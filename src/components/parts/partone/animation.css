@@ -1,0 +1,50 @@
+@keyframes slide {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.logos-slide {
+  animation: slide 15s linear infinite;
+}
+
+.logos {
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+}
+
+.logos::before,
+.logos::after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 10%;
+  z-index: 2;
+}
+
+.logos::before {
+  content: "Our Trusted Prtners";
+  color: #440080;
+  padding-left: 60px;
+  font-family: sans-serif;
+  font-size: large;
+  font-weight: bold;
+  left: 0;
+  background: white;
+}
+
+.logos::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0), white);
+}
+
+@media (max-width: 940px) {
+  .logos::before {
+    margin-top: 10px;
+    padding-left: 15px;
+  }
+}

@@ -1,0 +1,49 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  theme: {
+    screens: {
+      sm: "320px",
+      md: "640px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
+    },
+    extend: {
+      colors: {
+        primary: " #E6B8D4",
+        fbg: "#c183cc",
+        text1: "#1E1E1E ",
+        text2: "#440080",
+        text3: "#FFFFFF",
+        text4: "#000000",
+        text5: "#F5F0F0",
+        card: "#FCFAFA",
+        coming1: "#EDFFFF",
+        coming2: "#F5F1FE",
+        how1: "#F5F1FE",
+        how2: "#EDFFFF",
+        how3: "#F6E4F0",
+        howtext: "#707070",
+        memt1: "#302B2B",
+        rec1: "#FAF9FC",
+        rec2: "#f5ffff",
+        rec3: "#F9F2F7",
+        log: "#F2F2F2",
+        holder: "#E9E9E9",
+        Dh: "#F1F3F5",
+        act: "#2EC046",
+        bl: "#D9D9D9",
+        fade: "#B3B3B3",
+        not: "#F8F4F4",
+      },
+      fontFamily: {
+        sans: ["Open Sans", "sans-serif"],
+      },
+    },
+    input: {
+      appearance: "none",
+      borderColor: "#440080",
+    },
+  },
+};
