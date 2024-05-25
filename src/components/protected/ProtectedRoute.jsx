@@ -5,6 +5,7 @@ import { IdleTimerProvider } from "react-idle-timer";
 
 const ProtectedRoutes = () => {
   const idleTimerRef = useRef(null);
+
   const navigate = useNavigate();
 
   const token = sessionStorage.getItem("userData");

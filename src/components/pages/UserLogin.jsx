@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import { useIdleTimer } from "react-idle-timer/legacy";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { LoginUser } from "../../shared/redux/slices/landing.slices";
@@ -13,12 +12,10 @@ const UserLogin = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [passwordType, setPasswordType] = useState("password");
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
 
   const loginUserData = (e) => {
     e.preventDefault();
@@ -55,7 +52,7 @@ const UserLogin = () => {
 
   const togglePassword = () => {
     if (passwordType === "password") {
-      setPasswordType("text");
+      setPasswordType("string");
     } else {
       setPasswordType("password");
     }
@@ -83,14 +80,14 @@ const UserLogin = () => {
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-log py-8 font-sans">
-      <section className="text-center lg:w-[45%]">
+      <section className="string-center lg:w-[45%]">
         <header className="lg:px-[7em]">
           <img src={logo} alt="Logo" className="mx-auto mb-3 w-[5em]" />
-          <h1 className="mb-4 text-3xl font-semibold text-text2">
+          <h1 className="string-3xl string-text2 mb-4 font-semibold">
             Welcome Back
           </h1>
           <div>
-            <p className="font-medium text-howtext">
+            <p className="text-center font-medium text-howtext">
               {`Let's get you logged in to get back to building your investment
               portfolio and track your growth.`}
             </p>
@@ -99,9 +96,12 @@ const UserLogin = () => {
         <form onSubmit={loginUserData}>
           <div className="form mt-[2em] w-full">
             <div className="box1 sm:px-[1em]">
-              <label className="mb-3 flex text-text2">Email</label>
+              <label htmlFor="email" className="mb-3 flex text-text2">
+                Email
+              </label>
               <input
-                type="text"
+                type="email"
+                id="email"
                 placeholder="enter your e-mail"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -111,10 +111,13 @@ const UserLogin = () => {
           </div>
           <div className="form w-full">
             <div className="sm:px-[1em]">
-              <label className="mb-3 flex text-text2">Password</label>
+              <label htmlFor="password-input" className="mb-3 flex text-text2">
+                Password
+              </label>
               <div className="relative flex items-center">
                 <input
                   type={passwordType}
+                  id="password-input"
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}

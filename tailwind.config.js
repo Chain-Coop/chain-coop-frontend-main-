@@ -38,7 +38,7 @@ export default {
         not: "#F8F4F4",
       },
       fontFamily: {
-        sans: ["Open Sans", "sans-serif"],
+        sans: ["Open Sans", "sans-serif", "Asap"],
       },
     },
     input: {

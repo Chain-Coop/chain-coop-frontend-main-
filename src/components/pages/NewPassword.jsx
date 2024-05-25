@@ -27,12 +27,12 @@ const NewPassword = () => {
   }, [location]);
 
   const togglePassword = () => {
-    setPasswordType(passwordType === "password" ? "text" : "password");
+    setPasswordType(passwordType === "password" ? "string" : "password");
   };
 
   const toggleConfirmPassword = () => {
     setConfirmPasswordType(
-      confirmPasswordType === "password" ? "text" : "password",
+      confirmPasswordType === "password" ? "string" : "password",
     );
   };
 
@@ -114,10 +114,13 @@ const NewPassword = () => {
           className="form mt-[3em] w-full sm:px-[1em]"
         >
           <div>
-            <label className="mb-3 flex text-text2">Enter New Password</label>
+            <label htmlFor="password-input" className="mb-3 flex text-text2">
+              Enter New Password
+            </label>
             <div className="relative flex items-center">
               <input
                 placeholder="create new password"
+                id="password-input"
                 type={passwordType}
                 onChange={handleChange2}
                 onBlur={validatePassword}
@@ -142,12 +145,13 @@ const NewPassword = () => {
             )}
           </div>
           <div className="box1 lg:mt-[1.5em]">
-            <label className="mb-3 flex text-text2">
+            <label htmlFor="password-input" className="mb-3 flex text-text2">
               Re-Enter New Password
             </label>
             <div className="relative flex items-center">
               <input
                 placeholder="confirm new password"
+                id="password-input"
                 type={confirmPasswordType}
                 value={confirmPassword}
                 name="password"

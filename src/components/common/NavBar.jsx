@@ -35,7 +35,7 @@ const NavBar = () => {
           <img src={logo} alt="Chain Co-op Logo" />
         </Link>
         <div className="flex items-center">
-          <div className="mr-8 hidden flex-grow justify-center space-x-12 lg:flex">
+          <div className="mr-8 hidden flex-grow  justify-center space-x-12 lg:flex">
             {navLinksData.map((link, index) => (
               <NavLink
                 key={index}
@@ -129,7 +129,7 @@ const NavLink = ({ to, children, isActive }) => {
   return (
     <Link
       to={to}
-      className={`mr-8 font-sans lg:ml-8 lg:mr-0 ${isActive ? "font-semibold text-text2" : ""}`}
+      className={`mr-8 font-sans  lg:ml-8 lg:mr-0 ${isActive ? "font-semibold text-text2" : ""}`}
     >
       {children}
     </Link>

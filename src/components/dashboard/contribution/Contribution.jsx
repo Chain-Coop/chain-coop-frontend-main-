@@ -6,12 +6,18 @@ import {
   MdArrowOutward,
 } from "react-icons/md";
 import { IoIosArrowForward } from "react-icons/io";
+import { toggleState } from "../../../shared/utils/ToggleButton";
 
 const Contribution = () => {
   const [balanceVisible, setBalanceVisible] = useState(true);
 
   const toggleVisibility = () => {
     setBalanceVisible((prevVisible) => !prevVisible);
+  };
+  const [autoDeductionEnabled, setAutoDeductionEnabled] = useState(false);
+
+  const toggleAutoDeduction = () => {
+    setAutoDeductionEnabled((prevEnabled) => toggleState(prevEnabled));
   };
 
   return (
@@ -67,10 +73,13 @@ const Contribution = () => {
                 Auto-Deduction from Wallet
               </p>
               <div className="flex items-center">
-                <button className="rounded-full bg-act font-medium text-text5 shadow-md sm:px-[1em] sm:py-[2px] lg:px-[1.5em] lg:py-[5px]">
-                  Turn On
+                <button
+                  onClick={toggleAutoDeduction}
+                  className={`cursor-pointer rounded-full font-medium sm:px-[1em] sm:py-[2px] lg:px-[1.5em] lg:py-[5px] ${autoDeductionEnabled ? "bg-act text-white shadow-md" : "bg-act text-gray-500"}`}
+                >
+                  {autoDeductionEnabled ? "Turn Off" : "Turn On"}
                 </button>
-                <IoIosArrowForward />
+                <IoIosArrowForward className="cursor-pointer" />
               </div>
             </div>
           </div>

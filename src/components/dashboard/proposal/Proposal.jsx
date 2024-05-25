@@ -1,6 +1,8 @@
 import { DashboardHeader } from "../../common/DashboardHeader";
-import { FiPlusCircle, FiSearch } from "react-icons/fi";
+import { FiSearch } from "react-icons/fi";
 import { IoIosPeople } from "react-icons/io";
+import plus from "../../../../public/images/png/plus.png";
+
 import { Link } from "react-router-dom";
 
 const Proposal = () => {
@@ -94,7 +96,13 @@ const Proposal = () => {
 
           <section className="mb-[2em] mt-[2em] flex h-[250px] w-[190px] flex-col items-center justify-center rounded-lg border bg-Dh px-[1em] font-semibold shadow-lg hover:shadow-2xl">
             <Link to="/dashboard/proposal/submit-proposal">
-              <FiPlusCircle className="fill-text2 text-[2.5em]  text-text3" />
+              <img
+                width="24"
+                height="24"
+                src={plus}
+                alt="plus"
+                className="w-[3em] cursor-pointer shadow-sm"
+              />
             </Link>
             <p>Submit a </p>
             <p>proposal</p>

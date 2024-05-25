@@ -116,11 +116,15 @@ const CreateAccount = () => {
         <form onSubmit={registerUserData}>
           <div className="lg:px-13 form mt-[1em] w-full sm:px-[1em]">
             <div>
-              <label className="mb-3 flex text-base font-semibold text-text1">
+              <label
+                htmlFor="email-input"
+                className="mb-3 flex text-base font-semibold text-text1"
+              >
                 Email Address
               </label>
               <input
-                type="text"
+                type="email"
+                id="email-input"
                 onChange={(e) => setEmail(e.target.value)}
                 name="email"
                 placeholder="e-mail address"
@@ -131,12 +135,16 @@ const CreateAccount = () => {
 
           <div className="lg:px-13 form w-full sm:px-[1em]">
             <div className="box1">
-              <label className="mb-3 flex font-semibold text-text1">
+              <label
+                htmlFor="username-input"
+                className="mb-3 flex font-semibold text-text1"
+              >
                 Username
               </label>
               <input
                 onChange={(e) => setUsername(e.target.value)}
                 type="text"
+                id="username-input"
                 name="username"
                 placeholder="username"
                 className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md"
@@ -146,11 +154,15 @@ const CreateAccount = () => {
 
           <div className="lg:px-13 form w-full sm:px-[1em]">
             <div>
-              <label className="mb-3 flex font-sans font-semibold text-text1">
+              <label
+                htmlFor="phoneNumber-input"
+                className="mb-3 flex font-sans font-semibold text-text1"
+              >
                 Phone Number
               </label>
               <input
-                type="text"
+                type="number"
+                id="phoneNumber-input"
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 name="phoneNumber"
                 placeholder="phone number"
@@ -161,10 +173,14 @@ const CreateAccount = () => {
 
           <div className="lg:px-13 form w-full sm:px-[1em]">
             <div>
-              <label className="mb-3 flex font-semibold text-text1">
+              <label
+                htmlFor="membership-input"
+                className="mb-3 flex font-semibold text-text1"
+              >
                 Membership Type
               </label>
               <select
+                id="membership-input"
                 name="membershipType"
                 value={membershipType}
                 onChange={(e) => setMembershipType(e.target.value)}
@@ -178,11 +194,16 @@ const CreateAccount = () => {
           </div>
           <div className="lg:px-13 form w-full sm:px-[1em]">
             <div className="box1">
-              <label className="mb-3 flex font-semibold text-text1">
+              <label
+                htmlFor="password-input"
+                className="mb-3 flex font-semibold text-text1"
+              >
                 Password
               </label>
               <input
+                id="password-input"
                 onFocus={validatePassword}
+                type="password"
                 onChange={handleChange2}
                 value={password}
                 name="password"

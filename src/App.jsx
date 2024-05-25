@@ -10,7 +10,7 @@ import CreateAccount from "./components/pages/CreateAccount";
 import UserLoginOtp from "./components/pages/UserLoginOtp";
 import VerificationSuccessfull from "./components/pages/VerificationSuccessfull";
 import PaaswordRessetSuccessfull from "./components/pages/PaaswordRessetSuccessfull";
-import Contact from "./components/pages/Contact";
+import Contact from "./components/pages/entry/Contact";
 import ResetPassword from "./components/pages/ResetPassword";
 import NewPassword from "./components/pages/NewPassword";
 import UserLogin from "./components/pages/UserLogin";

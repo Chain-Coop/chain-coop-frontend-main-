@@ -73,14 +73,14 @@ const Home = () => {
             Start your investment journey by creating a portfolio
           </p>
         </header>
-        <div className="mt-4 grid gap-3 sm:grid-cols-1 lg:grid-cols-2">
-          <article className="mt-2 flex h-[230px] w-[180px] flex-col items-center justify-center rounded-lg bg-Dh font-semibold shadow-md">
+        <div className="mt-4 gap-[1.5em] space-y-[1.5em] sm:flex-col lg:flex lg:flex-row">
+          <article className="mt-2 flex h-[230px] flex-col items-center justify-center rounded-lg bg-Dh font-semibold shadow-md lg:w-[180px]">
             <img
               width="24"
               height="24"
               src={plus}
               alt="plus"
-              className="w-[3em] shadow-sm"
+              className="w-[3em] cursor-pointer shadow-sm"
             />
             <p className="font-sans sm:text-lg sm:font-semibold">Create a</p>
             <p className="font-sans sm:text-lg sm:font-semibold">
@@ -100,7 +100,7 @@ const Home = () => {
               <h1 className="p-[1em] text-lg font-medium uppercase text-text3">
                 automated ai <br /> learning Platform
               </h1>
-              <div className="mt-[4em]">
+              <div className="mt-[3.5em]">
                 <ComingSoonB text="" />
               </div>
             </div>

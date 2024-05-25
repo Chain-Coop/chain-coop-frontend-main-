@@ -64,7 +64,7 @@ const ForgetPassword = () => {
           <div className="box1">
             <label className="mb-3 flex text-text2">Email</label>
             <input
-              type="text"
+              type="string"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="e-mail"

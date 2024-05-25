@@ -1,22 +1,22 @@
-import NavBar from "../common/NavBar";
-import Footer from "../common/Footer";
+import NavBar from "../../common/NavBar";
+import Footer from "../../common/Footer";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 import { FiPhoneCall } from "react-icons/fi";
 import { CiLocationOn } from "react-icons/ci";
 import { MdMedicalInformation } from "react-icons/md";
-import icon1 from "../../../public/images/svg/social1.svg";
-import icon2 from "../../../public/images/svg/social2.svg";
-import icon3 from "../../../public/images/svg/social3.svg";
+import icon1 from "../../../../public/images/svg/social1.svg";
+import icon2 from "../../../../public/images/svg/social2.svg";
+import icon3 from "../../../../public/images/svg/social3.svg";
 
-import background from "../../../public/images/png/story.png";
-import circle from "../../../public/images/png/circle.png";
+import background from "../../../../public/images/png/story.png";
+import circle from "../../../../public/images/png/circle.png";
 
-import FooterBox from "../common/FooterBox";
+import FooterBox from "../../common/FooterBox";
 
-import "../../general.css";
-import { Send } from "../common/Button";
+import "../../../general.css";
+import { Send } from "../../common/Button";
 
 const Contact = () => {
   return (
