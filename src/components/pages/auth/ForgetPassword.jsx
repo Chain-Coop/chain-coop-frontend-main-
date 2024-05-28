@@ -1,9 +1,9 @@
-import logo from "../../../public/images/svg/icon.svg";
-import { EnterButton } from "../common/Button";
+import logo from "../../../../public/images/svg/auth/logo.svg";
+import { EnterButton } from "../../common/Button";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FORGOT_PASSWORD } from "../../shared/redux/services/landing.services";
+import { FORGOT_PASSWORD } from "../../../shared/redux/services/landing.services";
 import { useNavigate } from "react-router-dom";
 
 const ForgetPassword = () => {
@@ -50,7 +50,7 @@ const ForgetPassword = () => {
     <main className="flex h-screen items-center justify-center bg-log font-sans">
       <section className="text-center lg:w-[49%]">
         <div className="px-[2em]">
-          <img src={logo} alt="Logo" className="mx-auto mb-4 h-[4em] w-[4em]" />
+          <img src={logo} alt="Logo" className="mx-auto mb-4 h-[5em] w-[5em]" />
           <h1 className="mb-4 text-3xl font-semibold text-text2">
             Forgot Password ?
           </h1>

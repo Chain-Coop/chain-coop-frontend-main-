@@ -1,4 +1,4 @@
-import { Pin } from "../common/Button";
+import { Pin } from "../../common/Button";
 
 const CreatedPin = () => {
   return (

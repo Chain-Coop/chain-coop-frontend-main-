@@ -1,7 +1,7 @@
-import { EnterButton } from "../common/Button";
+import { EnterButton } from "../../common/Button";
 import { MdOutlineVisibilityOff, MdOutlineVisibility } from "react-icons/md";
 import { useEffect, useState } from "react";
-import { RESET_PASSWORD } from "../../shared/redux/services/landing.services";
+import { RESET_PASSWORD } from "../../../shared/redux/services/landing.services";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate, useLocation } from "react-router-dom";

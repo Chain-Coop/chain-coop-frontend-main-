@@ -1,7 +1,7 @@
-import { ComingSoonA, ComingSoonB } from "../../../common/Button";
-import person1 from "../../../../../public/images/png/personlaptop.png";
+// import { ComingSoonA, ComingSoonB } from "../../../common/Button";
+import person1 from "../../../../../public/images/jpg/home/person1.jpg";
 import person2 from "../../../../../public/images/png/ladylaptop.png";
-import person3 from "../../../../../public/images/png/ladylaptop3.png";
+import person3 from "../../../../../public/images/jpg/project-lady.jpg";
 
 const ProjectContent = () => {
   return (
@@ -16,7 +16,7 @@ const ProjectContent = () => {
         </header>
 
         <section>
-          <article
+          {/* <article
             className="mt-[2em] h-[550px] items-center rounded-xl bg-no-repeat p-[2em]"
             style={{
               backgroundImage: `url(${person1})`,
@@ -30,6 +30,9 @@ const ProjectContent = () => {
             <div className="mt-[19em] flex">
               <ComingSoonA text="" />
             </div>
+          </article> */}
+          <article className="mt-[2em]">
+            <img src={person1} alt="" />
           </article>
           <div className="mb-[2em] mt-4 flex flex-col lg:flex-row lg:space-x-4">
             <article
@@ -40,12 +43,10 @@ const ProjectContent = () => {
                 <h1 className="text-lg font-medium uppercase text-text3">
                   automated ai <br /> learning Platform
                 </h1>
-                <div className="mt-4">
-                  <ComingSoonB text="" />
-                </div>
+                <div className="mt-4">{/* <ComingSoonB text="" /> */}</div>
               </div>
             </article>
-            <article
+            {/* <article
               className="lg:w-[calc(50% - 2rem)] mt-4 rounded-xl bg-cover bg-center lg:mt-0"
               style={{ backgroundImage: `url(${person3})` }}
             >
@@ -57,6 +58,9 @@ const ProjectContent = () => {
                   <ComingSoonB text="" />
                 </div>
               </div>
+            </article> */}
+            <article>
+              <img src={person3} alt="" />
             </article>
           </div>
         </section>

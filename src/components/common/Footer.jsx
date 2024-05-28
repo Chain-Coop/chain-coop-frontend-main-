@@ -1,7 +1,7 @@
-import X from "../../../public/images/png/twitterx.png";
-import instagram from "../../../public/images/png/instagram.png";
-import facebook from "../../../public/images/png/facebook.png";
-import linkedin from "../../../public/images/png/linkedin.png";
+import X from "../../../public/images/png/home/twitterx.png";
+import instagram from "../../../public/images/png/home/instagram.png";
+import facebook from "../../../public/images/png/home/facebook.png";
+import linkedin from "../../../public/images/png/home/linkedin.png";
 
 const Footer = () => {
   return (

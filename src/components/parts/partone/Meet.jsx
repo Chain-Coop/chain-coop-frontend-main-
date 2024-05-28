@@ -1,13 +1,13 @@
-import person1 from "../../../../public/images/png/person1.png";
-import person2 from "../../../../public/images/png/person2.png";
-import person3 from "../../../../public/images/png/person3.png";
+import person1 from "../../../../public/images/jpg/home/person1.jpg";
+import person2 from "../../../../public/images/jpg/home/person2.jpg";
+import person3 from "../../../../public/images/jpg/home/person3.jpg";
 
 const image = [
   {
-    src: person2,
+    src: person1,
   },
   {
-    src: person1,
+    src: person2,
   },
   {
     src: person3,

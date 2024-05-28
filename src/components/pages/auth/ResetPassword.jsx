@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { Pin } from "../common/Button";
+import { Pin } from "../../common/Button";
 import { useNavigate, useLocation } from "react-router-dom";
-import { RESEND_LOGIN_OTP } from "../../shared/redux/services/landing.services";
+import { RESEND_LOGIN_OTP } from "../../../shared/redux/services/landing.services";
 import { toast } from "react-toastify";
 import OTPInput from "react-otp-input";
 

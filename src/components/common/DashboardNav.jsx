@@ -16,7 +16,7 @@ import { IoWalletSharp } from "react-icons/io5";
 import { GoProject } from "react-icons/go";
 import { VscGitPullRequestGoToChanges } from "react-icons/vsc";
 import { IoPersonCircleOutline } from "react-icons/io5";
-import membership from "../../../public/images/png/c1.png";
+import membership from "../../../public/images/jpg/membership/customer.jpg";
 import { useNavigate } from "react-router-dom";
 
 const navLinksData = [

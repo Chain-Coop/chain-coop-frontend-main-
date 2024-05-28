@@ -3,10 +3,10 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { LoginUser } from "../../shared/redux/slices/landing.slices";
-import { EnterButton } from "../common/Button";
+import { LoginUser } from "../../../shared/redux/slices/landing.slices";
+import { EnterButton } from "../../common/Button";
 import { MdOutlineVisibilityOff, MdOutlineVisibility } from "react-icons/md";
-import logo from "../../../public/images/svg/icon.svg";
+import logo from "../../../../public/images/svg/auth/logo.svg";
 
 const UserLogin = () => {
   const [password, setPassword] = useState("");
@@ -79,13 +79,11 @@ const UserLogin = () => {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-log py-8 font-sans">
+    <main className="flex min-h-screen items-center justify-center bg-log py-8 font-sans ">
       <section className="string-center lg:w-[45%]">
-        <header className="lg:px-[7em]">
+        <header className="text-center lg:px-[7em]">
           <img src={logo} alt="Logo" className="mx-auto mb-3 w-[5em]" />
-          <h1 className="string-3xl string-text2 mb-4 font-semibold">
-            Welcome Back
-          </h1>
+          <h1 className="mb-4 text-3xl font-bold text-text2">Welcome Back</h1>
           <div>
             <p className="text-center font-medium text-howtext">
               {`Let's get you logged in to get back to building your investment

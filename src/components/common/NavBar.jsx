@@ -2,7 +2,7 @@ import { HiOutlineBars3 } from "react-icons/hi2";
 import { HiX } from "react-icons/hi";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import logo from "../../../public/images/png/chain.png";
+import logo from "../../../public/images/svg/home/chain-logo.svg";
 import { LoginButton } from "./Button";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Pin } from "../common/Button";
-import { VerifyUserAuth } from "../../shared/redux/slices/landing.slices";
+import { Pin } from "../../common/Button";
+import { VerifyUserAuth } from "../../../shared/redux/slices/landing.slices";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import { RESEND_LOGIN_OTP } from "../../shared/redux/services/landing.services";
+import { RESEND_LOGIN_OTP } from "../../../shared/redux/services/landing.services";
 import { useDispatch } from "react-redux";
 import OTPInput from "react-otp-input";
 

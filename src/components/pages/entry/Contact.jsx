@@ -6,12 +6,12 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { FiPhoneCall } from "react-icons/fi";
 import { CiLocationOn } from "react-icons/ci";
 import { MdMedicalInformation } from "react-icons/md";
-import icon1 from "../../../../public/images/svg/social1.svg";
-import icon2 from "../../../../public/images/svg/social2.svg";
-import icon3 from "../../../../public/images/svg/social3.svg";
+import tweeter from "../../../../public/images/svg/contact/tweeter.svg";
+import linkdln from "../../../../public/images/svg/contact/linkdln.svg";
+import medium from "../../../../public/images/svg/contact/medium.svg";
 
-import background from "../../../../public/images/png/story.png";
-import circle from "../../../../public/images/png/circle.png";
+import background from "../../../../public/images/png/story/background.png";
+import circle from "../../../../public/images/png/contact/circle.png";
 
 import FooterBox from "../../common/FooterBox";
 
@@ -134,14 +134,14 @@ const Contact = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <img src={icon1} alt="twitter-img" />
+                        <img src={tweeter} alt="twitter-img" />
                       </a>
                       <a
                         href="https://www.linkedin.com/company/chain-coop/?viewAsMember=true"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <img src={icon2} alt="linkedin-img" />
+                        <img src={linkdln} alt="linkedin-img" />
                       </a>
                     </div>
                     <a
@@ -150,7 +150,7 @@ const Contact = () => {
                       rel="noopener noreferrer"
                     >
                       <div className="ml-auto mt-2 flex justify-center lg:mt-0">
-                        <img src={icon3} alt="medium-img" />
+                        <img src={medium} alt="medium-img" />
                       </div>
                     </a>
                   </div>

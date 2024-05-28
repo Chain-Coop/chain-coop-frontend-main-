@@ -1,10 +1,10 @@
-import logo from "../../../public/images/svg/icon.svg";
-import { EnterButton } from "../common/Button";
+import logo from "../../../../public/images/svg/auth/logo.svg";
+import { EnterButton } from "../../common/Button";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "../../shared/redux/reduxHooks";
-import { RegisterUser } from "../../shared/redux/slices/landing.slices";
+import { useAppSelector } from "../../../shared/redux/reduxHooks";
+import { RegisterUser } from "../../../shared/redux/slices/landing.slices";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import { FaArrowLeft } from "react-icons/fa6";
@@ -100,10 +100,10 @@ const CreateAccount = () => {
   };
 
   return (
-    <main className="h-vh flex items-center justify-center bg-log font-sans">
+    <main className="h-vh flex items-center pt-[1em] justify-center bg-log font-sans">
       <section className="text-center lg:w-[48%]">
         <div className="sm:px-[2em] lg:px-[5em]">
-          <img src={logo} alt="Logo" className="mx-auto mb-4 h-[4em] w-[4em]" />
+          <img src={logo} alt="Logo" className="mx-auto mb-4 h-[5em]" />
           <h1 className="mb-4 text-3xl font-bold text-text2">
             Create Your Account
           </h1>

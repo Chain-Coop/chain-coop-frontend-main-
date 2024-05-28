@@ -1,4 +1,4 @@
-import { Pin } from "../common/Button";
+import { Pin } from "../../common/Button";
 import OTPInput from "react-otp-input";
 
 const CreatePin = () => {

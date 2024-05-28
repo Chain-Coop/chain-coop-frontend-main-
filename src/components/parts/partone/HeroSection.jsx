@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import herobackground from "../../../../public/images/png/Hero.png";
+import herobackground from "../../../../public/images/png/home/background.png";
 import { GetStarted, Subscribe } from "../../common/Button";
 
 const HeroSection = () => {
   return (
     <main className="relative flex w-full font-sans">
-      <div className="flex items-center sm:h-[25em] lg:h-[100vh] lg:w-[50%]">
-        <div className="px-[1em]  lg:px-[4em]">
+      <div className="flex items-center sm:h-[25em] lg:h-[106vh] lg:w-[50%]">
+        <div className="px-[1em] lg:px-[4em]">
           <h1 className="mb-[1em] font-bold sm:text-3xl md:text-4xl lg:text-4xl">
             Your Trusted Investing <br /> Platform
             <span className="text-text2"> with</span>

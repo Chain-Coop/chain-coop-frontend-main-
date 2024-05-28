@@ -5,9 +5,8 @@ import {
   MdOutlineVisibility,
   MdArrowOutward,
 } from "react-icons/md";
-// import { FiPlusCircle } from "react-icons/fi";
 import { ComingSoonB } from "../../common/Button";
-import person2 from "../../../../public/images/png/ladylaptop.png";
+import person2 from "../../../../public/images/jpg/HomeD.jpg";
 import plus from "../../../../public/images/png/plus.png";
 
 const Home = () => {

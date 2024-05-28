@@ -1,5 +1,5 @@
-import success from "../../../public/images/svg/sucess.svg";
-import { Pin } from "../common/Button";
+import success from "../../../../public/images/svg/auth/sucess.svg";
+import { Pin } from "../../common/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const VerificationSuccessfull = () => {

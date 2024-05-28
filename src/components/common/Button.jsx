@@ -1,4 +1,4 @@
-import subicon from "../../../public/images/png/subicon.png";
+import subicon from "../../../public/images/png/home/subicon.png";
 import PropTypes from "prop-types";
 import ReactLoading from "react-loading";
 

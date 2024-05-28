@@ -1,16 +1,17 @@
-import card1 from "../../../../public/images/png/c1.png";
-import card2 from "../../../../public/images/png/c2.png";
-import card3 from "../../../../public/images/png/c3.png";
-import dot from "../../../../public/images/svg/Icon material-radio-button-checked.svg";
+//
+
+import member from "../../../../public/images/jpg/membership/customer.jpg";
+import investor from "../../../../public/images/jpg/membership/investor.jpg";
+import employee from "../../../../public/images/jpg/membership/employee.jpg";
+import dot from "../../../../public/images/svg/membership/radio-button.svg";
 
 const Card = () => {
   return (
     <main className="mx-auto font-sans sm:px-[1.5em] lg:mt-[3em] lg:w-[86%]">
       <section className="mt-8 flex flex-col justify-between lg:flex-row lg:space-x-8">
-
         <div className="flex-1 sm:mt-[1em] lg:mt-[0px]">
           <div className="relative">
-            <img src={card1} alt="card1" className="w-full" />
+            <img src={member} alt="card1" className="w-full" />
             <div className="mt-[1.5em] flex flex-col">
               <h1 className="text-xl font-semibold text-howtext">
                 Customer Membership Card
@@ -33,7 +34,7 @@ const Card = () => {
 
         <div className="flex-1 sm:mt-[1em] lg:mt-[0px]">
           <div className="relative">
-            <img src={card3} alt="card1" className="w-full" />
+            <img src={investor} alt="card1" className="w-full" />
             <div className="mt-[1.5em] flex flex-col">
               <h1 className="text-start text-xl font-semibold text-howtext">
                 Investor Membership Card
@@ -65,7 +66,7 @@ const Card = () => {
 
         <div className="flex-1 sm:mt-[1em] lg:mt-[0px]">
           <div className="relative">
-            <img src={card2} alt="card1" className="w-full" />
+            <img src={employee} alt="card1" className="w-full" />
             <div className="mt-[1.5em] flex flex-col">
               <h1 className="text-start text-xl font-semibold text-howtext">
                 Investors Membership Card
