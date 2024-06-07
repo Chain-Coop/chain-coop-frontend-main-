@@ -1,10 +1,10 @@
-import newspaper from "../../../../public/images/svg/newspaper.svg";
+import newspaper from "../../../../public/images/svg/dashboard/newspaper.svg";
 import { SiGooglemessages } from "react-icons/si";
 import { IoIosArrowForward } from "react-icons/io";
-import person2 from "../../../../public/images/jpg/home/person2.jpg";
-import person3 from "../../../../public/images/jpg/home/person3.jpg";
+import person2 from "../../../../public/images/png/dashboard/right.png";
+import person3 from "../../../../public/images/png/home/ladylaptop3.png";
 
-// import { ComingSoonB } from "../../common/Button";
+import { ComingSoon } from "../../common/Button";
 
 const Right = () => {
   return (
@@ -76,7 +76,7 @@ const Right = () => {
           <header>
             <h2 className="text-xl font-bold">Ongoing Project of Chain Coop</h2>
           </header>
-          {/* <div className="w-full">
+          <div className="w-full">
             <article
               className="mt-[1em] rounded-xl bg-no-repeat p-[1em]"
               style={{
@@ -89,18 +89,13 @@ const Right = () => {
               <h1 className="p-[1em] text-lg font-medium uppercase text-text3">
                 automated ai learning Platform
               </h1>
-              <div className="">
-                <ComingSoonB text="" />
+              <div>
+                <ComingSoon className="bg-coming2">Coming Soon</ComingSoon>
               </div>
-            </article>
-          </div> */}
-          <div className="w-full">
-            <article className="mt-[1em]">
-              <img src={person2} alt="" />
             </article>
           </div>
           {/* */}
-          {/* <div className="mt-[1em] h-[200px] w-full">
+          <div className="mt-[1em] h-[200px] w-full">
             <article
               className="rounded-xl bg-no-repeat p-[1em]"
               style={{
@@ -114,12 +109,8 @@ const Right = () => {
                 automated ai learning Platform
               </h1>
               <div className="">
-                <ComingSoonB text="" />
+                <ComingSoon className="bg-coming2">Coming Soon</ComingSoon>
               </div>
-            </article> */}
-          <div className="mt-[1em] h-[200px] w-full">
-            <article>
-              <img src={person3} alt="" />
             </article>
           </div>
         </section>

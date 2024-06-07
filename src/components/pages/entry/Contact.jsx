@@ -16,7 +16,7 @@ import circle from "../../../../public/images/png/contact/circle.png";
 import FooterBox from "../../common/FooterBox";
 
 import "../../../general.css";
-import { Send } from "../../common/Button";
+import { Primary } from "../../common/Button";
 
 const Contact = () => {
   return (
@@ -27,7 +27,7 @@ const Contact = () => {
           <img src={background} className="w-full object-cover" alt="" />
         </section>
         <section className="absolute inset-0 mx-auto ">
-          <header className="mx-auto text-center sm:mt-[2em] sm:w-full sm:px-1 md:px-[1em] lg:mt-[4em] lg:w-[65%]">
+          <header className="mx-auto text-center sm:mt-[2em] sm:w-full sm:px-1 md:px-[1em] lg:mt-[9em] lg:w-[65%]">
             <p className="text-lg font-semibold text-text2">Get in touch</p>
             <h1 className=" font-semibold sm:text-[1.5em] lg:text-[2.5em]">
               CONTACT US
@@ -98,7 +98,9 @@ const Contact = () => {
                     />
                   </div>
                 </div>
-                <Send text="Send" className="mt-[2em]" />
+                <Primary className="mt-[1.5em] bg-text2 px-4 text-text5 lg:px-[2.5em] lg:py-3">
+                  Send
+                </Primary>
               </form>
             </div>
 

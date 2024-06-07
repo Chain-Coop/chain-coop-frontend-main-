@@ -2,11 +2,12 @@ import X from "../../../public/images/png/home/twitterx.png";
 import instagram from "../../../public/images/png/home/instagram.png";
 import facebook from "../../../public/images/png/home/facebook.png";
 import linkedin from "../../../public/images/png/home/linkedin.png";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-text2 pb-[1.5em] font-sans">
-      <div className="mx-auto grid w-[86%] grid-cols-1 justify-between gap-2 sm:grid-cols-2 sm:pt-[100px] lg:flex lg:grid-cols-5 lg:gap-8 lg:pb-[10px] lg:pt-[200px]">
+    <footer className="w-full  bg-text2 pb-[1.5em] font-sans">
+      <div className="mx-auto grid w-[83%] grid-cols-1 justify-between gap-2 sm:grid-cols-2 sm:pt-[100px] lg:flex lg:grid-cols-5 lg:gap-8 lg:pb-[10px] lg:pt-[200px]">
         <div className="box1">
           <h3 className=" font-bold text-text3">Chain Coop</h3>
           <p className="mb-4 mt-4  font-light text-text3">
@@ -26,18 +27,31 @@ const Footer = () => {
         <div className="box2">
           <h3 className=" font-bold text-text3">Company</h3>
           <div className="mt-4">
-            <p className="mb-2 font-light text-text3">About Us</p>
-            <p className="mb-2 font-light text-text3">Team</p>
+            <p className="mb-2 font-light text-text3">
+              <Link to="/our-story">About Us</Link>
+            </p>
+            <p className="mb-2 font-light text-text3">
+              <Link to="/team">Team</Link>
+            </p>
+            <p className="mb-2 font-light text-text3">
+              <Link to="/career">Careers</Link>
+            </p>
             <p className="mb-2 font-light text-text3">Support</p>
           </div>
         </div>
         <div className="box3">
           <h3 className=" font-bold text-text3">Explore</h3>
           <div className="mt-4">
-            <p className="mb-2 font-light text-text3">Why Chain Coop</p>
-            <p className="mb-2 font-light text-text3">Membership Cards</p>
+            <p className="mb-2 font-light text-text3">
+              <Link to="/">Why Chain Coop</Link>
+            </p>
+            <p className="mb-2 font-light text-text3">
+              <Link to="/membership">Membership Cards</Link>
+            </p>
             <p className="mb-2 font-light text-text3">Projects</p>
-            <p className="mb-2 font-light text-text3">Blog</p>
+            <p className="mb-2 font-light text-text3">
+              <Link to="/blog">Blog</Link>
+            </p>
           </div>
         </div>
         <div className="box4">

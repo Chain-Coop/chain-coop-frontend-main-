@@ -1,54 +1,42 @@
-import subicon from "../../../public/images/png/home/subicon.png";
 import PropTypes from "prop-types";
 import ReactLoading from "react-loading";
 
-export const LoginButton = ({ onClick }) => {
+export const LoginButton = ({ onClick, children, className }) => {
   return (
     <button
-      className="top-[26px] h-[50px] w-[150px] gap-[16px] rounded-md bg-primary p-[8px] text-center font-sans text-[20px] font-medium leading-6 text-text1 sm:hidden lg:block"
+      className={`${className} top-[26px] h-[50px] w-[150px] gap-[16px] rounded-md  p-[8px] text-center font-sans text-[20px] leading-6 text-text1  lg:block`}
       onClick={onClick}
     >
-      Login
-    </button>
-  );
-};
-export const GetStarted = () => {
-  return (
-    <button className="h-[45px] w-[140px] rounded-md bg-text2 p-[8px] text-center  font-sans text-[20px] font-medium leading-6 text-text3 outline-none focus:outline-none">
-      Get Started
+      {children}
     </button>
   );
 };
 
-export const Join = () => {
+export const Primary = ({ children, className, onClick }) => {
   return (
-    <button className="h-[45px] w-[140px] gap-[16px] rounded-md bg-text2 p-[8px] text-center font-sans text-[20px] font-medium leading-6 text-text3 outline-none focus:outline-none">
-      Join
+    <button
+      onClick={onClick}
+      className={`text-center font-sans text-[20px] font-medium leading-6 outline-none focus:outline-none ${className}`}
+    >
+      {children}
     </button>
   );
 };
 
-export const Subscribe = () => {
+export const ComingSoon = ({ children, className }) => {
   return (
-    <button className="bg-#FFFFFF flex h-[45px] w-[178px] cursor-default justify-center rounded-md p-2 font-sans font-medium text-text2 shadow-xl outline-none focus:outline-none">
-      <img src={subicon} className="mr-2 h-[25px] " alt="" />
-      50+ Subscribes
+    <button
+      className={`font-base cursor-not-allowed rounded-xl  px-[15px] py-[6px] font-sans font-semibold ${className}`}
+    >
+      {children}
     </button>
   );
 };
 
-export const ComingSoonA = () => {
+export const Blog = ({ children, className }) => {
   return (
-    <button className="font-base rounded-xl bg-coming1 px-[15px] py-[6px] font-sans font-semibold">
-      Coming Soon
-    </button>
-  );
-};
-
-export const ComingSoonB = () => {
-  return (
-    <button className="font-base cursor-not-allowed rounded-xl bg-coming2 px-[15px] py-[6px] font-sans font-semibold">
-      Coming Soon
+    <button className={`font-base cursor-not-allowed ${className}`}>
+      {children}
     </button>
   );
 };
@@ -76,51 +64,32 @@ export const EnterButton = ({ type, text, loading, disabled, className }) => {
   );
 };
 
-export const Send = ({ text, className }) => {
-  return (
-    <button
-      className={`h-[45px] w-[140px] rounded-md bg-text2 p-[8px] text-center  font-sans text-[20px] font-medium leading-6 text-text3 outline-none focus:outline-none ${className}`}
-    >
-      {text}
-    </button>
-  );
-};
-
-EnterButton.propTypes = {
-  type: PropTypes.oneOf(["submit", "button"]),
-  text: PropTypes.string.isRequired,
-  loading: PropTypes.bool.isRequired,
-  disabled: PropTypes.bool,
-};
-
-export const Pin = ({ text, onClick, className }) => {
-  return (
-    <button
-      onClick={onClick}
-      className={`w-55px lg:mt-[2em]text-text5 rounded-full bg-text2 px-14 py-3 font-sans font-semibold text-text5 ${className}`}
-    >
-      {text}
-    </button>
-  );
-};
-
-EnterButton.propTypes = {
-  type: PropTypes.oneOf(["submit", "button"]),
-  loading: PropTypes.bool.isRequired,
-  disabled: PropTypes.bool,
-  text: PropTypes.string.isRequired,
-  className: PropTypes.string,
-};
 LoginButton.propTypes = {
   onClick: PropTypes.func.isRequired,
+  children: PropTypes.node,
+  className: PropTypes.string,
 };
-Pin.propTypes = {
+
+Primary.propTypes = {
+  children: PropTypes.node,
+  className: PropTypes.string,
   onClick: PropTypes.func,
+};
+
+ComingSoon.propTypes = {
+  children: PropTypes.node,
+  className: PropTypes.string,
+};
+
+EnterButton.propTypes = {
+  type: PropTypes.oneOf(["submit", "button"]),
+  loading: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool,
   text: PropTypes.string.isRequired,
   className: PropTypes.string,
 };
 
-Send.propTypes = {
-  text: PropTypes.string.isRequired,
+Blog.propTypes = {
+  children: PropTypes.node,
   className: PropTypes.string,
 };

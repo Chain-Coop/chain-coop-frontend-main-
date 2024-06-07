@@ -1,9 +1,14 @@
+import { useNavigate } from "react-router";
 import success from "../../../../public/images/svg/auth/sucess.svg";
-import { Pin } from "../../common/Button";
+import { Primary } from "../../common/Button";
 
 const PaaswordRessetSuccessfull = () => {
+  const navigate = useNavigate();
+  const login = () => {
+    navigate("/login");
+  };
   return (
-    <main className="flex font-sans h-screen items-center justify-center bg-log">
+    <main className="flex h-screen items-center justify-center bg-log font-sans">
       <section className="text-center lg:w-[25%]">
         <div>
           <img
@@ -16,9 +21,13 @@ const PaaswordRessetSuccessfull = () => {
               Password Reset Successful
             </p>
           </div>
-          <div className="mt-[2em]">
-            <Pin text="Continue" className="sm:text-lg" />
-          </div>
+
+          <Primary
+            className="w-[10em] rounded-full bg-text2 py-3 font-medium text-text5 sm:text-lg lg:mt-[2em]"
+            onClick={login}
+          >
+            Continue
+          </Primary>
         </div>
       </section>
     </main>

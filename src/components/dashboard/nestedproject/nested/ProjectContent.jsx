@@ -1,7 +1,8 @@
 // import { ComingSoonA, ComingSoonB } from "../../../common/Button";
-import person1 from "../../../../../public/images/jpg/home/person1.jpg";
-import person2 from "../../../../../public/images/png/ladylaptop.png";
-import person3 from "../../../../../public/images/jpg/project-lady.jpg";
+import person1 from "../../../../../public/images/png/home/personlaptop.png";
+import person2 from "../../../../../public/images/png/dashboard/project.png";
+import person3 from "../../../../../public/images/png/home/ladylaptop3.png";
+import { ComingSoon } from "../../../common/Button";
 
 const ProjectContent = () => {
   return (
@@ -16,7 +17,7 @@ const ProjectContent = () => {
         </header>
 
         <section>
-          {/* <article
+          <article
             className="mt-[2em] h-[550px] items-center rounded-xl bg-no-repeat p-[2em]"
             style={{
               backgroundImage: `url(${person1})`,
@@ -28,26 +29,26 @@ const ProjectContent = () => {
               automated ai <br /> learning Platform
             </h1>
             <div className="mt-[19em] flex">
-              <ComingSoonA text="" />
+              <ComingSoon className="bg-coming1">Coming Soon</ComingSoon>
             </div>
-          </article> */}
-          <article className="mt-[2em]">
-            <img src={person1} alt="" />
           </article>
+
           <div className="mb-[2em] mt-4 flex flex-col lg:flex-row lg:space-x-4">
             <article
-              className="lg:w-[calc(50% - 2rem)] rounded-lg bg-cover bg-center"
+              className=" rounded-lg bg-cover bg-center"
               style={{ backgroundImage: `url(${person2})` }}
             >
               <div className="p-6">
                 <h1 className="text-lg font-medium uppercase text-text3">
                   automated ai <br /> learning Platform
                 </h1>
-                <div className="mt-4">{/* <ComingSoonB text="" /> */}</div>
+                <div className="mt-4">
+                  <ComingSoon className="bg-coming2">Coming Soon</ComingSoon>
+                </div>
               </div>
             </article>
-            {/* <article
-              className="lg:w-[calc(50% - 2rem)] mt-4 rounded-xl bg-cover bg-center lg:mt-0"
+            <article
+              className=" mt-4 rounded-xl bg-cover bg-center lg:mt-0"
               style={{ backgroundImage: `url(${person3})` }}
             >
               <div className="p-6">
@@ -55,12 +56,9 @@ const ProjectContent = () => {
                   automated ai <br /> learning Platform
                 </h1>
                 <div className="mt-4">
-                  <ComingSoonB text="" />
+                  <ComingSoon className="bg-coming2">Coming Soon</ComingSoon>
                 </div>
               </div>
-            </article> */}
-            <article>
-              <img src={person3} alt="" />
             </article>
           </div>
         </section>

@@ -36,10 +36,12 @@ export default {
         bl: "#D9D9D9",
         fade: "#B3B3B3",
         not: "#F8F4F4",
+        blog: "#EEE7F3",
       },
       fontFamily: {
         sans: ["Open Sans", "sans-serif", "Asap"],
       },
+      backgroundImage: "url('/public/images/png/story/background.png')",
     },
     input: {
       appearance: "none",

@@ -7,9 +7,13 @@ import How from "../../parts/partone/How";
 import Meet from "../../parts/partone/Meet";
 import TrustedPartners from "../../parts/partone/TrustedPartners";
 import FooterBox from "../../common/FooterBox";
+import { useEffect } from "react";
 import NavBar from "../../common/NavBar";
 
 const HomePage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <div>

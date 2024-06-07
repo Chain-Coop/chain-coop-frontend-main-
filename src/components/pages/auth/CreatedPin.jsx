@@ -1,4 +1,4 @@
-import { Pin } from "../../common/Button";
+import { Primary } from "../../common/Button";
 
 const CreatedPin = () => {
   return (
@@ -14,7 +14,9 @@ const CreatedPin = () => {
               with anyone
             </p>
           </div>
-          <Pin text="Okay" className="mt-[2em]" />
+          <Primary className="w-[10em] rounded-full bg-text2 py-3 font-medium text-text5 sm:text-lg  lg:mt-[2em]">
+            Okay
+          </Primary>
         </div>
       </section>
     </main>

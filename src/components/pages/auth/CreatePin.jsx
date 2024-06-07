@@ -1,4 +1,4 @@
-import { Pin } from "../../common/Button";
+import { Primary } from "../../common/Button";
 import OTPInput from "react-otp-input";
 
 const CreatePin = () => {
@@ -28,7 +28,10 @@ const CreatePin = () => {
               />
             </div>
           </form>
-          <Pin text="Create Pin" className="font-sans font-medium sm:text-lg" />
+
+          <Primary className="w-[10em] rounded-full bg-text2 py-3 font-medium text-text5 sm:text-lg lg:mt-[2em]">
+            Create Pin
+          </Primary>
         </div>
       </section>
     </main>

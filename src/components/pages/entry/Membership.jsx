@@ -6,10 +6,14 @@ import AppStore from "../../parts/partone/AppStore";
 import Footer from "../../common/Footer";
 import FooterBox from "../../common/FooterBox";
 import Revolution from "../../parts/parttwo/Revolution";
+import { useEffect } from "react";
 const Membership = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
-      <NavBar />
+      <NavBar position="relative" />
       <Join />
       <Card />
       <Revolution />

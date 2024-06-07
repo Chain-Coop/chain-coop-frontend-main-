@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Pin } from "../../common/Button";
+import { Primary } from "../../common/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { RESEND_LOGIN_OTP } from "../../../shared/redux/services/landing.services";
 import { toast } from "react-toastify";
@@ -75,12 +75,14 @@ const ResetPassword = () => {
               />
             </div>
           </form>
-          <Pin
-            text="Resend OTP"
+
+          <Primary
             onClick={ResendOtp}
             loading={loading}
-            className="font-sans font-medium sm:text-lg"
-          />
+            className="w-[12em] rounded-full bg-text2 py-3 font-medium text-text5 sm:text-lg lg:mt-[2em]"
+          >
+            Resend OTP
+          </Primary>
         </div>
       </section>
     </main>

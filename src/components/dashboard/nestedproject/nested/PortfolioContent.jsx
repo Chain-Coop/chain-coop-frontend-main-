@@ -1,5 +1,5 @@
-import person2 from "../../../../../public/images/png/ladylaptop.png";
-import { ComingSoonB } from "../../../common/Button";
+import person2 from "../../../../../public/images/jpg/dashboard/porfolio.jpg";
+import { ComingSoon } from "../../../common/Button";
 
 const PortfolioContent = () => {
   return (
@@ -40,7 +40,7 @@ const PortfolioContent = () => {
               automated ai <br /> learning Platform
             </h1>
             <div className="mt-[7em]">
-              <ComingSoonB text="" />
+              <ComingSoon className="bg-coming2">Coming Soon</ComingSoon>
             </div>
           </div>
         </article>

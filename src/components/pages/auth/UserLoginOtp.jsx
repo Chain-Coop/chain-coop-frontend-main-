@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pin } from "../../common/Button";
+import { Primary } from "../../common/Button";
 import { VerifyUserAuth } from "../../../shared/redux/slices/landing.slices";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -94,12 +94,14 @@ const UserLoginOtp = () => {
               />
             </div>
           </form>
-          <Pin
-            text="Resend OTP"
-            loading={loading}
+
+          <Primary
             onClick={ResendOtp}
-            className="font-sans font-medium sm:text-lg"
-          />
+            loading={loading}
+            className="w-[12em] rounded-full bg-text2 py-3 font-medium text-text5 sm:text-lg  lg:mt-[2em]"
+          >
+            Resend OTP
+          </Primary>
         </div>
       </section>
     </main>

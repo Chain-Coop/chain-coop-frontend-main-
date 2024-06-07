@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { LoginUser } from "../../../shared/redux/slices/landing.slices";
-import { EnterButton } from "../../common/Button";
 import { MdOutlineVisibilityOff, MdOutlineVisibility } from "react-icons/md";
 import logo from "../../../../public/images/svg/auth/logo.svg";
+import { EnterButton } from "../../common/Button";
 
 const UserLogin = () => {
   const [password, setPassword] = useState("");
@@ -16,6 +16,11 @@ const UserLogin = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const home = (e) => {
+    e.preventDefault();
+    navigate("/");
+  };
 
   const loginUserData = (e) => {
     e.preventDefault();
@@ -82,7 +87,12 @@ const UserLogin = () => {
     <main className="flex min-h-screen items-center justify-center bg-log py-8 font-sans ">
       <section className="string-center lg:w-[45%]">
         <header className="text-center lg:px-[7em]">
-          <img src={logo} alt="Logo" className="mx-auto mb-3 w-[5em]" />
+          <img
+            src={logo}
+            alt="Logo"
+            className="mx-auto mb-3 w-[5em] cursor-pointer"
+            onClick={home}
+          />
           <h1 className="mb-4 text-3xl font-bold text-text2">Welcome Back</h1>
           <div>
             <p className="text-center font-medium text-howtext">

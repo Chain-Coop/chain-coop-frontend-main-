@@ -5,9 +5,10 @@ import {
   MdOutlineVisibility,
   MdArrowOutward,
 } from "react-icons/md";
-import { ComingSoonB } from "../../common/Button";
-import person2 from "../../../../public/images/jpg/HomeD.jpg";
-import plus from "../../../../public/images/png/plus.png";
+// import { FiPlusCircle } from "react-icons/fi";
+import { ComingSoon } from "../../common/Button";
+import person2 from "../../../../public/images/png/dashboard/home.png";
+import plus from "../../../../public/images/png/home/plus.png";
 
 const Home = () => {
   const [balanceVisible, setBalanceVisible] = useState(true);
@@ -100,7 +101,7 @@ const Home = () => {
                 automated ai <br /> learning Platform
               </h1>
               <div className="mt-[3.5em]">
-                <ComingSoonB text="" />
+                <ComingSoon className="bg-coming2">Coming Soon</ComingSoon>
               </div>
             </div>
           </article>

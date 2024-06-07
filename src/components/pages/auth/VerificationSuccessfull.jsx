@@ -1,6 +1,6 @@
 import success from "../../../../public/images/svg/auth/sucess.svg";
-import { Pin } from "../../common/Button";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Primary } from "../../common/Button";
 
 const VerificationSuccessfull = () => {
   const location = useLocation();
@@ -28,11 +28,12 @@ const VerificationSuccessfull = () => {
             </p>
           </div>
           <div>
-            <Pin
-              text="Continue"
+            <Primary
               onClick={goToReset}
-              className="mt-[1.5em] sm:text-lg"
-            />
+              className="w-[10em] rounded-full bg-text2 py-3 font-medium text-text5 sm:text-lg  lg:mt-[2em]"
+            >
+              Continue
+            </Primary>
           </div>
         </div>
       </section>
