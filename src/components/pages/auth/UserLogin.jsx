@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { LoginUser } from "../../../shared/redux/slices/landing.slices";
 import { MdOutlineVisibilityOff, MdOutlineVisibility } from "react-icons/md";
-import logo from "../../../../public/images/svg/auth/logo.svg";
+import logo from "../../../Assets/svg/auth/logo.svg";
 import { EnterButton } from "../../common/Button";
 
 const UserLogin = () => {
@@ -157,7 +157,7 @@ const UserLogin = () => {
               <span className="text-text2">Remember Me</span>
             </div>
             <a href="/forget-password" className="pointer font-normal italic">
-              Forget Password
+              Forgot Password
             </a>
           </div>
 

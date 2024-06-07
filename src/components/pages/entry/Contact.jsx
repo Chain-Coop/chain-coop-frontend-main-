@@ -6,12 +6,12 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { FiPhoneCall } from "react-icons/fi";
 import { CiLocationOn } from "react-icons/ci";
 import { MdMedicalInformation } from "react-icons/md";
-import tweeter from "../../../../public/images/svg/contact/tweeter.svg";
-import linkdln from "../../../../public/images/svg/contact/linkdln.svg";
-import medium from "../../../../public/images/svg/contact/medium.svg";
+import tweeter from "../../../Assets/svg/contact/tweeter.svg";
+import linkdln from "../../../Assets/svg/contact/linkdln.svg";
+import medium from "../../../Assets/svg/contact/medium.svg";
 
-import background from "../../../../public/images/png/story/background.png";
-import circle from "../../../../public/images/png/contact/circle.png";
+import background from "../../../Assets/png/story/background.png";
+import circle from "../../../Assets/png/contact/circle.png";
 
 import FooterBox from "../../common/FooterBox";
 

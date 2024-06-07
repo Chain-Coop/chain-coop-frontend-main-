@@ -5,10 +5,9 @@ import {
   MdOutlineVisibility,
   MdArrowOutward,
 } from "react-icons/md";
-// import { FiPlusCircle } from "react-icons/fi";
 import { ComingSoon } from "../../common/Button";
-import person2 from "../../../../public/images/png/dashboard/home.png";
-import plus from "../../../../public/images/png/home/plus.png";
+import person2 from "../../../Assets/png/dashboard/home.png";
+import plus from "../../../Assets/png/home/plus.png";
 
 const Home = () => {
   const [balanceVisible, setBalanceVisible] = useState(true);

@@ -1,12 +1,12 @@
-import notfound from "../../../public/images/svg/notfound.svg";
-import corner from "../../../public/images/svg/topcorner.svg";
+import notfound from "../../Assets/svg/notfound.svg";
+import corner from "../../Assets/svg/topcorner.svg";
 const NotFound = () => {
   const handleReturnBack = () => {
     window.history.back();
   };
 
   return (
-    <main className="bg-not flex h-screen items-center justify-center font-sans">
+    <main className="flex h-screen items-center justify-center bg-not font-sans">
       <div className="content text-center">
         <div>
           <img src={notfound} alt="404 Not Found" />

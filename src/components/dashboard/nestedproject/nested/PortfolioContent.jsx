@@ -1,4 +1,4 @@
-import person2 from "../../../../../public/images/jpg/dashboard/porfolio.jpg";
+import person2 from "../../../../Assets/jpg/dashboard/porfolio.jpg";
 import { ComingSoon } from "../../../common/Button";
 
 const PortfolioContent = () => {

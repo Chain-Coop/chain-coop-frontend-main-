@@ -1,4 +1,4 @@
-import success from "../../../../public/images/svg/auth/sucess.svg";
+import success from "../../../Assets/svg/auth/sucess.svg";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Primary } from "../../common/Button";
 

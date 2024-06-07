@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import success from "../../../../public/images/svg/auth/sucess.svg";
+import success from "../../../Assets/svg/auth/sucess.svg";
 import { Primary } from "../../common/Button";
 
 const PaaswordRessetSuccessfull = () => {

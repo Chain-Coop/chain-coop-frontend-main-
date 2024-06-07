@@ -1,7 +1,7 @@
 import { DashboardHeader } from "../../common/DashboardHeader";
 import { FiSearch } from "react-icons/fi";
 import { IoIosPeople } from "react-icons/io";
-import plus from "../../../../public/images/png/home/plus.png";
+import plus from "../../../Assets/png/home/plus.png";
 import { Link } from "react-router-dom";
 
 const Proposal = () => {

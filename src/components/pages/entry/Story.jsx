@@ -1,10 +1,10 @@
 import NavBar from "../../common/NavBar";
 import Footer from "../../common/Footer";
 import FooterBox from "../../common/FooterBox";
-import background from "../../../../public/images/png/story/background.png";
-import image1 from "../../../../public/images/jpg/story/image1.jpg";
-import image2 from "../../../../public/images/jpg/story/image2.jpg";
-import mark from "../../../../public/images/svg/story/icon-mark.svg";
+import background from "../../../Assets/png/story/background.png";
+import image1 from "../../../Assets/jpg/story/image1.jpg";
+import image2 from "../../../Assets/jpg/story/image2.jpg";
+import mark from "../../../Assets/svg/story/icon-mark.svg";
 import { useEffect } from "react";
 
 const Story = () => {

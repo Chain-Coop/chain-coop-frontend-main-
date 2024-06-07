@@ -1,6 +1,6 @@
-import person1 from "../../../../public/images/png/home/personlaptop.png";
-import person2 from "../../../../public/images/png/home/ladylaptop.png";
-import person3 from "../../../../public/images/png/home/ladylaptop3.png";
+import person1 from "../../../Assets/png/home/personlaptop.png";
+import person2 from "../../../Assets/png/home/personlaptop.png";
+import person3 from "../../../Assets/png/home/personlaptop.png";
 import { ComingSoon } from "../../common/Button";
 
 const Explore = () => {

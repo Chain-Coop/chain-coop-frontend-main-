@@ -1,4 +1,4 @@
-import logo from "../../../../public/images/svg/auth/logo.svg";
+import logo from "../../../Assets/svg/auth/logo.svg";
 import { EnterButton } from "../../common/Button";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";

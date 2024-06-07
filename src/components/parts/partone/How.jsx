@@ -1,6 +1,6 @@
-import step1 from "../../../../public/images/png/home/howto-step1.png";
-import step2 from "../../../../public/images/png/home/howto-step2.png";
-import step3 from "../../../../public/images/png/home/howto-step3.png";
+import step1 from "../../../Assets/png/home/howto-step1.png";
+import step2 from "../../../Assets/png/home/howto-step2.png";
+import step3 from "../../../Assets/png/home/howto-step3.png";
 
 const How = () => {
   return (

@@ -1,4 +1,4 @@
-import demologo from "../../../../public/images/png/home/demologo.png";
+import demologo from "../../../Assets/png/home/demologo.png";
 import "../../parts/partone/animation.css";
 
 const image = [

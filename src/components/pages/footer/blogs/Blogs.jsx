@@ -1,9 +1,9 @@
 import NavBar from "../../../common/NavBar";
-import tech from "../../../../../public/images/png/footer/blog/men.png";
-import machine from "../../../../../public/images/png/footer/blog/tech.png";
-import men2 from "../../../../../public/images/png/footer/blog/image3.png";
+import tech from "../../../../Assets/png/footer/blog/men.png";
+import machine from "../../../../Assets/png/footer/blog/tech.png";
+import men2 from "../../../../Assets/png/footer/blog/image3.png";
 import { Blog } from "../../../common/Button";
-import avatar from "../../../../../public/images/png/footer/blog/avatar.png";
+import avatar from "../../../../Assets/png/footer/blog/avatar.png";
 import Footer from "../../../common/Footer";
 import FooterBox from "../../../common/FooterBox";
 import { useEffect } from "react";

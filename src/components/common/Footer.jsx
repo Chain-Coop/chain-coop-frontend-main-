@@ -1,7 +1,7 @@
-import X from "../../../public/images/png/home/twitterx.png";
-import instagram from "../../../public/images/png/home/instagram.png";
-import facebook from "../../../public/images/png/home/facebook.png";
-import linkedin from "../../../public/images/png/home/linkedin.png";
+import X from "../../Assets/png/home/twitterx.png";
+import instagram from "../../Assets/png/home/instagram.png";
+import facebook from "../../Assets/png/home/facebook.png";
+import linkedin from "../../Assets/png/home/linkedin.png";
 import { Link } from "react-router-dom";
 
 const Footer = () => {

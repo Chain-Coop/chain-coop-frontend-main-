@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DashboardHeader } from "../../common/DashboardHeader";
 import {
   MdOutlineVisibilityOff,
@@ -7,9 +7,30 @@ import {
 } from "react-icons/md";
 import { IoIosArrowForward } from "react-icons/io";
 import { toggleState } from "../../../shared/utils/ToggleButton";
+import { GetWalletBalance } from "../../../shared/redux/slices/transaction.slices";
+// import { useAppSelector, useAppDispatch } from "../../../shared/reduxHooks";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
 
 const Contribution = () => {
   const [balanceVisible, setBalanceVisible] = useState(true);
+  const balance = useSelector((state) => state.transaction?.getWalletBalance);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const userToken = sessionStorage.getItem("userData");
+    if (userToken) {
+      dispatch(GetWalletBalance())
+        .unwrap()
+        .then(() => {})
+        .catch((err) => {
+          const errorMessage = err.message;
+          toast.error(errorMessage);
+        });
+    } else {
+      // Handle case when student token is not found
+    }
+  }, [dispatch]);
 
   const toggleVisibility = () => {
     setBalanceVisible((prevVisible) => !prevVisible);
@@ -42,7 +63,9 @@ const Contribution = () => {
             </div>
             <div className="mx-auto mt-[1.5em] w-[15em] rounded-md">
               {balanceVisible ? (
-                <p className="font-bold sm:text-xl lg:text-2xl">N 100,000.00</p>
+                <p className="font-bold sm:text-xl lg:text-2xl">
+                  &nbsp;₦ {balance?.balance.toLocaleString()}
+                </p>
               ) : (
                 <p className="text-2xl font-bold">*********</p>
               )}

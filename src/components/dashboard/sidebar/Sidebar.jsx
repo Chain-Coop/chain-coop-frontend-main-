@@ -1,12 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
 import { GoHome } from "react-icons/go";
-import logo from "../../../../public/images/svg/cooplogo.svg";
+import logo from "../../../Assets/svg/cooplogo.svg";
 import { FaDropbox } from "react-icons/fa6";
 import { IoWalletSharp } from "react-icons/io5";
 import { GoProject } from "react-icons/go";
 import { VscGitPullRequestGoToChanges } from "react-icons/vsc";
 import { IoPersonCircleOutline } from "react-icons/io5";
-import membership from "../../../../public/images/jpg/membership/customer.jpg";
+import membership from "../../../Assets/jpg/membership/customer.jpg";
 
 const sidebarLinks = [
   {

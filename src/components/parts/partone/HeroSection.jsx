@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import herobackground from "../../../../public/images/png/home/background.png";
-import subicon from "../../../../public/images/png/home/subicon.png";
+import herobackground from "../../../Assets/png/home/background.png";
+import subicon from "../../../Assets/png/home/subicon.png";
 import { Primary } from "../../common/Button";
 
 const HeroSection = () => {

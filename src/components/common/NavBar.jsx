@@ -1,7 +1,7 @@
 import { HiOutlineBars3 } from "react-icons/hi2";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import logo from "../../../public/images/svg/home/chain-logo.svg";
+import logo from "../../Assets/svg/home/chain-logo.svg";
 import PropTypes from "prop-types";
 import { Modal, ModalBody } from "reactstrap";
 import { LoginButton } from "./Button";

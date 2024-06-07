@@ -1,5 +1,5 @@
-import phone1 from "../../../../public/images/png/home/store-phone.png";
-import playstore from "../../../../public/images/png/home/playstore.png";
+import phone1 from "../../../Assets/png/home/store-phone.png";
+import playstore from "../../../Assets/png/home/playstore.png";
 
 const AppStore = () => {
   return (

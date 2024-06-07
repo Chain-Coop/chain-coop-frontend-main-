@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import NavBar from "../../../common/NavBar";
-import hero from "../../../../../public/images/png/footer/career/image1.png";
+import hero from "../../../../Assets/png/footer/career/image1.png";
 import { Primary } from "../../../common/Button";
 
 const Career = () => {

@@ -1,9 +1,7 @@
-//
-
-import member from "../../../../public/images/jpg/membership/customer.jpg";
-import investor from "../../../../public/images/jpg/membership/investor.jpg";
-import employee from "../../../../public/images/jpg/membership/employee.jpg";
-import dot from "../../../../public/images/svg/membership/radio-button.svg";
+import member from "../../../Assets/jpg/membership/customer.jpg";
+import investor from "../../../Assets/jpg/membership/investor.jpg";
+import employee from "../../../Assets/jpg/membership/employee.jpg";
+import dot from "../../../Assets/svg/membership/radio-button.svg";
 
 const Card = () => {
   return (

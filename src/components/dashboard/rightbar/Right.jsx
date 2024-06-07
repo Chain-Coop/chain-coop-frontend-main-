@@ -1,10 +1,10 @@
-import newspaper from "../../../../public/images/svg/dashboard/newspaper.svg";
+import newspaper from "../../../Assets/svg/dashboard/newspaper.svg";
 import { SiGooglemessages } from "react-icons/si";
 import { IoIosArrowForward } from "react-icons/io";
-import person2 from "../../../../public/images/png/dashboard/right.png";
-import person3 from "../../../../public/images/png/home/ladylaptop3.png";
-
+import person2 from "../../../Assets/png/dashboard/right.png";
+import person3 from "../../../Assets/png/home/ladylaptop3.png";
 import { ComingSoon } from "../../common/Button";
+
 
 const Right = () => {
   return (

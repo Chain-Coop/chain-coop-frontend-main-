@@ -1,6 +1,6 @@
-import person1 from "../../../../public/images/jpg/home/person1.jpg";
-import person2 from "../../../../public/images/jpg/home/person2.jpg";
-import person3 from "../../../../public/images/jpg/home/person3.jpg";
+import person1 from "../../../Assets/jpg/home/person1.jpg";
+import person2 from "../../../Assets/jpg/home/person2.jpg";
+import person3 from "../../../Assets/jpg/home/person3.jpg";
 
 const image = [
   {

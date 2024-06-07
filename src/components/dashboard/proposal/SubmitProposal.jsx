@@ -1,5 +1,4 @@
 import { DashboardHeader } from "../../common/DashboardHeader";
-// import { FaFileUpload } from "react-icons/fa";
 
 const SubmitProposal = () => {
   return (

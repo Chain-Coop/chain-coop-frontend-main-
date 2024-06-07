@@ -1,4 +1,4 @@
-import logo from "../../../../public/images/svg/auth/logo.svg";
+import logo from "../../../Assets/svg/auth/logo.svg";
 import { EnterButton } from "../../common/Button";
 import { useState } from "react";
 import { toast } from "react-toastify";
