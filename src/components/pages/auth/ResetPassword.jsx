@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { RESEND_LOGIN_OTP } from "../../../shared/redux/services/landing.services";
 import { toast } from "react-toastify";
 import OTPInput from "react-otp-input";
+import ReactLoading from "react-loading";
 
 const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
@@ -28,16 +29,12 @@ const ResetPassword = () => {
     setLoading(true);
     const endpoint = `/auth/resend_otp`;
     try {
-      await RESEND_LOGIN_OTP(endpoint, { email });
+      const response = await RESEND_LOGIN_OTP(endpoint, { email });
       setLoading(false);
-      toast.success("OTP sent successfully");
-    } catch (error) {
+      toast.success(response.data.msg);
+    } catch (response) {
       setLoading(false);
-      if (error.response) {
-        toast.error(error.response.data.message || "An error occurred");
-      } else {
-        toast.error("Network error. Please check your internet connection");
-      }
+      toast.error(response.data.msg);
     }
   };
 
@@ -81,7 +78,17 @@ const ResetPassword = () => {
             loading={loading}
             className="w-[12em] rounded-full bg-text2 py-3 font-medium text-text5 sm:text-lg lg:mt-[2em]"
           >
-            Resend OTP
+            {loading ? (
+              <ReactLoading
+                color="#FFFFFF"
+                width={25}
+                height={25}
+                type="spin"
+                className="inline-block"
+              />
+            ) : (
+              "Resend OTP"
+            )}
           </Primary>
         </div>
       </section>

@@ -66,18 +66,50 @@ const NewPassword = () => {
     return password !== confirmPassword || password.length < 8 || !special;
   };
 
+  // const resetPasswordFunc = async (e) => {
+  //   e.preventDefault();
+
+  //   validatePassword();
+
+  //   if (password !== confirmPassword) {
+  //     setConfirmPasswordError("Passwords do not match");
+  //     return;
+  //   } else {
+  //     setConfirmPasswordError(null);
+  //   }
+
+  //   setLoading(true);
+  //   const endpoint = `/auth/reset_password`;
+  //   try {
+  //     const response = await RESET_PASSWORD(endpoint, {
+  //       email: email,
+  //       otp: otp,
+  //       password: password,
+  //       confirmPassword: confirmPassword,
+  //     });
+  //     setLoading(false);
+  //     console.log(response);
+  //     if (response.status === 200) {
+  //       toast.success("Password Reset Successfully");
+  //       navigate("/login");
+  //     } else {
+  //       toast.error(response.data.msg);
+  //     }
+  //   } catch (e) {
+  //     setLoading(false);
+  //     toast.error(`Network error, kindly check your internet connection`);
+  //   }
+  // };
+
   const resetPasswordFunc = async (e) => {
     e.preventDefault();
-
     validatePassword();
-
     if (password !== confirmPassword) {
       setConfirmPasswordError("Passwords do not match");
       return;
     } else {
       setConfirmPasswordError(null);
     }
-
     setLoading(true);
     const endpoint = `/auth/reset_password`;
     try {
@@ -90,17 +122,18 @@ const NewPassword = () => {
       setLoading(false);
       console.log(response);
       if (response.status === 200) {
-        toast.success("Password Reset Successfully");
+        toast.success(response.data.msg);
         navigate("/login");
       } else {
-        toast.error(response.data.message);
+        toast.error(response.data.msg);
       }
-    } catch (e) {
+    } catch (respo) {
       setLoading(false);
-      toast.error(`Network error, kindly check your internet connection`);
+      toast.error(error.response?.data?.msg);
     }
   };
 
+  
   return (
     <main className="flex h-screen items-center justify-center bg-log font-sans">
       <section className="text-center sm:w-full lg:w-[45%]">

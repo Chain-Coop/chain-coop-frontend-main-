@@ -18,7 +18,7 @@ export const RegisterUser = createAsyncThunk(
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);
     }
-  }
+  },
 );
 
 export const LoginUser = createAsyncThunk(
@@ -32,12 +32,13 @@ export const LoginUser = createAsyncThunk(
         (error.response &&
           error.response.data &&
           error.response.data.message) ||
-        error.message ||
+        error.data.message ||
         error.toString();
+      console.log("messsage", message);
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);
     }
-  }
+  },
 );
 
 export const VerifyUserAuth = createAsyncThunk(
@@ -49,7 +50,7 @@ export const VerifyUserAuth = createAsyncThunk(
     } catch (error) {
       console.error(
         "Error:",
-        error.response || error.message || error.toString()
+        error.response || error.message || error.toString(),
       );
 
       const message =
@@ -62,7 +63,7 @@ export const VerifyUserAuth = createAsyncThunk(
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);
     }
-  }
+  },
 );
 const initialState = {
   getUserRegistered: null,

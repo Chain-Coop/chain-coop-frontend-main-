@@ -9,7 +9,9 @@ const Proposal = () => {
     <div className="font-sans">
       <div className="sm:mt-0 lg:mt-8">
         <header>
-          <DashboardHeader text="Proposal" />
+          <DashboardHeader className="flex items-center justify-center">
+            Proposal
+          </DashboardHeader>
         </header>
         <div className="mx-auto mt-8 sm:px-[1em] lg:w-[31em] lg:px-[0]">
           <section className="mb-4">

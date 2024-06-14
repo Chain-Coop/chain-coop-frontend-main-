@@ -10,7 +10,9 @@ const Project = () => {
     <main className="font-sans">
       <div className="sm:mt-[0] lg:mt-8">
         <header>
-          <DashboardHeader text="Project" />
+          <DashboardHeader className="flex items-center justify-center">
+            Project
+          </DashboardHeader>
         </header>
         <div className="mx-auto lg:w-[34em] lg:px-0">
           <nav>

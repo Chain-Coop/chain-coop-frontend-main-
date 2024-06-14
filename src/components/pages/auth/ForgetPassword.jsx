@@ -14,22 +14,13 @@ const ForgetPassword = () => {
   const forgotPasswordFunc = async () => {
     setLoading(true);
     const endpoint = `/auth/forget_password`;
-    try {
-      const response = await FORGOT_PASSWORD(endpoint, { email });
-      setLoading(false);
-      if (response.data.msg === "Password reset OTP sent to your email") {
-        toast.success("OTP sent successfully");
-        navigate(`/verification-successfull?email=${email}`);
-      } else {
-        toast.error("An error occurred");
-      }
-    } catch (error) {
-      setLoading(false);
-      if (error.response) {
-        toast.error(error.response.data.message || "An error occurred");
-      } else {
-        toast.error("Network error. Please check your internet connection");
-      }
+    const response = await FORGOT_PASSWORD(endpoint, { email });
+    setLoading(false);
+    if (response.status === 200) {
+      toast.success(response.data.msg);
+      navigate(`/verification-successfull?email=${email}`);
+    } else {
+      toast.error(response.data.msg);
     }
   };
 

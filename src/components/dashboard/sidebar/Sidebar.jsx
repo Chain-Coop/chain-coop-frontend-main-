@@ -55,7 +55,7 @@ const Sidebar = () => {
             key={index}
             to={link.to}
             className={`text flex items-center px-4 py-3 font-sans text-lg hover:bg-Dh ${
-              (link.to === "/dashboard/proposal" &&
+              (["/dashboard/proposal", "/dashboard/wallet"].includes(link.to) &&
                 location.pathname.startsWith(link.to)) ||
               location.pathname === link.to
                 ? "active !important border-l-2 border-text2 bg-Dh font-semibold"

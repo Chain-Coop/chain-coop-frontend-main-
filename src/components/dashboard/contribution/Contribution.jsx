@@ -8,7 +8,6 @@ import {
 import { IoIosArrowForward } from "react-icons/io";
 import { toggleState } from "../../../shared/utils/ToggleButton";
 import { GetWalletBalance } from "../../../shared/redux/slices/transaction.slices";
-// import { useAppSelector, useAppDispatch } from "../../../shared/reduxHooks";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -44,9 +43,11 @@ const Contribution = () => {
   return (
     <main className="font-sans">
       <header className="sm:mt-[0] lg:mt-[2em]">
-        <DashboardHeader text="Monthly Contribution" />
+        <DashboardHeader className="flex items-center justify-center">
+          Monthly Contribution
+        </DashboardHeader>
       </header>
-      <section className="mt-[2em] sm:px-[1.5em] lg:mx-auto lg:w-[30em] lg:px-[0]">
+      <section className="mt-[2em] sm:px-[1.5em] lg:mx-auto lg:w-[33em] lg:px-[0]">
         <article className="text-center text-text4">
           <div className=" mt-[2em] rounded-3xl py-[2em] shadow-md">
             <div className="flex justify-center gap-4 font-sans">

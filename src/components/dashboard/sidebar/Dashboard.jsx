@@ -11,6 +11,8 @@ import SubmitProposal from "../proposal/SubmitProposal";
 import Profile from "../profile/Profile";
 import Right from "../rightbar/Right";
 import "../../../../src/App.css";
+import Withdraw from "../wallet/withdraw/Withdraw";
+import SelectBank from "../wallet/withdraw/SelectBank";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -29,13 +31,12 @@ const Dashboard = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="contribution" element={<Contribution />} />
-          <Route path="wallet" element={<Wallet />} />
+          <Route path="wallet/*" element={<Wallet />} />
+          <Route path="wallet/withdraw" element={<Withdraw />} /> {/* Ensure path is correct */}
+          <Route path="wallet/select-bank" element={<SelectBank />} /> {/* Ensure path is correct */}
           <Route path="project" element={<Project />} />
           <Route path="proposal/*" element={<Proposal />} />
-          <Route
-            path="/proposal/submit-proposal"
-            element={<SubmitProposal />}
-          />
+          <Route path="proposal/submit-proposal" element={<SubmitProposal />} />
           <Route path="profile" element={<Profile />} />
         </Routes>
       </section>

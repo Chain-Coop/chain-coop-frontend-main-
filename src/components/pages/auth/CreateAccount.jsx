@@ -53,14 +53,19 @@ const CreateAccount = () => {
         setMembershipType("");
         setPassword("");
         setLoading(false);
-        toast.success("Account created successfully");
+        toast.success(
+          "Registration successful, enter the OTP sent to your email",
+        );
         navigate(`/account-otp?email=${email}`);
       })
+
       .catch((error) => {
         if (error.response && error.response.status === 409) {
-          toast.error("User already exists");
+          toast.error("Email already exists");
+        } else if (error.request && !error.response) {
+          toast.error("Network error occurred");
         } else {
-          toast.error("An error occurred. Please try again later.");
+          toast.error("Unknown error occurred");
         }
         setLoading(false);
       });
@@ -100,7 +105,7 @@ const CreateAccount = () => {
   };
 
   return (
-    <main className="h-vh flex items-center pt-[1em] justify-center bg-log font-sans">
+    <main className="h-vh flex items-center justify-center bg-log pt-[1em] font-sans">
       <section className="text-center lg:w-[48%]">
         <div className="sm:px-[2em] lg:px-[5em]">
           <img src={logo} alt="Logo" className="mx-auto mb-4 h-[5em]" />
@@ -188,7 +193,7 @@ const CreateAccount = () => {
               >
                 <option value="">--- Select your membership type ---</option>
                 <option value="patron">Patron</option>
-                <option value="investor">investor members</option>
+                <option value="investor members">investor members</option>
               </select>
             </div>
           </div>

@@ -21,7 +21,6 @@ const UserLogin = () => {
     e.preventDefault();
     navigate("/");
   };
-
   const loginUserData = (e) => {
     e.preventDefault();
 
@@ -35,13 +34,12 @@ const UserLogin = () => {
       .unwrap()
       .then(() => {
         setLoading(false);
-        toast.success("Login successful");
+        toast.success("Welcome");
         navigate("/dashboard");
       })
       .catch((error) => {
         setLoading(false);
-        const errorMessage =
-          error.response?.data?.message || "Invalid credentials";
+        const errorMessage = error.response?.data?.msg || "Invalid credentials";
         toast.error(errorMessage);
       });
     if (rememberMe) {
