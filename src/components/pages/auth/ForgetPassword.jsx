@@ -1,17 +1,19 @@
-import logo from "../../../Assets/svg/auth/logo.svg";
-import { EnterButton } from "../../common/Button";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FORGOT_PASSWORD } from "../../../shared/redux/services/landing.services";
+import { EnterButton } from "../../common/Button";
+import logo from "../../../Assets/svg/auth/logo.svg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FORGOT_PASSWORD } from "../../../shared/redux/services/landing.services";
-import { useNavigate } from "react-router-dom";
+import ReactLoading from "react-loading";
 
 const ForgetPassword = () => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
-  const forgotPasswordFunc = async () => {
+  const forgotPassword = async (e) => {
+    e.preventDefault();
     setLoading(true);
     const endpoint = `/auth/forget_password`;
     const response = await FORGOT_PASSWORD(endpoint, { email });
@@ -22,19 +24,6 @@ const ForgetPassword = () => {
     } else {
       toast.error(response.data.msg);
     }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validate()) {
-      await forgotPasswordFunc();
-    } else {
-      toast.error("Please enter your email");
-    }
-  };
-
-  const validate = () => {
-    return !email;
   };
 
   return (
@@ -51,7 +40,7 @@ const ForgetPassword = () => {
             </p>
           </div>
         </div>
-        <form onSubmit={handleSubmit} className="mt-[3em] w-full sm:px-[1em]">
+        <form onSubmit={forgotPassword} className="mt-[3em] w-full sm:px-[1em]">
           <div className="box1">
             <label className="mb-3 flex text-text2">Email</label>
             <input
@@ -62,13 +51,25 @@ const ForgetPassword = () => {
               className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md"
             />
           </div>
-          <div className="sm:px-[1em] ">
+          {/* <div className="sm:px-[1em] ">
             <EnterButton
               text="Submit"
               loading={loading}
               className="sm:text-lg "
             />
-          </div>
+          </div> */}
+          <EnterButton onClick={forgotPassword}>
+            {loading ? (
+              <ReactLoading
+                color="#FFFFFF"
+                width={25}
+                height={25}
+                type="spin"
+              />
+            ) : (
+              "Submit"
+            )}
+          </EnterButton>
         </form>
         <section className="flex justify-center">
           <p className="text-text font-medium">

@@ -7,20 +7,26 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer className="w-full  bg-text2 pb-[1.5em] font-sans">
-      <div className="mx-auto grid w-[83%] grid-cols-1 justify-between gap-2 sm:grid-cols-2 sm:pt-[100px] lg:flex lg:grid-cols-5 lg:gap-8 lg:pb-[10px] lg:pt-[200px]">
-        <div className="box1">
-          <h3 className=" font-bold text-text3">Chain Coop</h3>
-          <p className="mb-4 mt-4  font-light text-text3">
+      <div className="mx-auto grid grid-cols-1 justify-between gap-2 px-4 sm:grid-cols-2 sm:pt-[100px] lg:flex lg:w-[83%] lg:grid-cols-5 lg:gap-8 lg:pb-[10px] lg:pt-[200px]">
+        <div>
+          <h3 className="font-bold text-text3">Chain Coop</h3>
+          <p className="mb-4 mt-4 font-light text-text3">
             The first cooperative with digital membership <br /> in Nigeria.
             Earn fixed guaranteed returns <br />
             investing in business, all this via blockchain <br /> technology.
           </p>
-          <div className="mt-4">
+          {/* <div className="mt-4">
             <p className="mb-2  font-medium text-text3">
               Statue of Chain Cooperative
             </p>
             <p className="mb-2  font-medium text-text3">
               Constitution Act of the Chain Cooperative
+            </p>
+          </div> */}
+          <div className="w-[67%]">
+            <p className="font-medium text-text3">
+              Statue of Chain Cooperative Constitution Act of the Chain
+              Cooperative
             </p>
           </div>
         </div>

@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import ReactLoading from "react-loading";
 
 export const LoginButton = ({ onClick, children, className }) => {
   return (
@@ -41,24 +40,14 @@ export const Blog = ({ children, className }) => {
   );
 };
 
-export const EnterButton = ({ type, text, loading, disabled, className }) => {
+export const EnterButton = ({ children, className, onClick }) => {
   return (
     <div className="relative mb-[1em]">
       <button
-        type={type || "submit"}
-        className={`relative w-full rounded-full bg-text2 p-[15px] font-medium text-text5 ${className} ${
-          disabled ? "cursor-not-allowed" : "cursor-pointer"
-        }`}
-        disabled={loading || disabled}
-        style={{ opacity: loading ? 0.5 : 1 }}
-        title={disabled ? "Fill in all input fields" : ""}
+        className={`relative w-full rounded-full bg-text2 p-[15px] font-medium text-text5  ${className}`}
+        onClick={onClick}
       >
-        <span className={loading ? "invisible" : ""}>{text}</span>
-        {loading && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <ReactLoading color="white" width={25} height={25} type="spin" />
-          </div>
-        )}
+        {children}
       </button>
     </div>
   );
@@ -82,11 +71,9 @@ ComingSoon.propTypes = {
 };
 
 EnterButton.propTypes = {
-  type: PropTypes.oneOf(["submit", "button"]),
-  loading: PropTypes.bool.isRequired,
-  disabled: PropTypes.bool,
-  text: PropTypes.string.isRequired,
   className: PropTypes.string,
+  onClick: PropTypes.func.isRequired,
+  children: PropTypes.node,
 };
 
 Blog.propTypes = {

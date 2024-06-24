@@ -17,8 +17,7 @@ const Profile = () => {
     } else {
       sessionStorage.clear();
     }
-
-    navigate("/");
+     navigate("/");
   };
 
   return (

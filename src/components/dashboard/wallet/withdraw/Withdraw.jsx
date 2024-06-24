@@ -1,11 +1,11 @@
+import { useState } from "react";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 import { DashboardHeader } from "../../../common/DashboardHeader";
 import withdraw from "../../../../Assets/svg/dashboard/wallet/withdraw.svg";
-import { useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Modal from "../../../common/Modal";
 import { Primary } from "../../../common/Button";
-import { Link } from "react-router-dom";
 
 const Withdraw = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,11 +13,11 @@ const Withdraw = () => {
   const navigate = useNavigate();
 
   const wallet = () => {
-    navigate("/dashboard/wallet"); // Ensure this path is correct
+    navigate("/dashboard/wallet"); 
   };
 
   const SelectBank = () => {
-    navigate("/dashboard]/wallet/select-bank"); // Ensure this path is correct
+    navigate("/dashboard]/wallet/select-bank"); 
   };
 
   const toggleModal = () => {

@@ -7,6 +7,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { RESEND_LOGIN_OTP } from "../../../shared/redux/services/landing.services";
 import { useDispatch } from "react-redux";
 import OTPInput from "react-otp-input";
+import ReactLoading from "react-loading";
 
 const UserLoginOtp = () => {
   const navigate = useNavigate();
@@ -29,23 +30,20 @@ const UserLoginOtp = () => {
 
   const verifyUserData = (otpValue) => {
     setLoading(true);
-    console.log("OTP Values:", otp);
     let body = {
       otp: otpValue,
       email: email,
     };
-    console.log("body", body);
-
     dispatch(VerifyUserAuth(body))
       .unwrap()
-      .then((res) => {
-        console.log(res);
+      .then((response) => {
         setLoading(false);
+        toast.success(response.msg);
         navigate("/create-pin");
       })
-      .catch((err) => {
-        toast.error(err.message || "Invalid OTP, please try again");
+      .catch((error) => {
         setLoading(false);
+        toast.error(error);
       });
   };
 
@@ -53,19 +51,14 @@ const UserLoginOtp = () => {
     setLoading(true);
     const endpoint = `/auth/resend_otp`;
     try {
-      await RESEND_LOGIN_OTP(endpoint, { email });
+      const response = await RESEND_LOGIN_OTP(endpoint, { email });
       setLoading(false);
-      toast.success("OTP sent successfully");
+      toast.success(response.data.msg);
     } catch (error) {
       setLoading(false);
-      if (error.response) {
-        toast.error(error.response.data.message || "An error occurred");
-      } else {
-        toast.error("Network error. Please check your internet connection");
-      }
+      toast.error(error);
     }
   };
-
   return (
     <main className="flex h-screen items-center justify-center bg-log font-sans">
       <section className="text-center  md:w-[55%]">
@@ -98,9 +91,18 @@ const UserLoginOtp = () => {
           <Primary
             onClick={ResendOtp}
             loading={loading}
-            className="w-[12em] rounded-full bg-text2 py-3 font-medium text-text5 sm:text-lg  lg:mt-[2em]"
+            className="w-[12em] rounded-full bg-text2 px-2 py-3 font-medium text-text5 sm:text-lg lg:mt-[2em]"
           >
-            Resend OTP
+            {loading ? (
+              <ReactLoading
+                color="#FFFFFF"
+                width={25}
+                height={25}
+                type="spin"
+              />
+            ) : (
+              "Resend OTP"
+            )}
           </Primary>
         </div>
       </section>

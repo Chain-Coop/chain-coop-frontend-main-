@@ -9,12 +9,7 @@ export const RegisterUser = createAsyncThunk(
       const data = await LandingServices.RegisterUser(body);
       return { landing: data };
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
+      const message = error.msg;
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);
     }
@@ -28,13 +23,7 @@ export const LoginUser = createAsyncThunk(
       const data = await LandingServices.LoginUser(body);
       return { landing: data };
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.data.message ||
-        error.toString();
-      console.log("messsage", message);
+      const message = error.msg;
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);
     }
@@ -48,23 +37,13 @@ export const VerifyUserAuth = createAsyncThunk(
       const data = await LandingServices.VerifyUserAuth(body);
       return { landing: data };
     } catch (error) {
-      console.error(
-        "Error:",
-        error.response || error.message || error.toString(),
-      );
-
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-
+      const message = error.msg;
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);
     }
   },
 );
+
 const initialState = {
   getUserRegistered: null,
   getloginUser: null,

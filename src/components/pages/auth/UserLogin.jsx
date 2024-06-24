@@ -1,19 +1,20 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { LoginUser } from "../../../shared/redux/slices/landing.slices";
+import { EnterButton } from "../../common/Button";
 import { MdOutlineVisibilityOff, MdOutlineVisibility } from "react-icons/md";
 import logo from "../../../Assets/svg/auth/logo.svg";
-import { EnterButton } from "../../common/Button";
+import { toast } from "react-toastify";
+import ReactLoading from "react-loading";
 
 const UserLogin = () => {
-  const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [passwordType, setPasswordType] = useState("password");
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -21,6 +22,7 @@ const UserLogin = () => {
     e.preventDefault();
     navigate("/");
   };
+
   const loginUserData = (e) => {
     e.preventDefault();
 
@@ -39,9 +41,10 @@ const UserLogin = () => {
       })
       .catch((error) => {
         setLoading(false);
-        const errorMessage = error.response?.data?.msg || "Invalid credentials";
+        const errorMessage = error;
         toast.error(errorMessage);
       });
+
     if (rememberMe) {
       sessionStorage.setItem("email", email);
       sessionStorage.setItem("password", password);
@@ -61,10 +64,6 @@ const UserLogin = () => {
     }
   };
 
-  const isSubmitDisabled = () => {
-    return !(email.trim() && password.trim());
-  };
-
   useEffect(() => {
     const storedEmail = sessionStorage.getItem("email");
     const storedPassword = sessionStorage.getItem("password");
@@ -82,9 +81,9 @@ const UserLogin = () => {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-log py-8 font-sans ">
-      <section className="string-center lg:w-[45%]">
-        <header className="text-center lg:px-[7em]">
+    <main className="flex min-h-screen items-center justify-center bg-log py-8 font-sans">
+      <section className="w-full px-[12px] text-center lg:w-[45%]">
+        <header className="m-auto text-center">
           <img
             src={logo}
             alt="Logo"
@@ -92,7 +91,7 @@ const UserLogin = () => {
             onClick={home}
           />
           <h1 className="mb-4 text-3xl font-bold text-text2">Welcome Back</h1>
-          <div>
+          <div className="w-full lg:px-[5em]">
             <p className="text-center font-medium text-howtext">
               {`Let's get you logged in to get back to building your investment
               portfolio and track your growth.`}
@@ -100,50 +99,48 @@ const UserLogin = () => {
           </div>
         </header>
         <form onSubmit={loginUserData}>
-          <div className="form mt-[2em] w-full">
-            <div className="box1 sm:px-[1em]">
-              <label htmlFor="email" className="mb-3 flex text-text2">
-                Email
-              </label>
+          <div className="mt-[2em]">
+            <label htmlFor="email" className="mb-3 flex text-text2">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              placeholder="enter your e-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md focus:border-text2 focus:ring-text2"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="password-input" className="mb-3 flex text-text2">
+              Password
+            </label>
+            <div className="relative flex items-center">
               <input
-                type="email"
-                id="email"
-                placeholder="enter your e-mail"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md focus:border-text2 focus:ring-text2"
+                type={passwordType}
+                id="password-input"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="input mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md focus:border-text2 focus:ring-text2"
               />
+              <button
+                type="button"
+                className="absolute right-4 mb-3 flex"
+                onClick={togglePassword}
+              >
+                {passwordType === "password" ? (
+                  <MdOutlineVisibilityOff />
+                ) : (
+                  <MdOutlineVisibility />
+                )}
+              </button>
             </div>
           </div>
-          <div className="form w-full">
-            <div className="sm:px-[1em]">
-              <label htmlFor="password-input" className="mb-3 flex text-text2">
-                Password
-              </label>
-              <div className="relative flex items-center">
-                <input
-                  type={passwordType}
-                  id="password-input"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="input mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md focus:border-text2 focus:ring-text2"
-                />
-                <button
-                  type="button"
-                  className="absolute right-4 mb-3 flex"
-                  onClick={togglePassword}
-                >
-                  {passwordType === "password" ? (
-                    <MdOutlineVisibilityOff />
-                  ) : (
-                    <MdOutlineVisibility />
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-between sm:px-[1em]">
+
+          <div className="flex justify-between">
             <div className="flex gap-3">
               <input
                 type="checkbox"
@@ -155,20 +152,25 @@ const UserLogin = () => {
               <span className="text-text2">Remember Me</span>
             </div>
             <a href="/forget-password" className="pointer font-normal italic">
-              Forgot Password
+              Forgot Password ?
             </a>
           </div>
 
-          <div className="mt-[2em] sm:px-[1em]">
-            <EnterButton
-              type="submit"
-              text="Login"
-              loading={loading}
-              disabled={loading || isSubmitDisabled()}
-            />
-          </div>
+          <EnterButton onClick={loginUserData} className="mt-[2em]">
+            {loading ? (
+              <ReactLoading
+                color="#FFFFFF"
+                width={25}
+                height={25}
+                type="spin"
+              />
+            ) : (
+              "Submit"
+            )}
+          </EnterButton>
+
           <div className="flex justify-center">
-            <p className="font-sans">
+            <p>
               {`Don't have an account?`}
               <a
                 href="/sign-up"

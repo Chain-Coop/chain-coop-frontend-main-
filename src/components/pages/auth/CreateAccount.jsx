@@ -1,13 +1,14 @@
-import logo from "../../../Assets/svg/auth/logo.svg";
-import { EnterButton } from "../../common/Button";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "../../../shared/redux/reduxHooks";
 import { RegisterUser } from "../../../shared/redux/slices/landing.slices";
-import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
+import { EnterButton } from "../../common/Button";
 import { FaArrowLeft } from "react-icons/fa6";
+import { MdOutlineVisibilityOff, MdOutlineVisibility } from "react-icons/md";
+import logo from "../../../Assets/svg/auth/logo.svg";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ReactLoading from "react-loading";
 
 const CreateAccount = () => {
   useEffect(() => {
@@ -19,18 +20,13 @@ const CreateAccount = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [membershipType, setMembershipType] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordType, setPasswordType] = useState("password");
   const [loading, setLoading] = useState(false);
-  const [showErrorBox, setShowErrorBox] = useState(false);
-  const [special, setSpecial] = useState(false);
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const registerUser = useAppSelector(
-    (state) => state.landing.getUserRegistered,
-  );
-  console.log(registerUser);
 
-  const registerUserData = (e) => {
+  const registerUser = (e) => {
     e.preventDefault();
     if (isSubmitDisabled() || loading) {
       return;
@@ -54,20 +50,14 @@ const CreateAccount = () => {
         setPassword("");
         setLoading(false);
         toast.success(
-          "Registration successful, enter the OTP sent to your email",
+          "Registration successful, enter the OTP sent to your email"
         );
         navigate(`/account-otp?email=${email}`);
       })
-
       .catch((error) => {
-        if (error.response && error.response.status === 409) {
-          toast.error("Email already exists");
-        } else if (error.request && !error.response) {
-          toast.error("Network error occurred");
-        } else {
-          toast.error("Unknown error occurred");
-        }
         setLoading(false);
+        const errorMessage = error;
+        toast.error(errorMessage);
       });
   };
 
@@ -81,170 +71,143 @@ const CreateAccount = () => {
       /[!@#$%^&*(),.?":{}|<>]/.test(password)
     );
   };
-
-  const handleChange2 = (event) => {
-    const value = event.target.value;
-
-    const hasSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/.test(value);
-
-    if (hasSpecialCharacter) {
-      setSpecial(true);
-      console.log(hasSpecialCharacter);
-    }
-    setPassword(value);
-  };
-
-  const validatePassword = () => {
-    setShowErrorBox(!showErrorBox);
-
-    const hasSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-    setShowErrorBox(password.length < 8 || !special);
-    if (hasSpecialCharacter) {
-      setSpecial(true);
+  const togglePassword = () => {
+    if (passwordType === "password") {
+      setPasswordType("string");
+    } else {
+      setPasswordType("password");
     }
   };
 
   return (
     <main className="h-vh flex items-center justify-center bg-log pt-[1em] font-sans">
-      <section className="text-center lg:w-[48%]">
-        <div className="sm:px-[2em] lg:px-[5em]">
+      <section className="px-[1em] text-center lg:w-[48%]">
+        <div>
           <img src={logo} alt="Logo" className="mx-auto mb-4 h-[5em]" />
           <h1 className="mb-4 text-3xl font-bold text-text2">
             Create Your Account
           </h1>
-          <div>
-            <p className="font-medium text-howtext">
-              Start building your investment portfolio and track your growth
-            </p>
-          </div>
+          <p className="font-medium text-howtext">
+            Start building your investment portfolio and track your growth
+          </p>
         </div>
-        <form onSubmit={registerUserData}>
-          <div className="lg:px-13 form mt-[1em] w-full sm:px-[1em]">
-            <div>
-              <label
-                htmlFor="email-input"
-                className="mb-3 flex text-base font-semibold text-text1"
-              >
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email-input"
-                onChange={(e) => setEmail(e.target.value)}
-                name="email"
-                placeholder="e-mail address"
-                className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md focus:border-text2 focus:ring-text2"
-              />
-            </div>
+        <form onSubmit={registerUser}>
+          <div className="mt-[1em]">
+            <label
+              htmlFor="email-input"
+              className="mb-3 flex text-base font-semibold text-text1"
+            >
+              Email Address
+            </label>
+            <input
+              type="email"
+              id="email-input"
+              name="email"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              placeholder="e-mail address"
+              className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md focus:border-text2 focus:ring-text2"
+            />
           </div>
 
-          <div className="lg:px-13 form w-full sm:px-[1em]">
-            <div className="box1">
-              <label
-                htmlFor="username-input"
-                className="mb-3 flex font-semibold text-text1"
-              >
-                Username
-              </label>
-              <input
-                onChange={(e) => setUsername(e.target.value)}
-                type="text"
-                id="username-input"
-                name="username"
-                placeholder="username"
-                className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md"
-              />
-            </div>
+          <div>
+            <label
+              htmlFor="username-input"
+              className="mb-3 flex font-semibold text-text1"
+            >
+              Username
+            </label>
+            <input
+              type="text"
+              id="username-input"
+              name="username"
+              onChange={(e) => setUsername(e.target.value)}
+              value={username}
+              placeholder="username"
+              className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md"
+            />
           </div>
 
-          <div className="lg:px-13 form w-full sm:px-[1em]">
-            <div>
-              <label
-                htmlFor="phoneNumber-input"
-                className="mb-3 flex font-sans font-semibold text-text1"
-              >
-                Phone Number
-              </label>
-              <input
-                type="number"
-                id="phoneNumber-input"
-                onChange={(e) => setPhoneNumber(e.target.value)}
-                name="phoneNumber"
-                placeholder="phone number"
-                className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md"
-              />
-            </div>
+          <div>
+            <label
+              htmlFor="phoneNumber-input"
+              className="mb-3 flex font-sans font-semibold text-text1"
+            >
+              Phone Number
+            </label>
+            <input
+              type="number"
+              name="phoneNumber"
+              id="phoneNumber-input"
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              value={phoneNumber}
+              placeholder="phone number"
+              className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md"
+            />
           </div>
 
-          <div className="lg:px-13 form w-full sm:px-[1em]">
-            <div>
-              <label
-                htmlFor="membership-input"
-                className="mb-3 flex font-semibold text-text1"
-              >
-                Membership Type
-              </label>
-              <select
-                id="membership-input"
-                name="membershipType"
-                value={membershipType}
-                onChange={(e) => setMembershipType(e.target.value)}
-                className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md"
-              >
-                <option value="">--- Select your membership type ---</option>
-                <option value="patron">Patron</option>
-                <option value="investor members">investor members</option>
-              </select>
-            </div>
+          <div>
+            <label
+              htmlFor="membership-input"
+              className="mb-3 flex font-semibold text-text1"
+            >
+              Membership Type
+            </label>
+            <select
+              id="membership-input"
+              name="membershipType"
+              value={membershipType}
+              onChange={(e) => setMembershipType(e.target.value)}
+              className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md"
+            >
+              <option value="">--- Select your membership type ---</option>
+              <option value="patron">Patron</option>
+              <option value="investor members">Investor Members</option>
+            </select>
           </div>
-          <div className="lg:px-13 form w-full sm:px-[1em]">
-            <div className="box1">
-              <label
-                htmlFor="password-input"
-                className="mb-3 flex font-semibold text-text1"
-              >
-                Password
-              </label>
+
+          <div>
+            <label htmlFor="password-input" className="mb-3 flex text-text2">
+              Password
+            </label>
+            <div className="relative flex items-center">
               <input
+                type={passwordType}
                 id="password-input"
-                onFocus={validatePassword}
-                type="password"
-                onChange={handleChange2}
+                placeholder="Password"
                 value={password}
-                name="password"
-                placeholder="password"
-                className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md"
+                onChange={(e) => setPassword(e.target.value)}
+                className="input mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md focus:border-text2 focus:ring-text2"
               />
+              <button
+                type="button"
+                className="absolute right-4 mb-3 flex"
+                onClick={togglePassword}
+              >
+                {passwordType === "password" ? (
+                  <MdOutlineVisibilityOff />
+                ) : (
+                  <MdOutlineVisibility />
+                )}
+              </button>
             </div>
           </div>
-
-          <div className="w-full">
-            {showErrorBox && (
-              <div className="mt-2 text-sm text-red-500">
-                {password.length < 8 && (
-                  <div className="mb-2">
-                    Password must be at least 8 characters long
-                  </div>
-                )}
-                {!special && (
-                  <div>
-                    Must contain at least one number or symbol (!@#$%^&*)
-                  </div>
-                )}
-              </div>
+          <EnterButton
+            type="submit"
+            className={`mt-[2em] ${isSubmitDisabled() ? "cursor-not-allowed bg-[#8b5cf6] text-gray-500" : "cursor-pointer bg-text2 text-white"}`}
+            disabled={isSubmitDisabled() || loading}
+          >
+            {loading ? (
+              <ReactLoading
+                color="#FFFFFF"
+                width={25}
+                height={25}
+                type="spin"
+              />
+            ) : (
+              "Sign up"
             )}
-          </div>
-
-          <div className="lg:px-13 sm:px-[1em]">
-            <div className="lg:px-13 sm:px-[1em]">
-              <EnterButton
-                type="submit"
-                text="Submit"
-                loading={loading}
-                disabled={loading || isSubmitDisabled()}
-              />
-            </div>
-          </div>
+          </EnterButton>
         </form>
 
         <div

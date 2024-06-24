@@ -11,9 +11,12 @@ const API_URL_VERIFY_USER =
   import.meta.env.VITE_REACT_APP_API_URL + "/auth/verify_otp";
 
 const RegisterUser = async (body) => {
-  return await axios.post(API_URL_REGISTER_USER, body, {}).then((response) => {
+  try {
+    const response = await axios.post(API_URL_REGISTER_USER, body, {});
     return response.data;
-  });
+  } catch (error) {
+    throw error.response.data;
+  }
 };
 
 const LoginUser = async (body) => {
@@ -22,12 +25,21 @@ const LoginUser = async (body) => {
     const token = response.data.token;
     if (token) {
       sessionStorage.setItem("userData", token);
-      return response.data;
-    } else {
-      throw new Error("Token not found in response");
+      return response?.data;
     }
   } catch (error) {
-    throw new Error("Failed to login: " + error.message);
+    throw error.response.data;
+  }
+};
+
+const VerifyUserAuth = async (body) => {
+  try {
+    const response = await axios.post(API_URL_VERIFY_USER, body, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
   }
 };
 
@@ -45,19 +57,9 @@ export async function RESEND_LOGIN_OTP(endpoint, data) {
   try {
     return await axios.post(url, data);
   } catch (error) {
-    return error.response;
+    return error.response.data;
   }
 }
-
-const VerifyUserAuth = async (body) => {
-  return await axios
-    .post(API_URL_VERIFY_USER, body, {
-      headers: authHeader(),
-    })
-    .then((response) => {
-      return response.data;
-    });
-};
 
 export async function RESET_PASSWORD(endpoint, data) {
   const url = import.meta.env.VITE_REACT_APP_API_URL + endpoint;

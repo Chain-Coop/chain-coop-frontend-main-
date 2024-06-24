@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { GetWalletBalance } from "../../../shared/redux/slices/transaction.slices";
 import { DashboardHeader } from "../../common/DashboardHeader";
+import { toggleState } from "../../../shared/utils/ToggleButton";
 import {
   MdOutlineVisibilityOff,
   MdOutlineVisibility,
   MdArrowOutward,
 } from "react-icons/md";
 import { IoIosArrowForward } from "react-icons/io";
-import { toggleState } from "../../../shared/utils/ToggleButton";
-import { GetWalletBalance } from "../../../shared/redux/slices/transaction.slices";
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
 
 const Contribution = () => {
   const [balanceVisible, setBalanceVisible] = useState(true);
