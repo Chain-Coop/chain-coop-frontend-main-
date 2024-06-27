@@ -15,7 +15,7 @@ export const Primary = ({ children, className, onClick }) => {
   return (
     <button
       onClick={onClick}
-      className={`text-center font-sans text-[20px] font-medium leading-6 outline-none focus:outline-none ${className}`}
+      className={`text-center font-sans text-[15px] font-medium leading-6 outline-none focus:outline-none ${className}`}
     >
       {children}
     </button>

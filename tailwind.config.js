@@ -43,9 +43,5 @@ export default {
       },
       backgroundImage: "url('/public/images/png/story/background.png')",
     },
-    input: {
-      appearance: "none",
-      borderColor: "#440080",
-    },
   },
 };

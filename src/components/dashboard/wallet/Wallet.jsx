@@ -21,10 +21,7 @@ import { Link } from "react-router-dom";
 
 const Wallet = () => {
   const [balanceVisible, setBalanceVisible] = useState(true);
-  const balance = useSelector((state) => state.transaction?.getWalletBalance);
-  const transaction = useSelector(
-    (state) => state.transaction?.getUsersTransaction,
-  );
+  const balance = useSelector((state) => state?.transaction?.getWalletBalance);
 
   const navigate = useNavigate();
 
@@ -32,7 +29,6 @@ const Wallet = () => {
     navigate("/dashboard/wallet/withdraw");
   };
 
-  console.log("transaction", transaction);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -95,7 +91,7 @@ const Wallet = () => {
               <div className="mx-auto mt-[1.5em] w-[15em] rounded-md">
                 {balanceVisible ? (
                   <p className="font-bold sm:text-xl lg:text-2xl">
-                    &nbsp;₦ {balance?.balance.toLocaleString()}
+                    &nbsp;₦ {balance?.balance?.toLocaleString()}
                   </p>
                 ) : (
                   <p className="text-2xl font-bold">*********</p>
@@ -109,8 +105,8 @@ const Wallet = () => {
               </div>
             </div>
           </section>
-          {/**/}
-          <div className="mt-[1.5em] rounded-3xl shadow-md">
+
+          <section className="mt-[1.5em] rounded-3xl shadow-md">
             <div className="flex items-center justify-between py-[2em] font-semibold text-howtext sm:px-[1em] lg:px-[2.5em]">
               <Link to="/dashboard/wallet/withdraw">
                 <button
@@ -121,16 +117,18 @@ const Wallet = () => {
                   <span className="block lg:text-lg ">Withdraw</span>
                 </button>
               </Link>
-              <button className="flex flex-col items-center bg-inherit text-center">
-                <BsPlusCircleFill className="cursor-pointer fill-howtext text-4xl" />
-                <span className="block lg:text-lg">Fund Wallet</span>
-              </button>
+              <Link to="/dashboard/wallet/fund">
+                <button className="flex flex-col items-center bg-inherit text-center">
+                  <BsPlusCircleFill className="cursor-pointer fill-howtext text-4xl" />
+                  <span className="block lg:text-lg">Fund Wallet</span>
+                </button>
+              </Link>
               <button className="flex flex-col items-center bg-inherit text-center">
                 <FaMoneyBillTransfer className="cursor-pointer fill-howtext text-4xl" />
                 <span className="block lg:text-lg ">Transfer</span>
               </button>
             </div>
-          </div>
+          </section>
           <hr className="mt-[2em] h-[1px] rounded-md bg-howtext font-normal" />
           <section className="mt-[2em]">
             <p className="text-lg font-bold text-memt1">No Card Linked</p>

@@ -1,12 +1,14 @@
 import { useNavigate } from "react-router";
-import success from "../../../Assets/svg/auth/sucess.svg";
 import { Primary } from "../../common/Button";
+import success from "../../../Assets/svg/auth/sucess.svg";
 
 const PaaswordRessetSuccessfull = () => {
   const navigate = useNavigate();
+
   const login = () => {
     navigate("/login");
   };
+
   return (
     <main className="flex h-screen items-center justify-center bg-log font-sans">
       <section className="text-center lg:w-[25%]">

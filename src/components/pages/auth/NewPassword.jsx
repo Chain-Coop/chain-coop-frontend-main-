@@ -68,7 +68,7 @@ const NewPassword = () => {
         </header>
         <form
           onSubmit={resetPasswordFunc}
-          className="form mt-[3em] w-full sm:px-[1em]"
+          className="mt-[3em] w-full sm:px-[1em]"
         >
           <div>
             <label htmlFor="password-input" className="mb-3 flex text-text2">
@@ -76,12 +76,12 @@ const NewPassword = () => {
             </label>
             <div className="relative flex items-center">
               <input
-                placeholder="create new password"
                 id="password-input"
-                type={passwordType}
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
                 name="password"
+                type={passwordType}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="create new password"
                 className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md"
               />
               <button
@@ -97,7 +97,7 @@ const NewPassword = () => {
               </button>
             </div>
           </div>
-          <div className="box1 lg:mt-[1.5em]">
+          <div className="lg:mt-[1.5em]">
             <label
               htmlFor="confirm-password-input"
               className="mb-3 flex text-text2"

@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { Primary } from "../../common/Button";
 import { useNavigate, useLocation } from "react-router-dom";
-import { RESEND_LOGIN_OTP } from "../../../shared/redux/services/landing.services";
-import { toast } from "react-toastify";
 import OTPInput from "react-otp-input";
+import { RESEND_LOGIN_OTP } from "../../../shared/redux/services/landing.services";
+import { Primary } from "../../common/Button";
 import ReactLoading from "react-loading";
+import { toast } from "react-toastify";
 
 const ResetPassword = () => {
   const [loading, setLoading] = useState(false);

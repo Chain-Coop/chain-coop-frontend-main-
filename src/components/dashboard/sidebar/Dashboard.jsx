@@ -13,6 +13,10 @@ import Profile from "../profile/Profile";
 import Right from "../rightbar/Right";
 import Withdraw from "../wallet/withdraw/Withdraw";
 import SelectBank from "../wallet/withdraw/SelectBank";
+import BankAccount from "../wallet/withdraw/BankAccount";
+import SelectAccount from "../wallet/withdraw/SelectAccount";
+import VerifyAccount from "../wallet/withdraw/VerifyAccount";
+import FundWallet from "../wallet/fund/FundWallet";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -30,13 +34,23 @@ const Dashboard = () => {
         </nav>
         <Routes>
           <Route path="/" element={<Home />} />
+
           <Route path="contribution" element={<Contribution />} />
+
           <Route path="wallet/*" element={<Wallet />} />
           <Route path="wallet/withdraw" element={<Withdraw />} />
           <Route path="wallet/select-bank" element={<SelectBank />} />
+          <Route path="wallet/bank-account" element={<BankAccount />} />
+          <Route path="wallet/select-account" element={<SelectAccount />} />
+          <Route path="wallet/verify-account" element={<VerifyAccount />} />
+          
+          <Route path="wallet/fund" element={<FundWallet />} />
+
           <Route path="project" element={<Project />} />
+
           <Route path="proposal/*" element={<Proposal />} />
           <Route path="proposal/submit-proposal" element={<SubmitProposal />} />
+
           <Route path="profile" element={<Profile />} />
         </Routes>
       </section>

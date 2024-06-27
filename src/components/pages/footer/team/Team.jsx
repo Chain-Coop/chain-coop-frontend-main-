@@ -1,3 +1,7 @@
+import { useEffect } from "react";
+import NavBar from "../../../common/NavBar";
+import Footer from "../../../common/Footer";
+import FooterBox from "../../../common/FooterBox";
 import background from "../../../../Assets/png/footer/team/png/background.png";
 import background2 from "../../../../Assets/png/footer/team/png/background.png";
 import image1 from "../../../../Assets/png/footer/team/png/image1.png";
@@ -5,10 +9,6 @@ import image2 from "../../../../Assets/png/footer/team/png/image2.png";
 import tweeter from "../../../../Assets/svg/footer/team/tweeter.svg";
 import linkdln from "../../../../Assets/svg/footer/team/linkedln.svg";
 import medium from "../../../../Assets/svg/footer/team/medium.svg";
-import FooterBox from "../../../common/FooterBox";
-import Footer from "../../../common/Footer";
-import NavBar from "../../../common/NavBar";
-import { useEffect } from "react";
 
 const teamMembers = [
   {

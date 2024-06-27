@@ -1,12 +1,11 @@
 import { useRef } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { IdleTimerProvider } from "react-idle-timer";
+import { toast } from "react-toastify";
 
 const ProtectedRoutes = () => {
-  const idleTimerRef = useRef(null);
-
   const navigate = useNavigate();
+  const idleTimerRef = useRef(null);
 
   const token = sessionStorage.getItem("userData");
 
@@ -23,7 +22,7 @@ const ProtectedRoutes = () => {
   return (
     <IdleTimerProvider
       ref={idleTimerRef}
-      timeout={2 * 60 * 1000}
+      timeout={4 * 60 * 1000}
       onIdle={handleOnIdle}
     >
       <Outlet />

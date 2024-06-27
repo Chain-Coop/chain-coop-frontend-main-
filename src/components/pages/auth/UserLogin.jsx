@@ -31,7 +31,6 @@ const UserLogin = () => {
       email: email,
       password: password,
     };
-
     dispatch(LoginUser(body))
       .unwrap()
       .then(() => {
@@ -106,8 +105,8 @@ const UserLogin = () => {
             <input
               type="email"
               id="email"
-              placeholder="enter your e-mail"
               value={email}
+              placeholder="enter your e-mail"
               onChange={(e) => setEmail(e.target.value)}
               className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md focus:border-text2 focus:ring-text2"
             />
@@ -119,10 +118,10 @@ const UserLogin = () => {
             </label>
             <div className="relative flex items-center">
               <input
-                type={passwordType}
                 id="password-input"
-                placeholder="Password"
                 value={password}
+                type={passwordType}
+                placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}
                 className="input mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md focus:border-text2 focus:ring-text2"
               />
@@ -165,7 +164,7 @@ const UserLogin = () => {
                 type="spin"
               />
             ) : (
-              "Submit"
+              "Log in"
             )}
           </EnterButton>
 

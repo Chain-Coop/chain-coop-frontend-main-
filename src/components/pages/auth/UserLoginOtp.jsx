@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { Primary } from "../../common/Button";
+import { useDispatch } from "react-redux";
 import { VerifyUserAuth } from "../../../shared/redux/slices/landing.slices";
+import { RESEND_LOGIN_OTP } from "../../../shared/redux/services/landing.services";
+import { useNavigate, useLocation } from "react-router-dom";
+import OTPInput from "react-otp-input";
+import { Primary } from "../../common/Button";
+import ReactLoading from "react-loading";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate, useLocation } from "react-router-dom";
-import { RESEND_LOGIN_OTP } from "../../../shared/redux/services/landing.services";
-import { useDispatch } from "react-redux";
-import OTPInput from "react-otp-input";
-import ReactLoading from "react-loading";
 
 const UserLoginOtp = () => {
   const navigate = useNavigate();

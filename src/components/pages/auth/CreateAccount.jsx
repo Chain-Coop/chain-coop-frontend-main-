@@ -22,8 +22,8 @@ const CreateAccount = () => {
   const [password, setPassword] = useState("");
   const [passwordType, setPasswordType] = useState("password");
   const [loading, setLoading] = useState(false);
+  
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
 
   const registerUser = (e) => {
@@ -50,7 +50,7 @@ const CreateAccount = () => {
         setPassword("");
         setLoading(false);
         toast.success(
-          "Registration successful, enter the OTP sent to your email"
+          "Registration successful, enter the OTP sent to your email",
         );
         navigate(`/account-otp?email=${email}`);
       })
@@ -167,7 +167,10 @@ const CreateAccount = () => {
           </div>
 
           <div>
-            <label htmlFor="password-input" className="mb-3 flex text-text2">
+            <label
+              htmlFor="password-input"
+              className="mb-3 flex font-semibold text-text1"
+            >
               Password
             </label>
             <div className="relative flex items-center">

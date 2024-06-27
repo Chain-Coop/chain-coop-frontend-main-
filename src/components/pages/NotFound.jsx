@@ -1,5 +1,6 @@
 import notfound from "../../Assets/svg/notfound.svg";
 import corner from "../../Assets/svg/topcorner.svg";
+
 const NotFound = () => {
   const handleReturnBack = () => {
     window.history.back();

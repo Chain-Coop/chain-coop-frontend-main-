@@ -1,23 +1,21 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { Link } from "react-router-dom";
 import { DashboardHeader } from "../../../common/DashboardHeader";
-import withdraw from "../../../../Assets/svg/dashboard/wallet/withdraw.svg";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Modal from "../../../common/Modal";
 import { Primary } from "../../../common/Button";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import withdraw from "../../../../Assets/svg/dashboard/wallet/withdraw.svg";
 
 const Withdraw = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const navigate = useNavigate();
 
   const wallet = () => {
-    navigate("/dashboard/wallet"); 
+    navigate("/dashboard/wallet");
   };
 
   const SelectBank = () => {
-    navigate("/dashboard]/wallet/select-bank"); 
+    navigate("/dashboard/wallet/select-bank");
   };
 
   const toggleModal = () => {
@@ -29,32 +27,28 @@ const Withdraw = () => {
       <header className="mt-[2em]">
         <DashboardHeader>
           <div className="flex w-[55%] items-center justify-between">
-            <div>
-              <IoIosArrowBack
-                size={25}
-                className="cursor-pointer"
-                onClick={wallet}
-              />
-            </div>
+            <IoIosArrowBack
+              size={25}
+              className="cursor-pointer"
+              onClick={wallet}
+            />
             <div className="tracking-wide">Withdraw</div>
           </div>
         </DashboardHeader>
       </header>
-      <div className="m-auto mt-[2em] h-full w-[33em]">
+      <section className="m-auto mt-[2em] h-full w-[33em]">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <img src={withdraw} alt="Withdraw" />
             <p className="font-medium">Withdraw to Bank Account</p>
           </div>
-          <div>
-            <IoIosArrowForward
-              size={25}
-              className="cursor-pointer"
-              onClick={toggleModal}
-            />
-          </div>
+          <IoIosArrowForward
+            size={25}
+            className="cursor-pointer"
+            onClick={toggleModal}
+          />
         </div>
-      </div>
+      </section>
       <Modal isOpen={isModalOpen} onClose={toggleModal} className="bg-white">
         <div className="mt-[2.5em]">
           <header>
@@ -62,24 +56,42 @@ const Withdraw = () => {
               Bank Account Withdrawal
             </h1>
           </header>
-          <div className="mt-[2em] text-howtext">
+          <section className="mt-[2em]">
             <hr className="h-[1px] rounded-md " />
             <div className="mt-3 flex justify-between">
-              <p>Duration</p>
-              <p>2-3 business days</p>
+              <p className="text-howtext">Duration</p>
+              <p className="font-medium">2-3 business days</p>
             </div>
             <hr className="mt-3 h-[1px] rounded-md" />
             <div className="mt-5 flex justify-between">
-              <p>Withdrawal limit</p>
-              <p>500,000,000 / transaction</p>
+              <p className="text-howtext">Withdrawal limit</p>
+              <p className="font-medium">500,000,000 / transaction</p>
             </div>
-          </div>
-          <hr className="mt-3 h-[1px] rounded-md" />
-          <Link to={SelectBank}>
-            <Primary className="mt-[2.5em] w-full bg-text2 py-2 text-white">
-              Continue
-            </Primary>
-          </Link>
+            <hr className="mt-3 h-[1px] rounded-md" />
+            <div className="mt-[1em] w-full">
+              <label htmlFor="amount" className="flex-start flex font-medium">
+                Enter Amount
+              </label>
+              <div className="relative mt-[1em] flex w-full items-center">
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3 font-semibold text-gray-500">
+                  NGN
+                </span>
+                <input
+                  name="amount"
+                  id="amount"
+                  type="number"
+                  className="border-border bg-input focus:border-border flex-1 rounded-lg border-[1px] bg-inherit p-3 pl-10 focus:bg-inherit focus:outline-none"
+                  style={{ textAlign: "right" }}
+                />
+              </div>
+            </div>
+          </section>
+          <Primary
+            className="mt-[2em] w-full bg-text2 py-2 text-white"
+            onClick={SelectBank}
+          >
+            Continue
+          </Primary>
         </div>
       </Modal>
     </main>

@@ -51,13 +51,6 @@ const ForgetPassword = () => {
               className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md"
             />
           </div>
-          {/* <div className="sm:px-[1em] ">
-            <EnterButton
-              text="Submit"
-              loading={loading}
-              className="sm:text-lg "
-            />
-          </div> */}
           <EnterButton onClick={forgotPassword}>
             {loading ? (
               <ReactLoading

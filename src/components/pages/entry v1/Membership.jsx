@@ -1,12 +1,13 @@
-import Card from "../../parts/parttwo/Card";
+import { useEffect } from "react";
 import NavBar from "../../common/NavBar";
 import Join from "../../parts/parttwo/Join";
+import Card from "../../parts/parttwo/Card";
+import Revolution from "../../parts/parttwo/Revolution";
 import How from "../../parts/partone/How";
 import AppStore from "../../parts/partone/AppStore";
-import Footer from "../../common/Footer";
 import FooterBox from "../../common/FooterBox";
-import Revolution from "../../parts/parttwo/Revolution";
-import { useEffect } from "react";
+import Footer from "../../common/Footer";
+
 const Membership = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
