@@ -72,7 +72,7 @@ ComingSoon.propTypes = {
 
 EnterButton.propTypes = {
   className: PropTypes.string,
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes?.func?.isRequired,
   children: PropTypes.node,
 };
 

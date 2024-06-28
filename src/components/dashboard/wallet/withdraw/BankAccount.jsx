@@ -34,7 +34,7 @@ const BankAccount = () => {
         <p className="font-medium">{`Please, only add a bank account that you own. Transactions to accoiunts that don't belong to you will be flagged`}</p>
         <div className="mt-[1.5em] flex flex-col gap-3">
           <label htmlFor="amount" className="font-semibold">
-            Amount
+            Account Number
           </label>
           <input
             name="amount"
