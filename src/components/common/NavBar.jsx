@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 import { navBarLinks } from "../../data/Data";
 import { LoginButton } from "./Button";
 import { Modal, ModalBody } from "reactstrap";
+import logo from "../../Assets/svg/home/chain-logo.svg";
 import { HiOutlineBars3 } from "react-icons/hi2";
 import { AiOutlineClose } from "react-icons/ai";
-import logo from "../../Assets/svg/home/chain-logo.svg";
 
 const NavBar = () => {
   const [modal, setModal] = useState(false);

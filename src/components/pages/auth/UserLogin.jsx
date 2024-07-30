@@ -166,7 +166,7 @@ const UserLogin = () => {
               {`Don't have an account?`}
               <Link
                 to="/sign-up"
-                className="pointer ml-2 font-medium text-text2"
+                className="ml-2 cursor-pointer font-medium text-text2"
               >
                 Sign Up Now
               </Link>
