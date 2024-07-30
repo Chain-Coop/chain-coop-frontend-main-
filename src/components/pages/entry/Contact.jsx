@@ -21,7 +21,7 @@ const Contact = () => {
   return (
     <>
       <NavBar />
-      <main className="bg-background h-auto font-sans">
+      <main className="h-auto bg-background font-sans">
         <section className="pt-[4em]">
           <header className="mx-auto text-center sm:w-full sm:px-1 md:px-[1em] lg:w-[65%]">
             <p className="text-lg font-semibold text-text2">Get in touch</p>

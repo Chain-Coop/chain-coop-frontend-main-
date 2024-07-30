@@ -9,7 +9,7 @@ const How = () => {
         <h1 className="text-3xl font-bold">How to Get started</h1>
       </header>
       <section className="mt-8 flex flex-col lg:flex-row lg:space-x-9">
-        <article className="box1 relative my-4 flex flex-col justify-between rounded-xl bg-how1 p-[3em] sm:h-[411px] md:h-[250px] lg:h-[411px]">
+        <article className="relative  my-4 flex flex-col justify-between rounded-xl bg-how1 p-[3em] sm:h-[411px] md:h-[250px] lg:h-[411px]">
           <img
             src={step1}
             className="absolute inset-0 mx-auto self-center object-cover"

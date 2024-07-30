@@ -44,6 +44,7 @@ export default {
       backgroundImage: {
         background: "url('/src/Assets/png/story/background.png')",
         heroBackground: "url('/src/Assets/png/home/background.png')",
+        contact: "url('/src/Assets/png/contact/circle.png')",
         explore1: "url('/src/Assets/png/home/personlaptop.png')",
         explore2: "url('/src/Assets/png/home/ladylaptop.png')",
         explore3: "url('/src/Assets/png/home/ladylaptop3.png')",

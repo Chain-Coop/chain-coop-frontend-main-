@@ -9,13 +9,14 @@ import { IoWalletSharp } from "react-icons/io5";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { VscGitPullRequestGoToChanges } from "react-icons/vsc";
 
+//Landing Page NavBar Links
 export const navBarLinks = [
   { to: "/", text: "Why Chain Coop" },
   { to: "/our-story", text: "Our Story" },
   { to: "/membership", text: "Membership" },
   { to: "/contact", text: "Contact" },
 ];
-
+//Dashboard SideBAR lINKS
 export const sidebarLinks = [
   {
     icon: <GoHome className="mr-2" size={20} />,
@@ -54,7 +55,7 @@ export const sidebarLinks = [
     pathsToCheck: ["/dashboard/profile"],
   },
 ];
-
+//Mobile View Nav
 export const dashboardNav = [
   {
     icon: <GoHome className="mr-2" size={20} />,
@@ -121,6 +122,7 @@ export const meetImage = [
   },
 ];
 
+//Our Trusted Partners
 export const trustedPartners = [
   { src: demologo },
   { src: demologo },
@@ -132,4 +134,55 @@ export const trustedPartners = [
   { src: demologo },
   { src: demologo },
   { src: demologo },
+];
+
+//Membership Benefits
+export const customerCardData = [
+  {
+    paragraph: "Vote & get involved in the Coop Network",
+  },
+  {
+    paragraph: "Invest in the Coop Network business",
+  },
+];
+
+export const investorCardData = [
+  {
+    paragraph: "Vote & get involved in the Coop Network",
+  },
+  {
+    paragraph: "Invest in the Coop Network business",
+  },
+  {
+    paragraph: "Early access to first investment rounds",
+  },
+  {
+    paragraph: "Discounted The Coop Network products & services",
+  },
+];
+
+export const employeeCardData = [
+  {
+    paragraph: "Vote & get involved in the Coop Network",
+  },
+  {
+    paragraph: "Invest in the Coop Network business",
+  },
+  {
+    paragraph: "Early access to first investment rounds",
+  },
+  {
+    paragraph: "Discounted The Coop Network products & services",
+  },
+];
+
+
+//Revolutionizing member
+export const revolutionizingMember = [
+  {
+    paragraph: "Vote & get involved in the Coop Network",
+  },
+  {
+    paragraph: "Invest in the Coop Network business",
+  },
 ];
