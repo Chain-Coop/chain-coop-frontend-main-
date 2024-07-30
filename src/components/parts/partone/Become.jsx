@@ -1,25 +1,5 @@
+import { becomeData } from "../../../data/Data";
 import Card from "../../common/Card";
-
-const box = [
-  {
-    title: "Legally Guaranteed Returns",
-    paragraph:
-      "Enjoy Annual Co-op Dividends Based on Your Membership Contribution",
-  },
-  {
-    title: "Access Exclusive Investment Rounds",
-    paragraph: "Develop Strategies Build Your Portfolio, and Track Success",
-  },
-  {
-    title: "Expand Your Network",
-    paragraph:
-      "Participate in Members Meeting Online Chats, and Live Social Events with investors & Entrepreneurs",
-  },
-  {
-    title: "Vote and Engage with Chain Coop Network",
-    paragraph: "Contribute ideas and Commit to collective Growth",
-  },
-];
 
 const Become = () => {
   return (
@@ -37,7 +17,7 @@ const Become = () => {
           </p>
         </header>
         <div className="grid justify-center sm:grid-cols-[1fr] lg:grid-cols-[1fr,1fr] lg:gap-2">
-          {box.map((item, index) => (
+          {becomeData.map((item, index) => (
             <Card className="sm:p-3 md:p-[3.2em] lg:p-[3.2em]" key={index}>
               <div className="lg:px-3em] sm:px-[1em]">
                 <h2 className="mb-2 text-lg font-bold">{item.title}</h2>

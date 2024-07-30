@@ -4,17 +4,13 @@ import TransactionServices from "../services/transaction.services";
 
 export const GetWalletBalance = createAsyncThunk(
   "transaction/getWalletBalance",
-  async (thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
       const data = await TransactionServices.GetWalletBalance();
       return { transaction: data };
     } catch (error) {
       const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
+        error.msg || "Network Error: Please check your internet connection.";
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);
     }
@@ -23,17 +19,13 @@ export const GetWalletBalance = createAsyncThunk(
 
 export const GetUsersTransaction = createAsyncThunk(
   "transaction/getUsersTransaction",
-  async (thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
       const data = await TransactionServices.GetUsersTransaction();
       return { transaction: data };
     } catch (error) {
       const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
+        error.msg || "Network Error: Please check your internet connection.";
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);
     }
@@ -50,18 +42,19 @@ export const transactionSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(GetWalletBalance.fulfilled, (state, action) => {
-      state.getWalletBalance = action.payload.transaction;
-    });
-    builder.addCase(GetWalletBalance.rejected, (state) => {
-      state.getWalletBalance = null;
-    });
-    builder.addCase(GetUsersTransaction.fulfilled, (state, action) => {
-      state.getUsersTransaction = action.payload.transaction;
-    });
-    builder.addCase(GetUsersTransaction.rejected, (state) => {
-      state.getUsersTransaction = null;
-    });
+    builder
+      .addCase(GetWalletBalance.fulfilled, (state, action) => {
+        state.getWalletBalance = action.payload.transaction;
+      })
+      .addCase(GetWalletBalance.rejected, (state) => {
+        state.getWalletBalance = null;
+      })
+      .addCase(GetUsersTransaction.fulfilled, (state, action) => {
+        state.getUsersTransaction = action.payload.transaction;
+      })
+      .addCase(GetUsersTransaction.rejected, (state) => {
+        state.getUsersTransaction = null;
+      });
   },
 });
 

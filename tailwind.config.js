@@ -41,7 +41,13 @@ export default {
       fontFamily: {
         sans: ["Open Sans", "sans-serif", "Asap"],
       },
-      backgroundImage: "url('/public/images/png/story/background.png')",
+      backgroundImage: {
+        background: "url('/src/Assets/png/story/background.png')",
+        explore1: "url('/src/Assets/png/home/personlaptop.png')",
+        explore2: "url('/src/Assets/png/home/ladylaptop.png')",
+        explore3: "url('/src/Assets/png/home/ladylaptop3.png')",
+        dashboardHome: "url('/src/Assets/png/dashboard/home.png')",
+      },
     },
   },
 };

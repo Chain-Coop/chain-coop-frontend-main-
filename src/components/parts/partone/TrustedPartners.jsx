@@ -1,25 +1,12 @@
-import demologo from "../../../Assets/png/home/demologo.png";
+import { trustedPartners } from "../../../data/Data";
 import "../../parts/partone/animation.css";
-
-const image = [
-  { src: demologo },
-  { src: demologo },
-  { src: demologo },
-  { src: demologo },
-  { src: demologo },
-  { src: demologo },
-  { src: demologo },
-  { src: demologo },
-  { src: demologo },
-  { src: demologo },
-];
 
 const TrustedPartners = () => {
   return (
     <main className="logos flex justify-center shadow-md sm:p-[3rem] lg:p-[2rem]">
       <div className="logos-slide flex w-[96vw] items-center justify-between whitespace-nowrap">
         <div className="flex space-x-20">
-          {image.map((img, index) => (
+          {trustedPartners.map((img, index) => (
             <img
               key={index}
               src={img.src}

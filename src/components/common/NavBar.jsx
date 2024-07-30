@@ -1,18 +1,12 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Modal, ModalBody } from "reactstrap";
+import { navBarLinks } from "../../data/Data";
 import { LoginButton } from "./Button";
+import { Modal, ModalBody } from "reactstrap";
 import { HiOutlineBars3 } from "react-icons/hi2";
 import { AiOutlineClose } from "react-icons/ai";
 import logo from "../../Assets/svg/home/chain-logo.svg";
-
-const navLinksData = [
-  { to: "/", text: "Why Chain Coop" },
-  { to: "/our-story", text: "Our Story" },
-  { to: "/membership", text: "Membership" },
-  { to: "/contact", text: "Contact" },
-];
 
 const NavBar = () => {
   const [modal, setModal] = useState(false);
@@ -35,7 +29,7 @@ const NavBar = () => {
         </Link>
         <div className="flex items-center">
           <div className="mr-8 hidden  flex-grow justify-center space-x-12 lg:flex">
-            {navLinksData.map((link, index) => (
+            {navBarLinks.map((link, index) => (
               <NavLink
                 key={index}
                 isActive={location.pathname === link.to}
@@ -67,7 +61,7 @@ const NavBar = () => {
                 size={40}
               />
             </div>
-            {navLinksData.map((item, index) => (
+            {navBarLinks.map((item, index) => (
               <Link
                 key={index}
                 className="mb-4 cursor-pointer font-sans text-xl font-bold text-text4"

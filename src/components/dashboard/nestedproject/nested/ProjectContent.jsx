@@ -1,6 +1,3 @@
-import person1 from "../../../../Assets/png/home/personlaptop.png";
-import person2 from "../../../../Assets/png/home/ladylaptop.png";
-import person3 from "../../../../Assets/png/home/ladylaptop3.png";
 import { ComingSoon } from "../../../common/Button";
 
 const ProjectContent = () => {
@@ -16,14 +13,7 @@ const ProjectContent = () => {
         </header>
 
         <section>
-          <article
-            className="mt-[2em] h-[550px] items-center rounded-xl bg-no-repeat p-[2em]"
-            style={{
-              backgroundImage: `url(${person1})`,
-              backgroundPosition: "center",
-              backgroundSize: "cover",
-            }}
-          >
+          <article className="bg-explore1 mt-[2em] items-center rounded-xl bg-no-repeat p-[2em]">
             <h1 className="p-3em font-sans text-3xl font-medium uppercase text-text3">
               automated ai <br /> learning Platform
             </h1>
@@ -33,10 +23,7 @@ const ProjectContent = () => {
           </article>
 
           <div className="mb-[2em] mt-4 flex flex-col lg:flex-row lg:space-x-4">
-            <article
-              className=" rounded-lg bg-cover bg-center"
-              style={{ backgroundImage: `url(${person2})` }}
-            >
+            <article className=" bg-explore2 rounded-lg bg-cover bg-center">
               <div className="p-6">
                 <h1 className="text-lg font-medium uppercase text-text3">
                   automated ai <br /> learning Platform
@@ -46,10 +33,7 @@ const ProjectContent = () => {
                 </div>
               </div>
             </article>
-            <article
-              className=" mt-4 rounded-xl bg-cover bg-center lg:mt-0"
-              style={{ backgroundImage: `url(${person3})` }}
-            >
+            <article className=" bg-explore3 mt-4 rounded-xl bg-cover bg-center lg:mt-0">
               <div className="p-6">
                 <h1 className="text-lg font-medium uppercase text-text3">
                   automated ai <br /> learning Platform

@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LoginUser } from "../../../shared/redux/slices/landing.slices";
+import ToggleButton from "../../../shared/utils/ToggleButton";
+import { usePasswordVisibilityToggle } from "../../../shared/utils/PasswordVisibility";
 import { EnterButton } from "../../common/Button";
-import { MdOutlineVisibilityOff, MdOutlineVisibility } from "react-icons/md";
 import logo from "../../../Assets/svg/auth/logo.svg";
 import { toast } from "react-toastify";
 import ReactLoading from "react-loading";
@@ -11,9 +12,11 @@ import ReactLoading from "react-loading";
 const UserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordType, setPasswordType] = useState("password");
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [passwordType, togglePasswordVisibility] =
+    usePasswordVisibilityToggle();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -55,14 +58,6 @@ const UserLogin = () => {
     }
   };
 
-  const togglePassword = () => {
-    if (passwordType === "password") {
-      setPasswordType("string");
-    } else {
-      setPasswordType("password");
-    }
-  };
-
   useEffect(() => {
     const storedEmail = sessionStorage.getItem("email");
     const storedPassword = sessionStorage.getItem("password");
@@ -85,7 +80,7 @@ const UserLogin = () => {
         <header className="m-auto text-center">
           <img
             src={logo}
-            alt="Logo"
+            alt="chain_co-op_logo"
             className="mx-auto mb-3 w-[5em] cursor-pointer"
             onClick={home}
           />
@@ -125,17 +120,12 @@ const UserLogin = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 className="input mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md focus:border-text2 focus:ring-text2"
               />
-              <button
-                type="button"
-                className="absolute right-4 mb-3 flex"
-                onClick={togglePassword}
-              >
-                {passwordType === "password" ? (
-                  <MdOutlineVisibilityOff />
-                ) : (
-                  <MdOutlineVisibility />
-                )}
-              </button>
+              <div className="absolute right-4 mb-3 flex">
+                <ToggleButton
+                  isVisible={passwordType === "text"}
+                  onToggle={togglePasswordVisibility}
+                />
+              </div>
             </div>
           </div>
 
@@ -155,7 +145,10 @@ const UserLogin = () => {
             </a>
           </div>
 
-          <EnterButton onClick={loginUserData} className="mt-[2em]">
+          <EnterButton
+            onClick={loginUserData}
+            className={`mt-[2em] ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
+          >
             {loading ? (
               <ReactLoading
                 color="#FFFFFF"

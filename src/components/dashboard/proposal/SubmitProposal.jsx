@@ -5,7 +5,9 @@ const SubmitProposal = () => {
     <main className="mb-[2em] font-sans">
       <div className="mt-8">
         <header>
-          <DashboardHeader text="Submit a Proposal" />
+          <DashboardHeader className="flex items-center justify-center">
+            Submit a proposal
+          </DashboardHeader>
         </header>
         <form className="mx-auto mt-8 font-sans sm:px-[1.5em] lg:w-[31em] lg:px-0">
           <div className="mb-4">

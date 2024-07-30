@@ -1,35 +1,28 @@
-import { DashboardHeader } from "../../common/DashboardHeader";
 import { useEffect, useState } from "react";
-import {
-  MdOutlineVisibilityOff,
-  MdOutlineVisibility,
-  MdArrowOutward,
-} from "react-icons/md";
+import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { GetWalletBalance } from "../../../shared/redux/slices/transaction.slices";
+import { formatAmount } from "../../../shared/utils/format";
+import ToggleButton from "../../../shared/utils/ToggleButton";
+import History from "./TransactionHistory/History";
+import { DashboardHeader } from "../../common/DashboardHeader";
+import { MdArrowOutward } from "react-icons/md";
 import { PiHandWithdrawBold } from "react-icons/pi";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { IoIosArrowForward } from "react-icons/io";
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  GetUsersTransaction,
-  GetWalletBalance,
-} from "../../../shared/redux/slices/transaction.slices";
-import transact from "../../../Assets/png/dashboard/wallet/transaction.png";
-import { useNavigate } from "react-router";
-import { Link } from "react-router-dom";
 
 const Wallet = () => {
-  const [balanceVisible, setBalanceVisible] = useState(true);
   const balance = useSelector((state) => state?.transaction?.getWalletBalance);
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const withdraw = () => {
-    navigate("/dashboard/wallet/withdraw");
-  };
-
-  const dispatch = useDispatch();
+  const [isWalletVisible, setIsWalletVisible] = useState(() => {
+    const storedVisibility = sessionStorage.getItem("walletBalanceVisible");
+    return storedVisibility !== null ? storedVisibility === "true" : true;
+  });
 
   useEffect(() => {
     const userToken = sessionStorage.getItem("userData");
@@ -37,32 +30,19 @@ const Wallet = () => {
       dispatch(GetWalletBalance())
         .unwrap()
         .then(() => {})
-        .catch((err) => {
-          const errorMessage = err.message;
+        .catch((error) => {
+          const errorMessage = error;
           toast.error(errorMessage);
         });
-    } else {
-      // Handle case when student token is not found
     }
   }, [dispatch]);
 
-  useEffect(() => {
-    const userToken = sessionStorage.getItem("userData");
-    if (userToken) {
-      dispatch(GetUsersTransaction())
-        .unwrap()
-        .then(() => {})
-        .catch((err) => {
-          const errorMessage = err.message;
-          toast.error(errorMessage);
-        });
-    } else {
-      // Handle case when student token is not found
-    }
-  }, [dispatch]);
+  const formattedBalance = balance?.balance
+    ? formatAmount(balance.balance)
+    : "₦ 0.00";
 
-  const toggleVisibility = () => {
-    setBalanceVisible((prevVisible) => !prevVisible);
+  const withdraw = () => {
+    navigate("/dashboard/wallet/withdraw");
   };
 
   return (
@@ -70,7 +50,7 @@ const Wallet = () => {
       <div className="items-center sm:mt-[0] lg:mt-[2em]">
         <header>
           <DashboardHeader className="flex items-center justify-center">
-            Chiain Coop Wallet
+            Chain Coop Wallet
           </DashboardHeader>
         </header>
         <div className="mx-auto sm:px-[1.5em] lg:w-[35em]">
@@ -79,19 +59,22 @@ const Wallet = () => {
               <div className="flex justify-center gap-4 font-sans">
                 <p className="font-medium">Wallet Balance</p>
                 <div>
-                  <button className="bg-inherit" onClick={toggleVisibility}>
-                    {balanceVisible ? (
-                      <MdOutlineVisibilityOff />
-                    ) : (
-                      <MdOutlineVisibility />
-                    )}
-                  </button>
+                  <ToggleButton
+                    isVisible={isWalletVisible}
+                    onToggle={(newVisibility) => {
+                      setIsWalletVisible(newVisibility);
+                      sessionStorage.setItem(
+                        "walletBalanceVisible",
+                        newVisibility.toString(),
+                      );
+                    }}
+                  />
                 </div>
               </div>
               <div className="mx-auto mt-[1.5em] w-[15em] rounded-md">
-                {balanceVisible ? (
-                  <p className="font-bold sm:text-xl lg:text-2xl">
-                    &nbsp;₦ {balance?.balance?.toLocaleString()}
+                {isWalletVisible ? (
+                  <p className="font-bold sm:text-xl lg:text-xl">
+                    {formattedBalance}
                   </p>
                 ) : (
                   <p className="text-2xl font-bold">*********</p>
@@ -129,38 +112,20 @@ const Wallet = () => {
               </button>
             </div>
           </section>
-          <hr className="mt-[2em] h-[1px] rounded-md bg-howtext font-normal" />
+
           <section className="mt-[2em]">
-            <p className="text-lg font-bold text-memt1">No Card Linked</p>
-            <div className="mt-[1em] font-medium lg:flex lg:justify-between ">
-              <p>You havent linked your card to add fund</p>
+            <p className="text-sm font-bold text-memt1">No Card Linked</p>
+            <div className="items-center font-medium lg:flex lg:justify-between ">
+              <p>{`You haven't linked your card to add funds.`}</p>
               <div className="flex items-center">
-                <button className="flex items-center rounded-full bg-act py-[2px] text-center font-medium text-text5 sm:px-[9px] lg:px-[7px]">
+                <button className="flex items-center rounded-full bg-act py-[2px] text-center text-sm  text-text5 sm:px-[9px] lg:px-[7px]">
                   Link Card
                   <IoIosArrowForward />
                 </button>
               </div>
             </div>
-
-            <div className="mt-[2em]">
-              <p className="text-lg font-bold text-memt1">
-                Recent Transactions
-              </p>
-            </div>
-
-            <section className="flex h-full flex-col items-center justify-center py-[3em] text-center">
-              <div className="flex flex-col items-center justify-center">
-                <img
-                  className="mx-auto h-[50px] w-[50px] md:h-[70px] md:w-[70px]"
-                  src={transact}
-                  alt=""
-                />
-                <p className="text-lg text-gray-600">
-                  Your transaction will appear here
-                </p>
-              </div>
-            </section>
           </section>
+          <History />
         </div>
       </div>
     </main>

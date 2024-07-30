@@ -28,11 +28,11 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  display: none;
+  display: block;
+  width: 2px;
 }
 
 .custom-scrollbar {
   -ms-overflow-style: none;
-  scrollbar-width: none;
+  scrollbar-width: block;
 }
-

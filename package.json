@@ -16,6 +16,7 @@
     "@emotion/styled": "^11.11.5",
     "@mui/material": "^5.15.17",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
+    "@paystack/inline-js": "^2.19.0",
     "@reduxjs/toolkit": "^2.2.4",
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",

@@ -43,7 +43,7 @@ const Dashboard = () => {
           <Route path="wallet/bank-account" element={<BankAccount />} />
           <Route path="wallet/select-account" element={<SelectAccount />} />
           <Route path="wallet/verify-account" element={<VerifyAccount />} />
-          
+
           <Route path="wallet/fund" element={<FundWallet />} />
 
           <Route path="project" element={<Project />} />

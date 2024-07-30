@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { dashboardNav } from "../../data/Data";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -10,47 +11,8 @@ import ListItemText from "@mui/material/ListItemText";
 import { Divider } from "@mui/material";
 import { HiOutlineBars3 } from "react-icons/hi2";
 import { HiX } from "react-icons/hi";
-import { GoHome } from "react-icons/go";
-import { FaDropbox } from "react-icons/fa6";
-import { GoProject } from "react-icons/go";
-import { IoWalletSharp } from "react-icons/io5";
-import { IoPersonCircleOutline } from "react-icons/io5";
-import { VscGitPullRequestGoToChanges } from "react-icons/vsc";
 import logo from "./../../Assets/svg/cooplogo.svg";
 import membership from "../../Assets/jpg/membership/customer.jpg";
-
-const navLinksData = [
-  {
-    icon: <GoHome className="mr-2" size={20} />,
-    text: "Home",
-    to: "/dashboard",
-  },
-  {
-    icon: <FaDropbox className="mr-2" size={20} />,
-    text: "Contribution",
-    to: "/dashboard/contribution",
-  },
-  {
-    icon: <IoWalletSharp className="mr-2" size={20} />,
-    text: "Wallet",
-    to: "/dashboard/wallet",
-  },
-  {
-    icon: <GoProject className="mr-2" size={20} />,
-    text: "Project",
-    to: "/dashboard/project",
-  },
-  {
-    icon: <VscGitPullRequestGoToChanges className="mr-2" size={20} />,
-    text: "Proposal",
-    to: "/dashboard/proposal",
-  },
-  {
-    icon: <IoPersonCircleOutline className="mr-2" size={20} />,
-    text: "Profile",
-    to: "/dashboard/profile",
-  },
-];
 
 const DashboardNav = () => {
   const [openMenu, setOpenMenu] = useState(false);
@@ -113,7 +75,7 @@ const DashboardNav = () => {
           onKeyDown={() => setOpenMenu(false)}
         >
           <List>
-            {navLinksData.map((item, index) => (
+            {dashboardNav.map((item, index) => (
               <ListItem key={index} disablePadding>
                 <ListItemButton component={Link} to={item.to}>
                   {item.icon}

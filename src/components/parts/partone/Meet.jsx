@@ -1,18 +1,4 @@
-import person1 from "../../../Assets/jpg/home/person1.jpg";
-import person2 from "../../../Assets/jpg/home/person2.jpg";
-import person3 from "../../../Assets/jpg/home/person3.jpg";
-
-const image = [
-  {
-    src: person1,
-  },
-  {
-    src: person2,
-  },
-  {
-    src: person3,
-  },
-];
+import { meetImage } from "../../../data/Data";
 
 const Meet = () => {
   return (
@@ -27,7 +13,7 @@ const Meet = () => {
           </h1>
         </header>
         <div className="mt-[2em] grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-3">
-          {image.map((item, index) => (
+          {meetImage.map((item, index) => (
             <img
               key={index}
               src={item.src}

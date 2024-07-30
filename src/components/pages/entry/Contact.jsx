@@ -10,7 +10,6 @@ import tweeter from "../../../Assets/svg/contact/tweeter.svg";
 import linkdln from "../../../Assets/svg/contact/linkdln.svg";
 import medium from "../../../Assets/svg/contact/medium.svg";
 
-import background from "../../../Assets/png/story/background.png";
 import circle from "../../../Assets/png/contact/circle.png";
 
 import FooterBox from "../../common/FooterBox";
@@ -22,14 +21,11 @@ const Contact = () => {
   return (
     <>
       <NavBar />
-      <main className="relative h-full font-sans">
-        <section className="inset-0 flex items-center">
-          <img src={background} className="w-full object-cover" alt="" />
-        </section>
-        <section className="absolute inset-0 mx-auto ">
-          <header className="mx-auto text-center sm:mt-[2em] sm:w-full sm:px-1 md:px-[1em] lg:mt-[9em] lg:w-[65%]">
+      <main className="bg-background h-auto font-sans">
+        <section className="pt-[4em]">
+          <header className="mx-auto text-center sm:w-full sm:px-1 md:px-[1em] lg:w-[65%]">
             <p className="text-lg font-semibold text-text2">Get in touch</p>
-            <h1 className=" font-semibold sm:text-[1.5em] lg:text-[2.5em]">
+            <h1 className="font-semibold sm:text-[1.5em] lg:text-[2.5em]">
               CONTACT US
             </h1>
             <p className="text-sm">
@@ -38,7 +34,6 @@ const Contact = () => {
               Safe and transparent way
             </p>
           </header>
-
           <div className="ml-auto flex flex-col justify-end sm:mt-[2.5em] sm:gap-9 sm:pl-[10px] lg:ml-auto lg:mt-[5em] lg:w-[90%] lg:flex-row lg:gap-[3em]">
             <div className="sm:p-1 sm:px-[1em] md:px-[2em] lg:w-[75%] lg:p-3">
               <form>
@@ -98,7 +93,7 @@ const Contact = () => {
                     />
                   </div>
                 </div>
-                <Primary className="mt-[1.5em] bg-text2 px-8 text-text5 lg:px-[2.5em] py-2 lg:py-3">
+                <Primary className="mt-[1.5em] bg-text2 px-8 py-2 text-text5 lg:px-[2.5em] lg:py-3">
                   Send
                 </Primary>
               </form>
@@ -160,7 +155,6 @@ const Contact = () => {
               </section>
             </div>
           </div>
-
           <div className="sm:mt-[4em] lg:mt-[8em]">
             <FooterBox />
             <Footer />

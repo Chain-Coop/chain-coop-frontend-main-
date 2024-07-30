@@ -1,6 +1,3 @@
-import person1 from "../../../Assets/png/home/personlaptop.png";
-import person2 from "../../../Assets/png/home/ladylaptop.png";
-import person3 from "../../../Assets/png/home/ladylaptop3.png";
 import { ComingSoon } from "../../common/Button";
 
 const Explore = () => {
@@ -17,14 +14,7 @@ const Explore = () => {
         </header>
 
         <section className="grid justify-center gap-[40px] rounded-xl sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
-          <div
-            className="mb-8 h-[550px] items-center rounded-xl bg-no-repeat p-[3em] sm:mb-0 md:p-[2em]"
-            style={{
-              backgroundImage: `url(${person1})`,
-              backgroundPosition: "center",
-              backgroundSize: "cover",
-            }}
-          >
+          <div className="bg-explore1 mb-8 items-center rounded-xl  p-[3em] sm:mb-0 md:p-[2em]">
             <h1 className="p-3em text-3xl font-medium uppercase text-text3">
               automated ai <br /> learning Platform
             </h1>
@@ -34,14 +24,7 @@ const Explore = () => {
           </div>
 
           <section className="grid w-[50%] grid-cols-1 gap-[1em] sm:w-auto">
-            <div
-              className="mb-8 rounded-lg bg-no-repeat p-[2em] sm:mb-0"
-              style={{
-                backgroundImage: `url(${person2})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            >
+            <div className="bg-explore2 mb-8 rounded-lg p-[2em] sm:mb-0">
               <h1 className="p-3em text-3xl font-medium uppercase text-text3">
                 automated ai <br /> learning Platform
               </h1>
@@ -50,14 +33,7 @@ const Explore = () => {
               </div>
             </div>
 
-            <div
-              className="rounded-xl bg-no-repeat p-[2em]"
-              style={{
-                backgroundImage: `url(${person3})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            >
+            <div className="bg-explore3 rounded-xl p-[2em]">
               <h1 className="p-3em text-3xl font-medium uppercase text-text3">
                 automated ai <br /> learning Platform
               </h1>

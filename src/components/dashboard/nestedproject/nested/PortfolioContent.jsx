@@ -1,4 +1,3 @@
-import person2 from "../../../../Assets/jpg/dashboard/porfolio.jpg";
 import { ComingSoon } from "../../../common/Button";
 
 const PortfolioContent = () => {
@@ -27,15 +26,7 @@ const PortfolioContent = () => {
           </article>
         </div>
         <article className="mb-[2em] mt-[4em] sm:w-full lg:w-[300px]">
-          <div
-            className="rounded-xl bg-no-repeat p-[1em]"
-            style={{
-              backgroundImage: `url(${person2})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              height: "100%",
-            }}
-          >
+          <div className="bg-explore2 rounded-xl bg-cover bg-center bg-no-repeat p-[1em]">
             <h1 className="p-[1em] font-sans text-lg font-medium uppercase text-text3">
               automated ai <br /> learning Platform
             </h1>

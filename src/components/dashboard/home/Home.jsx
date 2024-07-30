@@ -6,7 +6,6 @@ import {
   MdArrowOutward,
 } from "react-icons/md";
 import { ComingSoon } from "../../common/Button";
-import person2 from "../../../Assets/png/dashboard/home.png";
 import plus from "../../../Assets/png/home/plus.png";
 
 const Home = () => {
@@ -73,7 +72,7 @@ const Home = () => {
           </p>
         </header>
         <div className="mt-4 gap-[1.5em] space-y-[1.5em] sm:flex-col lg:flex lg:flex-row">
-          <article className="mt-2 flex h-[230px] flex-col items-center justify-center rounded-lg bg-Dh font-semibold shadow-md lg:w-[180px]">
+          <article className="mt-2 flex h-[px] flex-col items-center justify-center rounded-lg bg-Dh font-semibold shadow-md lg:w-[180px]">
             <img
               width="24"
               height="24"
@@ -87,19 +86,11 @@ const Home = () => {
             </p>
           </article>
           <article>
-            <div
-              className="rounded-xl bg-no-repeat p-[1em]"
-              style={{
-                backgroundImage: `url(${person2})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                height: "100%",
-              }}
-            >
-              <h1 className="p-[1em] text-lg font-medium uppercase text-text3">
+            <div className="bg-dashboardHome bg-no-repet flex h-auto flex-col gap-[2em] rounded-xl p-3">
+              <h1 className="text-lg font-medium uppercase text-text3">
                 automated ai <br /> learning Platform
               </h1>
-              <div className="mt-[3.5em]">
+              <div className="mt-[3em]">
                 <ComingSoon className="bg-coming2">Coming Soon</ComingSoon>
               </div>
             </div>

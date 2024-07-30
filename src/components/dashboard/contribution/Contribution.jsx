@@ -1,19 +1,22 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GetWalletBalance } from "../../../shared/redux/slices/transaction.slices";
+import ToggleButton from "../../../shared/utils/ToggleButton";
+import { formatAmount } from "../../../shared/utils/format";
 import { DashboardHeader } from "../../common/DashboardHeader";
-import { toggleState } from "../../../shared/utils/ToggleButton";
-import {
-  MdOutlineVisibilityOff,
-  MdOutlineVisibility,
-  MdArrowOutward,
-} from "react-icons/md";
+import { MdArrowOutward } from "react-icons/md";
 import { IoIosArrowForward } from "react-icons/io";
 import { toast } from "react-toastify";
 
 const Contribution = () => {
-  const [balanceVisible, setBalanceVisible] = useState(true);
-  const balance = useSelector((state) => state.transaction?.getWalletBalance);
+  const [isContributionVisible, setIsContributionVisible] = useState(() => {
+    const storedVisibility = sessionStorage.getItem(
+      "contributionBalanceVisible",
+    );
+    return storedVisibility !== null ? storedVisibility === "true" : true;
+  });
+
+  const balance = useSelector((state) => state?.transaction?.getWalletBalance);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -26,19 +29,12 @@ const Contribution = () => {
           const errorMessage = err.message;
           toast.error(errorMessage);
         });
-    } else {
-      // Handle case when student token is not found
     }
   }, [dispatch]);
 
-  const toggleVisibility = () => {
-    setBalanceVisible((prevVisible) => !prevVisible);
-  };
-  const [autoDeductionEnabled, setAutoDeductionEnabled] = useState(false);
-
-  const toggleAutoDeduction = () => {
-    setAutoDeductionEnabled((prevEnabled) => toggleState(prevEnabled));
-  };
+  const formattedBalance = balance?.balance
+    ? formatAmount(balance.balance)
+    : "₦ 0.00";
 
   return (
     <main className="font-sans">
@@ -49,23 +45,26 @@ const Contribution = () => {
       </header>
       <section className="mt-[2em] sm:px-[1.5em] lg:mx-auto lg:w-[33em] lg:px-[0]">
         <article className="text-center text-text4">
-          <div className=" mt-[2em] rounded-3xl py-[2em] shadow-md">
+          <div className="mt-[2em] rounded-3xl py-[2em] shadow-md">
             <div className="flex justify-center gap-4 font-sans">
               <p className="font-medium">Contribution Balance</p>
               <div>
-                <button className="bg-inherit" onClick={toggleVisibility}>
-                  {balanceVisible ? (
-                    <MdOutlineVisibilityOff />
-                  ) : (
-                    <MdOutlineVisibility />
-                  )}
-                </button>
+                <ToggleButton
+                  isVisible={isContributionVisible}
+                  onToggle={(newVisibility) => {
+                    setIsContributionVisible(newVisibility);
+                    sessionStorage.setItem(
+                      "contributionBalanceVisible",
+                      newVisibility.toString(),
+                    );
+                  }}
+                />
               </div>
             </div>
             <div className="mx-auto mt-[1.5em] w-[15em] rounded-md">
-              {balanceVisible ? (
-                <p className="font-bold sm:text-xl lg:text-2xl">
-                  &nbsp;₦ {balance?.balance.toLocaleString()}
+              {isContributionVisible ? (
+                <p className="font-bold sm:text-xl lg:text-xl">
+                  {formattedBalance}
                 </p>
               ) : (
                 <p className="text-2xl font-bold">*********</p>
@@ -79,9 +78,9 @@ const Contribution = () => {
             </div>
           </div>
           <div className="mt-[2em]">
-            <div className=" flex justify-between">
+            <div className="flex justify-between">
               <div>
-                <button className="rounded-full bg-inherit  text-lg font-semibold shadow-md sm:px-[2em] sm:py-[5px] lg:px-[3em] lg:py-[10px]">
+                <button className="rounded-full bg-inherit text-lg font-semibold shadow-md sm:px-[2em] sm:py-[5px] lg:px-[3em] lg:py-[10px]">
                   Payment
                 </button>
               </div>
@@ -97,24 +96,21 @@ const Contribution = () => {
                 Auto-Deduction from Wallet
               </p>
               <div className="flex items-center">
-                <button
-                  onClick={toggleAutoDeduction}
-                  className={`cursor-pointer rounded-full font-medium sm:px-[1em] sm:py-[2px] lg:px-[1.5em] lg:py-[5px] ${autoDeductionEnabled ? "bg-act text-white shadow-md" : "bg-act text-gray-500"}`}
-                >
-                  {autoDeductionEnabled ? "Turn Off" : "Turn On"}
+                <button className="cursor-pointer rounded-full font-medium sm:px-[1em] sm:py-[2px] lg:px-[1.5em] lg:py-[5px]">
+                  Turn Off
                 </button>
                 <IoIosArrowForward className="cursor-pointer" />
               </div>
             </div>
           </div>
         </article>
-
+        
         <section className="mt-[1em]">
           <p className="text-lg font-semibold">Monthly Contribution Tracker</p>
         </section>
         <div>
           <p className="mt-[1em] text-sm">
-            Effortlessy manage and monitor your financial commitments
+            Effortlessly manage and monitor your financial commitments
           </p>
         </div>
       </section>
