@@ -17,23 +17,17 @@
 //     "process.env": import.meta.env,
 //   },
 // });
-
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import postcss from "./postcss.config.js";
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   optimizeDeps: {
-    include: ["@workspace/ckeditor5-custom-build"],
+    include: ['@workspace/ckeditor5-custom-build'],
   },
-
-  plugins: [react()],
-
+  plugins: [
+    react(),
+  ],
   define: {
-    "process.env": import.meta.env,
-  },
-
-  css: {
-    postcss,
+    'process.env': import.meta.env,
   },
 });
