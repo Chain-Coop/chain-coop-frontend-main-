@@ -26,13 +26,11 @@ const PortfolioContent = () => {
           </article>
         </div>
         <article className="mb-[2em] mt-[4em] sm:w-full lg:w-[300px]">
-          <div className="bg-explore2 rounded-xl bg-cover bg-center bg-no-repeat p-[1em]">
+          <div className="rounded-xl bg-explore2 bg-cover bg-center bg-no-repeat p-[1em]">
             <h1 className="p-[1em] font-sans text-lg font-medium uppercase text-text3">
               automated ai <br /> learning Platform
             </h1>
-            <div className="mt-[7em]">
-              <ComingSoon className="bg-coming2">Coming Soon</ComingSoon>
-            </div>
+            <ComingSoon className="mt-[7em] bg-coming2">Coming Soon</ComingSoon>
           </div>
         </article>
       </div>

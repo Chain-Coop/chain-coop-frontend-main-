@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FORGOT_PASSWORD } from "../../../shared/redux/services/landing.services";
 import { EnterButton } from "../../common/Button";
 import logo from "../../../Assets/svg/auth/logo.svg";
@@ -11,6 +11,11 @@ const ForgetPassword = () => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
+
+  const home = (e) => {
+    e.preventDefault();
+    navigate("/login");
+  };
 
   const forgotPassword = async (e) => {
     e.preventDefault();
@@ -30,7 +35,12 @@ const ForgetPassword = () => {
     <main className="flex h-screen items-center justify-center bg-log font-sans">
       <section className="text-center lg:w-[49%]">
         <div className="px-[2em]">
-          <img src={logo} alt="Logo" className="mx-auto mb-4 h-[5em] w-[5em]" />
+          <img
+            src={logo}
+            alt="Logo"
+            className="mx-auto mb-4 h-[5em] w-[5em] cursor-pointer"
+            onClick={home}
+          />
           <h1 className="mb-4 text-3xl font-semibold text-text2">
             Forgot Password ?
           </h1>
@@ -68,9 +78,9 @@ const ForgetPassword = () => {
           <p className="text-text font-medium">
             Know your Password ?
             <span>
-              <a href="/login" className="ml-3 text-text2">
+              <Link to="/login" className="ml-3 text-text2">
                 Sign in now
-              </a>
+              </Link>
             </span>
           </p>
         </section>

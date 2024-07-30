@@ -5,7 +5,6 @@ import person2 from "../../../Assets/png/dashboard/right.png";
 import person3 from "../../../Assets/png/home/ladylaptop3.png";
 import { ComingSoon } from "../../common/Button";
 
-
 const Right = () => {
   return (
     <aside className="h-vh flex w-full flex-col border-l border-bl bg-inherit px-[3em] py-[3em] font-sans text-memt1 shadow-md">
@@ -108,9 +107,7 @@ const Right = () => {
               <h1 className="p-[1em] text-lg font-medium uppercase text-text3">
                 automated ai learning Platform
               </h1>
-              <div className="">
-                <ComingSoon className="bg-coming2">Coming Soon</ComingSoon>
-              </div>
+              <ComingSoon className="bg-coming2">Coming Soon</ComingSoon>
             </article>
           </div>
         </section>

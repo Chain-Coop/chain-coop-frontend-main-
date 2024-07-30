@@ -77,7 +77,7 @@ const Contribution = () => {
               <span className="font-semibold text-act">0%</span>
             </div>
           </div>
-          <div className="mt-[2em]">
+          <section className="mt-[2em]">
             <div className="flex justify-between">
               <div>
                 <button className="rounded-full bg-inherit text-lg font-semibold shadow-md sm:px-[2em] sm:py-[5px] lg:px-[3em] lg:py-[10px]">
@@ -102,7 +102,7 @@ const Contribution = () => {
                 <IoIosArrowForward className="cursor-pointer" />
               </div>
             </div>
-          </div>
+          </section>
         </article>
         
         <section className="mt-[1em]">

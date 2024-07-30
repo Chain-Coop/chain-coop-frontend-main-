@@ -110,6 +110,7 @@ export const becomeData = [
   },
 ];
 
+//meet images on landing page
 export const meetImage = [
   {
     src: person1,
@@ -136,7 +137,7 @@ export const trustedPartners = [
   { src: demologo },
 ];
 
-//Membership Benefits
+//membership card on membership page
 export const customerCardData = [
   {
     paragraph: "Vote & get involved in the Coop Network",
@@ -176,13 +177,68 @@ export const employeeCardData = [
   },
 ];
 
-
-//Revolutionizing member
-export const revolutionizingMember = [
+//Footer Links
+export const company = [
   {
-    paragraph: "Vote & get involved in the Coop Network",
+    text: "About Us",
+    to: "/our-story",
+  },
+  // {
+  //   text: "Team",
+  //   to: "/team",
+  // },
+  {
+    text: "Careers",
+    to: "/career",
   },
   {
-    paragraph: "Invest in the Coop Network business",
+    text: "Support",
   },
 ];
+
+export const Explore = [
+  {
+    text: "Why Chain Coop",
+    to: "/",
+  },
+  {
+    text: "Membership Cards",
+    to: "/membership",
+  },
+  {
+    text: "Projects",
+    to: "/membership",
+  },
+  {
+    text: "Blog",
+  },
+];
+
+export const Legal = [
+  {
+    text: "Privacy Policy",
+  },
+  {
+    text: "Terms & Condition",
+  },
+  {
+    text: "Disclaimer",
+  },
+];
+
+export const Contacts = [
+  {
+    text: "Privacy Policy",
+  },
+  {
+    text: "Ikosi Ketu, Lagos, Nigeria",
+  },
+  {
+    text: "info@chainerative.com.ng",
+  },
+  {
+    text: "+234 809 322 7696",
+  },
+];
+
+

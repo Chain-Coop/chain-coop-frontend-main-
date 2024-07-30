@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { RegisterUser } from "../../../shared/redux/slices/landing.slices";
 import { usePasswordVisibilityToggle } from "../../../shared/utils/PasswordVisibility";
@@ -28,6 +28,10 @@ const CreateAccount = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const home = (e) => {
+    e.preventDefault();
+    navigate("/login");
+  };
 
   const registerUser = (e) => {
     e.preventDefault();
@@ -65,7 +69,12 @@ const CreateAccount = () => {
     <main className="h-vh flex items-center justify-center bg-log pt-[1em] font-sans">
       <section className="px-[1em] text-center lg:w-[48%]">
         <div>
-          <img src={logo} alt="Logo" className="mx-auto mb-4 h-[5em]" />
+          <img
+            src={logo}
+            alt="Logo"
+            className="mx-auto mb-4 h-[5em] cursor-pointer"
+            onClick={home}
+          />
           <h1 className="mb-4 text-3xl font-bold text-text2">
             Create Your Account
           </h1>
@@ -200,7 +209,7 @@ const CreateAccount = () => {
           <p className="font-sans font-semibold text-text1">
             Have an account ?
             <span className="ml-2 font-sans font-medium text-text2">
-              <a href="/login">Sign in</a>
+              <Link to="/login">Sign in</Link>
             </span>
           </p>
         </div>

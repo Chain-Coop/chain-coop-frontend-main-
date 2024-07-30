@@ -16,11 +16,11 @@ import membership from "../../Assets/jpg/membership/customer.jpg";
 
 const DashboardNav = () => {
   const [openMenu, setOpenMenu] = useState(false);
+  const navigate = useNavigate();
 
   const handleMenuClick = () => {
     setOpenMenu(!openMenu);
   };
-  const navigate = useNavigate();
 
   const handleLogout = () => {
     const rememberMe = sessionStorage.getItem("rememberMe") === "true";

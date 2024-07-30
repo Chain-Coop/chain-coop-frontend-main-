@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LoginUser } from "../../../shared/redux/slices/landing.slices";
 import ToggleButton from "../../../shared/utils/ToggleButton";
 import { usePasswordVisibilityToggle } from "../../../shared/utils/PasswordVisibility";
@@ -140,9 +140,9 @@ const UserLogin = () => {
 
               <span className="text-text2">Remember Me</span>
             </div>
-            <a href="/forget-password" className="pointer font-normal italic">
+            <Link to="/forget-password" className="pointer font-normal italic">
               Forgot Password ?
-            </a>
+            </Link>
           </div>
 
           <EnterButton
@@ -164,12 +164,12 @@ const UserLogin = () => {
           <div className="flex justify-center">
             <p>
               {`Don't have an account?`}
-              <a
-                href="/sign-up"
+              <Link
+                to="/sign-up"
                 className="pointer ml-2 font-medium text-text2"
               >
                 Sign Up Now
-              </a>
+              </Link>
             </p>
           </div>
         </form>

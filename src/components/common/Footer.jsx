@@ -1,8 +1,9 @@
+import { Link } from "react-router-dom";
+import { company, Contacts, Explore, Legal } from "../../data/Data";
 import X from "../../Assets/png/home/twitterx.png";
 import instagram from "../../Assets/png/home/instagram.png";
 import facebook from "../../Assets/png/home/facebook.png";
 import linkedin from "../../Assets/png/home/linkedin.png";
-import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -22,55 +23,64 @@ const Footer = () => {
             </p>
           </div>
         </section>
+        
         <section>
-          <h3 className=" font-bold text-text3">Company</h3>
+          <h3 className="font-bold text-text3">Company</h3>
           <div className="mt-4">
-            <p className="mb-2 font-light text-text3">
-              <Link to="/our-story">About Us</Link>
-            </p>
-            {/* <p className="mb-2 font-light text-text3">
-              <Link to="/team">Team</Link>
-            </p> */}
-            <p className="mb-2 font-light text-text3">
-              <Link to="/career">Careers</Link>
-            </p>
-            <p className="mb-2 font-light text-text3">Support</p>
+            {company.map((data, index) => (
+              <>
+                <p className="mb-2 font-light text-text3">
+                  <Link to={data.to} key={index}>
+                    {data.text}
+                  </Link>
+                </p>
+              </>
+            ))}
           </div>
         </section>
+
         <section>
           <h3 className=" font-bold text-text3">Explore</h3>
           <div className="mt-4">
-            <p className="mb-2 font-light text-text3">
-              <Link to="/">Why Chain Coop</Link>
-            </p>
-            <p className="mb-2 font-light text-text3">
-              <Link to="/membership">Membership Cards</Link>
-            </p>
-            <p className="mb-2 font-light text-text3">Projects</p>
-            <p className="mb-2 font-light text-text3">
-              <Link to="/blog">Blog</Link>
-            </p>
+            {Explore.map((data, index) => (
+              <>
+                <p className="mb-2 whitespace-nowrap font-light text-text3">
+                  <Link to={data.to} key={index}>
+                    {data.text}
+                  </Link>
+                </p>
+              </>
+            ))}
           </div>
         </section>
+
         <section>
           <h3 className=" font-bold text-text3">Legal</h3>
-          <div className="mt-4">
-            <p className="mb-2 font-light text-text3">Privacy Policy</p>
-            <p className="mb-2 font-light text-text3">Terms & Conditions</p>
-            <p className="mb-2 font-light text-text3">Disclaimer</p>
+          <div className="mt-4 whitespace-nowrap">
+            {Legal.map((data, index) => (
+              <>
+                <p className="mb-2 font-light text-text3">
+                  <Link to={data.to} key={index}>
+                    {data.text}
+                  </Link>
+                </p>
+              </>
+            ))}
           </div>
         </section>
+
         <section>
-          <h3 className="  font-bold text-text3">Contacts</h3>
-          <div className="mt-4">
-            <p className="mb-2 font-light text-text3">Privacy Policy</p>
-            <p className="mb-2 font-light text-text3">
-              Ikosi Ketu, Lagos, Nigeria
-            </p>
-            <p className="mb-2 font-light text-text3">
-              info@chainerative.com.ng
-            </p>
-            <p className="mb-2 font-light text-text3">+234 809 322 7696</p>
+          <h3 className="font-bold text-text3">Contacts</h3>
+          <div className="mt-4 whitespace-nowrap">
+            {Contacts.map((data, index) => (
+              <>
+                <p className="mb-2 font-light text-text3">
+                  <Link to={data.to} key={index}>
+                    {data.text}
+                  </Link>
+                </p>
+              </>
+            ))}
           </div>
         </section>
       </div>

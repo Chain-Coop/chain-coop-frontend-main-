@@ -15,7 +15,7 @@ import debit from "../../../../Assets/svg/dashboard/wallet/debit.svg";
 const FundWallet = () => {
   const [modalType, setModalType] = useState(null);
   const [email, setEmail] = useState("");
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -55,7 +55,7 @@ const FundWallet = () => {
         console.log("paystack response", response);
         handlePaymentSuccess(response.reference);
         setEmail("");
-        setAmount(0);
+        setAmount();
       },
     });
     handler.openIframe();
