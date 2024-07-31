@@ -10,6 +10,9 @@ const API_URL_LOGIN_USER =
 const API_URL_VERIFY_USER =
   import.meta.env.VITE_REACT_APP_API_URL + "/auth/verify_otp";
 
+const API_URL_PUBLIC_CONTACT =
+  import.meta.env.VITE_REACT_APP_API_URL + "/contact-us";
+
 const RegisterUser = async (body) => {
   try {
     const response = await axios.post(API_URL_REGISTER_USER, body, {});
@@ -69,11 +72,23 @@ export async function RESET_PASSWORD(endpoint, data) {
     return error.response;
   }
 }
+const PublicContact = async (body) => {
+  try {
+    const response = await axios.post(API_URL_PUBLIC_CONTACT, body, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error) {
+    console.log("services", error);
+    throw error.response.data;
+  }
+};
 
 const LandingServices = {
   RegisterUser,
   LoginUser,
   VerifyUserAuth,
+  PublicContact,
 };
 
 export default LandingServices;

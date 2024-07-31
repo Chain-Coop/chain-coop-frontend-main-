@@ -44,10 +44,25 @@ export const VerifyUserAuth = createAsyncThunk(
   },
 );
 
+export const PublicContact = createAsyncThunk(
+  "landing/publicContact",
+  async (body, thunkAPI) => {
+    try {
+      const data = await LandingServices.PublicContact(body);
+      return { landing: data };
+    } catch (error) {
+      const message = error.msg;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
 const initialState = {
   getUserRegistered: null,
   getloginUser: null,
   getResetOtp: null,
+  getPublicContact: null,
 };
 
 export const landingSlice = createSlice({
@@ -72,6 +87,12 @@ export const landingSlice = createSlice({
     });
     builder.addCase(VerifyUserAuth.rejected, (state) => {
       state.verifyAuthData = null;
+    });
+    builder.addCase(PublicContact.fulfilled, (state, action) => {
+      state.getPublicContact = action.payload.landing;
+    });
+    builder.addCase(PublicContact.rejected, (state) => {
+      state.getPublicContact = null;
     });
   },
 });

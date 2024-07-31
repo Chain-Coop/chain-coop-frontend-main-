@@ -59,9 +59,9 @@ const Story = () => {
                     <img src={mark} alt="svg-image" /> Legally Guaranteed
                     Returns
                   </p>
-                  <p className="flex gap-1">
+                  <p className="flex gap-2">
                     <img src={mark} alt="svg-image" /> Access Exclusive
-                    Investment Rounds
+                    Investment Roundss
                   </p>
                   <p className="flex gap-3">
                     <img src={mark} alt="svg-image" /> Expand Your Network

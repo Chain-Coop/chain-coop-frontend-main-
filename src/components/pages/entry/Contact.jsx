@@ -11,13 +11,54 @@ import linkdln from "../../../Assets/svg/contact/linkdln.svg";
 import medium from "../../../Assets/svg/contact/medium.svg";
 
 import circle from "../../../Assets/png/contact/circle.png";
-
 import FooterBox from "../../common/FooterBox";
 
 import "../../../general.css";
 import { Primary } from "../../common/Button";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { PublicContact } from "../../../shared/redux/slices/landing.slices";
+import { toast } from "react-toastify";
+import ReactLoading from "react-loading";
 
 const Contact = () => {
+  const [loading, setLoading] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone_number, setPhone_Number] = useState("");
+  const [message, setMessage] = useState("");
+
+  const dispatch = useDispatch();
+
+  const sendMessage = (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const body = {
+      name: name,
+      phone_number: phone_number,
+      email: email,
+      message: message,
+    };
+
+    dispatch(PublicContact(body))
+      .unwrap()
+      .then(() => {
+        setName("");
+        setEmail("");
+        setPhone_Number("");
+        setMessage("");
+        setLoading(false);
+        toast.success("Message sent");
+      })
+      .catch((error) => {
+        console.log("Error", error);
+        setLoading(false);
+        const errorMessage = error;
+        toast.error(errorMessage);
+      });
+  };
+
   return (
     <>
       <NavBar />
@@ -42,6 +83,7 @@ const Contact = () => {
                     Name
                   </label>
                   <input
+                    onChange={(e) => setName(e.target.value)}
                     type="text"
                     className="mt-[1em] w-full rounded-md border-none p-4 shadow-md"
                     placeholder="enter your name"
@@ -54,6 +96,7 @@ const Contact = () => {
                   </label>
                   <input
                     type="text"
+                    onChange={(e) => setEmail(e.target.value)}
                     className="mt-[1em] w-full rounded-md border-none p-4 shadow-md"
                     placeholder="enter your e-mail"
                   />
@@ -64,6 +107,7 @@ const Contact = () => {
                     Phone Number
                   </label>
                   <input
+                    onChange={(e) => setPhone_Number(e.target.value)}
                     type="text"
                     className="mt-[1em] w-full rounded-md border-none p-4 shadow-md"
                     placeholder="enter your phone number"
@@ -76,6 +120,10 @@ const Contact = () => {
                   <div className="custom-ckeditor mt-[1em] flex w-full rounded-md border-none shadow-md">
                     <CKEditor
                       editor={ClassicEditor}
+                      onChange={(event, editor) => {
+                        const data = editor.getData();
+                        setMessage(data);
+                      }}
                       config={{
                         toolbar: [
                           "Bold",
@@ -93,8 +141,20 @@ const Contact = () => {
                     />
                   </div>
                 </div>
-                <Primary className="mt-[1.5em] bg-text2 px-8 py-2 text-text5 lg:px-[2.5em] lg:py-3">
-                  Send
+                <Primary
+                  className="mt-[1.5em] bg-text2 px-8 py-2 text-text5 lg:px-[2.5em] lg:py-3"
+                  onClick={sendMessage}
+                >
+                  {loading ? (
+                    <ReactLoading
+                      color="#FFFFFF"
+                      width={25}
+                      height={25}
+                      type="spin"
+                    />
+                  ) : (
+                    "Send"
+                  )}
                 </Primary>
               </form>
             </div>
