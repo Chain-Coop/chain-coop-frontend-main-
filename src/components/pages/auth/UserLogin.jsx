@@ -38,7 +38,6 @@ const UserLogin = () => {
       .unwrap()
       .then(() => {
         setLoading(false);
-        toast.success("Welcome");
         navigate("/dashboard");
       })
       .catch((error) => {

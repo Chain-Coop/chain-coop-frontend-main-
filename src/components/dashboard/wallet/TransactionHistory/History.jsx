@@ -33,7 +33,7 @@ const History = () => {
   }, [dispatch]);
 
   const handleViewAll = () => {
-    setShowAll(true);
+    setShowAll((prevShowAll) => !prevShowAll);
   };
 
   return (
@@ -43,12 +43,20 @@ const History = () => {
           <h1 className="text-xl font-semibold text-memt1">
             Recent Transactions
           </h1>
-          {getTransaction && getTransaction.length > 3 && !showAll && (
+          {getTransaction && getTransaction.length > 3 && (
             <Primary
-              className="rounded-lg border-[2px] border-text2 bg-inherit px-4 py-1 font-semibold text-memt1"
+              className="flex items-center rounded-lg border-[2px] border-text2 bg-inherit px-4 py-1 font-semibold text-memt1"
               onClick={handleViewAll}
             >
-              View All
+              {showAll ? (
+                <>
+                  <span>Close</span>
+                </>
+              ) : (
+                <>
+                  <span>View All</span>
+                </>
+              )}
             </Primary>
           )}
         </div>
