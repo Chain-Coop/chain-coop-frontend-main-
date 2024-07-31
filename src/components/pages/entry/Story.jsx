@@ -34,7 +34,7 @@ const Story = () => {
               Safe and transparent way
             </p>
           </header>
-          <div className="m-auto flex flex-col px-2 lg:mt-[3em]  lg:w-[87%] lg:gap-8 lg:text-start">
+          <div className="m-auto flex flex-col px-2 lg:mt-[3em] lg:w-[87%] lg:gap-8 lg:text-start">
             <div className="flex sm:flex-col lg:mt-[7em] lg:flex-row">
               <div className="hidden lg:block lg:w-1/2">
                 <img src={image1} alt="people-image" />
@@ -78,7 +78,7 @@ const Story = () => {
             </div>
           </div>
         </section>
-        <div className="mx-auto flex w-[86%] justify-between gap-[3em] sm:mt-[12em] sm:flex-col lg:mt-[2em] lg:flex-row">
+        <div className="mx-auto flex w-[86%] justify-between gap-[3em] sm:mt-[10em] sm:flex-col lg:mt-[2em] lg:flex-row">
           <div className=" h-full rounded-lg bg-text2 px-[2em] py-[3em] text-text3 shadow-md">
             <h1 className="text-2xl font-semibold">Our Mission</h1>
             <p className="mt-4">
