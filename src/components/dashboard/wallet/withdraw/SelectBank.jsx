@@ -31,7 +31,7 @@ const SelectBank = () => {
         </DashboardHeader>
       </header>
       <article>
-        <div className="px-[2em]">
+        <div className="px-[1em]">
           <div className="mt-[2em] flex w-full gap-[1em] rounded-lg bg-Dh px-[1.5em] py-[1em] font-medium">
             <img src={xlamation} alt="" />
             <p>

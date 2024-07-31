@@ -36,11 +36,15 @@ const Withdraw = () => {
           </div>
         </DashboardHeader>
       </header>
-      <section className="m-auto mt-[2em] h-full w-[33em]">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <img src={withdraw} alt="Withdraw" />
-            <p className="font-medium">Withdraw to Bank Account</p>
+      <section className="m-auto mt-[2em] h-full w-full">
+        <div className="flex items-center justify-between px-4 sm:px-4 lg:px-6">
+          <div className="flex items-center gap-3">
+            <img
+              src={withdraw}
+              alt="Withdraw"
+              className="h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10"
+            />
+            <p className="text-lg font-medium">Withdraw to Bank Account</p>
           </div>
           <IoIosArrowForward
             size={25}
@@ -49,6 +53,7 @@ const Withdraw = () => {
           />
         </div>
       </section>
+
       <Modal isOpen={isModalOpen} onClose={toggleModal} className="bg-white">
         <div className="mt-[2.5em]">
           <header>
