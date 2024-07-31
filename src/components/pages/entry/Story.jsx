@@ -78,7 +78,7 @@ const Story = () => {
             </div>
           </div>
         </section>
-        <div className="mx-auto flex w-[86%] justify-between gap-[3em] sm:mt-[8em] sm:flex-col lg:mt-[2em] lg:flex-row">
+        <div className="mx-auto flex w-[86%] justify-between gap-[3em] sm:mt-[6em] sm:flex-col lg:mt-[2em] lg:flex-row">
           <div className=" h-full rounded-lg bg-text2 px-[2em] py-[3em] text-text3 shadow-md">
             <h1 className="text-2xl font-semibold">Our Mission</h1>
             <p className="mt-4">
