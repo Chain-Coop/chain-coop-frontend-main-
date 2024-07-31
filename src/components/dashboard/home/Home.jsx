@@ -72,7 +72,7 @@ const Home = () => {
           </p>
         </header>
         <div className="mt-4 gap-[1.5em] space-y-[1.5em] sm:flex-col lg:flex lg:flex-row">
-          <article className="mt-2 flex flex-col items-center justify-center rounded-lg bg-Dh p-4 font-semibold shadow-md lg:w-[180px]">
+          <article className="mt-2 flex flex-col items-center justify-center rounded-lg bg-Dh p-4 font-semibold shadow-md sm:py-[2em] lg:w-[180px]">
             <img
               width="24"
               height="24"
