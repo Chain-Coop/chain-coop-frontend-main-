@@ -14,13 +14,13 @@ import { useRef } from "react";
 import circle from "../../../Assets/png/contact/circle.png";
 import FooterBox from "../../common/FooterBox";
 
-import "../../../general.css";
 import { Primary } from "../../common/Button";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { PublicContact } from "../../../shared/redux/slices/landing.slices";
 import { toast } from "react-toastify";
 import ReactLoading from "react-loading";
+import "../../../general.css";
 
 const Contact = () => {
   const [loading, setLoading] = useState(false);
