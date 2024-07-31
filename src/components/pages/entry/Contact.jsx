@@ -9,6 +9,7 @@ import { MdMedicalInformation } from "react-icons/md";
 import tweeter from "../../../Assets/svg/contact/tweeter.svg";
 import linkdln from "../../../Assets/svg/contact/linkdln.svg";
 import medium from "../../../Assets/svg/contact/medium.svg";
+import { useRef } from "react";
 
 import circle from "../../../Assets/png/contact/circle.png";
 import FooterBox from "../../common/FooterBox";
@@ -29,6 +30,7 @@ const Contact = () => {
   const [message, setMessage] = useState("");
 
   const dispatch = useDispatch();
+  const editorRef = useRef(null);
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -48,6 +50,12 @@ const Contact = () => {
         setEmail("");
         setPhone_Number("");
         setMessage("");
+        window.location.reload();
+
+        if (editorRef.current) {
+          editorRef.current.setData("");
+        }
+
         setLoading(false);
         toast.success("Message sent");
       })
@@ -77,7 +85,7 @@ const Contact = () => {
           </header>
           <div className="ml-auto flex flex-col justify-end sm:mt-[2.5em] sm:gap-9 sm:pl-[10px] lg:ml-auto lg:mt-[5em] lg:w-[90%] lg:flex-row lg:gap-[3em]">
             <div className="sm:p-1 sm:px-[1em] md:px-[2em] lg:w-[75%] lg:p-3">
-              <form>
+              <form onSubmit={sendMessage}>
                 <div>
                   <label htmlFor="name" className="text-lg font-medium">
                     Name
@@ -142,8 +150,8 @@ const Contact = () => {
                   </div>
                 </div>
                 <Primary
+                  type="submit"
                   className="mt-[1.5em] bg-text2 px-8 py-2 text-text5 lg:px-[2.5em] lg:py-3"
-                  onClick={sendMessage}
                 >
                   {loading ? (
                     <ReactLoading
