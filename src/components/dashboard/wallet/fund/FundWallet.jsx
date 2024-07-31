@@ -98,9 +98,12 @@ const FundWallet = () => {
           </div>
         </DashboardHeader>
       </header>
-      <section className="m-auto mt-[2em] h-full w-[33em]">
-        <article className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+      <section className="m-auto mt-[1.5em] h-full w-full px-[1em]">
+        <div
+          className="flex items-center justify-between"
+          onClick={() => openModal("transfer")}
+        >
+          <div className="flex cursor-pointer items-center gap-4">
             <img src={fund} alt="Withdraw" />
             <div>
               <h2 className="font-medium">Bank Transfer</h2>
@@ -111,10 +114,9 @@ const FundWallet = () => {
           </div>
           <IoIosArrowForward
             size={25}
-            className="cursor-pointer"
-            onClick={() => openModal("transfer")}
+            className="hidden cursor-pointer lg:block"
           />
-        </article>
+        </div>
         <hr className="mt-3 h-[1px] rounded-md" />
         <article className="mt-[1em] flex items-center justify-between">
           <div
@@ -129,7 +131,10 @@ const FundWallet = () => {
               </p>
             </div>
           </div>
-          <IoIosArrowForward size={25} className="cursor-pointer" />
+          <IoIosArrowForward
+            size={25}
+            className="cursor-pointer sm:hidden lg:block"
+          />
         </article>
       </section>
 
