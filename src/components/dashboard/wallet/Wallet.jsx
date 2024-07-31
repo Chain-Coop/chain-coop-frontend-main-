@@ -125,6 +125,7 @@ const Wallet = () => {
               </div>
             </div>
           </section>
+          
           <History />
         </div>
       </div>
