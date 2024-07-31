@@ -95,6 +95,7 @@ export const becomeData = [
     paragraph:
       "Enjoy Annual Co-op Dividends Based on Your Membership Contribution",
   },
+
   {
     title: "Access Exclusive Investment Rounds",
     paragraph: "Develop Strategies Build Your Portfolio, and Track Success",
@@ -240,5 +241,3 @@ export const Contacts = [
     text: "+234 809 322 7696",
   },
 ];
-
-

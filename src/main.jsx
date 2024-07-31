@@ -19,5 +19,5 @@ root.render(
         <ToastContainerWrapper />
       </PersistGate>
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

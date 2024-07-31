@@ -18,6 +18,7 @@
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
     "@paystack/inline-js": "^2.19.0",
     "@reduxjs/toolkit": "^2.2.4",
+    "aos": "^2.3.4",
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
     "prettier-plugin-tailwindcss": "^0.5.14",

@@ -14,7 +14,7 @@ const Explore = () => {
         </header>
 
         <section className="grid justify-center gap-[40px] rounded-xl sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
-          <div className="bg-explore1 mb-8 items-center rounded-xl  p-[3em] sm:mb-0 md:p-[2em]">
+          <div className="mb-8 items-center rounded-xl bg-explore1 bg-no-repeat  p-[3em] sm:mb-0 md:p-[2em]">
             <h1 className="p-3em text-3xl font-medium uppercase text-text3">
               automated ai <br /> learning Platform
             </h1>
@@ -24,7 +24,7 @@ const Explore = () => {
           </div>
 
           <section className="grid w-[50%] grid-cols-1 gap-[1em] sm:w-auto">
-            <div className="bg-explore2 mb-8 rounded-lg p-[2em] sm:mb-0">
+            <div className="mb-8 rounded-lg bg-explore2 bg-no-repeat p-[2em] sm:mb-0">
               <h1 className="p-3em text-3xl font-medium uppercase text-text3">
                 automated ai <br /> learning Platform
               </h1>
@@ -33,7 +33,7 @@ const Explore = () => {
               </div>
             </div>
 
-            <div className="bg-explore3 rounded-xl p-[2em]">
+            <div className="rounded-xl bg-explore3 bg-no-repeat p-[2em]">
               <h1 className="p-3em text-3xl font-medium uppercase text-text3">
                 automated ai <br /> learning Platform
               </h1>
