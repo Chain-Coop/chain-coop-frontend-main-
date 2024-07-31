@@ -13,6 +13,9 @@ const API_URL_VERIFY_USER =
 const API_URL_PUBLIC_CONTACT =
   import.meta.env.VITE_REACT_APP_API_URL + "/contact-us";
 
+const API_URL_CREATE_PIN =
+  import.meta.env.VITE_REACT_APP_API_URL + "/wallet/create-pin";
+
 const RegisterUser = async (body) => {
   try {
     const response = await axios.post(API_URL_REGISTER_USER, body, {});
@@ -38,6 +41,17 @@ const LoginUser = async (body) => {
 const VerifyUserAuth = async (body) => {
   try {
     const response = await axios.post(API_URL_VERIFY_USER, body, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+const CreateUserPin = async (body) => {
+  try {
+    const response = await axios.post(API_URL_CREATE_PIN, body, {
       headers: authHeader(),
     });
     return response.data;
@@ -89,6 +103,7 @@ const LandingServices = {
   LoginUser,
   VerifyUserAuth,
   PublicContact,
+  CreateUserPin,
 };
 
 export default LandingServices;

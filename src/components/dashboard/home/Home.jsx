@@ -72,21 +72,23 @@ const Home = () => {
           </p>
         </header>
         <div className="mt-4 gap-[1.5em] space-y-[1.5em] sm:flex-col lg:flex lg:flex-row">
-          <article className="mt-2 flex h-[px] flex-col items-center justify-center rounded-lg bg-Dh font-semibold shadow-md lg:w-[180px]">
+          <article className="mt-2 flex flex-col items-center justify-center rounded-lg bg-Dh p-4 font-semibold shadow-md lg:w-[180px]">
             <img
               width="24"
               height="24"
               src={plus}
               alt="plus"
-              className="w-[3em] cursor-pointer shadow-sm"
+              className="h-[3em] w-[3em] cursor-pointer shadow-sm"
             />
-            <p className="font-sans sm:text-lg sm:font-semibold">Create a</p>
-            <p className="font-sans sm:text-lg sm:font-semibold">
+            <p className="text-center font-sans sm:text-lg sm:font-semibold">
+              Create a
+            </p>
+            <p className="text-center font-sans sm:text-lg sm:font-semibold">
               portfolio project
             </p>
           </article>
           <article>
-            <div className="bg-dashboardHome bg-no-repet flex h-auto flex-col gap-[2em] rounded-xl p-3">
+            <div className="flex h-auto flex-col gap-[2em] rounded-xl bg-dashboardHome bg-cover bg-no-repeat p-3">
               <h1 className="text-lg font-medium uppercase text-text3">
                 automated ai <br /> learning Platform
               </h1>

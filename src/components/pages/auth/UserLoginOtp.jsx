@@ -13,12 +13,12 @@ const UserLoginOtp = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
+  const [otp, setOtp] = useState("");
+
   const dispatch = useDispatch();
 
   const queryParams = new URLSearchParams(location.search);
   const email = queryParams.get("email");
-
-  const [otp, setOtp] = useState("");
 
   const handleOtpChange = (otpValue) => {
     setOtp(otpValue);
@@ -39,7 +39,7 @@ const UserLoginOtp = () => {
       .then((response) => {
         setLoading(false);
         toast.success(response.msg);
-        navigate("/create-pin");
+        navigate(`/create-pin?email=${email}`); 
       })
       .catch((error) => {
         setLoading(false);
