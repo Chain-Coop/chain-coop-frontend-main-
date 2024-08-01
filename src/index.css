@@ -1,0 +1,53 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root,
+.app {
+  height: 100%;
+  width: 100%;
+  font-family: "Asap", sans-serif;
+  background-color: #ffffff;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  right: 0%;
+  left: 0%;
+  min-height: 100vh;
+  /* width: 100vw; */
+  max-width: 1900px;
+  margin: 0rem auto;
+  font-family: "Asap", sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  right: 0%;
+  left: 0%;
+  box-sizing: border-box;
+}
+::-webkit-scrollbar {
+  /* width: 1px;
+  height: 1px; */
+}
+::-webkit-scrollbar-thumb {
+  background-color: #440080 !important;
+  border-radius: 40px !important;
+}
+::-webkit-scrollbar-track {
+  background-color: transparent !important;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
