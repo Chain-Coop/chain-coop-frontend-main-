@@ -1,45 +1,19 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { GetWalletBalance } from "../../../shared/redux/slices/transaction.slices";
-import { formatAmount } from "../../../shared/utils/format";
-import ToggleButton from "../../../shared/utils/ToggleButton";
-import History from "./TransactionHistory/History";
 import { DashboardHeader } from "../../common/DashboardHeader";
 import { MdArrowOutward } from "react-icons/md";
 import { PiHandWithdrawBold } from "react-icons/pi";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { IoIosArrowForward } from "react-icons/io";
-import { toast } from "react-toastify";
+import ToggleButton from "../../../shared/utils/ToggleButton";
+import History from "./TransactionHistory/History";
+import useBalance from "../../../shared/Hooks/useBalance";
 
 const Wallet = () => {
-  const balance = useSelector((state) => state?.transaction?.getWalletBalance);
-  const dispatch = useDispatch();
+  const { isWalletVisible, setIsWalletVisible, formattedBalance } =
+    useBalance();
   const navigate = useNavigate();
-
-  const [isWalletVisible, setIsWalletVisible] = useState(() => {
-    const storedVisibility = sessionStorage.getItem("walletBalanceVisible");
-    return storedVisibility !== null ? storedVisibility === "true" : true;
-  });
-
-  useEffect(() => {
-    const userToken = sessionStorage.getItem("userData");
-    if (userToken) {
-      dispatch(GetWalletBalance())
-        .unwrap()
-        .then(() => {})
-        .catch((error) => {
-          const errorMessage = error;
-          toast.error(errorMessage);
-        });
-    }
-  }, [dispatch]);
-
-  const formattedBalance = balance?.balance
-    ? formatAmount(balance.balance)
-    : "₦ 0.00";
 
   const withdraw = () => {
     navigate("/dashboard/wallet/withdraw");
@@ -125,7 +99,7 @@ const Wallet = () => {
               </div>
             </div>
           </section>
-          
+
           <History />
         </div>
       </div>

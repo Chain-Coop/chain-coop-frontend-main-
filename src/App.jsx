@@ -3,8 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./components/pages/entry/HomePage";
 // import OurStory from "./components/pages/entry/OurStory";
 import Membership from "./components/pages/entry/Membership";
-import CreatePin from "./components/pages/auth/CreatePin";
-import CreatedPin from "./components/pages/auth/CreatedPin";
 import ForgetPassword from "./components/pages/auth/ForgetPassword";
 import CreateAccount from "./components/pages/auth/CreateAccount";
 import UserLoginOtp from "./components/pages/auth/UserLoginOtp";
@@ -49,9 +47,6 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard/*" element={<Dashboard />} />
         </Route>
-
-        <Route path="/create-pin" element={<CreatePin />} />
-        <Route path="/created-pin" element={<CreatedPin />} />
 
         <Route path="/team" element={<Team />} />
         <Route path="/blog" element={<Blogs />} />
