@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetWalletBalance } from "../../../shared/redux/slices/transaction.slices";
+import { GetWalletBalance } from "../redux/slices/transaction.slices";
 import { toast } from "react-toastify";
-import { formatAmount } from "../../../shared/utils/format";
+import { formatAmount } from "../utils/format";
 
 const useBalance = () => {
   const dispatch = useDispatch();

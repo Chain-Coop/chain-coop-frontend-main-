@@ -1,12 +1,9 @@
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { GetWalletBalance } from "../../../shared/redux/slices/transaction.slices";
+import { useState } from "react";
 import ToggleButton from "../../../shared/utils/ToggleButton";
-import { formatAmount } from "../../../shared/utils/format";
 import { DashboardHeader } from "../../common/DashboardHeader";
 import { MdArrowOutward } from "react-icons/md";
 import { IoIosArrowForward } from "react-icons/io";
-import { toast } from "react-toastify";
+import useBalance from "../../../shared/Hooks/useBalance";
 
 const Contribution = () => {
   const [isContributionVisible, setIsContributionVisible] = useState(() => {
@@ -15,26 +12,7 @@ const Contribution = () => {
     );
     return storedVisibility !== null ? storedVisibility === "true" : true;
   });
-
-  const balance = useSelector((state) => state?.transaction?.getWalletBalance);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const userToken = sessionStorage.getItem("userData");
-    if (userToken) {
-      dispatch(GetWalletBalance())
-        .unwrap()
-        .then(() => {})
-        .catch((err) => {
-          const errorMessage = err.message;
-          toast.error(errorMessage);
-        });
-    }
-  }, [dispatch]);
-
-  const formattedBalance = balance?.balance
-    ? formatAmount(balance.balance)
-    : "₦ 0.00";
+  const { formattedBalance } = useBalance();
 
   return (
     <main className="font-sans">
@@ -104,7 +82,7 @@ const Contribution = () => {
             </div>
           </section>
         </article>
-        
+
         <section className="mt-[1em]">
           <p className="text-lg font-semibold">Monthly Contribution Tracker</p>
         </section>

@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import useBalance from "../../../shared/Hooks/useBalance";
+import ToggleButton from "../../../shared/utils/ToggleButton";
+import History from "./TransactionHistory/History";
 import { DashboardHeader } from "../../common/DashboardHeader";
 import { MdArrowOutward } from "react-icons/md";
 import { PiHandWithdrawBold } from "react-icons/pi";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { IoIosArrowForward } from "react-icons/io";
-import ToggleButton from "../../../shared/utils/ToggleButton";
-import History from "./TransactionHistory/History";
-import useBalance from "../../../shared/Hooks/useBalance";
 
 const Wallet = () => {
   const { isWalletVisible, setIsWalletVisible, formattedBalance } =
