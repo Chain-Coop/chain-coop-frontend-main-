@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { DashboardHeader } from "../../../../common/DashboardHeader";
 import { useNavigate } from "react-router";
 import transfer from "../../../../../Assets/svg/dashboard/wallet/transfer.svg";
 import {
@@ -7,6 +6,7 @@ import {
   IoIosArrowForward,
   IoIosArrowDown,
 } from "react-icons/io";
+import { DashboardHeader } from "../../../../common/DashboardHeader";
 
 const Transfer = () => {
   const navigate = useNavigate();
@@ -24,9 +24,11 @@ const Transfer = () => {
     <main className="font-sans">
       <header className="mt-[2em]">
         <DashboardHeader className="cursor-pointer" onClick={handleBackClick}>
-          <div className="flex items-center justify-between">
+          <div className="flex w-[65%] items-center justify-between">
             <IoIosArrowBack size={25} className="cursor-pointer" />
-            <h1 className="tracking-wide">Transfer Wallet</h1>
+            <div className="tracking-wide">
+              <h1>Transfer</h1>
+            </div>
           </div>
         </DashboardHeader>
       </header>
