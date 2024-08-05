@@ -80,10 +80,12 @@ const Wallet = () => {
                   <span className="block lg:text-lg">Fund Wallet</span>
                 </button>
               </Link>
-              <button className="flex flex-col items-center bg-inherit text-center">
-                <FaMoneyBillTransfer className="cursor-pointer fill-howtext text-4xl" />
-                <span className="block lg:text-lg ">Transfer</span>
-              </button>
+              <Link to="/dashboard/wallet/transfer">
+                <button className="flex flex-col items-center bg-inherit text-center">
+                  <FaMoneyBillTransfer className="cursor-pointer fill-howtext text-4xl" />
+                  <span className="block lg:text-lg ">Transfer</span>
+                </button>
+              </Link>
             </div>
           </section>
 

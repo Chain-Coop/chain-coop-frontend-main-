@@ -1,9 +1,9 @@
 import { useState } from "react";
 import ToggleButton from "../../../shared/utils/ToggleButton";
+import useBalance from "../../../shared/Hooks/useBalance";
 import { DashboardHeader } from "../../common/DashboardHeader";
 import { MdArrowOutward } from "react-icons/md";
 import { IoIosArrowForward } from "react-icons/io";
-import useBalance from "../../../shared/Hooks/useBalance";
 
 const Contribution = () => {
   const [isContributionVisible, setIsContributionVisible] = useState(() => {

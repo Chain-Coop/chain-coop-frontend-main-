@@ -17,13 +17,9 @@ const SelectAccount = () => {
   return (
     <main className="font-sans">
       <header className="mt-[2em]">
-        <DashboardHeader>
+        <DashboardHeader className="cursor-pointer" onClick={handleBackClick}>
           <div className="flex w-[65%] items-center justify-between">
-            <IoIosArrowBack
-              size={25}
-              className="cursor-pointer"
-              onClick={handleBackClick}
-            />
+            <IoIosArrowBack size={25} className="cursor-pointer" />
             <div className="tracking-wide">
               <h1>Select Account</h1>
             </div>

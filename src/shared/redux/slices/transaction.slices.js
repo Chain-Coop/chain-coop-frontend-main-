@@ -47,10 +47,26 @@ export const SendProposal = createAsyncThunk(
   },
 );
 
+export const GetProposal = createAsyncThunk(
+  "transaction/getProposal",
+  async (_, thunkAPI) => {
+    try {
+      const data = await TransactionServices.GetProposal();
+      return { transaction: data };
+    } catch (error) {
+      const message =
+        error.msg || "Network Error: Please check your internet connection.";
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
 const initialState = {
   getWalletBalance: null,
   getUsersTransaction: null,
   createProposal: null,
+  userProposal: null,
 };
 
 export const transactionSlice = createSlice({
@@ -73,10 +89,17 @@ export const transactionSlice = createSlice({
       });
 
     builder.addCase(SendProposal.fulfilled, (state, action) => {
-      state.createProposal = action.payload.landing;
+      state.createProposal = action.payload.transaction;
     });
     builder.addCase(SendProposal.rejected, (state) => {
       state.createProposal = null;
+    });
+
+    builder.addCase(GetProposal.fulfilled, (state, action) => {
+      state.userProposal = action.payload.transaction;
+    });
+    builder.addCase(GetProposal.rejected, (state) => {
+      state.userProposal = null;
     });
   },
 });
