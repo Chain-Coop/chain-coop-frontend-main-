@@ -13,12 +13,6 @@ const API_URL_VERIFY_USER =
 const API_URL_PUBLIC_CONTACT =
   import.meta.env.VITE_REACT_APP_API_URL + "/contact-us";
 
-<<<<<<< HEAD
-=======
-const API_URL_CREATE_PIN =
-  import.meta.env.VITE_REACT_APP_API_URL + "/wallet/create-pin";
-
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
 const RegisterUser = async (body) => {
   try {
     const response = await axios.post(API_URL_REGISTER_USER, body, {});
@@ -52,20 +46,6 @@ const VerifyUserAuth = async (body) => {
   }
 };
 
-<<<<<<< HEAD
-=======
-const CreateUserPin = async (body) => {
-  try {
-    const response = await axios.post(API_URL_CREATE_PIN, body, {
-      headers: authHeader(),
-    });
-    return response.data;
-  } catch (error) {
-    throw error.response.data;
-  }
-};
-
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
 export async function FORGOT_PASSWORD(endpoint, data) {
   const url = import.meta.env.VITE_REACT_APP_API_URL + endpoint;
   try {
@@ -104,7 +84,6 @@ const PublicContact = async (body) => {
   }
 };
 
-<<<<<<< HEAD
 const GetUserProfile = async () => {
   const url = import.meta.env.VITE_REACT_APP_API_URL + "/auth/user";
 
@@ -128,18 +107,12 @@ const GetUserProfile = async () => {
   }
 };
 
-=======
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
 const LandingServices = {
   RegisterUser,
   LoginUser,
   VerifyUserAuth,
   PublicContact,
-<<<<<<< HEAD
   GetUserProfile,
-=======
-  CreateUserPin,
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
 };
 
 export default LandingServices;

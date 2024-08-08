@@ -53,13 +53,7 @@ const CreateAccount = () => {
         setMembershipType("");
         setPassword("");
         setLoading(false);
-<<<<<<< HEAD
-=======
-        toast.success(
-          "Registration successful, enter the OTP sent to your email",
-        );
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
-        navigate(`/account-otp?email=${email}`);
+        navigate(`/account-otp?email=${email}`);  
       })
       .catch((error) => {
         setLoading(false);

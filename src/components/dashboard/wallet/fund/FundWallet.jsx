@@ -87,19 +87,9 @@ const FundWallet = () => {
   return (
     <main className="font-sans">
       <header className="mt-[2em]">
-<<<<<<< HEAD
         <DashboardHeader className="cursor-pointer" onClick={handleBackClick}>
           <div className="flex w-[55%] items-center justify-between">
             <IoIosArrowBack size={25} className="cursor-pointer" />
-=======
-        <DashboardHeader>
-          <div className="flex w-[55%] items-center justify-between">
-            <IoIosArrowBack
-              size={25}
-              className="cursor-pointer"
-              onClick={handleBackClick}
-            />
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
             <h1 className="tracking-wide">Fund Wallet</h1>
           </div>
         </DashboardHeader>

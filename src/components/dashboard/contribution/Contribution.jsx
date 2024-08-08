@@ -1,21 +1,9 @@
-<<<<<<< HEAD
 import { useState } from "react";
 import ToggleButton from "../../../shared/utils/ToggleButton";
 import useBalance from "../../../shared/Hooks/useBalance";
 import { DashboardHeader } from "../../common/DashboardHeader";
 import { MdArrowOutward } from "react-icons/md";
 import { IoIosArrowForward } from "react-icons/io";
-=======
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { GetWalletBalance } from "../../../shared/redux/slices/transaction.slices";
-import ToggleButton from "../../../shared/utils/ToggleButton";
-import { formatAmount } from "../../../shared/utils/format";
-import { DashboardHeader } from "../../common/DashboardHeader";
-import { MdArrowOutward } from "react-icons/md";
-import { IoIosArrowForward } from "react-icons/io";
-import { toast } from "react-toastify";
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
 
 const Contribution = () => {
   const [isContributionVisible, setIsContributionVisible] = useState(() => {
@@ -24,30 +12,7 @@ const Contribution = () => {
     );
     return storedVisibility !== null ? storedVisibility === "true" : true;
   });
-<<<<<<< HEAD
   const { formattedBalance } = useBalance();
-=======
-
-  const balance = useSelector((state) => state?.transaction?.getWalletBalance);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const userToken = sessionStorage.getItem("userData");
-    if (userToken) {
-      dispatch(GetWalletBalance())
-        .unwrap()
-        .then(() => {})
-        .catch((err) => {
-          const errorMessage = err.message;
-          toast.error(errorMessage);
-        });
-    }
-  }, [dispatch]);
-
-  const formattedBalance = balance?.balance
-    ? formatAmount(balance.balance)
-    : "₦ 0.00";
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
 
   return (
     <main className="font-sans">
@@ -117,11 +82,6 @@ const Contribution = () => {
             </div>
           </section>
         </article>
-<<<<<<< HEAD
-
-=======
-        
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
         <section className="mt-[1em]">
           <p className="text-lg font-semibold">Monthly Contribution Tracker</p>
         </section>

@@ -36,17 +36,10 @@ const UserLoginOtp = () => {
     };
     dispatch(VerifyUserAuth(body))
       .unwrap()
-<<<<<<< HEAD
       .then(() => {
         setLoading(false);
         toast.success("account verified successfully");
         navigate(`/login`);
-=======
-      .then((response) => {
-        setLoading(false);
-        toast.success(response.msg);
-        navigate(`/create-pin?email=${email}`); 
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
       })
       .catch((error) => {
         setLoading(false);

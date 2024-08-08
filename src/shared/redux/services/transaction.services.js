@@ -1,12 +1,9 @@
 import axios from "axios";
 import authHeader from "./headers";
 
-<<<<<<< HEAD
 const API_URL_SUBMIT_PROPOSAL =
   import.meta.env.VITE_REACT_APP_API_URL + "/proposals";
 
-=======
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
 const GetWalletBalance = async () => {
   const url = import.meta.env.VITE_REACT_APP_API_URL + "/wallet/balance";
   try {
@@ -45,7 +42,6 @@ const GetUsersTransaction = async () => {
   }
 };
 
-<<<<<<< HEAD
 const SendProposal = async (body) => {
   try {
     const userToken = sessionStorage.getItem("userData");
@@ -90,11 +86,6 @@ const TransactionServices = {
   GetUsersTransaction,
   SendProposal,
   GetProposal,
-=======
-const TransactionServices = {
-  GetWalletBalance,
-  GetUsersTransaction,
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
 };
 
 export default TransactionServices;

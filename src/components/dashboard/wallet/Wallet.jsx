@@ -1,20 +1,10 @@
-<<<<<<< HEAD
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import useBalance from "../../../shared/Hooks/useBalance";
-=======
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { GetWalletBalance } from "../../../shared/redux/slices/transaction.slices";
-import { formatAmount } from "../../../shared/utils/format";
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
 import ToggleButton from "../../../shared/utils/ToggleButton";
 import History from "./TransactionHistory/History";
 import { DashboardHeader } from "../../common/DashboardHeader";
 import { MdArrowOutward } from "react-icons/md";
-<<<<<<< HEAD
 import withdraw_icon from "../../../Assets/svg/dashboard/wallet/withdraw.svg";
 import fund_icon from "../../../Assets/svg/dashboard/wallet/fund.svg";
 import transfer_icon from "../../../Assets/svg/dashboard/wallet/transfer.svg";
@@ -25,41 +15,6 @@ const Wallet = () => {
     useBalance();
   const navigate = useNavigate();
 
-=======
-import { PiHandWithdrawBold } from "react-icons/pi";
-import { BsPlusCircleFill } from "react-icons/bs";
-import { FaMoneyBillTransfer } from "react-icons/fa6";
-import { IoIosArrowForward } from "react-icons/io";
-import { toast } from "react-toastify";
-
-const Wallet = () => {
-  const balance = useSelector((state) => state?.transaction?.getWalletBalance);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const [isWalletVisible, setIsWalletVisible] = useState(() => {
-    const storedVisibility = sessionStorage.getItem("walletBalanceVisible");
-    return storedVisibility !== null ? storedVisibility === "true" : true;
-  });
-
-  useEffect(() => {
-    const userToken = sessionStorage.getItem("userData");
-    if (userToken) {
-      dispatch(GetWalletBalance())
-        .unwrap()
-        .then(() => {})
-        .catch((error) => {
-          const errorMessage = error;
-          toast.error(errorMessage);
-        });
-    }
-  }, [dispatch]);
-
-  const formattedBalance = balance?.balance
-    ? formatAmount(balance.balance)
-    : "₦ 0.00";
-
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
   const withdraw = () => {
     navigate("/dashboard/wallet/withdraw");
   };
@@ -115,18 +70,12 @@ const Wallet = () => {
                   className="flex flex-col items-center bg-inherit text-center"
                   onClick={withdraw}
                 >
-<<<<<<< HEAD
                   <img src={withdraw_icon} alt="withdraw_icon" />
                   <span className="block text-memt1 lg:text-lg ">Withdraw</span>
-=======
-                  <PiHandWithdrawBold className="cursor-pointer fill-howtext text-4xl" />
-                  <span className="block lg:text-lg ">Withdraw</span>
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
                 </button>
               </Link>
               <Link to="/dashboard/wallet/fund">
                 <button className="flex flex-col items-center bg-inherit text-center">
-<<<<<<< HEAD
                   <img src={fund_icon} alt="withdraw" />
                   <span className="block text-memt1 lg:text-lg">
                     Fund Wallet
@@ -139,16 +88,6 @@ const Wallet = () => {
                   <span className="block text-memt1 lg:text-lg ">Transfer</span>
                 </button>
               </Link>
-=======
-                  <BsPlusCircleFill className="cursor-pointer fill-howtext text-4xl" />
-                  <span className="block lg:text-lg">Fund Wallet</span>
-                </button>
-              </Link>
-              <button className="flex flex-col items-center bg-inherit text-center">
-                <FaMoneyBillTransfer className="cursor-pointer fill-howtext text-4xl" />
-                <span className="block lg:text-lg ">Transfer</span>
-              </button>
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
             </div>
           </section>
 
@@ -164,11 +103,6 @@ const Wallet = () => {
               </div>
             </div>
           </section>
-<<<<<<< HEAD
-
-=======
-          
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
           <History />
         </div>
       </div>

@@ -10,13 +10,8 @@ const Withdraw = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
-<<<<<<< HEAD
   const handleBackClick = () => {
     navigate(-1);
-=======
-  const wallet = () => {
-    navigate("/dashboard/wallet");
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
   };
 
   const SelectBank = () => {
@@ -30,19 +25,9 @@ const Withdraw = () => {
   return (
     <main className="font-sans">
       <header className="mt-[2em]">
-<<<<<<< HEAD
         <DashboardHeader className="cursor-pointer" onClick={handleBackClick}>
           <div className="flex w-[55%] items-center justify-between">
             <IoIosArrowBack size={25} className="cursor-pointer" />
-=======
-        <DashboardHeader>
-          <div className="flex w-[55%] items-center justify-between">
-            <IoIosArrowBack
-              size={25}
-              className="cursor-pointer"
-              onClick={wallet}
-            />
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
             <div className="tracking-wide">Withdraw</div>
           </div>
         </DashboardHeader>

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { SendProposal } from "../../../shared/redux/slices/transaction.slices";
@@ -76,25 +75,10 @@ const SubmitProposal = () => {
           onSubmit={submitProposal}
           className="mx-auto mt-8 font-sans sm:px-[1.5em] lg:w-[31em] lg:px-0"
         >
-=======
-import { DashboardHeader } from "../../common/DashboardHeader";
-
-const SubmitProposal = () => {
-  return (
-    <main className="mb-[2em] font-sans">
-      <div className="mt-8">
-        <header>
-          <DashboardHeader className="flex items-center justify-center">
-            Submit a proposal
-          </DashboardHeader>
-        </header>
-        <form className="mx-auto mt-8 font-sans sm:px-[1.5em] lg:w-[31em] lg:px-0">
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
           <div className="mb-4">
             <h2 className="text-lg font-bold">Submit a Proposal</h2>
           </div>
           <div>
-<<<<<<< HEAD
             <label htmlFor="title" className="font-semibold">
               Full Name
             </label>
@@ -113,25 +97,17 @@ const SubmitProposal = () => {
 
           <div className="mt-[2em]">
             <label htmlFor="title" className="font-semibold">
-=======
-            <label htmlFor="text" className="font-semibold">
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
               Proposal Title
             </label>
             <div>
               <input
                 type="text"
-<<<<<<< HEAD
                 id="title"
                 placeholder="Proposal title text here"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 className="mt-[1em] h-12 w-full rounded-lg border-fade pl-4 shadow-md focus:border-transparent focus:outline-none focus:ring-2 focus:ring-fade"
                 required
-=======
-                placeholder="proposal title text here"
-                className="mt-[1em] h-12 w-full rounded-lg border-fade pl-4 shadow-md focus:border-transparent focus:outline-none focus:ring-2 focus:ring-fade"
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
               />
             </div>
           </div>
@@ -143,7 +119,6 @@ const SubmitProposal = () => {
               <textarea
                 id="description"
                 name="description"
-<<<<<<< HEAD
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className="mt-[0.5em] h-[15em] w-full rounded-lg border border-gray-300 p-[0.5em] font-sans shadow-lg focus:border-transparent focus:outline-none focus:ring-2 focus:ring-fade"
@@ -185,30 +160,6 @@ const SubmitProposal = () => {
               ) : (
                 "Submit"
               )}
-=======
-                className="mt-[0.5em] h-[15em] w-full rounded-lg border border-gray-300 p-[0.5em] font-sans shadow-lg focus:border-transparent focus:outline-none focus:ring-2 focus:ring-fade"
-                placeholder="enter description here"
-              ></textarea>
-            </div>
-          </div>
-          <div className="mt-[2em]">
-            <label htmlFor="attachment" className="font-semibold">
-              Attachment
-            </label>
-            <div>
-              <input
-                type="text"
-                id="attachment"
-                placeholder="upload a file"
-                className="mt-[1em] h-12 w-full rounded-lg border-2 border-dashed border-text2 pl-4 font-semibold placeholder-text2 shadow-md focus:border-transparent focus:outline-none focus:ring-2 focus:ring-fade"
-              />
-              {/* <FaFileUpload /> */}
-            </div>
-          </div>
-          <section className="mt-[2em]">
-            <button className="rounded-full bg-text2 px-[2.5em] py-[5px] font-sans text-text3">
-              Submit
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
             </button>
           </section>
         </form>
@@ -216,8 +167,4 @@ const SubmitProposal = () => {
     </main>
   );
 };
-<<<<<<< HEAD
-
-=======
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
 export default SubmitProposal;

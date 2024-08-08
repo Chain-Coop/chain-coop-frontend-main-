@@ -33,5 +33,4 @@ export const useBalance = () => {
   };
 };
 
-
 export default useBalance;

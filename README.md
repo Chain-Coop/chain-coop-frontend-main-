@@ -110,11 +110,7 @@ const Story = () => {
 };
 
 export default Story; -->
-<<<<<<< HEAD
 
 
 <!-- git remote set-url origin https://github.com/username/new-repo.git -->
 
-<!-- https://github.com/Iamfineboyygabriel/life.git -->
-=======
->>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
