@@ -5,9 +5,9 @@ import ToggleButton from "../../../shared/utils/ToggleButton";
 import History from "./TransactionHistory/History";
 import { DashboardHeader } from "../../common/DashboardHeader";
 import { MdArrowOutward } from "react-icons/md";
-import { PiHandWithdrawBold } from "react-icons/pi";
-import { BsPlusCircleFill } from "react-icons/bs";
-import { FaMoneyBillTransfer } from "react-icons/fa6";
+import withdraw_icon from "../../../Assets/svg/dashboard/wallet/withdraw.svg";
+import fund_icon from "../../../Assets/svg/dashboard/wallet/fund.svg";
+import transfer_icon from "../../../Assets/svg/dashboard/wallet/transfer.svg";
 import { IoIosArrowForward } from "react-icons/io";
 
 const Wallet = () => {
@@ -70,20 +70,22 @@ const Wallet = () => {
                   className="flex flex-col items-center bg-inherit text-center"
                   onClick={withdraw}
                 >
-                  <PiHandWithdrawBold className="cursor-pointer fill-howtext text-4xl" />
-                  <span className="block lg:text-lg ">Withdraw</span>
+                  <img src={withdraw_icon} alt="withdraw_icon" />
+                  <span className="block text-memt1 lg:text-lg ">Withdraw</span>
                 </button>
               </Link>
               <Link to="/dashboard/wallet/fund">
                 <button className="flex flex-col items-center bg-inherit text-center">
-                  <BsPlusCircleFill className="cursor-pointer fill-howtext text-4xl" />
-                  <span className="block lg:text-lg">Fund Wallet</span>
+                  <img src={fund_icon} alt="withdraw" />
+                  <span className="block text-memt1 lg:text-lg">
+                    Fund Wallet
+                  </span>
                 </button>
               </Link>
               <Link to="/dashboard/wallet/transfer">
                 <button className="flex flex-col items-center bg-inherit text-center">
-                  <FaMoneyBillTransfer className="cursor-pointer fill-howtext text-4xl" />
-                  <span className="block lg:text-lg ">Transfer</span>
+                  <img src={transfer_icon} alt="withdraw" />
+                  <span className="block text-memt1 lg:text-lg ">Transfer</span>
                 </button>
               </Link>
             </div>

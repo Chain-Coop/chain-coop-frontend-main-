@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GetWalletBalance } from "../redux/slices/transaction.slices";
-import { toast } from "react-toastify";
 import { formatAmount } from "../utils/format";
 
 const useBalance = () => {
@@ -18,8 +17,7 @@ const useBalance = () => {
       dispatch(GetWalletBalance())
         .unwrap()
         .catch((error) => {
-          const errorMessage = error;
-          toast.error(errorMessage);
+          console.log(error);
         });
     }
   }, [dispatch]);

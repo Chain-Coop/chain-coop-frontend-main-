@@ -44,7 +44,6 @@ export const VerifyUserAuth = createAsyncThunk(
   },
 );
 
-
 export const PublicContact = createAsyncThunk(
   "landing/publicContact",
   async (body, thunkAPI) => {
@@ -59,12 +58,27 @@ export const PublicContact = createAsyncThunk(
   },
 );
 
+export const GetUserProfile = createAsyncThunk(
+  "landing/getUserProfile",
+  async (_, thunkAPI) => {
+    try {
+      const data = await LandingServices.GetUserProfile();
+      return data;
+    } catch (error) {
+      const message = error.msg;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
 const initialState = {
   getUserRegistered: null,
   getloginUser: null,
   getResetOtp: null,
   getPublicContact: null,
   getUserPin: null,
+  getProfile: null,
 };
 
 export const landingSlice = createSlice({
@@ -95,6 +109,16 @@ export const landingSlice = createSlice({
     });
     builder.addCase(PublicContact.rejected, (state) => {
       state.getPublicContact = null;
+    });
+
+    builder.addCase(GetUserProfile.fulfilled, (state, action) => {
+      state.getProfile = action.payload;
+    });
+    builder.addCase(GetUserProfile.rejected, (state, action) => {
+      state.getProfile = null;
+      const errorMessage =
+        action.error.message || "Failed to fetch user profile.";
+      setMessage(errorMessage);
     });
   },
 });

@@ -146,7 +146,8 @@ const UserLogin = () => {
 
           <EnterButton
             onClick={loginUserData}
-            className={`mt-[2em] ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
+            className="mt-[2em]"
+            disabled={loading}
           >
             {loading ? (
               <ReactLoading

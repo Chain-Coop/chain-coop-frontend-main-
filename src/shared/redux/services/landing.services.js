@@ -84,11 +84,35 @@ const PublicContact = async (body) => {
   }
 };
 
+const GetUserProfile = async () => {
+  const url = import.meta.env.VITE_REACT_APP_API_URL + "/auth/user";
+
+  try {
+    const response = await axios({
+      url,
+      headers: authHeader(),
+      method: "get",
+    });
+    const token = response.data.token;
+    if (token) {
+      sessionStorage.setItem("userData", token);
+    }
+    return response.data;
+  } catch (error) {
+    if (!error.response) {
+      throw new Error("Network Error: Please check your internet connection.");
+    } else {
+      throw error.response.data;
+    }
+  }
+};
+
 const LandingServices = {
   RegisterUser,
   LoginUser,
   VerifyUserAuth,
   PublicContact,
+  GetUserProfile,
 };
 
 export default LandingServices;

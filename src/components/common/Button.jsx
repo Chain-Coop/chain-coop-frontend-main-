@@ -11,11 +11,12 @@ export const LoginButton = ({ onClick, children, className }) => {
   );
 };
 
-export const Primary = ({ children, className, onClick }) => {
+export const Primary = ({ children, className, onClick, disabled }) => {
   return (
     <button
       onClick={onClick}
-      className={`text-center font-sans text-[15px] font-medium leading-6 outline-none focus:outline-none ${className}`}
+      disabled={disabled}
+      className={`text-center font-sans text-[15px] font-medium leading-6 outline-none focus:outline-none ${className} ${disabled ? "disabled" : ""}`}
     >
       {children}
     </button>
@@ -40,12 +41,13 @@ export const Blog = ({ children, className }) => {
   );
 };
 
-export const EnterButton = ({ children, className, onClick }) => {
+export const EnterButton = ({ children, className, onClick, disabled }) => {
   return (
     <div className="relative mb-[1em]">
       <button
-        className={`relative w-full rounded-full bg-text2 p-[15px] font-medium text-text5  ${className}`}
+        className={`relative w-full rounded-full bg-text2 p-[15px] font-medium text-text5  ${className}  ${disabled ? "disabled" : ""}`}
         onClick={onClick}
+        disabled={disabled}
       >
         {children}
       </button>
@@ -63,6 +65,8 @@ Primary.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   onClick: PropTypes.func,
+  disabled: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 ComingSoon.propTypes = {
@@ -74,6 +78,7 @@ EnterButton.propTypes = {
   className: PropTypes.string,
   onClick: PropTypes?.func?.isRequired,
   children: PropTypes.node,
+  disabled: PropTypes.bool,
 };
 
 Blog.propTypes = {
