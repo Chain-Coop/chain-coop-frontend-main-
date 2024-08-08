@@ -44,6 +44,24 @@ export const VerifyUserAuth = createAsyncThunk(
   },
 );
 
+<<<<<<< HEAD
+=======
+export const CreateUserPin = createAsyncThunk(
+  "landing/createPin",
+  async (body, thunkAPI) => {
+    try {
+      const data = await LandingServices.CreateUserPin(body);
+      return { landing: data };
+    } catch (error) {
+      const message = error.msg;
+      console.log("message", message);
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
+>>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
 export const PublicContact = createAsyncThunk(
   "landing/publicContact",
   async (body, thunkAPI) => {
@@ -58,6 +76,7 @@ export const PublicContact = createAsyncThunk(
   },
 );
 
+<<<<<<< HEAD
 export const GetUserProfile = createAsyncThunk(
   "landing/getUserProfile",
   async (_, thunkAPI) => {
@@ -72,13 +91,18 @@ export const GetUserProfile = createAsyncThunk(
   },
 );
 
+=======
+>>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
 const initialState = {
   getUserRegistered: null,
   getloginUser: null,
   getResetOtp: null,
   getPublicContact: null,
   getUserPin: null,
+<<<<<<< HEAD
   getProfile: null,
+=======
+>>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
 };
 
 export const landingSlice = createSlice({
@@ -104,12 +128,22 @@ export const landingSlice = createSlice({
     builder.addCase(VerifyUserAuth.rejected, (state) => {
       state.verifyAuthData = null;
     });
+<<<<<<< HEAD
+=======
+    builder.addCase(CreateUserPin.fulfilled, (state, action) => {
+      state.getUserPin = action.payload.landing;
+    });
+    builder.addCase(CreateUserPin.rejected, (state) => {
+      state.getUserPin = null;
+    });
+>>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
     builder.addCase(PublicContact.fulfilled, (state, action) => {
       state.getPublicContact = action.payload.landing;
     });
     builder.addCase(PublicContact.rejected, (state) => {
       state.getPublicContact = null;
     });
+<<<<<<< HEAD
 
     builder.addCase(GetUserProfile.fulfilled, (state, action) => {
       state.getProfile = action.payload;
@@ -120,6 +154,8 @@ export const landingSlice = createSlice({
         action.error.message || "Failed to fetch user profile.";
       setMessage(errorMessage);
     });
+=======
+>>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
   },
 });
 

@@ -3,6 +3,11 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./components/pages/entry/HomePage";
 // import OurStory from "./components/pages/entry/OurStory";
 import Membership from "./components/pages/entry/Membership";
+<<<<<<< HEAD
+=======
+import CreatePin from "./components/pages/auth/CreatePin";
+import CreatedPin from "./components/pages/auth/CreatedPin";
+>>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
 import ForgetPassword from "./components/pages/auth/ForgetPassword";
 import CreateAccount from "./components/pages/auth/CreateAccount";
 import UserLoginOtp from "./components/pages/auth/UserLoginOtp";
@@ -48,6 +53,12 @@ function App() {
           <Route path="/dashboard/*" element={<Dashboard />} />
         </Route>
 
+<<<<<<< HEAD
+=======
+        <Route path="/create-pin" element={<CreatePin />} />
+        <Route path="/created-pin" element={<CreatedPin />} />
+
+>>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
         <Route path="/team" element={<Team />} />
         <Route path="/blog" element={<Blogs />} />
         <Route path="/career" element={<Career />} />

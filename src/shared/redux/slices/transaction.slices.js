@@ -32,6 +32,7 @@ export const GetUsersTransaction = createAsyncThunk(
   },
 );
 
+<<<<<<< HEAD
 export const SendProposal = createAsyncThunk(
   "transaction/sendProposal",
   async (body, thunkAPI) => {
@@ -67,6 +68,11 @@ const initialState = {
   getUsersTransaction: null,
   createProposal: null,
   userProposal: null,
+=======
+const initialState = {
+  getWalletBalance: null,
+  getUsersTransaction: null,
+>>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
 };
 
 export const transactionSlice = createSlice({
@@ -87,6 +93,7 @@ export const transactionSlice = createSlice({
       .addCase(GetUsersTransaction.rejected, (state) => {
         state.getUsersTransaction = null;
       });
+<<<<<<< HEAD
 
     builder.addCase(SendProposal.fulfilled, (state, action) => {
       state.createProposal = action.payload.transaction;
@@ -101,6 +108,8 @@ export const transactionSlice = createSlice({
     builder.addCase(GetProposal.rejected, (state) => {
       state.userProposal = null;
     });
+=======
+>>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
   },
 });
 

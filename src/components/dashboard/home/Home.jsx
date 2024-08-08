@@ -7,11 +7,17 @@ import {
 } from "react-icons/md";
 import { ComingSoon } from "../../common/Button";
 import plus from "../../../Assets/png/home/plus.png";
+<<<<<<< HEAD
 import useUserProfile from "../../../shared/Hooks/useUserProfile";
 
 const Home = () => {
   const [balanceVisible, setBalanceVisible] = useState(true);
   const { profileDetails } = useUserProfile();
+=======
+
+const Home = () => {
+  const [balanceVisible, setBalanceVisible] = useState(true);
+>>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
 
   const toggleVisibility = () => {
     setBalanceVisible((prevVisible) => !prevVisible);
@@ -22,9 +28,13 @@ const Home = () => {
       <header className="flex justify-between sm:mt-[1em] lg:mt-[2.5em]">
         <div className="font-medium">
           <p>Welcome Back!</p>
+<<<<<<< HEAD
           <p className="mt-2 font-semibold">
             {profileDetails?.username || "user"}
           </p>
+=======
+          <p className="font-semibold">Ogba Presido</p>
+>>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
         </div>
         <div>
           <IoIosNotifications className="cursor-pointer fill-text4" size={27} />

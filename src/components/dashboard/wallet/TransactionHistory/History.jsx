@@ -72,7 +72,11 @@ const History = () => {
                   <p className="font-semibold">
                     {formatDayAndDate(transaction.createdAt)}
                   </p>
+<<<<<<< HEAD
                   <p className="font-semibold text-gray-400">
+=======
+                  <p className="font-semibold text-howtext">
+>>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
                     {formatRelativeTime(transaction.createdAt)}
                   </p>
                   <p className="font-semibold">

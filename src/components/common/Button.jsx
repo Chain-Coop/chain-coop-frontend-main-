@@ -11,12 +11,20 @@ export const LoginButton = ({ onClick, children, className }) => {
   );
 };
 
+<<<<<<< HEAD
 export const Primary = ({ children, className, onClick, disabled }) => {
   return (
     <button
       onClick={onClick}
       disabled={disabled}
       className={`text-center font-sans text-[15px] font-medium leading-6 outline-none focus:outline-none ${className} ${disabled ? "disabled" : ""}`}
+=======
+export const Primary = ({ children, className, onClick }) => {
+  return (
+    <button
+      onClick={onClick}
+      className={`text-center font-sans text-[15px] font-medium leading-6 outline-none focus:outline-none ${className}`}
+>>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
     >
       {children}
     </button>
@@ -41,6 +49,7 @@ export const Blog = ({ children, className }) => {
   );
 };
 
+<<<<<<< HEAD
 export const EnterButton = ({ children, className, onClick, disabled }) => {
   return (
     <div className="relative mb-[1em]">
@@ -48,6 +57,14 @@ export const EnterButton = ({ children, className, onClick, disabled }) => {
         className={`relative w-full rounded-full bg-text2 p-[15px] font-medium text-text5  ${className}  ${disabled ? "disabled" : ""}`}
         onClick={onClick}
         disabled={disabled}
+=======
+export const EnterButton = ({ children, className, onClick }) => {
+  return (
+    <div className="relative mb-[1em]">
+      <button
+        className={`relative w-full rounded-full bg-text2 p-[15px] font-medium text-text5  ${className}`}
+        onClick={onClick}
+>>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
       >
         {children}
       </button>
@@ -65,8 +82,11 @@ Primary.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   onClick: PropTypes.func,
+<<<<<<< HEAD
   disabled: PropTypes.bool,
   loading: PropTypes.bool,
+=======
+>>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
 };
 
 ComingSoon.propTypes = {
@@ -78,7 +98,10 @@ EnterButton.propTypes = {
   className: PropTypes.string,
   onClick: PropTypes?.func?.isRequired,
   children: PropTypes.node,
+<<<<<<< HEAD
   disabled: PropTypes.bool,
+=======
+>>>>>>> 10cf39ba59df1c53433ab269595f99f4750d01bf
 };
 
 Blog.propTypes = {
