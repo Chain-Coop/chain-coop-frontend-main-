@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetWalletBalance } from "../redux/slices/transaction.slices";
 import { formatAmount } from "../utils/format";
 
-const useBalance = () => {
+export const useBalance = () => {
   const dispatch = useDispatch();
   const balance = useSelector((state) => state?.transaction?.getWalletBalance);
   const [isWalletVisible, setIsWalletVisible] = useState(() => {
@@ -32,5 +32,6 @@ const useBalance = () => {
     formattedBalance,
   };
 };
+
 
 export default useBalance;
