@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { GetUsersTransaction } from "../../../../shared/redux/slices/transaction.slices";
+import { useState } from "react";
 import {
   formatAmount,
   formatDayAndDate,
@@ -8,29 +6,12 @@ import {
   formatRelativeTime,
 } from "../../../../shared/utils/format";
 import transact from "../../../../Assets/png/dashboard/wallet/transaction.png";
-import { toast } from "react-toastify";
 import { Primary } from "../../../common/Button";
+import { useUserTransaction } from "../../../../shared/Hooks/useBalance";
 
 const History = () => {
-  const dispatch = useDispatch();
+  const { getTransaction } = useUserTransaction();
   const [showAll, setShowAll] = useState(false);
-
-  const getTransaction = useSelector(
-    (state) => state?.transaction?.getUsersTransaction,
-  );
-
-  useEffect(() => {
-    const userToken = sessionStorage.getItem("userData");
-    if (userToken) {
-      dispatch(GetUsersTransaction())
-        .unwrap()
-        .then(() => {})
-        .catch((err) => {
-          const errorMessage = err.message;
-          toast.error(errorMessage);
-        });
-    }
-  }, [dispatch]);
 
   const handleViewAll = () => {
     setShowAll((prevShowAll) => !prevShowAll);

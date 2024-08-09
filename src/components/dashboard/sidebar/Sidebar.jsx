@@ -5,7 +5,7 @@ import { sidebarLinks } from "../../../data/Data";
 
 const Sidebar = () => {
   const location = useLocation();
-  
+
   return (
     <aside className="h-vh flex w-[23em] flex-col border-r border-bl bg-rec1 py-[2em] font-sans text-memt1 shadow-md">
       <div>
@@ -28,7 +28,7 @@ const Sidebar = () => {
                   : ""
               }`}
             >
-              {link.icon}
+              <img src={link.img} alt={`${link.text} icon`} className="mr-3 h-6 w-6" />
               {link.text}
             </Link>
           );
@@ -43,8 +43,7 @@ const Sidebar = () => {
         </section>
         <section className="mt-4 flex w-[16em]">
           <p className="text-sm text-howtext">
-            This card grants you access to the chain Coop Chain Network
-            ecosystem. Once activated, it becomes non-transferable
+            This card grants you access to the Chain Coop Chain Network ecosystem. Once activated, it becomes non-transferable.
           </p>
         </section>
       </nav>

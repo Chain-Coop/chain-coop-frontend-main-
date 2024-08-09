@@ -18,6 +18,8 @@ import SelectAccount from "../wallet/withdraw/SelectAccount";
 import VerifyAccount from "../wallet/withdraw/VerifyAccount";
 import FundWallet from "../wallet/fund/FundWallet";
 import TransferWallet from "../wallet/transfer/main/Transfer";
+import AddFund from "../wallet/transfer/fundProject/AddFund";
+import ConfirmAmount from "../wallet/transfer/confirmAmount/Confirm";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -48,6 +50,11 @@ const Dashboard = () => {
           <Route path="wallet/fund" element={<FundWallet />} />
 
           <Route path="wallet/transfer" element={<TransferWallet />} />
+          <Route path="wallet/transfer/fund-project" element={<AddFund />} />
+          <Route
+            path="wallet/transfer/confirm-amount"
+            element={<ConfirmAmount />}
+          />
 
           <Route path="project" element={<Project />} />
 

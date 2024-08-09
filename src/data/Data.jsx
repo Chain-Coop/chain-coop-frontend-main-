@@ -8,54 +8,59 @@ import { FaDropbox } from "react-icons/fa6";
 import { IoWalletSharp } from "react-icons/io5";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { VscGitPullRequestGoToChanges } from "react-icons/vsc";
+import wallet from "../Assets/svg/dashboard/wallet.svg";
+import home from "../Assets/svg/dashboard/home.svg";
+import contribution from "../Assets/svg/dashboard/contribution.svg";
+import project from "../Assets/svg/dashboard/project.svg";
+import profile from "../Assets/svg/dashboard/Profile.svg";
+import proposal from "../Assets/svg/dashboard/proposal.svg";
 
-//Landing Page NavBar Links
 export const navBarLinks = [
   { to: "/", text: "Why Chain Coop" },
   { to: "/our-story", text: "Our Story" },
   { to: "/membership", text: "Membership" },
   { to: "/contact", text: "Contact" },
 ];
-//Dashboard SideBAR lINKS
+
 export const sidebarLinks = [
   {
-    icon: <GoHome className="mr-2" size={20} />,
+    img: home,
     text: "Home",
     to: "/dashboard",
     pathsToCheck: ["/dashboard/home"],
   },
   {
-    icon: <FaDropbox className="mr-2" size={20} />,
+    img: contribution,
     text: "Contribution",
     to: "/dashboard/contribution",
     pathsToCheck: ["/dashboard/contribution"],
   },
   {
-    icon: <IoWalletSharp className="mr-2" size={20} />,
+    img: wallet,
     text: "Wallet",
     to: "/dashboard/wallet",
     pathsToCheck: ["/dashboard/wallet"],
   },
   {
-    icon: <GoProject className="mr-2" size={20} />,
+    img: project,
     text: "Project",
     to: "/dashboard/project",
     pathsToCheck: ["/dashboard/project"],
   },
   {
-    icon: <VscGitPullRequestGoToChanges className="mr-2" size={20} />,
+    img: proposal,
     text: "Proposal",
     to: "/dashboard/proposal",
     pathsToCheck: ["/dashboard/proposal"],
   },
   {
-    icon: <IoPersonCircleOutline className="mr-2" size={20} />,
+    img: profile,
     text: "Profile",
     to: "/dashboard/profile",
     pathsToCheck: ["/dashboard/profile"],
   },
 ];
-//Mobile View Nav
+
 export const dashboardNav = [
   {
     icon: <GoHome className="mr-2" size={20} />,
@@ -111,7 +116,6 @@ export const becomeData = [
   },
 ];
 
-//meet images on landing page
 export const meetImage = [
   {
     src: person1,
@@ -124,7 +128,6 @@ export const meetImage = [
   },
 ];
 
-//Our Trusted Partners
 export const trustedPartners = [
   { src: demologo },
   { src: demologo },
@@ -138,7 +141,6 @@ export const trustedPartners = [
   { src: demologo },
 ];
 
-//membership card on membership page
 export const customerCardData = [
   {
     paragraph: "Vote & get involved in the Coop Network",
