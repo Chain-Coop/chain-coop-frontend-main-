@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import { MdOutlineVisibilityOff, MdOutlineVisibility } from "react-icons/md";
 
-const ToggleButton = ({ isVisible, onToggle }) => {
-  const toggleVisibility = (e) => {
+const ToggleButton = ({ isVisible, onToggle }: any) => {
+  const toggleVisibility = (e: any) => {
     e.preventDefault();
     const newVisibility = !isVisible;
     onToggle(newVisibility);

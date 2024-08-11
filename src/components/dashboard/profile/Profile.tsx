@@ -1,24 +1,9 @@
-import { IoIosNotifications } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import { handleLogout } from "../../../shared/utils/auth";
+import { IoIosNotifications } from "react-icons/io";
 
 const Profile = () => {
   const navigate = useNavigate();
-
-  const handleLogout = () => {
-    const rememberMe = sessionStorage.getItem("rememberMe") === "true";
-
-    if (rememberMe) {
-      const email = sessionStorage.getItem("email");
-      const password = sessionStorage.getItem("password");
-      sessionStorage.clear();
-      sessionStorage.setItem("email", email);
-      sessionStorage.setItem("password", password);
-      sessionStorage.setItem("rememberMe", true);
-    } else {
-      sessionStorage.clear();
-    }
-     navigate("/");
-  };
 
   return (
     <section>
@@ -36,7 +21,7 @@ const Profile = () => {
           <div className="sm:hidden lg:block">
             <button
               className="rounded-full bg-text3 px-[1.8em] py-[2px] text-lg font-semibold text-text2"
-              onClick={handleLogout}
+              onClick={() => handleLogout(navigate)}
             >
               Logout
             </button>

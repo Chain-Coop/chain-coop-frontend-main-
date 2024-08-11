@@ -1,61 +1,54 @@
-import { useState } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import { useDispatch } from "react-redux";
-import { SendProposal } from "../../../shared/redux/slices/transaction.slices";
 import { toast } from "react-toastify";
 import ReactLoading from "react-loading";
 import { DashboardHeader } from "../../common/DashboardHeader";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router";
+import { AppDispatch } from "../../../shared/redux/store";
+import { sendProposal } from "../../../shared/redux/slices/transaction.slices";
+
 const SubmitProposal = () => {
-  const [fullName, setFullName] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [document, setDocument] = useState(null);
+  const [document, setDocument] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
 
-  const dispatch = useDispatch();
   const userToken = sessionStorage.getItem("userData");
 
   const handleBackClick = () => {
     navigate(-1);
   };
 
-  const handleDocumentChange = (e) => {
-    const selectedDocument = e.target.files[0];
-    if (selectedDocument) {
-      setDocument(selectedDocument);
-    }
+  const handleDocumentChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedDocument = e.target.files ? e.target.files[0] : null;
+    setDocument(selectedDocument);
   };
 
-  const submitProposal = async (e) => {
+  const submitProposal = async (e: any) => {
     e.preventDefault();
     setLoading(true);
 
-    if (!userToken) {
-      setLoading(false);
-      toast.error("User token is missing. Please log in.");
-      return;
-    }
-
     const formData = new FormData();
-    formData.append("fullName", fullName);
     formData.append("title", title);
     formData.append("description", description);
-    if (document) formData.append("document", document);
+    if (document) {
+      formData.append("document", document);
+    }
 
     try {
-      await dispatch(SendProposal(formData)).unwrap();
+      await dispatch(sendProposal(formData)).unwrap();
       setLoading(false);
       toast.success("Proposal submitted successfully!");
       setTitle("");
       setDescription("");
       setDocument(null);
-      document.getElementById("attachment").value = null;
     } catch (error) {
       setLoading(false);
       const errorMessage =
-        error.message || "An error occurred. Please try again.";
+        (error as any).message || "An error occurred. Please try again.";
       toast.error(errorMessage);
     }
   };
@@ -78,23 +71,6 @@ const SubmitProposal = () => {
           <div className="mb-4">
             <h2 className="text-lg font-bold">Submit a Proposal</h2>
           </div>
-          <div>
-            <label htmlFor="title" className="font-semibold">
-              Full Name
-            </label>
-            <div>
-              <input
-                type="text"
-                id="title"
-                placeholder="full name"
-                value={title}
-                onChange={(e) => setFullName(e.target.value)}
-                className="mt-[1em] h-12 w-full rounded-lg border-fade pl-4 shadow-md focus:border-transparent focus:outline-none focus:ring-2 focus:ring-fade"
-                required
-              />
-            </div>
-          </div>
-
           <div className="mt-[2em]">
             <label htmlFor="title" className="font-semibold">
               Proposal Title
@@ -167,4 +143,5 @@ const SubmitProposal = () => {
     </main>
   );
 };
+
 export default SubmitProposal;

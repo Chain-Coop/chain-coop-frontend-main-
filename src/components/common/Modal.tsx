@@ -2,9 +2,9 @@ import { useEffect } from "react";
 import PropTypes from "prop-types";
 import cancel from "../../Assets/svg/cancel.svg";
 
-const Modal = ({ children, isOpen, onClose, className }) => {
+const Modal = ({ children, isOpen, onClose, className }: any) => {
   useEffect(() => {
-    function handleEscapeKeyPress(event) {
+    function handleEscapeKeyPress(event: any) {
       if (event.key === "Escape") {
         onClose();
       }

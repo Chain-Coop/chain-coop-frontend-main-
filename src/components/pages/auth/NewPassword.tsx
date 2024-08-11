@@ -20,8 +20,15 @@ const NewPassword = () => {
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
-    setEmail(queryParams.get("email"));
-    setOtp(queryParams.get("otp"));
+    const email = queryParams.get("email");
+    const otp = queryParams.get("otp");
+
+    if (email !== null) {
+      setEmail(email);
+    }
+    if (otp !== null) {
+      setOtp(otp);
+    }
   }, [location]);
 
   const togglePassword = () => {
@@ -34,7 +41,7 @@ const NewPassword = () => {
     );
   };
 
-  const resetPasswordFunc = async (e) => {
+  const resetPasswordFunc = async (e: any) => {
     e.preventDefault();
     setLoading(true);
     const endpoint = `/auth/reset_password`;
@@ -52,7 +59,7 @@ const NewPassword = () => {
       } else {
         toast.error(response.data.msg);
       }
-    } catch (error) {
+    } catch (error: any) {
       setLoading(false);
       toast.error(error.response?.data?.msg);
     }

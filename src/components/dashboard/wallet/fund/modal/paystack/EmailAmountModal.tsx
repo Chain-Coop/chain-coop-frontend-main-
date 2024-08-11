@@ -7,8 +7,8 @@ const EmailAmountModal = ({
   amount,
   setAmount,
   handlePaystackPayment,
-}) => {
-  const handleSubmit = (e) => {
+}: any) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     handlePaystackPayment(e);
   };

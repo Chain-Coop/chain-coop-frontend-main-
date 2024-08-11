@@ -23,11 +23,11 @@ const Footer = () => {
             </p>
           </div>
         </section>
-        
+
         <section>
           <h3 className="font-bold text-text3">Company</h3>
           <div className="mt-4">
-            {company.map((data, index) => (
+            {company.map((data: any, index: number) => (
               <>
                 <p className="mb-2 font-light text-text3">
                   <Link to={data.to} key={index}>
@@ -42,7 +42,7 @@ const Footer = () => {
         <section>
           <h3 className=" font-bold text-text3">Explore</h3>
           <div className="mt-4">
-            {Explore.map((data, index) => (
+            {Explore.map((data: any, index: number) => (
               <>
                 <p className="mb-2 whitespace-nowrap font-light text-text3">
                   <Link to={data.to} key={index}>
@@ -57,7 +57,7 @@ const Footer = () => {
         <section>
           <h3 className=" font-bold text-text3">Legal</h3>
           <div className="mt-4 whitespace-nowrap">
-            {Legal.map((data, index) => (
+            {Legal.map((data: any, index: number) => (
               <>
                 <p className="mb-2 font-light text-text3">
                   <Link to={data.to} key={index}>
@@ -72,7 +72,7 @@ const Footer = () => {
         <section>
           <h3 className="font-bold text-text3">Contacts</h3>
           <div className="mt-4 whitespace-nowrap">
-            {Contacts.map((data, index) => (
+            {Contacts.map((data: any, index: number) => (
               <>
                 <p className="mb-2 font-light text-text3">
                   <Link to={data.to} key={index}>

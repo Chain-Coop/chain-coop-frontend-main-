@@ -13,16 +13,16 @@ const API_URL_VERIFY_USER =
 const API_URL_PUBLIC_CONTACT =
   import.meta.env.VITE_REACT_APP_API_URL + "/contact-us";
 
-const RegisterUser = async (body) => {
+const RegisterUser = async (body: any) => {
   try {
     const response = await axios.post(API_URL_REGISTER_USER, body, {});
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     throw error.response.data;
   }
 };
 
-const LoginUser = async (body) => {
+const LoginUser = async (body: any) => {
   try {
     const response = await axios.post(API_URL_LOGIN_USER, body, {});
     const token = response.data.token;
@@ -30,55 +30,55 @@ const LoginUser = async (body) => {
       sessionStorage.setItem("userData", token);
       return response?.data;
     }
-  } catch (error) {
+  } catch (error: any) {
     throw error.response.data;
   }
 };
 
-const VerifyUserAuth = async (body) => {
+const VerifyUserAuth = async (body: any) => {
   try {
     const response = await axios.post(API_URL_VERIFY_USER, body, {
       headers: authHeader(),
     });
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     throw error.response.data;
   }
 };
 
-export async function FORGOT_PASSWORD(endpoint, data) {
+export async function FORGOT_PASSWORD(endpoint: string, data: any) {
   const url = import.meta.env.VITE_REACT_APP_API_URL + endpoint;
   try {
     return await axios.post(url, data);
-  } catch (error) {
+  } catch (error: any) {
     return error.response;
   }
 }
 
-export async function RESEND_LOGIN_OTP(endpoint, data) {
+export async function RESEND_LOGIN_OTP(endpoint: string, data: any) {
   const url = import.meta.env.VITE_REACT_APP_API_URL + endpoint;
   try {
     return await axios.post(url, data);
-  } catch (error) {
+  } catch (error: any) {
     return error.response.data;
   }
 }
 
-export async function RESET_PASSWORD(endpoint, data) {
+export async function RESET_PASSWORD(endpoint: string, data: any) {
   const url = import.meta.env.VITE_REACT_APP_API_URL + endpoint;
   try {
     return await axios.post(url, data);
-  } catch (error) {
+  } catch (error: any) {
     return error.response;
   }
 }
-const PublicContact = async (body) => {
+const PublicContact = async (body: any) => {
   try {
     const response = await axios.post(API_URL_PUBLIC_CONTACT, body, {
       headers: authHeader(),
     });
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     console.log("services", error);
     throw error.response.data;
   }
@@ -98,7 +98,7 @@ const GetUserProfile = async () => {
       sessionStorage.setItem("userData", token);
     }
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     if (!error.response) {
       throw new Error("Network Error: Please check your internet connection.");
     } else {

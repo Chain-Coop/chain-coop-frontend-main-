@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { handleLogout } from "../../shared/utils/auth";
 import { dashboardNav } from "../../data/Data";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -22,22 +23,6 @@ const DashboardNav = () => {
     setOpenMenu(!openMenu);
   };
 
-  const handleLogout = () => {
-    const rememberMe = sessionStorage.getItem("rememberMe") === "true";
-
-    if (rememberMe) {
-      const email = sessionStorage.getItem("email");
-      const password = sessionStorage.getItem("password");
-      sessionStorage.clear();
-      sessionStorage.setItem("email", email);
-      sessionStorage.setItem("password", password);
-      sessionStorage.setItem("rememberMe", true);
-    } else {
-      sessionStorage.clear();
-    }
-
-    navigate("/");
-  };
 
   return (
     <div className="px-5 py-2">
@@ -106,7 +91,7 @@ const DashboardNav = () => {
           <Divider />
           <div className="mb-[2em] mt-[1em] px-4">
             <button
-              onClick={handleLogout}
+              onClick={() => handleLogout(navigate)}
               className="rounded-full bg-red-600 px-[3em] py-1 font-sans text-text3 shadow-md"
             >
               Logout

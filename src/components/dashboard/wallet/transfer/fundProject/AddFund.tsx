@@ -19,7 +19,7 @@ const AddFund = () => {
     setDropdownVisible(!dropdownVisible);
   };
 
-  const handleProjectSelect = (project) => {
+  const handleProjectSelect = (project: any) => {
     setSelectedProject(project);
     setDropdownVisible(false);
   };

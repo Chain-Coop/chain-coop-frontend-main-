@@ -1,7 +1,7 @@
 import { useState } from "react";
 import customAxios from "../utils/axios";
 
-const useApi = async (url, method = "GET", requestData = null) => {
+const useApi = async (url:any, method = "GET", requestData = null) => {
   const [data, setData] = useState(null);
 
   try {

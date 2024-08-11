@@ -8,7 +8,7 @@ export const RegisterUser = createAsyncThunk(
     try {
       const data = await LandingServices.RegisterUser(body);
       return { landing: data };
-    } catch (error) {
+    } catch (error: any) {
       const message = error.msg;
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);
@@ -18,11 +18,11 @@ export const RegisterUser = createAsyncThunk(
 
 export const LoginUser = createAsyncThunk(
   "landing/loginUser",
-  async (body, thunkAPI) => {
+  async (body: any, thunkAPI) => {
     try {
       const data = await LandingServices.LoginUser(body);
       return { landing: data };
-    } catch (error) {
+    } catch (error: any) {
       const message = error.msg;
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);
@@ -36,7 +36,7 @@ export const VerifyUserAuth = createAsyncThunk(
     try {
       const data = await LandingServices.VerifyUserAuth(body);
       return { landing: data };
-    } catch (error) {
+    } catch (error: any) {
       const message = error.msg;
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);
@@ -50,7 +50,7 @@ export const PublicContact = createAsyncThunk(
     try {
       const data = await LandingServices.PublicContact(body);
       return { landing: data };
-    } catch (error) {
+    } catch (error: any) {
       const message = error.msg;
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);
@@ -63,9 +63,8 @@ export const GetUserProfile = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const data = await LandingServices.GetUserProfile();
-      console.log("data", data);
       return data;
-    } catch (error) {
+    } catch (error: any) {
       const message = error.msg;
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);
@@ -99,10 +98,10 @@ export const landingSlice = createSlice({
     builder.addCase(LoginUser.rejected, (state) => {
       state.getloginUser = null;
     });
-    builder.addCase(VerifyUserAuth.fulfilled, (state, action) => {
+    builder.addCase(VerifyUserAuth.fulfilled, (state: any, action) => {
       state.verifyAuthData = action.payload.landing;
     });
-    builder.addCase(VerifyUserAuth.rejected, (state) => {
+    builder.addCase(VerifyUserAuth.rejected, (state: any) => {
       state.verifyAuthData = null;
     });
     builder.addCase(PublicContact.fulfilled, (state, action) => {

@@ -21,7 +21,7 @@ const ResetPassword = () => {
     }
   }, [otp]);
 
-  const handleOtpChange = (otpValue) => {
+  const handleOtpChange = (otpValue: any) => {
     setOtp(otpValue);
   };
 
@@ -32,7 +32,7 @@ const ResetPassword = () => {
       const response = await RESEND_LOGIN_OTP(endpoint, { email });
       setLoading(false);
       toast.success(response.data.msg);
-    } catch (response) {
+    } catch (response: any) {
       setLoading(false);
       toast.error(response.data.msg);
     }

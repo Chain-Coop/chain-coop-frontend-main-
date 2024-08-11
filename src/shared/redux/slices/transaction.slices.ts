@@ -8,7 +8,7 @@ export const GetWalletBalance = createAsyncThunk(
     try {
       const data = await TransactionServices.GetWalletBalance();
       return { transaction: data };
-    } catch (error) {
+    } catch (error: any) {
       const message =
         error.msg || "Network Error: Please check your internet connection.";
       thunkAPI.dispatch(setMessage(message));
@@ -23,7 +23,7 @@ export const GetUsersTransaction = createAsyncThunk(
     try {
       const data = await TransactionServices.GetUsersTransaction();
       return { transaction: data };
-    } catch (error) {
+    } catch (error: any) {
       const message =
         error.msg || "Network Error: Please check your internet connection.";
       thunkAPI.dispatch(setMessage(message));
@@ -32,15 +32,15 @@ export const GetUsersTransaction = createAsyncThunk(
   },
 );
 
-export const SendProposal = createAsyncThunk(
+export const sendProposal = createAsyncThunk(
   "transaction/sendProposal",
-  async (body, thunkAPI) => {
+  async (formData: FormData, thunkAPI) => {
     try {
-      const data = await TransactionServices.SendProposal(body);
-      return { landing: data };
-    } catch (error) {
-      console.log("Errrr", error);
-      const message = error.msg;
+      const response = await TransactionServices.SendProposal(formData); // Use the correct service function
+      return { transaction: response.data }; // Adjust based on actual response structure
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message || "An error occurred. Please try again.";
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);
     }
@@ -53,7 +53,7 @@ export const GetProposal = createAsyncThunk(
     try {
       const data = await TransactionServices.GetProposal();
       return { transaction: data };
-    } catch (error) {
+    } catch (error: any) {
       const message =
         error.msg || "Network Error: Please check your internet connection.";
       thunkAPI.dispatch(setMessage(message));
@@ -88,10 +88,10 @@ export const transactionSlice = createSlice({
         state.getUsersTransaction = null;
       });
 
-    builder.addCase(SendProposal.fulfilled, (state, action) => {
+    builder.addCase(sendProposal.fulfilled, (state: any, action: any) => {
       state.createProposal = action.payload.transaction;
     });
-    builder.addCase(SendProposal.rejected, (state) => {
+    builder.addCase(sendProposal.rejected, (state) => {
       state.createProposal = null;
     });
 

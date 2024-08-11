@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
 import { navBarLinks } from "../../data/Data";
 import { LoginButton } from "./Button";
 import { Modal, ModalBody } from "reactstrap";
@@ -88,11 +87,7 @@ const NavBar = () => {
   );
 };
 
-NavBar.propTypes = {
-  position: PropTypes.string,
-};
-
-const NavLink = ({ to, children, isActive }) => {
+const NavLink = ({ to, children, isActive }: any) => {
   return (
     <Link
       to={to}
@@ -103,12 +98,6 @@ const NavLink = ({ to, children, isActive }) => {
       {children}
     </Link>
   );
-};
-
-NavLink.propTypes = {
-  to: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
-  isActive: PropTypes.bool.isRequired,
 };
 
 export default NavBar;

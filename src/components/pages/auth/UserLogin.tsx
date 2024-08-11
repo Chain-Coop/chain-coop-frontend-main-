@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { AppDispatch } from "../../../shared/redux/store";
 import { LoginUser } from "../../../shared/redux/slices/landing.slices";
+import { useDispatch } from "react-redux";
 import ToggleButton from "../../../shared/utils/ToggleButton";
 import { usePasswordVisibilityToggle } from "../../../shared/utils/PasswordVisibility";
 import { EnterButton } from "../../common/Button";
@@ -18,15 +19,15 @@ const UserLogin = () => {
   const [passwordType, togglePasswordVisibility] =
     usePasswordVisibilityToggle();
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
 
-  const home = (e) => {
+  const home = (e: any) => {
     e.preventDefault();
     navigate("/");
   };
 
-  const loginUserData = (e) => {
+  const loginUserData = (e: any) => {
     e.preventDefault();
 
     setLoading(true);
@@ -34,13 +35,14 @@ const UserLogin = () => {
       email: email,
       password: password,
     };
+
     dispatch(LoginUser(body))
       .unwrap()
       .then(() => {
         setLoading(false);
         navigate("/dashboard");
       })
-      .catch((error) => {
+      .catch((error: any) => {
         setLoading(false);
         const errorMessage = error;
         toast.error(errorMessage);
@@ -49,9 +51,9 @@ const UserLogin = () => {
     if (rememberMe) {
       sessionStorage.setItem("email", email);
       sessionStorage.setItem("password", password);
-      sessionStorage.setItem("rememberMe", rememberMe);
+      sessionStorage.setItem("rememberMe", "true");
     } else {
-      sessionStorage.removeItem("emailOrUsername");
+      sessionStorage.removeItem("email");
       sessionStorage.removeItem("password");
       sessionStorage.removeItem("rememberMe");
     }
@@ -122,7 +124,7 @@ const UserLogin = () => {
               <div className="absolute right-4 mb-3 flex">
                 <ToggleButton
                   isVisible={passwordType === "text"}
-                  onToggle={togglePasswordVisibility}
+                  onToggle={async () => togglePasswordVisibility}
                 />
               </div>
             </div>

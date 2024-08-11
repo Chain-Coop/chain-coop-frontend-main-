@@ -11,19 +11,20 @@ import EmailAmountModal from "./modal/paystack/EmailAmountModal";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import fund from "../../../../Assets/svg/dashboard/wallet/withdraw.svg";
 import debit from "../../../../Assets/svg/dashboard/wallet/debit.svg";
+import { AppDispatch } from "../../../../shared/redux/store";
 
 const FundWallet = () => {
   const [modalType, setModalType] = useState(null);
   const [email, setEmail] = useState("");
-  const [amount, setAmount] = useState();
+  const [amount, setAmount] = useState<number>(0);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   const handleBackClick = () => {
     navigate(-1);
   };
 
-  const openModal = (type) => {
+  const openModal = (type: any) => {
     setModalType(type);
   };
 
@@ -41,28 +42,33 @@ const FundWallet = () => {
     openModal("final");
   };
 
-  const handlePaystackPayment = (e) => {
+  const handlePaystackPayment = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!amount) {
+      console.error("Amount is undefined");
+      return;
+    }
 
     const handler = window.PaystackPop.setup({
       key: "pk_test_23c84d5c89c5b18982c60e27e917a498d8f76dd9",
       email: email,
-      amount: amount * 100,
+      amount: amount * 100, // Ensures amount is defined and multiplies it by 100
       currency: "NGN",
       ref: `REF-${Math.floor(Math.random() * 1000000)}`,
       onClose: function () {},
-      callback: function (response) {
+      callback: function (response: { reference: string }) {
         console.log("paystack response", response);
         handlePaymentSuccess(response.reference);
         setEmail("");
-        setAmount();
+        setAmount(0);
       },
     });
     handler.openIframe();
     closeModal();
   };
 
-  const handlePaymentSuccess = (reference) => {
+  const handlePaymentSuccess = (reference: any) => {
     console.log("Payment reference:", reference);
     fetch("https://chain-coop-backend.onrender.com/api/v1/wallet/webhook", {
       method: "POST",

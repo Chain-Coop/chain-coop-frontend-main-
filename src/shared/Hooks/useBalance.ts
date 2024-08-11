@@ -5,10 +5,13 @@ import {
   GetWalletBalance,
 } from "../redux/slices/transaction.slices";
 import { formatAmount } from "../utils/format";
+import { AppDispatch } from "../redux/store";
 
 export const useBalance = () => {
-  const dispatch = useDispatch();
-  const balance = useSelector((state) => state?.transaction?.getWalletBalance);
+  const dispatch: AppDispatch = useDispatch();
+  const balance = useSelector(
+    (state: any) => state?.transaction?.getWalletBalance,
+  );
   const [isWalletVisible, setIsWalletVisible] = useState(() => {
     const storedVisibility = sessionStorage.getItem("walletBalanceVisible");
     return storedVisibility !== null ? storedVisibility === "true" : true;
@@ -19,7 +22,7 @@ export const useBalance = () => {
     if (userToken) {
       dispatch(GetWalletBalance())
         .unwrap()
-        .catch((error) => {
+        .catch((error: any) => {
           console.log(error);
         });
     }
@@ -37,10 +40,9 @@ export const useBalance = () => {
 };
 
 export const useUserTransaction = () => {
-  const dispatch = useDispatch();
-
+  const dispatch: AppDispatch = useDispatch();
   const getTransaction = useSelector(
-    (state) => state?.transaction?.getUsersTransaction,
+    (state: any) => state?.transaction?.getUsersTransaction,
   );
 
   useEffect(() => {
@@ -49,7 +51,7 @@ export const useUserTransaction = () => {
       dispatch(GetUsersTransaction())
         .unwrap()
         .then(() => {})
-        .catch((err) => {
+        .catch((err: any) => {
           const errorMessage = err.message;
           console.log(errorMessage);
         });

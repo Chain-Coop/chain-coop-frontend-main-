@@ -14,7 +14,7 @@ const GetWalletBalance = async () => {
     });
 
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     if (!error.response) {
       throw new Error("Network Error: Please check your internet connection.");
     } else {
@@ -33,7 +33,7 @@ const GetUsersTransaction = async () => {
     });
 
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     if (!error.response) {
       throw new Error("Network Error: Please check your internet connection.");
     } else {
@@ -42,7 +42,7 @@ const GetUsersTransaction = async () => {
   }
 };
 
-const SendProposal = async (body) => {
+export const SendProposal = async (formData: FormData) => {
   try {
     const userToken = sessionStorage.getItem("userData");
     const config = {
@@ -51,13 +51,19 @@ const SendProposal = async (body) => {
         ...(userToken && { Authorization: `Bearer ${userToken}` }),
       },
     };
-    const response = await axios.post(API_URL_SUBMIT_PROPOSAL, body, config);
+    const response = await axios.post(
+      API_URL_SUBMIT_PROPOSAL,
+      formData,
+      config,
+    );
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     if (!error.response) {
       throw new Error("Network Error: Please check your internet connection.");
     } else {
-      throw error.response.data;
+      throw new Error(
+        error.response.data.message || "An error occurred. Please try again.",
+      );
     }
   }
 };
@@ -72,7 +78,7 @@ const GetProposal = async () => {
     });
 
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     if (!error.response) {
       throw new Error("Network Error: Please check your internet connection.");
     } else {
