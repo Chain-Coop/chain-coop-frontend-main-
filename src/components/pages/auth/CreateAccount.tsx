@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { RegisterUser } from "../../../shared/redux/slices/landing.slices";
-import { usePasswordVisibilityToggle } from "../../../shared/utils/PasswordVisibility";
 import ToggleButton from "../../../shared/utils/ToggleButton";
 import { EnterButton } from "../../common/Button";
 import logo from "../../../Assets/svg/auth/logo.svg";
@@ -11,6 +10,8 @@ import { toast } from "react-toastify";
 import ReactLoading from "react-loading";
 import "react-toastify/dist/ReactToastify.css";
 import { AppDispatch } from "../../../shared/redux/store";
+import usePasswordToggle from "../../../shared/utils/usePasswordToggle";
+import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 
 const CreateAccount = () => {
   useEffect(() => {
@@ -23,9 +24,8 @@ const CreateAccount = () => {
   const [membershipType, setMembershipType] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const [passwordType, togglePasswordVisibility] =
-    usePasswordVisibilityToggle();
+  const [passwordType, togglePasswordType] = usePasswordToggle();
+  const [confirmPasswordType, toggleConfirmPasswordType] = usePasswordToggle();
 
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
@@ -170,14 +170,19 @@ const CreateAccount = () => {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="input mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md  "
+                className="input mb-5 h-[4em] w-full items-center  rounded-full px-4 text-sm shadow-md  "
               />
-              <div className="absolute right-4 mb-3 flex">
-                <ToggleButton
-                  isVisible={passwordType === "text"}
-                  onToggle={async () => togglePasswordVisibility}
-                />
-              </div>
+              <button
+                type="button"
+                onClick={togglePasswordType}
+                className="items-centerself-center absolute right-4 mb-3"
+              >
+                {passwordType === "password" ? (
+                  <MdOutlineVisibilityOff />
+                ) : (
+                  <MdOutlineVisibility />
+                )}
+              </button>
             </div>
           </div>
           <EnterButton

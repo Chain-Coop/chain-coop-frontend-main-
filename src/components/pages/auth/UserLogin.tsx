@@ -4,11 +4,12 @@ import { AppDispatch } from "../../../shared/redux/store";
 import { LoginUser } from "../../../shared/redux/slices/landing.slices";
 import { useDispatch } from "react-redux";
 import ToggleButton from "../../../shared/utils/ToggleButton";
-import { usePasswordVisibilityToggle } from "../../../shared/utils/PasswordVisibility";
 import { EnterButton } from "../../common/Button";
 import logo from "../../../Assets/svg/auth/logo.svg";
 import { toast } from "react-toastify";
 import ReactLoading from "react-loading";
+import usePasswordToggle from "../../../shared/utils/usePasswordToggle";
+import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 
 const UserLogin = () => {
   const [email, setEmail] = useState("");
@@ -16,8 +17,7 @@ const UserLogin = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [passwordType, togglePasswordVisibility] =
-    usePasswordVisibilityToggle();
+  const [passwordType, togglePasswordType] = usePasswordToggle();
 
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
@@ -115,18 +115,23 @@ const UserLogin = () => {
             <div className="relative flex items-center">
               <input
                 id="password-input"
-                type="password"
+                type={passwordType}
                 value={password}
                 placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}
                 className="input mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md focus:border-text2 focus:ring-text2"
               />
-              <div className="absolute right-4 mb-3 flex">
-                <ToggleButton
-                  isVisible={passwordType === "text"}
-                  onToggle={async () => togglePasswordVisibility}
-                />
-              </div>
+              <button
+                type="button"
+                onClick={togglePasswordType}
+                className="absolute right-4 mb-3 self-center"
+              >
+                {passwordType === "password" ? (
+                  <MdOutlineVisibilityOff />
+                ) : (
+                  <MdOutlineVisibility />
+                )}
+              </button>
             </div>
           </div>
 
