@@ -1,4 +1,4 @@
-export const formatAmount = (amount) => {
+export const formatAmount = (amount: number) => {
   return (amount / 100).toLocaleString("en-NG", {
     style: "currency",
     currency: "NGN",
@@ -7,9 +7,9 @@ export const formatAmount = (amount) => {
   });
 };
 
-export const formatDayAndDate = (dateString) => {
+export const formatDayAndDate = (dateString: any) => {
   const date = new Date(dateString);
-  const options = {
+  const options: any = {
     weekday: "short",
     day: "numeric",
   };
@@ -18,15 +18,15 @@ export const formatDayAndDate = (dateString) => {
   return `${day}, ${weekday}`;
 };
 
-export const formatMonthAndYear = (dateString) => {
+export const formatMonthAndYear = (dateString: any) => {
   const date = new Date(dateString);
-  const options = { month: "long", year: "numeric" };
+  const options: any = { month: "long", year: "numeric" };
   return date.toLocaleDateString("en-US", options);
 };
 
-export const formatRelativeTime = (dateString) => {
-  const now = new Date();
-  const date = new Date(dateString);
+export const formatRelativeTime = (dateString: any) => {
+  const now: any = new Date();
+  const date: any = new Date(dateString);
   const diffTime = Math.abs(now - date);
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 

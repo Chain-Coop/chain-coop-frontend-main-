@@ -115,6 +115,7 @@ const UserLogin = () => {
             <div className="relative flex items-center">
               <input
                 id="password-input"
+                type="password"
                 value={password}
                 placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}

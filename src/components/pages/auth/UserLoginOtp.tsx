@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../shared/redux/store";
 import { VerifyUserAuth } from "../../../shared/redux/slices/landing.slices";
 import { RESEND_LOGIN_OTP } from "../../../shared/redux/services/landing.services";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -15,12 +16,12 @@ const UserLoginOtp = () => {
   const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState("");
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   const queryParams = new URLSearchParams(location.search);
   const email = queryParams.get("email");
 
-  const handleOtpChange = (otpValue) => {
+  const handleOtpChange = (otpValue: any) => {
     setOtp(otpValue);
 
     if (otpValue.length === 6) {
@@ -28,7 +29,7 @@ const UserLoginOtp = () => {
     }
   };
 
-  const verifyUserData = (otpValue) => {
+  const verifyUserData = (otpValue: number) => {
     setLoading(true);
     let body = {
       otp: otpValue,
@@ -54,7 +55,7 @@ const UserLoginOtp = () => {
       const response = await RESEND_LOGIN_OTP(endpoint, { email });
       setLoading(false);
       toast.success(response.data.msg);
-    } catch (error) {
+    } catch (error: any) {
       setLoading(false);
       toast.error(error);
     }
@@ -69,7 +70,7 @@ const UserLoginOtp = () => {
             </p>
           </div>
           <form
-            onSubmit={verifyUserData}
+            onSubmit={async () => verifyUserData}
             className="flex justify-center rounded-lg border-gray-200  px-3 py-2 "
           >
             <div className="flex space-x-5" data-hs-pin-input="">

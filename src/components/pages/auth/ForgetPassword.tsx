@@ -12,12 +12,12 @@ const ForgetPassword = () => {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
-  const home = (e) => {
+  const home = (e:any) => {
     e.preventDefault();
     navigate("/login");
   };
 
-  const forgotPassword = async (e) => {
+  const forgotPassword = async (e:any) => {
     e.preventDefault();
     setLoading(true);
     const endpoint = `/auth/forget_password`;

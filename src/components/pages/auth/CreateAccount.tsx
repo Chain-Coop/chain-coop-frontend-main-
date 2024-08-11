@@ -10,6 +10,7 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { toast } from "react-toastify";
 import ReactLoading from "react-loading";
 import "react-toastify/dist/ReactToastify.css";
+import { AppDispatch } from "../../../shared/redux/store";
 
 const CreateAccount = () => {
   useEffect(() => {
@@ -27,13 +28,14 @@ const CreateAccount = () => {
     usePasswordVisibilityToggle();
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const home = (e) => {
+  const dispatch: AppDispatch = useDispatch();
+
+  const home = (e: any) => {
     e.preventDefault();
     navigate("/login");
   };
 
-  const registerUser = (e) => {
+  const registerUser = (e: any) => {
     e.preventDefault();
     setLoading(true);
 
@@ -53,9 +55,9 @@ const CreateAccount = () => {
         setMembershipType("");
         setPassword("");
         setLoading(false);
-        navigate(`/account-otp?email=${email}`);  
+        navigate(`/account-otp?email=${email}`);
       })
-      .catch((error) => {
+      .catch((error: any) => {
         setLoading(false);
         const errorMessage = error;
         toast.error(errorMessage);
@@ -163,8 +165,8 @@ const CreateAccount = () => {
             </label>
             <div className="relative flex items-center">
               <input
-                type={passwordType}
                 id="password-input"
+                type="password"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -173,7 +175,7 @@ const CreateAccount = () => {
               <div className="absolute right-4 mb-3 flex">
                 <ToggleButton
                   isVisible={passwordType === "text"}
-                  onToggle={togglePasswordVisibility}
+                  onToggle={async () => togglePasswordVisibility}
                 />
               </div>
             </div>

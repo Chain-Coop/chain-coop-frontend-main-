@@ -4,7 +4,7 @@ import LandingServices from "../services/landing.services";
 
 export const RegisterUser = createAsyncThunk(
   "landing/registerUser",
-  async (body, thunkAPI) => {
+  async (body: any, thunkAPI) => {
     try {
       const data = await LandingServices.RegisterUser(body);
       return { landing: data };
@@ -32,7 +32,7 @@ export const LoginUser = createAsyncThunk(
 
 export const VerifyUserAuth = createAsyncThunk(
   "landing/verifyauth",
-  async (body, thunkAPI) => {
+  async (body: any, thunkAPI) => {
     try {
       const data = await LandingServices.VerifyUserAuth(body);
       return { landing: data };
