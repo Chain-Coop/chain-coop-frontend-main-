@@ -116,7 +116,6 @@ const UserLogin = () => {
               <input
                 id="password-input"
                 value={password}
-                type={passwordType}
                 placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}
                 className="input mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md focus:border-text2 focus:ring-text2"
