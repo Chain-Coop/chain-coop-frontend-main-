@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import ReactLoading from "react-loading";
 import usePasswordToggle from "../../../shared/utils/usePasswordToggle";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
+import React from "react";
 
 const UserLogin = () => {
   const [email, setEmail] = useState("");
