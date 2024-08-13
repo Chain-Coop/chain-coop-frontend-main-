@@ -1,3 +1,4 @@
+import React from "react";
 import { Primary } from "./Button";
 
 const FooterBox = () => {

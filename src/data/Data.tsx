@@ -2,16 +2,11 @@ import demologo from "../Assets/png/home/demologo.png";
 import person1 from "../Assets/jpg/home/person1.jpg";
 import person2 from "../Assets/jpg/home/person2.jpg";
 import person3 from "../Assets/jpg/home/person3.jpg";
-import { GoHome } from "react-icons/go";
-import { GoProject } from "react-icons/go";
-import { FaDropbox } from "react-icons/fa6";
-import { IoWalletSharp } from "react-icons/io5";
-import { IoPersonCircleOutline } from "react-icons/io5";
-import { VscGitPullRequestGoToChanges } from "react-icons/vsc";
 import wallet from "../Assets/svg/dashboard/wallet.svg";
 import home from "../Assets/svg/dashboard/home.svg";
 import contribution from "../Assets/svg/dashboard/contribution.svg";
 import project from "../Assets/svg/dashboard/project.svg";
+import shares from "../Assets/svg/dashboard/shares.svg";
 import profile from "../Assets/svg/dashboard/Profile.svg";
 import proposal from "../Assets/svg/dashboard/proposal.svg";
 
@@ -48,6 +43,12 @@ export const sidebarLinks = [
     pathsToCheck: ["/dashboard/project"],
   },
   {
+    img: shares,
+    text: "My Shares",
+    to: "/dashboard/shares",
+    pathsToCheck: ["/dashboard/shares"],
+  },
+  {
     img: proposal,
     text: "Proposal",
     to: "/dashboard/proposal",
@@ -63,32 +64,37 @@ export const sidebarLinks = [
 
 export const dashboardNav = [
   {
-    icon: <GoHome className="mr-2" size={20} />,
+    img: wallet,
     text: "Home",
     to: "/dashboard",
   },
   {
-    icon: <FaDropbox className="mr-2" size={20} />,
+    img: contribution,
     text: "Contribution",
     to: "/dashboard/contribution",
   },
   {
-    icon: <IoWalletSharp className="mr-2" size={20} />,
+    img: wallet,
     text: "Wallet",
     to: "/dashboard/wallet",
   },
   {
-    icon: <GoProject className="mr-2" size={20} />,
+    img: project,
     text: "Project",
     to: "/dashboard/project",
   },
   {
-    icon: <VscGitPullRequestGoToChanges className="mr-2" size={20} />,
+    img: shares,
+    text: "My Shares",
+    to: "/dashboard/shares",
+  },
+  {
+    img: proposal,
     text: "Proposal",
     to: "/dashboard/proposal",
   },
   {
-    icon: <IoPersonCircleOutline className="mr-2" size={20} />,
+    img: profile,
     text: "Profile",
     to: "/dashboard/profile",
   },

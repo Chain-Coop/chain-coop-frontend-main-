@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect } from "react";
 import PropTypes from "prop-types";
 import cancel from "../../Assets/svg/cancel.svg";
@@ -37,13 +38,6 @@ const Modal = ({ children, isOpen, onClose, className }: any) => {
       </div>
     </div>
   );
-};
-
-Modal.propTypes = {
-  children: PropTypes.node.isRequired,
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  className: PropTypes.string,
 };
 
 export default Modal;

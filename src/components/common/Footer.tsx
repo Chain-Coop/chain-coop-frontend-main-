@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { company, Contacts, Explore, Legal } from "../../data/Data";
 import X from "../../Assets/png/home/twitterx.png";

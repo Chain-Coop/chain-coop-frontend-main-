@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { Primary } from "../../../../common/Button";
 import upload from "../../../../../Assets/svg/dashboard/wallet/upload.svg";
 import wallet from "../../../../../Assets/svg/../svg/dashboard/wallet/wallet.svg";
@@ -38,8 +37,5 @@ const UploadReceiptModal = ({ onContinue }:any) => {
   );
 };
 
-UploadReceiptModal.propTypes = {
-  onContinue: PropTypes.func.isRequired,
-};
 
 export default UploadReceiptModal;

@@ -10,7 +10,7 @@ import Wallet from "../wallet/Wallet";
 import Project from "../nestedproject/Project";
 import Proposal from "../proposal/Proposal";
 import SubmitProposal from "../proposal/SubmitProposal";
-import Profile from "../profile/Profile";
+import Profile from "../profile/main/Profile";
 import Right from "../rightbar/Right";
 import Withdraw from "../wallet/withdraw/Withdraw";
 import SelectBank from "../wallet/withdraw/SelectBank";
@@ -21,6 +21,8 @@ import FundWallet from "../wallet/fund/FundWallet";
 import TransferWallet from "../wallet/transfer/main/Transfer";
 import AddFund from "../wallet/transfer/fundProject/AddFund";
 import ConfirmAmount from "../wallet/transfer/confirmAmount/Confirm";
+import ProfileTransactions from "../profile/profileDetails/transactions/Transactions";
+import Shares from "../shares/main/Shares";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -62,7 +64,13 @@ const Dashboard = () => {
           <Route path="proposal/*" element={<Proposal />} />
           <Route path="proposal/submit-proposal" element={<SubmitProposal />} />
 
+          <Route path="shares" element={<Shares />} />
+
           <Route path="profile" element={<Profile />} />
+          <Route
+            path="profile/transactions"
+            element={<ProfileTransactions />}
+          />
         </Routes>
       </section>
       <aside className="h-vh hidden w-[45%] overflow-y-auto lg:block ">

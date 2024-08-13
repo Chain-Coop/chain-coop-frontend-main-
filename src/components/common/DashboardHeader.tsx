@@ -1,3 +1,5 @@
+import React from "react";
+
 export const DashboardHeader = ({ children, className, onClick }: any) => {
   return (
     <header

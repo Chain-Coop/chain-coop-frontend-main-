@@ -1,3 +1,5 @@
+import React from "react";
+
 export const LoginButton = ({ onClick, children, className }:any) => {
   return (
     <button

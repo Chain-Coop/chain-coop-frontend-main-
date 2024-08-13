@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const Proposal = () => {
   return (
-    <div className="font-sans">
+    <main className="font-sans">
       <div className="sm:mt-0 lg:mt-8">
         <header>
           <DashboardHeader className="flex items-center justify-center">
@@ -111,7 +111,7 @@ const Proposal = () => {
           </section>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -22,7 +23,6 @@ const DashboardNav = () => {
   const handleMenuClick = () => {
     setOpenMenu(!openMenu);
   };
-
 
   return (
     <div className="px-5 py-2">
@@ -63,9 +63,9 @@ const DashboardNav = () => {
             {dashboardNav.map((item, index) => (
               <ListItem key={index} disablePadding>
                 <ListItemButton component={Link} to={item.to}>
-                  {item.icon}
+                  <img src={item.img} alt="imgs" />
                   <ListItemText
-                    className="font-extrabold"
+                    className="ml-2 font-extrabold"
                     primary={item.text}
                   />
                 </ListItemButton>
