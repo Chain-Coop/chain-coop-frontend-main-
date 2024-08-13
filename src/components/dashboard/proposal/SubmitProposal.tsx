@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
@@ -7,6 +8,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router";
 import { AppDispatch } from "../../../shared/redux/store";
 import { sendProposal } from "../../../shared/redux/slices/transaction.slices";
+
 
 const SubmitProposal = () => {
   const [title, setTitle] = useState("");

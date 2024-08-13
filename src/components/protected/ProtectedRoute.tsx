@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate, Navigate, Outlet } from "react-router-dom";
 import { IdleTimerProvider } from "react-idle-timer";
 import { toast } from "react-toastify";

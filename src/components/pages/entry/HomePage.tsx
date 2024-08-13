@@ -1,3 +1,4 @@
+import React from "react";
 import Footer from "../../common/Footer";
 import AppStore from "../../parts/partone/AppStore";
 import Become from "../../parts/partone/Become";

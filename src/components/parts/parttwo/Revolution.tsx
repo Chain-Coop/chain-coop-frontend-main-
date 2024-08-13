@@ -1,3 +1,5 @@
+import React from "react";
+
 const Revolution = () => {
   return (
     <main className="mx-auto flex items-center justify-center font-sans sm:mt-[2em] sm:px-[1em] lg:mt-[5em] lg:w-[86%] lg:px-0">

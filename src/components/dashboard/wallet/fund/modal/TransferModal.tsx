@@ -1,7 +1,8 @@
+import React from "react";
 import PropTypes from "prop-types";
 import { Primary } from "../../../../common/Button";
 
-const TransferModal = ({ onContinue }) => {
+const TransferModal = ({ onContinue }: any) => {
   return (
     <main className="lg:p-4">
       <article className="mt-[2.5em]">

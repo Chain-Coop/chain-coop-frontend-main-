@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Primary } from "../../common/Button";
 import success from "../../../Assets/svg/auth/sucess.svg";

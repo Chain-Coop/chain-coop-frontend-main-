@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import ToggleButton from "../../../shared/utils/ToggleButton";
 import useBalance from "../../../shared/Hooks/useBalance";

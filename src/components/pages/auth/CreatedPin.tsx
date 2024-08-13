@@ -1,4 +1,6 @@
+import React from "react";
 import { Primary } from "../../common/Button";
+
 
 const CreatedPin = () => {
   return (

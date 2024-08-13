@@ -1,3 +1,4 @@
+import React from "react";
 import newspaper from "../../../Assets/svg/dashboard/newspaper.svg";
 import { SiGooglemessages } from "react-icons/si";
 import { IoIosArrowForward } from "react-icons/io";

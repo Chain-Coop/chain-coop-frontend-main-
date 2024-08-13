@@ -1,3 +1,4 @@
+import React from "react";
 import { DashboardHeader } from "../../common/DashboardHeader";
 import { FiSearch } from "react-icons/fi";
 import { IoIosPeople } from "react-icons/io";

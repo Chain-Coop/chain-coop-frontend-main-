@@ -1,5 +1,6 @@
 import axios from "axios";
 import authHeader from "./headers";
+import React from "react";
 
 const API_URL_REGISTER_USER =
   import.meta.env.VITE_REACT_APP_API_URL + "/auth/register";
@@ -79,7 +80,6 @@ const PublicContact = async (body: any) => {
     });
     return response.data;
   } catch (error: any) {
-    console.log("services", error);
     throw error.response.data;
   }
 };

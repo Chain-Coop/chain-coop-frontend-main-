@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect } from "react";
 import NavBar from "../../../common/NavBar";
 import { Blog } from "../../../common/Button";

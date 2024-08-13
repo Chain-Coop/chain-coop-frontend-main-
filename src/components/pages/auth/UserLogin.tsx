@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AppDispatch } from "../../../shared/redux/store";
@@ -10,7 +11,6 @@ import { toast } from "react-toastify";
 import ReactLoading from "react-loading";
 import usePasswordToggle from "../../../shared/utils/usePasswordToggle";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
-import React from "react";
 
 const UserLogin = () => {
   const [email, setEmail] = useState("");

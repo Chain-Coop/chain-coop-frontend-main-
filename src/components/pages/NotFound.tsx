@@ -1,3 +1,4 @@
+import React from "react";
 import notfound from "../../Assets/svg/notfound.svg";
 import corner from "../../Assets/svg/topcorner.svg";
 

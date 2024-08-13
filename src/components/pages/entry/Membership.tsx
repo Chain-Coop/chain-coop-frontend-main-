@@ -1,3 +1,4 @@
+import React from "react";
 import Card from "../../parts/parttwo/Card";
 import NavBar from "../../common/NavBar";
 import Join from "../../parts/parttwo/Join";
@@ -13,7 +14,7 @@ const Membership = () => {
   }, []);
   return (
     <>
-      <NavBar position="relative" />
+      <NavBar />
       <Join />
       <Card />
       <Revolution />

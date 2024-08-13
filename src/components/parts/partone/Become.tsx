@@ -1,3 +1,4 @@
+import React from "react";
 import { becomeData } from "../../../data/Data";
 import Card from "../../common/Card";
 

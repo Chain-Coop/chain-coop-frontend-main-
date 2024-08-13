@@ -1,3 +1,4 @@
+import React, { useState, useRef } from "react";
 import NavBar from "../../common/NavBar";
 import Footer from "../../common/Footer";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
@@ -9,18 +10,17 @@ import { MdMedicalInformation } from "react-icons/md";
 import tweeter from "../../../Assets/svg/contact/tweeter.svg";
 import linkdln from "../../../Assets/svg/contact/linkdln.svg";
 import medium from "../../../Assets/svg/contact/medium.svg";
-import { useRef } from "react";
 
 import circle from "../../../Assets/png/contact/circle.png";
 import FooterBox from "../../common/FooterBox";
 
 import { Primary } from "../../common/Button";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { PublicContact } from "../../../shared/redux/slices/landing.slices";
 import { toast } from "react-toastify";
 import ReactLoading from "react-loading";
 import "../../../general.css";
+import { AppDispatch } from "../../../shared/redux/store";
 
 const Contact = () => {
   const [loading, setLoading] = useState(false);
@@ -29,10 +29,10 @@ const Contact = () => {
   const [phone_number, setPhone_Number] = useState("");
   const [message, setMessage] = useState("");
 
-  const dispatch = useDispatch();
-  const editorRef = useRef(null);
+  const dispatch: AppDispatch = useDispatch();
+  const editorRef = useRef<ClassicEditor | null>(null);
 
-  const sendMessage = (e) => {
+  const sendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
@@ -50,7 +50,6 @@ const Contact = () => {
         setEmail("");
         setPhone_Number("");
         setMessage("");
-        window.location.reload();
 
         if (editorRef.current) {
           editorRef.current.setData("");
@@ -60,13 +59,10 @@ const Contact = () => {
         toast.success("Message sent");
       })
       .catch((error) => {
-        console.log("Error", error);
         setLoading(false);
-        const errorMessage = error;
-        toast.error(errorMessage);
+        toast.error(error);
       });
   };
-
   return (
     <>
       <NavBar />

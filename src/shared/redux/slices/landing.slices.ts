@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message.slices";
 import LandingServices from "../services/landing.services";
+import React from "react";
+
 
 export const RegisterUser = createAsyncThunk(
   "landing/registerUser",
@@ -46,7 +48,7 @@ export const VerifyUserAuth = createAsyncThunk(
 
 export const PublicContact = createAsyncThunk(
   "landing/publicContact",
-  async (body, thunkAPI) => {
+  async (body:any, thunkAPI) => {
     try {
       const data = await LandingServices.PublicContact(body);
       return { landing: data };

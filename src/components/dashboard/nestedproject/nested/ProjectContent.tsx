@@ -1,3 +1,4 @@
+import React from "react";
 import { ComingSoon } from "../../../common/Button";
 
 const ProjectContent = () => {

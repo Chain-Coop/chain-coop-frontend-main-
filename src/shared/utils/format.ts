@@ -1,3 +1,5 @@
+import React from "react";
+
 export const formatAmount = (amount: number) => {
   return (amount / 100).toLocaleString("en-NG", {
     style: "currency",

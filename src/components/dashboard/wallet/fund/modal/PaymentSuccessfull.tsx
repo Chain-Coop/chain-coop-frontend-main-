@@ -1,6 +1,8 @@
+import React from "react";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import success from "../../../../../Assets/svg/auth/sucess.svg";
 import { useNavigate } from "react-router";
+
 
 const PaymentSuccessfull = () => {
   const navigate = useNavigate();

@@ -1,4 +1,5 @@
 import { EnterButton } from "../../common/Button";
+import React from "react";
 import { MdOutlineVisibilityOff, MdOutlineVisibility } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { RESET_PASSWORD } from "../../../shared/redux/services/landing.services";

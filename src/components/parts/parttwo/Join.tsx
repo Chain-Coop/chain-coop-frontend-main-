@@ -1,3 +1,5 @@
+import React from "react";
+
 const Join = () => {
   return (
     <main className="mx-auto mt-[6em] font-sans sm:mt-[1.5em] lg:mt-[6em] lg:w-[86%] ">

@@ -1,3 +1,4 @@
+import React from "react";
 import { meetImage } from "../../../data/Data";
 
 const Meet = () => {

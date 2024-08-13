@@ -2,8 +2,10 @@ import PropTypes from "prop-types";
 import { Primary } from "../../../../common/Button";
 import upload from "../../../../../Assets/svg/dashboard/wallet/upload.svg";
 import wallet from "../../../../../Assets/svg/../svg/dashboard/wallet/wallet.svg";
+import React from "react";
 
-const UploadReceiptModal = ({ onContinue }) => {
+
+const UploadReceiptModal = ({ onContinue }:any) => {
   return (
     <main className="py-6 text-center font-sans">
       <header>

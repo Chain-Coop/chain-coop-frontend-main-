@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import {
   formatAmount,
@@ -44,7 +45,7 @@ const History = () => {
         {getTransaction && getTransaction.length > 0 ? (
           getTransaction
             .slice(0, showAll ? getTransaction.length : 3)
-            .map((transaction, index) => (
+            .map((transaction: any, index: any) => (
               <div
                 key={index}
                 className="flex flex-col gap-[10px] rounded-lg px-[1.5em] py-[1em] shadow-md"
