@@ -7,10 +7,11 @@ import { DashboardHeader } from "../../common/DashboardHeader";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router";
 import { AppDispatch } from "../../../shared/redux/store";
+import { FaCircleQuestion } from "react-icons/fa6";
 import { sendProposal } from "../../../shared/redux/slices/transaction.slices";
 
-
 const SubmitProposal = () => {
+  const [fullName, setFullName] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [document, setDocument] = useState<File | null>(null);
@@ -29,11 +30,12 @@ const SubmitProposal = () => {
     setDocument(selectedDocument);
   };
 
-  const submitProposal = async (e: any) => {
+  const submitProposal = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
     const formData = new FormData();
+    formData.append("fullName", fullName);
     formData.append("title", title);
     formData.append("description", description);
     if (document) {
@@ -44,10 +46,12 @@ const SubmitProposal = () => {
       await dispatch(sendProposal(formData)).unwrap();
       setLoading(false);
       toast.success("Proposal submitted successfully!");
+      setFullName("");
       setTitle("");
       setDescription("");
       setDocument(null);
     } catch (error) {
+      console.log("Error", error);
       setLoading(false);
       const errorMessage =
         (error as any).message || "An error occurred. Please try again.";
@@ -72,6 +76,22 @@ const SubmitProposal = () => {
         >
           <div className="mb-4">
             <h2 className="text-lg font-bold">Submit a Proposal</h2>
+          </div>
+          <div className="mt-[2em]">
+            <label htmlFor="title" className="font-semibold">
+              Full Name
+            </label>
+            <div>
+              <input
+                type="text"
+                id="title"
+                placeholder="Your full name here"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="mt-[1em] h-12 w-full rounded-lg border-fade pl-4 shadow-md focus:border-transparent focus:outline-none focus:ring-2 focus:ring-fade"
+                required
+              />
+            </div>
           </div>
           <div className="mt-[2em]">
             <label htmlFor="title" className="font-semibold">

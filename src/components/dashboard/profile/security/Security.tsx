@@ -42,7 +42,11 @@ const Security = () => {
         ))}
       </section>
       {isModalOpen && (
-        <Modal className="bg-[#E9E9E9]" isOpen onClose={handleCloseModal}>
+        <Modal
+          className="bg-[#E9E9E9]"
+          isOpen
+          onClose={handleCloseModal}
+        >
           <NewPassword />
         </Modal>
       )}

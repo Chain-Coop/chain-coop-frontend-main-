@@ -2,8 +2,10 @@ import axios from "axios";
 import authHeader from "./headers";
 import React from "react";
 
-
 const API_URL_SUBMIT_PROPOSAL =
+  import.meta.env.VITE_REACT_APP_API_URL + "/proposals";
+
+const API_URL_SEND_PROPOSAL =
   import.meta.env.VITE_REACT_APP_API_URL + "/proposals";
 
 const GetWalletBalance = async () => {

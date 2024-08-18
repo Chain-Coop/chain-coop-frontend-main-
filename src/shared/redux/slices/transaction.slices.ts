@@ -36,8 +36,8 @@ export const sendProposal = createAsyncThunk(
   "transaction/sendProposal",
   async (formData: FormData, thunkAPI) => {
     try {
-      const response = await TransactionServices.SendProposal(formData); // Use the correct service function
-      return { transaction: response.data }; // Adjust based on actual response structure
+      const response = await TransactionServices.SendProposal(formData); 
+      return { transaction: response.data };
     } catch (error: any) {
       const message =
         error.response?.data?.message || "An error occurred. Please try again.";
