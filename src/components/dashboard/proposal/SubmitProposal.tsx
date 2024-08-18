@@ -7,20 +7,28 @@ import { DashboardHeader } from "../../common/DashboardHeader";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router";
 import { AppDispatch } from "../../../shared/redux/store";
-import { FaCircleQuestion } from "react-icons/fa6";
 import { sendProposal } from "../../../shared/redux/slices/transaction.slices";
+import uploadFile from "../../../Assets/svg/dashboard/uploadFile.svg";
+import Modal from "../../common/Modal";
+import SuccessfulModal from "./SuccessfulModal";
 
 const SubmitProposal = () => {
   const [fullName, setFullName] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [document, setDocument] = useState<File | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
 
-  const userToken = sessionStorage.getItem("userData");
+  const handleSuccessModal = () => {
+    setIsModalOpen(true);
+  };
 
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
   const handleBackClick = () => {
     navigate(-1);
   };
@@ -45,13 +53,12 @@ const SubmitProposal = () => {
     try {
       await dispatch(sendProposal(formData)).unwrap();
       setLoading(false);
-      toast.success("Proposal submitted successfully!");
+      handleSuccessModal();
       setFullName("");
       setTitle("");
       setDescription("");
       setDocument(null);
     } catch (error) {
-      console.log("Error", error);
       setLoading(false);
       const errorMessage =
         (error as any).message || "An error occurred. Please try again.";
@@ -119,7 +126,7 @@ const SubmitProposal = () => {
                 name="description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="mt-[0.5em] h-[15em] w-full rounded-lg border border-gray-300 p-[0.5em] font-sans shadow-lg focus:border-transparent focus:outline-none focus:ring-2 focus:ring-fade"
+                className="mt-[0.5em] h-[15em] w-full rounded-lg border border-gray-300 p-[0.5em] font-sans shadow-lg placeholder:flex placeholder:justify-center focus:border-transparent focus:outline-none focus:ring-2 focus:ring-fade"
                 placeholder="Enter description here"
                 required
               ></textarea>
@@ -139,22 +146,27 @@ const SubmitProposal = () => {
               {document ? (
                 <span className="truncate">{document.name}</span>
               ) : (
-                <span className="text-gray-500">Upload a document</span>
+                <div className="flex items-center gap-2">
+                  <img src={uploadFile} alt="file-img" />
+                  <span className="font-bold text-text2">Upload a file</span>
+                </div>
               )}
             </div>
           </div>
           <section className="mt-[2em]">
             <button
               type="submit"
-              className="rounded-full bg-text2 px-[2.5em] py-[5px] font-sans text-text3"
+              className="rounded-full bg-text2 px-[3em] py-[10px] font-sans text-text3 shadow-lg"
             >
               {loading ? (
-                <ReactLoading
-                  color="#FFFFFF"
-                  width={25}
-                  height={25}
-                  type="spin"
-                />
+                <div className="mr-auto flex px-2">
+                  <ReactLoading
+                    color="#FFFFFF"
+                    width={25}
+                    height={25}
+                    type="spin"
+                  />
+                </div>
               ) : (
                 "Submit"
               )}
@@ -162,6 +174,11 @@ const SubmitProposal = () => {
           </section>
         </form>
       </div>
+      {isModalOpen && (
+        <Modal className="bg-white" isOpen onClose={handleCloseModal}>
+          <SuccessfulModal />
+        </Modal>
+      )}
     </main>
   );
 };
