@@ -38,17 +38,16 @@ const Transfer = () => {
   return (
     <main className="font-sans">
       <DashboardHeader
-        className="mt-[2em] cursor-pointer"
+        className="relative cursor-pointer items-center"
         onClick={handleBackClick}
       >
-        <div className="flex w-[55%] items-center justify-between">
-          <IoIosArrowBack size={25} className="cursor-pointer" />
-          <div className="tracking-wide">
-            <h1>Transfer</h1>
-          </div>
+        <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
+
+        <div className="flex flex-grow items-center justify-center">
+          <div className="tracking-wide">Transfer</div>
         </div>
       </DashboardHeader>
-      <section className="m-auto mt-[2em] w-full px-4 sm:px-6">
+      <section className="m-auto mt-[2em] w-full px-4">
         <div className="flex items-center justify-between">
           <div
             className="flex cursor-pointer items-center gap-3"

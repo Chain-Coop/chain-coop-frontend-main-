@@ -26,9 +26,16 @@ const Withdraw = () => {
   return (
     <main className="font-sans">
       <header className="mt-[2em]">
-        <DashboardHeader className="cursor-pointer" onClick={handleBackClick}>
-          <div className="flex w-[55%] items-center justify-between">
-            <IoIosArrowBack size={25} className="cursor-pointer" />
+        <DashboardHeader
+          className="relative cursor-pointer items-center"
+          onClick={handleBackClick}
+        >
+          <IoIosArrowBack
+            size={25}
+            className="absolute left-0 cursor-pointer"
+          />
+
+          <div className="flex flex-grow items-center justify-center">
             <div className="tracking-wide">Withdraw</div>
           </div>
         </DashboardHeader>

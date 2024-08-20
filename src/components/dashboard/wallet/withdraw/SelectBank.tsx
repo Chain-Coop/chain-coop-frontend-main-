@@ -18,12 +18,17 @@ const SelectBank = () => {
   return (
     <main className="items-center font-sans">
       <header className="mt-[2em]">
-        <DashboardHeader className="cursor-pointer" onClick={handleBackClick}>
-          <div className="flex w-[55%] items-center justify-between">
-            <IoIosArrowBack size={25} className="cursor-pointer" />
-            <div className="tracking-wide">
-              <h1>Select Bank</h1>
-            </div>
+        <DashboardHeader
+          className="relative cursor-pointer items-center"
+          onClick={handleBackClick}
+        >
+          <IoIosArrowBack
+            size={25}
+            className="absolute left-0 cursor-pointer"
+          />
+
+          <div className="flex flex-grow items-center justify-center">
+            <div className="tracking-wide">Select Bank</div>
           </div>
         </DashboardHeader>
       </header>

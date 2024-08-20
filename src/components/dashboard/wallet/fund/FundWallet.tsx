@@ -54,7 +54,7 @@ const FundWallet = () => {
     const handler = window.PaystackPop.setup({
       key: "pk_test_23c84d5c89c5b18982c60e27e917a498d8f76dd9",
       email: email,
-      amount: amount * 100, // Ensures amount is defined and multiplies it by 100
+      amount: amount * 100,
       currency: "NGN",
       ref: `REF-${Math.floor(Math.random() * 1000000)}`,
       onClose: function () {},
@@ -94,10 +94,17 @@ const FundWallet = () => {
   return (
     <main className="font-sans">
       <header className="mt-[2em]">
-        <DashboardHeader className="cursor-pointer" onClick={handleBackClick}>
-          <div className="flex w-[55%] items-center justify-between">
-            <IoIosArrowBack size={25} className="cursor-pointer" />
-            <h1 className="tracking-wide">Fund Wallet</h1>
+        <DashboardHeader
+          className="relative cursor-pointer items-center"
+          onClick={handleBackClick}
+        >
+          <IoIosArrowBack
+            size={25}
+            className="absolute left-0 cursor-pointer"
+          />
+
+          <div className="flex flex-grow items-center justify-center">
+            <div className="tracking-wide">Fund Wallet</div>
           </div>
         </DashboardHeader>
       </header>

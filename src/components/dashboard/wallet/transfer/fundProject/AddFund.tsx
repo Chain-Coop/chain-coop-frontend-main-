@@ -32,14 +32,13 @@ const AddFund = () => {
   return (
     <main className="font-sans">
       <DashboardHeader
-        className="mt-8 cursor-pointer"
+        className="relative cursor-pointer items-center"
         onClick={handleBackClick}
       >
-        <div className="flex w-[90%] items-center justify-between md:w-[65%]">
-          <IoIosArrowBack size={25} className="cursor-pointer" />
-          <div className="tracking-wide">
-            <h1>Add Fund to Project</h1>
-          </div>
+        <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
+
+        <div className="flex flex-grow items-center justify-center">
+          <div className="tracking-wide">Add Fund To Project</div>
         </div>
       </DashboardHeader>
       <section className="px-3">
