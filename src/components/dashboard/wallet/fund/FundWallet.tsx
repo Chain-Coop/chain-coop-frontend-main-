@@ -168,7 +168,7 @@ const FundWallet = () => {
         className="bg-white"
       >
         <EmailAmountModal
-          amount={amount}
+         amount={amount ?? ''}
           setAmount={(value: number) => setAmount(value)}
           handlePaystackPayment={handlePaystackPayment}
           closeModal={closeModal}
