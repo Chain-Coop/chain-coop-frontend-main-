@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { GetWalletBalance } from "../../../../shared/redux/slices/transaction.slices";
@@ -13,13 +12,14 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import fund from "../../../../Assets/svg/dashboard/wallet/withdraw.svg";
 import debit from "../../../../Assets/svg/dashboard/wallet/debit.svg";
 import { AppDispatch } from "../../../../shared/redux/store";
+import useUserProfile from "../../../../shared/Hooks/useUserProfile";
 
 const FundWallet = () => {
   const [modalType, setModalType] = useState(null);
-  const [email, setEmail] = useState("");
-  const [amount, setAmount] = useState<number>(0);
+  const [amount, setAmount] = useState<number>();
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
+  const { profileDetails } = useUserProfile();
 
   const handleBackClick = () => {
     navigate(-1);
@@ -53,15 +53,13 @@ const FundWallet = () => {
 
     const handler = window.PaystackPop.setup({
       key: "pk_test_23c84d5c89c5b18982c60e27e917a498d8f76dd9",
-      email: email,
+      email: profileDetails?.email,
       amount: amount * 100,
       currency: "NGN",
       ref: `REF-${Math.floor(Math.random() * 1000000)}`,
       onClose: function () {},
       callback: function (response: { reference: string }) {
-        console.log("paystack response", response);
         handlePaymentSuccess(response.reference);
-        setEmail("");
         setAmount(0);
       },
     });
@@ -79,11 +77,9 @@ const FundWallet = () => {
       body: JSON.stringify({ reference }),
     })
       .then((response) => {
-        console.log("Webhook response status:", response.status);
         return response.json();
       })
       .then((data) => {
-        console.log("Webhook response:", data);
         dispatch(GetWalletBalance());
       })
       .catch((error) => {
@@ -178,10 +174,8 @@ const FundWallet = () => {
         className="bg-white"
       >
         <EmailAmountModal
-          email={email}
-          setEmail={setEmail}
           amount={amount}
-          setAmount={(value) => setAmount(Number(value))}
+          setAmount={(value: number) => setAmount(Number(value))}
           handlePaystackPayment={handlePaystackPayment}
           closeModal={closeModal}
         />
