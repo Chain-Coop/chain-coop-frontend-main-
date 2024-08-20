@@ -13,12 +13,12 @@ const ForgetPassword = () => {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
-  const home = (e:any) => {
+  const home = (e: any) => {
     e.preventDefault();
     navigate("/login");
   };
 
-  const forgotPassword = async (e:any) => {
+  const forgotPassword = async (e: any) => {
     e.preventDefault();
     setLoading(true);
     const endpoint = `/auth/forget_password`;
@@ -59,10 +59,10 @@ const ForgetPassword = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="e-mail"
-              className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md"
+              className="mb-5 h-[4em] w-full rounded-full border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
             />
           </div>
-          <EnterButton onClick={forgotPassword}>
+          <EnterButton disabled={loading} onClick={forgotPassword}>
             {loading ? (
               <ReactLoading
                 color="#FFFFFF"

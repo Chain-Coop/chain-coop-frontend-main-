@@ -24,7 +24,7 @@ const NewPassword = () => {
               id="password"
               name="password"
               type={passwordType}
-              className="mt-[10px] w-full rounded-full border-[2px] bg-white p-3 shadow-lg focus:outline-none"
+              className="mt-[10px] w-full rounded-full  border-[1px] bg-white p-3 shadow-lg focus:border-text2 focus:outline-none focus:ring-text2 "
             />
             <button
               type="button"
@@ -51,7 +51,7 @@ const NewPassword = () => {
               name="confirmPassword"
               id="confirmPassword"
               type={confirmPasswordType}
-              className="mt-[10px] w-full rounded-full border-[2px] bg-white p-3 shadow-lg focus:outline-none"
+              className="mt-[10px] w-full rounded-full  border-[1px] bg-white p-3 shadow-lg focus:border-text2 focus:outline-none focus:ring-text2"
             />
             <button
               type="button"

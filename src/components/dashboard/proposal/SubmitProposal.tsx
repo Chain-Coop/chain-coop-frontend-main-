@@ -95,7 +95,7 @@ const SubmitProposal = () => {
                 placeholder="Your full name here"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="mt-[1em] h-12 w-full rounded-lg border-fade pl-4 shadow-md focus:border-transparent focus:outline-none focus:ring-2 focus:ring-fade"
+                className="mt-[1em] h-12 w-full rounded-lg  border-[1px] pl-4  shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
                 required
               />
             </div>
@@ -111,7 +111,7 @@ const SubmitProposal = () => {
                 placeholder="Proposal title text here"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="mt-[1em] h-12 w-full rounded-lg border-fade pl-4 shadow-md focus:border-transparent focus:outline-none focus:ring-2 focus:ring-fade"
+                className="mt-[1em] h-12 w-full rounded-lg  border-[1px] pl-4 shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
                 required
               />
             </div>
@@ -126,7 +126,7 @@ const SubmitProposal = () => {
                 name="description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="mt-[0.5em] h-[15em] w-full rounded-lg border border-gray-300 p-[0.5em] font-sans shadow-lg placeholder:flex placeholder:justify-center focus:border-transparent focus:outline-none focus:ring-2 focus:ring-fade"
+                className="mt-[0.5em] h-[15em] w-full rounded-lg  border-[1px] p-[0.5em] font-sans shadow-lg placeholder:flex placeholder:justify-center focus:border-text2 focus:outline-none focus:ring-text2 "
                 placeholder="Enter description here"
                 required
               ></textarea>

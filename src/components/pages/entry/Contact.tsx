@@ -89,7 +89,7 @@ const Contact = () => {
                   <input
                     onChange={(e) => setName(e.target.value)}
                     type="text"
-                    className="mt-[1em] w-full rounded-md border-none p-4 shadow-md"
+                    className="mt-[1em] w-full  rounded-md border-[1px] p-4 shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
                     placeholder="enter your name"
                   />
                 </div>
@@ -101,7 +101,7 @@ const Contact = () => {
                   <input
                     type="text"
                     onChange={(e) => setEmail(e.target.value)}
-                    className="mt-[1em] w-full rounded-md border-none p-4 shadow-md"
+                    className="mt-[1em] w-full rounded-md  border-[1px] p-4 shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
                     placeholder="enter your e-mail"
                   />
                 </div>
@@ -113,7 +113,7 @@ const Contact = () => {
                   <input
                     onChange={(e) => setPhone_Number(e.target.value)}
                     type="text"
-                    className="mt-[1em] w-full rounded-md border-none p-4 shadow-md"
+                    className="mt-[1em] w-full  rounded-md border-[1px] p-4 shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
                     placeholder="enter your phone number"
                   />
                 </div>
@@ -121,7 +121,7 @@ const Contact = () => {
                   <label htmlFor="message" className="text-lg font-medium">
                     Message
                   </label>
-                  <div className="custom-ckeditor mt-[1em] flex w-full rounded-md border-none shadow-md">
+                  <div className="custom-ckeditor mt-[1em]  flex w-full rounded-md border-[1px] shadow-md focus:border-text2 focus:outline-none focus:ring-text2">
                     <CKEditor
                       editor={ClassicEditor}
                       onChange={(event, editor) => {

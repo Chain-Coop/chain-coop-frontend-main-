@@ -249,3 +249,10 @@ export const Contacts = [
     text: "+234 809 322 7696",
   },
 ];
+
+export enum ModalType {
+  Transfer = "transfer",
+  Upload = "upload",
+  Final = "final",
+  Paystack = "paystack",
+}

@@ -105,7 +105,7 @@ const UserLogin = () => {
               value={email}
               placeholder="enter your e-mail"
               onChange={(e) => setEmail(e.target.value)}
-              className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md focus:border-text2 focus:ring-text2"
+              className="input mb-5 h-[4em] w-full rounded-full border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
             />
           </div>
 
@@ -120,7 +120,7 @@ const UserLogin = () => {
                 value={password}
                 placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}
-                className="input mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md focus:border-text2 focus:ring-text2"
+                className="input mb-5 h-[4em] w-full rounded-full border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
               />
               <button
                 type="button"

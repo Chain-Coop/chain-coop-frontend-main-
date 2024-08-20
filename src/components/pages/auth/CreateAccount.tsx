@@ -97,7 +97,7 @@ const CreateAccount = () => {
               onChange={(e) => setEmail(e.target.value)}
               value={email}
               placeholder="e-mail address"
-              className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md focus:border-text2 focus:ring-text2"
+              className="mb-5 h-[4em] w-full rounded-full border-[1px] px-4 text-sm  shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
             />
           </div>
 
@@ -115,7 +115,7 @@ const CreateAccount = () => {
               onChange={(e) => setUsername(e.target.value)}
               value={username}
               placeholder="username"
-              className="mb-5 h-[4em] w-full  rounded-full px-4 text-sm shadow-md"
+              className="mb-5 h-[4em] w-full  rounded-full border-[1px] px-4  text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
             />
           </div>
 
@@ -133,7 +133,7 @@ const CreateAccount = () => {
               onChange={(e) => setPhoneNumber(e.target.value)}
               value={phoneNumber}
               placeholder="phone number"
-              className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md"
+              className="mb-5 h-[4em] w-full rounded-full  border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
             />
           </div>
 
@@ -171,7 +171,7 @@ const CreateAccount = () => {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="input mb-5 h-[4em] w-full items-center  rounded-full px-4 text-sm shadow-md  "
+                className="input mb-5 h-[4em]  w-full items-center rounded-full border-[1px] px-4 text-sm  shadow-md focus:border-text2 focus:outline-none focus:ring-text2  "
               />
               <button
                 type="button"
