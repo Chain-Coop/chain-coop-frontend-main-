@@ -250,7 +250,7 @@ export const Contacts = [
   },
 ];
 
-export enum ModalType {
+export enum ModalTypes {
   Transfer = "transfer",
   Upload = "upload",
   Final = "final",

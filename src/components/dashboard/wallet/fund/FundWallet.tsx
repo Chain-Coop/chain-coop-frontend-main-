@@ -1,23 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../shared/redux/store";
 import useUserProfile from "../../../../shared/Hooks/useUserProfile";
 import { GetWalletBalance } from "../../../../shared/redux/slices/transaction.slices";
+import { DashboardHeader } from "../../../common/DashboardHeader";
 import Modal from "../../../common/Modal";
 import TransferModal from "./modal/TransferModal";
+import EmailAmountModal from "./modal/paystack/EmailAmountModal";
+import { ModalTypes } from "../../../../data/Data";
 import UploadReceiptModal from "./modal/UploadReceiptModal";
 import PaymentSuccessfull from "./modal/PaymentSuccessfull";
-import EmailAmountModal from "./modal/paystack/EmailAmountModal";
-import { ModalType } from "../../../../data/Data";
-import { DashboardHeader } from "../../../common/DashboardHeader";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import fund from "../../../../Assets/svg/dashboard/wallet/withdraw.svg";
 import debit from "../../../../Assets/svg/dashboard/wallet/debit.svg";
 
-const FundWallet: React.FC = () => {
-  const [modalType, setModalType] = useState<ModalType | null>(null);
-  const [amount, setAmount] = useState<number | undefined>();
+const FundWallet = () => {
+  const [modalType, setModalType] = useState<ModalTypes | null>(null);
+  const [amount, setAmount] = useState<number | null>(null);
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const { profileDetails } = useUserProfile();
@@ -26,82 +26,65 @@ const FundWallet: React.FC = () => {
     navigate(-1);
   };
 
-  const openModal = (type: ModalType) => {
-    setModalType(type);
-  };
-
-  const closeModal = () => {
-    setModalType(null);
-  };
+  const openModal = (type: ModalTypes) => setModalType(type);
+  const closeModal = () => setModalType(null);
 
   const handleTransferContinue = () => {
-    closeModal();
-    openModal(ModalType.Upload);
+    openModal(ModalTypes.Upload);
   };
 
   const handleUploadContinue = () => {
-    closeModal();
-    openModal(ModalType.Final);
+    openModal(ModalTypes.Final);
   };
 
-  const handlePaystackPayment = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handlePaystackPayment = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
 
-    if (!amount) {
-      console.error("Amount is undefined");
-      return;
-    }
+      if (!amount) {
+        console.error("Amount is undefined");
+        return;
+      }
 
-    if (!profileDetails?.email) {
-      console.error("User email is missing");
-      return;
-    }
-
-    const handler = window.PaystackPop?.setup({
-      key: "pk_test_23c84d5c89c5b18982c60e27e917a498d8f76dd9",
-      email: profileDetails.email,
-      amount: amount * 100,
-      currency: "NGN",
-      ref: `REF-${Math.floor(Math.random() * 1000000)}`,
-      onClose: function () {
-        console.warn("Payment process was closed");
-      },
-      callback: function (response: { reference: string }) {
-        handlePaymentSuccess(response.reference);
-        setAmount(0);
-      },
-    });
-
-    if (handler) {
-      handler.openIframe();
-    } else {
-      console.error("Paystack handler is not available");
-    }
-
-    closeModal();
-  };
-
-  const handlePaymentSuccess = (reference: string) => {
-    console.log("Payment reference:", reference);
-
-    fetch("https://chain-coop-backend.onrender.com/api/v1/wallet/webhook", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ reference }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          dispatch(GetWalletBalance());
-        } else {
-          console.error("Webhook response indicated failure:", data);
-        }
-      })
-      .catch((error) => {
-        console.error("Error calling webhook:", error);
+      const handler = window.PaystackPop.setup({
+        key: "pk_test_23c84d5c89c5b18982c60e27e917a498d8f76dd9",
+        email: profileDetails?.email,
+        amount: amount * 100,
+        currency: "NGN",
+        ref: `REF-${Math.floor(Math.random() * 1000000)}`,
+        onClose: function () {},
+        callback: function (response: { reference: string }) {
+          handlePaymentSuccess(response.reference);
+          setAmount(null);
+        },
       });
+      handler.openIframe();
+      closeModal();
+    },
+    [amount, profileDetails?.email],
+  );
+
+  const handlePaymentSuccess = async (reference: string) => {
+    try {
+      const response = await fetch(
+        "https://chain-coop-backend.onrender.com/api/v1/wallet/webhook",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ reference }),
+        },
+      );
+      const data = await response.json();
+      if (response.ok) {
+        dispatch(GetWalletBalance());
+      } else {
+        console.error("Error from webhook:", data.message);
+      }
+    } catch (error) {
+      console.error("Error calling webhook:", error);
+    }
   };
 
   return (
@@ -122,10 +105,10 @@ const FundWallet: React.FC = () => {
       </header>
       <section className="m-auto mt-[1.5em] h-full w-full px-[1em]">
         <div
-          className="flex items-center justify-between"
-          onClick={() => openModal(ModalType.Transfer)}
+          className="flex cursor-pointer items-center justify-between"
+          onClick={() => openModal(ModalTypes.Transfer)}
         >
-          <div className="flex cursor-pointer items-center gap-4">
+          <div className="flex items-center gap-4">
             <img src={fund} alt="Withdraw" />
             <div>
               <h2 className="font-medium">Bank Transfer</h2>
@@ -134,17 +117,14 @@ const FundWallet: React.FC = () => {
               </p>
             </div>
           </div>
-          <IoIosArrowForward
-            size={25}
-            className="hidden cursor-pointer lg:block"
-          />
+          <IoIosArrowForward size={25} className="hidden lg:block" />
         </div>
         <hr className="mt-3 h-[1px] rounded-md" />
-        <article className="mt-[1em] flex items-center justify-between">
-          <div
-            className="flex cursor-pointer items-center gap-4"
-            onClick={() => openModal(ModalType.Paystack)}
-          >
+        <article
+          className="mt-[1em] flex cursor-pointer items-center justify-between"
+          onClick={() => openModal(ModalTypes.Paystack)}
+        >
+          <div className="flex items-center gap-4">
             <img src={debit} alt="Withdraw" />
             <div>
               <h2 className="font-medium">Debit / Credit Card</h2>
@@ -153,15 +133,13 @@ const FundWallet: React.FC = () => {
               </p>
             </div>
           </div>
-          <IoIosArrowForward
-            size={25}
-            className="cursor-pointer sm:hidden lg:block"
-          />
+          <IoIosArrowForward size={25} className="hidden lg:block" />
         </article>
       </section>
 
+      {/* Dynamic Modal Rendering */}
       <Modal
-        isOpen={modalType === ModalType.Transfer}
+        isOpen={modalType === ModalTypes.Transfer}
         onClose={closeModal}
         className="bg-white"
       >
@@ -169,7 +147,7 @@ const FundWallet: React.FC = () => {
       </Modal>
 
       <Modal
-        isOpen={modalType === ModalType.Upload}
+        isOpen={modalType === ModalTypes.Upload}
         onClose={closeModal}
         className="bg-white"
       >
@@ -177,7 +155,7 @@ const FundWallet: React.FC = () => {
       </Modal>
 
       <Modal
-        isOpen={modalType === ModalType.Final}
+        isOpen={modalType === ModalTypes.Final}
         onClose={closeModal}
         className="bg-white"
       >
@@ -185,13 +163,13 @@ const FundWallet: React.FC = () => {
       </Modal>
 
       <Modal
-        isOpen={modalType === ModalType.Paystack}
+        isOpen={modalType === ModalTypes.Paystack}
         onClose={closeModal}
         className="bg-white"
       >
         <EmailAmountModal
           amount={amount}
-          setAmount={(value: number) => setAmount(Number(value))}
+          setAmount={(value: number) => setAmount(value)}
           handlePaystackPayment={handlePaystackPayment}
           closeModal={closeModal}
         />
