@@ -1,3 +1,4 @@
+import { formatPayStackAmount } from "../../../../../../shared/utils/format";
 import React, { useState } from "react";
 import { Primary } from "../../../../../common/Button";
 
@@ -18,17 +19,9 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({
     amount ? amount.toString() : "",
   );
 
-  const formatAmount = (value: string) => {
-    const cleanedValue = value.replace(/,/g, "");
-    if (isNaN(Number(cleanedValue))) return value;
-
-    const formattedValue = Number(cleanedValue).toLocaleString("en-NG");
-    return formattedValue;
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setInputValue(formatAmount(value));
+    setInputValue(formatPayStackAmount(value));
 
     setAmount(Number(value.replace(/,/g, "")));
   };
@@ -53,7 +46,7 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({
               Amount (NGN)
             </label>
             <input
-              type="text" 
+              type="text"
               id="amount"
               value={inputValue}
               onChange={handleChange}

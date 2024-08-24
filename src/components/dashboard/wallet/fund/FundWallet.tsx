@@ -1,9 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../../shared/redux/store";
+import { useSelector } from "react-redux";
 import useUserProfile from "../../../../shared/Hooks/useUserProfile";
-import { GetWalletBalance } from "../../../../shared/redux/slices/transaction.slices";
 import { DashboardHeader } from "../../../common/DashboardHeader";
 import Modal from "../../../common/Modal";
 import TransferModal from "./modal/TransferModal";
@@ -15,18 +13,28 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import fund from "../../../../Assets/svg/dashboard/wallet/withdraw.svg";
 import debit from "../../../../Assets/svg/dashboard/wallet/debit.svg";
 
-const FundWallet = () => {
+const FundWallet: React.FC = () => {
   const [modalType, setModalType] = useState<ModalTypes | null>(null);
   const [amount, setAmount] = useState<number | null>(null);
+  const [transactionReference, setTransactionReference] = useState<string>("");
   const navigate = useNavigate();
-  const dispatch: AppDispatch = useDispatch();
   const { profileDetails } = useUserProfile();
+
+  const generateUniqueReference = () => {
+    return `REF-${Date.now()}-${Math.floor(Math.random() * 1000000)}`;
+  };
 
   const handleBackClick = () => {
     navigate(-1);
   };
 
-  const openModal = (type: ModalTypes) => setModalType(type);
+  const openModal = (type: ModalTypes) => {
+    if (type === ModalTypes.Paystack) {
+      setTransactionReference(generateUniqueReference());
+    }
+    setModalType(type);
+  };
+
   const closeModal = () => setModalType(null);
 
   const handleTransferContinue = () => {
@@ -47,45 +55,25 @@ const FundWallet = () => {
       }
 
       const handler = window.PaystackPop.setup({
-        key: "pk_test_23c84d5c89c5b18982c60e27e917a498d8f76dd9",
+        key: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY,
         email: profileDetails?.email,
         amount: amount * 100,
         currency: "NGN",
-        ref: `REF-${Math.floor(Math.random() * 1000000)}`,
-        onClose: function () {},
-        callback: function (response: { reference: string }) {
-          handlePaymentSuccess(response.reference);
-          setAmount(null);
+        ref: transactionReference,
+        callback: function (response: any) {
+          if (response.status === "success") {
+            openModal(ModalTypes.Final);
+          }
+        },
+        onClose: function () {
+          // Handle modal close
         },
       });
       handler.openIframe();
       closeModal();
     },
-    [amount, profileDetails?.email],
+    [amount, profileDetails?.email, transactionReference],
   );
-
-  const handlePaymentSuccess = async (reference: string) => {
-    try {
-      const response = await fetch(
-        "https://chain-coop-backend.onrender.com/api/v1/wallet/webhook",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ reference }),
-        },
-      );
-      const data = await response.json();
-      if (response.ok) {
-        dispatch(GetWalletBalance());
-      } else {
-        console.error("Error from webhook:", data.message);
-      }
-    } catch (error) {
-      console.error("Error calling webhook:", error);
-    }
-  };
 
   return (
     <main className="font-sans">
@@ -137,7 +125,6 @@ const FundWallet = () => {
         </article>
       </section>
 
-      {/* Dynamic Modal Rendering */}
       <Modal
         isOpen={modalType === ModalTypes.Transfer}
         onClose={closeModal}
@@ -168,8 +155,8 @@ const FundWallet = () => {
         className="bg-white"
       >
         <EmailAmountModal
-         amount={amount ?? ''}
-          setAmount={(value: number) => setAmount(value)}
+          amount={amount ?? 0}
+          setAmount={setAmount}
           handlePaystackPayment={handlePaystackPayment}
           closeModal={closeModal}
         />

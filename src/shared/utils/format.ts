@@ -46,3 +46,11 @@ export const formatRelativeTime = (dateString: any) => {
     return `${diffMonths} month${diffMonths > 1 ? "s" : ""} ago`;
   }
 };
+
+export const formatPayStackAmount = (value: string) => {
+  const cleanedValue = value.replace(/,/g, "");
+  if (isNaN(Number(cleanedValue))) return value;
+
+  const formattedValue = Number(cleanedValue).toLocaleString("en-NG");
+  return formattedValue;
+};
