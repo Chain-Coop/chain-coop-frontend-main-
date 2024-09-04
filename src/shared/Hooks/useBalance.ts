@@ -2,13 +2,14 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  GetContributionBalance,
   GetUsersTransaction,
   GetWalletBalance,
 } from "../redux/slices/transaction.slices";
 import { formatAmount } from "../utils/format";
 import { AppDispatch } from "../redux/store";
 
-export const useBalance = () => {
+export const useWalletBalance = () => {
   const dispatch: AppDispatch = useDispatch();
   const balance = useSelector(
     (state: any) => state?.transaction?.getWalletBalance,
@@ -40,6 +41,40 @@ export const useBalance = () => {
   };
 };
 
+export const useConributionBalance = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const balance = useSelector(
+    (state: any) => state?.transaction?.getContributionBalance,
+  );
+  console.log("contribution", balance);
+  const [isContributionVisible, setIsContributionVisible] = useState(() => {
+    const storedVisibility = sessionStorage.getItem(
+      "contributionBalanceVisible",
+    );
+    return storedVisibility !== null ? storedVisibility === "true" : true;
+  });
+  useEffect(() => {
+    const userToken = sessionStorage.getItem("userData");
+    if (userToken) {
+      dispatch(GetContributionBalance())
+        .unwrap()
+        .catch((error: any) => {
+          console.log(error);
+        });
+    }
+  }, [dispatch]);
+
+  const formattedBalance = balance?.balance
+    ? formatAmount(balance.balance)
+    : "₦ 0.00";
+
+  return {
+    isContributionVisible,
+    setIsContributionVisible,
+    formattedBalance,
+  };
+};
+
 export const useUserTransaction = () => {
   const dispatch: AppDispatch = useDispatch();
   const getTransaction = useSelector(
@@ -63,4 +98,4 @@ export const useUserTransaction = () => {
   };
 };
 
-export default useBalance;
+export default useWalletBalance;

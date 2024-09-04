@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { AppDispatch } from "../../../shared/redux/store";
 import { LoginUser } from "../../../shared/redux/slices/landing.slices";
 import { useDispatch } from "react-redux";
-import ToggleButton from "../../../shared/utils/ToggleButton";
 import { EnterButton } from "../../common/Button";
 import logo from "../../../Assets/svg/auth/logo.svg";
 import { toast } from "react-toastify";
@@ -103,6 +102,7 @@ const UserLogin = () => {
               type="email"
               id="email"
               value={email}
+              required
               placeholder="enter your e-mail"
               onChange={(e) => setEmail(e.target.value)}
               className="input mb-5 h-[4em] w-full rounded-full border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
@@ -119,6 +119,7 @@ const UserLogin = () => {
                 type={passwordType}
                 value={password}
                 placeholder="Password"
+                required
                 onChange={(e) => setPassword(e.target.value)}
                 className="input mb-5 h-[4em] w-full rounded-full border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
               />

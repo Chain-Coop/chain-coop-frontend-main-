@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { AppDispatch } from "../../../shared/redux/store";
 import usePasswordToggle from "../../../shared/utils/usePasswordToggle";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
+import CustomSelect from "../../../shared/utils/CustomSelect";
 
 const CreateAccount = () => {
   useEffect(() => {
@@ -30,6 +31,11 @@ const CreateAccount = () => {
 
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
+
+  const membershipOptions = [
+    { value: "patron", label: "Patron" },
+    { value: "investor members", label: "Investor Members" },
+  ];
 
   const home = (e: any) => {
     e.preventDefault();
@@ -96,6 +102,7 @@ const CreateAccount = () => {
               name="email"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
+              required
               placeholder="e-mail address"
               className="mb-5 h-[4em] w-full rounded-full border-[1px] px-4 text-sm  shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
             />
@@ -114,6 +121,7 @@ const CreateAccount = () => {
               name="username"
               onChange={(e) => setUsername(e.target.value)}
               value={username}
+              required
               placeholder="username"
               className="mb-5 h-[4em] w-full  rounded-full border-[1px] px-4  text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
             />
@@ -132,11 +140,11 @@ const CreateAccount = () => {
               id="phoneNumber-input"
               onChange={(e) => setPhoneNumber(e.target.value)}
               value={phoneNumber}
+              required
               placeholder="phone number"
               className="mb-5 h-[4em] w-full rounded-full  border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
             />
           </div>
-
           <div>
             <label
               htmlFor="membership-input"
@@ -144,17 +152,11 @@ const CreateAccount = () => {
             >
               Membership Type
             </label>
-            <select
-              id="membership-input"
-              name="membershipType"
+            <CustomSelect
               value={membershipType}
-              onChange={(e) => setMembershipType(e.target.value)}
-              className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md"
-            >
-              <option value="">--- Select your membership type ---</option>
-              <option value="patron">Patron</option>
-              <option value="investor members">Investor Members</option>
-            </select>
+              onChange={(value: any) => setMembershipType(value)}
+              options={membershipOptions}
+            />
           </div>
 
           <div>
@@ -170,6 +172,7 @@ const CreateAccount = () => {
                 type="password"
                 placeholder="Password"
                 value={password}
+                required
                 onChange={(e) => setPassword(e.target.value)}
                 className="input mb-5 h-[4em]  w-full items-center rounded-full border-[1px] px-4 text-sm  shadow-md focus:border-text2 focus:outline-none focus:ring-text2  "
               />
@@ -188,6 +191,7 @@ const CreateAccount = () => {
           </div>
           <EnterButton
             type="submit"
+            disabled={loading}
             className="cursor-pointer bg-text2 text-white"
           >
             {loading ? (

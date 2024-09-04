@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
-import useBalance from "../../../shared/Hooks/useBalance";
+import useWalletBalance from "../../../shared/Hooks/useBalance";
 import ToggleButton from "../../../shared/utils/ToggleButton";
 import History from "./TransactionHistory/History";
 import { DashboardHeader } from "../../common/DashboardHeader";
@@ -13,7 +13,7 @@ import { IoIosArrowForward } from "react-icons/io";
 
 const Wallet = () => {
   const { isWalletVisible, setIsWalletVisible, formattedBalance } =
-    useBalance();
+    useWalletBalance();
   const navigate = useNavigate();
 
   const withdraw = () => {

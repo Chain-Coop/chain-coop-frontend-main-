@@ -13,6 +13,16 @@ const GetWalletBalance = async () => {
   }
 };
 
+const GetContributionBalance = async () => {
+  const url = `${API_URL}/contribute/details`;
+  try {
+    const response = await axios.get(url, { headers: authHeader() });
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
 const GetUsersTransaction = async () => {
   const url = `${API_URL}/wallet/history`;
   try {
@@ -58,6 +68,7 @@ const handleApiError = (error: any) => {
 
 const TransactionServices = {
   GetWalletBalance,
+  GetContributionBalance,
   GetUsersTransaction,
   SendProposal,
   GetProposal,

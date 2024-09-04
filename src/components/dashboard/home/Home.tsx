@@ -9,10 +9,16 @@ import {
 import { ComingSoon } from "../../common/Button";
 import plus from "../../../Assets/png/home/plus.png";
 import useUserProfile from "../../../shared/Hooks/useUserProfile";
+import { useNavigate } from "react-router";
 
 const Home = () => {
   const [balanceVisible, setBalanceVisible] = useState(true);
   const { profileDetails } = useUserProfile();
+  const navigate = useNavigate();
+
+  const addFund = () => {
+    navigate("/dashboard/wallet");
+  };
 
   const toggleVisibility = () => {
     setBalanceVisible((prevVisible) => !prevVisible);
@@ -65,7 +71,10 @@ const Home = () => {
         </article>
       </section>
       <div>
-        <button className="mx-auto mt-[2em] w-full rounded-3xl bg-inherit py-[1em] text-center text-lg font-semibold text-text4 shadow-md">
+        <button
+          onClick={addFund}
+          className="mx-auto mt-[2em] w-full rounded-3xl bg-inherit py-[1em] text-center text-lg font-semibold text-text4 shadow-md"
+        >
           + Add Fund
         </button>
       </div>

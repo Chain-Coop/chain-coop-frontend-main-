@@ -9,9 +9,9 @@ import EmailAmountModal from "./modal/paystack/EmailAmountModal";
 import { ModalTypes } from "../../../../data/Data";
 import UploadReceiptModal from "./modal/UploadReceiptModal";
 import PaymentSuccessfull from "./modal/PaymentSuccessfull";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import fund from "../../../../Assets/svg/dashboard/wallet/withdraw.svg";
 import debit from "../../../../Assets/svg/dashboard/wallet/debit.svg";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const FundWallet: React.FC = () => {
   const [modalType, setModalType] = useState<ModalTypes | null>(null);
@@ -65,9 +65,7 @@ const FundWallet: React.FC = () => {
             openModal(ModalTypes.Final);
           }
         },
-        onClose: function () {
-          // Handle modal close
-        },
+        onClose: function () {},
       });
       handler.openIframe();
       closeModal();
