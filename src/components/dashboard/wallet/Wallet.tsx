@@ -92,7 +92,7 @@ const Wallet = () => {
             </div>
           </section>
 
-          <section className="mt-[2em]">
+          {/* <section className="mt-[2em]">
             <p className="text-sm font-bold text-memt1">No Card Linked</p>
             <div className="items-center font-medium lg:flex lg:justify-between ">
               <p>{`You haven't linked your card to add funds.`}</p>
@@ -103,7 +103,7 @@ const Wallet = () => {
                 </button>
               </div>
             </div>
-          </section>
+          </section> */}
           <History />
         </div>
       </div>

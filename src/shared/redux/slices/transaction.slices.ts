@@ -19,7 +19,6 @@ export const GetContributionBalance = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const data = await TransactionServices.GetContributionBalance();
-      console.log("data", data);
       return { transaction: data };
     } catch (error: any) {
       return handleAsyncError(error, thunkAPI);
@@ -63,6 +62,18 @@ export const GetProposal = createAsyncThunk(
   },
 );
 
+export const GetAllProject = createAsyncThunk(
+  "transaction/getAllProject",
+  async (_, thunkAPI) => {
+    try {
+      const data = await TransactionServices.GetAllProject();
+      return { transaction: data };
+    } catch (error: any) {
+      return handleAsyncError(error, thunkAPI);
+    }
+  },
+);
+
 const handleAsyncError = (error: any, thunkAPI: any) => {
   const message = error.message || "An error occurred. Please try again.";
   thunkAPI.dispatch(setMessage(message));
@@ -76,6 +87,7 @@ interface TransactionState {
   createProposal: any | null;
   userProposal: any | null;
   fundWalletStatus: "idle" | "loading" | "success" | "failed";
+  allProjects:any,
 }
 
 const initialState: TransactionState = {
@@ -85,6 +97,7 @@ const initialState: TransactionState = {
   createProposal: null,
   userProposal: null,
   fundWalletStatus: "idle",
+  allProjects:null,
 };
 
 export const transactionSlice = createSlice({
@@ -143,6 +156,15 @@ export const transactionSlice = createSlice({
       )
       .addCase(GetProposal.rejected, (state) => {
         state.userProposal = null;
+      })
+      .addCase(
+        GetAllProject.fulfilled,
+        (state, action: PayloadAction<{ transaction: any }>) => {
+          state.allProjects = action.payload.transaction;
+        },
+      )
+      .addCase(GetAllProject.rejected, (state) => {
+        state.allProjects = null;
       });
   },
 });

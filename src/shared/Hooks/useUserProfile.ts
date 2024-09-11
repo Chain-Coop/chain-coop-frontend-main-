@@ -1,11 +1,20 @@
-import { useEffect } from "react";
+
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetUserProfile } from "../redux/slices/landing.slices";
+import { GetUserProfile, uploadAvatar } from "../redux/slices/landing.slices";
 import { AppDispatch } from "../redux/store";
+import { setMessage } from "../redux/slices/message.slices";
+import { GetAllProject, GetProposal } from "../redux/slices/transaction.slices";
+
+enum UploadFields {
+  ProfilePicture = "profilePicture", 
+}
 
 export const useUserProfile = () => {
   const dispatch: AppDispatch = useDispatch();
   const profileDetails = useSelector((state: any) => state.landing.getProfile);
+  const userToken = sessionStorage.getItem("userData");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     dispatch(GetUserProfile())
@@ -15,9 +24,88 @@ export const useUserProfile = () => {
       });
   }, [dispatch]);
 
+  const uploadUserAvatar = async (selectedFile: File) => {
+    if (userToken && selectedFile) {
+      setLoading(true);
+      try {
+        const formData = new FormData();
+        formData.append(UploadFields.ProfilePicture, selectedFile); 
+        await dispatch(uploadAvatar(formData)).unwrap();
+        await dispatch(profileDetails()).unwrap(); 
+      } catch (error: any) {
+        const errorMessage = error.message || "Failed to upload avatar";
+        dispatch(setMessage(errorMessage));
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      const errorMessage = "Token not found or file not selected";
+      dispatch(setMessage(errorMessage));
+    }
+  };
+
   return {
     profileDetails,
+    loading,
+    uploadUserAvatar,
   };
 };
+
+
+
+export const useProposalLength = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+
+  const useLength = useSelector(
+    (state: any) => state.transaction.userProposal,
+  );
+  const userToken = sessionStorage.getItem("userData");
+  useEffect(() => {
+    if (userToken) {
+      setLoading(true);
+      dispatch(GetProposal())
+        .unwrap()
+        .then(() => setLoading(false))
+        .catch((error: any) => {
+          const errorMessage = error.message;
+          dispatch(setMessage(errorMessage));
+          setLoading(false);
+        });
+    } else {
+      dispatch(setMessage("Token not found"));
+    }
+  }, [dispatch, userToken]);
+
+  return { useLength, loading };
+};
+
+export const useAllProjects = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+
+  const useProjects = useSelector(
+    (state: any) => state.transaction.allProjects,
+  );
+  const userToken = sessionStorage.getItem("userData");
+  useEffect(() => {
+    if (userToken) {
+      setLoading(true);
+      dispatch(GetAllProject())
+        .unwrap()
+        .then(() => setLoading(false))
+        .catch((error: any) => {
+          const errorMessage = error.message;
+          dispatch(setMessage(errorMessage));
+          setLoading(false);
+        });
+    } else {
+      dispatch(setMessage("Token not found"));
+    }
+  }, [dispatch, userToken]);
+
+  return { useProjects, loading };
+};
+
 
 export default useUserProfile;

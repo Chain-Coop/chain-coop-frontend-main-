@@ -14,7 +14,7 @@ const GetWalletBalance = async () => {
 };
 
 const GetContributionBalance = async () => {
-  const url = `${API_URL}/contribute/details`;
+  const url = `${API_URL}/contribution/balance`;
   try {
     const response = await axios.get(url, { headers: authHeader() });
     return response.data;
@@ -58,6 +58,17 @@ const GetProposal = async () => {
   }
 };
 
+
+const GetAllProject = async () => {
+  const url = `${API_URL}/project`;
+  try {
+    const response = await axios.get(url, { headers: authHeader() });
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
 const handleApiError = (error: any) => {
   if (!error.response) {
     throw new Error("Network Error: Please check your internet connection.");
@@ -72,6 +83,7 @@ const TransactionServices = {
   GetUsersTransaction,
   SendProposal,
   GetProposal,
+  GetAllProject,
 };
 
 export default TransactionServices;

@@ -23,6 +23,7 @@ import AddFund from "../wallet/transfer/fundProject/AddFund";
 import ConfirmAmount from "../wallet/transfer/confirmAmount/Confirm";
 import ProfileTransactions from "../profile/profileDetails/transactions/Transactions";
 import Shares from "../shares/main/Shares";
+import ContactUs from "../contact/main/ContactUs";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -59,6 +60,11 @@ const Dashboard = () => {
             element={<ConfirmAmount />}
           />
 
+          <Route
+            path="contribution/fund_contribution/confirm_transaction"
+            element={<ConfirmAmount />}
+          />
+
           <Route path="project" element={<Project />} />
 
           <Route path="proposal/*" element={<Proposal />} />
@@ -71,7 +77,9 @@ const Dashboard = () => {
             path="profile/transactions"
             element={<ProfileTransactions />}
           />
-        </Routes>
+
+        <Route path="contact_us" element={<ContactUs />} />
+    </Routes>
       </section>
       <aside className="h-vh hidden w-[45%] overflow-y-auto lg:block ">
         <Right />

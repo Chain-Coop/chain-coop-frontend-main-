@@ -103,6 +103,7 @@ const CreateAccount = () => {
               onChange={(e) => setEmail(e.target.value)}
               value={email}
               required
+              disabled={loading}
               placeholder="e-mail address"
               className="mb-5 h-[4em] w-full rounded-full border-[1px] px-4 text-sm  shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
             />
@@ -122,6 +123,7 @@ const CreateAccount = () => {
               onChange={(e) => setUsername(e.target.value)}
               value={username}
               required
+              disabled={loading}
               placeholder="username"
               className="mb-5 h-[4em] w-full  rounded-full border-[1px] px-4  text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
             />
@@ -141,6 +143,7 @@ const CreateAccount = () => {
               onChange={(e) => setPhoneNumber(e.target.value)}
               value={phoneNumber}
               required
+              disabled={loading}
               placeholder="phone number"
               className="mb-5 h-[4em] w-full rounded-full  border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
             />
@@ -173,6 +176,7 @@ const CreateAccount = () => {
                 placeholder="Password"
                 value={password}
                 required
+                disabled={loading}
                 onChange={(e) => setPassword(e.target.value)}
                 className="input mb-5 h-[4em]  w-full items-center rounded-full border-[1px] px-4 text-sm  shadow-md focus:border-text2 focus:outline-none focus:ring-text2  "
               />

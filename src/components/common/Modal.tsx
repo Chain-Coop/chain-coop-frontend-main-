@@ -26,7 +26,7 @@ const Modal = ({ children, isOpen, onClose, className }: any) => {
       className={`modal fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50 backdrop-blur-sm`}
     >
       <div
-        className={`relative my-8 w-full max-w-lg rounded-[1em] p-3 px-[2em] ${className}`}
+        className={`relative my-8 w-full max-w-md rounded-[1em] p-3 px-[2em] ${className}`}
       >
         <img
           src={cancel}

@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import transfer from "../../../../../Assets/svg/dashboard/wallet/transfer.svg";
 import {
@@ -13,11 +12,13 @@ import fund_icon from "../../../../../Assets/svg/dashboard/project.svg";
 import { Link } from "react-router-dom";
 import Modal from "../../../../common/Modal";
 import PaymentPlan from "../modal/PaymentPlan";
+import ContributionPlan from "../modal/ContributionPlan";
 
 const Transfer = () => {
   const navigate = useNavigate();
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPaymentPlanModalOpen, setIsPaymentPlanModalOpen] = useState(false);
+  const [isContributionPlanModalOpen, setIsContributionPlanModalOpen] = useState(false);
 
   const handleBackClick = () => {
     navigate(-1);
@@ -27,18 +28,27 @@ const Transfer = () => {
     setDropdownVisible(!dropdownVisible);
   };
 
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
+  const handleContributionClick = () => {
+    setIsPaymentPlanModalOpen(true);
   };
 
-  const handleContributionClick = () => {
-    setIsModalOpen(true);
+  const handleClosePaymentPlanModal = () => {
+    setIsPaymentPlanModalOpen(false);
+  };
+
+  const handleOpenContributionPlanModal = () => {
+    setIsPaymentPlanModalOpen(false); 
+    setIsContributionPlanModalOpen(true); 
+  };
+
+  const handleCloseContributionPlanModal = () => {
+    setIsContributionPlanModalOpen(false);
   };
 
   return (
     <main className="font-sans">
       <DashboardHeader
-        className="relative cursor-pointer items-center"
+        className="relative cursor-pointer lg:mt-[2em] items-center"
         onClick={handleBackClick}
       >
         <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
@@ -92,8 +102,11 @@ const Transfer = () => {
           </div>
         )}
       </section>
-      <Modal isOpen={isModalOpen} onClose={toggleModal} className="bg-white">
-        <PaymentPlan />
+      <Modal isOpen={isPaymentPlanModalOpen} onClose={handleClosePaymentPlanModal} className="bg-white">
+        <PaymentPlan onContinue={handleOpenContributionPlanModal} />
+      </Modal>
+      <Modal isOpen={isContributionPlanModalOpen} onClose={handleCloseContributionPlanModal} className="bg-white">
+        <ContributionPlan /> 
       </Modal>
     </main>
   );

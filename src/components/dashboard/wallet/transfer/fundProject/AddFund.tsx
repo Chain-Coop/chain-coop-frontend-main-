@@ -1,16 +1,14 @@
-import React from "react";
-import { IoIosArrowBack } from "react-icons/io";
+import React, { useState } from "react";
+import { IoIosArrowBack, IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
 import { DashboardHeader } from "../../../../common/DashboardHeader";
 import { useNavigate } from "react-router";
 import arrow from "../../../../../Assets/svg/dashboard/wallet/transfer-arrow.svg";
-import { useState } from "react";
-import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
 import { Primary } from "../../../../common/Button";
 
 const AddFund = () => {
   const navigate = useNavigate();
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedProject, setSelectedProject] = useState<string | null>(null);
 
   const handleBackClick = () => {
     navigate(-1);
@@ -20,7 +18,7 @@ const AddFund = () => {
     setDropdownVisible(!dropdownVisible);
   };
 
-  const handleProjectSelect = (project: any) => {
+  const handleProjectSelect = (project: string) => {
     setSelectedProject(project);
     setDropdownVisible(false);
   };
@@ -36,7 +34,6 @@ const AddFund = () => {
         onClick={handleBackClick}
       >
         <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
-
         <div className="flex flex-grow items-center justify-center">
           <div className="tracking-wide">Add Fund To Project</div>
         </div>
@@ -109,7 +106,10 @@ const AddFund = () => {
         </div>
         <Primary
           onClick={confirmAmount}
-          className="mt-[2em] w-full bg-text2 py-3 text-white"
+          className={`mt-[2em] w-full py-3 text-white ${
+            selectedProject ? "bg-text2" : "bg-gray-400 cursor-not-allowed"
+          }`}
+          disabled={!selectedProject}
         >
           Continue
         </Primary>

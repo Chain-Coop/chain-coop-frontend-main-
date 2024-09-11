@@ -74,6 +74,20 @@ export const GetUserProfile = createAsyncThunk(
   },
 );
 
+export const uploadAvatar = createAsyncThunk(
+  "landing/uploadProfile",
+  async (body: any, thunkAPI) => {
+    try {
+      const data = await LandingServices.UploadAvatar(body);
+      return data;
+    } catch (error: any) {
+      const message = error.message || "Something went wrong!";
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
 const initialState = {
   getUserRegistered: null,
   getloginUser: null,
@@ -81,6 +95,7 @@ const initialState = {
   getPublicContact: null,
   getUserPin: null,
   getProfile: null,
+  avatarUrl: null,
 };
 
 export const landingSlice = createSlice({
@@ -121,6 +136,9 @@ export const landingSlice = createSlice({
       const errorMessage =
         action.error.message || "Failed to fetch user profile.";
       setMessage(errorMessage);
+    });
+    builder.addCase(uploadAvatar.fulfilled, (state, action) => {
+      state.avatarUrl = action.payload.data.publicURL;
     });
   },
 });

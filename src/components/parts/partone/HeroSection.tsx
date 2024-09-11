@@ -6,9 +6,9 @@ import { Primary } from "../../common/Button";
 const HeroSection = () => {
   return (
     <main className="relative flex w-full flex-col font-sans lg:flex-row">
-      <div className="flex items-center px-4 py-8 sm:px-6 lg:w-1/2 lg:px-[4em] lg:py-24">
+      <div className="flex items-center px-4 py-5 lg:w-1/2 lg:px-[4em] lg:py-24">
         <div className="max-w-xl">
-          <h1 className="mb-4 text-2xl font-bold sm:text-3xl lg:mb-6 lg:text-5xl">
+          <h1 className="mb-4 text-2xl font-bold  lg:mb-6 lg:text-5xl">
             Your Trusted Investing <br className="hidden sm:inline" /> Platform
             <span className="text-text2"> with</span>
             <br className="hidden sm:inline" />
@@ -21,7 +21,7 @@ const HeroSection = () => {
           </p>
           <div className="flex flex-col gap-[3em] sm:flex-row sm:items-center">
             <Link to="/sign-up" className="w-full sm:w-auto">
-              <Primary className="w-full rounded-md bg-text2 px-4 py-2 text-center text-sm text-text5 sm:px-4 sm:py-3 sm:text-base">
+              <Primary className="w-full rounded-md bg-text2 lg:px-4 lg:py-2 text-center text-sm text-text5 px-1 py-2 sm:text-base">
                 Get Started
               </Primary>
             </Link>

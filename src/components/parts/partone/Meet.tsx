@@ -19,7 +19,7 @@ const Meet = () => {
               key={index}
               src={item.src}
               alt={`Person ${index + 1}`}
-              className="h-[20em] w-[26em] rounded-md"
+              className="rounded-md"
             />
           ))}
         </div>

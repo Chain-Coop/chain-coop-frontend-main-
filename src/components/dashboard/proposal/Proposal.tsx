@@ -1,11 +1,17 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { useProposalLength } from "../../../shared/Hooks/useUserProfile";
 import { DashboardHeader } from "../../common/DashboardHeader";
+import plus from "../../../Assets/png/home/plus.png";
 import { FiSearch } from "react-icons/fi";
 import { IoIosPeople } from "react-icons/io";
-import plus from "../../../Assets/png/home/plus.png";
-import { Link } from "react-router-dom";
 
 const Proposal = () => {
+  const {useLength}=useProposalLength()
+  const proposalLength = useLength?.length || 0;
+
+
+  console.log("use proposal length",proposalLength)
   return (
     <main className="font-sans">
       <div className="sm:mt-0 lg:mt-8">
@@ -14,7 +20,7 @@ const Proposal = () => {
             Proposal
           </DashboardHeader>
         </header>
-        <div className="mx-auto mt-8 sm:px-[1em] lg:w-[31em] lg:px-[0]">
+        <div className="mx-auto mt-8 sm:px-[1em] lg:w-[32em] lg:px-[0]">
           <section className="mb-4">
             <h2 className="text-lg font-bold">Explore DAOs</h2>
           </section>
@@ -28,7 +34,7 @@ const Proposal = () => {
               <p>DOA Joined</p>
             </div>
             <div className="flex flex-col justify-center rounded-lg bg-text2 py-[2em]">
-              <h1 className="mb-2 text-4xl font-bold">4</h1>
+                 <h1 className="mb-2 text-4xl font-bold">{proposalLength}</h1>
               <p>Proposal</p>
             </div>
           </section>
@@ -116,3 +122,4 @@ const Proposal = () => {
 };
 
 export default Proposal;
+

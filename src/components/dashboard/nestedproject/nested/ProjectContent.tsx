@@ -1,7 +1,11 @@
 import React from "react";
 import { ComingSoon } from "../../../common/Button";
+import { useAllProjects } from "../../../../shared/Hooks/useUserProfile";
 
 const ProjectContent = () => {
+  const{useProjects} = useAllProjects()
+
+  console.log("prooo",useProjects)
   return (
     <main className="font-sans">
       <div className="sm:px-[1em] lg:px-0">

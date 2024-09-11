@@ -45,7 +45,7 @@ const FundWallet: React.FC = () => {
     openModal(ModalTypes.Final);
   };
 
-  const handlePaystackPayment = useCallback(
+  const handlePaystackPayment = 
     (e: React.FormEvent) => {
       e.preventDefault();
 
@@ -69,13 +69,11 @@ const FundWallet: React.FC = () => {
       });
       handler.openIframe();
       closeModal();
-    },
-    [amount, profileDetails?.email, transactionReference],
-  );
+    }
 
   return (
     <main className="font-sans">
-      <header className="mt-[2em]">
+      <header className="lg:mt-[2em]">
         <DashboardHeader
           className="relative cursor-pointer items-center"
           onClick={handleBackClick}

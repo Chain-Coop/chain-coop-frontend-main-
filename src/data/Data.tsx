@@ -255,4 +255,6 @@ export enum ModalTypes {
   Upload = "upload",
   Final = "final",
   Paystack = "paystack",
+  PaymentPlan="PaymentPlan",
+  ContributionPlan="ContributionPlan"
 }

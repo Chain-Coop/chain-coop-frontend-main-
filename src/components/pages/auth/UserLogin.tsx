@@ -102,6 +102,7 @@ const UserLogin = () => {
               type="email"
               id="email"
               value={email}
+              disabled={loading}
               required
               placeholder="enter your e-mail"
               onChange={(e) => setEmail(e.target.value)}
@@ -120,6 +121,7 @@ const UserLogin = () => {
                 value={password}
                 placeholder="Password"
                 required
+                disabled={loading}
                 onChange={(e) => setPassword(e.target.value)}
                 className="input mb-5 h-[4em] w-full rounded-full border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
               />

@@ -5,6 +5,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import person2 from "../../../Assets/png/dashboard/right.png";
 import person3 from "../../../Assets/png/home/ladylaptop3.png";
 import { ComingSoon } from "../../common/Button";
+import { Link } from "react-router-dom";
 
 const Right = () => {
   return (
@@ -29,7 +30,7 @@ const Right = () => {
           <h2 className="text-lg font-semibold">Need Help? Contact Us </h2>
         </header>
         <hr className="mt-[1.5em] h-1" />
-        <article className="mt-[1.5em] flex items-center gap-2">
+        <Link to="/dashboard/contact_us" className="mt-[1.5em] flex items-center gap-2">
           <div>
             <SiGooglemessages className="fill-text2" size={45} />
           </div>
@@ -47,7 +48,7 @@ const Right = () => {
               className="cursor-pointer text-text2"
             />
           </div>
-        </article>
+        </Link>
 
         <hr className="mt-[1.5em] h-1" />
         <section className="mt-[1.5em] flex items-center gap-2">

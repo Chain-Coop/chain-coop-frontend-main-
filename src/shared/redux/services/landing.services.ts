@@ -14,6 +14,10 @@ const API_URL_VERIFY_USER =
 const API_URL_PUBLIC_CONTACT =
   import.meta.env.VITE_REACT_APP_API_URL + "/contact-us";
 
+const API_URL_UPLOAD_AVATAR =
+import.meta.env.VITE_REACT_APP_API_URL + "/profile/upload_profile_picture";
+
+
 const RegisterUser = async (body: any) => {
   try {
     const response = await axios.post(API_URL_REGISTER_USER, body, {});
@@ -107,12 +111,34 @@ const GetUserProfile = async () => {
   }
 };
 
+const UploadAvatar = async (body: any) => {
+  try {
+    const response = await axios.post(API_URL_UPLOAD_AVATAR, body, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("userData")}`,
+      },
+    });
+    if (response?.data) {
+      return response.data;
+    } else {
+      throw new Error("Unexpected response structure");
+    }
+  } catch (error: any) {
+    if (!error.response) {
+      throw new Error("Network Error: Please check your internet connection.");
+    } else {
+      throw error.response.data;
+    }
+  }
+};
+
 const LandingServices = {
   RegisterUser,
   LoginUser,
   VerifyUserAuth,
   PublicContact,
   GetUserProfile,
+  UploadAvatar,
 };
 
 export default LandingServices;

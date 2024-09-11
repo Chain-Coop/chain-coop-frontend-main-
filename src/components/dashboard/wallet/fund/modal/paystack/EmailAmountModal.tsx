@@ -33,7 +33,7 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({
 
   return (
     <main className="font-sans">
-      <div className="p-6">
+      <div className="py-[3em]">
         <h2 className="mb-4 flex justify-center text-xl font-semibold">
           Pay with Paystack
         </h2>
@@ -56,7 +56,7 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({
           </div>
           <Primary
             type="submit"
-            className="mt-[2em] w-full bg-text2 py-2 text-white"
+            className="mt-[1.5em] w-full bg-text2 py-2 text-white"
           >
             Pay with Paystack
           </Primary>

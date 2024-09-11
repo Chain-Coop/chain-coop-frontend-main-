@@ -29,7 +29,7 @@ const Home = () => {
       <header className="flex justify-between sm:mt-[1em] lg:mt-[2.5em]">
         <div className="font-medium">
           <p>Welcome Back!</p>
-          <p className="mt-2 font-semibold">
+          <p className="mt-1 font-semibold">
             {profileDetails?.username || "user"}
           </p>
         </div>

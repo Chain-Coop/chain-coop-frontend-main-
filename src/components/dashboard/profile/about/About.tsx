@@ -1,16 +1,14 @@
 import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
+import { Link } from "react-router-dom";
 
 const About = () => {
   const sections = [
-    {
-      title: "Terms & Condition",
-    },
+    { title: "Terms & Condition" },
     { title: "Privacy Policy" },
     { title: "FAQs" },
-    { title: "Contact Us" },
+    { title: "Contact Us", link: "/dashboard/contact_us" },
     { title: "Visit Our Blog" },
-    { title: "Visit Our Website" },
     { title: "Join Our Community" },
   ];
 
@@ -24,10 +22,17 @@ const About = () => {
           <div key={index} className="mb-2 flex flex-col">
             <hr className="h-[1px] rounded-full bg-gray-200" />
             <div className="flex items-center justify-between py-1">
-              <span className="font-semibold">{section.title}</span>
-              <div className="flex items-center">
-                <IoIosArrowForward size={15} className="text-text2" />
-              </div>
+              {section.link ? (
+                <Link to={section.link} className="flex items-center justify-between w-full">
+                  <span className="font-semibold">{section.title}</span>
+                  <IoIosArrowForward size={15} className="text-text2" />
+                </Link>
+              ) : (
+                <div className="flex items-center justify-between w-full">
+                  <span className="font-semibold">{section.title}</span>
+                  <IoIosArrowForward size={15} className="text-text2" />
+                </div>
+              )}
             </div>
           </div>
         ))}
