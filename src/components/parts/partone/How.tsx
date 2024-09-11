@@ -5,7 +5,7 @@ import step3 from "../../../Assets/png/home/howto-step3.png";
 
 const How = () => {
   return (
-    <main className="mx-auto font-sans sm:mt-[3em] sm:px-[1em] lg:mt-[8em] lg:w-[86%] lg:px-[0]">
+    <main className="font-sans mt-[3em] sm:px-[1em] lg:mt-[8em] ">
       <header className="flex justify-center">
         <h1 className="text-3xl font-bold">How to Get started</h1>
       </header>

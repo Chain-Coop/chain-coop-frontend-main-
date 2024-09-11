@@ -69,6 +69,18 @@ const GetAllProject = async () => {
   }
 };
 
+const CreateContributionPlan = async (body: any) => {
+  try {
+    const response = await axios.post(`${API_URL}/contribution/contribute`, body, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
+
 const handleApiError = (error: any) => {
   if (!error.response) {
     throw new Error("Network Error: Please check your internet connection.");
@@ -84,6 +96,7 @@ const TransactionServices = {
   SendProposal,
   GetProposal,
   GetAllProject,
+  CreateContributionPlan,
 };
 
 export default TransactionServices;

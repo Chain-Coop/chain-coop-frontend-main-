@@ -30,7 +30,7 @@ const AddFund = () => {
   return (
     <main className="font-sans">
       <DashboardHeader
-        className="relative cursor-pointer items-center"
+        className="relative lg:mt-[2em] cursor-pointer items-center"
         onClick={handleBackClick}
       >
         <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />

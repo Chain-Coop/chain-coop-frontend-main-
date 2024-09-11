@@ -1,13 +1,21 @@
 import React from "react";
 import { useState } from "react";
-import ToggleButton from "../../../shared/utils/ToggleButton";
-import { DashboardHeader } from "../../common/DashboardHeader";
-import { MdArrowOutward } from "react-icons/md";
-import { IoIosArrowForward } from "react-icons/io";
-import { Primary } from "../../../components/common/Button";
-import Modal from "../../../components/common/Modal";
 import { useNavigate } from "react-router";
 import { useConributionBalance } from "../../../shared/Hooks/useBalance";
+import ToggleButton from "../../../shared/utils/ToggleButton";
+import { DashboardHeader } from "../../common/DashboardHeader";
+import { Primary } from "../../../components/common/Button";
+import Modal from "../../../components/common/Modal";
+import Box from '@mui/material/Box';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import { MdArrowOutward } from "react-icons/md";
+import { IoIosArrowForward } from "react-icons/io";
+import { steps } from "../../../data/Data";
 
 
 const Contribution = () => {
@@ -34,8 +42,23 @@ const Contribution = () => {
   const fundContribution = ()=>{
     navigate("/dashboard/wallet/transfer")
   }
+  const [activeStep, setActiveStep] = React.useState(0);
+
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleReset = () => {
+    setActiveStep(0);
+  };
+
+
   return (
-    <main className="font-sans">
+    <main className="font-sans pb-[1.5em]">
       <header className="sm:mt-[0] lg:mt-[2em]">
         <DashboardHeader className="flex items-center justify-center">
           Monthly Contribution
@@ -75,6 +98,7 @@ const Contribution = () => {
               <span className="font-semibold text-act">0%</span>
             </div>
           </div>
+          
           <section className="mt-[2em]">
             <div className="flex justify-between">
               <div>
@@ -112,6 +136,32 @@ const Contribution = () => {
             Effortlessly manage and monitor your financial commitments
           </p>
         </div>
+        <Box sx={{ maxWidth: 400, marginTop: "1em" }}>
+      <Stepper activeStep={activeStep} orientation="vertical">
+        {steps.map((step, index) => (
+          <Step key={step.label}>
+            <StepLabel
+            sx={{fontSize:"2rem",fontWeight:"1em"}}
+            >
+              <Typography sx={{display:"flex",fontFamily:"sans-serif",gap:"3px"}}>
+              {step.label} :
+              <p>
+                {step.comment}
+              </p>
+              </Typography>
+            </StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+      {activeStep === steps.length && (
+        <Paper square elevation={0} sx={{ p: 3 }}>
+          <Typography>All steps completed - you&apos;re finished</Typography>
+          <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
+            Reset
+          </Button>
+        </Paper>
+      )}
+    </Box>
       </section>
       <Modal isOpen={isModalOpen} onClose={toggleModal} className="bg-white">
         <div className="mt-[2.5em]">

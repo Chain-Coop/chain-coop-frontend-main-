@@ -25,7 +25,7 @@ const Story = () => {
           />
         </div>
         <section className="absolute inset-0 mx-auto">
-          <header className="mx-auto text-center sm:mt-[2em] sm:w-full sm:px-1 md:px-[1em] lg:mt-[9em] lg:w-[65%]">
+          <header className="mx-auto text-center sm:w-full sm:px-1 md:px-[1em] lg:mt-[9em] lg:w-[65%]">
             <h1 className="text-[1.5em] font-semibold sm:text-[2em] lg:text-[2.5em]">
               Our Story
             </h1>
@@ -58,7 +58,7 @@ const Story = () => {
                   <br className="hidden sm:block" />
                   One-Time N100k Membership Fee
                 </p>
-                <div className="mt-[1em] flex flex-col gap-2 font-medium lg:gap-7">
+                <div className="mt-[1em] flex flex-col gap-1 font-medium lg:gap-7">
                   <p className="flex items-center gap-3 text-sm">
                     <img src={mark} alt="svg-image" className="h-4 w-4" />{" "}
                     Legally Guaranteed Returns
@@ -83,7 +83,7 @@ const Story = () => {
             </div>
           </div>
         </section>
-        <div className="mx-auto mt-[40em] flex w-full flex-col justify-between gap-[2em] px-4 sm:mt-[6em] sm:w-[98%] lg:mt-[2em] lg:flex-row">
+        <div className="mx-auto mt-[40em] flex lg:w-[87%] flex-col justify-between gap-[2em] px-4 sm:mt-[7em]  lg:mt-[2em] lg:flex-row">
           <div className="h-full rounded-lg bg-text2 px-[1em] py-[2em] text-text3 shadow-md sm:px-[2em] sm:py-[3em]">
             <h1 className="text-xl font-semibold sm:text-2xl">Our Mission</h1>
             <p className="mt-4 text-sm sm:text-base">
@@ -94,7 +94,7 @@ const Story = () => {
               through chain wallet simple safe and transparent way.
             </p>
           </div>
-          <div className="mb-[4em] h-full rounded-lg px-[1em] py-[2em] shadow-md sm:px-[2em] sm:py-[3em] lg:mt-[5em]">
+          <div className="mb-[2em] h-full rounded-lg px-[1em] py-[2em] shadow-md sm:px-[2em] sm:py-[3em] lg:mt-[5em]">
             <h1 className="text-xl font-semibold sm:text-2xl">Our Goals</h1>
             <p className="mt-4 text-sm sm:text-base">
               Meet Chain Coop our business-Oriented community, designed into a

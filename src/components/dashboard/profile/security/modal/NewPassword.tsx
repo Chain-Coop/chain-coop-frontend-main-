@@ -1,7 +1,7 @@
 import React from "react";
 import usePasswordToggle from "../../../../../shared/utils/usePasswordToggle";
+import {  Primary } from "../../../../common/Button";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
-import { EnterButton, Primary } from "../../../../common/Button";
 
 const NewPassword = () => {
   const [passwordType, togglePasswordType] = usePasswordToggle();
@@ -24,7 +24,7 @@ const NewPassword = () => {
               id="password"
               name="password"
               type={passwordType}
-              className="mt-[10px] w-full rounded-full  border-[1px] bg-white p-3 shadow-lg focus:border-text2 focus:outline-none focus:ring-text2 "
+              className="mt-[10px] w-full rounded-full  border-[1px] bg-white p-3 shadow-lg focus:border-text2 focus:outline-none focus:ring-text2"
             />
             <button
               type="button"

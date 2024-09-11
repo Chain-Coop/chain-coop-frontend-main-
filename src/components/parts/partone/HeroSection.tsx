@@ -19,9 +19,9 @@ const HeroSection = () => {
             cooperative with open membership, through Chain Wallet. Simple,
             safe, and transparent way.
           </p>
-          <div className="flex flex-col gap-[3em] sm:flex-row sm:items-center">
+          <div className="flex flex-col gap-[2.5em] sm:flex-row sm:items-center">
             <Link to="/sign-up" className="w-full sm:w-auto">
-              <Primary className="w-full rounded-md bg-text2 lg:px-4 lg:py-2 text-center text-sm text-text5 px-1 py-2 sm:text-base">
+              <Primary className="w-full rounded-md bg-text2 lg:px-4 lg:py-2 text-center text-sm text-text5 px-[9px] py-2 sm:text-base">
                 Get Started
               </Primary>
             </Link>

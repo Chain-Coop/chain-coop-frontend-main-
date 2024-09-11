@@ -11,9 +11,9 @@ import dot from "../../../Assets/svg/membership/radio-button.svg";
 
 const Card = () => {
   return (
-    <main className="mx-auto font-sans sm:px-[1.5em] lg:mt-[3em] lg:w-[86%]">
+    <main className="mx-auto font-sans px-[1em]">
       <section className="mt-8 flex flex-col justify-between lg:flex-row lg:space-x-8">
-        <div className="flex-1 sm:mt-[1em] lg:mt-[0px]">
+        <div className="flex-1">
           <div className="relative">
             <img src={member} alt="customer's_card" className="w-full" />
             <div className="mt-[1.5em] flex flex-col">

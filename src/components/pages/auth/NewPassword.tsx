@@ -90,7 +90,7 @@ const NewPassword = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="create new password"
-                className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md"
+                className="mb-5 h-[4em] w-full rounded-full focus:border-text2 focus:outline-none focus:ring-text2 px-4 text-sm shadow-md"
               />
               <button
                 type="button"
@@ -120,7 +120,7 @@ const NewPassword = () => {
                 value={confirmPassword}
                 name="confirmPassword"
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md"
+                className="mb-5 h-[4em] focus:border-text2 focus:outline-none focus:ring-text2 w-full rounded-full px-4 text-sm shadow-md"
               />
               <button
                 type="button"
@@ -136,7 +136,7 @@ const NewPassword = () => {
             </div>
           </div>
           <div className="mt-[1em] sm:px-[1em]">
-            <EnterButton type="submit" className="mt-[2em]">
+            <EnterButton disabled={loading} type="submit" className="mt-[2em]">
               {loading ? (
                 <ReactLoading
                   color="#FFFFFF"

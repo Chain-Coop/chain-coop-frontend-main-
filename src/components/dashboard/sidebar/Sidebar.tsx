@@ -1,15 +1,18 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../../Assets/svg/cooplogo.svg";
 import membership from "../../../Assets/jpg/membership/customer.jpg";
 import { sidebarLinks } from "../../../data/Data";
 
 const Sidebar = () => {
   const location = useLocation();
-
+const navigate = useNavigate()
+const home = ()=>{
+  navigate("/dashboard")
+}
   return (
     <aside className="h-vh flex w-[23em] flex-col border-r border-bl bg-rec1 py-[2em] font-sans text-memt1 shadow-md">
-      <div>
+      <div onClick={home}>
         <img src={logo} alt="ChainCoop-logo" className="ml-[1em]" />
       </div>
       <nav className="mb-[3em] ml-5 mt-[2em] flex flex-grow flex-col">

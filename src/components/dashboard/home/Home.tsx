@@ -1,15 +1,15 @@
 import React from "react";
 import { useState } from "react";
-import { IoIosNotifications } from "react-icons/io";
+import { useNavigate } from "react-router";
+import useUserProfile from "../../../shared/Hooks/useUserProfile";
+import { ComingSoon } from "../../common/Button";
 import {
   MdOutlineVisibilityOff,
   MdOutlineVisibility,
   MdArrowOutward,
 } from "react-icons/md";
-import { ComingSoon } from "../../common/Button";
 import plus from "../../../Assets/png/home/plus.png";
-import useUserProfile from "../../../shared/Hooks/useUserProfile";
-import { useNavigate } from "react-router";
+import { IoIosNotifications } from "react-icons/io";
 
 const Home = () => {
   const [balanceVisible, setBalanceVisible] = useState(true);

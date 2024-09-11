@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import transfer from "../../../../../Assets/svg/dashboard/wallet/transfer.svg";
-import {
-  IoIosArrowBack,
-  IoIosArrowForward,
-  IoIosArrowDown,
-} from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
 import { DashboardHeader } from "../../../../common/DashboardHeader";
 import contribution from "../../../../../Assets/svg/dashboard/contribution.svg";
 import fund_icon from "../../../../../Assets/svg/dashboard/project.svg";
@@ -19,6 +15,7 @@ const Transfer = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [isPaymentPlanModalOpen, setIsPaymentPlanModalOpen] = useState(false);
   const [isContributionPlanModalOpen, setIsContributionPlanModalOpen] = useState(false);
+  const [paymentData, setPaymentData] = useState({ paymentPlan: "", amount: 0 });
 
   const handleBackClick = () => {
     navigate(-1);
@@ -36,13 +33,23 @@ const Transfer = () => {
     setIsPaymentPlanModalOpen(false);
   };
 
-  const handleOpenContributionPlanModal = () => {
-    setIsPaymentPlanModalOpen(false); 
-    setIsContributionPlanModalOpen(true); 
+  const handleOpenContributionPlanModal = (selectedPlan:string) => {
+    setPaymentData({ ...paymentData, paymentPlan: selectedPlan });
+    setIsPaymentPlanModalOpen(false);
+    setIsContributionPlanModalOpen(true);
   };
 
   const handleCloseContributionPlanModal = () => {
     setIsContributionPlanModalOpen(false);
+  };
+
+  const handleConfirmTransaction = (contributionPlan:string, amount:number) => {
+    const transactionData = {
+      paymentPlan: paymentData.paymentPlan,
+      contributionPlan,
+      amount,
+    };
+    navigate("/dashboard/contribution/fund_contribution/confirm_Transaction", { state: transactionData });
   };
 
   return (
@@ -106,7 +113,7 @@ const Transfer = () => {
         <PaymentPlan onContinue={handleOpenContributionPlanModal} />
       </Modal>
       <Modal isOpen={isContributionPlanModalOpen} onClose={handleCloseContributionPlanModal} className="bg-white">
-        <ContributionPlan /> 
+        <ContributionPlan onConfirm={handleConfirmTransaction} />
       </Modal>
     </main>
   );

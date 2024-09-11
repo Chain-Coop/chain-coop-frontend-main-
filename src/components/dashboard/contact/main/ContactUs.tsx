@@ -1,18 +1,17 @@
 import React, { useRef, useState } from 'react'
+import { PublicContact } from '../../../../shared/redux/slices/landing.slices';
+import { useAppDispatch } from '../../../../shared/redux/reduxHooks';
 import { DashboardHeader } from '../../../common/DashboardHeader'
 import { Primary } from "../../../../components/common/Button";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { useAppDispatch } from '../../../../shared/redux/reduxHooks';
 import { AppDispatch } from '../../../../shared/redux/store';
-import { PublicContact } from '../../../../shared/redux/slices/landing.slices';
 import { toast } from "react-toastify";
 import ReactLoading from "react-loading";
 
 const ContactUs = () => {
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
-  const [phone_number, setPhone_Number] = useState("");
   const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
 
@@ -24,7 +23,6 @@ const ContactUs = () => {
 
     const body = {
       name: name,
-      phone_number: phone_number,
       email: email,
       message: message,
     };

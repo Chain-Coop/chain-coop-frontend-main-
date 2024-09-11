@@ -258,3 +258,18 @@ export enum ModalTypes {
   PaymentPlan="PaymentPlan",
   ContributionPlan="ContributionPlan"
 }
+
+export const steps = [
+  { label: 'January',status:"Completed",comment:"Payment Made" },
+  { label: 'February',status:"Completedd",comment:"Payment Made" },
+  { label: 'March',status:"Completed",comment:"Payment Made" },
+  { label: 'April',status:"Completed",comment:"Payment Made" },
+  { label: 'May',status:"Completed",comment:"Payment Made" },
+  { label: 'June',status:"Completed",comment:"Payment Made" },
+  { label: 'July',status:"Completed",comment:"Payment Made" },
+  { label: 'August',status:"Completed",comment:"Payment Made" },
+  { label: 'September',status:"In Progress",comment:"Payment Pending" },
+  { label: 'October',status:"In Progress",comment:"Payment Pending" },
+  { label: 'November',status:"In Progress",comment:"Payment Pending" },
+  { label: 'December',status:"In Progress",comment:"Payment Pending" }
+];

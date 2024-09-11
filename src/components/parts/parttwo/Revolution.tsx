@@ -2,7 +2,7 @@ import React from "react";
 
 const Revolution = () => {
   return (
-    <main className="mx-auto flex items-center justify-center font-sans sm:mt-[2em] sm:px-[1em] lg:mt-[5em] lg:w-[86%] lg:px-0">
+    <main className="mx-auto flex items-center justify-center font-sans sm:mt-[2em] sm:px-[1em] lg:mt-[5em]  lg:px-0">
       <section>
         <header className="text-center text-text4">
           <h1 className="mb-2 font-bold sm:text-xl lg:text-3xl">

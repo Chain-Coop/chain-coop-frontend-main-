@@ -74,6 +74,18 @@ export const GetAllProject = createAsyncThunk(
   },
 );
 
+export const CreateContributionPlan = createAsyncThunk(
+  "transaction/createContributionPlan",
+  async (body:any, thunkAPI) => {
+    try {
+      const data = await TransactionServices.CreateContributionPlan(body);
+      return { transaction: data };
+    } catch (error: any) {
+      return handleAsyncError(error, thunkAPI);
+    }
+  },
+);
+
 const handleAsyncError = (error: any, thunkAPI: any) => {
   const message = error.message || "An error occurred. Please try again.";
   thunkAPI.dispatch(setMessage(message));
@@ -88,6 +100,7 @@ interface TransactionState {
   userProposal: any | null;
   fundWalletStatus: "idle" | "loading" | "success" | "failed";
   allProjects:any,
+  contributionPlan:any,
 }
 
 const initialState: TransactionState = {
@@ -98,6 +111,7 @@ const initialState: TransactionState = {
   userProposal: null,
   fundWalletStatus: "idle",
   allProjects:null,
+  contributionPlan:null,
 };
 
 export const transactionSlice = createSlice({
@@ -165,7 +179,16 @@ export const transactionSlice = createSlice({
       )
       .addCase(GetAllProject.rejected, (state) => {
         state.allProjects = null;
-      });
+      })
+      .addCase(
+        CreateContributionPlan.fulfilled,
+        (state, action: PayloadAction<{ transaction: any }>) => {
+          state.contributionPlan = action.payload.transaction;
+        },
+      )
+      .addCase(CreateContributionPlan.rejected, (state) => {
+        state.contributionPlan = null;
+      })
   },
 });
 

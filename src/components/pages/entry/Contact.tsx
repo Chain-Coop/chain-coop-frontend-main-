@@ -67,7 +67,7 @@ const Contact = () => {
     <>
       <NavBar />
       <main className="h-auto bg-background font-sans">
-        <section className="pt-[4em]">
+        <section className="lg:pt-[4em]">
           <header className="mx-auto text-center sm:w-full sm:px-1 md:px-[1em] lg:w-[65%]">
             <p className="text-lg font-semibold text-text2">Get in touch</p>
             <h1 className="font-semibold sm:text-[1.5em] lg:text-[2.5em]">

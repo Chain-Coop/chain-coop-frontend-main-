@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import useUserProfile from "../../../../shared/Hooks/useUserProfile";
-import ReactLoading from "react-loading";
 import user from "../../../../Assets/png/dashboard/avatar.png";
 import { IoIosArrowForward } from "react-icons/io";
+import ReactLoading from "react-loading";
 
 const Avatar = () => {
   const { profileDetails, uploadUserAvatar, loading: initialLoading } = useUserProfile();

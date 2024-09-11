@@ -12,10 +12,10 @@
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^41.4.2",
     "@ckeditor/ckeditor5-react": "^6.3.0",
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
-    "@mui/material": "^5.15.17",
-    "@mui/styled-engine-sc": "^6.0.0-alpha.18",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/material": "^5.16.7",
+    "@mui/styled-engine-sc": "^6.0.2",
     "@paystack/inline-js": "^2.19.0",
     "@reduxjs/toolkit": "^2.2.4",
     "aos": "^2.3.4",
@@ -34,7 +34,7 @@
     "react-toastify": "^10.0.5",
     "reactstrap": "^9.2.2",
     "redux-persist": "^6.0.0",
-    "styled-components": "^6.1.11"
+    "styled-components": "^6.1.13"
   },
   "devDependencies": {
     "@types/node": "^20.12.11",

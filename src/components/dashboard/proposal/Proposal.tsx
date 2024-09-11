@@ -10,8 +10,8 @@ const Proposal = () => {
   const {useLength}=useProposalLength()
   const proposalLength = useLength?.length || 0;
 
+console.log("use proposal length",proposalLength)
 
-  console.log("use proposal length",proposalLength)
   return (
     <main className="font-sans">
       <div className="sm:mt-0 lg:mt-8">
