@@ -92,6 +92,18 @@ const handleAsyncError = (error: any, thunkAPI: any) => {
   return thunkAPI.rejectWithValue(message);
 };
 
+export const UploadPaymentReceipt = createAsyncThunk(
+  "transaction/uploadPaymentReceipt",
+  async (formData: FormData, thunkAPI) => {
+    try {
+      const response = await TransactionServices.UploadPaymentReceipt(formData);
+      return { transaction: response };
+    } catch (error: any) {
+      return handleAsyncError(error, thunkAPI);
+    }
+  },
+);
+
 interface TransactionState {
   getWalletBalance: any | null;
   getContributionBalance: any | null;
@@ -101,6 +113,7 @@ interface TransactionState {
   fundWalletStatus: "idle" | "loading" | "success" | "failed";
   allProjects:any,
   contributionPlan:any,
+  uploadReceipt: any | null;
 }
 
 const initialState: TransactionState = {
@@ -112,6 +125,7 @@ const initialState: TransactionState = {
   fundWalletStatus: "idle",
   allProjects:null,
   contributionPlan:null,
+  uploadReceipt:null,
 };
 
 export const transactionSlice = createSlice({
@@ -153,6 +167,7 @@ export const transactionSlice = createSlice({
       .addCase(GetUsersTransaction.rejected, (state) => {
         state.getUsersTransaction = null;
       })
+
       .addCase(
         sendProposal.fulfilled,
         (state, action: PayloadAction<{ transaction: any }>) => {
@@ -188,6 +203,16 @@ export const transactionSlice = createSlice({
       )
       .addCase(CreateContributionPlan.rejected, (state) => {
         state.contributionPlan = null;
+      })
+
+      .addCase(
+        UploadPaymentReceipt.fulfilled,
+        (state, action: PayloadAction<{ transaction: any }>) => {
+          state.uploadReceipt = action.payload.transaction;
+        },
+      )
+      .addCase(UploadPaymentReceipt.rejected, (state) => {
+        state.uploadReceipt = null;
       })
   },
 });

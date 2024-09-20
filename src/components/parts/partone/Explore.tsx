@@ -10,7 +10,7 @@ const Explore = () => {
             Explore Our Investment Opportunities
           </h1>
           <p className="font-sans lg:mt-[1.5em]">
-            Self-Sustaining Business Already Making Waves in the Market
+            self-Sustaining business backed by the power of blockchain and cooperative ownership 
           </p>
         </header>
 

@@ -1,4 +1,5 @@
-import demologo from "../Assets/png/home/demologo.png";
+import lagosStateLogo from "../Assets/png/home/lagos-state-logo.jpg"
+import ministryOfCommerce from "../Assets/png/home/ministry-of-commerce.jpg"
 import person1 from "../Assets/jpg/home/person1.jpg";
 import person2 from "../Assets/jpg/home/person2.jpg";
 import person3 from "../Assets/jpg/home/person3.jpg";
@@ -11,7 +12,7 @@ import profile from "../Assets/svg/dashboard/Profile.svg";
 import proposal from "../Assets/svg/dashboard/proposal.svg";
 
 export const navBarLinks = [
-  { to: "/", text: "Why Chain Coop" },
+  { to: "/why-chain-coop", text: "Why Chain Coop" },
   { to: "/our-story", text: "Our Story" },
   { to: "/membership", text: "Membership" },
   { to: "/contact", text: "Contact" },
@@ -104,7 +105,7 @@ export const becomeData = [
   {
     title: "Legally Guaranteed Returns",
     paragraph:
-      "Enjoy Annual Co-op Dividends Based on Your Membership Contribution",
+      "As a Chain Co-op member, your investment are protected by cooperative laws giving you peace of mind with annual dividends based on your contributions",
   },
 
   {
@@ -112,13 +113,13 @@ export const becomeData = [
     paragraph: "Develop Strategies Build Your Portfolio, and Track Success",
   },
   {
-    title: "Expand Your Network",
+    title: "Grow Your Network with Industry Experts",
     paragraph:
-      "Participate in Members Meeting Online Chats, and Live Social Events with investors & Entrepreneurs",
+      "Meet fellow tech professionals investors, and extrepreneur through virtual meetups and exclusive events",
   },
   {
-    title: "Vote and Engage with Chain Coop Network",
-    paragraph: "Contribute ideas and Commit to collective Growth",
+    title: "Shape the Future of Chain Co-op",
+    paragraph: "Vote on critical decisions, share your insights, and help guide growth of our worker-owned cooperative",
   },
 ];
 
@@ -135,17 +136,18 @@ export const meetImage = [
 ];
 
 export const trustedPartners = [
-  { src: demologo },
-  { src: demologo },
-  { src: demologo },
-  { src: demologo },
-  { src: demologo },
-  { src: demologo },
-  { src: demologo },
-  { src: demologo },
-  { src: demologo },
-  { src: demologo },
+  { src: lagosStateLogo },
+  { src: ministryOfCommerce },
+  { src: lagosStateLogo },
+  { src: ministryOfCommerce },
+  { src: lagosStateLogo },
+  { src: ministryOfCommerce },
+  { src: lagosStateLogo },
+  { src: ministryOfCommerce },
+  { src: lagosStateLogo },
+  { src: ministryOfCommerce },
 ];
+
 
 export const customerCardData = [
   {

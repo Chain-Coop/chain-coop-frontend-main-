@@ -20,12 +20,14 @@ import Team from "./components/pages/footer/team/Team";
 import Blogs from "./components/pages/footer/blogs/Blogs";
 import Story from "./components/pages/entry/Story";
 import Career from "./components/pages/footer/careers/Career";
+import Landing from "./components/pages/entry/Landing";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/why-chain-coop" element={<HomePage />} />
         <Route path="/our-story" element={<Story />} />
         <Route path="/membership" element={<Membership />} />
         <Route path="/contact" element={<Contact />} />

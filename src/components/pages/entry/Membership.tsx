@@ -5,7 +5,6 @@ import Join from "../../parts/parttwo/Join";
 import How from "../../parts/partone/How";
 import AppStore from "../../parts/partone/AppStore";
 import Footer from "../../common/Footer";
-import FooterBox from "../../common/FooterBox";
 import Revolution from "../../parts/parttwo/Revolution";
 import { useEffect } from "react";
 const Membership = () => {
@@ -22,7 +21,6 @@ const Membership = () => {
       <How />
       <AppStore />
      </div>
-      <FooterBox />
       <Footer />
     </>
   );

@@ -1,22 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../../common/NavBar";
 import Footer from "../../common/Footer";
-import FooterBox from "../../common/FooterBox";
 import background from "../../../Assets/png/story/background.png";
 import image1 from "../../../Assets/jpg/story/image1.jpg";
 import image2 from "../../../Assets/jpg/story/image2.jpg";
 import mark from "../../../Assets/svg/story/icon-mark.svg";
-import { useEffect } from "react";
 
 const Story = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    setIsLoaded(true);
   }, []);
 
   return (
     <>
       <NavBar />
-      <main className="relative h-full font-sans">
+      <main className={`relative h-full font-sans transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
         <div className="inset-0 flex items-center">
           <img
             src={background}
@@ -38,7 +39,7 @@ const Story = () => {
           <div className="m-auto mt-8 flex flex-col px-4 sm:mt-0 sm:px-2 lg:mt-[3em] lg:w-[87%] lg:gap-8 lg:text-start">
             <div className="flex flex-col lg:mt-[7em] lg:flex-row">
               <div className="hidden lg:block lg:w-1/2">
-                <img src={image1} alt="people-image" />
+                <img src={image1} alt="people-image" className="w-full h-auto" />
               </div>
               <div className="mx-auto mt-[1.5em] text-center tracking-wide lg:mt-[3em] lg:w-1/2">
                 <p className="text-sm sm:text-base">
@@ -78,12 +79,12 @@ const Story = () => {
                 </div>
               </div>
               <div className="hidden lg:block lg:w-1/2">
-                <img src={image2} alt="people-image" />
+                <img src={image2} alt="people-image" className="w-full h-auto" />
               </div>
             </div>
           </div>
         </section>
-        <div className="mx-auto flex lg:w-[87%] flex-col justify-between gap-[2em] px-4 sm:mt-[6em]  lg:mt-[2em] lg:flex-row">
+        <div className="mx-auto flex lg:w-[87%] flex-col justify-between gap-[2em] px-4 sm:mt-[6em] lg:mt-[2em] lg:flex-row">
           <div className="h-full rounded-lg bg-text2 px-[1em] py-[2em] text-text3 shadow-md sm:px-[2em] sm:py-[3em]">
             <h1 className="text-xl font-semibold sm:text-2xl">Our Mission</h1>
             <p className="mt-4 text-sm sm:text-base">
@@ -105,7 +106,6 @@ const Story = () => {
             </p>
           </div>
         </div>
-        <FooterBox />
         <Footer />
       </main>
     </>

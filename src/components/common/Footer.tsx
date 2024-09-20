@@ -5,11 +5,30 @@ import X from "../../Assets/png/home/twitterx.png";
 import instagram from "../../Assets/png/home/instagram.png";
 import facebook from "../../Assets/png/home/facebook.png";
 import linkedin from "../../Assets/png/home/linkedin.png";
+import { Primary } from "./Button";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-text2 pb-[1.5em] font-sans">
-      <div className="mx-auto grid grid-cols-1 justify-between gap-y-6 px-3 sm:grid-cols-2 sm:gap-4 sm:pt-[100px] lg:flex lg:w-[83%] lg:grid-cols-5 lg:gap-8 lg:pb-[10px] lg:pt-[200px]">
+    <footer>
+    <div className="relative z-[10px] mx-auto flex items-center justify-center rounded-2xl bg-fbg font-sans sm:mb-[-70px] sm:mt-[2em] sm:h-[150px] lg:mb-[-100px] lg:h-[200px] lg:w-[90%]">
+      <div>
+        <h1 className="text-l mb-4 text-center font-normal lg:text-3xl">
+          Stay Updated with Our Latest Developments
+        </h1>
+        <div className="flex flex-col items-center justify-center gap-[9px] sm:flex-row sm:gap-2 lg:mx-auto lg:w-full">
+          <input
+            type="text"
+            className="mb-2 h-12 rounded-md border border-gray-300 p-4  focus:border-primary focus:outline-none sm:mb-0 sm:w-auto lg:flex-1"
+            placeholder="enter your e-mail"
+          />
+          <Primary className="rounded-md bg-text2 px-4 py-2 text-sm text-text5 lg:px-7 lg:py-2 lg:text-xl">
+            Join Now
+          </Primary>
+        </div>
+      </div>
+    </div>
+    <div className="w-full bg-text2  font-sans">
+      <div className="mx-auto grid grid-cols-1 justify-between gap-y-6 px-3 sm:grid-cols-2 sm:gap-4 sm:pt-[100px] lg:flex lg:w-[83%] lg:grid-cols-5 lg:gap-8 lg:pb-[10px] lg:pt-[190px]">
         <section className="mb-4">
           <h3 className="font-bold text-text3">Chain Coop</h3>
           <p className="mb-4 mt-4 font-light text-text3">
@@ -102,6 +121,7 @@ const Footer = () => {
           </a>
         </div>
       </section>
+    </div>
     </footer>
   );
 };

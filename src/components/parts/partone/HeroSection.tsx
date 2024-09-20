@@ -6,7 +6,7 @@ import { Primary } from "../../common/Button";
 const HeroSection = () => {
   return (
     <main className="relative flex w-full flex-col font-sans lg:flex-row">
-      <div className="flex items-center px-4 py-5 lg:w-1/2 lg:px-[4em] lg:py-24">
+      <div className="flex items-center px-4 py-5 lg:w-1/2 lg:px-[4em] lg:py-[8em]">
         <div className="max-w-xl">
           <h1 className="mb-4 text-2xl font-bold  lg:mb-6 lg:text-5xl">
             Your Trusted Investing <br className="hidden sm:inline" /> Platform
@@ -15,9 +15,8 @@ const HeroSection = () => {
             <span className="text-text2">Guaranteed Returns</span>
           </h1>
           <p className="mb-6 text-sm text-text1 sm:text-base lg:mb-8">
-            Meet Chain Coop, our business-oriented community, designed into a
-            cooperative with open membership, through Chain Wallet. Simple,
-            safe, and transparent way.
+           Join Chain Co-op, a tech-worker-owned cooperative built for financial success, powered by the cutting-edge
+           Chain Wallet. Simplify your investment with transparency, safety and sustainability.
           </p>
           <div className="flex flex-col gap-[2.5em] sm:flex-row sm:items-center">
             <Link to="/sign-up" className="w-full sm:w-auto">
@@ -36,7 +35,7 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-      <div className="hidden h-64 w-full bg-heroBackground bg-cover bg-center bg-no-repeat lg:block lg:h-auto lg:w-1/2"></div>
+      <div className="hidden w-full bg-heroBackground bg-cover bg-center bg-no-repeat lg:block lg:h-auto lg:w-1/2"></div>
     </main>
   );
 };

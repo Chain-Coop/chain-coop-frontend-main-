@@ -13,7 +13,7 @@ const home = ()=>{
   return (
     <aside className="h-vh flex w-[23em] flex-col border-r border-bl bg-rec1 py-[2em] font-sans text-memt1 shadow-md">
       <div onClick={home}>
-        <img src={logo} alt="ChainCoop-logo" className="ml-[1em]" />
+        <img src={logo} alt="ChainCoop-logo" className="ml-[1em] cursor-pointer" />
       </div>
       <nav className="mb-[3em] ml-5 mt-[2em] flex flex-grow flex-col">
         {sidebarLinks.map((link, index) => {

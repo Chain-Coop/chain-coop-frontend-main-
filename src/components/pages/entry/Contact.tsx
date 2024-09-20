@@ -12,7 +12,6 @@ import linkdln from "../../../Assets/svg/contact/linkdln.svg";
 import medium from "../../../Assets/svg/contact/medium.svg";
 
 import circle from "../../../Assets/png/contact/circle.png";
-import FooterBox from "../../common/FooterBox";
 
 import { Primary } from "../../common/Button";
 import { useDispatch } from "react-redux";
@@ -220,7 +219,6 @@ const Contact = () => {
             </div>
           </div>
           <div className="sm:mt-[4em] lg:mt-[8em]">
-            <FooterBox />
             <Footer />
           </div>
         </section>

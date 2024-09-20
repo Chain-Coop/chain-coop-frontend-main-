@@ -60,7 +60,7 @@ const GetProposal = async () => {
 
 
 const GetAllProject = async () => {
-  const url = `${API_URL}/project`;
+  const url = `${API_URL}/project/admin`;
   try {
     const response = await axios.get(url, { headers: authHeader() });
     return response.data;
@@ -89,6 +89,22 @@ const handleApiError = (error: any) => {
   }
 };
 
+const UploadPaymentReceipt = async (formData: FormData) => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        ...authHeader(),
+      },
+    };
+    const response = await axios.post(`${API_URL}/wallet/upload-receipt`, formData, config);
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
+
 const TransactionServices = {
   GetWalletBalance,
   GetContributionBalance,
@@ -97,6 +113,7 @@ const TransactionServices = {
   GetProposal,
   GetAllProject,
   CreateContributionPlan,
+  UploadPaymentReceipt,
 };
 
 export default TransactionServices;

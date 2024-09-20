@@ -6,7 +6,6 @@ import tech from "../../../../Assets/png/footer/blog/men.png";
 import machine from "../../../../Assets/png/footer/blog/tech.png";
 import men2 from "../../../../Assets/png/footer/blog/image3.png";
 import avatar from "../../../../Assets/png/footer/blog/avatar.png";
-import FooterBox from "../../../common/FooterBox";
 import Footer from "../../../common/Footer";
 
 const Blogs = () => {
@@ -187,7 +186,6 @@ const Blogs = () => {
             </div>
           </div>
         </div>
-        <FooterBox />
         <Footer />
       </main>
     </>

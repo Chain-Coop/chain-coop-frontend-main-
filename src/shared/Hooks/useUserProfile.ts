@@ -31,7 +31,7 @@ export const useUserProfile = () => {
         const formData = new FormData();
         formData.append(UploadFields.ProfilePicture, selectedFile); 
         await dispatch(uploadAvatar(formData)).unwrap();
-        await dispatch(profileDetails()).unwrap(); 
+        await dispatch(GetUserProfile()).unwrap();
       } catch (error: any) {
         const errorMessage = error.message || "Failed to upload avatar";
         dispatch(setMessage(errorMessage));

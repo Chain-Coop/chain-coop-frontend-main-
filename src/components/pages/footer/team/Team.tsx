@@ -2,7 +2,6 @@ import React from "react";
 import { useEffect } from "react";
 import NavBar from "../../../common/NavBar";
 import Footer from "../../../common/Footer";
-import FooterBox from "../../../common/FooterBox";
 import background from "../../../../Assets/png/footer/team/png/background.png";
 import background2 from "../../../../Assets/png/footer/team/png/background.png";
 import image1 from "../../../../Assets/png/footer/team/png/image1.png";
@@ -132,7 +131,6 @@ const Team = () => {
               ))}
             </div>
           </div>
-          <FooterBox />
           <Footer />
         </div>
       </div>
