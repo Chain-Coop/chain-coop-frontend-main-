@@ -7,13 +7,13 @@ const Become = () => {
     <main className="mx-auto mb-[3em] flex items-center justify-center font-sans lg:w-[86%] ">
       <div>
         <header className="py-8 text-center text-text4">
-          <h1 className="mb-2 font-bold sm:text-2xl lg:text-3xl">
+          <h1 className="mb-2 font-bold sm:text-[17px] lg:text-3xl">
             Become an Early Member
           </h1>
-          <h1 className="mb-2 font-bold sm:text-2xl lg:text-3xl">
+          <h1 className="mb-2 font-bold sm:text-[17px] lg:text-3xl">
             with a One-Time N100K Membership Fee
           </h1>
-          <p className="font-semibold">
+          <p className="font-semibold sm:text-sm">
             Enjoy All the Benefits Chain Coop Has to Offer
           </p>
         </header>
