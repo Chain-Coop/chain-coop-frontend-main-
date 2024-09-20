@@ -16,7 +16,7 @@ const TrustedPartners: React.FC = () => {
               key={index}
               src={img.src}
               alt={`Image ${index + 1}`}
-              className="h-[5em] w-[5em] mr-4"
+              className="h-[5em] w-[6em] mr-4"
             />
           ))}
         </div>
