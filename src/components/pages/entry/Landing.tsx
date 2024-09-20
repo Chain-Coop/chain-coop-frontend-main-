@@ -49,8 +49,8 @@ return (
           </section>
 
           <section className="relative flex flex-col w-full lg:flex-row pt-8 lg:-mt-1 text-white z-10">
-            <div
-              className="relative h-[300px] w-full lg:h-[450px] lg:w-1/3"
+               <div
+              className="relative h-[300px] sm:mb-3 w-full lg:h-[450px] lg:w-1/3"
               style={{
                 backgroundImage: `url(${imageRight})`,
                 backgroundSize: "cover",
@@ -58,7 +58,7 @@ return (
                 backgroundRepeat: "no-repeat",
               }}
             >
-              <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center lg:px-[5em]">
+              <div className="absolute inset-0 flex flex-col items-center justify-center px-6 sm:px-8 lg:px-[5em] text-center">
                 <h2 className="mb-4 text-xl font-semibold sm:text-2xl lg:text-3xl">
                   As an Investor
                 </h2>
@@ -70,6 +70,7 @@ return (
                 </p>
               </div>
             </div>
+
 
             <div className="hidden lg:flex lg:w-1/3 justify-between py-[3em]">
               <div className="flex mt-[1.5em] justify-between flex-col">
@@ -110,33 +111,33 @@ return (
               </div>
             </div>
 
-            <div
-              className="relative h-[300px] w-full lg:h-[450px] lg:w-1/3"
-              style={{
-                backgroundImage: `url(${imageLeft})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }}
-            >
-              <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center lg:px-[5em]">
-                <h2 className="mb-4 text-xl font-semibold sm:text-2xl lg:text-3xl">
-                  As Employee
-                </h2>
-                <p className="text-sm lg:text-base">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Debitis qui magni ipsam velit nostrum expedita quam accusamus.
-                  Excepturi dignissimos, adipisci deleniti commodi vel voluptatem
-                  temporibus.
-                </p>
-              </div>
-            </div>
+          <div
+          className="relative h-[300px] w-full lg:h-[450px] lg:w-1/3"
+          style={{
+            backgroundImage: `url(${imageLeft})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        >
+          <div className="absolute inset-0 flex flex-col items-center justify-center px-6 sm:px-8 lg:px-[5em] text-center">
+            <h2 className="mb-4 text-xl font-semibold sm:text-2xl lg:text-3xl">
+              As Employee
+            </h2>
+            <p className="text-sm lg:text-base">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Debitis qui magni ipsam velit nostrum expedita quam accusamus.
+              Excepturi dignissimos, adipisci deleniti commodi vel voluptatem
+              temporibus.
+            </p>
+          </div>
+        </div>
           </section>
 
           <div className="w-full lg:w-[80%] mt-8 lg:mt-[12em] flex flex-col lg:flex-row justify-between m-auto px-2 lg:px-0">
             <div className="w-full lg:w-[50%] flex flex-col gap-[2em]">
               <h2 className="font-semibold sm:text-center text-xl">How Our Membership Works</h2>
-              <p className="text-sm sm:text-center lg:text-base">
+              <p className="text-sm text-center lg:text-start lg:text-base">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis
                 aliquam quas magnam necessitatibus iure aspernatur, provident
                 dicta enim ut. Nam atque aliquam qui dolorum debitis sapiente quos
@@ -217,54 +218,30 @@ return (
               <p>Enjoy all the Benefit Chain Coop Has to offer</p>
             </div>
             <div className="flex flex-col items-center mt-[2em] space-y-4">
-  {/* Map through the circle content */}
-  {Object.entries(earlyMemberCircleText).map(([key, content], index) => (
-    <div
-      key={index}
-      className="relative w-[220px] h-[220px] px-2 flex items-center justify-center bg-[#e3d9ec]"
-      style={{
-        borderRadius: "50%",
-        overflow: "hidden",
-      }}
-    >
-      <div className="text-center">
-        <h1 className="text-text2 font-semibold text-[1em]">
-          {content.title}
-        </h1>
-        <p className="text-xs mt-[7px]">
-          {content.p}
-        </p>
-      </div>
-    </div>
-  ))}
-
-  {/* Fourth circle (if it exists) */}
-  {Object.entries(earlyMemberCircleText).length > 3 && (
-    <div
-      className="relative w-[220px] h-[220px] px-2 flex items-center justify-center bg-[#e3d9ec]"
-      style={{
-        borderRadius: "50%",
-        overflow: "hidden",
-      }}
-    >
-      <div className="text-center">
-        <h1 className="text-text2 font-semibold text-[1em]">
-          {earlyMemberCircleText.fourthBox.title}
-        </h1>
-        <p className="text-xs mt-[7px]">
-          {earlyMemberCircleText.fourthBox.p}
-        </p>
-      </div>
-    </div>
-  )}
-</div>
-
-
-    </div>
+              {Object.entries(earlyMemberCircleText).map(([key, content], index) => (
+                <div
+                  key={index}
+                  className="relative w-[220px] h-[220px] px-2 flex items-center justify-center bg-[#e3d9ec]"
+                  style={{
+                    borderRadius: "50%",
+                    overflow: "hidden",
+                  }}
+                >
+                  <div className="text-center">
+                    <h1 className="text-text2 font-semibold text-[1em]">
+                      {content.title}
+                    </h1>
+                    <p className="text-xs mt-[7px]">
+                      {content.p}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            </div>
       </main>
       <Footer />
-        </>
-
+      </>
     );
     };
 
