@@ -138,21 +138,21 @@ export const meetImage = [
 
 export const trustedPartners = [
   { src: lagosStateLogo },
-  // {src: synWave},
+  {src: synWave},
   { src: ministryOfCommerce },
   { src: lagosStateLogo },
-  // {src: synWave},
+  {src: synWave},
   { src: ministryOfCommerce },
   { src: lagosStateLogo },
-  // {src: synWave},
+  {src: synWave},
   { src: ministryOfCommerce },
   { src: lagosStateLogo },
-  // {src: synWave},
+  {src: synWave},
   { src: ministryOfCommerce },
   { src: lagosStateLogo },
-  // {src: synWave},
+  {src: synWave},
   { src: ministryOfCommerce },
-  // {src: synWave},
+  {src: synWave},
 ];
 
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { trustedPartners } from "../../../data/Data";
 import "../../parts/partone/animation.css";
+import syn from "../../../Assets/png/home/syn-wave.jpg"
 
 interface TrustedPartner {
   src: string;
@@ -16,7 +17,7 @@ const TrustedPartners: React.FC = () => {
               key={index}
               src={img.src}
               alt={`Image ${index + 1}`}
-              className="h-[5em] w-[6em] mr-4"
+              className="h-[5em] mr-4"
             />
           ))}
         </div>
