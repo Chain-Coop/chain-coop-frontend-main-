@@ -29,7 +29,10 @@ const UserLogin = () => {
 
   const loginUserData = (e: any) => {
     e.preventDefault();
-
+    if (!email || !password) {
+      toast.error("Please fill in all fields.");
+      return; 
+    }
     setLoading(true);
     let body = {
       email: email,

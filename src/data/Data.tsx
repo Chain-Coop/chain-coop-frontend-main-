@@ -282,3 +282,22 @@ export const steps = [
   { label: 'November',status:"In Progress",comment:"Payment Pending" },
   { label: 'December',status:"In Progress",comment:"Payment Pending" }
 ];
+
+export const earlyMemberCircleText = {
+  firstBox: {
+    title: "Legally Guaranteed Returns",
+    p: "Enjoy Annual Co-op Dividends Based on Your Membership Contribution",
+  },
+  secondBox: {
+    title: "Access Exclusive Investment Rounds",
+    p: "Develop Strategies, Build Your Portfolio, and Track Success",
+  },
+  thirdBox: {
+    title: "Vote and Engage with Chain Coop Network",
+    p: "Contribute ideas and Commit to collective Growth",
+  },
+  fourthBox: {
+    title: "Expand Your Network",
+    p: "Participate in Members Meetings, Online Chats and live social Events with Investors and Entrepreneurs",
+  },
+};

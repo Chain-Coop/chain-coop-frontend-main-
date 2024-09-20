@@ -8,6 +8,7 @@ import rectangle from "../../../Assets/png/home/who-lady.png";
 import innovation from "../../../Assets/png/home/innovation.png";
 import group from "../../../Assets/png/home/group.png";
 import Footer from "../../common/Footer";
+import { earlyMemberCircleText } from "../../../data/Data";
 
 const Landing = () => {
 const [isLoaded, setIsLoaded] = useState(false);
@@ -164,7 +165,7 @@ return (
             minHeight: "100vh",
           }}
         >
-          <section className="relative flex flex-col lg:flex-row pt-8 lg:-mt-1 z-10">
+          <section className="relative flex flex-col lg:flex-row pt-8 lg:-mt-3 z-10">
             <section className="inset-0 mt-[2em] w-full">
               <div className="w-full px-4 lg:px-7  bg-[#ece6f2] py-8 sm:py-12">
                 <h2 className="font-semibold text-[1.5em] lg:text-[2em] text-center mb-8">
@@ -206,12 +207,65 @@ return (
               </div>
             </section>
           </section>
-        </div>
+            <div className="text-center mt-[2.5em]">
+              <h1 className="text-[1.5em] font-semibold sm:text-[1.5em] sm:mt-2 lg:text-[1.6em]">
+              Become an Early Member
+            </h1> 
+              <h1 className="text-[1.5em] font-semibold sm:text-[1.5em] sm:mt-2 lg:text-[1.6em]">
+                With a One-Time N100k Membership Fee
+              </h1>
+              <p>Enjoy all the Benefit Chain Coop Has to offer</p>
+            </div>
+            <div className="flex flex-col items-center mt-[2em] space-y-4">
+  {/* Map through the circle content */}
+  {Object.entries(earlyMemberCircleText).map(([key, content], index) => (
+    <div
+      key={index}
+      className="relative w-[220px] h-[220px] px-2 flex items-center justify-center bg-[#e3d9ec]"
+      style={{
+        borderRadius: "50%",
+        overflow: "hidden",
+      }}
+    >
+      <div className="text-center">
+        <h1 className="text-text2 font-semibold text-[1em]">
+          {content.title}
+        </h1>
+        <p className="text-xs mt-[7px]">
+          {content.p}
+        </p>
+      </div>
+    </div>
+  ))}
+
+  {/* Fourth circle (if it exists) */}
+  {Object.entries(earlyMemberCircleText).length > 3 && (
+    <div
+      className="relative w-[220px] h-[220px] px-2 flex items-center justify-center bg-[#e3d9ec]"
+      style={{
+        borderRadius: "50%",
+        overflow: "hidden",
+      }}
+    >
+      <div className="text-center">
+        <h1 className="text-text2 font-semibold text-[1em]">
+          {earlyMemberCircleText.fourthBox.title}
+        </h1>
+        <p className="text-xs mt-[7px]">
+          {earlyMemberCircleText.fourthBox.p}
+        </p>
+      </div>
+    </div>
+  )}
+</div>
+
+
+    </div>
       </main>
       <Footer />
-    </>
+        </>
 
-);
-};
+    );
+    };
 
-export default Landing;
+    export default Landing;
