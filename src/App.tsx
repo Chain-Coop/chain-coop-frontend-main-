@@ -26,8 +26,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/why-chain-coop" element={<HomePage />} />
+        <Route path="/why-chain-co-op" element={<Landing />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/our-story" element={<Story />} />
         <Route path="/membership" element={<Membership />} />
         <Route path="/contact" element={<Contact />} />

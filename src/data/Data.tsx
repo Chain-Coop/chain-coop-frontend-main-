@@ -13,7 +13,7 @@ import profile from "../Assets/svg/dashboard/Profile.svg";
 import proposal from "../Assets/svg/dashboard/proposal.svg";
 
 export const navBarLinks = [
-  { to: "/why-chain-coop", text: "Why Chain Coop" },
+  { to: "/why-chain-co-op", text: "Why Chain Coop" },
   { to: "/our-story", text: "Our Story" },
   { to: "/membership", text: "Membership" },
   { to: "/contact", text: "Contact" },

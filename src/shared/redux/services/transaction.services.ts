@@ -3,6 +3,9 @@ import authHeader from "./headers";
 
 const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
+const API_URL_FUND_WALLET =
+  import.meta.env.VITE_REACT_APP_API_URL + "/wallet/fund-wallet";
+
 const GetWalletBalance = async () => {
   const url = `${API_URL}/wallet/balance`;
   try {
@@ -104,6 +107,19 @@ const UploadPaymentReceipt = async (formData: FormData) => {
   }
 };
 
+const FundWallet = async (body: any) => {
+  try {
+    const response = await axios.post(API_URL_FUND_WALLET, body, {});
+    const token = response.data.token;
+    if (token) {
+      sessionStorage.setItem("userData", token);
+      return response?.data;
+    }
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
 
 const TransactionServices = {
   GetWalletBalance,
@@ -114,6 +130,7 @@ const TransactionServices = {
   GetAllProject,
   CreateContributionPlan,
   UploadPaymentReceipt,
+  FundWallet,
 };
 
 export default TransactionServices;

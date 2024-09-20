@@ -104,6 +104,20 @@ export const UploadPaymentReceipt = createAsyncThunk(
   },
 );
 
+export const FundWallet = createAsyncThunk(
+  "transaction/fundWallet",
+  async (body: any, thunkAPI) => {
+    try {
+      const data = await TransactionServices.FundWallet(body);
+      return { landing: data };
+    } catch (error: any) {
+      const message = error.msg;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
 interface TransactionState {
   getWalletBalance: any | null;
   getContributionBalance: any | null;
@@ -114,6 +128,7 @@ interface TransactionState {
   allProjects:any,
   contributionPlan:any,
   uploadReceipt: any | null;
+  fundUserWallet: any | null;
 }
 
 const initialState: TransactionState = {
@@ -126,6 +141,7 @@ const initialState: TransactionState = {
   allProjects:null,
   contributionPlan:null,
   uploadReceipt:null,
+  fundUserWallet: null,
 };
 
 export const transactionSlice = createSlice({
