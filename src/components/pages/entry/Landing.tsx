@@ -136,7 +136,7 @@ return (
 
           <div className="w-full lg:w-[80%] mt-8 lg:mt-[12em] flex flex-col lg:flex-row justify-between m-auto px-2 lg:px-0">
             <div className="w-full lg:w-[50%] flex flex-col gap-[2em]">
-              <h2 className="font-semibold sm:text-center text-xl">How Our Membership Works</h2>
+              <h2 className="font-semibold sm:text-center lg:text-start text-center text-xl">How Our Membership Works</h2>
               <p className="text-sm text-center lg:text-start lg:text-base">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis
                 aliquam quas magnam necessitatibus iure aspernatur, provident
@@ -168,7 +168,7 @@ return (
         >
           <section className="relative flex flex-col lg:flex-row pt-8 lg:-mt-3 z-10">
             <section className="inset-0 mt-[2em] w-full">
-              <div className="w-full px-4 lg:px-7  bg-[#ece6f2] py-8 sm:py-12">
+              <div className="w-full px-3 lg:px-7  bg-[#ece6f2] py-8 sm:py-12">
                 <h2 className="font-semibold text-[1.5em] lg:text-[2em] text-center mb-8">
                   Who is a member?
                 </h2>
@@ -176,8 +176,8 @@ return (
                 <div className="w-full lg:w-[85%] m-auto flex flex-col gap-12">
                   <div className="flex flex-col lg:flex-row justify-between">
                     <div className="w-full lg:w-[48%] flex flex-col gap-4">
-                      <h2 className="font-semibold text-xl">How Our Membership Works</h2>
-                      <p className="text-sm sm:text-base">
+                      <h2 className="font-semibold lg:text-start text-center text-xl">How Our Membership Works</h2>
+                      <p className="text-sm lg:text-start text-center sm:text-base">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis
                         aliquam quas magnam necessitatibus iure aspernatur, provident dicta
                         enim ut. Nam atque aliquam qui dolorum debitis sapiente quos aut veniam,
@@ -194,8 +194,8 @@ return (
                       <img src={innovation} alt="group" className="h-auto w-full object-cover" />
                     </div>
                     <div className="w-full lg:w-[48%] mt-auto flex flex-col gap-4">
-                      <h2 className="font-semibold text-xl">What Members Get</h2>
-                      <p className="text-sm sm:text-base">
+                      <h2 className="font-semibold lg:text-start text-center text-xl">What Members Get</h2>
+                      <p className="text-sm lg:text-start text-center sm:text-base">
                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit ex est 
                      veritatis porro error iusto incidunt quos blanditiis corporis. Nesciunt
                       dolore facere voluptate tempora itaque alias molestias voluptates nihil 
@@ -217,32 +217,58 @@ return (
               </h1>
               <p>Enjoy all the Benefit Chain Coop Has to offer</p>
             </div>
-            <div className="flex flex-col items-center mt-[2em] space-y-4">
-              {Object.entries(earlyMemberCircleText).map(([key, content], index) => (
-                <div
-                  key={index}
-                  className="relative w-[220px] h-[220px] px-2 flex items-center justify-center bg-[#e3d9ec]"
-                  style={{
-                    borderRadius: "50%",
-                    overflow: "hidden",
-                  }}
-                >
-                  <div className="text-center">
-                    <h1 className="text-text2 font-semibold text-[1em]">
-                      {content.title}
-                    </h1>
-                    <p className="text-xs mt-[7px]">
-                      {content.p}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            </div>
-      </main>
-      <Footer />
-      </>
-    );
-    };
+            <div className="flex flex-wrap justify-center sm:flex-col lg:flex-row items-center mt-[2em] sm:space-y-4 lg:space-x-4 lg:space-y-0">
+            <div className="flex flex-col items-center mt-[2em]">
+  {/* First 3 Circles */}
+  <div className="flex flex-wrap justify-center lg:flex-row sm:space-y-4 lg:space-x-4 lg:space-y-0">
+    {Object.entries(earlyMemberCircleText).slice(0, 3).map(([key, content], index) => (
+      <div
+        key={index}
+        className="relative w-[220px] h-[220px] px-2 flex items-center justify-center bg-[#e3d9ec] mt-4 lg:mt-0"
+        style={{
+          borderRadius: "50%",
+          overflow: "hidden",
+        }}
+      >
+        <div className="text-center">
+          <h1 className="text-text2 font-semibold text-[1em]">
+            {content.title}
+          </h1>
+          <p className="text-xs mt-[7px]">
+            {content.p}
+          </p>
+        </div>
+      </div>
+    ))}
+  </div>
 
-    export default Landing;
+      {earlyMemberCircleText.fourthBox && (
+      <div
+        className="relative w-[220px] h-[220px] px-2 flex items-center justify-center bg-[#e3d9ec] mt-6"
+        style={{
+          borderRadius: "50%",
+          overflow: "hidden",
+        }}
+      >
+        <div className="text-center">
+          <h1 className="text-text2 font-semibold text-[1em]">
+            {earlyMemberCircleText.fourthBox.title}
+          </h1>
+          <p className="text-xs mt-[7px]">
+            {earlyMemberCircleText.fourthBox.p}
+          </p>
+        </div>
+      </div>
+    )}
+  </div>
+
+  </div>
+
+              </div>
+        </main>
+        <Footer />
+        </>
+      );
+      };
+
+      export default Landing;
