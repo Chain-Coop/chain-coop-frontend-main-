@@ -24,7 +24,7 @@ const NavBar = () => {
   return (
     <nav className="relative left-0 top-0 flex h-[75px] w-full items-center border-b border-text5 bg-white font-sans">
       <div className="mx-auto flex w-[92%] items-center justify-between">
-        <Link to="/">
+        <Link to="/why-chain-coop">
           <img src={logo} className="w-[9em]" alt="Chain Co-op Logo" />
         </Link>
         <div className="flex items-center">
