@@ -69,9 +69,13 @@
 // export default EmailAmountModal;
 
 
-import { formatPayStackAmount } from "../../../../../../shared/utils/format";
 import React, { useState } from "react";
 import { Primary } from "../../../../../common/Button";
+import { useAppDispatch } from "../../../../../../shared/redux/reduxHooks";
+import { AppDispatch } from "../../../../../../shared/redux/store";
+import { toast } from "react-toastify";
+import { FundWallet } from "../../../../../../shared/redux/slices/transaction.slices";
+import ReactLoading from "react-loading";
 
 interface EmailAmountModalProps {
   closeModal: () => void;
@@ -80,7 +84,40 @@ interface EmailAmountModalProps {
 const EmailAmountModal: React.FC<EmailAmountModalProps> = ({
   closeModal,
 }) => {
-
+  const [amount, setAmount] = useState<string | undefined>(undefined);
+  const [loading, setLoading] = useState(false);
+  const dispatch: AppDispatch = useAppDispatch();
+ 
+  const submitData = (e: any) => {
+    e.preventDefault();
+  
+    if (!amount) {
+      toast.error("Please input an amount");
+      return;
+    }
+  
+    setLoading(true);
+  
+    let body = {
+      amount,
+    };
+  
+    dispatch(FundWallet(body))
+      .unwrap()
+      .then((response) => {
+        setLoading(false);
+        const paymentUrl = response?.landing?.paymentUrl;
+        if (paymentUrl) {
+          window.location.href = paymentUrl;
+        }
+      })
+      .catch((error: any) => {
+        setLoading(false);
+        const errorMessage = error?.message || "An error occurred, please try again";
+        toast.error(errorMessage);
+      });
+  };
+  
 
   return (
     <main className="font-sans">
@@ -88,7 +125,7 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({
         <h2 className="mb-4 flex justify-center text-xl font-semibold">
           Pay with Paystack
         </h2>
-        <form>
+        <form onSubmit={submitData}>
           <div className="mb-4">
             <label
               htmlFor="amount"
@@ -100,6 +137,7 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({
               type="text"
               id="amount"
               required
+              onChange={(e) => setAmount(e.target.value)}
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-text2 focus:outline-none focus:ring-text2 sm:text-sm"
             />
           </div>
@@ -107,7 +145,16 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({
             type="submit"
             className="mt-[1.5em] w-full bg-text2 py-2 text-white"
           >
-            Pay with Paystack
+              {loading ? (
+              <ReactLoading
+                color="#FFFFFF"
+                width={25}
+                height={25}
+                type="spin"
+              />
+            ) : (
+              "Pay with Paystack"
+            )}
           </Primary>
         </form>
       </div>

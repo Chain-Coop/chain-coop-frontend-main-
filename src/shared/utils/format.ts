@@ -1,12 +1,12 @@
-import React from "react";
+export const formatAmount = (amount: number): string => {
+  const amountInNaira = amount >= 100 ? amount / 100 : amount;
 
-export const formatAmount = (amount: number) => {
-  return (amount / 100).toLocaleString("en-NG", {
-    style: "currency",
-    currency: "NGN",
+  return new Intl.NumberFormat('en-NG', {
+    style: 'currency',
+    currency: 'NGN',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  });
+  }).format(amountInNaira);
 };
 
 export const formatDayAndDate = (dateString: any) => {

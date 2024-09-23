@@ -87,7 +87,7 @@ export const CreateContributionPlan = createAsyncThunk(
 );
 
 const handleAsyncError = (error: any, thunkAPI: any) => {
-  const message = error.message || "An error occurred. Please try again.";
+  const message = error.error || "An error occurred. Please try again.";
   thunkAPI.dispatch(setMessage(message));
   return thunkAPI.rejectWithValue(message);
 };
@@ -118,6 +118,19 @@ export const FundWallet = createAsyncThunk(
   },
 );
 
+export const VerifyFundWallet = createAsyncThunk(
+  "transaction/verifyFundWallet",
+  async (body: any, thunkAPI) => {
+    try {
+      const data = await TransactionServices.VerifyFundWallet(body);
+      return { transaction: data };
+    } catch (error: any) {
+      return handleAsyncError(error, thunkAPI);
+    }
+  },
+);
+
+
 interface TransactionState {
   getWalletBalance: any | null;
   getContributionBalance: any | null;
@@ -129,6 +142,7 @@ interface TransactionState {
   contributionPlan:any,
   uploadReceipt: any | null;
   fundUserWallet: any | null;
+  veryfyFundUserWallet: any | null;
 }
 
 const initialState: TransactionState = {
@@ -142,6 +156,7 @@ const initialState: TransactionState = {
   contributionPlan:null,
   uploadReceipt:null,
   fundUserWallet: null,
+  veryfyFundUserWallet:null,
 };
 
 export const transactionSlice = createSlice({
@@ -230,6 +245,15 @@ export const transactionSlice = createSlice({
       .addCase(UploadPaymentReceipt.rejected, (state) => {
         state.uploadReceipt = null;
       })
+      .addCase(
+        VerifyFundWallet.fulfilled,
+        (state, action: PayloadAction<{ transaction: any }>) => {
+          state. veryfyFundUserWallet = action.payload.transaction;
+        },
+      )
+      .addCase(VerifyFundWallet.rejected, (state) => {
+        state. veryfyFundUserWallet = null;
+      });
   },
 });
 

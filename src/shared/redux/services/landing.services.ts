@@ -36,9 +36,14 @@ const LoginUser = async (body: any) => {
       return response?.data;
     }
   } catch (error: any) {
-    throw error.response.data;
+    if (error.response && error.response.data) {
+      throw error.response.data;
+    } else {
+      throw new Error("Network Error: Please check your internet connection.");
+    }
   }
 };
+
 
 const VerifyUserAuth = async (body: any) => {
   try {

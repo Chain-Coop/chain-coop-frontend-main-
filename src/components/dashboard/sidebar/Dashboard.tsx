@@ -24,6 +24,7 @@ import ConfirmAmount from "../wallet/transfer/confirmAmount/Confirm";
 import ProfileTransactions from "../profile/profileDetails/transactions/Transactions";
 import Shares from "../shares/main/Shares";
 import ContactUs from "../contact/main/ContactUs";
+import VerifyTransaction from "../wallet/fund/verifyTransaction/VerifyTransaction";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -52,6 +53,8 @@ const Dashboard = () => {
           <Route path="wallet/verify-account" element={<VerifyAccount />} />
 
           <Route path="wallet/fund" element={<FundWallet />} />
+          <Route path="wallet/fund_wallet/verify_transaction" element={<VerifyTransaction />} />
+
 
           <Route path="wallet/transfer" element={<TransferWallet />} />
           <Route path="wallet/transfer/fund-project" element={<AddFund />} />

@@ -46,7 +46,6 @@ export const useConributionBalance = () => {
   const balance = useSelector(
     (state: any) => state?.transaction?.getContributionBalance,
   );
-  // console.log("contribution", balance);
   const [isContributionVisible, setIsContributionVisible] = useState(() => {
     const storedVisibility = sessionStorage.getItem(
       "contributionBalanceVisible",

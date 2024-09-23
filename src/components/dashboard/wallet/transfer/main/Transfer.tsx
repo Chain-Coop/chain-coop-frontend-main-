@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import transfer from "../../../../../Assets/svg/dashboard/wallet/transfer.svg";
 import { IoIosArrowBack, IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
 import { DashboardHeader } from "../../../../common/DashboardHeader";
@@ -7,35 +7,22 @@ import contribution from "../../../../../Assets/svg/dashboard/contribution.svg";
 import fund_icon from "../../../../../Assets/svg/dashboard/project.svg";
 import { Link } from "react-router-dom";
 import Modal from "../../../../common/Modal";
-import PaymentPlan from "../modal/PaymentPlan";
 import ContributionPlan from "../modal/ContributionPlan";
 
-const Transfer = () => {
+const Transfer: React.FC = () => {
   const navigate = useNavigate();
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [isPaymentPlanModalOpen, setIsPaymentPlanModalOpen] = useState(false);
   const [isContributionPlanModalOpen, setIsContributionPlanModalOpen] = useState(false);
-  const [paymentData, setPaymentData] = useState({ paymentPlan: "", amount: 0 });
 
   const handleBackClick = () => {
-    navigate(-1);
+    navigate("/dashboard/wallet");
   };
 
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
   };
 
-  const handleContributionClick = () => {
-    setIsPaymentPlanModalOpen(true);
-  };
-
-  const handleClosePaymentPlanModal = () => {
-    setIsPaymentPlanModalOpen(false);
-  };
-
-  const handleOpenContributionPlanModal = (selectedPlan:string) => {
-    setPaymentData({ ...paymentData, paymentPlan: selectedPlan });
-    setIsPaymentPlanModalOpen(false);
+  const handleOpenContributionPlanModal = () => {
     setIsContributionPlanModalOpen(true);
   };
 
@@ -43,13 +30,9 @@ const Transfer = () => {
     setIsContributionPlanModalOpen(false);
   };
 
-  const handleConfirmTransaction = (contributionPlan:string, amount:number) => {
-    const transactionData = {
-      paymentPlan: paymentData.paymentPlan,
-      contributionPlan,
-      amount,
-    };
-    navigate("/dashboard/contribution/fund_contribution/confirm_Transaction", { state: transactionData });
+  const handleConfirmPlan = (selectedPlan: string) => {
+    setIsContributionPlanModalOpen(false);
+    navigate("/dashboard/contribution/fund_contribution/confirm_transaction", { state: { contributionPlan: selectedPlan } });
   };
 
   return (
@@ -59,7 +42,6 @@ const Transfer = () => {
         onClick={handleBackClick}
       >
         <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
-
         <div className="flex flex-grow items-center justify-center">
           <div className="tracking-wide">Transfer</div>
         </div>
@@ -93,14 +75,13 @@ const Transfer = () => {
             <ul className="rounded-lg bg-white shadow-md">
               <Link to="/dashboard/wallet/transfer/fund-project">
                 <li className="flex cursor-pointer items-center gap-3 border-b p-4 font-medium hover:bg-gray-100">
-                  <img src={fund_icon} alt="contribution" />
+                  <img src={fund_icon} alt="fund project" />
                   Fund your project
                 </li>
               </Link>
-
               <li
                 className="flex cursor-pointer items-center gap-3 border-b p-4 font-medium hover:bg-gray-100"
-                onClick={handleContributionClick}
+                onClick={handleOpenContributionPlanModal}
               >
                 <img src={contribution} alt="contribution" />
                 Fund your contribution
@@ -109,11 +90,8 @@ const Transfer = () => {
           </div>
         )}
       </section>
-      <Modal isOpen={isPaymentPlanModalOpen} onClose={handleClosePaymentPlanModal} className="bg-white">
-        <PaymentPlan onContinue={handleOpenContributionPlanModal} />
-      </Modal>
       <Modal isOpen={isContributionPlanModalOpen} onClose={handleCloseContributionPlanModal} className="bg-white">
-        <ContributionPlan onConfirm={handleConfirmTransaction} />
+        <ContributionPlan onConfirm={handleConfirmPlan} />
       </Modal>
     </main>
   );

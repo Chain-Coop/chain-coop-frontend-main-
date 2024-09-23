@@ -1,6 +1,7 @@
-import lagosStateLogo from "../Assets/png/home/lagos-state-logo.jpg"
-import ministryOfCommerce from "../Assets/png/home/ministry-of-commerce.jpg"
-import synWave from "../Assets/png/home/syn-wave.jpg"
+import lagosStateLogo from "../Assets/jpg/home/lagos-state.jpg"
+import ministryOfCommerce from "../Assets/jpg/home/ministry-work.jpg"
+import synWave from "../Assets/jpg/home/syn-wave.jpg"
+import google from "../Assets/jpg/home/google.jpg"
 import person1 from "../Assets/jpg/home/person1.jpg";
 import person2 from "../Assets/jpg/home/person2.jpg";
 import person3 from "../Assets/jpg/home/person3.jpg";
@@ -139,20 +140,26 @@ export const meetImage = [
 export const trustedPartners = [
   { src: lagosStateLogo },
   {src: synWave},
+  {src: google},
   { src: ministryOfCommerce },
   { src: lagosStateLogo },
   {src: synWave},
+  {src: google},
   { src: ministryOfCommerce },
   { src: lagosStateLogo },
   {src: synWave},
+  {src: google},
   { src: ministryOfCommerce },
   { src: lagosStateLogo },
   {src: synWave},
+  {src: google},
   { src: ministryOfCommerce },
   { src: lagosStateLogo },
   {src: synWave},
+  {src: google},
   { src: ministryOfCommerce },
   {src: synWave},
+  {src: google},
 ];
 
 
