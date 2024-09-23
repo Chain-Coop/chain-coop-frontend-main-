@@ -1,7 +1,6 @@
 import React from "react";
 import { trustedPartners } from "../../../data/Data";
 import "../../parts/partone/animation.css";
-import syn from "../../../Assets/png/home/syn-wave.jpg"
 
 interface TrustedPartner {
   src: string;
@@ -9,9 +8,9 @@ interface TrustedPartner {
 
 const TrustedPartners: React.FC = () => {
   return (
-    <main className="logos flex justify-center shadow-md sm:p-[3rem] lg:p-[2rem]">
+    <main className="logos flex justify-center shadow-md sm:py-[15px] lg:p-[2rem]">
       <div className="logos-slide flex w-[96vw] items-center justify-between whitespace-nowrap">
-        <div className="flex space-x-20">
+        <div className="flex sm:mt-4">
           {trustedPartners.map((img: TrustedPartner, index: number) => (
             <img
               key={index}
