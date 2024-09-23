@@ -66,7 +66,7 @@ const GetProposal = async () => {
 
 
 const GetAllProject = async () => {
-  const url = `${API_URL}/project/admin`;
+  const url = `${API_URL}/project/all-projects`;
   try {
     const response = await axios.get(url, { headers: authHeader() });
     return response.data;
