@@ -25,6 +25,8 @@ import ProfileTransactions from "../profile/profileDetails/transactions/Transact
 import Shares from "../shares/main/Shares";
 import ContactUs from "../contact/main/ContactUs";
 import VerifyTransaction from "../wallet/fund/verifyTransaction/VerifyTransaction";
+import ConfirmTransaction from "../wallet/transfer/fundContribution/confirmTransaction";
+import ProjectContentOverView from "../nestedproject/nested/ProjectContentOverView";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -60,7 +62,7 @@ const Dashboard = () => {
           <Route path="wallet/transfer/fund-project" element={<AddFund />} />
           <Route
             path="wallet/transfer/confirm-amount"
-            element={<ConfirmAmount />}
+            element={<ConfirmTransaction />}
           />
 
           <Route
@@ -69,6 +71,7 @@ const Dashboard = () => {
           />
 
           <Route path="project" element={<Project />} />
+          <Route path="project/project_over-view/:projectId" element={<ProjectContentOverView />} />
 
           <Route path="proposal/*" element={<Proposal />} />
           <Route path="proposal/submit-proposal" element={<SubmitProposal />} />

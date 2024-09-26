@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import {
-  formatAmount,
+  formatBalance,
   formatDayAndDate,
   formatMonthAndYear,
   formatRelativeTime,
@@ -67,7 +67,7 @@ const History = () => {
                   <p className="font-medium">
                     <span className="text-act">
                       {transaction.type === "credit" ? "+" : "-"}
-                      {formatAmount(transaction.amount)}
+                      {formatBalance(transaction.amount)}
                     </span>
                   </p>
                 </div>

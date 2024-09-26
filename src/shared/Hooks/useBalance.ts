@@ -1,4 +1,3 @@
-import React from "react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -6,8 +5,8 @@ import {
   GetUsersTransaction,
   GetWalletBalance,
 } from "../redux/slices/transaction.slices";
-import { formatAmount } from "../utils/format";
 import { AppDispatch } from "../redux/store";
+import { formatBalance } from "../utils/format";
 
 export const useWalletBalance = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -31,7 +30,7 @@ export const useWalletBalance = () => {
   }, [dispatch]);
 
   const formattedBalance = balance?.balance
-    ? formatAmount(balance.balance)
+    ? formatBalance(balance.balance)
     : "₦ 0.00";
 
   return {
@@ -64,7 +63,7 @@ export const useConributionBalance = () => {
   }, [dispatch]);
 
   const formattedBalance = balance?.balance
-    ? formatAmount(balance.balance)
+    ? formatBalance(balance.balance)
     : "₦ 0.00";
 
   return {

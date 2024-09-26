@@ -38,9 +38,8 @@ const FundWallet: React.FC = () => {
 
   return (
     <main className="font-sans">
-      <header className="lg:mt-[2em]">
         <DashboardHeader
-          className="relative cursor-pointer items-center"
+          className="relative cursor-pointer lg:mt-[2em] items-center"
           onClick={handleBackClick}
         >
           <IoIosArrowBack
@@ -51,7 +50,6 @@ const FundWallet: React.FC = () => {
             <div className="tracking-wide">Fund Wallet</div>
           </div>
         </DashboardHeader>
-      </header>
       <section className="m-auto mt-[1.5em] h-full w-full px-[1em]">
         <div
           className="flex cursor-pointer items-center justify-between"

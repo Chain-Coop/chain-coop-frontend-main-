@@ -7,7 +7,15 @@ const API_URL_FUND_WALLET =
   import.meta.env.VITE_REACT_APP_API_URL + "/wallet/fund-wallet";
 
 const API_URL_VERIFY_FUND_WALLET =
-  import.meta.env.VITE_REACT_APP_API_URL + "wallet/verify-payment";
+  import.meta.env.VITE_REACT_APP_API_URL + "/wallet/verify-payment";
+
+  const handleApiError = (error: any) => {
+    if (!error.response) {
+      throw new Error("Network Error: Please check your internet connection.");
+    } else {
+      throw error.response.data;
+    }
+  };
 
 const GetWalletBalance = async () => {
   const url = `${API_URL}/wallet/balance`;
@@ -86,15 +94,6 @@ const CreateContributionPlan = async (body: any) => {
   }
 };
 
-
-const handleApiError = (error: any) => {
-  if (!error.response) {
-    throw new Error("Network Error: Please check your internet connection.");
-  } else {
-    throw error.response.data;
-  }
-};
-
 const UploadPaymentReceipt = async (formData: FormData) => {
   try {
     const config = {
@@ -152,6 +151,26 @@ const VerifyFundWallet = async (body: any) => {
   }
 };
 
+const FundProject = async (body: any, projectId: string) => {
+  try {
+    const response = await axios.post(`${API_URL}/project/${projectId}/fund`, body, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
+const GetProjectById = async (projectId: string) => {
+  const url = `${API_URL}/project/${projectId}`;
+  try {
+    const response = await axios.get(url, { headers: authHeader() });
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
 
 
 const TransactionServices = {
@@ -165,6 +184,8 @@ const TransactionServices = {
   UploadPaymentReceipt,
   FundWallet,
   VerifyFundWallet,
+  FundProject,
+  GetProjectById,
 };
 
 export default TransactionServices;

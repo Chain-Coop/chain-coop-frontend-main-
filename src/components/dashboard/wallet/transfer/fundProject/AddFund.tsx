@@ -4,11 +4,16 @@ import { DashboardHeader } from "../../../../common/DashboardHeader";
 import { useNavigate } from "react-router";
 import arrow from "../../../../../Assets/svg/dashboard/wallet/transfer-arrow.svg";
 import { Primary } from "../../../../common/Button";
+import { useAllProjects } from "../../../../../shared/Hooks/useUserProfile";
+import useWalletBalance from "../../../../../shared/Hooks/useBalance";
 
 const AddFund = () => {
   const navigate = useNavigate();
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
+  const { useProjects } = useAllProjects();
+  const { formattedBalance } = useWalletBalance();
+
 
   const handleBackClick = () => {
     navigate(-1);
@@ -40,16 +45,16 @@ const AddFund = () => {
       </DashboardHeader>
       <section className="px-3">
         <div className="mt-6 flex items-center justify-between">
-          <div>
+          <div className="flex flex-col gap-2">
             <p className="font-medium">Chain Coop Wallet</p>
-            <span className="text-gray-400">0.00</span>
+            <span className="text-gray-400">{formattedBalance}</span>
           </div>
           <img
             src={arrow}
             alt="transfer-arrow"
             className="h-6 w-6 md:h-auto md:w-auto"
           />
-          <div>
+          <div className="flex flex-col gap-2">
             <p className="font-medium">Project Fund</p>
             <span className="text-gray-400">0.00</span>
           </div>
@@ -58,7 +63,13 @@ const AddFund = () => {
           <hr className="w-full" />
           <div className="flex items-center justify-between">
             <p>NGN</p>
-            <span>0.00</span>
+            <span className="text-base text-normal">
+              <input 
+                type="text" 
+                className="border border-gray-300 focus:border-text2 focus:outline-none focus:ring-text2 rounded-md px-3 py-2 w-full md:w-auto"
+                placeholder="Enter amount"
+              />
+            </span>
           </div>
           <hr className="w-full" />
         </div>
@@ -66,11 +77,11 @@ const AddFund = () => {
           className="relative mt-4 flex cursor-pointer items-center justify-between"
           onClick={toggleDropdown}
         >
-          <p>
+          <p className="font-semibold">
             {selectedProject ? (
               selectedProject
             ) : (
-              <span className="font-medium">--- No project selected ---</span>
+              <span className="font-medium px-[1.5em]">--- No project selected ---</span>
             )}
           </p>
           {dropdownVisible ? (
@@ -79,30 +90,24 @@ const AddFund = () => {
             <IoIosArrowForward size={25} />
           )}
 
-          {dropdownVisible && (
-            <div className="absolute left-0 right-0 top-full z-10 mt-2 overflow-auto">
-              <ul className="rounded-lg bg-white px-2 shadow-md">
-                <li
-                  className="flex cursor-pointer items-center gap-3 border-b p-4 font-semibold hover:bg-gray-100"
-                  onClick={() => handleProjectSelect("AI Learning Platform")}
+        {dropdownVisible && (
+          <div className="absolute  h-[200px] left-0 px-[2em] right-0 top-full z-10 mt-2 overflow-auto bg-white shadow-md">
+            {useProjects && useProjects.length > 0 ? (
+              useProjects.map((project:any) => (
+                <div
+                  key={project.id}
+                  className="cursor-pointer font-semibold p-2 hover:bg-gray-200"
+                  onClick={() => handleProjectSelect(project.title)}
                 >
-                  AI Learning Platform
-                </li>
-                <li
-                  className="flex cursor-pointer items-center gap-3 border-b p-4 font-semibold hover:bg-gray-100"
-                  onClick={() => handleProjectSelect("Blockchain Project")}
-                >
-                  Blockchain Project
-                </li>
-                <li
-                  className="flex cursor-pointer items-center gap-3 border-b p-4 font-semibold hover:bg-gray-100"
-                  onClick={() => handleProjectSelect("Data Science Project")}
-                >
-                  Data Science Project
-                </li>
-              </ul>
-            </div>
-          )}
+                  {project.title}
+                </div>
+              ))
+            ) : (
+              <p className="p-2 text-gray-400">No projects available</p>
+            )}
+          </div>
+        )}
+
         </div>
         <Primary
           onClick={confirmAmount}

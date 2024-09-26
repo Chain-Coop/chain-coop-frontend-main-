@@ -141,7 +141,7 @@ const Contribution = () => {
         {steps.map((step, index) => (
           <Step key={step.label}>
             <StepLabel
-            sx={{fontSize:"2rem",fontWeight:"1em"}}
+            sx={{fontSize:"2rem",fontWeight:"2em"}}
             >
               <Typography sx={{display:"flex",fontFamily:"sans-serif",gap:"3px"}}>
               {step.label} :

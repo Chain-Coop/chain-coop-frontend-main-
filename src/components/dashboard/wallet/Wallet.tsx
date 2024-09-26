@@ -15,6 +15,9 @@ const Wallet = () => {
   const { isWalletVisible, setIsWalletVisible, formattedBalance } =
     useWalletBalance();
   const navigate = useNavigate();
+  // const formattedBalance = balance?.balance
+//   ? formatAmountInNaira(balance.balance)
+//   : "₦0.00";
 
   const withdraw = () => {
     navigate("/dashboard/wallet/withdraw");
@@ -92,18 +95,6 @@ const Wallet = () => {
             </div>
           </section>
 
-          {/* <section className="mt-[2em]">
-            <p className="text-sm font-bold text-memt1">No Card Linked</p>
-            <div className="items-center font-medium lg:flex lg:justify-between ">
-              <p>{`You haven't linked your card to add funds.`}</p>
-              <div className="flex items-center">
-                <button className="flex items-center rounded-full bg-act py-[2px] text-center text-sm  text-text5 sm:px-[9px] lg:px-[7px]">
-                  Link Card
-                  <IoIosArrowForward />
-                </button>
-              </div>
-            </div>
-          </section> */}
           <History />
         </div>
       </div>
@@ -112,3 +103,17 @@ const Wallet = () => {
 };
 
 export default Wallet;
+
+
+{/* <section className="mt-[2em]">
+  <p className="text-sm font-bold text-memt1">No Card Linked</p>
+  <div className="items-center font-medium lg:flex lg:justify-between ">
+    <p>{`You haven't linked your card to add funds.`}</p>
+    <div className="flex items-center">
+      <button className="flex items-center rounded-full bg-act py-[2px] text-center text-sm  text-text5 sm:px-[9px] lg:px-[7px]">
+        Link Card
+        <IoIosArrowForward />
+      </button>
+    </div>
+  </div>
+</section> */}

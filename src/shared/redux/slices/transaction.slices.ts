@@ -2,6 +2,15 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { setMessage } from "./message.slices";
 import TransactionServices from "../services/transaction.services";
 
+interface FundProjectBody {
+ amount: number,
+}
+
+interface FundProjectPayload {
+  body: FundProjectBody;
+  projectId: string;
+}
+
 export const GetWalletBalance = createAsyncThunk(
   "transaction/getWalletBalance",
   async (_, thunkAPI) => {
@@ -130,6 +139,32 @@ export const VerifyFundWallet = createAsyncThunk(
   },
 );
 
+export const FundProject = createAsyncThunk(
+  "transaction/fundProject",
+  async ({body, projectId}: FundProjectPayload, thunkAPI) => {
+    try {
+      const data = await TransactionServices.FundProject(body,projectId);
+      return { landing: data };
+    } catch (error: any) {
+      const message = error.msg;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
+export const GetProjectById = createAsyncThunk(
+  "transaction/getProjectById",
+  async ({ projectId }: { projectId: string }, thunkAPI) => {
+    try {
+      const data = await TransactionServices.GetProjectById(projectId);
+      return data;
+    } catch (error: any) {
+      const message = error.msg || "Failed to fetch project";
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 interface TransactionState {
   getWalletBalance: any | null;
@@ -143,6 +178,10 @@ interface TransactionState {
   uploadReceipt: any | null;
   fundUserWallet: any | null;
   veryfyFundUserWallet: any | null;
+  fundUserProject: null,
+  currentProject: any | null;
+  loading: boolean;
+  error: string | null;
 }
 
 const initialState: TransactionState = {
@@ -157,6 +196,10 @@ const initialState: TransactionState = {
   uploadReceipt:null,
   fundUserWallet: null,
   veryfyFundUserWallet:null,
+  fundUserProject: null,
+  currentProject: null,
+  loading: false,
+  error: null,
 };
 
 export const transactionSlice = createSlice({
@@ -208,6 +251,7 @@ export const transactionSlice = createSlice({
       .addCase(sendProposal.rejected, (state) => {
         state.createProposal = null;
       })
+
       .addCase(
         GetProposal.fulfilled,
         (state, action: PayloadAction<{ transaction: any }>) => {
@@ -217,14 +261,21 @@ export const transactionSlice = createSlice({
       .addCase(GetProposal.rejected, (state) => {
         state.userProposal = null;
       })
+
+      .addCase(GetAllProject.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(
         GetAllProject.fulfilled,
         (state, action: PayloadAction<{ transaction: any }>) => {
           state.allProjects = action.payload.transaction;
         },
       )
-      .addCase(GetAllProject.rejected, (state) => {
+      .addCase(GetAllProject.rejected, (state, action) => {
+        state.loading = false;
         state.allProjects = null;
+        state.error = action.payload as string;
       })
       .addCase(
         CreateContributionPlan.fulfilled,
@@ -253,6 +304,29 @@ export const transactionSlice = createSlice({
       )
       .addCase(VerifyFundWallet.rejected, (state) => {
         state. veryfyFundUserWallet = null;
+      })
+
+      .addCase(
+        FundProject.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.fundUserProject = action.payload;
+        },
+      )
+      .addCase(FundProject.rejected, (state, action) => {
+        state.fundUserProject = null;
+      })
+
+      .addCase(GetProjectById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(GetProjectById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentProject = action.payload;
+      })
+      .addCase(GetProjectById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });

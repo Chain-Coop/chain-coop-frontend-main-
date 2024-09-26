@@ -1,12 +1,40 @@
-export const formatAmount = (amount: number): string => {
-  const amountInNaira = amount >= 100 ? amount / 100 : amount;
+type FormatOptions = {
+  showCents?: boolean;
+  useGrouping?: boolean;
+  roundToWhole?: boolean;
+};
 
-  return new Intl.NumberFormat('en-NG', {
+export const formatBalance = (
+  amountInKobo: number | null | undefined,
+  options: FormatOptions = {}
+): string => {
+  const {
+    showCents = true,
+    useGrouping = true,
+    roundToWhole = false
+  } = options;
+
+  if (amountInKobo === null || amountInKobo === undefined) {
+    return '₦0';
+  }
+
+  const amountInNaira = amountInKobo / 100;
+
+  const formatter = new Intl.NumberFormat('en-NG', {
     style: 'currency',
     currency: 'NGN',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(amountInNaira);
+    minimumFractionDigits: showCents ? 2 : 0,
+    maximumFractionDigits: showCents ? 2 : 0,
+    useGrouping: useGrouping,
+  });
+
+  let formattedAmount = formatter.format(roundToWhole ? Math.round(amountInNaira) : amountInNaira);
+
+  formattedAmount = formattedAmount.replace('NGN', '₦');
+
+  formattedAmount = formattedAmount.replace('₦ ', '₦');
+
+  return formattedAmount;
 };
 
 export const formatDayAndDate = (dateString: any) => {
