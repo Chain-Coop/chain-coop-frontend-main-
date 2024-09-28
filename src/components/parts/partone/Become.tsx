@@ -20,7 +20,7 @@ const Become = () => {
         <div className="grid justify-center sm:grid-cols-[1fr] lg:grid-cols-[1fr,1fr] lg:gap-2">
           {becomeData.map((item, index) => (
             <Card className="sm:p-3 md:p-[3.2em] lg:p-[3.2em]" key={index}>
-              <div className="lg:px-3em] sm:px-[1em]">
+              <div className="lg:px-[3em] sm:text-sm sm:px-[4px]">
                 <h2 className="mb-2 text-lg font-bold">{item.title}</h2>
                 <p className="font-sans lg:mt-[2em]">{item.paragraph}</p>
               </div>

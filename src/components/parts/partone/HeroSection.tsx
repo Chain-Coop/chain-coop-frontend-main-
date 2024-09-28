@@ -8,12 +8,14 @@ const HeroSection = () => {
     <main className="relative flex w-full flex-col font-sans lg:flex-row">
       <div className="flex items-center px-4 py-5 lg:w-1/2 lg:px-[4em] lg:py-[8em]">
         <div className="max-w-xl">
-          <h1 className="mb-4 text-2xl font-bold  lg:mb-6 lg:text-5xl">
-            Your Trusted Investing <br className="hidden sm:inline" /> Platform
-            <span className="text-text2"> with</span>
-            <br className="hidden sm:inline" />
-            <span className="text-text2">Guaranteed Returns</span>
+          <div className="lg:mb-6 mb-4">
+          <h1 className="text-2xl font-bold  lg:text-4xl">
+           Build your Financial Future wih Chain Co-op
           </h1>
+          <h1 className="mb-4 text-2xl font-bold text-text2  lg:mb-6 lg:text-4xl">
+          The Tech-Driven Worker-Owned Cooperative
+          </h1>
+          </div>
           <p className="mb-6 text-sm text-text1 sm:text-base lg:mb-8">
            Join Chain Co-op, a tech-worker-owned cooperative built for financial success, powered by the cutting-edge
            Chain Wallet. Simplify your investment with transparency, safety and sustainability.

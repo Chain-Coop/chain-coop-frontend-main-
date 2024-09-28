@@ -11,7 +11,22 @@ import dot from "../../../Assets/svg/membership/radio-button.svg";
 
 const Card = () => {
   return (
-    <main className="mx-auto font-sans px-[1em]">
+    <main className="mx-auto mt-[3em] font-sans px-[1em]">
+        <section>
+        <div className=" text-center text-text4">
+          <header>
+            <h1 className="mb-2 font-bold text-memt1 sm:text-xl lg:text-3xl">
+              Membership Tiers
+            </h1>
+          </header>
+          <article className="sm:px-[5px] mx-auto lg:w-[77%]">
+            <p className="lg:text-lg font-medium">
+          Choose from various tiers to suits your needs. Each Cards grants access to voting rights, inverstment opportunities and
+          exclusive Coop Network benefits, all tailred to your level of investment.
+            </p>
+          </article>
+        </div>
+      </section>
       <section className="mt-8 flex flex-col justify-between lg:flex-row lg:space-x-8">
         <div className="flex-1">
           <div className="relative">

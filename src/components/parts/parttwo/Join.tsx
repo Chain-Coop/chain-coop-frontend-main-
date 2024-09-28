@@ -3,22 +3,18 @@ import React from "react";
 const Join = () => {
   return (
     <main className="font-sans">
-      <section className="">
+      <section>
         <div className=" text-center text-text4">
           <header>
             <h1 className="mb-2 font-bold text-memt1 sm:text-xl lg:text-3xl">
-              Join Coop and Unlock Exclusive
-            </h1>
-            <h1 className="font-bold text-memt1 sm:mb-3 sm:text-xl lg:mb-8 lg:text-3xl">
-              Membership Benefits
+              Join Chain Co-op Today
             </h1>
           </header>
-          <article className="sm:px-[5px] mx-auto lg:w-[65%]">
+          <article className="sm:px-[5px] mx-auto lg:w-[70%]">
             <p className="lg:text-lg font-medium">
-              Embrace the advantage of being a member in a rapidly expanding
-              business consortium. Giving priviledge access to cutting edge
-              investment opportunities. Discover our array of Early Member cards
-              powered by innovative block chain.
+           Becoming a Chain Co-op is simple and secure. Your membership is represented <span className="ml-2 text-red-500">
+            by a digital NFT Card </span>ensuring your ownership and invesment are securely tracked through block chain. Limited 
+            to 3000 early members - don't miss your chance.
             </p>
           </article>
         </div>

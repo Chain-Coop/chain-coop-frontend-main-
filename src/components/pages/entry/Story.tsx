@@ -31,9 +31,7 @@ const Story = () => {
               Our Story
             </h1>
             <p className="px-4 text-xs tracking-wide sm:px-0 sm:text-sm">
-              Meet our Chain Coop, our business-oriented community designed into
-              a cooperative with open membership, through Chain Wallet Simple,
-              Safe and transparent way
+               A Tech-driven worker owned Cooperative, Built for a better future. 
             </p>
           </header>
           <div className="m-auto mt-8 flex flex-col px-4 sm:mt-0 sm:px-2 lg:mt-[3em] lg:w-[87%] lg:gap-8 lg:text-start">
@@ -41,23 +39,21 @@ const Story = () => {
               <div className="hidden lg:block lg:w-1/2">
                 <img src={image1} alt="people-image" className="w-full h-auto" />
               </div>
-              <div className="mx-auto mt-[1.5em] text-center tracking-wide lg:mt-[3em] lg:w-1/2">
+              <div className="mx-auto mt-[1.5em] lg:text-start text-center tracking-wide lg:mt-[3em] lg:w-1/2">
                 <p className="text-sm sm:text-base">
-                  Meet Chain Coop, Our business-oriented community designed into
-                  a cooperative with open membership through Chain Wallet,
-                  Simple, safe and transparent way.
+                  Chain is nigeria first digital membership cooperative, leveraging blockchain to offer safe, guanteed returns through 
+                  ethical investment. As a worker-owned co-op, we are reshaping the future of work and investment
                 </p>
               </div>
             </div>
             <div className="z-[0px] mt-8 flex flex-col-reverse sm:mt-0 lg:z-[10px] lg:mt-[-170px] lg:flex-row">
-              <div className="mt-6 lg:ml-[2em] lg:mt-[12em] lg:w-[45%]">
-                <h1 className="text-2xl font-semibold sm:flex sm:justify-center sm:text-3xl">
-                  Our Membership
+              <div className="mt-6 lg:ml-[2em] lg:mt-[12em] lg:w-[50%]">
+                <h1 className="text-2xl w-[60%] font-bold sm:flex sm:justify-center sm:text-3xl">
+                  Join Our Tech -Driven Cooperative
                 </h1>
-                <p className="mt-[1em] text-center text-xs sm:text-sm lg:text-start">
-                  Enjoy All the Benefits Chain Coop Has to Offer with a
-                  <br className="hidden sm:block" />
-                  One-Time N100k Membership Fee
+                <p className="mt-[1em] w-[55%] text-center text-xs sm:text-sm lg:text-start">
+               A one time 100k membership access grants you access to exclusive investment rounds, the power to vote 
+               on cooperative decisions that inpact your future 
                 </p>
                 <div className="mt-[1em] flex flex-col gap-2 font-medium lg:gap-7">
                   <p className="flex items-center gap-3 text-sm">
@@ -85,28 +81,25 @@ const Story = () => {
           </div>
         </section>
         <div className="mx-auto flex lg:w-[87%] flex-col justify-between gap-[2em] px-4 sm:mt-[6em] lg:mt-[2em] lg:flex-row">
-          <div className="h-full rounded-lg bg-text2 px-[1em] py-[2em] text-text3 shadow-md sm:px-[2em] sm:py-[3em]">
-            <h1 className="text-xl font-semibold sm:text-2xl">Our Mission</h1>
-            <p className="mt-4 text-sm sm:text-base">
-              Meet Chain Coop our business-Oriented community, designed into a
-              cooperative with open membership, through chain wallet simple safe
-              and transparent way. Meet Chain Coop our business-Oriented
-              community, designed into a cooperative with open membership,
-              through chain wallet simple safe and transparent way.
-            </p>
-          </div>
-          <div className="mb-[2em] h-full rounded-lg px-[1em] py-[2em] shadow-md sm:px-[2em] sm:py-[3em] lg:mt-[5em]">
-            <h1 className="text-xl font-semibold sm:text-2xl">Our Goals</h1>
-            <p className="mt-4 text-sm sm:text-base">
-              Meet Chain Coop our business-Oriented community, designed into a
-              cooperative with open membership, through chain wallet simple safe
-              and transparent way. Meet Chain Coop our business-Oriented
-              community, designed into a cooperative with open membership,
-              through chain wallet simple safe and transparent way.
-            </p>
-          </div>
+        <div className="h-full rounded-lg bg-text2 px-[1em] py-[8em] text-text3 shadow-md sm:px-[2em] sm:py-[3em] lg:h-[300px]">
+          <h1 className="text-xl font-semibold sm:text-2xl">Our Mission</h1>
+          <p className="mt-4 text-sm sm:text-base">
+            Chain Co-op aims to create a community where tech Workers can participate in business 
+            ownership, make sustainable investment and drive collective success. 
+          </p>
+          <p className="mt-4 text-sm sm:text-base">
+            We envision a future where cooperative governance leads innovation.
+          </p>
         </div>
-        <Footer />
+        <div className="mb-[2em] h-full rounded-lg px-[1em] py-[8em] shadow-md sm:px-[2em] sm:py-[3em] lg:mt-[5em] lg:h-[300px]">
+          <h1 className="text-xl font-semibold sm:text-2xl">Our Goals</h1>
+          <p className="mt-4 text-sm sm:text-base">
+            Ownership innovation: and inclusion: As a worker-owned co-op, we foster innovation through 
+            collaboration, prioritize democratic decision-making, and promote inclusivity in all business dealings.  
+          </p>
+        </div>
+      </div>
+              <Footer />
       </main>
     </>
   );

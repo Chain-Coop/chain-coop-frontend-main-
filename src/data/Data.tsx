@@ -205,7 +205,7 @@ export const investorCardData = [
     paragraph: "Early access to first investment rounds",
   },
   {
-    paragraph: "Discounted The Coop Network products & services",
+    paragraph: "Discounted products & services",
   },
 ];
 
@@ -220,7 +220,7 @@ export const employeeCardData = [
     paragraph: "Early access to first investment rounds",
   },
   {
-    paragraph: "Discounted The Coop Network products & services",
+    paragraph: "Discounted products & services",
   },
 ];
 
@@ -315,18 +315,22 @@ export const steps = [
 export const earlyMemberCircleText = {
   firstBox: {
     title: "Legally Guaranteed Returns",
-    p: "Enjoy Annual Co-op Dividends Based on Your Membership Contribution",
+    p: "Receive legally guanteed annual dividends based on your membership contribution",
+    p2: "Chain Co-op ensures your returns are protected by cooperative law,offering peace of mind and long-term financial growth ",
   },
   secondBox: {
     title: "Access Exclusive Investment Rounds",
-    p: "Develop Strategies, Build Your Portfolio, and Track Success",
+    p: "As a chain Co-op member, you gain exlcusive access to high growth business investment rounds",
+    p2: "Build your portfolio with high trasparency, track your performance through quarterly reports, and grow your wealth in sustainable ventures.",
   },
   thirdBox: {
     title: "Vote and Engage with Chain Coop Network",
-    p: "Contribute ideas and Commit to collective Growth",
+    p: "Chain Co-op member, you can vote on key decision that shape the cooperative future",
+    p2: "Engage in strategic decisions share your ideas, and actively contribute to the growth and success of the cooperative ",
   },
   fourthBox: {
     title: "Expand Your Network",
-    p: "Participate in Members Meetings, Online Chats and live social Events with Investors and Entrepreneurs",
+    p: "Expand your network with  fellow investors, through entrepreneurs, and tech innovators through exclusive member meetings, online discussions and live events",
+    p2: "Collabrate with industry leaders and enhance your investment strategies within our growing cooperative community.",
   },
 };

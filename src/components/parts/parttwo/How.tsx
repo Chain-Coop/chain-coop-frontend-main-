@@ -5,12 +5,12 @@ import step3 from "../../../Assets/png/home/howto-step3.png";
 
 const How = () => {
   return (
-    <main className="font-sans mt-[3em] w-[90%] m-auto sm:px-[em] lg:mt-[8em] ">
+    <main className="font-sans mt-[3em] w-[100%] m-auto sm:px-[1em] lg:mt-[8em]">
       <header className="flex justify-center">
         <h1 className="text-3xl font-bold">How to Get started</h1>
       </header>
       <section className="mt-8 flex flex-col lg:flex-row lg:space-x-9">
-        <article className="relative  my-4 flex flex-col justify-between rounded-xl bg-how1 p-[3em] sm:h-[411px] md:h-[250px] lg:h-[411px]">
+        <article className="relative my-4 flex w-full flex-col justify-between rounded-xl bg-how1 p-[3em] sm:h-[411px] md:h-[250px] lg:h-[411px] lg:w-1/3">
           <img
             src={step1}
             className="absolute inset-0 mx-auto self-center object-cover"
@@ -18,15 +18,17 @@ const How = () => {
           />
           <div>
             <h1 className="text-2xl font-bold text-howtext">
-              Register as <br /> member
+              Secure <br /> Registration
             </h1>
             <p className="mt-4 font-sans font-medium text-howtext">
-              Register and Become a Verified Member - Securely complete KYC.
+              Complete our KYC process for safe, compliant registration. Once
+              verified, you can invest in projects and drive sustainable business
+              growth.
             </p>
           </div>
         </article>
 
-        <article className="relative my-4 flex flex-col justify-between rounded-xl bg-how2 p-[3em] sm:h-[411px] md:h-[250px] lg:h-[411px]">
+        <article className="relative my-4 flex w-full flex-col justify-between rounded-xl bg-how2 p-[3em] sm:h-[411px] md:h-[250px] lg:h-[411px] lg:w-1/3">
           <img
             src={step2}
             className="absolute inset-0 mx-auto self-center object-cover"
@@ -34,15 +36,16 @@ const How = () => {
           />
           <div>
             <h1 className="text-2xl font-bold text-howtext">
-              Purchase Your <br /> Card
+              Purchase Your <br /> Membership Card
             </h1>
             <p className="mt-4 font-medium text-howtext">
-            Purchase Your Membership  Card - Your ticket to co-op dividends and decision making  
+              Secure your stake in the coop and start earning dividends through
+              your membership card.
             </p>
           </div>
         </article>
 
-        <article className="relative my-4 flex flex-col justify-between rounded-xl bg-how3 p-[3em] sm:h-[411px] md:h-[280px] lg:h-[411px]">
+        <article className="relative my-4 flex w-full flex-col justify-between rounded-xl bg-how3 p-[3em] sm:h-[411px] md:h-[280px] lg:h-[411px] lg:w-1/3">
           <img
             src={step3}
             className="absolute inset-0 mx-auto self-center object-cover"
@@ -50,10 +53,11 @@ const How = () => {
           />
           <div>
             <h1 className="text-2xl font-bold text-howtext">
-              Access the Coop <br /> Wallet and Build <br /> Your Income
+              Use the Coop <br /> Wallet
             </h1>
             <p className="mt-4 font-medium text-howtext">
-             Unlock Chain Wallet - investment track, and grow your portfolio.
+              Soon you will be able to use the Coop wallet to access the ecosystem,
+              invest in innovative business, and track your portfolio.
             </p>
           </div>
         </article>

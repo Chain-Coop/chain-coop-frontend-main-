@@ -10,23 +10,27 @@ import { Primary } from "./Button";
 const Footer = () => {
   return (
     <footer>
-    <div className="relative z-[10px] mx-auto flex items-center w-full justify-center rounded-2xl bg-fbg font-sans sm:mb-[-70px] sm:mt-[2em] sm:h-[150px] lg:mb-[-100px] lg:h-[200px] lg:w-[90%]">
-      <div>
-        <h1 className="text-l mb-4 w-full text-center font-normal lg:text-3xl">
-          Stay Updated with Our Latest Developments
-        </h1>
-        <div className="flex flex-col items-center justify-center gap-[9px] sm:flex-row sm:gap-2 lg:mx-auto lg:w-full">
-          <input
-            type="text"
-            className="mb-2 h-12 rounded-md border border-gray-300 p-3  focus:border-primary focus:outline-none sm:mb-0 sm:w-[16em] lg:flex-1"
-            placeholder="enter your e-mail"
-          />
-          <Primary className="rounded-md bg-text2 px-4 py-2 text-sm text-text5 lg:px-7 lg:py-2 lg:text-xl">
-            Join Now
-          </Primary>
+     <div className="relative z-10 mx-auto flex items-center justify-center w-full rounded-2xl bg-[#CCA3BC] font-sans p-4 sm:p-6 lg:p-8 sm:mb-[-70px] sm:mt-[2em] lg:mb-[-100px] lg:w-[90%]">
+        <div className="text-center w-full">
+          <h1 className="text-xl font-semibold mb-2 lg:text-2xl">
+            Stay Ahead with Chain Co-op
+          </h1>
+          <h2 className="text-lg mb-4 font-semibold w-[73%] m-auto lg:text-2xl">
+            Subscribe to the latest tech in tech-driven cooperative innovations and
+            investment opportunities.
+          </h2>
+          <div className="flex sm:flex-col lg:flex-row items-center justify-center gap-4 w-full max-w-[60%] mx-auto">
+            <input
+              type="text"
+              className="w-full rounded-md border border-gray-300 p-4 focus:border-primary focus:outline-none"
+              placeholder="Enter your e-mail"
+            />
+            <Primary className="lg:w-[30%] sm:w-[50%] rounded-md bg-text2 px-4 py-2 text-lg text-text5 lg:text-xl">
+              Join Now
+            </Primary>
+          </div>
         </div>
       </div>
-    </div>
     <div className="w-full bg-text2  font-sans">
       <div className="mx-auto grid grid-cols-1 justify-between gap-y-6 px-3 sm:grid-cols-2 sm:gap-4 sm:pt-[100px] lg:flex lg:w-[83%] lg:grid-cols-5 lg:gap-8 lg:pb-[10px] lg:pt-[190px]">
         <section className="mb-4">

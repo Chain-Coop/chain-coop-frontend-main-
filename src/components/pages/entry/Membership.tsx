@@ -2,7 +2,7 @@ import React from "react";
 import Card from "../../parts/parttwo/Card";
 import NavBar from "../../common/NavBar";
 import Join from "../../parts/parttwo/Join";
-import How from "../../parts/partone/How";
+import How from "../../parts/parttwo/How";
 import AppStore from "../../parts/partone/AppStore";
 import Footer from "../../common/Footer";
 import Revolution from "../../parts/parttwo/Revolution";

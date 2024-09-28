@@ -6,35 +6,30 @@ const Revolution = () => {
       <section>
         <header className="text-center text-text4">
           <h1 className="mb-2 font-bold sm:text-xl lg:text-3xl">
-            Revolutionizing Membership
+            Confidence in Every Step 
           </h1>
         </header>
-        <article className="mx-auto text-center text-base font-medium text-text4 sm:w-full lg:px-[2em]">
-          <p className="font-sans">
-            {`  We've streamlined the process of becoming a legal cooperative
-            member, ensuring simplicity and security through blockchain
-            technology. Your membership is represented digitally by a
-            non-fungible token card, guaranteeing effortless registration and
-            confirming your unique ownership. Purchase yours with confidence,
-            knowing your contribution is safeguarded by the Coop Network's
-            business and legal provisions.`}
+        <article className="text-center text-base font-medium text-text4 sm:w-full">
+          <div>
+          <p className="font-sans m-auto w-[65%]">
+         Your digital membership card, secured by blockchain, provides you with seemless registration ,
+        transparent ownership, and guanteed returns on your investment.
           </p>
+          </div>
         </article>
 
         <section className="mt-[2em] ">
           <div className="rectangle1 mx-auto w-full rounded-2xl bg-rec1 p-[3em] shadow-md ">
             <div className="sm:w-full lg:w-[72%]">
               <h3 className="font-bold text-howtext sm:text-xl lg:text-2xl">
-                Legally Guranteed Returns
+                 Guranteed Returns & Growth
               </h3>
               <div className="mt-[1em]">
-                <p className="font-lg font-semibold text-howtext">
-                  Recieve annual cooperative dividends based on your membership
-                  contribution or explore further investment opportunities
-                  within Coop business for attractive fixed interest rate, which
-                  can be reinvested for a long term gains Simple,secure and
-                  protected by law
+                <p className="font-lg font-medium">
+                  Recieve annual dividends based on your contribution, with opportunities to further
+                  investment at fixed interest rate
                 </p>
+                <p  className="font-lg mt-[1em] font-medium">safe, simple and legally protected.</p>
               </div>
             </div>
           </div>
@@ -47,12 +42,9 @@ const Revolution = () => {
                 Access To Funding And Portfolio Grwoth
               </h3>
               <div className="mt-[1em]">
-                <p className="font-lg font-sans font-semibold text-howtext">
-                  {`dive into the Coop Network's comprehensive business ecosysytem
-                  and seize lucrative investment prospects. Review business
-                  plans, formulate strategies, build your porfolio and monitor
-                  progress Count ongoing support, including quartely performance
-                  reports and withdrawl assistance`}
+                <p className="font-lg font-sans font-medium">
+               Gain early access to early rounds, build you portfolio, and track your Progress with quarterly performance
+               reports. 
                 </p>
               </div>
             </div>
@@ -63,14 +55,12 @@ const Revolution = () => {
           <div className="rectangle1 mx-auto w-full rounded-2xl bg-rec1 p-[3em] shadow-md ">
             <div className="sm:w-full lg:w-[71%] ">
               <h3 className="font-bold  text-howtext sm:text-xl lg:text-2xl">
-                Become A Community Contributor
+               Shape the Future
               </h3>
               <div className="mt-[1em]">
-                <p className="font-lg font-semibold text-howtext">
-                  {`As a member actively participate in project development and
-                  launch and aid in strategic decision making for The Coop
-                  Netword's management. Foster ecosystem growth by offering
-                  feedback and insights into our projects and products.`}
+                <p className="font-lg font-medium">
+                Join as an active participant in project development and decision-making, helping grow
+                the cooperative ecosystem with your feedbacks.
                 </p>
               </div>
             </div>
@@ -81,15 +71,12 @@ const Revolution = () => {
           <div className="mx-auto w-full rounded-2xl bg-rec3 p-[3em] shadow-md ">
             <div className="sm:w-full lg:w-[71%]">
               <h3 className="font-sans font-bold text-howtext sm:text-xl lg:text-2xl">
-                Network With Fellow Investors And Experts
+                Collaborate & connect
               </h3>
               <div className="mt-[1em]">
-                <p className="font-lg font-semibold text-howtext">
-                  Engage in members-only meetings, online,discaussions and live
-                  social gathering. Collaborate with founding members of The
-                  Coop Network, fellow investors and entrepreneur and enjoy the
-                  perks of a shared economy, including access to high -quality
-                  educational resources
+                <p className="font-lg font-medium">
+                 Join exclusive meetings and online discusions with fellow investors and experts,
+                 gain valuable insights while growing your network in the shared community.
                 </p>
               </div>
             </div>
@@ -100,14 +87,12 @@ const Revolution = () => {
           <div className="rectangle1 mx-auto w-full rounded-2xl bg-rec2 p-[3em] shadow-md ">
             <div className="sm:w-full lg:w-[71%]">
               <h3 className="font-sans font-bold text-howtext sm:text-xl lg:text-2xl">
-                Investing In Tomorrow
+                Investing In The Future
               </h3>
               <div className="mt-[1em]">
-                <p className="font-lg font-sans font-semibold text-howtext">
-                  Play a part in constructing brighter future by supporting
-                  sustainable and innovative businesses focusing on vital
-                  resources such as energy , agriculture and water, all powered
-                  by cutting-edge technology
+                <p className="font-lg font-sans font-medium">
+                 Support sustainable, innovative businesess  in energy, agriculture and water
+                 through cutting edge technology, creating long term impact.
                 </p>
               </div>
             </div>
