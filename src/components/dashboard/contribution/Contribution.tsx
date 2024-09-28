@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { useConributionBalance } from "../../../shared/Hooks/useBalance";
 import ToggleButton from "../../../shared/utils/ToggleButton";
 import { DashboardHeader } from "../../common/DashboardHeader";
 import { Primary } from "../../../components/common/Button";
@@ -16,12 +15,11 @@ import Typography from '@mui/material/Typography';
 import { MdArrowOutward } from "react-icons/md";
 import { IoIosArrowForward } from "react-icons/io";
 import { steps } from "../../../data/Data";
-
+import { useContributionBalance } from "../../../shared/Hooks/useBalance";
 
 const Contribution = () => {
-  const { formattedBalance } = useConributionBalance();
-  // console.log("formatted contribution",formattedBalance)
-  const [isContributionVisible, setIsContributionVisible] = useState(() => {
+  const { formattedBalance } = useContributionBalance();
+    const [isContributionVisible, setIsContributionVisible] = useState(() => {
     const storedVisibility = sessionStorage.getItem(
       "contributionBalanceVisible",
     );

@@ -14,7 +14,6 @@ const AddFund = () => {
   const { useProjects } = useAllProjects();
   const { formattedBalance } = useWalletBalance();
 
-
   const handleBackClick = () => {
     navigate(-1);
   };

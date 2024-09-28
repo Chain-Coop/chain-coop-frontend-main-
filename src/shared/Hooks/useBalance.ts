@@ -30,7 +30,7 @@ export const useWalletBalance = () => {
   }, [dispatch]);
 
   const formattedBalance = balance?.balance
-    ? formatBalance(balance.balance)
+    ? formatBalance(balance.balance * 100)
     : "₦ 0.00";
 
   return {
@@ -40,7 +40,7 @@ export const useWalletBalance = () => {
   };
 };
 
-export const useConributionBalance = () => {
+export const useContributionBalance = () => {
   const dispatch: AppDispatch = useDispatch();
   const balance = useSelector(
     (state: any) => state?.transaction?.getContributionBalance,
@@ -63,7 +63,7 @@ export const useConributionBalance = () => {
   }, [dispatch]);
 
   const formattedBalance = balance?.balance
-    ? formatBalance(balance.balance)
+    ? formatBalance(balance.balance * 100)  
     : "₦ 0.00";
 
   return {

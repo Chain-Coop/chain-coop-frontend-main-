@@ -15,9 +15,6 @@ const Wallet = () => {
   const { isWalletVisible, setIsWalletVisible, formattedBalance } =
     useWalletBalance();
   const navigate = useNavigate();
-  // const formattedBalance = balance?.balance
-//   ? formatAmountInNaira(balance.balance)
-//   : "₦0.00";
 
   const withdraw = () => {
     navigate("/dashboard/wallet/withdraw");
