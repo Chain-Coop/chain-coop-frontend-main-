@@ -118,7 +118,7 @@ export const FundWallet = createAsyncThunk(
   async (body: any, thunkAPI) => {
     try {
       const data = await TransactionServices.FundWallet(body);
-      return { landing: data };
+      return { transaction: data };
     } catch (error: any) {
       const message = error.msg;
       thunkAPI.dispatch(setMessage(message));
@@ -144,7 +144,7 @@ export const FundProject = createAsyncThunk(
   async ({body, projectId}: FundProjectPayload, thunkAPI) => {
     try {
       const data = await TransactionServices.FundProject(body,projectId);
-      return { landing: data };
+      return { transaction: data };
     } catch (error: any) {
       const message = error.msg;
       thunkAPI.dispatch(setMessage(message));
@@ -166,6 +166,32 @@ export const GetProjectById = createAsyncThunk(
   }
 );
 
+export const GetAllBanks = createAsyncThunk(
+  "transaction/getAllBanks",
+  async (_, thunkAPI) => {
+    try {
+      const data = await TransactionServices.GetAllBanks();
+      return { transaction: data };
+    } catch (error: any) {
+      return handleAsyncError(error, thunkAPI);
+    }
+  },
+);
+
+export const GetAccountName = createAsyncThunk(
+  "transaction/getAccountName",
+  async (body:any , thunkAPI) => {
+    try {
+      const data = await TransactionServices.GetAccountName(body);
+      return { transaction: data };
+    } catch (error: any) {
+      const message = error.msg;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
 interface TransactionState {
   getWalletBalance: any | null;
   getContributionBalance: any | null;
@@ -174,11 +200,13 @@ interface TransactionState {
   userProposal: any | null;
   fundWalletStatus: "idle" | "loading" | "success" | "failed";
   allProjects:any,
+  allBanks:any,
   contributionPlan:any,
   uploadReceipt: any | null;
   fundUserWallet: any | null;
   veryfyFundUserWallet: any | null;
   fundUserProject: null,
+  getUserAccountName: null,
   currentProject: any | null;
   loading: boolean;
   error: string | null;
@@ -192,9 +220,11 @@ const initialState: TransactionState = {
   userProposal: null,
   fundWalletStatus: "idle",
   allProjects:null,
+  allBanks:null,
   contributionPlan:null,
   uploadReceipt:null,
   fundUserWallet: null,
+  getUserAccountName: null,
   veryfyFundUserWallet:null,
   fundUserProject: null,
   currentProject: null,
@@ -277,6 +307,7 @@ export const transactionSlice = createSlice({
         state.allProjects = null;
         state.error = action.payload as string;
       })
+
       .addCase(
         CreateContributionPlan.fulfilled,
         (state, action: PayloadAction<{ transaction: any }>) => {
@@ -327,7 +358,38 @@ export const transactionSlice = createSlice({
       .addCase(GetProjectById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-      });
+      })
+
+      .addCase(GetAllBanks.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        GetAllBanks.fulfilled,
+        (state, action: PayloadAction<{ transaction: any }>) => {
+          state.allBanks = action.payload.transaction;
+        },
+      )
+      .addCase(GetAllBanks.rejected, (state, action) => {
+        state.loading = false;
+        state.allBanks = null;
+        state.error = action.payload as string;
+      })
+       
+      .addCase(GetAccountName.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        GetAccountName.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.getUserAccountName = action.payload;
+        },
+      )
+      .addCase(GetAccountName.rejected, (state, action) => {
+        state.getUserAccountName = null;
+      })
+
   },
 });
 

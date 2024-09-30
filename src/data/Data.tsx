@@ -107,21 +107,21 @@ export const becomeData = [
   {
     title: "Legally Guaranteed Returns",
     paragraph:
-      "As a Chain Co-op member, your investment are protected by cooperative laws giving you peace of mind with annual dividends based on your contributions",
+      "As a Chain Co-op member, your investment are protected by cooperative laws giving you peace of mind with annual dividends based on your contributions.",
   },
 
   {
     title: "Access Exclusive Investment Rounds",
-    paragraph: "Develop Strategies Build Your Portfolio, and Track Success",
+    paragraph: "Develop Strategies Build Your Portfolio, and Track Success.",
   },
   {
     title: "Grow Your Network with Industry Experts",
     paragraph:
-      "Meet fellow tech professionals investors, and extrepreneur through virtual meetups and exclusive events",
+      "Meet fellow tech professionals investors, and extrepreneur through virtual meetups and exclusive events.",
   },
   {
     title: "Shape the Future of Chain Co-op",
-    paragraph: "Vote on critical decisions, share your insights, and help guide growth of our worker-owned cooperative",
+    paragraph: "Vote on critical decisions, share your insights, and help guide growth of our worker-owned cooperative.",
   },
 ];
 

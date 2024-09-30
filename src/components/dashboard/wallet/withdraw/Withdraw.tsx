@@ -1,6 +1,5 @@
-import React from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { DashboardHeader } from "../../../common/DashboardHeader";
 import Modal from "../../../common/Modal";
 import { Primary } from "../../../common/Button";
@@ -9,18 +8,42 @@ import withdraw from "../../../../Assets/svg/dashboard/wallet/withdraw.svg";
 
 const Withdraw = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [amount, setAmount] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  const WITHDRAWAL_LIMIT = 500000000; 
 
   const handleBackClick = () => {
     navigate(-1);
   };
 
-  const SelectBank = () => {
-    navigate("/dashboard/wallet/select-bank");
-  };
-
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
+    setError("");
+  };
+
+  const handleAmountChange = (e: any) => {
+    const inputAmount = e.target.value;
+    setAmount(inputAmount);
+
+    const numAmount = parseFloat(inputAmount);
+    if (numAmount > WITHDRAWAL_LIMIT) {
+      setError(`Amount exceeds the withdrawal limit of ${WITHDRAWAL_LIMIT.toLocaleString()} NGN.`);
+    } else {
+      setError(""); 
+    }
+  };
+
+  const handleContinue = () => {
+    const numAmount = parseFloat(amount);
+    if (isNaN(numAmount) || numAmount <= 0) {
+      setError("Please enter a valid amount.");
+    } else if (numAmount > WITHDRAWAL_LIMIT) {
+      setError(`Amount exceeds the withdrawal limit of ${WITHDRAWAL_LIMIT.toLocaleString()} NGN.`);
+    } else {
+      navigate("/dashboard/wallet/select-bank", { state: { amount: numAmount } });
+    }
   };
 
   return (
@@ -34,7 +57,6 @@ const Withdraw = () => {
             size={25}
             className="absolute left-0 cursor-pointer"
           />
-
           <div className="flex flex-grow items-center justify-center">
             <div className="tracking-wide">Withdraw</div>
           </div>
@@ -74,7 +96,7 @@ const Withdraw = () => {
             <hr className="mt-3 h-[1px] rounded-md" />
             <div className="mt-5 flex justify-between">
               <p className="text-howtext">Withdrawal limit</p>
-              <p className="font-medium">500,000,000 / transaction</p>
+              <p className="font-medium">{WITHDRAWAL_LIMIT.toLocaleString()} NGN / transaction</p>
             </div>
             <hr className="mt-3 h-[1px] rounded-md" />
             <div className="mt-[1em] w-full">
@@ -89,15 +111,18 @@ const Withdraw = () => {
                   name="amount"
                   id="amount"
                   type="number"
-                  className="border-border bg-input focus:border-border flex-1 rounded-lg border-[1px] bg-inherit p-3 pl-10 focus:bg-inherit focus:outline-none"
+                  value={amount}
+                  onChange={handleAmountChange}
+                  className="border-border bg-input focus:border-border flex-1 rounded-lg border-[1px] bg-inherit p-3 pl-12 focus:bg-inherit focus:outline-none"
                   style={{ textAlign: "right" }}
                 />
               </div>
+              {error && <p className="mt-2 text-sm font-bold text-red-500">{error}</p>}
             </div>
           </section>
           <Primary
             className="mt-[2em] w-full bg-text2 py-2 text-white"
-            onClick={SelectBank}
+            onClick={handleContinue}
           >
             Continue
           </Primary>

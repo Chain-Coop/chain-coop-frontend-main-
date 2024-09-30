@@ -10,7 +10,7 @@ const Explore = () => {
             Explore Our Investment Opportunities
           </h1>
           <div className="lg:w-[53%] m-auto">
-          <p className="font-sans lg:mt-[1.5em]">
+          <p className="font-sans sm:text-center lg:mt-[1.5em]">
             Invest in Tomorrow: Explore innovative, self sustaining businessess backed by the 
           power of block chain and cooperative ownership.
           </p>

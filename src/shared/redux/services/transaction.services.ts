@@ -90,7 +90,7 @@ const CreateContributionPlan = async (body: any) => {
     });
     return response.data;
   } catch (error: any) {
-    throw error.response.data;
+    handleApiError(error);
   }
 };
 
@@ -126,7 +126,7 @@ const FundWallet = async (body: any) => {
     );
     return response?.data;
   } catch (error: any) {
-    throw error.response?.data || error.message;
+    handleApiError(error);
   }
 };
 
@@ -147,7 +147,7 @@ const VerifyFundWallet = async (body: any) => {
     );
     return response?.data;
   } catch (error: any) {
-    throw error.response?.data || error.message;
+    handleApiError(error);
   }
 };
 
@@ -158,7 +158,7 @@ const FundProject = async (body: any, projectId: string) => {
     });
     return response.data;
   } catch (error: any) {
-    throw error.response.data;
+    handleApiError(error);
   }
 };
 
@@ -172,6 +172,26 @@ const GetProjectById = async (projectId: string) => {
   }
 };
 
+const GetAllBanks = async () => {
+  const url = `${API_URL}/withdrawal/all-banks`;
+  try {
+    const response = await axios.get(url, { headers: authHeader() });
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
+const GetAccountName = async (body: any) => {
+  try {
+    const response = await axios.post(`${API_URL}/withdrawal/verify-bank-account`, body, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
 
 const TransactionServices = {
   GetWalletBalance,
@@ -186,6 +206,8 @@ const TransactionServices = {
   VerifyFundWallet,
   FundProject,
   GetProjectById,
+  GetAllBanks,
+  GetAccountName,
 };
 
 export default TransactionServices;

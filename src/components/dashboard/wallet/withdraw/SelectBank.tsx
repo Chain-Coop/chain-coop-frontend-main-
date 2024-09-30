@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router-dom";
 import { DashboardHeader } from "../../../common/DashboardHeader";
 import { IoIosArrowBack } from "react-icons/io";
 import withdraw from "../../../../Assets/svg/dashboard/wallet/withdraw.svg";
@@ -7,12 +7,15 @@ import xlamation from "../../../../Assets/svg/dashboard/wallet/xclamation.svg";
 
 const SelectBank = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const amount = location.state?.amount;
 
   const handleBackClick = () => {
     navigate(-1);
   };
+
   const BankAccount = () => {
-    navigate("/dashboard/wallet/bank-account");
+    navigate("/dashboard/wallet/bank-account", { state: { amount } });
   };
 
   return (
@@ -26,7 +29,6 @@ const SelectBank = () => {
             size={25}
             className="absolute left-0 cursor-pointer"
           />
-
           <div className="flex flex-grow items-center justify-center">
             <div className="tracking-wide">Select Bank</div>
           </div>
@@ -37,7 +39,7 @@ const SelectBank = () => {
           <div className="mt-[2em] flex w-full gap-[1em] rounded-lg bg-Dh px-[1.5em] py-[1em] font-medium">
             <img src={xlamation} alt="" />
             <p>
-              Withdraws can only be made to bank account that match the name of
+              Withdrawals can only be made to bank accounts that match the name of
               your Chain Coop account
             </p>
           </div>
@@ -46,6 +48,11 @@ const SelectBank = () => {
               <img src={withdraw} alt="withdraw" />
             </div>
             <p className="mt-[1em] text-howtext">{`You haven't added any bank yet`}</p>
+            {amount && (
+              <p className="mt-[0.5em] font-medium">
+                Withdrawal amount: <span className="text-green-500">NGN {parseFloat(amount).toLocaleString()}</span>
+              </p>
+            )}
           </div>
           <button
             className="mt-[2em] flex w-full justify-center gap-[1em] rounded-lg bg-Dh px-[1.5em] py-[1em] font-semibold text-text2"

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetUserProfile, uploadAvatar } from "../redux/slices/landing.slices";
 import { AppDispatch } from "../redux/store";
 import { setMessage } from "../redux/slices/message.slices";
-import { GetAllProject, GetProposal } from "../redux/slices/transaction.slices";
+import { GetAllBanks, GetAllProject, GetProposal } from "../redux/slices/transaction.slices";
 
 enum UploadFields {
   ProfilePicture = "profilePicture", 
@@ -106,6 +106,35 @@ export const useAllProjects = () => {
   }, [dispatch, userToken]);
 
   return { useProjects, loading };
+};
+
+
+export const useAllBanks = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+
+  const useBanks = useSelector(
+    (state: any) => state.transaction.allBanks,
+  );
+console.log("use",useAllBanks)
+  const userToken = sessionStorage.getItem("userData");
+  useEffect(() => {
+    if (userToken) {
+      setLoading(true);
+      dispatch(GetAllBanks())
+        .unwrap()
+        .then(() => setLoading(false))
+        .catch((error: any) => {
+          const errorMessage = error.message;
+          dispatch(setMessage(errorMessage));
+          setLoading(false);
+        });
+    } else {
+      dispatch(setMessage("Token not found"));
+    }
+  }, [dispatch, userToken]);
+
+  return { useBanks, loading };
 };
 
 
