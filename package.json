@@ -15,11 +15,13 @@
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/material": "^5.16.7",
-    "@mui/styled-engine-sc": "^6.0.2",
+    "@mui/styled-engine-sc": "^6.1.1",
     "@paystack/inline-js": "^2.19.0",
     "@reduxjs/toolkit": "^2.2.4",
     "aos": "^2.3.4",
     "axios": "^1.6.8",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
     "lucide-react": "^0.446.0",
     "prettier-plugin-tailwindcss": "^0.5.14",
@@ -35,9 +37,12 @@
     "react-toastify": "^10.0.5",
     "reactstrap": "^9.2.2",
     "redux-persist": "^6.0.0",
-    "styled-components": "^6.1.13"
+    "styled-components": "^6.1.13",
+    "tailwind-merge": "^2.5.2",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@shadcn/ui": "^0.0.4",
     "@types/node": "^20.12.11",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",

@@ -9,7 +9,6 @@ import { MdArrowOutward } from "react-icons/md";
 import withdraw_icon from "../../../Assets/svg/dashboard/wallet/withdraw.svg";
 import fund_icon from "../../../Assets/svg/dashboard/wallet/fund.svg";
 import transfer_icon from "../../../Assets/svg/dashboard/wallet/transfer.svg";
-import { IoIosArrowForward } from "react-icons/io";
 
 const Wallet = () => {
   const { isWalletVisible, setIsWalletVisible, formattedBalance } =

@@ -47,12 +47,7 @@ const SelectBank = () => {
             <div className="flex justify-center">
               <img src={withdraw} alt="withdraw" />
             </div>
-            <p className="mt-[1em] text-howtext">{`You haven't added any bank yet`}</p>
-            {amount && (
-              <p className="mt-[0.5em] font-medium">
-                Withdrawal amount: <span className="text-green-500">NGN {parseFloat(amount).toLocaleString()}</span>
-              </p>
-            )}
+            <p className="mt-[1em] text-howtext">{`You haven't added any bank accounts`}</p>
           </div>
           <button
             className="mt-[2em] flex w-full justify-center gap-[1em] rounded-lg bg-Dh px-[1.5em] py-[1em] font-semibold text-text2"

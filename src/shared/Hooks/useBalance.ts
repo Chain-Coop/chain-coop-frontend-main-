@@ -8,11 +8,44 @@ import {
 import { AppDispatch } from "../redux/store";
 import { formatBalance } from "../utils/format";
 
+
+// export const useWalletBalance = () => {
+//   const dispatch: AppDispatch = useDispatch();
+//   const balance = useSelector(
+//     (state: any) => state?.transaction?.getWalletBalance,
+//   );
+//   const [isWalletVisible, setIsWalletVisible] = useState(() => {
+//     const storedVisibility = sessionStorage.getItem("walletBalanceVisible");
+//     return storedVisibility !== null ? storedVisibility === "true" : true;
+//   });
+
+//   useEffect(() => {
+//     const userToken = sessionStorage.getItem("userData");
+//     if (userToken) {
+//       dispatch(GetWalletBalance())
+//         .unwrap()
+//         .catch((error: any) => {
+//           console.log(error);
+//         });
+//     }
+//   }, [dispatch]);
+
+  
+//   const formattedBalance = balance?.balance
+//     ? formatBalance(balance.balance * 100)
+//     : "₦ 0.00";
+
+//   return {
+//     isWalletVisible,
+//     setIsWalletVisible,
+//     formattedBalance,
+//   };
+// };
+
 export const useWalletBalance = () => {
   const dispatch: AppDispatch = useDispatch();
-  const balance = useSelector(
-    (state: any) => state?.transaction?.getWalletBalance,
-  );
+  
+  const balance = useSelector((state: any) => state?.transaction?.getWalletBalance);
   const [isWalletVisible, setIsWalletVisible] = useState(() => {
     const storedVisibility = sessionStorage.getItem("walletBalanceVisible");
     return storedVisibility !== null ? storedVisibility === "true" : true;
@@ -29,14 +62,17 @@ export const useWalletBalance = () => {
     }
   }, [dispatch]);
 
-  const formattedBalance = balance?.balance
-    ? formatBalance(balance.balance * 100)
+  const balanceInKobo = balance?.balance ? balance.balance * 100 : 0;
+
+  const formattedBalance = balanceInKobo
+    ? formatBalance(balanceInKobo)
     : "₦ 0.00";
 
   return {
     isWalletVisible,
     setIsWalletVisible,
-    formattedBalance,
+    formattedBalance, 
+    balanceInKobo,    
   };
 };
 

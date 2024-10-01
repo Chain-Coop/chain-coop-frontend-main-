@@ -27,6 +27,7 @@ import ContactUs from "../contact/main/ContactUs";
 import VerifyTransaction from "../wallet/fund/verifyTransaction/VerifyTransaction";
 import ConfirmTransaction from "../wallet/transfer/fundContribution/confirmTransaction";
 import ProjectContentOverView from "../nestedproject/nested/ProjectContentOverView";
+import AuthorizeWithdrawal from "../wallet/withdraw/AuthorizeWithdrawal";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -53,6 +54,7 @@ const Dashboard = () => {
           <Route path="wallet/bank-account" element={<BankAccount />} />
           <Route path="wallet/select-account" element={<SelectAccount />} />
           <Route path="wallet/verify-account" element={<VerifyAccount />} />
+
 
           <Route path="wallet/fund" element={<FundWallet />} />
           <Route path="wallet/fund_wallet/verify_transaction" element={<VerifyTransaction />} />

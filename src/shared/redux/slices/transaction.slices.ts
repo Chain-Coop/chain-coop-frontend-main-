@@ -185,9 +185,7 @@ export const GetAccountName = createAsyncThunk(
       const data = await TransactionServices.GetAccountName(body);
       return { transaction: data };
     } catch (error: any) {
-      const message = error.msg;
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue(message);
+      return handleAsyncError(error, thunkAPI);
     }
   },
 );

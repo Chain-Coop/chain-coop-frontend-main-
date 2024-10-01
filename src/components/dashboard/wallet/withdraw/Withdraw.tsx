@@ -100,11 +100,11 @@ const Withdraw = () => {
             </div>
             <hr className="mt-3 h-[1px] rounded-md" />
             <div className="mt-[1em] w-full">
-              <label htmlFor="amount" className="flex-start flex font-medium">
+              <label htmlFor="amount" className="flex-start flex font-semibold">
                 Enter Amount
               </label>
               <div className="relative mt-[1em] flex w-full items-center">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3 font-semibold text-gray-500">
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3 font-semibold">
                   NGN
                 </span>
                 <input

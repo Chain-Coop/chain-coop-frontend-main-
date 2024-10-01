@@ -7,7 +7,7 @@ type FormatOptions = {
 export const formatBalance = (
   amountInKobo: number | null | undefined,
   options: FormatOptions = {}
-): string => {
+): any => {
   const {
     showCents = true,
     useGrouping = true,

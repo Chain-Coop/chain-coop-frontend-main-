@@ -116,7 +116,6 @@ export const useAllBanks = () => {
   const useBanks = useSelector(
     (state: any) => state.transaction.allBanks,
   );
-console.log("use",useAllBanks)
   const userToken = sessionStorage.getItem("userData");
   useEffect(() => {
     if (userToken) {

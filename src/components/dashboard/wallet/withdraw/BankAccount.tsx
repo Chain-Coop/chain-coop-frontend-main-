@@ -3,11 +3,34 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { DashboardHeader } from "../../../common/DashboardHeader";
 import { Primary } from "../../../common/Button";
 import { IoIosArrowBack } from "react-icons/io";
+import { FormControl, InputLabel, OutlinedInput } from '@mui/material';
+import { styled } from '@mui/material/styles';
+
+const CustomOutlinedInput = styled(OutlinedInput)(({ theme }) => ({
+  '& .MuiOutlinedInput-notchedOutline': {
+    borderColor: '#E5E7EB',
+  },
+  '&:hover .MuiOutlinedInput-notchedOutline': {
+    borderColor: '#000080',
+  },
+  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+    borderColor: '#000080',
+  },
+  '& input': {
+    padding: '14px',
+  }
+}));
+
+const CustomInputLabel = styled(InputLabel)({
+  '&.Mui-focused': {
+    color: '#000080',
+  },
+});
 
 const BankAccount = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const amount = location.state?.amount;
+  const amount = location?.state?.amount;
 
   const [accountNumber, setAccountNumber] = useState("");
   const [error, setError] = useState("");
@@ -16,7 +39,7 @@ const BankAccount = () => {
     navigate(-1);
   };
 
-  const handleAccountNumberChange = (e:any) => {
+  const handleAccountNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAccountNumber(e.target.value);
     setError("");
   };
@@ -33,7 +56,7 @@ const BankAccount = () => {
 
   return (
     <main className="font-sans">
-      <header className="lg:mt-[2em]">
+      <header className="lg:mt-8">
         <DashboardHeader
           className="relative cursor-pointer items-center"
           onClick={handleBackClick}
@@ -47,32 +70,29 @@ const BankAccount = () => {
           </div>
         </DashboardHeader>
       </header>
-      <section className="mt-[2em] px-[1em]">
+      <section className="mt-8 px-4">
         <p className="font-medium">
-          {`Please, only add a bank account that you own. Transactions to accounts that don't belong to you will be flagged`}
+          Please, only add a bank account that you own. Transactions to accounts that don't belong to you will be flagged
         </p>
-        {amount && (
-          <p className="mt-[1em] font-medium">
-            Withdrawal amount: <span className="text-green-500">NGN {parseFloat(amount).toLocaleString()}</span>
-            </p>
-        )}
-        <div className="mt-[1.5em] flex flex-col gap-3">
-          <label htmlFor="accountNumber" className="font-semibold">
-            Account Number
-          </label>
-          <input
-            name="accountNumber"
-            id="accountNumber"
-            type="text"
-            value={accountNumber}
-            onChange={handleAccountNumberChange}
-            maxLength={10}
-            className="border-border bg-input focus:border-border flex-1 rounded-lg border-[1px] bg-inherit p-3 focus:bg-inherit focus:outline-none"
-          />
-          {error && <p className="text-sm text-red-500">{error}</p>}
+
+        <div className="mt-6">
+          <FormControl className="w-full" variant="outlined">
+            <CustomInputLabel htmlFor="account-number">
+              Account Number
+            </CustomInputLabel>
+            <CustomOutlinedInput
+              id="account-number"
+              type="text"
+              value={accountNumber}
+              onChange={handleAccountNumberChange}
+              label="Account Number"
+              inputProps={{ maxLength: 10 }}
+            />
+          </FormControl>
+          {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
         </div>
         <Primary
-          className="mt-[2em] w-full bg-text2 py-3 text-white"
+          className="mt-8 w-full bg-text2 py-3 text-white"
           onClick={selectAccount}
         >
           Continue
