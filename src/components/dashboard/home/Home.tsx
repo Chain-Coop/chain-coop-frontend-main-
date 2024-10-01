@@ -49,7 +49,6 @@ const Home = () => {
     if (minutesSinceSkipped >= 2) {
       setShowReminder(true);
     } else {
-      // Set a timeout to show the reminder after the remaining time
       const remainingTime = (2 * 60 * 1000) - (currentDate.getTime() - skippedDate.getTime());
       setTimeout(() => setShowReminder(true), remainingTime);
     }

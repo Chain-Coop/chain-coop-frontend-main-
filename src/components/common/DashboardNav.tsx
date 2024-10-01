@@ -14,11 +14,24 @@ import { Divider } from "@mui/material";
 import { HiOutlineBars3 } from "react-icons/hi2";
 import { HiX } from "react-icons/hi";
 import logo from "./../../Assets/svg/cooplogo.svg";
-import membership from "../../Assets/jpg/membership/customer.jpg";
+import member from "../../Assets/jpg/membership/customer.jpg";
+import useUserProfile from "../../shared/Hooks/useUserProfile";
+import investor from "../../Assets/jpg/membership/investor.jpg";
 
 const DashboardNav = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const navigate = useNavigate();
+  const { profileDetails } = useUserProfile();
+ 
+  
+  const getMembershipImage = () => {
+    if (profileDetails?.membershipType === "patron") {
+      return member;
+    } else if (profileDetails?.membershipType === "investor members") {
+      return investor;
+    }
+    return member;
+  };
 
   const handleMenuClick = () => {
     setOpenMenu(!openMenu);
@@ -79,7 +92,7 @@ const DashboardNav = () => {
               </button>
             </div>
             <div className="mt-[2em] px-1">
-              <img src={membership} className="" alt="membership-card" />
+            <img src={getMembershipImage()} className="" alt="membership-card" />
             </div>
             <div className="mt-4 flex px-3">
               <p className="font-sans text-sm text-howtext">
