@@ -102,17 +102,3 @@ const VerifyAccount = () => {
 
 export default VerifyAccount;
 
-
-
-{/* <div className="mt-[2.5em] flex flex-col justify-center">
-  <img
-    src={success}
-    alt="Logo"
-    className="mx-auto sm:w-[6em] lg:w-[8em]"
-  />
-  <header>
-    <h1 className="text-center text-xl font-semibold">
-      Successfully Submitted
-    </h1>
-  </header>
-</div> */}

@@ -6,6 +6,9 @@ const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 const API_URL_FUND_WALLET =
   import.meta.env.VITE_REACT_APP_API_URL + "/wallet/fund-wallet";
 
+const API_URL_CREATE_TRANSACTION_PIN =
+  import.meta.env.VITE_REACT_APP_API_URL + "/wallet/create-pin";
+
 const API_URL_VERIFY_FUND_WALLET =
   import.meta.env.VITE_REACT_APP_API_URL + "/wallet/verify-payment";
 
@@ -193,6 +196,22 @@ const GetAccountName = async (body: any) => {
   }
 };
 
+
+const CreateTransactionPin = async (body: any) => {
+  try {
+    const response = await axios.post(API_URL_CREATE_TRANSACTION_PIN, body,{
+      headers: authHeader(),
+    });
+     return response?.data;
+  } catch (error: any) {
+    if (error.response && error.response.data) {
+      throw error.response.data;
+    } else {
+      throw new Error("Network Error: Please check your internet connection.");
+    }
+  }
+};
+
 const TransactionServices = {
   GetWalletBalance,
   GetContributionBalance,
@@ -208,6 +227,7 @@ const TransactionServices = {
   GetProjectById,
   GetAllBanks,
   GetAccountName,
+  CreateTransactionPin,
 };
 
 export default TransactionServices;

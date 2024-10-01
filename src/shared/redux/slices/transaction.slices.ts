@@ -190,6 +190,20 @@ export const GetAccountName = createAsyncThunk(
   },
 );
 
+export const CreateTransactionPin = createAsyncThunk(
+  "transaction/createTransaction",
+  async (body: any, thunkAPI) => {
+    try {
+      const data = await TransactionServices.CreateTransactionPin(body);
+      return { landing: data };
+    } catch (error: any) {
+      const message = error.msg;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
 interface TransactionState {
   getWalletBalance: any | null;
   getContributionBalance: any | null;
@@ -206,6 +220,7 @@ interface TransactionState {
   fundUserProject: null,
   getUserAccountName: null,
   currentProject: any | null;
+  createPin: any | null;
   loading: boolean;
   error: string | null;
 }
@@ -226,6 +241,7 @@ const initialState: TransactionState = {
   veryfyFundUserWallet:null,
   fundUserProject: null,
   currentProject: null,
+  createPin: null,
   loading: false,
   error: null,
 };
@@ -387,6 +403,17 @@ export const transactionSlice = createSlice({
       .addCase(GetAccountName.rejected, (state, action) => {
         state.getUserAccountName = null;
       })
+      
+      .addCase(CreateTransactionPin.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      builder.addCase(CreateTransactionPin.fulfilled, (state, action) => {
+        state.createPin = action.payload.landing;
+      });
+      builder.addCase(CreateTransactionPin.rejected, (state) => {
+        state.createPin = null;
+      });
 
   },
 });

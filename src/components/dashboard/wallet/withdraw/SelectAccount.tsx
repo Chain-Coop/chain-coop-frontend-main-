@@ -64,7 +64,6 @@ const SelectAccount = () => {
           setError("Unable to verify account. Please check the details and try again.");
         }
       } catch (error:any) {
-        console.log("Eee",error)
         setError(error || "An error occurred while verifying the account. Please try again.");
       } finally {
         setLoading(false);

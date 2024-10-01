@@ -13,10 +13,11 @@ const AddFund = () => {
   const navigate = useNavigate();
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [selectedProject, setSelectedProject] = useState<any>(null);
-  const [amount, setAmount] = useState("");
+  const [displayAmount, setDisplayAmount] = useState("");
+  const [actualAmount, setActualAmount] = useState("");
   const [error, setError] = useState("");
   const { useProjects } = useAllProjects();
-  const { balanceInKobo, formattedBalance } = useWalletBalance();
+  const { balanceInNaira, formattedBalance } = useWalletBalance();
 
   const handleBackClick = () => {
     navigate(-1);
@@ -31,34 +32,55 @@ const AddFund = () => {
     setDropdownVisible(false);
   };
 
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value.replace(/[^0-9.]/g, '');
+  const formatNumberWithCommas = (value: string) => {
+    const cleanValue = value.replace(/[^\d.]/g, '');
     
-    const parts = inputValue.split('.');
+    const parts = cleanValue.split('.');
+    const wholePart = parts[0];
+    const decimalPart = parts[1] || '';
+
+    const formattedWholePart = wholePart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    
+    return decimalPart ? `${formattedWholePart}.${decimalPart.slice(0, 2)}` : formattedWholePart;
+  };
+
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    
+    const numericValue = inputValue.replace(/[^\d.]/g, '');
+    
+    const parts = numericValue.split('.');
+    let cleanValue = parts[0];
     if (parts.length > 1) {
-      parts[1] = parts[1].slice(0, 2);
-      setAmount(parts.join('.'));
-    } else {
-      setAmount(inputValue);
+      cleanValue += '.' + parts[1].slice(0, 2);
     }
+    
+    setActualAmount(cleanValue);
+    
+    setDisplayAmount(formatNumberWithCommas(cleanValue));
     
     setError("");
   };
 
   const confirmAmount = () => {
-    const amountInKobo = Math.round(parseFloat(amount) * 100);
+    const amountInNaira = parseFloat(actualAmount);
 
-    if (isNaN(amountInKobo) || amountInKobo <= 0) {
+    if (isNaN(amountInNaira) || amountInNaira <= 0) {
       setError("Please enter a valid amount");
       return;
     }
 
-    if (amountInKobo > balanceInKobo) {
+    if (amountInNaira > balanceInNaira) {
       setError(`Insufficient balance. Your current balance is ${formattedBalance}`);
       return;
     }
 
-    navigate("/dashboard/wallet/transfer/confirm-amount", { state: { amountInKobo } });
+    navigate("/dashboard/wallet/transfer/confirm-amount", {
+      state: { 
+        amountInNaira,
+        selectedProjectId: selectedProject._id 
+      }
+    });
   };
 
   return (
@@ -69,7 +91,7 @@ const AddFund = () => {
       >
         <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
         <div className="flex flex-grow items-center justify-center">
-          <div className="tracking-wide">Add Fund To Project</div>
+          <div className="tracking-wide">Add fund to project</div>
         </div>
       </DashboardHeader>
       <section className="px-3">
@@ -93,14 +115,14 @@ const AddFund = () => {
         <div className="mt-4 flex flex-col gap-4">
           <hr className="w-full" />
           <div className="flex items-center justify-between">
-            <p className="font-semibold">NGN</p>
+            <p className="font-semibold">Amount to Invest</p>
             <span className="text-base text-normal relative">
               <input 
                 type="text" 
                 className="border border-gray-300 focus:border-text2 focus:outline-none focus:ring-text2 rounded-md px-3 py-2 w-full md:w-auto pl-6"
                 placeholder="0.00"
-                value={amount}   
-                onChange={handleAmountChange} 
+                value={displayAmount}   
+                onChange={handleAmountChange}
               />
               <span className="absolute left-2 top-1/2 transform -translate-y-1/2">₦</span>
             </span>
@@ -152,9 +174,9 @@ const AddFund = () => {
         <Primary
           onClick={confirmAmount}
           className={`mt-[2em] w-full py-3 text-white ${
-            selectedProject && amount ? "bg-text2" : "bg-gray-400 cursor-not-allowed"
+            selectedProject && displayAmount ? "bg-text2" : "bg-gray-400 cursor-not-allowed"
           }`}
-          disabled={!selectedProject || !amount}
+          disabled={!selectedProject || !displayAmount}
         >
           Continue
         </Primary>

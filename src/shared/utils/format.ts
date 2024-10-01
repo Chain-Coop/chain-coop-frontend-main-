@@ -1,24 +1,22 @@
-type FormatOptions = {
+export interface FormatOptions {
   showCents?: boolean;
   useGrouping?: boolean;
   roundToWhole?: boolean;
-};
+}
 
 export const formatBalance = (
-  amountInKobo: number | null | undefined,
+  amountInNaira: number | null | undefined,  
   options: FormatOptions = {}
-): any => {
+): string => {
   const {
     showCents = true,
     useGrouping = true,
     roundToWhole = false
   } = options;
 
-  if (amountInKobo === null || amountInKobo === undefined) {
+  if (amountInNaira === null || amountInNaira === undefined) {
     return '₦0';
   }
-
-  const amountInNaira = amountInKobo / 100;
 
   const formatter = new Intl.NumberFormat('en-NG', {
     style: 'currency',
@@ -29,9 +27,7 @@ export const formatBalance = (
   });
 
   let formattedAmount = formatter.format(roundToWhole ? Math.round(amountInNaira) : amountInNaira);
-
   formattedAmount = formattedAmount.replace('NGN', '₦');
-
   formattedAmount = formattedAmount.replace('₦ ', '₦');
 
   return formattedAmount;

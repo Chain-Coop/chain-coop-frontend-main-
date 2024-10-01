@@ -1,15 +1,29 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../../Assets/svg/cooplogo.svg";
-import membership from "../../../Assets/jpg/membership/customer.jpg";
 import { sidebarLinks } from "../../../data/Data";
+import member from "../../../Assets/jpg/membership/customer.jpg";
+import investor from "../../../Assets/jpg/membership/investor.jpg";
+import useUserProfile from "../../../shared/Hooks/useUserProfile";
 
 const Sidebar = () => {
-  const location = useLocation();
-const navigate = useNavigate()
-const home = ()=>{
-  navigate("/dashboard")
-}
+  const location = useLocation();  
+  const navigate = useNavigate();
+  const { profileDetails } = useUserProfile();
+
+  const home = () => {
+    navigate("/dashboard");
+  };
+
+  const getMembershipImage = () => {
+    if (profileDetails?.membershipType === "patron") {
+      return member;
+    } else if (profileDetails?.membershipType === "investor members") {
+      return investor;
+    }
+    return member;
+  };
+
   return (
     <aside className="h-vh flex w-[23em] flex-col border-r border-bl bg-rec1 py-[2em] font-sans text-memt1 shadow-md">
       <div onClick={home}>
@@ -43,7 +57,7 @@ const home = ()=>{
           </button>
         </section>
         <section className="mt-[2em] w-[16em] px-1">
-          <img src={membership} className="" alt="membership-card" />
+          <img src={getMembershipImage()} className="" alt="membership-card" />
         </section>
         <section className="mt-4 flex w-[16em]">
           <p className="text-sm text-howtext">
