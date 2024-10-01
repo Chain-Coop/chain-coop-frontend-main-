@@ -16,6 +16,8 @@ import { CreateTransactionPin } from "../../../shared/redux/slices/transaction.s
 import { AppDispatch } from "../../../shared/redux/store";
 import ReactLoading from "react-loading";
 import PinReminder from "../../common/PinReminder";
+import success from "../../../../Assets/svg/auth/sucess.svg";
+
 
 const Home = () => {
   const [balanceVisible, setBalanceVisible] = useState(true);
@@ -230,18 +232,16 @@ const Home = () => {
       <Modal
         isOpen={isSuccessModalOpen}
         onClose={() => setIsSuccessModalOpen(false)}
-        className="flex flex-col justify-center bg-white py-[3em] text-center"
+        className="flex flex-col justify-center bg-white py-[4em] text-center"
       >
-        <header>
+        <div className="flex justify-center">
+          <img src={success} alt="success" />
+        </div>
+
+        <header className="mt-[1em]">
           <h1 className="text-2xl font-semibold">You've created your PIN</h1>
           <p className="mt-1 text-howtext">Keep your account safe and your secret Pin. Do not share this PIN with anyone</p>
         </header>
-        <Primary
-          onClick={() => setIsSuccessModalOpen(false)}
-          className="mt-[2em] w-full rounded-full bg-text2 py-2 font-semibold text-white"
-        >
-          Close
-        </Primary>
       </Modal>
 
       {showReminder && <PinReminder onClose={() => setShowReminder(false)} onCreatePin={() => setIsModalOpen(true)} />}
