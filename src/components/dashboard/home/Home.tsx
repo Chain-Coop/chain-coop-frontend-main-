@@ -16,7 +16,7 @@ import { CreateTransactionPin } from "../../../shared/redux/slices/transaction.s
 import { AppDispatch } from "../../../shared/redux/store";
 import ReactLoading from "react-loading";
 import PinReminder from "../../common/PinReminder";
-import success from "../../../../Assets/svg/auth/sucess.svg";
+import success from "../../../Assets/svg/auth/sucess.svg";
 
 
 const Home = () => {
