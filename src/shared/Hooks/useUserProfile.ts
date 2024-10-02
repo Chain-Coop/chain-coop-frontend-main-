@@ -138,3 +138,40 @@ export const useAllBanks = () => {
 
 
 export default useUserProfile;
+
+
+export const usePinSetup = (isPinCreated: boolean) => {
+  const [showPinSetup, setShowPinSetup] = useState(false);
+  const [showReminder, setShowReminder] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  useEffect(() => {
+    if (!isPinCreated) {
+      const pinSkippedAt = localStorage.getItem('pinSkippedAt');
+      
+      if (!pinSkippedAt) {
+        setShowPinSetup(true);
+      } else {
+        const skippedTime = new Date(pinSkippedAt).getTime();
+        const currentTime = new Date().getTime();
+        const timeDifference = currentTime - skippedTime;
+        
+        if (timeDifference >=  60 * 1000) { 
+          setShowReminder(true);
+        } else {
+          const timeoutId = setTimeout(() => setShowReminder(true), 2 * 60 * 1000 - timeDifference);
+          return () => clearTimeout(timeoutId);
+        }
+      }
+    }
+  }, [isPinCreated]);
+
+  return {
+    showPinSetup,
+    setShowPinSetup,
+    showReminder,
+    setShowReminder,
+    showSuccessModal,
+    setShowSuccessModal
+  };
+};

@@ -1,6 +1,5 @@
 import React from "react";
 import { useEffect } from "react";
-import PropTypes from "prop-types";
 import cancel from "../../Assets/svg/cancel.svg";
 
 const Modal = ({ children, isOpen, onClose, className }: any) => {
@@ -26,7 +25,7 @@ const Modal = ({ children, isOpen, onClose, className }: any) => {
       className={`modal fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50 backdrop-blur-sm`}
     >
       <div
-        className={`relative my-8 w-full max-w-md rounded-[1em] p-3 px-[2em] ${className}`}
+        className={`relative my-8 w-full max-w-md rounded-[1em] p-3 px-[1.5em] ${className}`}
       >
         <img
           src={cancel}

@@ -27,7 +27,7 @@ import ContactUs from "../contact/main/ContactUs";
 import VerifyTransaction from "../wallet/fund/verifyTransaction/VerifyTransaction";
 import ConfirmTransaction from "../wallet/transfer/fundContribution/confirmTransaction";
 import ProjectContentOverView from "../nestedproject/nested/ProjectContentOverView";
-import AuthorizeWithdrawal from "../wallet/withdraw/AuthorizeWithdrawal";
+import GlobalPinSetupManager from "../../common/GlobalPinSetUpManager";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -43,6 +43,7 @@ const Dashboard = () => {
         <nav className="sm:block lg:hidden">
           <DashboardNav />
         </nav>
+      <GlobalPinSetupManager>
         <Routes>
           <Route path="/" element={<Home />} />
 
@@ -88,6 +89,7 @@ const Dashboard = () => {
 
         <Route path="contact_us" element={<ContactUs />} />
     </Routes>
+    </GlobalPinSetupManager>
       </section>
       <aside className="h-vh hidden w-[45%] overflow-y-auto lg:block ">
         <Right />

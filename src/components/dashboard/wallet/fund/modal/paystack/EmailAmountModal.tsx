@@ -36,7 +36,7 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({
       .unwrap()
       .then((response) => {
         setLoading(false);
-        const paymentUrl = response?.landing?.paymentUrl;
+        const paymentUrl = response?.transaction?.paymentUrl;
         if (paymentUrl) {
           window.location.href = paymentUrl;
         }

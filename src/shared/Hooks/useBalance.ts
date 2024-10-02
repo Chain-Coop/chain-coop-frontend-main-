@@ -86,7 +86,6 @@ export const useUserTransaction = () => {
         .then(() => {})
         .catch((err: any) => {
           const errorMessage = err.message;
-          console.log(errorMessage);
         });
     }
   }, [dispatch]);
@@ -96,3 +95,5 @@ export const useUserTransaction = () => {
 };
 
 export default useWalletBalance;
+
+
