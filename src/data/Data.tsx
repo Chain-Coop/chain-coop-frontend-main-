@@ -224,6 +224,39 @@ export const employeeCardData = [
   },
 ];
 
+//MEMBERSHIP FEE CARD DATA
+export const MembershipFeePioneerCardData = [
+  {
+    paragraph: "Installmentall payment is allowed till fee is completed",
+  },
+  {
+    paragraph: "Vote and engage with the coop network",
+  },
+  {
+    paragraph: "Invest in the coop network business",
+  },
+  {
+    paragraph: "Early access to the first investment rounds",
+  },
+  {
+    paragraph: "Discounted the coop network product and services",
+  },
+];
+
+
+export const CustomerFeeExplorerCardData = [
+  {
+    paragraph: "Installmentall payment is allowed till fee is completed",
+  },
+  {
+    paragraph: "Vote and engage with the coop network",
+  },
+  {
+    paragraph: "Invest in the coop network business",
+  },
+];
+
+
 //Footer Links
 export const company = [
   {

@@ -28,6 +28,7 @@ import VerifyTransaction from "../wallet/fund/verifyTransaction/VerifyTransactio
 import ConfirmTransaction from "../wallet/transfer/fundContribution/confirmTransaction";
 import ProjectContentOverView from "../nestedproject/nested/ProjectContentOverView";
 import GlobalPinSetupManager from "../../common/GlobalPinSetUpManager";
+import MembershipType from "../../pages/membershipFee/membershipType/MembershipType";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -44,6 +45,8 @@ const Dashboard = () => {
           <DashboardNav />
         </nav>
       <GlobalPinSetupManager>
+     
+
         <Routes>
           <Route path="/" element={<Home />} />
 

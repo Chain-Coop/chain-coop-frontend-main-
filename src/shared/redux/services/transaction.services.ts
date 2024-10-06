@@ -6,6 +6,9 @@ const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 const API_URL_FUND_WALLET =
   import.meta.env.VITE_REACT_APP_API_URL + "/wallet/fund-wallet";
 
+  const API_URL_MEMBERSHIP_PAYSTACK_SUBSCRIPTION =
+  import.meta.env.VITE_REACT_APP_API_URL + "/membership/activate";
+
 const API_URL_CREATE_TRANSACTION_PIN =
   import.meta.env.VITE_REACT_APP_API_URL + "/wallet/create-pin";
 
@@ -133,6 +136,28 @@ const FundWallet = async (body: any) => {
   }
 };
 
+
+const PayStackMembershipSubscription = async (body: any) => {
+  try {
+    const token = sessionStorage.getItem("userData");
+    if (!token) {
+      throw new Error("Authorization token not found.");
+    }
+    const response = await axios.post(
+      API_URL_MEMBERSHIP_PAYSTACK_SUBSCRIPTION, 
+      body, 
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response?.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
 const VerifyFundWallet = async (body: any) => {
   try {
     const token = sessionStorage.getItem("userData");
@@ -228,6 +253,7 @@ const TransactionServices = {
   GetAllBanks,
   GetAccountName,
   CreateTransactionPin,
+  PayStackMembershipSubscription,
 };
 
 export default TransactionServices;

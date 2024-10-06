@@ -127,6 +127,21 @@ export const FundWallet = createAsyncThunk(
   },
 );
 
+export const PayStackMembershipSubscription = createAsyncThunk(
+  "transaction/payStackMembershipSubscription",
+  async (body: any, thunkAPI) => {
+    try {
+      const data = await TransactionServices.PayStackMembershipSubscription(body);
+      return { transaction: data };
+    } catch (error: any) {
+      const message = error.msg;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
+
 export const VerifyFundWallet = createAsyncThunk(
   "transaction/verifyFundWallet",
   async (body: any, thunkAPI) => {
@@ -216,6 +231,7 @@ interface TransactionState {
   contributionPlan:any,
   uploadReceipt: any | null;
   fundUserWallet: any | null;
+  fundMembershipSubscription: any | null;
   veryfyFundUserWallet: any | null;
   fundUserProject: null,
   getUserAccountName: null,
@@ -237,6 +253,7 @@ const initialState: TransactionState = {
   contributionPlan:null,
   uploadReceipt:null,
   fundUserWallet: null,
+  fundMembershipSubscription: null,
   getUserAccountName: null,
   veryfyFundUserWallet:null,
   fundUserProject: null,
@@ -341,6 +358,7 @@ export const transactionSlice = createSlice({
       .addCase(UploadPaymentReceipt.rejected, (state) => {
         state.uploadReceipt = null;
       })
+
       .addCase(
         VerifyFundWallet.fulfilled,
         (state, action: PayloadAction<{ transaction: any }>) => {
@@ -413,7 +431,17 @@ export const transactionSlice = createSlice({
       });
       builder.addCase(CreateTransactionPin.rejected, (state) => {
         state.createPin = null;
-      });
+      })
+
+      .addCase(
+        PayStackMembershipSubscription.fulfilled,
+        (state, action: PayloadAction<{ transaction: any }>) => {
+          state.fundMembershipSubscription = action.payload.transaction;
+        },
+      )
+      .addCase(PayStackMembershipSubscription.rejected, (state) => {
+        state.fundMembershipSubscription = null;
+      })
 
   },
 });

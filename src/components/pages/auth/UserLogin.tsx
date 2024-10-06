@@ -46,6 +46,7 @@ const UserLogin = () => {
         navigate("/dashboard");
       })
       .catch((error: any) => {
+        console.log("err",error)
         setLoading(false);
         const errorMessage = error;
         toast.error(errorMessage);
