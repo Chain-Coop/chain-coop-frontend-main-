@@ -24,9 +24,9 @@ const Right = () => {
             </p>
             <img src={newspaper} alt="newpaper-icon" />
           </div>
-          <div className="mt-[1.5em] text-sm">4 mins ago</div>
+          {/* <div className="mt-[1.5em] text-sm">4 mins ago</div> */}
         </article>
-        <header className="mt-[2em]">
+        {/* <header className="mt-[2em]">
           <h2 className="text-lg font-semibold">Need Help? Contact Us </h2>
         </header>
         <hr className="mt-[1.5em] h-1" />
@@ -48,10 +48,10 @@ const Right = () => {
               className="cursor-pointer text-text2"
             />
           </div>
-        </Link>
+        </Link> */}
 
         <hr className="mt-[1.5em] h-1" />
-        <section className="mt-[1.5em] flex items-center gap-2">
+        {/* <section className="mt-[1.5em] flex items-center gap-2">
           <div className="box-logo">
             <SiGooglemessages className="cursor-pointer fill-text2" size={40} />
           </div>
@@ -71,7 +71,7 @@ const Right = () => {
               className="cursor-pointer text-text2"
             />
           </div>
-        </section>
+        </section> */}
 
         <section className="mt-[2em] flex flex-col text-text4">
           <header>

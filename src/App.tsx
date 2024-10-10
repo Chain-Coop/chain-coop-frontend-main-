@@ -50,14 +50,14 @@ function App() {
           element={<PaaswordRessetSuccessfull />}
         />
 
-    <Route path="/set-payment-plan/*" element={<PaymentPlanWrapper />} />
+     <Route path="/set-payment-plan/*" element={<PaymentPlanWrapper />} />
     <Route path="/dashboard/*" element={<AuthWrapper><Dashboard /></AuthWrapper>} />
-    <Route path="*" element={<Navigate to="/dashboard" replace />} />
-
+    <Route path="*" element={<Navigate to="/dashboard" replace />} />   
+     
+    {/* <Route path="/dashboard/*" element={<Dashboard />} />  */}
         <Route path="/team" element={<Team />} />
         <Route path="/blog" element={<Blogs />} />
         <Route path="/career" element={<Career />} />
-
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

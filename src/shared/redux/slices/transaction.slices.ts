@@ -11,6 +11,11 @@ interface FundProjectPayload {
   projectId: string;
 }
 
+interface VerificationParams {
+  reference: string;
+  trxref: string;
+}
+
 export const GetWalletBalance = createAsyncThunk(
   "transaction/getWalletBalance",
   async (_, thunkAPI) => {
@@ -83,11 +88,11 @@ export const GetAllProject = createAsyncThunk(
   },
 );
 
-export const CreateContributionPlan = createAsyncThunk(
-  "transaction/createContributionPlan",
-  async (body:any, thunkAPI) => {
+export const GetAllUserFundedProject = createAsyncThunk(
+  "transaction/getAllUserFundedProject",
+  async (_, thunkAPI) => {
     try {
-      const data = await TransactionServices.CreateContributionPlan(body);
+      const data = await TransactionServices.GetAllUserFundedProject();
       return { transaction: data };
     } catch (error: any) {
       return handleAsyncError(error, thunkAPI);
@@ -95,11 +100,28 @@ export const CreateContributionPlan = createAsyncThunk(
   },
 );
 
+export const CreateContributionPlan = createAsyncThunk(
+  "transaction/createContributionPlan",
+  async (body: any, thunkAPI) => {
+    try {
+      const data = await TransactionServices.CreateContributionPlan(body);
+      return  data ;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error || error);
+    }
+  }
+);
+
 const handleAsyncError = (error: any, thunkAPI: any) => {
-  const message = error.error || "An error occurred. Please try again.";
+  let message = error.error || "An error occurred. Please try again.";
+  
+  if (!error.response) {
+    message = "Network error. Please check your internet connection.";
+  }
   thunkAPI.dispatch(setMessage(message));
   return thunkAPI.rejectWithValue(message);
 };
+
 
 export const UploadPaymentReceipt = createAsyncThunk(
   "transaction/uploadPaymentReceipt",
@@ -152,6 +174,18 @@ export const VerifyFundWallet = createAsyncThunk(
       return handleAsyncError(error, thunkAPI);
     }
   },
+);
+
+export const VerifyMembershipSubscription = createAsyncThunk(
+  "transaction/verifyMembershipSubscription",
+  async (params: VerificationParams, thunkAPI) => {
+    try {
+      const data = await TransactionServices.VerifyMembershipSubscription(params);
+      return { transaction: data };
+    } catch (error: any) {
+      return handleAsyncError(error, thunkAPI);
+    }
+  }
 );
 
 export const FundProject = createAsyncThunk(
@@ -219,36 +253,70 @@ export const CreateTransactionPin = createAsyncThunk(
   },
 );
 
+export const WithdrawalFromWallet = createAsyncThunk(
+  "transaction/withdrawalFromWallet",
+  async (body: any, thunkAPI) => {
+    try {
+      const data = await TransactionServices.WithdrawalFromWallet(body);
+      return { landing: data };
+    } catch (error: any) {
+      const message = error;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
+
+export const GetUsersContributionHistory = createAsyncThunk(
+  "transaction/getUsersContributionHistory ",
+  async (_, thunkAPI) => {
+    try {
+      const data = await TransactionServices.GetUsersContributionHistory();
+      return { transaction: data };
+    } catch (error: any) {
+      return handleAsyncError(error, thunkAPI);
+    }
+  },
+);
+
+
 interface TransactionState {
   getWalletBalance: any | null;
   getContributionBalance: any | null;
   getUsersTransaction: any | null;
+  getUsersContribution: any | null;
   createProposal: any | null;
   userProposal: any | null;
   fundWalletStatus: "idle" | "loading" | "success" | "failed";
   allProjects:any,
+  allFundedProjects:any,
   allBanks:any,
   contributionPlan:any,
   uploadReceipt: any | null;
   fundUserWallet: any | null;
   fundMembershipSubscription: any | null;
   veryfyFundUserWallet: any | null;
+  veryfyFundMembership: any | null;
   fundUserProject: null,
   getUserAccountName: null,
   currentProject: any | null;
   createPin: any | null;
+  requestWithdrawal: any | null;
   loading: boolean;
-  error: string | null;
+  error: string | null | Record<string, unknown>;
 }
 
 const initialState: TransactionState = {
   getWalletBalance: null,
   getContributionBalance: null,
   getUsersTransaction: null,
+  getUsersContribution: null,
   createProposal: null,
   userProposal: null,
   fundWalletStatus: "idle",
   allProjects:null,
+  allFundedProjects:null,
   allBanks:null,
   contributionPlan:null,
   uploadReceipt:null,
@@ -256,9 +324,11 @@ const initialState: TransactionState = {
   fundMembershipSubscription: null,
   getUserAccountName: null,
   veryfyFundUserWallet:null,
+  veryfyFundMembership:null,
   fundUserProject: null,
   currentProject: null,
   createPin: null,
+  requestWithdrawal: null,
   loading: false,
   error: null,
 };
@@ -341,12 +411,15 @@ export const transactionSlice = createSlice({
 
       .addCase(
         CreateContributionPlan.fulfilled,
-        (state, action: PayloadAction<{ transaction: any }>) => {
-          state.contributionPlan = action.payload.transaction;
-        },
+        (state, action: PayloadAction<any>) => {
+          state.contributionPlan = action.payload.contribution;
+          state.error = null;  
+        }
       )
-      .addCase(CreateContributionPlan.rejected, (state) => {
+      
+      .addCase(CreateContributionPlan.rejected, (state, action) => {
         state.contributionPlan = null;
+        state.error = action as string | Record<string, unknown> || 'An unknown error occurred';
       })
 
       .addCase(
@@ -441,6 +514,53 @@ export const transactionSlice = createSlice({
       )
       .addCase(PayStackMembershipSubscription.rejected, (state) => {
         state.fundMembershipSubscription = null;
+      })
+
+      .addCase(
+        VerifyMembershipSubscription.fulfilled,
+        (state, action: PayloadAction<{ transaction: any }>) => {
+          state. veryfyFundMembership = action.payload.transaction;
+        },
+      )
+      .addCase(VerifyMembershipSubscription.rejected, (state) => {
+        state. veryfyFundMembership = null;
+      })
+      
+      .addCase(WithdrawalFromWallet.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      builder.addCase(WithdrawalFromWallet.fulfilled, (state, action) => {
+        state.createPin = action.payload.landing;
+      });
+      builder.addCase(WithdrawalFromWallet.rejected, (state) => {
+        state.createPin = null;
+      })
+
+      .addCase(GetAllUserFundedProject.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        GetAllUserFundedProject.fulfilled,
+        (state, action: PayloadAction<{ transaction: any }>) => {
+          state.allFundedProjects = action.payload.transaction;
+        },
+      )
+      .addCase(GetAllUserFundedProject.rejected, (state, action) => {
+        state.loading = false;
+        state.allFundedProjects = null;
+        state.error = action.payload as string;
+      })
+
+      .addCase(
+        GetUsersContributionHistory.fulfilled,
+        (state, action: PayloadAction<{ transaction: any }>) => {
+          state.getUsersContribution = action.payload.transaction;
+        },
+      )
+      .addCase(GetUsersContributionHistory.rejected, (state) => {
+        state.getUsersContribution = null;
       })
 
   },

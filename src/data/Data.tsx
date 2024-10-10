@@ -45,18 +45,18 @@ export const sidebarLinks = [
     to: "/dashboard/project",
     pathsToCheck: ["/dashboard/project"],
   },
-  {
-    img: shares,
-    text: "My Shares",
-    to: "/dashboard/shares",
-    pathsToCheck: ["/dashboard/shares"],
-  },
-  {
-    img: proposal,
-    text: "Proposal",
-    to: "/dashboard/proposal",
-    pathsToCheck: ["/dashboard/proposal"],
-  },
+  // {
+  //   img: shares,
+  //   text: "My Shares",
+  //   to: "/dashboard/shares",
+  //   pathsToCheck: ["/dashboard/shares"],
+  // },
+  // {
+  //   img: proposal,
+  //   text: "Proposal",
+  //   to: "/dashboard/proposal",
+  //   pathsToCheck: ["/dashboard/proposal"],
+  // },
   {
     img: profile,
     text: "Profile",
@@ -86,16 +86,16 @@ export const dashboardNav = [
     text: "Project",
     to: "/dashboard/project",
   },
-  {
-    img: shares,
-    text: "My Shares",
-    to: "/dashboard/shares",
-  },
-  {
-    img: proposal,
-    text: "Proposal",
-    to: "/dashboard/proposal",
-  },
+  // {
+  //   img: shares,
+  //   text: "My Shares",
+  //   to: "/dashboard/shares",
+  // },
+  // {
+  //   img: proposal,
+  //   text: "Proposal",
+  //   to: "/dashboard/proposal",
+  // },
   {
     img: profile,
     text: "Profile",
@@ -267,13 +267,13 @@ export const company = [
   //   text: "Team",
   //   to: "/team",
   // },
-  {
-    text: "Careers",
-    to: "/career",
-  },
-  {
-    text: "Support",
-  },
+  // {
+  //   text: "Careers",
+  //   to: "/career",
+  // },
+  // {
+  //   text: "Support",
+  // },
 ];
 
 export const Explore = [
@@ -289,29 +289,32 @@ export const Explore = [
     text: "Projects",
     to: "/membership",
   },
-  {
-    text: "Blog",
-  },
+  // {
+  //   text: "Blog",
+  // },
 ];
 
-export const Legal = [
-  {
-    text: "Privacy Policy",
-  },
-  {
-    text: "Terms & Condition",
-  },
-  {
-    text: "Disclaimer",
-  },
-];
+// export const Legal = [
+//   {
+//     text: "Privacy Policy",
+//   },
+//   {
+//     text: "Terms & Condition",
+//   },
+//   {
+//     text: "Disclaimer",
+//   },
+// ];
 
 export const Contacts = [
   {
-    text: "Privacy Policy",
+text: "Lets build a better future together!"
   },
   {
-    text: "Ikosi Ketu, Lagos, Nigeria",
+    text: "Visit us at No. 9 Ogunlana Street, Ikosi"
+  },
+  {
+    text: "Ketu, Lagos, Nigeria",
   },
   {
     text: "info@chainerative.com.ng",
@@ -367,3 +370,19 @@ export const earlyMemberCircleText = {
     p2: "Collabrate with industry leaders and enhance your investment strategies within our growing cooperative community.",
   },
 };
+
+export const  SavingOn = [
+  { text: "House Rent" },
+  { text: "School Fees" },
+  { text: "Food" },
+  { text: "Personal Need" },
+  { text: "Car" },
+  { text: "Others" },
+];
+
+export const Plan = [
+  { text: "Daily" },
+  { text: "Weekly" },
+  { text: "Monthly" },
+];
+

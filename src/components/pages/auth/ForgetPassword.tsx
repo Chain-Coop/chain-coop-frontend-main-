@@ -25,7 +25,6 @@ const ForgetPassword = () => {
     const response = await FORGOT_PASSWORD(endpoint, { email });
     setLoading(false);
     if (response.status === 200) {
-      toast.success(response.data.msg);
       navigate(`/verification-successfull?email=${email}`);
     } else {
       toast.error(response.data.msg);

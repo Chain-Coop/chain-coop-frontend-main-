@@ -79,13 +79,13 @@ const Transfer: React.FC = () => {
                   Fund your project
                 </li>
               </Link>
-              <li
+              {/* <li
                 className="flex cursor-pointer items-center gap-3 border-b p-4 font-medium hover:bg-gray-100"
                 onClick={handleOpenContributionPlanModal}
               >
                 <img src={contribution} alt="contribution" />
                 Fund your contribution
-              </li>
+              </li> */}
             </ul>
           </div>
         )}

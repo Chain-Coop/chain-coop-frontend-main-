@@ -83,13 +83,13 @@ const Home = () => {
 
       <section className="mt-[2em] w-full">
         <header>
-          <p className="font-semibold sm:text-lg">Create a portfolio</p>
+          {/* <p className="font-semibold sm:text-lg">Create a portfolio</p>
           <p className="mt-[1em]">
             Start your investment journey by creating a portfolio
-          </p>
+          </p> */}
         </header>
         <div className="mt-4 gap-[1.5em] space-y-[1.5em] sm:flex-col lg:flex lg:flex-row">
-          <article className="mt-2 flex flex-col items-center justify-center rounded-lg bg-Dh p-4 font-semibold shadow-md sm:py-[2em] lg:w-[180px]">
+          {/* <article className="mt-2 flex flex-col items-center justify-center rounded-lg bg-Dh p-4 font-semibold shadow-md sm:py-[2em] lg:w-[180px]">
             <img
               width="24"
               height="24"
@@ -103,7 +103,7 @@ const Home = () => {
             <p className="text-center font-sans sm:text-lg sm:font-semibold">
               portfolio project
             </p>
-          </article>
+          </article> */}
           <article>
             <div className="flex h-auto flex-col gap-[2em] rounded-xl bg-dashboardHome bg-cover bg-no-repeat p-3">
               <h1 className="text-lg font-medium uppercase text-text3">

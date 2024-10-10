@@ -33,8 +33,8 @@ const CreateAccount = () => {
   const dispatch: AppDispatch = useDispatch();
 
   const membershipOptions = [
-    { value: "patron", label: "Patron" },
-    { value: "investor members", label: "Investor Members" },
+    { value: "Explorer", label: "Explorer" },
+    { value: "Pioneer", label: "Pioneer" },
   ];
 
   const home = (e: any) => {
@@ -170,16 +170,17 @@ const CreateAccount = () => {
               Password
             </label>
             <div className="relative flex items-center">
-              <input
-                id="password-input"
-                type="password"
-                placeholder="Password"
-                value={password}
-                required
-                disabled={loading}
-                onChange={(e) => setPassword(e.target.value)}
-                className="input mb-5 h-[4em]  w-full items-center rounded-full border-[1px] px-4 text-sm  shadow-md focus:border-text2 focus:outline-none focus:ring-text2  "
-              />
+            <input
+              id="password-input"
+              type={passwordType} 
+              placeholder="Password"
+              value={password}
+              required
+              disabled={loading}
+              onChange={(e) => setPassword(e.target.value)}
+              className="input mb-5 h-[4em] w-full items-center rounded-full border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
+          />
+
               <button
                 type="button"
                 onClick={togglePasswordType}
@@ -196,7 +197,7 @@ const CreateAccount = () => {
           <EnterButton
             type="submit"
             disabled={loading}
-            className="cursor-pointer bg-text2 text-white"
+            className="cursor-pointer flex text-center justify-center bg-text2 text-white"
           >
             {loading ? (
               <ReactLoading

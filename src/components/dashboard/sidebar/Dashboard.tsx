@@ -5,7 +5,7 @@ import "../../../../src/App.css";
 import DashboardNav from "../../common/DashboardNav";
 import Sidebar from "./Sidebar";
 import Home from "../home/Home";
-import Contribution from "../contribution/Contribution";
+import Contribution from "../contribution/main/Contribution";
 import Wallet from "../wallet/Wallet";
 import Project from "../nestedproject/Project";
 import Proposal from "../proposal/Proposal";
@@ -29,6 +29,11 @@ import ConfirmTransaction from "../wallet/transfer/fundContribution/confirmTrans
 import ProjectContentOverView from "../nestedproject/nested/ProjectContentOverView";
 import GlobalPinSetupManager from "../../common/GlobalPinSetUpManager";
 import MembershipType from "../../pages/membershipFee/membershipType/MembershipType";
+import Purpose from "../contribution/purpose/Purpose"
+import SavingsPlan from "../contribution/savingsPlan/SavingsPlan"
+import StartDate from "../contribution/startDate/StartDate"
+import SavingsAmount from "../contribution/savingsAmount/SavingsAmount"
+
 
 const Dashboard = () => {
   useEffect(() => {
@@ -51,6 +56,10 @@ const Dashboard = () => {
           <Route path="/" element={<Home />} />
 
           <Route path="contribution" element={<Contribution />} />
+          <Route path="contribution/purpose" element={<Purpose />} />
+          <Route path="contribution/plan" element={<SavingsPlan />} />
+          <Route path="contribution/date" element={<StartDate />} />
+          <Route path="contribution/amount" element={<SavingsAmount />} />
 
           <Route path="wallet/*" element={<Wallet />} />
           <Route path="wallet/withdraw" element={<Withdraw />} />

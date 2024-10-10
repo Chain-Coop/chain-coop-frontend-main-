@@ -1,7 +1,5 @@
-import React from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { handleLogout } from "../../shared/utils/auth";
 import { dashboardNav } from "../../data/Data";
 import Box from "@mui/material/Box";
@@ -22,8 +20,7 @@ const DashboardNav = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const navigate = useNavigate();
   const { profileDetails } = useUserProfile();
- 
-  
+
   const getMembershipImage = () => {
     if (profileDetails?.membershipType === "patron") {
       return member;
@@ -32,6 +29,17 @@ const DashboardNav = () => {
     }
     return member;
   };
+
+  const getButtonProps = () => {
+    if (profileDetails?.membershipStatus === "pending") {
+      return { text: "Pending", bgColor: "bg-yellow-500" }; 
+    } else if (profileDetails?.membershipStatus === "activated") {
+      return { text: "Activated", bgColor: "bg-green-500" }; 
+    }
+    return { text: "Unknown", bgColor: "bg-gray-400" }; 
+  };
+
+  const { text, bgColor } = getButtonProps();
 
   const handleMenuClick = () => {
     setOpenMenu(!openMenu);
@@ -87,17 +95,17 @@ const DashboardNav = () => {
           </List>
           <div>
             <div className="mt-[1em] px-4">
-              <button className="cursor-not-allowed rounded-full bg-act px-[2em] py-1 font-sans text-text3 shadow-md">
-                Activated
+              <button className={`rounded-full ${bgColor} px-[2em] py-1 font-sans text-text3 shadow-md`}>
+                {text}
               </button>
             </div>
             <div className="mt-[2em] px-1">
-            <img src={getMembershipImage()} className="" alt="membership-card" />
+              <img src={getMembershipImage()} className="" alt="membership-card" />
             </div>
             <div className="mt-4 flex px-3">
               <p className="font-sans text-sm text-howtext">
-                This card grant you access to the chain Coop Chain Network
-                ecosystem. Once Activated, it becomes non-transferable
+                This card grants you access to the Chain Coop Chain Network
+                ecosystem. Once activated, it becomes non-transferable.
               </p>
             </div>
           </div>

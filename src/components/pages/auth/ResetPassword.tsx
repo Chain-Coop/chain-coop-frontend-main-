@@ -65,6 +65,7 @@ const ResetPassword = () => {
                 skipDefaultStyles={true}
                 containerStyle={"gap-3 my-5"}
                 numInputs={6}
+                inputType='tel'
                 inputStyle={
                   "block lg:h-[55px] sm:h-[50px] sm:w-[35px] lg:w-[55px] text-center border-text2 rounded-md text-sm text-gray-500 focus:border-text2 focus:ring-text2 disabled:opacity-50 disabled:pointer-events-none"
                 }

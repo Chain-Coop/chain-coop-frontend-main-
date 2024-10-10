@@ -51,7 +51,7 @@ const FundWallet: React.FC = () => {
           </div>
         </DashboardHeader>
       <section className="m-auto mt-[1.5em] h-full w-full px-[1em]">
-        <div
+        {/* <div
           className="flex cursor-pointer items-center justify-between"
           onClick={() => openModal(ModalTypes.Transfer)}
         >
@@ -65,8 +65,8 @@ const FundWallet: React.FC = () => {
             </div>
           </div>
           <IoIosArrowForward size={25} className="hidden lg:block" />
-        </div>
-        <hr className="mt-3 h-[1px] rounded-md" />
+        </div> */}
+        {/* <hr className="mt-3 h-[1px] rounded-md" /> */}
         <article
           className="mt-[1em] flex cursor-pointer items-center justify-between"
           onClick={() => openModal(ModalTypes.Paystack)}

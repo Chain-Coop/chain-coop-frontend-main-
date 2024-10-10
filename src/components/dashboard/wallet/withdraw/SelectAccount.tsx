@@ -57,7 +57,9 @@ const SelectAccount = () => {
             state: { 
               accountName: response.transaction.result.data.account_name,
               accountNumber: response.transaction.result.data.account_number,
-              bankName: selectedBank.name
+              bankName: selectedBank.name,
+              bankCode: selectedBank.code,
+              amount: amount
             }
           });
         } else {

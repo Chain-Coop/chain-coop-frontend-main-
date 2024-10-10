@@ -81,11 +81,12 @@ const UserLoginOtp = () => {
                 skipDefaultStyles={true}
                 containerStyle={"gap-3 my-5"}
                 numInputs={6}
+                inputType="tel"
+                renderSeparator={<span>*</span>}
+                renderInput={(props) => <input {...props} />}
                 inputStyle={
                   "block lg:h-[55px] lg:w-[55px] sm:h-[50px] sm:w-[35px] text-center border-gray-200 rounded-md text-sm placeholder:text-gray-300 focus:border-text2 focus:ring-text2 disabled:opacity-50 disabled:pointer-events-none  dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                 }
-                renderSeparator={<span>-</span>}
-                renderInput={(props) => <input {...props} />}
               />
             </div>
           </form>
@@ -93,7 +94,7 @@ const UserLoginOtp = () => {
           <Primary
             onClick={ResendOtp}
             loading={loading}
-            className="w-[12em] rounded-full bg-text2 px-2 py-3 font-medium text-text5 sm:text-lg lg:mt-[2em]"
+            className="w-[12em] rounded-full flex justify-center m-auto text-center bg-text2 px-2 py-3 font-medium text-text5 sm:text-lg lg:mt-[2em]"
           >
             {loading ? (
               <ReactLoading

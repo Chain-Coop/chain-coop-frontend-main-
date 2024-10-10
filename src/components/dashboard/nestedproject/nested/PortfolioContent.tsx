@@ -1,16 +1,19 @@
 import React from "react";
 import { ComingSoon } from "../../../common/Button";
+import { useAllUserFundedProjects } from "../../../../shared/Hooks/useUserProfile";
 
 const PortfolioContent = () => {
+  const {useUserProjects} = useAllUserFundedProjects()
+  console.log(useUserProjects)
   return (
     <main className="font-sans">
       <div className="sm:px-[1.5em] lg:px-0 ">
         <div>
           <p className="text-medium font-bold">Your Portfolio</p>
-          <p className="mt-[1em] text-sm">
+          {/* <p className="mt-[1em] text-sm">
             You have not created any portfolio yet. Click on any of the cards to
             create your portfolio
-          </p>
+          </p> */}
         </div>
         <div className="mt-[1.5em] justify-between sm:flex-col lg:flex lg:flex-row">
           <article>

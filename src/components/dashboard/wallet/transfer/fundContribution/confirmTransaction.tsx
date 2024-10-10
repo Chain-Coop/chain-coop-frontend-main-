@@ -17,7 +17,7 @@ const ConfirmTransaction = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
-  const [isModalOpen, setIsModalOpen] = useState(false);  // State to control modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false);  
   
   const { amountInNaira, selectedProjectId } = location.state as { 
     amountInNaira: number; 
@@ -90,7 +90,7 @@ const ConfirmTransaction = () => {
         )}
         <div className="mt-[2em] flex justify-center">
           <Primary 
-            className="w-[70%] bg-text2 py-3 text-white" 
+            className="w-[70%] flex justify-center bg-text2 py-3 text-white" 
             onClick={handleFund} 
             disabled={loading}
           >

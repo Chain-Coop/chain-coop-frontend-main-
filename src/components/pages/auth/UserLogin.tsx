@@ -26,32 +26,35 @@ const UserLogin = () => {
     e.preventDefault();
     navigate("/");
   };
-
   const loginUserData = (e: any) => {
     e.preventDefault();
     if (!email || !password) {
       toast.error("Please fill in all fields.");
       return; 
     }
+  
     setLoading(true);
     let body = {
       email: email,
       password: password,
     };
-
+  
     dispatch(LoginUser(body))
       .unwrap()
-      .then(() => {
+      .then((response) => {
         setLoading(false);
-        navigate("/dashboard");
+        if (response.landing.role === "user") {
+          navigate("/dashboard");
+        } else {
+          toast.error("You do not have access to this dashboard.");
+        }
       })
       .catch((error: any) => {
-        console.log("err",error)
         setLoading(false);
         const errorMessage = error;
         toast.error(errorMessage);
       });
-
+  
     if (rememberMe) {
       sessionStorage.setItem("email", email);
       sessionStorage.setItem("password", password);
@@ -62,18 +65,8 @@ const UserLogin = () => {
       sessionStorage.removeItem("rememberMe");
     }
   };
-
-  useEffect(() => {
-    const storedEmail = sessionStorage.getItem("email");
-    const storedPassword = sessionStorage.getItem("password");
-    const storedRememberMe = sessionStorage.getItem("rememberMe");
-
-    if (storedRememberMe === "true") {
-      setEmail(storedEmail || "");
-      setPassword(storedPassword || "");
-      setRememberMe(true);
-    }
-  }, []);
+  
+  
 
   const toggleRememberMe = () => {
     setRememberMe(!rememberMe);
@@ -161,7 +154,7 @@ const UserLogin = () => {
 
           <EnterButton
             onClick={loginUserData}
-            className="mt-[2em]"
+            className="mt-[2em] flex justify-center text-center"
             disabled={loading}
           >
             {loading ? (

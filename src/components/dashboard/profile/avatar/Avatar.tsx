@@ -1,18 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useUserProfile from "../../../../shared/Hooks/useUserProfile";
 import user from "../../../../Assets/png/dashboard/avatar.png";
 import { IoIosArrowForward } from "react-icons/io";
 import ReactLoading from "react-loading";
 
 const Avatar = () => {
-  const { profileDetails, uploadUserAvatar, loading: initialLoading } = useUserProfile();
+  const { profileDetails, uploadUserAvatar, loading: initialLoading, fetchUserProfile } = useUserProfile();
   const [avatarLoading, setAvatarLoading] = useState(initialLoading);
 
-  const handleFileChange = async (event: any) => {
-    const selectedFile = event.target.files[0];
+  useEffect(() => {
+    setAvatarLoading(initialLoading);
+  }, [initialLoading]);
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       setAvatarLoading(true);
-      await uploadUserAvatar(selectedFile); 
+      await uploadUserAvatar(selectedFile);
+      await fetchUserProfile();
       setAvatarLoading(false);
     }
   };
@@ -34,7 +39,7 @@ const Avatar = () => {
                   />
                 ) : (
                   <img
-                    src={profileDetails?.profilePhoto?.url ||user}
+                    src={profileDetails?.profilePhoto?.url || user}
                     alt="profile"
                     className="h-full w-full object-cover"
                   />
@@ -54,9 +59,6 @@ const Avatar = () => {
             <span className="text-lg font-semibold">
               {profileDetails?.username || "user"}
             </span>
-            <button className="w-full rounded-full bg-primary px-2 py-1 text-sm font-medium shadow-md sm:w-auto sm:px-6 sm:text-base">
-              Edit Profile
-            </button>
           </div>
         </div>
         <IoIosArrowForward size={25} className="mt-4 text-text2 sm:mt-0" />

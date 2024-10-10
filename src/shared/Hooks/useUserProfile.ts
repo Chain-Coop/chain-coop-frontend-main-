@@ -1,10 +1,10 @@
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GetUserProfile, uploadAvatar } from "../redux/slices/landing.slices";
 import { AppDispatch } from "../redux/store";
 import { setMessage } from "../redux/slices/message.slices";
-import { GetAllBanks, GetAllProject, GetProposal } from "../redux/slices/transaction.slices";
+import { GetAllBanks, GetAllProject, GetAllUserFundedProject, GetProposal, GetUsersContributionHistory } from "../redux/slices/transaction.slices";
 
 enum UploadFields {
   ProfilePicture = "profilePicture", 
@@ -12,17 +12,18 @@ enum UploadFields {
 
 export const useUserProfile = () => {
   const dispatch: AppDispatch = useDispatch();
-  const profileDetails = useSelector((state: any) => state.landing.getProfile);
+  const profileDetails = useSelector((state: any) => state?.landing?.getProfile);
   const userToken = sessionStorage.getItem("userData");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    dispatch(GetUserProfile())
-      .unwrap()
-      .catch((error) => {
-        console.error("Profile fetch error:", error);
-      });
+  const fetchUserProfile = useCallback(() => {
+    return dispatch(GetUserProfile()).unwrap();
   }, [dispatch]);
+
+  useEffect(() => {
+    fetchUserProfile().catch((error) => {
+    });
+  }, [fetchUserProfile]);
 
   const uploadUserAvatar = async (selectedFile: File) => {
     if (userToken && selectedFile) {
@@ -31,7 +32,7 @@ export const useUserProfile = () => {
         const formData = new FormData();
         formData.append(UploadFields.ProfilePicture, selectedFile); 
         await dispatch(uploadAvatar(formData)).unwrap();
-        await dispatch(GetUserProfile()).unwrap();
+        await fetchUserProfile();
       } catch (error: any) {
         const errorMessage = error.message || "Failed to upload avatar";
         dispatch(setMessage(errorMessage));
@@ -48,9 +49,9 @@ export const useUserProfile = () => {
     profileDetails,
     loading,
     uploadUserAvatar,
+    fetchUserProfile,
   };
 };
-
 
 
 export const useProposalLength = () => {
@@ -58,7 +59,7 @@ export const useProposalLength = () => {
   const [loading, setLoading] = useState(false);
 
   const useLength = useSelector(
-    (state: any) => state.transaction.userProposal,
+    (state: any) => state?.transaction?.userProposal,
   );
   const userToken = sessionStorage.getItem("userData");
   useEffect(() => {
@@ -68,7 +69,7 @@ export const useProposalLength = () => {
         .unwrap()
         .then(() => setLoading(false))
         .catch((error: any) => {
-          const errorMessage = error.message;
+          const errorMessage = error?.message;
           dispatch(setMessage(errorMessage));
           setLoading(false);
         });
@@ -85,7 +86,7 @@ export const useAllProjects = () => {
   const [loading, setLoading] = useState(false);
 
   const useProjects = useSelector(
-    (state: any) => state.transaction.allProjects,
+    (state: any) => state?.transaction?.allProjects,
   );
 
   const userToken = sessionStorage.getItem("userData");
@@ -114,7 +115,7 @@ export const useAllBanks = () => {
   const [loading, setLoading] = useState(false);
 
   const useBanks = useSelector(
-    (state: any) => state.transaction.allBanks,
+    (state: any) => state?.transaction?.allBanks,
   );
   const userToken = sessionStorage.getItem("userData");
   useEffect(() => {
@@ -124,7 +125,7 @@ export const useAllBanks = () => {
         .unwrap()
         .then(() => setLoading(false))
         .catch((error: any) => {
-          const errorMessage = error.message;
+          const errorMessage = error?.message;
           dispatch(setMessage(errorMessage));
           setLoading(false);
         });
@@ -152,8 +153,8 @@ export const usePinSetup = (isPinCreated: boolean) => {
       if (!pinSkippedAt) {
         setShowPinSetup(true);
       } else {
-        const skippedTime = new Date(pinSkippedAt).getTime();
-        const currentTime = new Date().getTime();
+        const skippedTime = new Date(pinSkippedAt)?.getTime();
+        const currentTime = new Date()?.getTime();
         const timeDifference = currentTime - skippedTime;
         
         if (timeDifference >=  60 * 1000) { 
@@ -173,5 +174,54 @@ export const usePinSetup = (isPinCreated: boolean) => {
     setShowReminder,
     showSuccessModal,
     setShowSuccessModal
+  };
+};
+
+export const useAllUserFundedProjects = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+
+  const useUserProjects = useSelector(
+    (state: any) => state?.transaction?.allFundedProjects,
+  );
+  const userToken = sessionStorage.getItem("userData");
+  useEffect(() => {
+    if (userToken) {
+      setLoading(true);
+      dispatch(GetAllUserFundedProject())
+        .unwrap()
+        .then(() => setLoading(false))
+        .catch((error: any) => {
+          const errorMessage = error.message;
+          dispatch(setMessage(errorMessage));
+          setLoading(false);
+        });
+    } else {
+      dispatch(setMessage("Token not found"));
+    }
+  }, [dispatch, userToken]);
+
+  return { useUserProjects, loading };
+};
+
+export const useUserContributionHisory = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const getContributions = useSelector(
+    (state: any) => state?.transaction?.getUsersContribution,
+  );
+
+  useEffect(() => {
+    const userToken = sessionStorage.getItem("userData");
+    if (userToken) {
+      dispatch(GetUsersContributionHistory())
+        .unwrap()
+        .then(() => {})
+        .catch((err: any) => {
+          const errorMessage = err.message;
+        });
+    }
+  }, [dispatch]);
+  return {
+    getContributions,
   };
 };

@@ -15,7 +15,6 @@ const Security = () => {
   };
 
   const sections = [
-    { title: "Allow Notifications" },
     { title: "Chain Pin" },
     { title: "Password Reset", onClick: handlePasswordResetClick },
   ];

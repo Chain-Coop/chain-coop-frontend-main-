@@ -24,7 +24,7 @@ const SelectPaymentPlan = ({ onNext, onPrev, membershipType }: any) => {
         if (selectedValue === 'PaystackSubscription') {
             setPaymentMethod('PaystackSubscription');
         } else {
-            setPaymentMethod(''); 
+            setPaymentMethod('OneTimePayment'); 
         }
     };
 
@@ -56,8 +56,8 @@ const SelectPaymentPlan = ({ onNext, onPrev, membershipType }: any) => {
                     toast.error(errorMessage);
                 });
         } else if (value === 'Once Payment') {
-            toast.info("One-time payment will be handled later.");
             setLoading(false);
+            onNext('one-time', membershipType); 
         }
     };
 

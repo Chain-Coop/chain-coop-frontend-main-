@@ -16,13 +16,24 @@ const Sidebar = () => {
   };
 
   const getMembershipImage = () => {
-    if (profileDetails?.membershipType === "patron") {
+    if (profileDetails?.membershipType === "Explorer") {
       return member;
-    } else if (profileDetails?.membershipType === "investor members") {
+    } else if (profileDetails?.membershipType === "Pioneer") {
       return investor;
     }
     return member;
   };
+
+  const getButtonProps = () => {
+    if (profileDetails?.membershipStatus === "pending") {
+      return { text: "Pending", bgColor: "bg-yellow-500" }; 
+    } else if (profileDetails?.membershipStatus === "activated") {
+      return { text: "Activated", bgColor: "bg-green-500" }; 
+    }
+    return { text: "Unknown", bgColor: "bg-gray-400" }; 
+  };
+
+  const { text, bgColor } = getButtonProps();
 
   return (
     <aside className="h-vh flex w-[23em] flex-col border-r border-bl bg-rec1 py-[2em] font-sans text-memt1 shadow-md">
@@ -52,8 +63,8 @@ const Sidebar = () => {
           );
         })}
         <section className="mt-[1em] px-4">
-          <button className="cursor-not-allowed rounded-full bg-act px-[2em] py-1 text-text3 shadow-md">
-            Activated
+          <button className={`rounded-full ${bgColor} px-[2em] py-1 text-text3 shadow-md`}>
+            {text}
           </button>
         </section>
         <section className="mt-[2em] w-[16em] px-1">

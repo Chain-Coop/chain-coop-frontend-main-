@@ -12,9 +12,20 @@ const API_URL_FUND_WALLET =
 const API_URL_CREATE_TRANSACTION_PIN =
   import.meta.env.VITE_REACT_APP_API_URL + "/wallet/create-pin";
 
+  const API_URL_WITHDRAW_FROM_WALLET =
+  import.meta.env.VITE_REACT_APP_API_URL + "/withdrawal/request-withdrawal";
+
 const API_URL_VERIFY_FUND_WALLET =
   import.meta.env.VITE_REACT_APP_API_URL + "/wallet/verify-payment";
 
+  const API_URL_VERIFY_PAYSTACK_SUBSCRIPTION =
+  import.meta.env.VITE_REACT_APP_API_URL + "/membership/verify-payment";
+
+  interface VerificationParams {
+    reference: string;
+    trxref: string;
+  }
+  
   const handleApiError = (error: any) => {
     if (!error.response) {
       throw new Error("Network Error: Please check your internet connection.");
@@ -22,6 +33,8 @@ const API_URL_VERIFY_FUND_WALLET =
       throw error.response.data;
     }
   };
+
+
 
 const GetWalletBalance = async () => {
   const url = `${API_URL}/wallet/balance`;
@@ -81,6 +94,16 @@ const GetProposal = async () => {
 
 const GetAllProject = async () => {
   const url = `${API_URL}/project/all-projects`;
+  try {
+    const response = await axios.get(url, { headers: authHeader() });
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
+const GetAllUserFundedProject = async () => {
+  const url = `${API_URL}/project/funded`;
   try {
     const response = await axios.get(url, { headers: authHeader() });
     return response.data;
@@ -237,6 +260,54 @@ const CreateTransactionPin = async (body: any) => {
   }
 };
 
+const VerifyMembershipSubscription =  async (params: VerificationParams) => {
+  try {
+    const token = sessionStorage.getItem("userData");
+    if (!token) {
+      throw new Error("Authorization token not found.");
+    }
+    
+    const response = await axios.get(
+      API_URL_VERIFY_PAYSTACK_SUBSCRIPTION,
+      {
+        params, 
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response?.data;
+  } catch (error: any) {
+    throw handleApiError(error);
+  }
+};
+
+const WithdrawalFromWallet = async (body: any) => {
+  try {
+    const response = await axios.post(API_URL_WITHDRAW_FROM_WALLET, body,{
+      headers: authHeader(),
+    });
+     return response?.data;
+  } catch (error: any) {
+    if (error.response.data) {
+      throw error.response.data;
+    } else {
+      throw new Error("Network Error: Please check your internet connection.");
+    }
+  }
+};
+
+const GetUsersContributionHistory = async () => {
+  const url = `${API_URL}/contribution/history`;
+  try {
+    const response = await axios.get(url, { headers: authHeader() });
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
+
 const TransactionServices = {
   GetWalletBalance,
   GetContributionBalance,
@@ -254,6 +325,10 @@ const TransactionServices = {
   GetAccountName,
   CreateTransactionPin,
   PayStackMembershipSubscription,
+  VerifyMembershipSubscription,
+  WithdrawalFromWallet,
+  GetAllUserFundedProject,
+  GetUsersContributionHistory,
 };
 
 export default TransactionServices;

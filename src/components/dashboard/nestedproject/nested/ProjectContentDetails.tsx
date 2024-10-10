@@ -1,12 +1,19 @@
 import React from 'react';
 import { Primary } from '../../../common/Button';
+import { Link, useNavigate } from "react-router-dom";
 import { formatBalance } from '../../../../shared/utils/format';
+import DOMPurify from 'dompurify';
+import { IoIosArrowDropleft } from 'react-icons/io';
 
 interface ProjectContentDetailsProps {
   project: any; 
 }
 
 const ProjectContentDetails: React.FC<ProjectContentDetailsProps> = ({ project }) => {
+  const navigate = useNavigate()
+  const back = () => {
+    navigate(-1)
+  }
         if (!project) {
           return <LoadingIndicator />;
         }
@@ -19,9 +26,12 @@ const ProjectContentDetails: React.FC<ProjectContentDetailsProps> = ({ project }
         <div className='flex flex-col gap-[1.4em] mt-[1.3em]'>
          <p className='text-gray-400 font-semibold text-sm'>OverView</p>
         <article>
-            <p className='font-medium'>
-            {project?.description}
-            </p>
+             <div 
+              className="prose mb-4"
+              dangerouslySetInnerHTML={{ 
+                __html: DOMPurify?.sanitize(project?.description)
+              }} 
+            />
         </article>
         <div>
             <img src={project?.documentUrl} alt={project.title} className='rounded-lg' />
@@ -31,12 +41,14 @@ const ProjectContentDetails: React.FC<ProjectContentDetailsProps> = ({ project }
           <p className='font-bold'>This Project is available for {formatBalance(project?.projectPrice)} {}</p>
         </div>
         <div className='flex justify-between items-center'>
-           <h1>back</h1>
+          <IoIosArrowDropleft size={25} onClick={back} className='cursor-pointer' />
+           <Link to="/dashboard/wallet/transfer/fund-project">
            <Primary
            className="mt-8 w- bg-text2 rounded-md py-2 font-semibold px-5 text-white"
-          >
+           >
           Purchase
         </Primary>
+        </Link>
         </div>
         </div>
     </main>
