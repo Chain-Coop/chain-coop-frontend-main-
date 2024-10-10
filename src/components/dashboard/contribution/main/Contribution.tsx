@@ -73,7 +73,7 @@ const Contribution = () => {
                     '& .MuiStepLabel-iconContainer': {
                       paddingRight: '1rem',
                       '& .MuiStepIcon-root': {
-                        color: index === 1 ? '#9CA3AF' : '#1976d2',
+                        color: index === 1 ? '#9CA3AF' : '#430280',
                       }
                     }
                   }}
