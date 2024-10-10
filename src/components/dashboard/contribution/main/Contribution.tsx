@@ -54,7 +54,7 @@ const Contribution = () => {
     };
 
     return (
-      <section className="mt-[1em]">
+      <section className="mt-[1em] font-sans">
         <div className="flex justify-between mb-4 whitespace-nowrap">
           <p className="text-lg font-semibold">Daily Contribution</p>
           <p className="text-lg font-semibold">Status</p>
@@ -80,19 +80,19 @@ const Contribution = () => {
                 >
                   <div className="flex justify-between items-start w-full sm:flex-row flex-col gap-2 sm:gap-0">
                     <div className="flex-1 min-w-0">
-                      <p className={`font-semibold truncate ${index === 1 ? 'text-gray-400' : ''}`}>
+                      <p className={`font-semibold text-lg truncate ${index === 1 ? 'text-gray-400' : ''}`}>
                         Cash Transfer from Co-op wallet
                       </p>
                       <p className={`font-semibold whitespace-nowrap ${index === 1 ? 'text-gray-400' : ''}`}>
                         {format(step.date, "EEEE: dd/MM/yyyy")}
                       </p>
-                      <p className={`font-semibold ${index === 1 ? 'text-gray-400' : ''}`}>
+                      <p className={`font-semibold whitespace-nowrap ${index === 1 ? 'text-gray-400' : ''}`}>
                         Amount: <span className={index === 1 ? 'text-gray-400' : 'text-act'}>
                           NGN {step.amount.toLocaleString()}
                         </span>
                       </p>
                     </div>
-                    <div className="sm:ml-4 self-start sm:self-center">
+                    <div className="sm:ml-2 self-start sm:self-center">
                       <div className={`px-3 py-1 rounded-full text-sm whitespace-nowrap ${getStatusStyle(step.status)}`}>
                         {step.status}
                       </div>
