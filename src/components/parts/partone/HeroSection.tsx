@@ -21,11 +21,11 @@ const HeroSection = () => {
            Chain Wallet. Simplify your investment with transparency, safety and sustainability.
           </p>
           <div className="flex flex-col gap-[2.5em] sm:flex-row sm:items-center">
-            <Link to="/sign-up" className="w-full sm:w-auto">
+            {/* <Link to="/sign-up" className="w-full sm:w-auto">
               <Primary className="w-full rounded-md bg-text2 lg:px-4 lg:py-2 text-center text-sm text-text5 px-[9px] py-2 sm:text-base">
                 Get Started
               </Primary>
-            </Link>
+            </Link> */}
             <Primary className="flex w-full items-center justify-center rounded-md bg-white py-2 text-sm font-semibold text-text2 shadow-xl outline-none sm:w-auto sm:px-4 sm:py-3 sm:text-base">
               <img
                 src={subicon}
