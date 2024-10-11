@@ -17,86 +17,88 @@ const Story = () => {
   return (
     <>
       <NavBar />
-      <main className={`relative font-sans transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
-        <div className="relative">
+      <main className={`relative h-full font-sans transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+        <div className="inset-0 flex items-center">
           <img
             src={background}
-            className="h-[30vh] w-full object-cover sm:h-[40vh] lg:h-[50vh]"
+            className="h-[30vh] w-full object-cover sm:h-auto"
             alt="background_image"
           />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <header className="text-center px-4 sm:px-6 lg:px-8">
-              <h1 className="text-2xl font-semibold sm:text-3xl lg:text-4xl mb-2">
-                Our Story
-              </h1>
-              <p className="text-sm sm:text-base lg:text-lg">
-                A Tech-driven worker owned Cooperative, Built for a better future. 
-              </p>
-            </header>
-          </div>
         </div>
-
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
-          <div className="flex flex-col lg:flex-row items-center mb-12 lg:mb-20">
-            <div className="lg:w-1/2 lg:pr-8 mb-6 lg:mb-0">
-              <img src={image1} alt="people-image" className="w-full h-auto rounded-lg shadow-md" />
+        <section className="absolute inset-0 mx-auto">
+          <header className="mx-auto text-center sm:w-full sm:px-1 md:px-[1em] lg:mt-[9em] lg:w-[65%]">
+            <h1 className="text-[1.5em] font-semibold sm:text-[1.5em] lg:text-[2.5em]">
+              Our Story
+            </h1>
+            <p className="px-4 text-xs tracking-wide sm:px-0 sm:text-sm">
+              A Tech-driven worker owned Cooperative, Built for a better future. 
+            </p>
+          </header>
+          <div className="m-auto mt-8 flex flex-col px-4 sm:mt-0 sm:px-2 lg:mt-[3em] lg:w-[87%] lg:gap-8 lg:text-start">
+            <div className="flex flex-col lg:mt-[7em] lg:flex-row">
+              <div className="hidden lg:block lg:w-1/2">
+                <img src={image1} alt="people-image" className="w-full h-auto" />
+              </div>
+              <div className="mx-auto mt-[1.5em] lg:text-start text-center tracking-wide lg:mt-[3em] lg:w-1/2">
+                <p className="text-sm sm:text-base">
+                  Chain is nigeria first digital membership cooperative, leveraging blockchain to offer safe, guanteed returns through 
+                  ethical investment. As a worker-owned co-op, we are reshaping the future of work and investment
+                </p>
+              </div>
             </div>
-            <div className="lg:w-1/2 lg:pl-8 text-center lg:text-left">
-              <p className="text-sm sm:text-base lg:text-lg">
-                Chain is Nigeria's first digital membership cooperative, leveraging blockchain to offer safe, guaranteed returns through 
-                ethical investment. As a worker-owned co-op, we are reshaping the future of work and investment.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-col lg:flex-row items-center">
-            <div className="lg:w-1/2 lg:pr-8 order-2 lg:order-1">
-              <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 text-center lg:text-left">
-                Join Our Tech-Driven Cooperative
-              </h2>
-              <p className="mb-6 text-sm sm:text-base lg:text-lg text-center lg:text-left">
-                A one-time 100k membership access grants you exclusive investment rounds and the power to vote 
-                on cooperative decisions that impact your future.
-              </p>
-              <div className="space-y-4">
-                {["Legally Guaranteed Returns", "Access Exclusive Investment Rounds", "Expand Your Network", "Vote and Engage with Chain Coop Network"].map((item, index) => (
-                  <p key={index} className="flex items-center text-sm sm:text-base">
-                    <img src={mark} alt="checkmark" className="h-4 w-4 mr-3" />
-                    {item}
+            <div className="z-[0px] mt-8 flex flex-col-reverse sm:mt-0 lg:z-[10px] lg:mt-[-170px] lg:flex-row">
+              <div className="mt-6 lg:ml-[2em] lg:mt-[12em] lg:w-[50%] flex flex-col items-center lg:items-start">
+                <h1 className="text-2xl font-bold sm:text-lg text-center lg:text-left w-full lg:w-[60%]">
+                  Join Our Tech-Driven Cooperative
+                </h1>
+                <p className="mt-[1em] text-center text-xs sm:text-sm lg:text-start w-full lg:w-[55%]">
+                  A one time 100k membership access grants you access to exclusive investment rounds, the power to vote 
+                  on cooperative decisions that inpact your future 
+                </p>
+                <div className="mt-[1em] flex flex-col gap-2 font-medium lg:gap-7 w-full">
+                  <p className="flex items-center gap-3 text-sm">
+                    <img src={mark} alt="svg-image" className="h-4 w-4" />{" "}
+                    Legally Guaranteed Returns
                   </p>
-                ))}
+                  <p className="flex items-center gap-2 text-sm">
+                    <img src={mark} alt="svg-image" className="h-4 w-4" />{" "}
+                    Access Exclusive Investment Rounds
+                  </p>
+                  <p className="flex items-center gap-3 text-sm">
+                    <img src={mark} alt="svg-image" className="h-4 w-4" />{" "}
+                    Expand Your Network
+                  </p>
+                  <p className="flex items-center gap-3 text-sm">
+                    <img src={mark} alt="svg-image" className="h-4 w-4" /> Vote
+                    and Engage with Chain Coop Network
+                  </p>
+                </div>
               </div>
-            </div>
-            <div className="lg:w-1/2 lg:pl-8 mb-6 lg:mb-0 order-1 lg:order-2">
-              <img src={image2} alt="people-image" className="w-full h-auto rounded-lg shadow-md" />
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-gray-100 py-12 sm:py-16 lg:py-20">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid gap-8 md:grid-cols-2">
-              <div className="bg-white rounded-lg shadow-md p-8">
-                <h2 className="text-xl sm:text-2xl font-semibold mb-4">Our Mission</h2>
-                <p className="text-sm sm:text-base mb-4">
-                  Chain Co-op aims to create a community where tech Workers can participate in business 
-                  ownership, make sustainable investment and drive collective success. 
-                </p>
-                <p className="text-sm sm:text-base">
-                  We envision a future where cooperative governance leads innovation.
-                </p>
-              </div>
-              <div className="bg-white rounded-lg shadow-md p-8">
-                <h2 className="text-xl sm:text-2xl font-semibold mb-4">Our Goals</h2>
-                <p className="text-sm sm:text-base">
-                  Ownership innovation and inclusion: As a worker-owned co-op, we foster innovation through 
-                  collaboration, prioritize democratic decision-making, and promote inclusivity in all business dealings.  
-                </p>
+              <div className="hidden lg:block lg:w-1/2">
+                <img src={image2} alt="people-image" className="w-full h-auto" />
               </div>
             </div>
           </div>
+        </section>
+        <div className="mx-auto flex lg:w-[87%] flex-col justify-between gap-[2em] px-4 sm:mt-[11em] lg:mt-[2em] lg:flex-row">
+          <div className="h-full rounded-lg bg-text2 px-[1em] py-[8em] text-text3 shadow-md sm:px-[2em] sm:py-[3em] lg:h-[300px]">
+            <h1 className="text-xl font-semibold sm:text-2xl">Our Mission</h1>
+            <p className="mt-4 text-sm sm:text-base">
+              Chain Co-op aims to create a community where tech Workers can participate in business 
+              ownership, make sustainable investment and drive collective success. 
+            </p>
+            <p className="mt-4 text-sm sm:text-base">
+              We envision a future where cooperative governance leads innovation.
+            </p>
+          </div>
+          <div className="mb-[2em] h-full rounded-lg px-[1em] py-[8em] shadow-md sm:px-[2em] sm:py-[3em] lg:mt-[5em] lg:h-[300px]">
+            <h1 className="text-xl font-semibold sm:text-2xl">Our Goals</h1>
+            <p className="mt-4 text-sm sm:text-base">
+              Ownership innovation: and inclusion: As a worker-owned co-op, we foster innovation through 
+              collaboration, prioritize democratic decision-making, and promote inclusivity in all business dealings.  
+            </p>
+          </div>
         </div>
-
         <Footer />
       </main>
     </>
