@@ -19,7 +19,7 @@ const Membership = () => {
       <Card />
       <Revolution />
       <How />
-      <AppStore />
+      {/* <AppStore /> */}
      </div>
       <Footer />
     </>

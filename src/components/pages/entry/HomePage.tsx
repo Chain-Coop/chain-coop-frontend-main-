@@ -24,7 +24,7 @@ const HomePage = () => {
         <Meet />
         <Explore />
         <How />
-        <AppStore />
+        {/* <AppStore /> */}
         <Footer />
       </div>
     </>

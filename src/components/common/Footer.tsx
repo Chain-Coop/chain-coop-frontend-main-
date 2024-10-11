@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { company, Contacts, Explore, Legal } from "../../data/Data";
+import { company, Contacts, Explore } from "../../data/Data";
 import X from "../../Assets/png/home/twitterx.png";
 import instagram from "../../Assets/png/home/instagram.png";
 import facebook from "../../Assets/png/home/facebook.png";
@@ -10,7 +10,7 @@ import { Primary } from "./Button";
 const Footer = () => {
   return (
     <footer>
-    <div className="relative z-10 mx-auto flex items-center justify-center w-full rounded-2xl bg-[#CCA3BC] font-sans p-4 sm:py-3 lg:p-8 sm:mb-[-70px] sm:mt-[2em] lg:mb-[-100px] lg:w-[90%]">
+    {/* <div className="relative z-10 mx-auto flex items-center justify-center w-full rounded-2xl bg-[#CCA3BC] font-sans p-4 sm:py-3 lg:p-8 sm:mb-[-70px] sm:mt-[2em] lg:mb-[-100px] lg:w-[90%]">
   <div className="text-center w-full">
     <h1 className="text-sm font-semibold mb-1 lg:text-2xl">
       Stay Ahead with Chain Co-op
@@ -30,7 +30,7 @@ const Footer = () => {
       </Primary>
     </div> 
   </div>
-</div>
+</div> */}
 
     <div className="w-full bg-text2  font-sans">
     <div className="mx-auto lg:w-[90%] px-[1em] pt-[120px] lg:pt-[190px] lg:pb-[10px]">
