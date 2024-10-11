@@ -72,14 +72,14 @@ const NavBar = () => {
               </Link>
             ))}
             <div className="block font-bold lg:hidden">
-              <LoginButton className="bg-primary" onClick={handleLoginClick}>
+              <LoginButton className="bg-primary  cursor-not-allowed" onClick={handleLoginClick}>
                 Login
               </LoginButton>
             </div>
           </ModalBody>
         </Modal>
         <div className="hidden lg:block">
-          <LoginButton className="bg-primary" onClick={handleLoginClick}>
+          <LoginButton className="bg-primary cursor-not-allowed">
             Login
           </LoginButton>
         </div>

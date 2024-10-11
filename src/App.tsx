@@ -4,15 +4,15 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-d
 import HomePage from "./components/pages/entry/HomePage";
 // import OurStory from "./components/pages/entry/OurStory";
 import Membership from "./components/pages/entry/Membership";
-import ForgetPassword from "./components/pages/auth/ForgetPassword";
-import CreateAccount from "./components/pages/auth/CreateAccount";
-import UserLoginOtp from "./components/pages/auth/UserLoginOtp";
+// import ForgetPassword from "./components/pages/auth/ForgetPassword";
+// import CreateAccount from "./components/pages/auth/CreateAccount";
+// import UserLoginOtp from "./components/pages/auth/UserLoginOtp";
 import VerificationSuccessfull from "./components/pages/auth/VerificationSuccessfull";
 import PaaswordRessetSuccessfull from "./components/pages/auth/PaaswordRessetSuccessfull";
 import Contact from "./components/pages/entry/Contact";
-import ResetPassword from "./components/pages/auth/ResetPassword";
-import NewPassword from "./components/pages/auth/NewPassword";
-import UserLogin from "./components/pages/auth/UserLogin";
+// import ResetPassword from "./components/pages/auth/ResetPassword";
+// import NewPassword from "./components/pages/auth/NewPassword";
+// import UserLogin from "./components/pages/auth/UserLogin";
 import Dashboard from "./components/dashboard/sidebar/Dashboard";
 import NotFound from "./components/pages/NotFound";
 import Team from "./components/pages/footer/team/Team";
@@ -33,12 +33,12 @@ function App() {
         <Route path="/our-story" element={<Story />} />
         <Route path="/membership" element={<Membership />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/login" element={<UserLogin />} />
-        <Route path="/sign-up" element={<CreateAccount />} />
-        <Route path="/forget-password" element={<ForgetPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/new-password" element={<NewPassword />} />
-        <Route path="/account-otp" element={<UserLoginOtp />} />
+        {/* <Route path="/login" element={<UserLogin />} /> */}
+        {/* <Route path="/sign-up" element={<CreateAccount />} /> */}
+        {/* <Route path="/forget-password" element={<ForgetPassword />} /> */}
+        {/* <Route path="/reset-password" element={<ResetPassword />} /> */}
+        {/* <Route path="/new-password" element={<NewPassword />} /> */}
+        {/* <Route path="/account-otp" element={<UserLoginOtp />} /> */}
         <Route path="/membershipType" element={<MembershipType />} />
 
         <Route

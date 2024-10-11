@@ -2,9 +2,9 @@ import lagosStateLogo from "../Assets/jpg/home/lagos-state.jpg"
 import ministryOfCommerce from "../Assets/jpg/home/ministry-work.jpg"
 import synWave from "../Assets/jpg/home/syn-wave.jpg"
 import google from "../Assets/jpg/home/google.jpg"
-import person1 from "../Assets/jpg/home/person1.jpg";
-import person2 from "../Assets/jpg/home/person2.jpg";
-import person3 from "../Assets/jpg/home/person3.jpg";
+import person1 from "../Assets/png/home/Co-op-PX1.png";
+import person2 from "../Assets/png/home/Co-op-PX2.png";
+import person3 from "../Assets/png/home/Co-op-PX3.png";
 import wallet from "../Assets/svg/dashboard/wallet.svg";
 import home from "../Assets/svg/dashboard/home.svg";
 import contribution from "../Assets/svg/dashboard/contribution.svg";
