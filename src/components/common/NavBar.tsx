@@ -72,7 +72,7 @@ const NavBar = () => {
               </Link>
             ))}
             <div className="block font-bold lg:hidden">
-              <LoginButton className="bg-primary  cursor-not-allowed" onClick={handleLoginClick}>
+              <LoginButton className="bg-primary  cursor-not-allowed">
                 Login
               </LoginButton>
             </div>
