@@ -71,18 +71,18 @@ const NavBar = () => {
                 {item.text}
               </Link>
             ))}
-            <div className="block font-bold lg:hidden">
+            {/* <div className="block font-bold lg:hidden">
               <LoginButton className="bg-primary  cursor-not-allowed">
                 Login
               </LoginButton>
-            </div>
+            </div> */}
           </ModalBody>
         </Modal>
-        <div className="hidden lg:block">
+        {/* <div className="hidden lg:block">
           <LoginButton className="bg-primary cursor-not-allowed">
             Login
           </LoginButton>
-        </div>
+        </div> */}
       </div>
     </nav>
   );

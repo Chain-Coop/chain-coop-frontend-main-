@@ -14,7 +14,7 @@ const Membership = () => {
   return (
     <>
       <NavBar />
-      <div className="sm:mt-[1em] lg:w-[86%] lg:mt-[6em] flex-col flex mx-auto">
+      <div className="sm:mt-[1em] lg:w-[86%] w-full px-1 lg:mt-[6em] flex-col flex mx-auto">
       <Join />
       <Card />
       <Revolution />
