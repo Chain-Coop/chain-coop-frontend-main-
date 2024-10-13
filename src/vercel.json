@@ -1,4 +1,7 @@
 {
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
   "headers": [
     {
       "source": "/(.*).(jpg|jpeg|png|gif|ico|svg)$",
@@ -8,12 +11,6 @@
           "value": "public, max-age=2592000"
         }
       ]
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/(.*)",  
-      "destination": "/"   
     }
   ]
 }
