@@ -17,8 +17,8 @@ const Footer = () => {
   const dispatch: AppDispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
-   
-  const joinNews = (e: any) => {  
+  const joinNews = (e: any) => {
+    if (!email) return;
     setLoading(true);
     let body = {
       email: email,
@@ -27,10 +27,10 @@ const Footer = () => {
     dispatch(JoinNewsLetter(body))
       .unwrap()
       .then((response:any) => {
-        console.log("rrr",response)
         setLoading(false);
-        if (response.status === 201) {
-          toast.success(response.data.msg)
+        if (response?.status === 201) {
+          toast.success(response?.data?.msg)
+          setEmail("")
         } 
       })
       .catch((error: any) => {
@@ -52,14 +52,16 @@ const Footer = () => {
           Subscribe to the latest tech in tech-driven cooperative innovations and
           investment opportunities.
         </h1>
-        <div className="flex sm:flex-col lg:flex-row items-center justify-center gap-4 w-full lg:max-w-[60%] mx-auto">
+        <form onSubmit={joinNews} className="flex sm:flex-col lg:flex-row items-center justify-center gap-4 w-full lg:max-w-[60%] mx-auto">
           <input
             type="email"
             className="w-full rounded-md border border-gray-300 p-2 lg:p-4 focus:border-primary focus:outline-none"
             placeholder="Enter your e-mail"
+            value={email}
+            required
             onChange={(e) => setEmail(e.target.value)}
           />
-          <Primary onClick={joinNews} className="lg:w-[30%] sm:w-[50%] flex text-center justify-center rounded-md bg-text2 px-4 py-2 text-lg text-text5 lg:text-xl">
+          <button type="submit" className="lg:w-[30%] sm:w-[50%] flex text-center justify-center rounded-md bg-text2 px-4 py-2 text-lg text-text5 lg:text-xl">
           {loading ? (
               <ReactLoading
                 color="#FFFFFF"
@@ -70,8 +72,8 @@ const Footer = () => {
             ) : (
               "Join Now"
             )}
-          </Primary>
-        </div> 
+          </button>
+        </form> 
       </div>
       </div> 
 
