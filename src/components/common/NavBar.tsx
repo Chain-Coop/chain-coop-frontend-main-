@@ -22,7 +22,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="relative left-0 top-0 flex h-[75px] w-full items-center border-b border-text5 bg-white font-sans">
+    <nav className="relative  left-0 top-0 flex h-[75px] w-full items-center border-b border-text5 bg-white font-sans">
       <div className="mx-auto flex w-[92%] items-center justify-between">
         <Link to="/">
           <img src={logo} className="w-[9em]" alt="Chain Co-op Logo" />
@@ -53,30 +53,31 @@ const NavBar = () => {
           toggle={toggleModal}
           fullscreen
         >
-          <ModalBody className="flex h-screen w-screen flex-col items-center justify-center bg-white p-7 text-center">
-            <div className="absolute right-8 top-12">
-              <AiOutlineClose
-                onClick={toggleModal}
-                className="text-text cursor-pointer"
-                size={40}
-              />
-            </div>
-            {navBarLinks.map((item, index) => (
+        <ModalBody className="flex h-screen w-screen flex-col items-center justify-center bg-white p-7 text-center">
+          <div className="absolute right-8 top-12">
+            <AiOutlineClose
+              onClick={toggleModal}
+              className="text-text cursor-pointer"
+              size={40}
+            />
+          </div>
+          {navBarLinks.map((item, index) => {
+            const isActive = location.pathname === item.to; 
+            return (
               <Link
                 key={index}
-                className="mb-4 cursor-pointer font-sans text-xl font-bold text-text4"
+                className={`mb-4 cursor-pointer font-sans text-xl ${
+                  isActive ? "font-bold text-text2" : "font-medium text-text4"
+                }`}
                 to={item.to}
                 onClick={toggleModal}
               >
                 {item.text}
               </Link>
-            ))}
-            {/* <div className="block font-bold lg:hidden">
-              <LoginButton className="bg-primary  cursor-not-allowed">
-                Login
-              </LoginButton>
-            </div> */}
-          </ModalBody>
+            );
+          })}
+        </ModalBody>
+
         </Modal>
         {/* <div className="hidden lg:block">
           <LoginButton className="bg-primary cursor-not-allowed">
@@ -102,3 +103,30 @@ const NavLink = ({ to, children, isActive }: any) => {
 };
 
 export default NavBar;
+
+
+
+  {/* <ModalBody className="flex h-screen w-screen flex-col items-center justify-center bg-white p-7 text-center">
+            <div className="absolute right-8 top-12">
+              <AiOutlineClose
+                onClick={toggleModal}
+                className="text-text cursor-pointer"
+                size={40}
+              />
+            </div>
+            {navBarLinks.map((item, index) => (
+              <Link
+                key={index}
+                className="mb-4 cursor-pointer font-sans text-xl font-bold text-text4"
+                to={item.to}
+                onClick={toggleModal}
+              >
+                {item.text}
+              </Link>
+            ))}
+            {/* <div className="block font-bold lg:hidden">
+              <LoginButton className="bg-primary  cursor-not-allowed">
+                Login
+              </LoginButton>
+            </div> */}
+            // </ModalBody>
