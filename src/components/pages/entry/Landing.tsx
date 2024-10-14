@@ -6,7 +6,7 @@ import NavBar from "../../common/NavBar";
 import lady from "../../../Assets/png/home/lady.png";
 import rectangle from "../../../Assets/png/home/who-lady.png";
 import innovation from "../../../Assets/png/home/innovation.png";
-import group from "../../../Assets/png/home/group.png";
+import kyc from "../../../Assets/png/home/Co-op-PX4.png";
 import Footer from "../../common/Footer";
 import { earlyMemberCircleText } from "../../../data/Data";
 
@@ -155,7 +155,7 @@ return (
             </div>
             <div className="mt-4 lg:mt-0">
               <img
-                src={group}
+                src={kyc}
                 alt="group"
                 className="h-auto w-full lg:h-[300px] lg:w-[400px] object-cover"
               />
