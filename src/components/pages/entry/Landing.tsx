@@ -157,7 +157,7 @@ return (
               <img
                 src={kyc}
                 alt="group"
-                className="h-auto w-full lg:h-[300px] lg:w-[400px] object-cover"
+                className="h-auto w-full lg:h-[] lg:w-[400px] object-cover"
               />
             </div>
           </div>
