@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { company, Contacts, Explore } from "../../data/Data";
 import X from "../../Assets/png/home/twitterx.png";
@@ -6,31 +6,74 @@ import instagram from "../../Assets/png/home/instagram.png";
 import facebook from "../../Assets/png/home/facebook.png";
 import linkedin from "../../Assets/png/home/linkedin.png";
 import { Primary } from "./Button";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../shared/redux/store";
+import { toast } from "react-toastify";
+import { JoinNewsLetter } from "../../shared/redux/slices/landing.slices";
+import ReactLoading from "react-loading";
 
 const Footer = () => {
+  const [email, setEmail] = useState("");
+  const dispatch: AppDispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+
+   
+  const joinNews = (e: any) => {  
+    setLoading(true);
+    let body = {
+      email: email,
+    };
+  
+    dispatch(JoinNewsLetter(body))
+      .unwrap()
+      .then((response:any) => {
+        console.log("rrr",response)
+        setLoading(false);
+        if (response.status === 201) {
+          toast.success(response.data.msg)
+        } 
+      })
+      .catch((error: any) => {
+        setLoading(false);
+        const errorMessage = error;
+        toast.error(errorMessage);
+      });
+  };
+  
+
   return (
     <footer>
-    {/* <div className="relative z-10 mx-auto flex items-center justify-center w-full rounded-2xl bg-[#CCA3BC] font-sans p-4 sm:py-3 lg:p-8 sm:mb-[-70px] sm:mt-[2em] lg:mb-[-100px] lg:w-[90%]">
-  <div className="text-center w-full">
-    <h1 className="text-sm font-semibold mb-1 lg:text-2xl">
-      Stay Ahead with Chain Co-op
-    </h1>
-    <h1 className="text-sm mb-4 w-full font-semibold sm:px-4 lg:w-[73%] m-auto lg:text-2xl">
-      Subscribe to the latest tech in tech-driven cooperative innovations and
-      investment opportunities.
-    </h1>
-    <div className="flex sm:flex-col lg:flex-row items-center justify-center gap-4 w-full lg:max-w-[60%] mx-auto">
-      <input
-        type="text"
-        className="w-full rounded-md border border-gray-300 p-2 lg:p-4 focus:border-primary focus:outline-none"
-        placeholder="Enter your e-mail"
-      />
-      <Primary className="lg:w-[30%] sm:w-[50%] rounded-md bg-text2 px-4 py-2 text-lg text-text5 lg:text-xl">
-        Join Now
-      </Primary>
-    </div> 
-  </div>
-</div> */}
+     <div className="relative z-10 mx-auto flex items-center justify-center w-full rounded-2xl bg-[#CCA3BC] font-sans p-4 sm:py-3 lg:p-8 sm:mb-[-70px] sm:mt-[2em] lg:mb-[-100px] lg:w-[90%]">
+      <div className="text-center w-full">
+        <h1 className="text-sm font-semibold mb-1 lg:text-2xl">
+          Stay Ahead with Chain Co-op
+        </h1>
+        <h1 className="text-sm mb-4 w-full font-semibold sm:px-4 lg:w-[73%] m-auto lg:text-2xl">
+          Subscribe to the latest tech in tech-driven cooperative innovations and
+          investment opportunities.
+        </h1>
+        <div className="flex sm:flex-col lg:flex-row items-center justify-center gap-4 w-full lg:max-w-[60%] mx-auto">
+          <input
+            type="email"
+            className="w-full rounded-md border border-gray-300 p-2 lg:p-4 focus:border-primary focus:outline-none"
+            placeholder="Enter your e-mail"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Primary onClick={joinNews} className="lg:w-[30%] sm:w-[50%] flex text-center justify-center rounded-md bg-text2 px-4 py-2 text-lg text-text5 lg:text-xl">
+          {loading ? (
+              <ReactLoading
+                color="#FFFFFF"
+                width={25}
+                height={25}
+                type="spin"
+              />
+            ) : (
+              "Join Now"
+            )}
+          </Primary>
+        </div> 
+      </div>
+      </div> 
 
     <div className="w-full bg-text2  font-sans">
     <div className="mx-auto lg:w-[90%] px-[1em] pt-[120px] lg:pt-[190px] lg:pb-[10px]">

@@ -32,6 +32,22 @@ export const LoginUser = createAsyncThunk(
   },
 );
 
+export const JoinNewsLetter = createAsyncThunk(
+  "landing/joinNewsLetter",
+  async (body: any, thunkAPI) => {
+    try {
+      const response = await LandingServices.JoinNewsLetter(body);
+      console.log("rrr",response)
+      return response ;
+    } catch (error: any) {
+      const message = error.msg;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
+
 export const VerifyUserAuth = createAsyncThunk(
   "landing/verifyauth",
   async (body: any, thunkAPI) => {
@@ -91,6 +107,7 @@ export const uploadAvatar = createAsyncThunk(
 const initialState = {
   getUserRegistered: null,
   getloginUser: null,
+  newsLetter: null,
   getResetOtp: null,
   getPublicContact: null,
   getUserPin: null,
@@ -139,6 +156,12 @@ export const landingSlice = createSlice({
     });
     builder.addCase(uploadAvatar.fulfilled, (state, action) => {
       state.avatarUrl = action.payload.data.publicURL;
+    });
+    builder.addCase(JoinNewsLetter.fulfilled, (state:any, action) => {
+      state.newsLetter = action.payload;
+    });
+    builder.addCase(JoinNewsLetter.rejected, (state) => {
+      state.newsLetter = null;
     });
   },
 });

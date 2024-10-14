@@ -5,6 +5,10 @@ import React from "react";
 const API_URL_REGISTER_USER =
   import.meta.env.VITE_REACT_APP_API_URL + "/auth/register";
 
+  const API_URL_NEWS_LETTER =
+  import.meta.env.VITE_REACT_APP_API_URL + "/news-letter/join";
+
+
 const API_URL_LOGIN_USER =
   import.meta.env.VITE_REACT_APP_API_URL + "/auth/login";
 
@@ -44,6 +48,20 @@ const LoginUser = async (body: any) => {
   }
 };
 
+
+const JoinNewsLetter = async (body: any) => {
+  try {
+    const response = await axios.post(API_URL_NEWS_LETTER, body, {});
+    console.log("res",response)
+    return response;
+  } catch (error: any) {
+    if (error.response && error.response.data) {
+      throw error.response.data;
+    } else {
+      throw new Error("Network Error: Please check your internet connection.");
+    }
+  }
+};
 
 const VerifyUserAuth = async (body: any) => {
   try {
@@ -144,6 +162,7 @@ const LandingServices = {
   PublicContact,
   GetUserProfile,
   UploadAvatar,
+  JoinNewsLetter
 };
 
 export default LandingServices;
