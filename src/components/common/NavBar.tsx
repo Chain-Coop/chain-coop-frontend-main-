@@ -76,6 +76,11 @@ const NavBar = () => {
               </Link>
             );
           })}
+             {/* <div className="block font-bold lg:hidden">
+            //   <LoginButton className="bg-primary  cursor-not-allowed">
+            //     Login
+            //   </LoginButton>
+            // </div> */}
         </ModalBody>
 
         </Modal>
@@ -103,30 +108,3 @@ const NavLink = ({ to, children, isActive }: any) => {
 };
 
 export default NavBar;
-
-
-
-  {/* <ModalBody className="flex h-screen w-screen flex-col items-center justify-center bg-white p-7 text-center">
-            <div className="absolute right-8 top-12">
-              <AiOutlineClose
-                onClick={toggleModal}
-                className="text-text cursor-pointer"
-                size={40}
-              />
-            </div>
-            {navBarLinks.map((item, index) => (
-              <Link
-                key={index}
-                className="mb-4 cursor-pointer font-sans text-xl font-bold text-text4"
-                to={item.to}
-                onClick={toggleModal}
-              >
-                {item.text}
-              </Link>
-            ))}
-            {/* <div className="block font-bold lg:hidden">
-              <LoginButton className="bg-primary  cursor-not-allowed">
-                Login
-              </LoginButton>
-            </div> */}
-            // </ModalBody>
