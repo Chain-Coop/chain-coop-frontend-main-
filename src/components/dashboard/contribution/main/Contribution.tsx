@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import ToggleButton from "../../../../shared/utils/ToggleButton";
 import { DashboardHeader } from "../../../common/DashboardHeader";
@@ -8,7 +7,6 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import { MdArrowOutward } from "react-icons/md";
-import { IoIosArrowForward } from "react-icons/io";
 import { format } from 'date-fns';
 import { useContributionBalance } from "../../../../shared/Hooks/useBalance";
 import { useUserContributionHisory } from "../../../../shared/Hooks/useUserProfile";
@@ -21,6 +19,7 @@ const Contribution = () => {
   });
   
   const { getContributions } = useUserContributionHisory();
+  console.log("getCont",getContributions)
   const navigate = useNavigate();
 
   const ContributionTracker = () => {
@@ -31,18 +30,18 @@ const Contribution = () => {
 
     const steps = [
       {
-        date: new Date(startDate),
+        date: startDate ? new Date(startDate) : new Date(),
         amount,
         status: 'Completed'
       },
       {
-        date: new Date(nextContributionDate),
+        date: nextContributionDate ? new Date(nextContributionDate) : new Date(),
         amount,
         status: 'In Progress'
       }
     ];
 
-    const getStatusStyle = (status:any) => {
+    const getStatusStyle = (status: string) => {
       switch (status) {
         case 'Completed':
           return 'bg-green-500 text-white';
@@ -53,18 +52,29 @@ const Contribution = () => {
       }
     };
 
+    const formatSafeDate = (date: Date) => {
+      try {
+        return format(date, "EEEE: dd/MM/yyyy");
+      } catch {
+        return "Date unavailable";
+      }
+    };
+
     return (
       <section className="mt-[1em] font-sans">
         <div className="flex justify-between mb-4 whitespace-nowrap">
-          <p className="text-lg font-semibold">Daily Contribution</p>
-          <p className="text-lg font-semibold">Status</p>
+          <p className="text-lg font-bold">{getContributions[0]?.contributionPlan} Contribution Tracker</p>
         </div>
         <div>
           <p className="mt-[1em] text-sm">
             Effortlessly manage and monitor your financial commitments
           </p>
         </div>
-        <Box sx={{ maxWidth: "100%", marginTop: "1em" }}>
+        <div className="flex mt-[1em] font-semibold justify-between">
+          <p>{getContributions[0]?.contributionPlan} </p>
+          <p>Status</p>
+        </div>
+        <Box sx={{ maxWidth: "100%", marginTop: "1.5em" }}>
           <Stepper orientation="vertical">
             {steps.map((step, index) => (
               <Step key={index} active={true}>
@@ -84,7 +94,7 @@ const Contribution = () => {
                         Cash Transfer from Co-op wallet
                       </p>
                       <p className={`font-semibold whitespace-nowrap ${index === 1 ? 'text-gray-400' : ''}`}>
-                        {format(step.date, "EEEE: dd/MM/yyyy")}
+                        {formatSafeDate(step.date)}
                       </p>
                       <p className={`font-semibold whitespace-nowrap ${index === 1 ? 'text-gray-400' : ''}`}>
                         Amount: <span className={index === 1 ? 'text-gray-400' : 'text-act'}>
@@ -93,7 +103,7 @@ const Contribution = () => {
                       </p>
                     </div>
                     <div className="sm:ml-2 self-start sm:self-center">
-                      <div className={`px-3 py-1 rounded-full text-sm whitespace-nowrap ${getStatusStyle(step.status)}`}>
+                      <div className={`px-5 py-1 rounded-full text-sm whitespace-nowrap ${getStatusStyle(step.status)}`}>
                         {step.status}
                       </div>
                     </div>
@@ -115,7 +125,7 @@ const Contribution = () => {
     <main className="font-sans pb-[1.5em]">
       <header className="sm:mt-[0] lg:mt-[2em]">
         <DashboardHeader className="flex items-center justify-center">
-         Contribution Plan
+          Contribution Plan
         </DashboardHeader>
       </header>
       <section className="mt-[2em] sm:px-[1.5em] lg:mx-auto lg:w-[33em] lg:px-[0]">
@@ -167,14 +177,8 @@ const Contribution = () => {
               </div>
             </div>
             <hr className="mt-[2em] w-full" />
-            <div className="auto-deduction mt-[1em] flex justify-between">
-              <p className="sm:font-semibold lg:text-sm lg:font-medium">
-                Auto-Deduction from Wallet
-              </p>
-            </div>
           </section>
         </article>
-        
         <ContributionTracker />
       </section>
     </main>

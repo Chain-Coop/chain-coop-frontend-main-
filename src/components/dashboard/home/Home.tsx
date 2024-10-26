@@ -3,16 +3,16 @@ import { useNavigate } from "react-router";
 import useUserProfile from "../../../shared/Hooks/useUserProfile";
 import { ComingSoon } from "../../common/Button";
 import {
-  MdOutlineVisibilityOff,
-  MdOutlineVisibility,
   MdArrowOutward,
 } from "react-icons/md";
 import { IoIosNotifications } from "react-icons/io";
-import plus from "../../../Assets/png/home/plus.png";
+import useWalletBalance from "../../../shared/Hooks/useBalance";
+import ToggleButton from "../../../shared/utils/ToggleButton";
 
 
 const Home = () => {
-  const [balanceVisible, setBalanceVisible] = useState(true);
+  const { isWalletVisible, setIsWalletVisible, formattedBalance } =
+  useWalletBalance();
   const { profileDetails } = useUserProfile();
   
   const navigate = useNavigate();
@@ -21,9 +21,6 @@ const Home = () => {
     navigate("/dashboard/wallet");
   };
 
-  const toggleVisibility = () => {
-    setBalanceVisible((prev) => !prev);
-  };
 
   return (
     <main className="mx-auto mb-[2em] px-[2em] font-sans">
@@ -40,37 +37,39 @@ const Home = () => {
       </header>
       
       <section className="text-center text-text4">
-        <article className="mt-[2em] rounded-3xl py-[2em] shadow-lg sm:px-[2em]">
-          <div className="flex items-center justify-center gap-4">
-            <p>Total Balance</p>
-            <div>
-              <button
-                className="bg-inherit sm:ml-[2px] lg:ml-[3px]"
-                onClick={toggleVisibility}
-              >
-                {balanceVisible ? (
-                  <MdOutlineVisibilityOff />
+            <div className="mx-auto mt-[2em] rounded-3xl py-[2em] shadow-md">
+              <div className="flex justify-center gap-4 font-sans">
+                <p className="font-medium">Total Balance</p>
+                <div>
+                  <ToggleButton
+                    isVisible={isWalletVisible}
+                    onToggle={(newVisibility) => {
+                      setIsWalletVisible(newVisibility);
+                      sessionStorage.setItem(
+                        "walletBalanceVisible",
+                        newVisibility.toString(),
+                      );
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="mx-auto mt-[1.5em] w-[15em] rounded-md">
+                {isWalletVisible ? (
+                  <p className="font-bold sm:text-xl lg:text-xl">
+                    {formattedBalance}
+                  </p>
                 ) : (
-                  <MdOutlineVisibility />
+                  <p className="text-2xl font-bold">*********</p>
                 )}
-              </button>
+                <hr className="mt-[1em] h-[1px] rounded-md bg-howtext font-normal" />
+              </div>
+              <div className="mt-[1em] flex justify-center gap-2">
+                <span>Total Gains</span>
+                <MdArrowOutward className="fill-act" />
+                <span className="font-semibold text-act">0%</span>
+              </div>
             </div>
-          </div>
-          <div className="mx-auto mt-[1.5em] rounded-md lg:w-[15em]">
-            {balanceVisible ? (
-              <p className="font-bold sm:text-xl lg:text-2xl">N 500,000.00</p>
-            ) : (
-              <p className="text-2xl font-bold">*********</p>
-            )}
-            <hr className="mt-[1em] h-[1px] rounded-md bg-howtext" />
-          </div>
-          <div className="mt-[1em] flex justify-center gap-2">
-            <span>Total Gains</span>
-            <MdArrowOutward className="fill-act" />
-            <span className="font-semibold text-act">0%</span>
-          </div>
-        </article>
-      </section>
+          </section>
 
       <div>
         <button
