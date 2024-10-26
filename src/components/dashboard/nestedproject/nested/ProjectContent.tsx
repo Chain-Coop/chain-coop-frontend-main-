@@ -16,7 +16,7 @@ const ProjectContent = () => {
       return <SkeletonLoader />;
     }
 
-    if (!useProjects || useProjects.length === 0) {
+    if (!useProjects || useProjects?.length === 0) {
       return <NoProjectsFound />;
     }
 

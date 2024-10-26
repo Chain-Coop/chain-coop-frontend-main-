@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { IoIosArrowDropleft } from "react-icons/io";
 import { DashboardHeader } from "../../../common/DashboardHeader";
-import { Alert } from '@mui/material';
+import { Alert, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import Modal from '../../../common/Modal';
-import OTPInput from 'react-otp-input';
 import { Primary } from '../../../common/Button';
 import ReactLoading from "react-loading";
 import { CreateContributionPlan } from '../../../../shared/redux/slices/transaction.slices';
@@ -12,14 +11,12 @@ import { AppDispatch } from '../../../../shared/redux/store';
 import { useDispatch } from 'react-redux';
 import success from "../../../../Assets/svg/auth/sucess.svg";
 
-
 const StartDate: React.FC = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [pin, setPin] = useState("");
+  const [availableEndDates, setAvailableEndDates] = useState<string[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -28,15 +25,50 @@ const StartDate: React.FC = () => {
 
   const { purpose, plan, amount } = location.state || {};
 
+  const formatDate = (date: Date): string => {
+    return date.toISOString()?.split('T')[0];
+  };
+
+  const calculateAvailableEndDates = (startDateStr: string) => {
+    if (!startDateStr) return [];
+    
+    const dates: string[] = [];
+    const startDate = new Date(startDateStr);
+    
+    for (let i = 1; i <= 12; i++) {
+      const endDate = new Date(startDate);
+      endDate.setMonth(startDate.getMonth() + i);
+      
+      if (startDate?.getDate() !== endDate?.getDate()) {
+        endDate?.setDate(0); 
+      }
+      
+      dates.push(formatDate(endDate));
+    }
+    
+    return dates;
+  };
+
   useEffect(() => {
-    const today = new Date().toISOString().split('T')[0];
+    const today = formatDate(new Date());
     document.getElementById('startDate')?.setAttribute('min', today);
-    document.getElementById('endDate')?.setAttribute('min', today);
   }, []);
 
-  const handlePinChange = (pinValue: string) => {
-    const numericValue = pinValue.replace(/[^0-9]/g, '');
-    setPin(numericValue);
+  useEffect(() => {
+    if (startDate) {
+      const dates = calculateAvailableEndDates(startDate);
+      setAvailableEndDates(dates);
+      setEndDate("");
+    }
+  }, [startDate]);
+
+  const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newStartDate = e.target.value;
+    setStartDate(newStartDate);
+  };
+
+  const handleEndDateChange = (event: any) => {
+    setEndDate(event.target.value as string);
   };
 
   const handleSubmit = async (e: React.MouseEvent) => {
@@ -44,8 +76,14 @@ const StartDate: React.FC = () => {
     setLoading(true);
     setError("");
   
-    if (!startDate || !endDate || pin.length !== 4) {
-      setError("Please fill in all fields correctly.");
+    if (!startDate || !endDate) {
+      setError("Please select both start and end dates.");
+      setLoading(false);
+      return;
+    }
+
+    if (!availableEndDates.includes(endDate)) {
+      setError("Please select a valid monthly interval from the start date");
       setLoading(false);
       return;
     }
@@ -55,38 +93,24 @@ const StartDate: React.FC = () => {
       contributionPlan: plan,
       amount,
       startDate,
-      endDate,
-      pin,
+      endDate
     };
   
     try {
       const response = await dispatch(CreateContributionPlan(body)).unwrap();
-      console.log("Response:", response.contribution);  
-      if (response?.statusCode === 201) { 
-        setIsModalOpen(false);
+      if (response?.paymentUrl) {
         setIsSuccessModalOpen(true);
         setTimeout(() => {
-          setIsSuccessModalOpen(false);
-          navigate("/dashboard/contribution");
-        }, 3000);
+          window.location.href = response.paymentUrl;
+        }, 2000);
       } else {
-        setError("Contribution plan creation failed. Please try again.");
+        setError("Payment initialization failed. Please try again.");
       }
     } catch (error: any) {
-      setError(error.error || "An error occurred. Please try again.");
+      setError(error?.error || "An error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
-  };
-
-  const toggleModal = () => {
-    if (!startDate || !endDate) {
-      setError("Please select both start and end dates before proceeding.");
-      return;
-    }
-    setIsModalOpen(!isModalOpen);
-    setPin("");
-    setError("");
   };
 
   return (
@@ -108,101 +132,73 @@ const StartDate: React.FC = () => {
             id="startDate"
             required
             value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
+            onChange={handleStartDateChange}
             className="input mb-5 h-[4em] w-full rounded-lg border-[1px] px-4 text-sm shadow-md"
           /> 
         </div>
         <div className="mt-[2em]">
-          <label htmlFor="endDate" className="mb-3 flex font-semibold">
-            End Date
-          </label>
-          <input
-            type="date"
-            id="endDate"
-            required
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            className="input mb-5 h-[4em] w-full rounded-lg border-[1px] px-4 text-sm shadow-md"
-          /> 
+          <FormControl fullWidth>
+            <InputLabel id="end-date-label" style={{color:'#440080'}}>Choose End Date</InputLabel>
+            <Select
+              labelId="end-date-label"
+              id="end-date-select"
+              value={endDate}
+              label="Choose End Date"
+              onChange={handleEndDateChange}
+              disabled={!startDate}
+              className="mb-5"
+              sx={{
+                height: '3.4em',
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderRadius: '0.5rem',
+                },
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#440080',
+                },
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#440080',
+                },
+              }}
+            >
+              <MenuItem value="">
+                <em>Select end date</em>
+              </MenuItem>
+              {availableEndDates.map((date, index) => (
+                <MenuItem key={date} value={date}>
+                  {new Date(date).toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  })} ({index + 1} {index === 0 ? 'month' : 'months'})
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </div>
         {error && <Alert severity="error" className="mt-4 mb-4">{error}</Alert>}
         <div className='mt-[3em]'>
-          <button
+          <Primary
+            onClick={handleSubmit}
+            disabled={loading}
             className="bg-text2 rounded-md flex text-center justify-center m-auto py-[1em] w-[80%] font-semibold px-8 text-white"
-            onClick={toggleModal}
           >
-            Submit
-          </button>
+            {loading ? (
+              <ReactLoading color="#FFFFFF" height={25} width={25} type="spin" />
+            ) : (
+              "Submit"
+            )}
+          </Primary>
         </div>
         <button onClick={() => navigate(-1)} className="flex mt-[3em] items-center">
-        <IoIosArrowDropleft size={25} />
+          <IoIosArrowDropleft size={25} />
         </button>
       </div>
-      <Modal
-        isOpen={isModalOpen}
-        onClose={toggleModal}
-        className="bg-white text-center flex flex-col justify-center items-center py-[3em]" 
-      >
-        <header>
-          <h1 className="font-semibold text-2xl">
-            My Chain Co-op Pin
-          </h1>
-          <p className="text-howtext mt-1">Enter your transaction pin.</p>
-        </header>
-        <div className="flex justify-center mt-5"> 
-          <OTPInput
-            value={pin}
-            onChange={handlePinChange}
-            numInputs={4}
-            renderSeparator={<span className="w-2"></span>}
-            renderInput={(props) => (
-              <input 
-                {...props} 
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                onKeyDown={(e) => {
-                  if (
-                    !(
-                      (e.key >= '0' && e.key <= '9') ||
-                      e.key === 'Backspace' ||
-                      e.key === 'ArrowLeft' ||
-                      e.key === 'ArrowRight' ||
-                      e.key === 'Tab'
-                    )
-                  ) {
-                    e.preventDefault();
-                  }
-                }}
-              />
-            )}
-            skipDefaultStyles={true}
-            containerStyle="flex gap-3 my-5 justify-center"
-            inputStyle={
-              "block lg:h-[55px] lg:w-[55px] sm:h-[50px] sm:w-[35px] text-center border-gray-200 rounded-md text-sm placeholder:text-gray-300 focus:border-text2 focus:ring-text2 bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-            }
-          />
-        </div>
-        {error && <Alert severity="error" className="mt-4 mb-4">{error}</Alert>}
-
-        <Primary
-          onClick={handleSubmit}
-          disabled={loading}
-          className="mt-[2em] px-2 w-full flex justify-center font-semibold rounded-full bg-text2 py-2 text-white"
-        >
-          {loading ? (
-            <ReactLoading color="#FFFFFF" height={25} width={25} type="spin" />
-          ) : (
-            "Confirm Contribution"
-          )}
-        </Primary>
-      </Modal>
       <Modal
         isOpen={isSuccessModalOpen}
         onClose={() => setIsSuccessModalOpen(false)}
         className="bg-white text-center flex flex-col justify-center items-center py-[3em]"
       >
-     <div className="mt-[2.5em] flex flex-col justify-center">
+        <div className="mt-[2.5em] flex flex-col justify-center">
           <img
             src={success}
             alt="Success Icon"
@@ -213,7 +209,7 @@ const StartDate: React.FC = () => {
               Contribution Successful
             </h1>
             <p className="text-howtext mt-2">
-              Your contribution has been processed. Redirecting to contribution page...
+              Redirecting to payment page...
             </p>
           </header>
         </div>

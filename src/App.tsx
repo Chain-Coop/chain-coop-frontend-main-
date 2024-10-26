@@ -20,9 +20,6 @@ import Blogs from "./components/pages/footer/blogs/Blogs";
 import Story from "./components/pages/entry/Story";
 import Career from "./components/pages/footer/careers/Career";
 import Landing from "./components/pages/entry/Landing";
-import AuthWrapper from "./components/pages/auth/AuthWrapper";
-import MembershipType from "./components/pages/membershipFee/membershipType/MembershipType";
-import PaymentPlanWrapper from "./components/pages/membershipFee/main/PaymentWrapper";
 
 function App() {
   return (
@@ -39,7 +36,6 @@ function App() {
         {/* <Route path="/reset-password" element={<ResetPassword />} /> */}
         {/* <Route path="/new-password" element={<NewPassword />} /> */}
         {/* <Route path="/account-otp" element={<UserLoginOtp />} /> */}
-        <Route path="/membershipType" element={<MembershipType />} />
 
         <Route
           path="/verification-successfull"
@@ -50,7 +46,6 @@ function App() {
           element={<PaaswordRessetSuccessfull />}
         />
 
-     <Route path="/set-payment-plan/*" element={<PaymentPlanWrapper />} />
     {/* <Route path="/dashboard/*" element={<AuthWrapper><Dashboard /></AuthWrapper>} />
     <Route path="*" element={<Navigate to="/dashboard" replace />} />    */}
      
@@ -72,7 +67,6 @@ export default App;
 // import React from "react";
 // import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 // import HomePage from "./components/pages/entry/HomePage";
-// // import OurStory from "./components/pages/entry/OurStory";
 // import Membership from "./components/pages/entry/Membership";
 // import ForgetPassword from "./components/pages/auth/ForgetPassword";
 // import CreateAccount from "./components/pages/auth/CreateAccount";
@@ -90,9 +84,7 @@ export default App;
 // import Story from "./components/pages/entry/Story";
 // import Career from "./components/pages/footer/careers/Career";
 // import Landing from "./components/pages/entry/Landing";
-// import AuthWrapper from "./components/pages/auth/AuthWrapper";
-// import MembershipType from "./components/pages/membershipFee/membershipType/MembershipType";
-// import PaymentPlanWrapper from "./components/pages/membershipFee/main/PaymentWrapper";
+// import ProtectedRoutes from "./components/protected/ProtectedRoute";
 
 // function App() {
 //   return (
@@ -109,7 +101,6 @@ export default App;
 //         <Route path="/reset-password" element={<ResetPassword />} />
 //         <Route path="/new-password" element={<NewPassword />} />
 //          <Route path="/account-otp" element={<UserLoginOtp />} />
-//         <Route path="/membershipType" element={<MembershipType />} />
 
 //         <Route
 //           path="/verification-successfull"
@@ -120,13 +111,11 @@ export default App;
 //           element={<PaaswordRessetSuccessfull />}
 //         />
 
-//      <Route path="/set-payment-plan/*" element={<PaymentPlanWrapper />} />
-//     {/* <Route path="/dashboard/*" element={<AuthWrapper><Dashboard /></AuthWrapper>} /> */}
-//     <Route path="/dashboard/*" element={<Dashboard />} />
-
-//     <Route path="*" element={<Navigate to="/dashboard" replace />} />   
+//        <Route element={<ProtectedRoutes />}>
+//           <Route path="/dashboard/*" element={<Dashboard />} />          
+//           <Route path="*" element={<Navigate to="/dashboard" replace />} />
+//         </Route>  
      
-//     {/* <Route path="/dashboard/*" element={<Dashboard />} />  */}
 //         <Route path="/team" element={<Team />} />
 //         <Route path="/blog" element={<Blogs />} />
 //         <Route path="/career" element={<Career />} />

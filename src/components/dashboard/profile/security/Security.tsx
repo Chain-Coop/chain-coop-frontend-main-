@@ -1,17 +1,31 @@
 import React, { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import Modal from "../../../common/Modal";
+import Email from "./modal/Email";
+import OtpInput from "./modal/OtpInput";
 import NewPassword from "./modal/NewPassword";
 
 const Security = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0); // 0: none, 1: email, 2: otp, 3: new password
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
 
   const handlePasswordResetClick = () => {
-    setIsModalOpen(true);
+    setCurrentStep(1);
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
+    setCurrentStep(0);
+    setEmail("");
+    setOtp("");
+  };
+
+  const handleEmailSent = () => {
+    setCurrentStep(2); // Move to OTP step
+  };
+
+  const handleOtpEntered = () => {
+    setCurrentStep(3); // Move to new password step
   };
 
   const sections = [
@@ -24,6 +38,7 @@ const Security = () => {
       <header>
         <h2 className="font-semibold text-howtext">Security</h2>
       </header>
+      
       <section className="mt-[1.2em]">
         {sections.map((section, index) => (
           <div key={index} className="mb-2 flex flex-col">
@@ -40,15 +55,51 @@ const Security = () => {
           </div>
         ))}
       </section>
-      {isModalOpen && (
+
+      {currentStep === 1 && (
         <Modal
           className="bg-[#E9E9E9]"
           isOpen
           onClose={handleCloseModal}
         >
-          <NewPassword />
+          <Email
+            email={email}
+            setEmail={setEmail}
+            onClose={handleCloseModal}
+            onEmailSent={handleEmailSent}
+          />
         </Modal>
       )}
+
+      {currentStep === 2 && (
+        <Modal
+          className="bg-[#E9E9E9]"
+          isOpen
+          onClose={handleCloseModal}
+        >
+          <OtpInput
+            otp={otp}
+            setOtp={setOtp}
+            onClose={handleCloseModal}
+            onOtpEntered={handleOtpEntered}
+          />
+        </Modal>
+      )}
+
+       {currentStep === 3 && (
+        <Modal
+          className="bg-[#E9E9E9]"
+          isOpen
+          onClose={handleCloseModal}
+        >
+          <NewPassword
+            email={email}
+            otp={otp}
+            onClose={handleCloseModal}
+            onPasswordReset={handleCloseModal}
+          />
+        </Modal>
+      )} 
     </main>
   );
 };

@@ -55,11 +55,11 @@ const Wallet = () => {
                 )}
                 <hr className="mt-[1em] h-[1px] rounded-md bg-howtext font-normal" />
               </div>
-              <div className="mt-[1em] flex justify-center gap-2">
+              {/* <div className="mt-[1em] flex justify-center gap-2">
                 <span>Total Gains</span>
                 <MdArrowOutward className="fill-act" />
                 <span className="font-semibold text-act">0%</span>
-              </div>
+              </div> */}
             </div>
           </section>
 

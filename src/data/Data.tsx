@@ -377,7 +377,6 @@ export const  SavingOn = [
   { text: "Food" },
   { text: "Personal Need" },
   { text: "Car" },
-  { text: "Others" },
 ];
 
 export const Plan = [

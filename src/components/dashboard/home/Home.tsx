@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import useUserProfile from "../../../shared/Hooks/useUserProfile";
+import useUserProfile, { useAllProjects } from "../../../shared/Hooks/useUserProfile";
 import { ComingSoon } from "../../common/Button";
-import {
-  MdArrowOutward,
-} from "react-icons/md";
 import { IoIosNotifications } from "react-icons/io";
 import useWalletBalance from "../../../shared/Hooks/useBalance";
 import ToggleButton from "../../../shared/utils/ToggleButton";
@@ -14,6 +11,9 @@ const Home = () => {
   const { isWalletVisible, setIsWalletVisible, formattedBalance } =
   useWalletBalance();
   const { profileDetails } = useUserProfile();
+  const { useProjects, loading } = useAllProjects();
+  console.log("usePro",useProjects)
+
   
   const navigate = useNavigate();
   
@@ -63,11 +63,6 @@ const Home = () => {
                 )}
                 <hr className="mt-[1em] h-[1px] rounded-md bg-howtext font-normal" />
               </div>
-              <div className="mt-[1em] flex justify-center gap-2">
-                <span>Total Gains</span>
-                <MdArrowOutward className="fill-act" />
-                <span className="font-semibold text-act">0%</span>
-              </div>
             </div>
           </section>
 
@@ -82,27 +77,8 @@ const Home = () => {
 
       <section className="mt-[2em] w-full">
         <header>
-          {/* <p className="font-semibold sm:text-lg">Create a portfolio</p>
-          <p className="mt-[1em]">
-            Start your investment journey by creating a portfolio
-          </p> */}
         </header>
         <div className="mt-4 gap-[1.5em] space-y-[1.5em] sm:flex-col lg:flex lg:flex-row">
-          {/* <article className="mt-2 flex flex-col items-center justify-center rounded-lg bg-Dh p-4 font-semibold shadow-md sm:py-[2em] lg:w-[180px]">
-            <img
-              width="24"
-              height="24"
-              src={plus}
-              alt="plus"
-              className="h-[3em] w-[3em] cursor-pointer shadow-sm"
-            />
-            <p className="text-center font-sans sm:text-lg sm:font-semibold">
-              Create a
-            </p>
-            <p className="text-center font-sans sm:text-lg sm:font-semibold">
-              portfolio project
-            </p>
-          </article> */}
           <article>
             <div className="flex h-auto flex-col gap-[2em] rounded-xl bg-dashboardHome bg-cover bg-no-repeat p-3">
               <h1 className="text-lg font-medium uppercase text-text3">

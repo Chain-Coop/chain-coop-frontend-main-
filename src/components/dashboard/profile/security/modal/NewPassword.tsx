@@ -3,7 +3,7 @@ import usePasswordToggle from "../../../../../shared/utils/usePasswordToggle";
 import {  Primary } from "../../../../common/Button";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 
-const NewPassword = () => {
+const NewPassword = ({email, otp}:any) => {
   const [passwordType, togglePasswordType] = usePasswordToggle();
   const [confirmPasswordType, toggleConfirmPasswordType] = usePasswordToggle();
   const [confirmNewPasswordType, toggleConfirmNewPasswordType] =
