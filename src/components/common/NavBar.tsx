@@ -84,11 +84,11 @@ const NavBar = () => {
         </ModalBody>
 
         </Modal>
-         <div className="hidden lg:block">
+         {/* <div className="hidden lg:block">
           <LoginButton className="bg-primary" onClick={handleLoginClick}>
             Login
           </LoginButton>
-        </div>
+        </div> */}
       </div>
     </nav>
   );

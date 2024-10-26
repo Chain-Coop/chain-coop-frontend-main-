@@ -87,18 +87,18 @@ const Explore = () => {
         </header>
 
         <div className="wrapper w-full">
-	<div className="card">
-		<div className="poster"><img src={explore1} alt="Location Unknown"/></div>
-		<div className="details">
-			<h1>Automated Ai Learning Platform</h1>
-      <p className="desc">
-        Our upcoming project leverages cutting-edge AI to streamline learning processes, designed to enhance productivity and unlock new growth opportunities for forward-thinking companies.
-      </p>
+    <div className="card">
+      <div className="poster"><img src={explore1} alt="Location Unknown"/></div>
+      <div className="details">
+        <h1>Automated Ai Learning Platform</h1>
+        <p className="desc">
+          Our upcoming project leverages cutting-edge AI to streamline learning processes, designed to enhance productivity and unlock new growth opportunities for forward-thinking companies.
+        </p>
       <div className="tags">
-	<span className="tag">Investment</span>
-	<span className="tag">Growth</span>
-	<span className="tag">Innovation</span>
-</div>
+      <span className="tag">Investment</span>
+      <span className="tag">Growth</span>
+      <span className="tag">Innovation</span>
+    </div>
 			<div className="cast">
 				<h3>Cast</h3>
 				<ul>
@@ -109,17 +109,17 @@ const Explore = () => {
 		</div>
 	</div>
 	<div className="card">
-		<div className="poster"><img src={explore2} alt="Location Unknown"/></div>
+		<div className="poster"><img src={explore2} alt="explore-img"/></div>
 		<div className="details">
     <h1>Automated Ai Learning Platform</h1>
       <p className="desc">
         Our upcoming project leverages cutting-edge AI to streamline learning processes, designed to enhance productivity and unlock new growth opportunities for forward-thinking companies.
       </p>
       <div className="tags">
-	<span className="tag">Investment</span>
-	<span className="tag">Growth</span>
-	<span className="tag">Innovation</span>
-</div>
+      <span className="tag">Investment</span>
+      <span className="tag">Growth</span>
+      <span className="tag">Innovation</span>
+    </div>
       <div className="cast">
 				<h3>Cast</h3>
 				<ul>
@@ -137,10 +137,10 @@ const Explore = () => {
         Our upcoming project leverages cutting-edge AI to streamline learning processes, designed to enhance productivity and unlock new growth opportunities for forward-thinking companies.
       </p>
       <div className="tags">
-	<span className="tag">Investment</span>
-	<span className="tag">Growth</span>
-	<span className="tag">Innovation</span>
-</div>
+      <span className="tag">Investment</span>
+      <span className="tag">Growth</span>
+      <span className="tag">Innovation</span>
+    </div>
       <div className="cast">
 				<h3>Cast</h3>
 				<ul>
