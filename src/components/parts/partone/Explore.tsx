@@ -23,7 +23,7 @@ const Explore = () => {
           </div>
         </header>
 
-        <div className="wrapper flex gap-[24px] flex-wrap items-center w-full">
+        <div className="wrapper flex gap-[24px] justify-center flex-wrap items-center w-full">
     <div className="card">
       <div className="poster"><img src={explore1} alt="Location Unknown"/></div>
       <div className="details">
