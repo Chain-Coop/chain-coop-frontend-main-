@@ -176,6 +176,19 @@ export const VerifyFundWallet = createAsyncThunk(
   },
 );
 
+export const VerifyFundContribution = createAsyncThunk(
+  "transaction/verifyFundContribution",
+  async (body: any, thunkAPI) => {
+    try {
+      const data = await TransactionServices.VerifyFundContribution(body);
+      return { transaction: data };
+    } catch (error: any) {
+      return handleAsyncError(error, thunkAPI);
+    }
+  },
+);
+
+
 export const VerifyMembershipSubscription = createAsyncThunk(
   "transaction/verifyMembershipSubscription",
   async (params: VerificationParams, thunkAPI) => {
@@ -269,10 +282,10 @@ export const WithdrawalFromWallet = createAsyncThunk(
 
 
 export const GetUsersContributionHistory = createAsyncThunk(
-  "transaction/getUsersContributionHistory ",
-  async (_, thunkAPI) => {
+  "transaction/getUsersContributionHistory",
+  async ({ page, limit }: { page: number; limit: number }, thunkAPI) => {
     try {
-      const data = await TransactionServices.GetUsersContributionHistory();
+      const data = await TransactionServices.GetUsersContributionHistory(page, limit);
       return { transaction: data };
     } catch (error: any) {
       return handleAsyncError(error, thunkAPI);
@@ -280,6 +293,13 @@ export const GetUsersContributionHistory = createAsyncThunk(
   },
 );
 
+export const GetContributionDetailsById = createAsyncThunk(
+  "transaction/getContributionDetailsById",
+   async ({ contributionId}: { contributionId: any }) => {
+     const response = await TransactionServices.GetContributionDetailsById(contributionId);
+     return response
+   }
+ );
 
 interface TransactionState {
   getWalletBalance: any | null;
@@ -297,12 +317,14 @@ interface TransactionState {
   fundUserWallet: any | null;
   fundMembershipSubscription: any | null;
   veryfyFundUserWallet: any | null;
+  veryfyFundUserContribution: any | null;
   veryfyFundMembership: any | null;
   fundUserProject: null,
   getUserAccountName: null,
   currentProject: any | null;
   createPin: any | null;
   requestWithdrawal: any | null;
+  contributionDetails: any | null;
   loading: boolean;
   error: string | null | Record<string, unknown>;
 }
@@ -324,11 +346,13 @@ const initialState: TransactionState = {
   fundMembershipSubscription: null,
   getUserAccountName: null,
   veryfyFundUserWallet:null,
+  veryfyFundUserContribution:null,
   veryfyFundMembership:null,
   fundUserProject: null,
   currentProject: null,
   createPin: null,
   requestWithdrawal: null,
+  contributionDetails: null,
   loading: false,
   error: null,
 };
@@ -349,10 +373,10 @@ export const transactionSlice = createSlice({
           state.getWalletBalance = action.payload.transaction;
         },
       )
-
       .addCase(GetWalletBalance.rejected, (state) => {
         state.getWalletBalance = null;
       })
+
       .addCase(
         GetContributionBalance.fulfilled,
         (state, action: PayloadAction<{ transaction: any }>) => {
@@ -440,6 +464,16 @@ export const transactionSlice = createSlice({
       )
       .addCase(VerifyFundWallet.rejected, (state) => {
         state. veryfyFundUserWallet = null;
+      })
+
+      .addCase(
+        VerifyFundContribution.fulfilled,
+        (state, action: PayloadAction<{ transaction: any }>) => {
+          state. veryfyFundUserContribution = action.payload.transaction;
+        },
+      )
+      .addCase(VerifyFundContribution.rejected, (state) => {
+        state. veryfyFundUserContribution = null;
       })
 
       .addCase(
@@ -563,6 +597,15 @@ export const transactionSlice = createSlice({
         state.getUsersContribution = null;
       })
 
+      .addCase(
+        GetContributionDetailsById.fulfilled,
+        (state, action: PayloadAction<{ contribution: any }>) => {
+          state.contributionDetails = action.payload.contribution;
+        }
+      )
+      .addCase(GetContributionDetailsById.rejected, (state) => {
+        state.contributionDetails = null;
+      });
   },
 });
 

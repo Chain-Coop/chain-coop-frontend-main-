@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router";
 import useUserProfile, { useAllProjects } from "../../../shared/Hooks/useUserProfile";
 import { ComingSoon } from "../../common/Button";
@@ -6,14 +6,30 @@ import { IoIosNotifications } from "react-icons/io";
 import useWalletBalance from "../../../shared/Hooks/useBalance";
 import ToggleButton from "../../../shared/utils/ToggleButton";
 
+interface Project {
+  _id: string;
+  title: string;
+  status: string;
+  documentUrl: string;
+  createdAt: string;
+}
+
+const ProjectsSkeleton = () => (
+  <div className="mt-4 gap-6 space-y-6 sm:flex-col lg:flex lg:flex-row lg:space-y-0">
+    <div className="animate-pulse flex-1">
+      <div className="h-48 bg-gray-200 rounded-xl"></div>
+    </div>
+    <div className="animate-pulse flex-1">
+      <div className="h-48 bg-gray-200 rounded-xl"></div>
+    </div>
+  </div>
+);
 
 const Home = () => {
   const { isWalletVisible, setIsWalletVisible, formattedBalance } =
-  useWalletBalance();
+    useWalletBalance();
   const { profileDetails } = useUserProfile();
   const { useProjects, loading } = useAllProjects();
-  console.log("usePro",useProjects)
-
   
   const navigate = useNavigate();
   
@@ -21,10 +37,53 @@ const Home = () => {
     navigate("/dashboard/wallet");
   };
 
+  const latestProjects = React?.useMemo(() => {
+    if (!useProjects) return [];
+    
+    return [...useProjects]
+      .sort((a: Project, b: Project) => 
+        new Date(b?.createdAt)?.getTime() - new Date(a?.createdAt)?.getTime()
+      )
+      .slice(0, 2);
+  }, [useProjects]);
+
+  const renderProjects = () => {
+    if (loading) {
+      return <ProjectsSkeleton />;
+    }
+
+    if (!latestProjects?.length) {
+      return null;
+    }
+
+    return (
+      <div className="mt-4 gap-6 space-y-6 sm:flex-col lg:flex lg:flex-row lg:space-y-0">
+        {latestProjects.map((project: Project) => (
+          <article key={project?._id} className="flex-1">
+            <div 
+              className="flex h-auto min-h-48 flex-col gap-8 rounded-xl p-3 bg-cover bg-center bg-no-repeat transition-transform hover:scale-[1.02]"
+              style={{ 
+                backgroundImage: `url(${project?.documentUrl})`,
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                backgroundBlendMode: 'overlay'
+              }}
+            >
+              <h1 className="text-lg font-medium uppercase text-text3">
+                {project?.title}
+              </h1>
+              <div className="mt-12">
+                <ComingSoon className="bg-coming2">{project?.status}</ComingSoon>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    );
+  };
 
   return (
-    <main className="mx-auto mb-[2em] px-[2em] font-sans">
-      <header className="flex justify-between sm:mt-[1em] lg:mt-[2.5em]">
+    <main className="mx-auto mb-8 px-8 font-sans">
+      <header className="flex justify-between sm:mt-4 lg:mt-10">
         <div className="font-medium">
           <p>Welcome Back!</p>
           <p className="mt-1 font-semibold">
@@ -37,63 +96,49 @@ const Home = () => {
       </header>
       
       <section className="text-center text-text4">
-            <div className="mx-auto mt-[2em] rounded-3xl py-[2em] shadow-md">
-              <div className="flex justify-center gap-4 font-sans">
-                <p className="font-medium">Total Balance</p>
-                <div>
-                  <ToggleButton
-                    isVisible={isWalletVisible}
-                    onToggle={(newVisibility) => {
-                      setIsWalletVisible(newVisibility);
-                      sessionStorage.setItem(
-                        "walletBalanceVisible",
-                        newVisibility.toString(),
-                      );
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="mx-auto mt-[1.5em] w-[15em] rounded-md">
-                {isWalletVisible ? (
-                  <p className="font-bold sm:text-xl lg:text-xl">
-                    {formattedBalance}
-                  </p>
-                ) : (
-                  <p className="text-2xl font-bold">*********</p>
-                )}
-                <hr className="mt-[1em] h-[1px] rounded-md bg-howtext font-normal" />
-              </div>
+        <div className="mx-auto mt-8 rounded-3xl py-8 shadow-md">
+          <div className="flex justify-center gap-4 font-sans">
+            <p className="font-medium">Total Balance</p>
+            <div>
+              <ToggleButton
+                isVisible={isWalletVisible}
+                onToggle={(newVisibility) => {
+                  setIsWalletVisible(newVisibility);
+                  sessionStorage.setItem(
+                    "walletBalanceVisible",
+                    newVisibility?.toString()
+                  );
+                }}
+              />
             </div>
-          </section>
+          </div>
+          <div className="mx-auto mt-6 w-60 rounded-md">
+            {isWalletVisible ? (
+              <p className="font-bold sm:text-xl lg:text-xl">
+                {formattedBalance}
+              </p>
+            ) : (
+              <p className="text-2xl font-bold">*********</p>
+            )}
+            <hr className="mt-4 h-px rounded-md bg-howtext font-normal" />
+          </div>
+        </div>
+      </section>
 
       <div>
         <button
           onClick={addFund}
-          className="mx-auto mt-[2em] w-full rounded-3xl bg-inherit py-[1em] text-center text-lg font-semibold text-text4 shadow-md"
+          className="mx-auto mt-8 w-full rounded-3xl bg-inherit py-4 text-center text-lg font-semibold text-text4 shadow-md hover:bg-gray-50 transition-colors"
         >
           + Add Fund
         </button>
       </div>
 
-      <section className="mt-[2em] w-full">
-        <header>
-        </header>
-        <div className="mt-4 gap-[1.5em] space-y-[1.5em] sm:flex-col lg:flex lg:flex-row">
-          <article>
-            <div className="flex h-auto flex-col gap-[2em] rounded-xl bg-dashboardHome bg-cover bg-no-repeat p-3">
-              <h1 className="text-lg font-medium uppercase text-text3">
-                automated ai <br /> learning Platform
-              </h1>
-              <div className="mt-[3em]">
-                <ComingSoon className="bg-coming2">Coming Soon</ComingSoon>
-              </div>
-            </div>
-          </article>
-        </div>
+      <section className="mt-8 w-full">
+        {renderProjects()}
       </section>
     </main>
   );
 };
 
 export default Home;
-

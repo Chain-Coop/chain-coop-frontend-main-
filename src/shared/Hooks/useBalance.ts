@@ -42,33 +42,45 @@ export const useWalletBalance = () => {
 
 export const useContributionBalance = () => {
   const dispatch: AppDispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
   const balance = useSelector(
     (state: any) => state?.transaction?.getContributionBalance,
   );
+
   const [isContributionVisible, setIsContributionVisible] = useState(() => {
-    const storedVisibility = sessionStorage.getItem(
-      "contributionBalanceVisible",
-    );
+    const storedVisibility = sessionStorage.getItem("contributionBalanceVisible");
     return storedVisibility !== null ? storedVisibility === "true" : true;
   });
+
   useEffect(() => {
     const userToken = sessionStorage.getItem("userData");
     if (userToken) {
+      setIsLoading(true);
       dispatch(GetContributionBalance())
         .unwrap()
         .catch((error: any) => {
-          console.log(error);
+          setError(error.message || 'Failed to fetch balance');
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
+    } else {
+      setError('User token not found');
+      setIsLoading(false);
     }
   }, [dispatch]);
 
-  const balanceInNaira = balance?.balance || 0;
+  const balanceInNaira = balance?.totalBalance || 0;
   const formattedBalance = formatBalance(balanceInNaira);
 
   return {
     isContributionVisible,
     setIsContributionVisible,
     formattedBalance,
+    isLoading,
+    error
   };
 };
 

@@ -28,11 +28,13 @@ import VerifyTransaction from "../wallet/fund/verifyTransaction/VerifyTransactio
 import ConfirmTransaction from "../wallet/transfer/fundContribution/confirmTransaction";
 import ProjectContentOverView from "../nestedproject/nested/ProjectContentOverView";
 import GlobalPinSetupManager from "../../common/GlobalPinSetUpManager";
-import MembershipType from "../../pages/membershipFee/membershipType/MembershipType";
 import Purpose from "../contribution/purpose/Purpose"
 import SavingsPlan from "../contribution/savingsPlan/SavingsPlan"
 import StartDate from "../contribution/startDate/StartDate"
 import SavingsAmount from "../contribution/savingsAmount/SavingsAmount"
+import VerifyContribution from "../contribution/main/VerifyContribution";
+import ViewContribution from "../contribution/viewContribution/ViewContribution";
+import WithdrawContribution from "../contribution/withdrawContribution/WithdrawContribution";
 
 
 const Dashboard = () => {
@@ -60,6 +62,13 @@ const Dashboard = () => {
           <Route path="contribution/plan" element={<SavingsPlan />} />
           <Route path="contribution/date" element={<StartDate />} />
           <Route path="contribution/amount" element={<SavingsAmount />} />
+          <Route
+            path="contribution/fund_contribution/confirm_transaction"
+            element={<ConfirmAmount />}
+          />
+         <Route path="contribution/fund_contribution/verify_transaction" element={<VerifyContribution />} />
+         <Route path="/contribution/contribution_details" element={<ViewContribution />} />
+         <Route path="/contribution/withdraw_contribution" element={<WithdrawContribution />} />
 
           <Route path="wallet/*" element={<Wallet />} />
           <Route path="wallet/withdraw" element={<Withdraw />} />
@@ -80,10 +89,6 @@ const Dashboard = () => {
             element={<ConfirmTransaction />}
           />
 
-          <Route
-            path="contribution/fund_contribution/confirm_transaction"
-            element={<ConfirmAmount />}
-          />
 
           <Route path="project" element={<Project />} />
           <Route path="project/project_over-view/:projectId" element={<ProjectContentOverView />} />

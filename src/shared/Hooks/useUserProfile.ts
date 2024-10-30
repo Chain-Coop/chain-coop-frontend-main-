@@ -1,4 +1,3 @@
-
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GetUserProfile, uploadAvatar } from "../redux/slices/landing.slices";
@@ -109,7 +108,6 @@ export const useAllProjects = () => {
   return { useProjects, loading };
 };
 
-
 export const useAllBanks = () => {
   const dispatch: AppDispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -137,9 +135,7 @@ export const useAllBanks = () => {
   return { useBanks, loading };
 };
 
-
 export default useUserProfile;
-
 
 export const usePinSetup = (isPinCreated: boolean) => {
   const [showPinSetup, setShowPinSetup] = useState(false);
@@ -184,6 +180,7 @@ export const useAllUserFundedProjects = () => {
   const useUserProjects = useSelector(
     (state: any) => state?.transaction?.allFundedProjects,
   );
+  
   const userToken = sessionStorage.getItem("userData");
   useEffect(() => {
     if (userToken) {
@@ -204,8 +201,11 @@ export const useAllUserFundedProjects = () => {
   return { useUserProjects, loading };
 };
 
-export const useUserContributionHisory = () => {
+export const useUserContributionHistory = (page: number, limit: number) => {
   const dispatch: AppDispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const getContributions = useSelector(
     (state: any) => state?.transaction?.getUsersContribution,
   );
@@ -213,15 +213,27 @@ export const useUserContributionHisory = () => {
   useEffect(() => {
     const userToken = sessionStorage.getItem("userData");
     if (userToken) {
-      dispatch(GetUsersContributionHistory())
+      setIsLoading(true);
+      dispatch(GetUsersContributionHistory({ page, limit }))
         .unwrap()
-        .then(() => {})
+        .then(() => {
+          setError(null);
+        })
         .catch((err: any) => {
-          const errorMessage = err.message;
+          setError(err.message || 'Failed to fetch contributions');
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
+    } else {
+      setError('User token not found');
+      setIsLoading(false);
     }
-  }, [dispatch]);
+  }, [dispatch, page, limit]);
+
   return {
     getContributions,
+    isLoading,
+    error
   };
 };

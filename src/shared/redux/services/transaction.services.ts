@@ -18,6 +18,9 @@ const API_URL_CREATE_TRANSACTION_PIN =
 const API_URL_VERIFY_FUND_WALLET =
   import.meta.env.VITE_REACT_APP_API_URL + "/wallet/verify-payment";
 
+  const API_URL_VERIFY_CONTRIBUTION =
+  import.meta.env.VITE_REACT_APP_API_URL + "/contribution/verify-contribution";
+
   const API_URL_VERIFY_PAYSTACK_SUBSCRIPTION =
   import.meta.env.VITE_REACT_APP_API_URL + "/membership/verify-payment";
 
@@ -202,6 +205,27 @@ const VerifyFundWallet = async (body: any) => {
   }
 };
 
+const VerifyFundContribution = async (params: any) => {
+  try {
+    const token = sessionStorage.getItem("userData");
+    if (!token) {
+      throw new Error("Authorization token not found.");
+    }
+    const response = await axios.get(
+      API_URL_VERIFY_CONTRIBUTION, 
+      {
+        params,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response?.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
 const FundProject = async (body: any, projectId: string) => {
   try {
     const response = await axios.post(`${API_URL}/project/${projectId}/fund`, body, {
@@ -297,8 +321,8 @@ const WithdrawalFromWallet = async (body: any) => {
   }
 };
 
-const GetUsersContributionHistory = async () => {
-  const url = `${API_URL}/contribution/history`;
+const GetUsersContributionHistory = async (page: number, limit: number) => {
+  const url = `${API_URL}/contribution/history?page=${page}&limit=${limit}`;
   try {
     const response = await axios.get(url, { headers: authHeader() });
     return response.data;
@@ -307,6 +331,23 @@ const GetUsersContributionHistory = async () => {
   }
 };
 
+const GetContributionDetailsById = async (contributionId: any) => {
+  const url = `${API_URL}/contribution/category/${contributionId}`;
+  try {
+    const response = await axios({
+      url,
+      headers: authHeader(),
+      method: "get",
+    });
+    const token = response?.data?.data?.tokens?.accessToken;
+    if (token) {
+      sessionStorage.setItem("userData", token);
+    }
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 const TransactionServices = {
   GetWalletBalance,
@@ -329,6 +370,9 @@ const TransactionServices = {
   WithdrawalFromWallet,
   GetAllUserFundedProject,
   GetUsersContributionHistory,
+  VerifyFundContribution,
+  GetContributionDetailsById,
 };
+
 
 export default TransactionServices;
