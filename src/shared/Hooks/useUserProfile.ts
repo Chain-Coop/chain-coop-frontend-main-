@@ -82,23 +82,24 @@ export const useProposalLength = () => {
 
 export const useAllProjects = () => {
   const dispatch: AppDispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
-
+  
   const useProjects = useSelector(
-    (state: any) => state?.transaction?.allProjects,
+    (state: any) => state?.transaction?.allProjects
+  );
+  
+  const loading = useSelector(
+    (state: any) => state?.transaction?.loading
   );
 
   const userToken = sessionStorage.getItem("userData");
+  
   useEffect(() => {
     if (userToken) {
-      setLoading(true);
       dispatch(GetAllProject())
         .unwrap()
-        .then(() => setLoading(false))
         .catch((error: any) => {
           const errorMessage = error.message;
           dispatch(setMessage(errorMessage));
-          setLoading(false);
         });
     } else {
       dispatch(setMessage("Token not found"));
@@ -107,6 +108,7 @@ export const useAllProjects = () => {
 
   return { useProjects, loading };
 };
+
 
 export const useAllBanks = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -175,65 +177,59 @@ export const usePinSetup = (isPinCreated: boolean) => {
 
 export const useAllUserFundedProjects = () => {
   const dispatch: AppDispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
-
-  const useUserProjects = useSelector(
-    (state: any) => state?.transaction?.allFundedProjects,
-  );
   
+  const { allFundedProjects, loading } = useSelector((state: any) => state.transaction);
+console.log("alll",allFundedProjects)
   const userToken = sessionStorage.getItem("userData");
+
   useEffect(() => {
-    if (userToken) {
-      setLoading(true);
+    if (!allFundedProjects && userToken && !loading) {
       dispatch(GetAllUserFundedProject())
         .unwrap()
-        .then(() => setLoading(false))
         .catch((error: any) => {
-          const errorMessage = error.message;
-          dispatch(setMessage(errorMessage));
-          setLoading(false);
+          dispatch(setMessage(error.message));
         });
-    } else {
-      dispatch(setMessage("Token not found"));
     }
-  }, [dispatch, userToken]);
+  }, [dispatch, userToken, allFundedProjects, loading]);
 
-  return { useUserProjects, loading };
+  return { 
+    useUserProjects: allFundedProjects, 
+    loading
+  };
 };
+
 
 export const useUserContributionHistory = (page: number, limit: number) => {
   const dispatch: AppDispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
+  
   const getContributions = useSelector(
-    (state: any) => state?.transaction?.getUsersContribution,
+    (state: any) => state?.transaction?.getUsersContribution
+  );
+  
+  const loading = useSelector(
+    (state: any) => state?.transaction?.loading
+  );
+  
+  const error = useSelector(
+    (state: any) => state?.transaction?.error
   );
 
   useEffect(() => {
     const userToken = sessionStorage.getItem("userData");
     if (userToken) {
-      setIsLoading(true);
       dispatch(GetUsersContributionHistory({ page, limit }))
         .unwrap()
-        .then(() => {
-          setError(null);
-        })
         .catch((err: any) => {
-          setError(err.message || 'Failed to fetch contributions');
-        })
-        .finally(() => {
-          setIsLoading(false);
+          dispatch(setMessage(err.message || 'Failed to fetch contributions'));
         });
     } else {
-      setError('User token not found');
-      setIsLoading(false);
+      dispatch(setMessage('User token not found'));
     }
   }, [dispatch, page, limit]);
 
   return {
     getContributions,
-    isLoading,
+    isLoading: loading,
     error
   };
 };

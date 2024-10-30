@@ -377,14 +377,21 @@ export const transactionSlice = createSlice({
         state.getWalletBalance = null;
       })
 
+      .addCase(GetContributionBalance.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(
         GetContributionBalance.fulfilled,
         (state, action: PayloadAction<{ transaction: any }>) => {
+          state.loading = false;
           state.getContributionBalance = action.payload.transaction;
         },
       )
-      .addCase(GetContributionBalance.rejected, (state) => {
+      .addCase(GetContributionBalance.rejected, (state, action) => {
+        state.loading = false;
         state.getContributionBalance = null;
+        state.error = action.payload as string;
       })
 
       .addCase(
@@ -424,6 +431,7 @@ export const transactionSlice = createSlice({
       .addCase(
         GetAllProject.fulfilled,
         (state, action: PayloadAction<{ transaction: any }>) => {
+          state.loading = false;
           state.allProjects = action.payload.transaction;
         },
       )
@@ -578,7 +586,9 @@ export const transactionSlice = createSlice({
       .addCase(
         GetAllUserFundedProject.fulfilled,
         (state, action: PayloadAction<{ transaction: any }>) => {
+          state.loading = false;
           state.allFundedProjects = action.payload.transaction;
+          state.error = null;
         },
       )
       .addCase(GetAllUserFundedProject.rejected, (state, action) => {
@@ -587,14 +597,21 @@ export const transactionSlice = createSlice({
         state.error = action.payload as string;
       })
 
+      .addCase(GetUsersContributionHistory.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(
         GetUsersContributionHistory.fulfilled,
         (state, action: PayloadAction<{ transaction: any }>) => {
+          state.loading = false;
           state.getUsersContribution = action.payload.transaction;
         },
       )
-      .addCase(GetUsersContributionHistory.rejected, (state) => {
+      .addCase(GetUsersContributionHistory.rejected, (state, action) => {
+        state.loading = false;
         state.getUsersContribution = null;
+        state.error = action.payload as string;
       })
 
       .addCase(

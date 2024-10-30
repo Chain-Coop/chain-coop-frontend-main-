@@ -30,6 +30,10 @@ const Home = () => {
     useWalletBalance();
   const { profileDetails } = useUserProfile();
   const { useProjects, loading } = useAllProjects();
+
+  const handleProjectClick = (projectId: string) => {
+    navigate(`/dashboard/project/project_over-view/${projectId}`);
+  };
   
   const navigate = useNavigate();
   
@@ -61,12 +65,13 @@ const Home = () => {
         {latestProjects.map((project: Project) => (
           <article key={project?._id} className="flex-1">
             <div 
-              className="flex h-auto min-h-48 flex-col gap-8 rounded-xl p-3 bg-cover bg-center bg-no-repeat transition-transform hover:scale-[1.02]"
+              className="flex cursor-pointer h-auto min-h-48 flex-col gap-8 rounded-xl p-3 bg-cover bg-center bg-no-repeat transition-transform hover:scale-[1.02]"
               style={{ 
                 backgroundImage: `url(${project?.documentUrl})`,
                 backgroundColor: 'rgba(255, 255, 255, 0.1)',
                 backgroundBlendMode: 'overlay'
               }}
+              onClick={() => handleProjectClick(project._id)}  
             >
               <h1 className="text-lg font-medium uppercase text-text3">
                 {project?.title}

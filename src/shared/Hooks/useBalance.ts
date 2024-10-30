@@ -7,6 +7,7 @@ import {
 } from "../redux/slices/transaction.slices";
 import { AppDispatch } from "../redux/store";
 import { formatBalance } from "../utils/format";
+import { setMessage } from "../redux/slices/message.slices";
 
 export const useWalletBalance = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -40,15 +41,18 @@ export const useWalletBalance = () => {
   };
 };
 
-export const useContributionBalance = () => {
-  const dispatch: AppDispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  
-  const balance = useSelector(
-    (state: any) => state?.transaction?.getContributionBalance,
-  );
 
+export const useContributionBalance = () => {
+  const dispatch: AppDispatch = useDispatch();  
+  const balance = useSelector(
+    (state: any) => state?.transaction?.getContributionBalance
+  );
+  const loading = useSelector(
+    (state: any) => state?.transaction?.loading
+  );
+  const error = useSelector(
+    (state: any) => state?.transaction?.error
+  );
   const [isContributionVisible, setIsContributionVisible] = useState(() => {
     const storedVisibility = sessionStorage.getItem("contributionBalanceVisible");
     return storedVisibility !== null ? storedVisibility === "true" : true;
@@ -57,18 +61,13 @@ export const useContributionBalance = () => {
   useEffect(() => {
     const userToken = sessionStorage.getItem("userData");
     if (userToken) {
-      setIsLoading(true);
       dispatch(GetContributionBalance())
         .unwrap()
-        .catch((error: any) => {
-          setError(error.message || 'Failed to fetch balance');
-        })
-        .finally(() => {
-          setIsLoading(false);
+        .catch((err: any) => {
+          dispatch(setMessage(err.message || 'Failed to fetch balance'));
         });
     } else {
-      setError('User token not found');
-      setIsLoading(false);
+      dispatch(setMessage('User token not found'));
     }
   }, [dispatch]);
 
@@ -79,7 +78,7 @@ export const useContributionBalance = () => {
     isContributionVisible,
     setIsContributionVisible,
     formattedBalance,
-    isLoading,
+    isLoading: loading,
     error
   };
 };

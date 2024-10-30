@@ -12,19 +12,18 @@ import ReactLoading from "react-loading";
 import Modal from "../../../../common/Modal";
 import success from "../../../../../Assets/svg/auth/sucess.svg";
 
-
 const ConfirmTransaction = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
-  const [isModalOpen, setIsModalOpen] = useState(false);  
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
-  const { amountInNaira, selectedProjectId } = location.state as { 
-    amountInNaira: number; 
-    selectedProjectId: string 
+  const { amountInNaira, selectedProjectId } = location.state as {
+    amountInNaira: number;
+    selectedProjectId: string
   };
   
-  const interestRate = 0.05; 
+  const interestRate = 0.05;
   const returns = Math.round(amountInNaira * interestRate);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -33,8 +32,9 @@ const ConfirmTransaction = () => {
     navigate(-1);
   };
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    navigate('/dashboard'); 
   };
 
   const handleFund = async () => {
@@ -42,10 +42,13 @@ const ConfirmTransaction = () => {
     setError("");
     try {
       const body = { amount: amountInNaira };
-      const result:any = await dispatch(FundProject({ body, projectId: selectedProjectId })).unwrap();
-      if(result.status === 201){
-        handleOpenModal(); 
-        setLoading(false);  
+      const result = await dispatch(FundProject({ body, projectId: selectedProjectId })).unwrap();
+      
+            if (result?.transaction?.statusCode === 200 ) {
+        setLoading(false);
+        setIsModalOpen(true); 
+      } else {
+        throw new Error('Transaction failed');
       }
     } catch (error: any) {
       setLoading(false);
@@ -89,9 +92,9 @@ const ConfirmTransaction = () => {
           <Alert severity="error" className="mt-4">{error}</Alert>
         )}
         <div className="mt-[2em] flex justify-center">
-          <Primary 
-            className="w-[70%] flex justify-center bg-text2 py-3 text-white" 
-            onClick={handleFund} 
+          <Primary
+            className="w-[70%] flex justify-center bg-text2 py-3 text-white"
+            onClick={handleFund}
             disabled={loading}
           >
             {loading ? (
@@ -102,10 +105,13 @@ const ConfirmTransaction = () => {
           </Primary>
         </div>
       </section>
-      
-      {isModalOpen && (
-        <Modal>
-          <div className="mt-[2.5em] flex flex-col justify-center">
+
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={handleCloseModal}
+        className="bg-white"
+      >
+           <div className="mt-[2.5em] flex flex-col justify-center">
             <img
               src={success}
               alt="Success Icon"
@@ -116,9 +122,16 @@ const ConfirmTransaction = () => {
                 Successfully Submitted
               </h1>
             </header>
-          </div> 
-        </Modal>
-      )}
+            <div className="mt-4 flex justify-center">
+              <Primary
+                className="w-[50%] bg-text2 py-2 text-white"
+                onClick={handleCloseModal}
+              >
+                Done
+              </Primary>
+            </div>
+          </div>
+      </Modal>
     </main>
   );
 };

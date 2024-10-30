@@ -183,16 +183,16 @@ const VerifyAccount = () => {
             "block lg:h-[55px] lg:w-[55px] sm:h-[50px] sm:w-[35px] text-center border-gray-200 rounded-md text-sm placeholder:text-gray-300 focus:border-text2 focus:ring-text2 bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
           }
         />
+      </div>
         {error && (
           <Alert severity="error" className="mt-4 mb-4">
             {error}
           </Alert>
         )}
-      </div>
         <Primary
           onClick={handleSubmit}
           disabled={loading}
-          className="mt-[2em] px-2 w-full font-semibold rounded-full bg-text2 py-2 text-white"
+          className="mt-[2em] px-2 w-full flex justify-center font-semibold rounded-full bg-text2 py-2 text-white"
         >
           {loading ? (
             <ReactLoading color="#FFFFFF" height={25} width={25} type="spin" />
