@@ -1,5 +1,5 @@
 
-.wrapper {
+/* .wrapper {
     position: relative;
     width: 100%;
     height: 100%;
@@ -11,7 +11,7 @@
     flex-wrap: wrap;
     overflow-x: hidden;
     max-width: 100vw;
-}
+} */
 
 .card {
     position: relative;
