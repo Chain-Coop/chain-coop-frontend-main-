@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import ReactLoading from "react-loading";
 import usePasswordToggle from "../../../shared/utils/usePasswordToggle";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
+import { saveRememberMe } from "../../../shared/utils/auth";
 
 const UserLogin = () => {
   const [email, setEmail] = useState("");
@@ -26,24 +27,32 @@ const UserLogin = () => {
     e.preventDefault();
     navigate("/");
   };
+
   const loginUserData = (e: any) => {
     e.preventDefault();
     if (!email || !password) {
       toast.error("Please fill in all fields.");
-      return; 
+      return;
     }
-  
+
     setLoading(true);
     let body = {
       email: email,
       password: password,
     };
-  
+
     dispatch(LoginUser(body))
       .unwrap()
       .then((response) => {
         setLoading(false);
         if (response.landing.role === "user") {
+          if (rememberMe) {
+            saveRememberMe(email, password);
+          } else {
+            sessionStorage.removeItem("email");
+            sessionStorage.removeItem("encryptedPassword");
+            sessionStorage.removeItem("rememberMe");
+          }
           navigate("/dashboard");
         } else {
           toast.error("You do not have access to this dashboard.");
@@ -51,19 +60,8 @@ const UserLogin = () => {
       })
       .catch((error: any) => {
         setLoading(false);
-        const errorMessage = error;
-        toast.error(errorMessage);
+        toast.error(error);
       });
-  
-    if (rememberMe) {
-      sessionStorage.setItem("email", email);
-      sessionStorage.setItem("password", password);
-      sessionStorage.setItem("rememberMe", "true");
-    } else {
-      sessionStorage.removeItem("email");
-      sessionStorage.removeItem("password");
-      sessionStorage.removeItem("rememberMe");
-    }
   };
 
   const toggleRememberMe = () => {

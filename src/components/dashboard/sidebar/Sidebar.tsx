@@ -25,9 +25,9 @@ const Sidebar = () => {
   };
 
   const getButtonProps = () => {
-    if (profileDetails?.membershipStatus === "pending") {
-      return { text: "Pending", bgColor: "bg-yellow-500" }; 
-    } else if (profileDetails?.membershipStatus === "activated") {
+    if (profileDetails?.membershipStatus === "inactive") {
+      return { text: "Inactive", bgColor: "bg-yellow-500" }; 
+    } else if (profileDetails?.membershipStatus === "activative") {
       return { text: "Activated", bgColor: "bg-green-500" }; 
     }
     return { text: "Unknown", bgColor: "bg-gray-400" }; 

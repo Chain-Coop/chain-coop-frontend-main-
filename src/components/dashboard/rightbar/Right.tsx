@@ -1,11 +1,8 @@
 import React from "react";
 import newspaper from "../../../Assets/svg/dashboard/newspaper.svg";
-import { SiGooglemessages } from "react-icons/si";
-import { IoIosArrowForward } from "react-icons/io";
 import person2 from "../../../Assets/png/dashboard/right.png";
 import person3 from "../../../Assets/png/home/ladylaptop3.png";
 import { ComingSoon } from "../../common/Button";
-import { Link } from "react-router-dom";
 
 const Right = () => {
   return (
@@ -24,55 +21,11 @@ const Right = () => {
             </p>
             <img src={newspaper} alt="newpaper-icon" />
           </div>
-          {/* <div className="mt-[1.5em] text-sm">4 mins ago</div> */}
         </article>
-        {/* <header className="mt-[2em]">
-          <h2 className="text-lg font-semibold">Need Help? Contact Us </h2>
-        </header>
-        <hr className="mt-[1.5em] h-1" />
-        <Link to="/dashboard/contact_us" className="mt-[1.5em] flex items-center gap-2">
-          <div>
-            <SiGooglemessages className="fill-text2" size={45} />
-          </div>
-          <div className="flex w-full flex-col justify-between">
-            <div>
-              <h2 className="text-xl font-semibold text-text2">Contact Us</h2>
-              <p>
-                Chat with a member of our <br /> customer success team.
-              </p>
-            </div>
-          </div>
-          <div>
-            <IoIosArrowForward
-              size={20}
-              className="cursor-pointer text-text2"
-            />
-          </div>
-        </Link> */}
+
 
         <hr className="mt-[1.5em] h-1" />
-        {/* <section className="mt-[1.5em] flex items-center gap-2">
-          <div className="box-logo">
-            <SiGooglemessages className="cursor-pointer fill-text2" size={40} />
-          </div>
-          <article className="flex w-full flex-col justify-between">
-            <div>
-              <h2 className="text-lg font-semibold text-text2">
-                Coop Onboarding Series
-              </h2>
-              <p>
-                Watch Our Onboarding Videos <br /> to get started
-              </p>
-            </div>
-          </article>
-          <div>
-            <IoIosArrowForward
-              size={20}
-              className="cursor-pointer text-text2"
-            />
-          </div>
-        </section> */}
-
+     
         <section className="mt-[2em] flex flex-col text-text4">
           <header>
             <h2 className="text-xl font-bold">Ongoing Project of Chain Coop</h2>

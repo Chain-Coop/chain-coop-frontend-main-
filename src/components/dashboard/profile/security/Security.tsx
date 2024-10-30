@@ -4,10 +4,11 @@ import Modal from "../../../common/Modal";
 import Email from "./modal/Email";
 import OtpInput from "./modal/OtpInput";
 import NewPassword from "./modal/NewPassword";
-
+import useUserProfile from "../../../../shared/Hooks/useUserProfile";
 const Security = () => {
-  const [currentStep, setCurrentStep] = useState(0); // 0: none, 1: email, 2: otp, 3: new password
+  const [currentStep, setCurrentStep] = useState(0); 
   const [email, setEmail] = useState("");
+  const { profileDetails } = useUserProfile();
   const [otp, setOtp] = useState("");
 
   const handlePasswordResetClick = () => {
@@ -21,11 +22,15 @@ const Security = () => {
   };
 
   const handleEmailSent = () => {
-    setCurrentStep(2); // Move to OTP step
+    setCurrentStep(2); 
   };
 
   const handleOtpEntered = () => {
-    setCurrentStep(3); // Move to new password step
+    setCurrentStep(3); 
+  };
+
+  const handleResetSuccess = () => {
+    setCurrentStep(0);
   };
 
   const sections = [
@@ -93,10 +98,10 @@ const Security = () => {
           onClose={handleCloseModal}
         >
           <NewPassword
-            email={email}
+            email={profileDetails.email}
             otp={otp}
             onClose={handleCloseModal}
-            onPasswordReset={handleCloseModal}
+            onSuccess={handleResetSuccess} // Pass onSuccess to close all modals
           />
         </Modal>
       )} 

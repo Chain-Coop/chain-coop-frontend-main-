@@ -34,7 +34,7 @@ const ProtectedRoutes = () => {
       }
     };
 
-    const intervalId = setInterval(validateSession, 60000);
+    const intervalId = setInterval(validateSession, 10000);
 
     return () => clearInterval(intervalId);
   }, [navigate]);
@@ -45,7 +45,7 @@ const ProtectedRoutes = () => {
 
   return (
     <IdleTimerProvider
-      timeout={10 * 60 * 1000} 
+      timeout={60 * 1000} 
       onIdle={handleOnIdle}
       debounce={250}
     >

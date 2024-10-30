@@ -1,10 +1,10 @@
 import React from "react";
 import { useAllUserFundedProjects } from "../../../../shared/Hooks/useUserProfile";
+import { ComingSoon } from "../../../common/Button";
 
 const PortfolioContent = () => {
   const { useUserProjects, loading } = useAllUserFundedProjects();
   const { totalFundedProjects, totalFundedAmount, fundedProjects } = useUserProjects || {};
-  console.log("funded",fundedProjects, totalFundedAmount,totalFundedAmount)
 
   if (loading) {
     return (
@@ -59,10 +59,10 @@ const PortfolioContent = () => {
           </article>
         </div>
 
-        <div className="mb-[2em] mt-[4em]">
+        <div className="mb-[2em] flex flex-col gap-[2em] mt-[4em]">
           {fundedProjects?.length > 0 ? (
-            fundedProjects.map((project:any, index:number) => (
-              <article key={index} className="sm:w-full lg:w-[300px]">
+            fundedProjects?.map((project:any, index:number) => (
+              <article key={index} className="w-full">
                 <div
                   className="rounded-xl bg-explore2 bg-cover bg-center bg-no-repeat p-[1em]"
                   style={{
@@ -72,9 +72,9 @@ const PortfolioContent = () => {
                   <h1 className="p-[1em] font-sans text-lg font-medium uppercase text-text3">
                     {project.title}
                   </h1>
-                  <p className="p-[1em] font-sans text-sm text-text2">
-                    {project.description}
-                  </p>
+                  <div className="mt-12">
+                <ComingSoon className="bg-coming2">{project?.status}</ComingSoon>
+                </div>
                 </div>
               </article>
             ))

@@ -1,21 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Primary } from "../../../../common/Button";
 import { FORGOT_PASSWORD } from "../../../../../shared/redux/services/landing.services";
-import { toast } from "react-toastify";
 import ReactLoading from "react-loading";
+import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 
-const EmailStep = ({ email, setEmail, onClose, onEmailSent }:any) => {
+const EmailStep = ({ onClose, onEmailSent }:any) => {
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  
+  const { profileDetails } = useUserProfile();
+
+  useEffect(() => {
+    setEmail(profileDetails.email);
+  }, [profileDetails.email]);
+
   const handleOtpMail = async () => {
     try {
       setLoading(true);
       const endpoint = `/auth/forget_password`;
-      console.log("sending")
       const response = await FORGOT_PASSWORD(endpoint, { email });
-      console.log("proccessed",response)
       if (response.status === 200) {
-        onEmailSent(); 
+        onEmailSent();
       }
     } catch (error) {
       console.error("Failed to send OTP:", error);
@@ -32,13 +36,13 @@ const EmailStep = ({ email, setEmail, onClose, onEmailSent }:any) => {
             <h1 className="font-semibold text-lg">Reset Password</h1>
           </header>
         </div>
-        
+
         <div className="mt-[1em]">
           <label
             htmlFor="email"
             className="flex-start flex text-lg font-semibold text-text2"
           >
-            Enter your Email Address
+            Email Address
           </label>
           <div className="relative flex items-center text-center">
             <input
@@ -47,27 +51,27 @@ const EmailStep = ({ email, setEmail, onClose, onEmailSent }:any) => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-[10px] w-full rounded-full border-[1px] bg-white p-2 shadow-lg focus:border-text2 focus:outline-none focus:ring-text2"
+              className="mt-[10px] w-full rounded-full border-[1px] bg-gray-200 p-2 shadow-lg focus:border-none focus:outline-none focus:ring-text2"
             />
           </div>
         </div>
 
-        <Primary 
+        <Primary
           onClick={handleOtpMail}
           disabled={loading}
           className="m-auto mt-4 flex w-[60%] justify-center rounded-full bg-text2 px-3 py-2 text-lg text-white"
         >
-         {loading ? (
-              <ReactLoading
-                color="#FFFFFF"
-                width={25}
-                height={25}
-                type="spin"
-                className="inline-block"
-              />
-            ) : (
-              "Reset"
-            )}
+          {loading ? (
+            <ReactLoading
+              color="#FFFFFF"
+              width={25}
+              height={25}
+              type="spin"
+              className="inline-block"
+            />
+          ) : (
+            "Reset"
+          )}
         </Primary>
       </section>
     </main>

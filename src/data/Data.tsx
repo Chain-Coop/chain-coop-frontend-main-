@@ -381,5 +381,6 @@ export const  SavingOn = [
 
 export const Plan = [
   { text: "Monthly" },
+  { text: "Daily" },
 ];
 
