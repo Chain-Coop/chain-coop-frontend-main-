@@ -45,7 +45,7 @@ const ProtectedRoutes = () => {
 
   return (
     <IdleTimerProvider
-      timeout={60 * 1000} 
+      timeout={5 * 60 * 1000} 
       onIdle={handleOnIdle}
       debounce={250}
     >

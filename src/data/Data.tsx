@@ -107,7 +107,7 @@ export const becomeData = [
   {
     title: "Legally Guaranteed Returns",
     paragraph:
-      "As a Chain Co-op member, your investment are protected by cooperative laws giving you peace of mind with annual dividends based on your contributions.",
+      "As a Chain Co-op member, your investment are protected by cooperative laws giving you peace of mind with annual dividends based on your contributions.Get legally backed savings with Naira, Dollars, Gold, or BTC, with the security of cooperative laws.",
   },
 
   {
@@ -117,7 +117,7 @@ export const becomeData = [
   {
     title: "Grow Your Network with Industry Experts",
     paragraph:
-      "Meet fellow tech professionals investors, and extrepreneur through virtual meetups and exclusive events.",
+      "Meet others focused on saving, learn how to protect your money, and connect with fiancial experts.",
   },
   {
     title: "Shape the Future of Chain Co-op",

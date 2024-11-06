@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import ToggleButton from "../../../../shared/utils/ToggleButton";
 import { DashboardHeader } from "../../../common/DashboardHeader";
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-import { format, parseISO } from 'date-fns';
+import { format, parseISO, isFuture, isPast } from 'date-fns';
 import { AppDispatch } from "../../../../shared/redux/store";
 import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
 import { useSelector } from "react-redux";
@@ -20,73 +20,92 @@ const ViewContribution = () => {
     const storedVisibility = sessionStorage.getItem("contributionBalanceVisible");
     return storedVisibility !== null ? storedVisibility === "true" : true;
   });
+  
   const location = useLocation();
   const contributionId = location?.state?.contributionId;
   const dispatch: AppDispatch = useAppDispatch();
   const { contributionDetails } = useSelector((state: any) => state.transaction);
-
-const balanceInNaira = contributionDetails?.balance || 0;
-const formattedBalance = formatBalance(balanceInNaira);
-
-const handleBackClick = () => {
-  navigate(-1)
-}
-
-const formatContributionDate = (dateString: string) => {
-  if (!dateString) return "Date not available";
-  try {
-    return format(parseISO(dateString), "MMMM dd, yyyy");
-  } catch {
-    return "Invalid date";
-  }
-};
-
-  useEffect(() => {
-    dispatch(GetContributionDetailsById({ contributionId}));
-  }, [dispatch, contributionId]);
-
   const navigate = useNavigate();
 
+  const balanceInNaira = contributionDetails?.balance || 0;
+  const formattedBalance = formatBalance(balanceInNaira);
+
+  const handleBackClick = () => {
+    navigate(-1);
+  };
+
+  const formatContributionDate = (dateString: string) => {
+    if (!dateString) return "Date not available";
+    try {
+      return format(parseISO(dateString), "MMMM dd, yyyy");
+    } catch {
+      return "Invalid date";
+    }
+  };
+
+  useEffect(() => {
+    dispatch(GetContributionDetailsById({ contributionId }));
+  }, [dispatch, contributionId]);
+
   const ContributionTracker = () => {
-    if (!contributionDetails || contributionDetails?.length === 0) return null;
+    if (!contributionDetails) return null;
 
-    const contribution = contributionDetails;
-    const { 
-        startDate = new Date(), 
-        nextContributionDate = new Date(), 
-        amount = 0, 
-    } = contribution ?? {};
+    const {
+      startDate,
+      lastContributionDate,
+      nextContributionDate,
+      amount = 0,
+      status,
+    } = contributionDetails;
 
+    // Create steps array with all relevant dates
     const steps = [
       {
-        date: startDate ? new Date(startDate) : new Date(),
+        label: 'Start Date',
+        date: startDate,
         amount,
-        status: 'Completed'
+        description: 'Contribution Started',
+        status: isPast(parseISO(startDate)) ? 'Completed' : 'Pending'
       },
       {
-        date: nextContributionDate ? new Date(nextContributionDate) : new Date(),
+        label: 'Last Contribution',
+        date: lastContributionDate,
         amount,
-        status: 'In Progress'
+        description: 'Last Contribution Made',
+        status: lastContributionDate ? 'Completed' : 'Pending'
+      },
+      {
+        label: 'Next Contribution',
+        date: nextContributionDate,
+        amount,
+        description: 'Next Scheduled Contribution',
+        status: 'Upcoming'
       }
-    ];
+    ].filter(step => step.date); // Only include steps with valid dates
 
     const getStatusStyle = (status: string) => {
       switch (status) {
         case 'Completed':
           return 'bg-green-500 text-white';
-        case 'In Progress':
+        case 'Upcoming':
           return 'bg-gray-200 text-gray-600';
+        case 'Pending':
+          return 'bg-yellow-500 text-white';
         default:
-          return '';
+          return 'bg-gray-200 text-gray-600';
       }
     };
 
-    const formatSafeDate = (date: Date) => {
+    const formatSafeDate = (dateString: string) => {
       try {
-        return format(date, "EEEE: dd/MM/yyyy");
+        return format(parseISO(dateString), "EEEE: dd/MM/yyyy");
       } catch {
         return "Date unavailable";
       }
+    };
+
+    const isStepActive = (status: string) => {
+      return status !== 'Upcoming';
     };
 
     return (
@@ -100,40 +119,40 @@ const formatContributionDate = (dateString: string) => {
           </p>
         </div>
         <div className="flex mt-[1em] font-semibold justify-between">
-          <p>{contributionDetails?.contributionPlan} </p>
+          <p>{contributionDetails?.contributionPlan} Contribution</p>
           <p>Status</p>
         </div>
         <Box sx={{ maxWidth: "100%", marginTop: "1.5em" }}>
           <Stepper orientation="vertical">
             {steps.map((step, index) => (
-              <Step key={index} active={true}>
-                <StepLabel 
+              <Step key={index} active={isStepActive(step.status)}>
+                <StepLabel
                   sx={{
                     '& .MuiStepLabel-iconContainer': {
                       paddingRight: '1rem',
                       '& .MuiStepIcon-root': {
-                        color: index === 1 ? '#9CA3AF' : '#430280',
+                        color: step.status === 'Upcoming' ? '#9CA3AF' : '#430280',
                       }
                     }
                   }}
                 >
                   <div className="flex justify-between items-start w-full sm:flex-row flex-col gap-2 sm:gap-0">
                     <div className="flex-1 min-w-0">
-                      <p className={`font-semibold text-lg truncate ${index === 1 ? 'text-gray-400' : ''}`}>
-                        Cash Transfer from Co-op wallet
+                      <p className={`font-semibold text-lg truncate ${step.status === 'Upcoming' ? 'text-gray-400' : ''}`}>
+                        {step.description}
                       </p>
-                      <p className={`font-semibold whitespace-nowrap ${index === 1 ? 'text-gray-400' : ''}`}>
+                      <p className={`font-semibold whitespace-nowrap ${step.status === 'Upcoming' ? 'text-gray-400' : ''}`}>
                         {formatSafeDate(step.date)}
                       </p>
-                      <p className={`font-semibold whitespace-nowrap ${index === 1 ? 'text-gray-400' : ''}`}>
-                        Amount: <span className={index === 1 ? 'text-gray-400' : 'text-act'}>
-                          NGN {step?.amount?.toLocaleString()}
+                      <p className={`font-semibold whitespace-nowrap ${step.status === 'Upcoming' ? 'text-gray-400' : ''}`}>
+                        Amount: <span className={step.status === 'Upcoming' ? 'text-gray-400' : 'text-act'}>
+                          NGN {step.amount?.toLocaleString()}
                         </span>
                       </p>
                     </div>
                     <div className="sm:ml-2 self-start sm:self-center">
-                      <div className={`px-5 py-1 rounded-full text-sm whitespace-nowrap ${getStatusStyle(step?.status)}`}>
-                        {step?.status}
+                      <div className={`px-5 py-1 rounded-full text-sm whitespace-nowrap ${getStatusStyle(step.status)}`}>
+                        {step.status}
                       </div>
                     </div>
                   </div>
@@ -150,17 +169,17 @@ const formatContributionDate = (dateString: string) => {
     <main className="font-sans pb-[1.5em]">
       <header className="sm:mt-[0] lg:mt-[2em]">
         <DashboardHeader className="flex items-center justify-center">
-         {contributionDetails?.contributionPlan} Contribution Plan
+          {contributionDetails?.contributionPlan} Contribution Plan
         </DashboardHeader>
       </header>
       <header className="flex items-center justify-between gap-8 w-full max-w-md mx-auto p-4">
-          <div className="left-0 ml-4">
-            <IoIosArrowBack onClick={handleBackClick} className="cursor-pointer" size={30} />
-          </div>
-          <div className="flex-1 text-center">
-            <h1 className="font-bold text-xl">{contributionDetails?.savingsCategory}</h1>
-          </div>
-        </header>
+        <div className="left-0 ml-4">
+          <IoIosArrowBack onClick={handleBackClick} className="cursor-pointer" size={30} />
+        </div>
+        <div className="flex-1 text-center">
+          <h1 className="font-bold text-xl">{contributionDetails?.savingsCategory}</h1>
+        </div>
+      </header>
       <section className="sm:px-[1.5em] lg:mx-auto lg:w-[33em] lg:px-[0]">
         <article className="text-center text-text4">
           <div className="rounded-3xl py-[2em] shadow-md">
@@ -173,7 +192,7 @@ const formatContributionDate = (dateString: string) => {
                     setIsContributionVisible(newVisibility);
                     sessionStorage.setItem(
                       "contributionBalanceVisible",
-                      newVisibility.toString(),
+                      newVisibility.toString()
                     );
                   }}
                 />
@@ -190,23 +209,23 @@ const formatContributionDate = (dateString: string) => {
               <hr className="mt-[1em] h-[1px] rounded-md bg-howtext" />
             </div>
           </div>
-          
+
           <section className="mt-[2em] mb-[2em]">
             <div className="flex justify-center">
-            <Link 
-            to="/dashboard/contribution/withdraw_contribution"
-            state={{ contributionId: contributionId }}
-          >
-            <button className="rounded-full bg-inherit text-lg font-semibold shadow-md whitespace-nowrap sm:px-[1em] sm:py-[5px] lg:px-[3em] lg:py-[10px]">
-              Withdraw
-            </button>
-          </Link>
+              <Link
+                to="/dashboard/contribution/withdraw_contribution"
+                state={{ contributionId: contributionId }}
+              >
+                <button className="rounded-full bg-inherit text-lg font-semibold shadow-md whitespace-nowrap sm:px-[1em] sm:py-[5px] lg:px-[3em] lg:py-[10px]">
+                  Withdraw
+                </button>
+              </Link>
             </div>
           </section>
           <span className="font-semibold mt-[1em] text-gray-500">
             Next Contribution: {formatContributionDate(contributionDetails?.nextContributionDate)}
           </span>
-            <hr className="mt-[2em] w-full" />
+          <hr className="mt-[2em] w-full" />
         </article>
         <ContributionTracker />
       </section>
