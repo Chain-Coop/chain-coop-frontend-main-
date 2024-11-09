@@ -56,7 +56,6 @@ const Contribution: React.FC = () => {
   const handleNextPage = () => setPage(prev => Math.min(totalPages, prev + 1));
 
   const navigateToContributionDetails = (contributionId: string) => {
-    console.log("id",contributionId)
     if (!contributionId) return;
     navigate(`/dashboard/contribution/contribution_details`, {
       state: { contributionId },
@@ -187,3 +186,4 @@ const Contribution: React.FC = () => {
 };
 
 export default Contribution;
+

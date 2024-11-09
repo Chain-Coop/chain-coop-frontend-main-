@@ -28,6 +28,7 @@ const API_URL_VERIFY_FUND_WALLET =
     reference: string;
     trxref: string;
   }
+
   
   const handleApiError = (error: any) => {
     if (!error.response) {
@@ -332,7 +333,7 @@ const GetUsersContributionHistory = async (page: number, limit: number) => {
 };
 
 const GetContributionDetailsById = async (contributionId: any) => {
-  const url = `${API_URL}/contribution/category/${contributionId}`;
+  const url = `${API_URL}/contribution/history?contributionId=${contributionId}`;
   try {
     const response = await axios({
       url,

@@ -1,3 +1,4 @@
+
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { setMessage } from "./message.slices";
 import TransactionServices from "../services/transaction.services";
@@ -15,6 +16,33 @@ interface VerificationParams {
   reference: string;
   trxref: string;
 }
+
+interface ContributionHistory {
+  _id: string;
+  contribution: string;
+  user: string;
+  amount: number;
+  Date: string;
+  type: string;
+  balance: number;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+interface ContributionDetails {
+  startDate: string;
+  nextContributionDate: string;
+  withdrawalDate: string;
+  amount: number;
+  status: string;
+  contributionPlan: string;
+  savingsCategory: string;
+  balance: number;
+  history: ContributionHistory[];
+}
+
 
 export const GetWalletBalance = createAsyncThunk(
   "transaction/getWalletBalance",
@@ -297,6 +325,7 @@ export const GetContributionDetailsById = createAsyncThunk(
   "transaction/getContributionDetailsById",
    async ({ contributionId}: { contributionId: any }) => {
      const response = await TransactionServices.GetContributionDetailsById(contributionId);
+     console.log("res",response)
      return response
    }
  );
@@ -324,7 +353,7 @@ interface TransactionState {
   currentProject: any | null;
   createPin: any | null;
   requestWithdrawal: any | null;
-  contributionDetails: any | null;
+  contributionDetails: ContributionDetails | null;
   loading: boolean;
   error: string | null | Record<string, unknown>;
 }
@@ -614,13 +643,28 @@ export const transactionSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      .addCase(
-        GetContributionDetailsById.fulfilled,
-        (state, action: PayloadAction<{ contribution: any }>) => {
-          state.contributionDetails = action.payload.contribution;
-        }
-      )
-      .addCase(GetContributionDetailsById.rejected, (state) => {
+       .addCase(GetContributionDetailsById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(GetContributionDetailsById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;      
+        state.contributionDetails = {
+          startDate: action.payload.startDate,
+          nextContributionDate: action.payload.nextContributionDate,
+          withdrawalDate: action.payload.withdrawalDate,
+          amount: action.payload.history[0]?.amount || 0,
+          status: action.payload.history[0]?.status || '',
+          contributionPlan: action.payload.contributionPlan || '',
+          savingsCategory: action.payload.savingsCategory || '',
+          balance: action.payload.balance || 0,
+          history: action.payload.history || []
+        };
+      })
+      
+      .addCase(GetContributionDetailsById.rejected, (state, action) => {
+        state.loading = false;
         state.contributionDetails = null;
       });
   },
