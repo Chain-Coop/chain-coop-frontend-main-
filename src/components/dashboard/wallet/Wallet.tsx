@@ -5,7 +5,6 @@ import useWalletBalance from "../../../shared/Hooks/useBalance";
 import ToggleButton from "../../../shared/utils/ToggleButton";
 import History from "./TransactionHistory/History";
 import { DashboardHeader } from "../../common/DashboardHeader";
-import { MdArrowOutward } from "react-icons/md";
 import withdraw_icon from "../../../Assets/svg/dashboard/wallet/withdraw.svg";
 import fund_icon from "../../../Assets/svg/dashboard/wallet/fund.svg";
 import transfer_icon from "../../../Assets/svg/dashboard/wallet/transfer.svg";
@@ -99,17 +98,3 @@ const Wallet = () => {
 };
 
 export default Wallet;
-
-
-{/* <section className="mt-[2em]">
-  <p className="text-sm font-bold text-memt1">No Card Linked</p>
-  <div className="items-center font-medium lg:flex lg:justify-between ">
-    <p>{`You haven't linked your card to add funds.`}</p>
-    <div className="flex items-center">
-      <button className="flex items-center rounded-full bg-act py-[2px] text-center text-sm  text-text5 sm:px-[9px] lg:px-[7px]">
-        Link Card
-        <IoIosArrowForward />
-      </button>
-    </div>
-  </div>
-</section> */}

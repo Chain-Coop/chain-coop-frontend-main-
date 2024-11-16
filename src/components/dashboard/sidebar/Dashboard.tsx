@@ -27,15 +27,15 @@ import ContactUs from "../contact/main/ContactUs";
 import VerifyTransaction from "../wallet/fund/verifyTransaction/VerifyTransaction";
 import ConfirmTransaction from "../wallet/transfer/fundContribution/confirmTransaction";
 import ProjectContentOverView from "../nestedproject/nested/ProjectContentOverView";
-import GlobalPinSetupManager from "../../common/GlobalPinSetUpManager";
-import Purpose from "../contribution/purpose/Purpose"
-import SavingsPlan from "../contribution/savingsPlan/SavingsPlan"
-import StartDate from "../contribution/startDate/StartDate"
-import SavingsAmount from "../contribution/savingsAmount/SavingsAmount"
+import Purpose from "../contribution/purpose/Purpose";
+import SavingsPlan from "../contribution/savingsPlan/SavingsPlan";
+import StartDate from "../contribution/startDate/StartDate";
+import SavingsAmount from "../contribution/savingsAmount/SavingsAmount";
 import VerifyContribution from "../contribution/main/VerifyContribution";
 import ViewContribution from "../contribution/viewContribution/ViewContribution";
 import WithdrawContribution from "../contribution/withdrawContribution/WithdrawContribution";
-
+import ManageCards from "../contribution/manageCards/ManageCards";
+import ConfirmWithdrawal from "../contribution/withdrawContribution/ConfirmAmount";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -51,9 +51,6 @@ const Dashboard = () => {
         <nav className="sm:block lg:hidden">
           <DashboardNav />
         </nav>
-      <GlobalPinSetupManager>
-     
-
         <Routes>
           <Route path="/" element={<Home />} />
 
@@ -66,10 +63,24 @@ const Dashboard = () => {
             path="contribution/fund_contribution/confirm_transaction"
             element={<ConfirmAmount />}
           />
-         <Route path="contribution/fund_contribution/verify_transaction" element={<VerifyContribution />} />
-         <Route path="/contribution/contribution_details" element={<ViewContribution />} />
-         <Route path="/contribution/withdraw_contribution" element={<WithdrawContribution />} />
+          <Route
+            path="contribution/fund_contribution/verify_transaction"
+            element={<VerifyContribution />}
+          />
+          <Route
+            path="/contribution/contribution_details"
+            element={<ViewContribution />}
+          />
+          <Route
+            path="/contribution/withdraw_contribution"
+            element={<WithdrawContribution />}
+          />
+          <Route
+            path="/contribution/withdraw_contribution/confirm-amount"
+            element={<ConfirmWithdrawal />}
+          />
 
+          <Route path="/contribution/manage_cards" element={<ManageCards />} />
           <Route path="wallet/*" element={<Wallet />} />
           <Route path="wallet/withdraw" element={<Withdraw />} />
           <Route path="wallet/select-bank" element={<SelectBank />} />
@@ -77,10 +88,11 @@ const Dashboard = () => {
           <Route path="wallet/select-account" element={<SelectAccount />} />
           <Route path="wallet/verify-account" element={<VerifyAccount />} />
 
-
           <Route path="wallet/fund" element={<FundWallet />} />
-          <Route path="wallet/fund_wallet/verify_transaction" element={<VerifyTransaction />} />
-
+          <Route
+            path="wallet/fund_wallet/verify_transaction"
+            element={<VerifyTransaction />}
+          />
 
           <Route path="wallet/transfer" element={<TransferWallet />} />
           <Route path="wallet/transfer/fund-project" element={<AddFund />} />
@@ -89,9 +101,11 @@ const Dashboard = () => {
             element={<ConfirmTransaction />}
           />
 
-
           <Route path="project" element={<Project />} />
-          <Route path="project/project_over-view/:projectId" element={<ProjectContentOverView />} />
+          <Route
+            path="project/project_over-view/:projectId"
+            element={<ProjectContentOverView />}
+          />
 
           <Route path="proposal/*" element={<Proposal />} />
           <Route path="proposal/submit-proposal" element={<SubmitProposal />} />
@@ -104,9 +118,8 @@ const Dashboard = () => {
             element={<ProfileTransactions />}
           />
 
-        <Route path="contact_us" element={<ContactUs />} />
-    </Routes>
-    </GlobalPinSetupManager>
+          <Route path="contact_us" element={<ContactUs />} />
+        </Routes>
       </section>
       <aside className="h-vh hidden w-[45%] overflow-y-auto lg:block ">
         <Right />

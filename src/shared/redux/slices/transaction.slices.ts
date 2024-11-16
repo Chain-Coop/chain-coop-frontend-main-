@@ -1,10 +1,9 @@
-
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { setMessage } from "./message.slices";
 import TransactionServices from "../services/transaction.services";
 
 interface FundProjectBody {
- amount: number,
+  amount: number;
 }
 
 interface FundProjectPayload {
@@ -42,7 +41,6 @@ interface ContributionDetails {
   balance: number;
   history: ContributionHistory[];
 }
-
 
 export const GetWalletBalance = createAsyncThunk(
   "transaction/getWalletBalance",
@@ -133,23 +131,22 @@ export const CreateContributionPlan = createAsyncThunk(
   async (body: any, thunkAPI) => {
     try {
       const data = await TransactionServices.CreateContributionPlan(body);
-      return  data ;
+      return data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error || error);
     }
-  }
+  },
 );
 
 const handleAsyncError = (error: any, thunkAPI: any) => {
   let message = error.error || "An error occurred. Please try again.";
-  
+
   if (!error.response) {
     message = "Network error. Please check your internet connection.";
   }
   thunkAPI.dispatch(setMessage(message));
   return thunkAPI.rejectWithValue(message);
 };
-
 
 export const UploadPaymentReceipt = createAsyncThunk(
   "transaction/uploadPaymentReceipt",
@@ -181,7 +178,8 @@ export const PayStackMembershipSubscription = createAsyncThunk(
   "transaction/payStackMembershipSubscription",
   async (body: any, thunkAPI) => {
     try {
-      const data = await TransactionServices.PayStackMembershipSubscription(body);
+      const data =
+        await TransactionServices.PayStackMembershipSubscription(body);
       return { transaction: data };
     } catch (error: any) {
       const message = error.msg;
@@ -190,7 +188,6 @@ export const PayStackMembershipSubscription = createAsyncThunk(
     }
   },
 );
-
 
 export const VerifyFundWallet = createAsyncThunk(
   "transaction/verifyFundWallet",
@@ -216,24 +213,24 @@ export const VerifyFundContribution = createAsyncThunk(
   },
 );
 
-
 export const VerifyMembershipSubscription = createAsyncThunk(
   "transaction/verifyMembershipSubscription",
   async (params: VerificationParams, thunkAPI) => {
     try {
-      const data = await TransactionServices.VerifyMembershipSubscription(params);
+      const data =
+        await TransactionServices.VerifyMembershipSubscription(params);
       return { transaction: data };
     } catch (error: any) {
       return handleAsyncError(error, thunkAPI);
     }
-  }
+  },
 );
 
 export const FundProject = createAsyncThunk(
   "transaction/fundProject",
-  async ({body, projectId}: FundProjectPayload, thunkAPI) => {
+  async ({ body, projectId }: FundProjectPayload, thunkAPI) => {
     try {
-      const data = await TransactionServices.FundProject(body,projectId);
+      const data = await TransactionServices.FundProject(body, projectId);
       return { transaction: data };
     } catch (error: any) {
       const message = error.msg;
@@ -253,7 +250,7 @@ export const GetProjectById = createAsyncThunk(
       const message = error.msg || "Failed to fetch project";
       return thunkAPI.rejectWithValue(message);
     }
-  }
+  },
 );
 
 export const GetAllBanks = createAsyncThunk(
@@ -270,7 +267,7 @@ export const GetAllBanks = createAsyncThunk(
 
 export const GetAccountName = createAsyncThunk(
   "transaction/getAccountName",
-  async (body:any , thunkAPI) => {
+  async (body: any, thunkAPI) => {
     try {
       const data = await TransactionServices.GetAccountName(body);
       return { transaction: data };
@@ -308,12 +305,28 @@ export const WithdrawalFromWallet = createAsyncThunk(
   },
 );
 
+export const WithdrawalFromContribution = createAsyncThunk(
+  "transaction/withdrawalFromContribution",
+  async (body: any, thunkAPI) => {
+    try {
+      const data = await TransactionServices.WithdrawalFromContribution(body);
+      return { landing: data };
+    } catch (error: any) {
+      const message = error;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
 
 export const GetUsersContributionHistory = createAsyncThunk(
   "transaction/getUsersContributionHistory",
   async ({ page, limit }: { page: number; limit: number }, thunkAPI) => {
     try {
-      const data = await TransactionServices.GetUsersContributionHistory(page, limit);
+      const data = await TransactionServices.GetUsersContributionHistory(
+        page,
+        limit,
+      );
       return { transaction: data };
     } catch (error: any) {
       return handleAsyncError(error, thunkAPI);
@@ -323,12 +336,27 @@ export const GetUsersContributionHistory = createAsyncThunk(
 
 export const GetContributionDetailsById = createAsyncThunk(
   "transaction/getContributionDetailsById",
-   async ({ contributionId}: { contributionId: any }) => {
-     const response = await TransactionServices.GetContributionDetailsById(contributionId);
-     console.log("res",response)
-     return response
-   }
- );
+  async ({ contributionId }: { contributionId: any }) => {
+    const response =
+      await TransactionServices.GetContributionDetailsById(contributionId);
+    console.log("res", response);
+    return response;
+  },
+);
+
+export const PayContribution = createAsyncThunk(
+  "transaction/payContribution",
+  async (body: any, thunkAPI) => {
+    try {
+      const data = await TransactionServices.PayContribution(body);
+      return { landing: data };
+    } catch (error: any) {
+      const message = error.msg;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
 
 interface TransactionState {
   getWalletBalance: any | null;
@@ -338,21 +366,23 @@ interface TransactionState {
   createProposal: any | null;
   userProposal: any | null;
   fundWalletStatus: "idle" | "loading" | "success" | "failed";
-  allProjects:any,
-  allFundedProjects:any,
-  allBanks:any,
-  contributionPlan:any,
+  allProjects: any;
+  allFundedProjects: any;
+  allBanks: any;
+  contributionPlan: any;
   uploadReceipt: any | null;
   fundUserWallet: any | null;
   fundMembershipSubscription: any | null;
   veryfyFundUserWallet: any | null;
   veryfyFundUserContribution: any | null;
   veryfyFundMembership: any | null;
-  fundUserProject: null,
-  getUserAccountName: null,
+  fundUserProject: null;
+  getUserAccountName: null;
   currentProject: any | null;
   createPin: any | null;
-  requestWithdrawal: any | null;
+  fundContribution: any | null;
+  requestWithdrawalWallet: any | null;
+  requestWithdrawalContribution: any | null;
   contributionDetails: ContributionDetails | null;
   loading: boolean;
   error: string | null | Record<string, unknown>;
@@ -366,21 +396,23 @@ const initialState: TransactionState = {
   createProposal: null,
   userProposal: null,
   fundWalletStatus: "idle",
-  allProjects:null,
-  allFundedProjects:null,
-  allBanks:null,
-  contributionPlan:null,
-  uploadReceipt:null,
+  allProjects: null,
+  allFundedProjects: null,
+  allBanks: null,
+  contributionPlan: null,
+  uploadReceipt: null,
   fundUserWallet: null,
   fundMembershipSubscription: null,
   getUserAccountName: null,
-  veryfyFundUserWallet:null,
-  veryfyFundUserContribution:null,
-  veryfyFundMembership:null,
+  veryfyFundUserWallet: null,
+  veryfyFundUserContribution: null,
+  veryfyFundMembership: null,
   fundUserProject: null,
   currentProject: null,
   createPin: null,
-  requestWithdrawal: null,
+  fundContribution: null,
+  requestWithdrawalWallet: null,
+  requestWithdrawalContribution: null,
   contributionDetails: null,
   loading: false,
   error: null,
@@ -474,13 +506,15 @@ export const transactionSlice = createSlice({
         CreateContributionPlan.fulfilled,
         (state, action: PayloadAction<any>) => {
           state.contributionPlan = action.payload.contribution;
-          state.error = null;  
-        }
+          state.error = null;
+        },
       )
-      
+
       .addCase(CreateContributionPlan.rejected, (state, action) => {
         state.contributionPlan = null;
-        state.error = action as string | Record<string, unknown> || 'An unknown error occurred';
+        state.error =
+          (action as string | Record<string, unknown>) ||
+          "An unknown error occurred";
       })
 
       .addCase(
@@ -496,29 +530,26 @@ export const transactionSlice = createSlice({
       .addCase(
         VerifyFundWallet.fulfilled,
         (state, action: PayloadAction<{ transaction: any }>) => {
-          state. veryfyFundUserWallet = action.payload.transaction;
+          state.veryfyFundUserWallet = action.payload.transaction;
         },
       )
       .addCase(VerifyFundWallet.rejected, (state) => {
-        state. veryfyFundUserWallet = null;
+        state.veryfyFundUserWallet = null;
       })
 
       .addCase(
         VerifyFundContribution.fulfilled,
         (state, action: PayloadAction<{ transaction: any }>) => {
-          state. veryfyFundUserContribution = action.payload.transaction;
+          state.veryfyFundUserContribution = action.payload.transaction;
         },
       )
       .addCase(VerifyFundContribution.rejected, (state) => {
-        state. veryfyFundUserContribution = null;
+        state.veryfyFundUserContribution = null;
       })
 
-      .addCase(
-        FundProject.fulfilled,
-        (state, action: PayloadAction<any>) => {
-          state.fundUserProject = action.payload;
-        },
-      )
+      .addCase(FundProject.fulfilled, (state, action: PayloadAction<any>) => {
+        state.fundUserProject = action.payload;
+      })
       .addCase(FundProject.rejected, (state, action) => {
         state.fundUserProject = null;
       })
@@ -551,7 +582,7 @@ export const transactionSlice = createSlice({
         state.allBanks = null;
         state.error = action.payload as string;
       })
-       
+
       .addCase(GetAccountName.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -565,15 +596,16 @@ export const transactionSlice = createSlice({
       .addCase(GetAccountName.rejected, (state, action) => {
         state.getUserAccountName = null;
       })
-      
+
       .addCase(CreateTransactionPin.pending, (state) => {
         state.loading = true;
         state.error = null;
-      })
-      builder.addCase(CreateTransactionPin.fulfilled, (state, action) => {
-        state.createPin = action.payload.landing;
       });
-      builder.addCase(CreateTransactionPin.rejected, (state) => {
+    builder.addCase(CreateTransactionPin.fulfilled, (state, action) => {
+      state.createPin = action.payload.landing;
+    });
+    builder
+      .addCase(CreateTransactionPin.rejected, (state) => {
         state.createPin = null;
       })
 
@@ -590,22 +622,39 @@ export const transactionSlice = createSlice({
       .addCase(
         VerifyMembershipSubscription.fulfilled,
         (state, action: PayloadAction<{ transaction: any }>) => {
-          state. veryfyFundMembership = action.payload.transaction;
+          state.veryfyFundMembership = action.payload.transaction;
         },
       )
       .addCase(VerifyMembershipSubscription.rejected, (state) => {
-        state. veryfyFundMembership = null;
+        state.veryfyFundMembership = null;
       })
-      
+
       .addCase(WithdrawalFromWallet.pending, (state) => {
         state.loading = true;
         state.error = null;
-      })
-      builder.addCase(WithdrawalFromWallet.fulfilled, (state, action) => {
-        state.createPin = action.payload.landing;
       });
-      builder.addCase(WithdrawalFromWallet.rejected, (state) => {
-        state.createPin = null;
+    builder.addCase(WithdrawalFromWallet.fulfilled, (state, action) => {
+      state.loading = false;
+      state.requestWithdrawalWallet = action.payload.landing;
+    });
+    builder
+      .addCase(WithdrawalFromWallet.rejected, (state) => {
+        state.loading = false;
+        state.requestWithdrawalWallet = null;
+      })
+
+      .addCase(WithdrawalFromContribution.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      });
+    builder.addCase(WithdrawalFromContribution.fulfilled, (state, action) => {
+      state.loading = false;
+      state.requestWithdrawalContribution = action.payload.landing;
+    });
+    builder
+      .addCase(WithdrawalFromContribution.rejected, (state) => {
+        state.loading = false;
+        state.requestWithdrawalContribution = null;
       })
 
       .addCase(GetAllUserFundedProject.pending, (state) => {
@@ -643,30 +692,41 @@ export const transactionSlice = createSlice({
         state.error = action.payload as string;
       })
 
-       .addCase(GetContributionDetailsById.pending, (state) => {
+      .addCase(GetContributionDetailsById.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(GetContributionDetailsById.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = null;      
+        state.error = null;
         state.contributionDetails = {
           startDate: action.payload.startDate,
           nextContributionDate: action.payload.nextContributionDate,
           withdrawalDate: action.payload.withdrawalDate,
           amount: action.payload.history[0]?.amount || 0,
-          status: action.payload.history[0]?.status || '',
-          contributionPlan: action.payload.contributionPlan || '',
-          savingsCategory: action.payload.savingsCategory || '',
+          status: action.payload.history[0]?.status || "",
+          contributionPlan: action.payload.contributionPlan || "",
+          savingsCategory: action.payload.savingsCategory || "",
           balance: action.payload.balance || 0,
-          history: action.payload.history || []
+          history: action.payload.history || [],
         };
       })
-      
+
       .addCase(GetContributionDetailsById.rejected, (state, action) => {
         state.loading = false;
         state.contributionDetails = null;
+      })
+
+      .addCase(PayContribution.pending, (state) => {
+        state.loading = true;
+        state.error = null;
       });
+    builder.addCase(PayContribution.fulfilled, (state, action) => {
+      state.fundContribution = action.payload.landing;
+    });
+    builder.addCase(PayContribution.rejected, (state) => {
+      state.createPin = null;
+    });
   },
 });
 

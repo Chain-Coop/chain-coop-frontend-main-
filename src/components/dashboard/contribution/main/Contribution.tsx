@@ -19,19 +19,22 @@ type Contribution = {
 };
 
 const ContributionListSkeleton: React.FC = () => (
-  <div className="w-full px-2 bg-text2 rounded-lg flex flex-col h-auto gap-[1em] mt-[1em] text-center py-[3em]">
+  <div className="mt-[1em] flex h-auto w-full flex-col gap-[1em] rounded-lg bg-text2 px-2 py-[3em] text-center">
     {Array.from({ length: 3 }).map((_, index) => (
-      <div key={index} className="rounded-full w-[90%] flex flex-col gap-2 py-2 px-[1.5em] bg-white animate-pulse">
+      <div
+        key={index}
+        className="flex w-[90%] animate-pulse flex-col gap-2 rounded-full bg-white px-[1.5em] py-2"
+      >
         <div className="flex justify-between">
-          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+          <div className="h-4 w-1/4 rounded bg-gray-200"></div>
+          <div className="h-4 w-1/4 rounded bg-gray-200"></div>
         </div>
         <div className="flex justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gray-200 rounded-full"></div>
-            <div className="h-6 bg-gray-200 rounded w-24"></div>
+            <div className="h-8 w-8 rounded-full bg-gray-200"></div>
+            <div className="h-6 w-24 rounded bg-gray-200"></div>
           </div>
-          <div className="h-6 bg-gray-200 rounded w-32"></div>
+          <div className="h-6 w-32 rounded bg-gray-200"></div>
         </div>
       </div>
     ))}
@@ -40,20 +43,28 @@ const ContributionListSkeleton: React.FC = () => (
 
 const Contribution: React.FC = () => {
   const navigate = useNavigate();
-  const { formattedBalance, isLoading: isBalanceLoading } = useContributionBalance();
+  const { formattedBalance, isLoading: isBalanceLoading } =
+    useContributionBalance();
   const [page, setPage] = useState(1);
   const limit = 10;
-  const { getContributions, isLoading: isContributionsLoading, error } = useUserContributionHistory(page, limit);
-  console.log("geee",getContributions)
+  const {
+    getContributions,
+    isLoading: isContributionsLoading,
+    error,
+  } = useUserContributionHistory(page, limit);
+  // console.log("geee",getContributions)
   const [isContributionVisible, setIsContributionVisible] = useState(() => {
-    const storedVisibility = sessionStorage.getItem("contributionBalanceVisible");
+    const storedVisibility = sessionStorage.getItem(
+      "contributionBalanceVisible",
+    );
     return storedVisibility !== null ? storedVisibility === "true" : true;
   });
 
   const totalPages = getContributions?.totalPages || 1;
-  
-  const handlePrevPage = () => setPage(prev => Math.max(1, prev - 1));
-  const handleNextPage = () => setPage(prev => Math.min(totalPages, prev + 1));
+
+  const handlePrevPage = () => setPage((prev) => Math.max(1, prev - 1));
+  const handleNextPage = () =>
+    setPage((prev) => Math.min(totalPages, prev + 1));
 
   const navigateToContributionDetails = (contributionId: string) => {
     if (!contributionId) return;
@@ -72,7 +83,7 @@ const Contribution: React.FC = () => {
   };
 
   return (
-    <main className="font-sans pb-[1.5em]">
+    <main className="pb-[1.5em] font-sans">
       <header className="sm:mt-[0] lg:mt-[2em]">
         <DashboardHeader className="flex items-center justify-center">
           Contribution Plan
@@ -88,16 +99,21 @@ const Contribution: React.FC = () => {
                 isVisible={isContributionVisible}
                 onToggle={(newVisibility) => {
                   setIsContributionVisible(newVisibility);
-                  sessionStorage.setItem("contributionBalanceVisible", newVisibility.toString());
+                  sessionStorage.setItem(
+                    "contributionBalanceVisible",
+                    newVisibility.toString(),
+                  );
                 }}
               />
             </div>
 
             <div className="mx-auto mt-[1.5em] w-[15em] rounded-md">
               {isBalanceLoading ? (
-                <div className="h-8 bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-8 animate-pulse rounded bg-gray-200"></div>
               ) : isContributionVisible ? (
-                <p className="font-bold sm:text-xl lg:text-xl">{formattedBalance}</p>
+                <p className="font-bold sm:text-xl lg:text-xl">
+                  {formattedBalance}
+                </p>
               ) : (
                 <p className="text-2xl font-bold">*********</p>
               )}
@@ -107,7 +123,10 @@ const Contribution: React.FC = () => {
 
           <section className="mt-[2em]">
             <div className="flex justify-center">
-              <button onClick={fundContribution} className="rounded-full text-text2 font-bold bg-inherit text-lg shadow-lg whitespace-nowrap sm:px-[1em] sm:py-[5px] lg:px-[3em] lg:py-[10px]">
+              <button
+                onClick={fundContribution}
+                className="whitespace-nowrap rounded-full bg-inherit text-lg font-bold text-text2 shadow-lg sm:px-[1em] sm:py-[5px] lg:px-[3em] lg:py-[10px]"
+              >
                 Add Savings
               </button>
             </div>
@@ -118,64 +137,78 @@ const Contribution: React.FC = () => {
 
       <section className="mt-[2em] px-[2em]">
         <header>
-          <h1 className="font-bold text-xl">My Savings</h1>
+          <h1 className="text-xl font-bold">My Savings</h1>
         </header>
 
         {isContributionsLoading ? (
           <ContributionListSkeleton />
         ) : getContributions?.contributions?.length > 0 ? (
-          <div className="px-2 bg-text2 rounded-lg flex flex-col h-auto gap-[1em] mt-[1em] text-center py-[1.5em]">
-            <div className="flex justify-between items-center px-4 mb-3">
-              <span className="text-white font-medium">Page {page}/{totalPages}</span>
-              <div className="flex font-semibold gap-2">
+          <div className="mt-[1em] flex h-auto flex-col gap-[1em] rounded-lg bg-text2 px-2 py-[1.5em] text-center">
+            <div className="mb-3 flex items-center justify-between px-4">
+              <span className="font-medium text-white">
+                Page {page}/{totalPages}
+              </span>
+              <div className="flex gap-2 font-semibold">
                 <button
                   onClick={handlePrevPage}
                   disabled={page === 1}
-                  className="disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  <IoIosArrowBack className="text-white" size={25}/>
+                  <IoIosArrowBack className="text-white" size={25} />
                 </button>
                 <button
                   onClick={handleNextPage}
                   disabled={page >= totalPages}
-                  className="disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <IoIosArrowForward className="text-white" size={25} />
                 </button>
               </div>
             </div>
-            <hr className="text-gray-500"/>
+            <hr className="text-gray-500" />
 
-            {getContributions?.contributions?.map((contribution: Contribution) => (
-            <div
-                key={contribution._id}
-                onClick={() => navigateToContributionDetails(contribution._id)}
-                className="rounded-full cursor-pointer w-[90%] flex border-2 border-gray-500 flex-col gap-2 py-2 px-[1.5em] bg-white hover:bg-gray-50 transition-colors"
-              >
-                <div className="flex font-medium text-gray-500 justify-between">
-                  <p>Savings Name</p>
-                  <p>Savings Balance</p>
-                </div>
-                <div className="flex justify-between">
-                  <div className="flex items-center gap-3">
+            {getContributions?.contributions?.map(
+              (contribution: Contribution) => (
+                <div
+                  key={contribution._id}
+                  onClick={() =>
+                    navigateToContributionDetails(contribution._id)
+                  }
+                  className="flex w-[90%] cursor-pointer flex-col gap-2 rounded-full border-2 border-gray-500 bg-white px-[1.5em] py-2 transition-colors hover:bg-gray-50"
+                >
+                  <div className="flex justify-between font-medium text-gray-500">
+                    <p>Savings Name</p>
+                    <p>Savings Balance</p>
+                  </div>
+                  <div className="flex justify-between">
+                    <div className="flex items-center gap-3">
+                      <div>
+                        <img
+                          src={contributionImg}
+                          alt="Contribution category icon"
+                        />
+                      </div>
+                      <p className="text-lg font-semibold">
+                        {contribution?.savingsCategory}
+                      </p>
+                    </div>
                     <div>
-                      <img src={contributionImg} alt="Contribution category icon" />
-                    </div>                    
-                    <p className="font-semibold text-lg">{contribution?.savingsCategory}</p>
-                  </div>
-                  <div>
-                    <figure className="font-semibold text-lg">
-                      {formatCurrency(contribution?.balance)}
-                    </figure>
+                      <figure className="text-lg font-semibold">
+                        {formatCurrency(contribution?.balance)}
+                      </figure>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ),
+            )}
           </div>
         ) : (
-          <div className="w-full px-2 bg-text2 rounded-lg flex flex-col h-auto gap-[1em] mt-[1em] text-center py-[3em]">
-            <h2 className="text-how1 font-bold text-xl">No Savings Yet</h2>
-            <p onClick={fundContribution} className="text-how1 font-semibold mt-[1.5em] text-xl cursor-pointer">
+          <div className="mt-[1em] flex h-auto w-full flex-col gap-[1em] rounded-lg bg-text2 px-2 py-[3em] text-center">
+            <h2 className="text-xl font-bold text-how1">No Savings Yet</h2>
+            <p
+              onClick={fundContribution}
+              className="mt-[1.5em] cursor-pointer text-xl font-semibold text-how1"
+            >
               Get Started
             </p>
           </div>
@@ -186,4 +219,3 @@ const Contribution: React.FC = () => {
 };
 
 export default Contribution;
-

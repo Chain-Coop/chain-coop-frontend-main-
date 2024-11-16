@@ -1,6 +1,11 @@
 import "./App.css";
 import React from "react";
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import HomePage from "./components/pages/entry/HomePage";
 // import OurStory from "./components/pages/entry/OurStory";
 import Membership from "./components/pages/entry/Membership";
@@ -46,10 +51,10 @@ function App() {
           element={<PaaswordRessetSuccessfull />}
         />
 
-    {/* <Route path="/dashboard/*" element={<AuthWrapper><Dashboard /></AuthWrapper>} />
+        {/* <Route path="/dashboard/*" element={<AuthWrapper><Dashboard /></AuthWrapper>} />
     <Route path="*" element={<Navigate to="/dashboard" replace />} />    */}
-     
-    {/* <Route path="/dashboard/*" element={<Dashboard />} />  */}
+
+        {/* <Route path="/dashboard/*" element={<Dashboard />} />  */}
         <Route path="/team" element={<Team />} />
         <Route path="/blog" element={<Blogs />} />
         <Route path="/career" element={<Career />} />
@@ -60,8 +65,6 @@ function App() {
 }
 
 export default App;
-
-
 
 // import "./App.css";
 // import React from "react";
@@ -96,7 +99,7 @@ export default App;
 //         <Route path="/membership" element={<Membership />} />
 //         <Route path="/contact" element={<Contact />} />
 //         <Route path="/login" element={<UserLogin />} />
-//         <Route path="/sign-up" element={<CreateAccount />} /> 
+//         <Route path="/sign-up" element={<CreateAccount />} />
 //         <Route path="/forget-password" element={<ForgetPassword />} />
 //         <Route path="/reset-password" element={<ResetPassword />} />
 //         <Route path="/new-password" element={<NewPassword />} />
@@ -112,10 +115,10 @@ export default App;
 //         />
 
 //        <Route element={<ProtectedRoutes />}>
-//           <Route path="/dashboard/*" element={<Dashboard />} />          
+//           <Route path="/dashboard/*" element={<Dashboard />} />
 //           <Route path="*" element={<Navigate to="/dashboard" replace />} />
-//         </Route>  
-     
+//         </Route>
+
 //         <Route path="/team" element={<Team />} />
 //         <Route path="/blog" element={<Blogs />} />
 //         <Route path="/career" element={<Career />} />

@@ -6,39 +6,42 @@ const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 const API_URL_FUND_WALLET =
   import.meta.env.VITE_REACT_APP_API_URL + "/wallet/fund-wallet";
 
-  const API_URL_MEMBERSHIP_PAYSTACK_SUBSCRIPTION =
+const API_URL_MEMBERSHIP_PAYSTACK_SUBSCRIPTION =
   import.meta.env.VITE_REACT_APP_API_URL + "/membership/activate";
 
 const API_URL_CREATE_TRANSACTION_PIN =
   import.meta.env.VITE_REACT_APP_API_URL + "/wallet/create-pin";
 
-  const API_URL_WITHDRAW_FROM_WALLET =
+const API_URL_PAY_CONTRIBUTION =
+  import.meta.env.VITE_REACT_APP_API_URL + "/contribution/pay";
+
+const API_URL_WITHDRAW_FROM_WALLET =
   import.meta.env.VITE_REACT_APP_API_URL + "/withdrawal/request-withdrawal";
+
+const API_URL_WITHDRAW_FROM_CONTRIBUTION =
+  import.meta.env.VITE_REACT_APP_API_URL + "/contribution/withdraw";
 
 const API_URL_VERIFY_FUND_WALLET =
   import.meta.env.VITE_REACT_APP_API_URL + "/wallet/verify-payment";
 
-  const API_URL_VERIFY_CONTRIBUTION =
-  import.meta.env.VITE_REACT_APP_API_URL + "/contribution/verify-contribution";
+const API_URL_VERIFY_CONTRIBUTION =
+  import.meta.env.VITE_REACT_APP_API_URL + `/contribution/verify-contribution`;
 
-  const API_URL_VERIFY_PAYSTACK_SUBSCRIPTION =
+const API_URL_VERIFY_PAYSTACK_SUBSCRIPTION =
   import.meta.env.VITE_REACT_APP_API_URL + "/membership/verify-payment";
 
-  interface VerificationParams {
-    reference: string;
-    trxref: string;
+interface VerificationParams {
+  reference: string;
+  trxref: string;
+}
+
+const handleApiError = (error: any) => {
+  if (!error.response) {
+    throw new Error("Network Error: Please check your internet connection.");
+  } else {
+    throw error.response.data;
   }
-
-  
-  const handleApiError = (error: any) => {
-    if (!error.response) {
-      throw new Error("Network Error: Please check your internet connection.");
-    } else {
-      throw error.response.data;
-    }
-  };
-
-
+};
 
 const GetWalletBalance = async () => {
   const url = `${API_URL}/wallet/balance`;
@@ -95,7 +98,6 @@ const GetProposal = async () => {
   }
 };
 
-
 const GetAllProject = async () => {
   const url = `${API_URL}/project/all-projects`;
   try {
@@ -118,9 +120,13 @@ const GetAllUserFundedProject = async () => {
 
 const CreateContributionPlan = async (body: any) => {
   try {
-    const response = await axios.post(`${API_URL}/contribution/contribute`, body, {
-      headers: authHeader(),
-    });
+    const response = await axios.post(
+      `${API_URL}/contribution/contribute`,
+      body,
+      {
+        headers: authHeader(),
+      },
+    );
     return response.data;
   } catch (error: any) {
     handleApiError(error);
@@ -135,7 +141,11 @@ const UploadPaymentReceipt = async (formData: FormData) => {
         ...authHeader(),
       },
     };
-    const response = await axios.post(`${API_URL}/wallet/upload-receipt`, formData, config);
+    const response = await axios.post(
+      `${API_URL}/wallet/upload-receipt`,
+      formData,
+      config,
+    );
     return response.data;
   } catch (error: any) {
     handleApiError(error);
@@ -148,21 +158,16 @@ const FundWallet = async (body: any) => {
     if (!token) {
       throw new Error("Authorization token not found.");
     }
-    const response = await axios.post(
-      API_URL_FUND_WALLET, 
-      body, 
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axios.post(API_URL_FUND_WALLET, body, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response?.data;
   } catch (error: any) {
     handleApiError(error);
   }
 };
-
 
 const PayStackMembershipSubscription = async (body: any) => {
   try {
@@ -171,13 +176,13 @@ const PayStackMembershipSubscription = async (body: any) => {
       throw new Error("Authorization token not found.");
     }
     const response = await axios.post(
-      API_URL_MEMBERSHIP_PAYSTACK_SUBSCRIPTION, 
-      body, 
+      API_URL_MEMBERSHIP_PAYSTACK_SUBSCRIPTION,
+      body,
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
     return response?.data;
   } catch (error: any) {
@@ -191,15 +196,11 @@ const VerifyFundWallet = async (body: any) => {
     if (!token) {
       throw new Error("Authorization token not found.");
     }
-    const response = await axios.post(
-      API_URL_VERIFY_FUND_WALLET, 
-      body, 
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axios.post(API_URL_VERIFY_FUND_WALLET, body, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response?.data;
   } catch (error: any) {
     handleApiError(error);
@@ -212,14 +213,14 @@ const VerifyFundContribution = async (params: any) => {
     if (!token) {
       throw new Error("Authorization token not found.");
     }
+    const queryString = `reference=${params.reference}${params.addCard ? "&addCard=true" : ""}`;
     const response = await axios.get(
-      API_URL_VERIFY_CONTRIBUTION, 
+      `${API_URL_VERIFY_CONTRIBUTION}?${queryString}`,
       {
-        params,
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
     return response?.data;
   } catch (error: any) {
@@ -229,9 +230,13 @@ const VerifyFundContribution = async (params: any) => {
 
 const FundProject = async (body: any, projectId: string) => {
   try {
-    const response = await axios.post(`${API_URL}/project/${projectId}/fund`, body, {
-      headers: authHeader(),
-    });
+    const response = await axios.post(
+      `${API_URL}/project/${projectId}/fund`,
+      body,
+      {
+        headers: authHeader(),
+      },
+    );
     return response.data;
   } catch (error: any) {
     handleApiError(error);
@@ -260,22 +265,25 @@ const GetAllBanks = async () => {
 
 const GetAccountName = async (body: any) => {
   try {
-    const response = await axios.post(`${API_URL}/withdrawal/verify-bank-account`, body, {
-      headers: authHeader(),
-    });
+    const response = await axios.post(
+      `${API_URL}/withdrawal/verify-bank-account`,
+      body,
+      {
+        headers: authHeader(),
+      },
+    );
     return response.data;
   } catch (error: any) {
     handleApiError(error);
   }
 };
 
-
 const CreateTransactionPin = async (body: any) => {
   try {
-    const response = await axios.post(API_URL_CREATE_TRANSACTION_PIN, body,{
+    const response = await axios.post(API_URL_CREATE_TRANSACTION_PIN, body, {
       headers: authHeader(),
     });
-     return response?.data;
+    return response?.data;
   } catch (error: any) {
     if (error.response && error.response.data) {
       throw error.response.data;
@@ -285,22 +293,19 @@ const CreateTransactionPin = async (body: any) => {
   }
 };
 
-const VerifyMembershipSubscription =  async (params: VerificationParams) => {
+const VerifyMembershipSubscription = async (params: VerificationParams) => {
   try {
     const token = sessionStorage.getItem("userData");
     if (!token) {
       throw new Error("Authorization token not found.");
     }
-    
-    const response = await axios.get(
-      API_URL_VERIFY_PAYSTACK_SUBSCRIPTION,
-      {
-        params, 
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+
+    const response = await axios.get(API_URL_VERIFY_PAYSTACK_SUBSCRIPTION, {
+      params,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response?.data;
   } catch (error: any) {
     throw handleApiError(error);
@@ -309,10 +314,29 @@ const VerifyMembershipSubscription =  async (params: VerificationParams) => {
 
 const WithdrawalFromWallet = async (body: any) => {
   try {
-    const response = await axios.post(API_URL_WITHDRAW_FROM_WALLET, body,{
+    const response = await axios.post(API_URL_WITHDRAW_FROM_WALLET, body, {
       headers: authHeader(),
     });
-     return response?.data;
+    return response?.data;
+  } catch (error: any) {
+    if (error.response.data) {
+      throw error.response.data;
+    } else {
+      throw new Error("Network Error: Please check your internet connection.");
+    }
+  }
+};
+
+const WithdrawalFromContribution = async (body: any) => {
+  try {
+    const response = await axios.post(
+      API_URL_WITHDRAW_FROM_CONTRIBUTION,
+      body,
+      {
+        headers: authHeader(),
+      },
+    );
+    return response?.data;
   } catch (error: any) {
     if (error.response.data) {
       throw error.response.data;
@@ -350,6 +374,21 @@ const GetContributionDetailsById = async (contributionId: any) => {
   }
 };
 
+const PayContribution = async (body: any) => {
+  try {
+    const response = await axios.post(API_URL_PAY_CONTRIBUTION, body, {
+      headers: authHeader(),
+    });
+    return response?.data;
+  } catch (error: any) {
+    if (error.response && error.response.data) {
+      throw error.response.data;
+    } else {
+      throw new Error("Network Error: Please check your internet connection.");
+    }
+  }
+};
+
 const TransactionServices = {
   GetWalletBalance,
   GetContributionBalance,
@@ -373,7 +412,8 @@ const TransactionServices = {
   GetUsersContributionHistory,
   VerifyFundContribution,
   GetContributionDetailsById,
+  PayContribution,
+  WithdrawalFromContribution,
 };
-
 
 export default TransactionServices;
