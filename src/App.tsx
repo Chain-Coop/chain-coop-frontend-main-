@@ -68,7 +68,12 @@ export default App;
 
 // import "./App.css";
 // import React from "react";
-// import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+// import {
+//   BrowserRouter as Router,
+//   Route,
+//   Routes,
+//   Navigate,
+// } from "react-router-dom";
 // import HomePage from "./components/pages/entry/HomePage";
 // import Membership from "./components/pages/entry/Membership";
 // import ForgetPassword from "./components/pages/auth/ForgetPassword";
@@ -103,7 +108,7 @@ export default App;
 //         <Route path="/forget-password" element={<ForgetPassword />} />
 //         <Route path="/reset-password" element={<ResetPassword />} />
 //         <Route path="/new-password" element={<NewPassword />} />
-//          <Route path="/account-otp" element={<UserLoginOtp />} />
+//         <Route path="/account-otp" element={<UserLoginOtp />} />
 
 //         <Route
 //           path="/verification-successfull"
@@ -114,7 +119,7 @@ export default App;
 //           element={<PaaswordRessetSuccessfull />}
 //         />
 
-//        <Route element={<ProtectedRoutes />}>
+//         <Route element={<ProtectedRoutes />}>
 //           <Route path="/dashboard/*" element={<Dashboard />} />
 //           <Route path="*" element={<Navigate to="/dashboard" replace />} />
 //         </Route>

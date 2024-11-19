@@ -35,7 +35,7 @@ const Profile = () => {
       </section>
       <section className="m-auto mt-[2em] flex flex-col gap-[1em] px-4 lg:px-10">
         <Avatar />
-        {/* <Details /> */}
+        <Details />
         <Security />
         {/* <About /> */}
       </section>

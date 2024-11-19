@@ -52,7 +52,6 @@ const Contribution: React.FC = () => {
     isLoading: isContributionsLoading,
     error,
   } = useUserContributionHistory(page, limit);
-  // console.log("geee",getContributions)
   const [isContributionVisible, setIsContributionVisible] = useState(() => {
     const storedVisibility = sessionStorage.getItem(
       "contributionBalanceVisible",
@@ -60,7 +59,7 @@ const Contribution: React.FC = () => {
     return storedVisibility !== null ? storedVisibility === "true" : true;
   });
 
-  const totalPages = getContributions?.totalPages || 1;
+  const totalPages = Math.max(getContributions?.totalPages || 1, 1);
 
   const handlePrevPage = () => setPage((prev) => Math.max(1, prev - 1));
   const handleNextPage = () =>

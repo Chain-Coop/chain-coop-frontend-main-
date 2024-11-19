@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { AppDispatch } from "../../../../shared/redux/store";
-import { GetContributionDetailsById } from "../../../../shared/redux/slices/transaction.slices";
+import {
+  GetContributionDetailsById,
+  PayContribution,
+} from "../../../../shared/redux/slices/transaction.slices";
 import { formatBalance } from "../../../../shared/utils/format";
 import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
 import ToggleButton from "../../../../shared/utils/ToggleButton";
@@ -11,9 +14,49 @@ import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import { format, parseISO, isPast } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { useSelector } from "react-redux";
 import { IoIosArrowBack } from "react-icons/io";
+import Modal from "../../../common/Modal";
+import PaymentChoice from "../paymentChoice.tsx/PaymentChoice";
+import PayWithPaystack from "../paymentChoice.tsx/PayWithPaystack";
+import { Loader2, CheckCircle2, XCircle, AlertCircle } from "lucide-react";
+
+type VerificationStatus = "idle" | "verifying" | "success" | "error";
+
+interface StatusConfig {
+  icon: React.ReactNode;
+  title: string;
+  message: string;
+  color: string;
+}
+
+const statusConfig: Record<VerificationStatus, StatusConfig> = {
+  idle: {
+    icon: <AlertCircle className="h-12 w-12 text-gray-400" />,
+    title: "Initializing Verification",
+    message: "Please wait...",
+    color: "text-gray-600",
+  },
+  verifying: {
+    icon: <Loader2 className="h-12 w-12 animate-spin text-blue-500" />,
+    title: "Verifying Transaction",
+    message: "Please wait while we verify your payment...",
+    color: "text-blue-600",
+  },
+  success: {
+    icon: <CheckCircle2 className="h-12 w-12 text-green-500" />,
+    title: "Verification Successful",
+    message: "Your payment has been verified. Redirecting...",
+    color: "text-green-600",
+  },
+  error: {
+    icon: <XCircle className="h-12 w-12 text-red-500" />,
+    title: "Verification Failed",
+    message: "An error occurred during verification.",
+    color: "text-red-600",
+  },
+};
 
 const ViewContribution = () => {
   const [isContributionVisible, setIsContributionVisible] = useState(() => {
@@ -22,11 +65,45 @@ const ViewContribution = () => {
     );
     return storedVisibility !== null ? storedVisibility === "true" : true;
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const walletData = useSelector(
+    (state: any) => state?.transaction?.getWalletBalance,
+  );
+  const hasCards = walletData?.allCards?.length > 0;
 
   const location = useLocation();
   const contributionId = location?.state?.contributionId;
   const dispatch: AppDispatch = useAppDispatch();
+  const [verificationStatus, setVerificationStatus] = useState<
+    "idle" | "verifying" | "success" | "error"
+  >("idle");
   const navigate = useNavigate();
+
+  const handleDirectPayment: any = async (paymentType: "paystack") => {
+    setIsProcessing(true);
+    setVerificationStatus("verifying");
+
+    try {
+      const paymentResponse = await dispatch(
+        PayContribution({
+          contributionId,
+          paymentType,
+        }),
+      ).unwrap();
+      if (paymentResponse?.landing?.payment?.info?.data) {
+        window.location.href =
+          paymentResponse.landing.payment.info.data.authorization_url;
+      } else {
+        setVerificationStatus("error");
+      }
+    } catch (error) {
+      setVerificationStatus("error");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   useEffect(() => {
     if (contributionId) {
@@ -48,7 +125,7 @@ const ViewContribution = () => {
   const formatContributionDate = (dateString: string) => {
     if (!dateString) return "Date not available";
     try {
-      return format(parseISO(dateString), "MMMM dd, yyyy");
+      return format(parseISO(dateString), "dd/MM/yyyy");
     } catch {
       return "Invalid date";
     }
@@ -58,58 +135,43 @@ const ViewContribution = () => {
     if (!contributionDetails) return null;
 
     const {
-      startDate,
       nextContributionDate,
       amount = 0,
-      balance = 0,
       history = [],
     } = contributionDetails;
 
     const buildSteps = () => {
       const steps = [];
 
-      const initialPayment = history?.find(
-        (t: any) =>
-          t.type === "Credit" &&
-          t.status === "Completed" &&
-          t.balance <= balance,
+      const sortedHistory = [...history].sort(
+        (a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime(),
       );
 
-      const startDatePayment = history?.find(
-        (t: any) =>
-          t?.type === "Credit" && t?.Date >= startDate && t?.balance <= balance,
-      );
-
-      const isSameDate =
-        initialPayment &&
-        startDate &&
-        format(parseISO(initialPayment.Date), "yyyy-MM-dd") ===
-          format(parseISO(startDate), "yyyy-MM-dd");
-
-      if (initialPayment && !isSameDate) {
-        steps?.push({
-          label: "Initial Payment",
-          date: initialPayment.Date,
-          amount: initialPayment.amount,
-          description: "Initial contribution payment",
-          status: "Completed",
-          reference: initialPayment.reference,
-        });
-      }
-
-      if (startDate) {
-        steps?.push({
+      if (sortedHistory.length > 0) {
+        const firstTransaction = sortedHistory[0];
+        steps.push({
           label: "Start Date",
-          date: startDate,
-          amount: amount,
-          description: "Scheduled start of regular contributions",
-          status: startDatePayment ? "Completed" : "Pending",
-          reference: startDatePayment?.reference,
+          date: firstTransaction.Date,
+          amount: firstTransaction.amount,
+          description: "Start of regular contributions",
+          status: "Completed",
+          reference: firstTransaction.reference,
+        });
+
+        sortedHistory.slice(1).forEach((transaction) => {
+          steps.push({
+            label: "Cash Transfer from Savings Account",
+            date: transaction.Date,
+            amount: transaction.amount,
+            description: "Cash Transfer from Savings Bank Account",
+            status: "Completed",
+            reference: transaction.reference,
+          });
         });
       }
 
       if (nextContributionDate) {
-        steps?.push({
+        steps.push({
           label: "Next Contribution",
           date: nextContributionDate,
           amount: amount,
@@ -173,9 +235,7 @@ const ViewContribution = () => {
                 >
                   <div className="flex w-full flex-col items-start justify-between gap-2 sm:flex-row sm:gap-0">
                     <div className="min-w-0 flex-1">
-                      <p className="text-lg font-medium">
-                        {step?.label || step.description}
-                      </p>
+                      <p className="text-lg font-medium">{step?.label}</p>
                       <div className="gap-[1em] lg:flex">
                         <p className="whitespace-nowrap font-semibold text-gray-700">
                           {formatSafeDate(step.date)}
@@ -267,26 +327,49 @@ const ViewContribution = () => {
               </div>
             </div>
           </section>
+          <hr className="mt-[2em]" />
           <section className="mb-[2em] mt-[2em]">
-            <div className="flex justify-center">
+            <div className="flex justify-between">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="whitespace-nowrap rounded-full border-2 border-gray-200 bg-inherit text-lg font-semibold shadow-lg sm:px-[1em] sm:py-[5px] lg:px-[3em] lg:py-[13px]"
+              >
+                Add Money
+              </button>
+
               <Link
                 to="/dashboard/contribution/withdraw_contribution"
                 state={{ contributionId: contributionId }}
               >
-                <button className="whitespace-nowrap rounded-full bg-inherit text-lg font-semibold shadow-md sm:px-[1em] sm:py-[5px] lg:px-[3em] lg:py-[10px]">
+                <button className="whitespace-nowrap rounded-full border-2 border-gray-200 bg-inherit text-lg font-semibold shadow-lg sm:px-[1em] sm:py-[5px] lg:px-[3em] lg:py-[13px]">
                   Withdraw
                 </button>
               </Link>
             </div>
           </section>
           <span className="mt-[1em] font-semibold text-gray-500">
-            Next Contribution:{" "}
+            Next Contribution is:{" "}
             {formatContributionDate(contributionDetails?.nextContributionDate)}
           </span>
           <hr className="mt-[2em] w-full" />
         </article>
         <ContributionTracker />
       </section>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        className="flex flex-col bg-[#ECE6F2] py-[2em]"
+      >
+        {hasCards ? (
+          <PaymentChoice contributionData={contributionId} />
+        ) : (
+          <PayWithPaystack
+            onSelect={handleDirectPayment}
+            isProcessing={isProcessing}
+          />
+        )}
+      </Modal>
     </main>
   );
 };

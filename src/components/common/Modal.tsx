@@ -75,7 +75,7 @@ const Modal = ({ children, isOpen, onClose, className }: any) => {
           onClick={onClose}
           className="absolute right-4 top-4 cursor-pointer hover:text-gray-700"
         />
-        <div>{children}</div>
+        <div className="mt-5">{children}</div>
       </div>
     </div>
   );

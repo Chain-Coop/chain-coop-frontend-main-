@@ -25,7 +25,6 @@ const ConfirmAmount = () => {
     amountInNaira: number;
     contributionId: string;
   };
-  console.log("amm", amountInNaira, contributionId);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -42,15 +41,18 @@ const ConfirmAmount = () => {
     setLoading(true);
     setError("");
     try {
-      const body = { amount: amountInNaira, contributionId: contributionId };
+      const body = {
+        amount: amountInNaira,
+        contributionId: contributionId,
+        pay: "active",
+      };
       const result = await dispatch(WithdrawalFromContribution(body)).unwrap();
-      console.log("ree", result);
-      // if (result?.statusCode === 200) {
-      //   setLoading(false);
-      //   setIsModalOpen(true);
-      // } else {
-      //   throw new Error("Transaction failed");
-      // }
+      if (result?.landing?.statusCode === 200) {
+        setLoading(false);
+        setIsModalOpen(true);
+      } else {
+        throw new Error("Transaction failed");
+      }
     } catch (error: any) {
       setLoading(false);
       setError(error.message || "An error occurred. Please try again.");

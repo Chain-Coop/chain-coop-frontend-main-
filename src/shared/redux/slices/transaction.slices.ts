@@ -339,7 +339,6 @@ export const GetContributionDetailsById = createAsyncThunk(
   async ({ contributionId }: { contributionId: any }) => {
     const response =
       await TransactionServices.GetContributionDetailsById(contributionId);
-    console.log("res", response);
     return response;
   },
 );

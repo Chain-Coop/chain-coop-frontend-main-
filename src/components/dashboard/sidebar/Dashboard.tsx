@@ -36,6 +36,7 @@ import ViewContribution from "../contribution/viewContribution/ViewContribution"
 import WithdrawContribution from "../contribution/withdrawContribution/WithdrawContribution";
 import ManageCards from "../contribution/manageCards/ManageCards";
 import ConfirmWithdrawal from "../contribution/withdrawContribution/ConfirmAmount";
+import ManageAccountCards from "../profile/profileDetails/accountsAndCard/ManageCards";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -117,7 +118,7 @@ const Dashboard = () => {
             path="profile/transactions"
             element={<ProfileTransactions />}
           />
-
+          <Route path="profile/manage-cards" element={<ManageAccountCards />} />
           <Route path="contact_us" element={<ContactUs />} />
         </Routes>
       </section>

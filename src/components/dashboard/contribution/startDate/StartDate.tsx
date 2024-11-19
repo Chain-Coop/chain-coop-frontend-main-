@@ -22,14 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PaymentChoice from "../paymentChoice.tsx/PaymentChoice";
 import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
 import PayWithPaystack from "../paymentChoice.tsx/PayWithPaystack";
-import {
-  Loader2,
-  CheckCircle2,
-  XCircle,
-  AlertCircle,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { Loader2, CheckCircle2, XCircle, AlertCircle } from "lucide-react";
 
 interface ContributionResponse {
   result: {

@@ -9,7 +9,7 @@ import withdraw_icon from "../../../../Assets/svg/dashboard/wallet/withdraw.svg"
 import success from "../../../../Assets/svg/auth/sucess.svg";
 import OTPInput from "react-otp-input";
 import { WithdrawalFromWallet } from "../../../../shared/redux/slices/transaction.slices";
-import { Alert } from '@mui/material';
+import { Alert } from "@mui/material";
 import { AppDispatch } from "../../../../shared/redux/store";
 import { useDispatch } from "react-redux";
 import ReactLoading from "react-loading";
@@ -26,13 +26,14 @@ const VerifyAccount = () => {
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
 
-  const { accountName, accountNumber, bankName, bankCode, amount } = location.state || {};
+  const { accountName, accountNumber, bankName, bankCode, amount } =
+    location.state || {};
 
   useEffect(() => {
     if (transactionComplete) {
       window.history.pushState(null, "", window.location.pathname);
       window.addEventListener("popstate", () => {
-        navigate("/dashboard/wallet"); 
+        navigate("/dashboard/wallet");
       });
     }
     return () => {
@@ -41,10 +42,9 @@ const VerifyAccount = () => {
   }, [transactionComplete, navigate]);
 
   const handlePinChange = (pinValue: string) => {
-    const numericValue = pinValue.replace(/[^0-9]/g, '');
+    const numericValue = pinValue.replace(/[^0-9]/g, "");
     setPin(numericValue);
   };
-
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -62,11 +62,11 @@ const VerifyAccount = () => {
     setTransactionComplete(true);
     setIsModalOpen(false);
     setIsSuccessModalOpen(true);
-    
+
     setPin("");
-    
+
     setTimeout(() => {
-      navigate("/dashboard/wallet", { replace: true }); 
+      navigate("/dashboard/wallet", { replace: true });
     }, 3000);
   };
 
@@ -80,17 +80,21 @@ const VerifyAccount = () => {
     setError("");
 
     try {
-      const response = await dispatch(WithdrawalFromWallet({
-        accountNumber,
-        bankCode,
-        amount,
-        pin
-      })).unwrap();
-      
+      const response = await dispatch(
+        WithdrawalFromWallet({
+          accountNumber,
+          bankCode,
+          amount,
+          pin,
+        }),
+      ).unwrap();
+
       if (response.landing.message) {
         handleSuccessfulTransaction();
       } else {
-        setError(response.landing.message || "Withdrawal failed. Please try again.");
+        setError(
+          response.landing.message || "Withdrawal failed. Please try again.",
+        );
       }
     } catch (err: any) {
       const errorMessage = err.error || "An error occurred. Please try again.";
@@ -99,13 +103,13 @@ const VerifyAccount = () => {
       setLoading(false);
     }
   };
-  
+
   useEffect(() => {
     if (!location.state) {
       navigate("/wallet", { replace: true });
     }
   }, [location.state, navigate]);
-  
+
   return (
     <main className="font-sans">
       <header className="lg:mt-[2em]">
@@ -122,13 +126,12 @@ const VerifyAccount = () => {
           </div>
         </DashboardHeader>
       </header>
-      <section className="text-center items-center flex gap- flex-col justify-center mt-[2.5em]">
+      <section className="gap- mt-[2.5em] flex flex-col items-center justify-center text-center">
         <img src={withdraw_icon} alt="withdraw_icon" />
         <div className="mt-[2em]">
           <h1 className="font-bold">{accountName}</h1>
-          <p className="text-howtext flex gap-1 font-medium">
-            <span>{bankName}</span>.
-            <span>{accountNumber}</span>
+          <p className="flex gap-1 font-medium text-howtext">
+            <span>{bankName}</span>.<span>{accountNumber}</span>
           </p>
         </div>
       </section>
@@ -138,61 +141,59 @@ const VerifyAccount = () => {
       >
         Submit
       </Primary>
-      
+
       <Modal
         isOpen={isModalOpen}
         onClose={toggleModal}
-        className="bg-white text-center flex fle-col justify-center py-[3em]"
-      > 
+        className="fle-col flex justify-center bg-white py-[3em] text-center"
+      >
         <header>
-          <h1 className="font-semibold text-2xl">
-            My Chain Co-op Pin
-          </h1>
-          <p className="text-howtext mt-1">Enter your transaction pin.</p>
+          <h1 className="text-2xl font-semibold">My Chain Co-op Pin</h1>
+          <p className="mt-1 text-howtext">Enter your transaction pin.</p>
         </header>
-      <div className="flex justify-center">
-      <OTPInput
-          value={pin}
-          onChange={handlePinChange}
-          numInputs={4}
-          renderSeparator={<span className="w-2"></span>}
-          renderInput={(props) => (
-            <input 
-              {...props} 
-              type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              onKeyDown={(e) => {
-                if (
-                  !(
-                    (e.key >= '0' && e.key <= '9') ||
-                    e.key === 'Backspace' ||
-                    e.key === 'ArrowLeft' ||
-                    e.key === 'ArrowRight' ||
-                    e.key === 'Tab'
-                  )
-                ) {
-                  e.preventDefault();
-                }
-              }}
-            />
-          )}
-          skipDefaultStyles={true}
-          containerStyle={"gap-3 my-5"}
-          inputStyle={
-            "block lg:h-[55px] lg:w-[55px] sm:h-[50px] sm:w-[35px] text-center border-gray-200 rounded-md text-sm placeholder:text-gray-300 focus:border-text2 focus:ring-text2 bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-          }
-        />
-      </div>
+        <div className="flex justify-center">
+          <OTPInput
+            value={pin}
+            onChange={handlePinChange}
+            numInputs={4}
+            renderSeparator={<span className="w-2"></span>}
+            renderInput={(props) => (
+              <input
+                {...props}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                onKeyDown={(e) => {
+                  if (
+                    !(
+                      (e.key >= "0" && e.key <= "9") ||
+                      e.key === "Backspace" ||
+                      e.key === "ArrowLeft" ||
+                      e.key === "ArrowRight" ||
+                      e.key === "Tab"
+                    )
+                  ) {
+                    e.preventDefault();
+                  }
+                }}
+              />
+            )}
+            skipDefaultStyles={true}
+            containerStyle={"gap-3 my-5"}
+            inputStyle={
+              "block lg:h-[55px] lg:w-[55px] sm:h-[50px] sm:w-[35px] text-center border-gray-200 rounded-md text-sm placeholder:text-gray-300 focus:border-text2 focus:ring-text2 bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+            }
+          />
+        </div>
         {error && (
-          <Alert severity="error" className="mt-4 mb-4">
+          <Alert severity="error" className="mb-4 mt-4">
             {error}
           </Alert>
         )}
         <Primary
           onClick={handleSubmit}
           disabled={loading}
-          className="mt-[2em] px-2 w-full flex justify-center font-semibold rounded-full bg-text2 py-2 text-white"
+          className="mt-[2em] flex w-full justify-center rounded-full bg-text2 px-2 py-2 font-semibold text-white"
         >
           {loading ? (
             <ReactLoading color="#FFFFFF" height={25} width={25} type="spin" />
@@ -207,7 +208,7 @@ const VerifyAccount = () => {
         onClose={() => {
           navigate("/wallet", { replace: true });
         }}
-        className="bg-white text-center py-[3em]"
+        className="bg-white py-[3em] text-center"
       >
         <div className="mt-[2.5em] flex flex-col justify-center">
           <img
@@ -219,7 +220,7 @@ const VerifyAccount = () => {
             <h1 className="text-center text-xl font-semibold">
               Transaction Successful
             </h1>
-            <p className="text-howtext mt-2">
+            <p className="mt-2 text-howtext">
               Your withdrawal has been processed. Redirecting to wallet...
             </p>
           </header>
