@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetContributionDetailsById } from "../../../../shared/redux/slices/transaction.slices";
 import { AppDispatch } from "../../../../shared/redux/store";
 import useWalletBalance from "../../../../shared/Hooks/useBalance";
+import Modal from "../../../common/Modal";
+import { format, parseISO, isAfter, isBefore, isToday } from "date-fns";
 
 const WithdrawContribution = () => {
   const navigate = useNavigate();
@@ -20,6 +22,7 @@ const WithdrawContribution = () => {
   const [displayAmount, setDisplayAmount] = useState("");
   const [actualAmount, setActualAmount] = useState("");
   const [error, setError] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { contributionDetails } = useSelector(
     (state: any) => state?.transaction,
@@ -76,6 +79,7 @@ const WithdrawContribution = () => {
   const confirmAmount = () => {
     const amountInNaira = parseFloat(actualAmount);
     const contributionBalance = contributionDetails?.balance || 0;
+    const withdrawalDate = contributionDetails?.withdrawalDate;
 
     if (isNaN(amountInNaira) || amountInNaira <= 0) {
       setError("Please enter a valid amount");
@@ -89,6 +93,23 @@ const WithdrawContribution = () => {
       return;
     }
 
+    if (withdrawalDate) {
+      const parsedWithdrawalDate = parseISO(withdrawalDate);
+      const today = new Date();
+
+      if (
+        isAfter(parsedWithdrawalDate, today) &&
+        !isToday(parsedWithdrawalDate)
+      ) {
+        setIsModalOpen(true);
+        return;
+      }
+    }
+
+    navigateToConfirmation(amountInNaira);
+  };
+
+  const navigateToConfirmation = (amountInNaira: number) => {
     navigate("/dashboard/contribution/withdraw_contribution/confirm-amount", {
       state: {
         amountInNaira,
@@ -96,6 +117,11 @@ const WithdrawContribution = () => {
         contributionPlan: contributionDetails?.contributionPlan,
       },
     });
+  };
+
+  const handleModalConfirm = () => {
+    setIsModalOpen(false);
+    navigateToConfirmation(parseFloat(actualAmount));
   };
 
   if (!contributionDetails) {
@@ -115,6 +141,7 @@ const WithdrawContribution = () => {
           </div>
         </div>
       </DashboardHeader>
+
       <section className="px-3">
         <div className="mt-6 flex items-center justify-between">
           <div className="flex flex-col gap-2">
@@ -177,6 +204,55 @@ const WithdrawContribution = () => {
           Continue
         </Primary>
       </section>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        className="px-18 rounded-2xl bg-white py-6"
+      >
+        <div className="max-w-lg">
+          <header className="mb-3 text-center">
+            <h2 className="text-xl font-bold">Withdrawal Notice</h2>
+          </header>
+          <header className="mb-3">
+            <h2 className="text-xl font-semibold text-gray-500">Update</h2>
+          </header>
+          <div className="mb-10 font-medium">
+            <p>
+              The next withdrawal date is in six months and that will be {""}
+              {format(
+                parseISO(contributionDetails.withdrawalDate),
+                "dd/MM/yyyy",
+              )}
+              . as selected by you.
+            </p>
+            <p>
+              However, it seems you want to Withdraw before the stipulated date
+              and service fee of N2,000.00 will be charge.
+            </p>
+          </div>
+          <div className="m-auto w-[60%]">
+            <header className="text-center">
+              <h2 className="text-xl font-semibold text-text2">
+                Would you like to continue ?
+              </h2>
+            </header>
+            <div className="mt-3 flex justify-between">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="rounded-md border-2 border-black px-3 py-1"
+              >
+                No
+              </button>
+              <button
+                onClick={handleModalConfirm}
+                className="rounded-md border-2 border-black px-3 py-1"
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </main>
   );
 };

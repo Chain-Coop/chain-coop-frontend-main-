@@ -41,7 +41,7 @@ const cardColors = [
   { bg: "bg-gradient-to-r from-emerald-500 to-teal-500", text: "text-white" },
 ];
 
-const PaymentChoice = ({ contributionData }: any) => {
+const PaymentWithCard = ({ contributionData }: any) => {
   const contributionId = contributionData.contributionId;
   const navigate = useNavigate();
   const dispatch: AppDispatch = useAppDispatch();
@@ -102,7 +102,9 @@ const PaymentChoice = ({ contributionData }: any) => {
         } else {
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log("err", error);
+    }
   };
 
   const handleCardSelect = (card: Card) => {
@@ -257,4 +259,4 @@ const PaymentChoice = ({ contributionData }: any) => {
   );
 };
 
-export default PaymentChoice;
+export default PaymentWithCard;

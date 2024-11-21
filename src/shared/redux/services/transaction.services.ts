@@ -12,8 +12,14 @@ const API_URL_MEMBERSHIP_PAYSTACK_SUBSCRIPTION =
 const API_URL_CREATE_TRANSACTION_PIN =
   import.meta.env.VITE_REACT_APP_API_URL + "/wallet/create-pin";
 
+const API_URL_GENERATE_PIN_OTP =
+  import.meta.env.VITE_REACT_APP_API_URL + "/wallet/generate-pin-otp";
+
 const API_URL_PAY_CONTRIBUTION =
   import.meta.env.VITE_REACT_APP_API_URL + "/contribution/pay";
+
+const API_URL_PAY_UNPAID_CONTRIBUTION =
+  import.meta.env.VITE_REACT_APP_API_URL + "/contribution/charge-unpaid";
 
 const API_URL_WITHDRAW_FROM_WALLET =
   import.meta.env.VITE_REACT_APP_API_URL + "/withdrawal/request-withdrawal";
@@ -112,6 +118,7 @@ const GetAllUserFundedProject = async () => {
   const url = `${API_URL}/project/funded`;
   try {
     const response = await axios.get(url, { headers: authHeader() });
+    console.log("rr", response);
     return response.data;
   } catch (error: any) {
     handleApiError(error);
@@ -278,6 +285,25 @@ const GetAccountName = async (body: any) => {
   }
 };
 
+const GeneratePinOTP = async () => {
+  try {
+    const response = await axios.post(
+      API_URL_GENERATE_PIN_OTP,
+      {},
+      {
+        headers: authHeader(),
+      },
+    );
+    return response?.data;
+  } catch (error: any) {
+    if (error.response && error.response.data) {
+      throw error.response.data;
+    } else {
+      throw new Error("Network Error: Please check your internet connection.");
+    }
+  }
+};
+
 const CreateTransactionPin = async (body: any) => {
   try {
     const response = await axios.post(API_URL_CREATE_TRANSACTION_PIN, body, {
@@ -389,6 +415,54 @@ const PayContribution = async (body: any) => {
   }
 };
 
+const PayUnPaidContribution = async (body: any) => {
+  try {
+    const response = await axios.post(API_URL_PAY_UNPAID_CONTRIBUTION, body, {
+      headers: authHeader(),
+    });
+    return response?.data;
+  } catch (error: any) {
+    if (error.response && error.response.data) {
+      throw error.response.data;
+    } else {
+      throw new Error("Network Error: Please check your internet connection.");
+    }
+  }
+};
+
+const deleteCard = async (body: { cardId: string }) => {
+  const url = `${API_URL}/wallet/cards`;
+
+  try {
+    const response = await axios({
+      url,
+      method: "DELETE",
+      headers: authHeader(),
+      data: { cardId: body.cardId },
+    });
+
+    const token = response?.data?.data?.tokens?.accessToken;
+    if (token) {
+      sessionStorage.setItem("userData", token);
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("Delete card error:", error);
+    throw error;
+  }
+};
+
+const GetUnPaidBalance = async (contributionId: any) => {
+  const url = `${API_URL}/contribution/unpaid?contributionId=${contributionId}`;
+  try {
+    const response = await axios.get(url, { headers: authHeader() });
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
 const TransactionServices = {
   GetWalletBalance,
   GetContributionBalance,
@@ -414,6 +488,10 @@ const TransactionServices = {
   GetContributionDetailsById,
   PayContribution,
   WithdrawalFromContribution,
+  PayUnPaidContribution,
+  deleteCard,
+  GetUnPaidBalance,
+  GeneratePinOTP,
 };
 
 export default TransactionServices;

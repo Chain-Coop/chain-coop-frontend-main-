@@ -5,45 +5,140 @@ import Email from "./modal/Email";
 import OtpInput from "./modal/OtpInput";
 import NewPassword from "./modal/NewPassword";
 import useUserProfile from "../../../../shared/Hooks/useUserProfile";
+import GeneratePin from "./modal/GeneratePin";
+import OtpPin from "./modal/OtpPin";
+import ChangePin from "./modal/ChangePin";
+
 const Security = () => {
-  const [currentStep, setCurrentStep] = useState(0); 
+  const [passwordResetStep, setPasswordResetStep] = useState(0);
+  const [pinResetStep, setPinResetStep] = useState(0);
   const [email, setEmail] = useState("");
   const { profileDetails } = useUserProfile();
   const [otp, setOtp] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentModalType, setCurrentModalType] = useState("");
 
-  const handlePasswordResetClick = () => {
-    setCurrentStep(1);
-  };
-
-  const handleCloseModal = () => {
-    setCurrentStep(0);
+  const resetStates = () => {
+    setPasswordResetStep(0);
+    setPinResetStep(0);
     setEmail("");
     setOtp("");
-  };
-
-  const handleEmailSent = () => {
-    setCurrentStep(2); 
-  };
-
-  const handleOtpEntered = () => {
-    setCurrentStep(3); 
-  };
-
-  const handleResetSuccess = () => {
-    setCurrentStep(0);
+    setIsModalOpen(false);
+    setCurrentModalType("");
   };
 
   const sections = [
-    { title: "Chain Pin" },
-    { title: "Password Reset", onClick: handlePasswordResetClick },
+    {
+      title: "Chain Pin",
+      onClick: () => {
+        setCurrentModalType("pin");
+        setPinResetStep(1);
+        setIsModalOpen(true);
+      },
+    },
+    {
+      title: "Password Reset",
+      onClick: () => {
+        setCurrentModalType("password");
+        setPasswordResetStep(1);
+        setIsModalOpen(true);
+      },
+    },
   ];
+
+  const renderModal = () => {
+    if (!isModalOpen) return null;
+
+    if (currentModalType === "password") {
+      switch (passwordResetStep) {
+        case 1:
+          return (
+            <Modal
+              className="w-[25em] bg-[#E9E9E9]"
+              isOpen
+              onClose={resetStates}
+            >
+              <Email
+                email={email}
+                setEmail={setEmail}
+                onClose={resetStates}
+                onEmailSent={() => setPasswordResetStep(2)}
+              />
+            </Modal>
+          );
+        case 2:
+          return (
+            <Modal className="bg-[#E9E9E9]" isOpen onClose={resetStates}>
+              <OtpInput
+                otp={otp}
+                setOtp={setOtp}
+                onClose={resetStates}
+                onOtpEntered={() => setPasswordResetStep(5)}
+              />
+            </Modal>
+          );
+        case 3:
+          return (
+            <Modal className="bg-[#E9E9E9]" isOpen onClose={resetStates}>
+              <NewPassword
+                email={profileDetails.email}
+                otp={otp}
+                onClose={resetStates}
+                onSuccess={resetStates}
+              />
+            </Modal>
+          );
+      }
+    }
+
+    if (currentModalType === "pin") {
+      switch (pinResetStep) {
+        case 1:
+          return (
+            <Modal
+              className="w-[25em] bg-[#E9E9E9]"
+              isOpen
+              onClose={resetStates}
+            >
+              <GeneratePin onClose={() => setPinResetStep(2)} />
+            </Modal>
+          );
+        case 2:
+          return (
+            <Modal
+              className="w-[25em] bg-[#E9E9E9]"
+              isOpen
+              onClose={resetStates}
+            >
+              <OtpPin
+                onNext={(enteredOtp: any) => {
+                  setOtp(enteredOtp);
+                  setPinResetStep(3);
+                }}
+                onClose={resetStates}
+              />
+            </Modal>
+          );
+        case 3:
+          return (
+            <Modal
+              className="w-[25em] bg-[#E9E9E9]"
+              isOpen
+              onClose={resetStates}
+            >
+              <ChangePin otp={otp} onClose={resetStates} />
+            </Modal>
+          );
+      }
+    }
+  };
 
   return (
     <main className="mt-4 font-sans">
       <header>
         <h2 className="font-semibold text-howtext">Security</h2>
       </header>
-      
+
       <section className="mt-[1.2em]">
         {sections.map((section, index) => (
           <div key={index} className="mb-2 flex flex-col">
@@ -61,50 +156,7 @@ const Security = () => {
         ))}
       </section>
 
-      {currentStep === 1 && (
-        <Modal
-          className="bg-[#E9E9E9]"
-          isOpen
-          onClose={handleCloseModal}
-        >
-          <Email
-            email={email}
-            setEmail={setEmail}
-            onClose={handleCloseModal}
-            onEmailSent={handleEmailSent}
-          />
-        </Modal>
-      )}
-
-      {currentStep === 2 && (
-        <Modal
-          className="bg-[#E9E9E9]"
-          isOpen
-          onClose={handleCloseModal}
-        >
-          <OtpInput
-            otp={otp}
-            setOtp={setOtp}
-            onClose={handleCloseModal}
-            onOtpEntered={handleOtpEntered}
-          />
-        </Modal>
-      )}
-
-       {currentStep === 3 && (
-        <Modal
-          className="bg-[#E9E9E9]"
-          isOpen
-          onClose={handleCloseModal}
-        >
-          <NewPassword
-            email={profileDetails.email}
-            otp={otp}
-            onClose={handleCloseModal}
-            onSuccess={handleResetSuccess} // Pass onSuccess to close all modals
-          />
-        </Modal>
-      )} 
+      {renderModal()}
     </main>
   );
 };

@@ -19,7 +19,7 @@ import {
 } from "../../../../shared/redux/slices/transaction.slices";
 import { AppDispatch } from "../../../../shared/redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import PaymentChoice from "../paymentChoice.tsx/PaymentChoice";
+import PaymentWithCard from "../paymentChoice.tsx/PaymentWithCard";
 import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
 import PayWithPaystack from "../paymentChoice.tsx/PayWithPaystack";
 import { Loader2, CheckCircle2, XCircle, AlertCircle } from "lucide-react";
@@ -81,6 +81,7 @@ const StartDate: React.FC = () => {
     "idle" | "verifying" | "success" | "error"
   >("idle");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [verificationErrorMessage, setVerificationErrorMessage] = useState("");
   const dispatch: AppDispatch = useAppDispatch();
 
   useEffect(() => {
@@ -186,6 +187,9 @@ const StartDate: React.FC = () => {
   const handleDirectPayment = async (paymentType: "paystack") => {
     setIsProcessing(true);
     setVerificationStatus("verifying");
+    setVerificationErrorMessage("");
+
+    setIsModalOpen(false);
 
     try {
       const paymentResponse = await dispatch(
@@ -200,9 +204,18 @@ const StartDate: React.FC = () => {
           paymentResponse.landing.payment.info.data.authorization_url;
       } else {
         setVerificationStatus("error");
+        setVerificationErrorMessage(
+          "Unable to process payment. Please try again.",
+        );
       }
-    } catch (error) {
+    } catch (error: any) {
+      const errorMessage =
+        typeof error === "string"
+          ? error
+          : error?.error || "Payment verification failed. Please try again.";
+
       setVerificationStatus("error");
+      setVerificationErrorMessage(errorMessage);
     } finally {
       setIsProcessing(false);
     }
@@ -313,7 +326,7 @@ const StartDate: React.FC = () => {
         className="flex flex-col bg-[#ECE6F2] py-[2em]"
       >
         {hasCards ? (
-          <PaymentChoice contributionData={contributionData} />
+          <PaymentWithCard contributionData={contributionData} />
         ) : (
           <PayWithPaystack
             onSelect={handleDirectPayment}
@@ -323,18 +336,25 @@ const StartDate: React.FC = () => {
       </Modal>
       <Modal
         isOpen={verificationStatus !== "idle"}
-        onClose={() => !isProcessing && setVerificationStatus("idle")}
-        className="bg-white"
+        onClose={() => {
+          if (!isProcessing) {
+            setVerificationStatus("idle");
+            setIsModalOpen(false);
+          }
+        }}
+        className=" bg-white"
       >
-        <div className="flex flex-col items-center gap-4 text-center">
+        <div className="flex w-[19em] flex-col items-center gap-4 text-center">
           {statusConfig[verificationStatus].icon}
-          <h3
+          <h5
             className={`text-lg font-semibold ${statusConfig[verificationStatus]?.color}`}
           >
             {statusConfig[verificationStatus]?.title}
-          </h3>
-          <p className="text-sm text-gray-500">
-            {statusConfig[verificationStatus]?.message}
+          </h5>
+          <p className="text-lg text-gray-500">
+            {verificationStatus === "error"
+              ? verificationErrorMessage
+              : statusConfig[verificationStatus]?.message}
           </p>
         </div>
       </Modal>

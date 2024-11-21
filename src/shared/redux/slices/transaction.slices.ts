@@ -119,6 +119,7 @@ export const GetAllUserFundedProject = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const data = await TransactionServices.GetAllUserFundedProject();
+      console.log("dd", data);
       return { transaction: data };
     } catch (error: any) {
       return handleAsyncError(error, thunkAPI);
@@ -277,6 +278,20 @@ export const GetAccountName = createAsyncThunk(
   },
 );
 
+export const GeneratePinOTP = createAsyncThunk(
+  "transaction/generatePinOTP",
+  async (_, thunkAPI) => {
+    try {
+      const data = await TransactionServices.GeneratePinOTP();
+      return { landing: data };
+    } catch (error: any) {
+      const message = error.msg;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
 export const CreateTransactionPin = createAsyncThunk(
   "transaction/createTransaction",
   async (body: any, thunkAPI) => {
@@ -284,6 +299,7 @@ export const CreateTransactionPin = createAsyncThunk(
       const data = await TransactionServices.CreateTransactionPin(body);
       return { landing: data };
     } catch (error: any) {
+      console.log("err", error);
       const message = error.msg;
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);
@@ -357,8 +373,47 @@ export const PayContribution = createAsyncThunk(
   },
 );
 
+export const PayUnPaidContribution = createAsyncThunk(
+  "transaction/payUnPaidContribution",
+  async (body: any, thunkAPI) => {
+    try {
+      const data = await TransactionServices.PayUnPaidContribution(body);
+      return { landing: data };
+    } catch (error: any) {
+      const message = error.msg;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
+export const deleteCard = createAsyncThunk(
+  "transaction/deleteCard",
+  async (body: any, thunkAPI) => {
+    try {
+      const response = await TransactionServices.deleteCard(body);
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+export const GetUnPaidBalance = createAsyncThunk(
+  "transaction/getUnPaidBalance",
+  async (contributionId: string, thunkAPI) => {
+    try {
+      const data = await TransactionServices.GetUnPaidBalance(contributionId);
+      return { transaction: data };
+    } catch (error: any) {
+      return handleAsyncError(error, thunkAPI);
+    }
+  },
+);
+
 interface TransactionState {
   getWalletBalance: any | null;
+  getUnPaidContributionBalance: any | null;
   getContributionBalance: any | null;
   getUsersTransaction: any | null;
   getUsersContribution: any | null;
@@ -379,7 +434,10 @@ interface TransactionState {
   getUserAccountName: null;
   currentProject: any | null;
   createPin: any | null;
+  getPinOtp: any | null;
+  removeCard: null;
   fundContribution: any | null;
+  fundUnPaidContribution: any | null;
   requestWithdrawalWallet: any | null;
   requestWithdrawalContribution: any | null;
   contributionDetails: ContributionDetails | null;
@@ -389,6 +447,7 @@ interface TransactionState {
 
 const initialState: TransactionState = {
   getWalletBalance: null,
+  getUnPaidContributionBalance: null,
   getContributionBalance: null,
   getUsersTransaction: null,
   getUsersContribution: null,
@@ -409,9 +468,12 @@ const initialState: TransactionState = {
   fundUserProject: null,
   currentProject: null,
   createPin: null,
+  getPinOtp: null,
   fundContribution: null,
+  fundUnPaidContribution: null,
   requestWithdrawalWallet: null,
   requestWithdrawalContribution: null,
+  removeCard: null,
   contributionDetails: null,
   loading: false,
   error: null,
@@ -604,8 +666,20 @@ export const transactionSlice = createSlice({
       state.createPin = action.payload.landing;
     });
     builder
-      .addCase(CreateTransactionPin.rejected, (state) => {
-        state.createPin = null;
+      .addCase(CreateTransactionPin.rejected, (state, action: any) => {
+        state.createPin = action.payload.landing;
+      })
+
+      .addCase(GeneratePinOTP.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      });
+    builder.addCase(GeneratePinOTP.fulfilled, (state, action) => {
+      state.getPinOtp = action.payload.landing;
+    });
+    builder
+      .addCase(GeneratePinOTP.rejected, (state) => {
+        state.getPinOtp = null;
       })
 
       .addCase(
@@ -663,6 +737,7 @@ export const transactionSlice = createSlice({
       .addCase(
         GetAllUserFundedProject.fulfilled,
         (state, action: PayloadAction<{ transaction: any }>) => {
+          console.log("sct", action.payload);
           state.loading = false;
           state.allFundedProjects = action.payload.transaction;
           state.error = null;
@@ -723,9 +798,45 @@ export const transactionSlice = createSlice({
     builder.addCase(PayContribution.fulfilled, (state, action) => {
       state.fundContribution = action.payload.landing;
     });
-    builder.addCase(PayContribution.rejected, (state) => {
-      state.createPin = null;
+    builder
+      .addCase(PayContribution.rejected, (state) => {
+        state.fundContribution = null;
+      })
+
+      .addCase(PayUnPaidContribution.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      });
+    builder.addCase(PayUnPaidContribution.fulfilled, (state, action) => {
+      state.fundUnPaidContribution = action.payload.landing;
     });
+    builder
+      .addCase(PayUnPaidContribution.rejected, (state) => {
+        state.fundUnPaidContribution = null;
+      })
+
+      .addCase(deleteCard.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteCard.fulfilled, (state, action: PayloadAction<any>) => {
+        state.loading = false;
+        state.removeCard = action.payload;
+      })
+      .addCase(deleteCard.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to delete card";
+      })
+
+      .addCase(
+        GetUnPaidBalance.fulfilled,
+        (state, action: PayloadAction<{ transaction: any }>) => {
+          state.getUnPaidContributionBalance = action.payload.transaction;
+        },
+      )
+      .addCase(GetUnPaidBalance.rejected, (state) => {
+        state.getUnPaidContributionBalance = null;
+      });
   },
 });
 

@@ -4,14 +4,14 @@ import { FORGOT_PASSWORD } from "../../../../../shared/redux/services/landing.se
 import ReactLoading from "react-loading";
 import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 
-const EmailStep = ({ onClose, onEmailSent }:any) => {
+const EmailStep = ({ onClose, onEmailSent }: any) => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const { profileDetails } = useUserProfile();
 
   useEffect(() => {
-    setEmail(profileDetails.email);
-  }, [profileDetails.email]);
+    setEmail(profileDetails?.email);
+  }, [profileDetails?.email]);
 
   const handleOtpMail = async () => {
     try {
@@ -33,7 +33,7 @@ const EmailStep = ({ onClose, onEmailSent }:any) => {
       <section className="flex flex-col gap-[1em] py-[2em]">
         <div className="text-center">
           <header>
-            <h1 className="font-semibold text-lg">Reset Password</h1>
+            <h1 className="text-lg font-semibold">Reset Password</h1>
           </header>
         </div>
 
@@ -50,6 +50,7 @@ const EmailStep = ({ onClose, onEmailSent }:any) => {
               name="email"
               type="email"
               value={email}
+              readOnly
               onChange={(e) => setEmail(e.target.value)}
               className="mt-[10px] w-full rounded-full border-[1px] bg-gray-200 p-2 shadow-lg focus:border-none focus:outline-none focus:ring-text2"
             />

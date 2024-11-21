@@ -40,11 +40,18 @@
 // };
 
 // export default Modal;
+
 import React from "react";
 import { useEffect } from "react";
 import cancel from "../../Assets/svg/cancel.svg";
 
-const Modal = ({ children, isOpen, onClose, className }: any) => {
+const Modal = ({
+  children,
+  isOpen,
+  onClose,
+  className,
+  minWidth = "min-w-md",
+}: any) => {
   useEffect(() => {
     function handleEscapeKeyPress(event: any) {
       if (event.key === "Escape") {
@@ -73,7 +80,7 @@ const Modal = ({ children, isOpen, onClose, className }: any) => {
           src={cancel}
           alt="cancel"
           onClick={onClose}
-          className="absolute right-4 top-4 cursor-pointer hover:text-gray-700"
+          className="absolute right-4 top-4 h-9 w-9 cursor-pointer hover:text-gray-700"
         />
         <div className="mt-5">{children}</div>
       </div>

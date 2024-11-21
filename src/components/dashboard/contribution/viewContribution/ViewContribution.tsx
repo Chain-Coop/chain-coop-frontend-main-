@@ -18,9 +18,10 @@ import { format, parseISO } from "date-fns";
 import { useSelector } from "react-redux";
 import { IoIosArrowBack } from "react-icons/io";
 import Modal from "../../../common/Modal";
-import PaymentChoice from "../paymentChoice.tsx/PaymentChoice";
-import PayWithPaystack from "../paymentChoice.tsx/PayWithPaystack";
+import PaymentChoice from "../unpaidContribution/PaymentChoice";
+import PayWithPaystack from "../unpaidContribution/PayWithPaystack";
 import { Loader2, CheckCircle2, XCircle, AlertCircle } from "lucide-react";
+import { useUnPaidContribution } from "../../../../shared/Hooks/useBalance";
 
 type VerificationStatus = "idle" | "verifying" | "success" | "error";
 
@@ -59,12 +60,21 @@ const statusConfig: Record<VerificationStatus, StatusConfig> = {
 };
 
 const ViewContribution = () => {
+  const location = useLocation();
+  const contributionId = location?.state?.contributionId;
+  console.log("cc", contributionId);
   const [isContributionVisible, setIsContributionVisible] = useState(() => {
     const storedVisibility = sessionStorage.getItem(
       "contributionBalanceVisible",
     );
     return storedVisibility !== null ? storedVisibility === "true" : true;
   });
+  const {
+    isUnPaidVisible,
+    setIsUnPaidVisible,
+    formattedBalance: realBalance,
+  } = useUnPaidContribution();
+  console.log("rea", realBalance);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -73,15 +83,13 @@ const ViewContribution = () => {
   );
   const hasCards = walletData?.allCards?.length > 0;
 
-  const location = useLocation();
-  const contributionId = location?.state?.contributionId;
   const dispatch: AppDispatch = useAppDispatch();
   const [verificationStatus, setVerificationStatus] = useState<
     "idle" | "verifying" | "success" | "error"
   >("idle");
   const navigate = useNavigate();
 
-  const handleDirectPayment: any = async (paymentType: "paystack") => {
+  const handleDirectPayment = async (paymentType: "paystack") => {
     setIsProcessing(true);
     setVerificationStatus("verifying");
 
@@ -92,13 +100,24 @@ const ViewContribution = () => {
           paymentType,
         }),
       ).unwrap();
+
       if (paymentResponse?.landing?.payment?.info?.data) {
         window.location.href =
           paymentResponse.landing.payment.info.data.authorization_url;
       } else {
         setVerificationStatus("error");
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.log("err", error);
+
+      statusConfig.error = {
+        ...statusConfig.error,
+        message:
+          error?.message ||
+          error?.error ||
+          "Payment verification failed. Please try again.",
+      };
+
       setVerificationStatus("error");
     } finally {
       setIsProcessing(false);

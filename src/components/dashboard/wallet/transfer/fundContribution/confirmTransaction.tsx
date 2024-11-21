@@ -7,7 +7,7 @@ import { formatBalance } from "../../../../../shared/utils/format";
 import { useDispatch } from "react-redux";
 import { FundProject } from "../../../../../shared/redux/slices/transaction.slices";
 import { AppDispatch } from "../../../../../shared/redux/store";
-import { Alert } from '@mui/material';
+import { Alert } from "@mui/material";
 import ReactLoading from "react-loading";
 import Modal from "../../../../common/Modal";
 import success from "../../../../../Assets/svg/auth/sucess.svg";
@@ -17,12 +17,12 @@ const ConfirmTransaction = () => {
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
+
   const { amountInNaira, selectedProjectId } = location.state as {
     amountInNaira: number;
-    selectedProjectId: string
+    selectedProjectId: string;
   };
-  
+
   const interestRate = 0.05;
   const returns = Math.round(amountInNaira * interestRate);
   const [error, setError] = useState("");
@@ -34,7 +34,7 @@ const ConfirmTransaction = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    navigate('/dashboard'); 
+    navigate("/dashboard");
   };
 
   const handleFund = async () => {
@@ -42,13 +42,15 @@ const ConfirmTransaction = () => {
     setError("");
     try {
       const body = { amount: amountInNaira };
-      const result = await dispatch(FundProject({ body, projectId: selectedProjectId })).unwrap();
-      
-            if (result?.transaction?.statusCode === 200 ) {
+      const result = await dispatch(
+        FundProject({ body, projectId: selectedProjectId }),
+      ).unwrap();
+
+      if (result?.transaction?.statusCode === 200) {
         setLoading(false);
-        setIsModalOpen(true); 
+        setIsModalOpen(true);
       } else {
-        throw new Error('Transaction failed');
+        throw new Error("Transaction failed");
       }
     } catch (error: any) {
       setLoading(false);
@@ -59,7 +61,7 @@ const ConfirmTransaction = () => {
   return (
     <main className="font-sans">
       <DashboardHeader
-        className="relative lg:mt-[2em] cursor-pointer items-center"
+        className="relative cursor-pointer items-center lg:mt-[2em]"
         onClick={handleBackClick}
       >
         <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
@@ -89,16 +91,23 @@ const ConfirmTransaction = () => {
           </div>
         </div>
         {error && (
-          <Alert severity="error" className="mt-4">{error}</Alert>
+          <Alert severity="error" className="mt-4">
+            {error}
+          </Alert>
         )}
         <div className="mt-[2em] flex justify-center">
           <Primary
-            className="w-[70%] flex justify-center bg-text2 py-3 text-white"
+            className="flex w-[70%] justify-center bg-text2 py-3 text-white"
             onClick={handleFund}
             disabled={loading}
           >
             {loading ? (
-              <ReactLoading type="spin" color="#ffffff" height={20} width={20} />
+              <ReactLoading
+                type="spin"
+                color="#ffffff"
+                height={20}
+                width={20}
+              />
             ) : (
               `Fund ${formatBalance(amountInNaira)}`
             )}
@@ -106,31 +115,31 @@ const ConfirmTransaction = () => {
         </div>
       </section>
 
-      <Modal 
-        isOpen={isModalOpen} 
+      <Modal
+        isOpen={isModalOpen}
         onClose={handleCloseModal}
-        className="bg-white"
+        className="w-[25em] bg-white"
       >
-           <div className="mt-[2.5em] flex flex-col justify-center">
-            <img
-              src={success}
-              alt="Success Icon"
-              className="mx-auto sm:w-[6em] lg:w-[8em]"
-            />
-            <header>
-              <h1 className="text-center text-xl font-semibold">
-                Successfully Submitted
-              </h1>
-            </header>
-            <div className="mt-4 flex justify-center">
-              <Primary
-                className="w-[50%] bg-text2 py-2 text-white"
-                onClick={handleCloseModal}
-              >
-                Done
-              </Primary>
-            </div>
+        <div className="mt-[2.5em] flex flex-col justify-center">
+          <img
+            src={success}
+            alt="Success Icon"
+            className="mx-auto sm:w-[6em] lg:w-[8em]"
+          />
+          <header>
+            <h1 className="text-center text-xl font-semibold">
+              Successfully Submitted
+            </h1>
+          </header>
+          <div className="mt-4 flex justify-center">
+            <Primary
+              className="w-[50%] bg-text2 py-2 text-white"
+              onClick={handleCloseModal}
+            >
+              Done
+            </Primary>
           </div>
+        </div>
       </Modal>
     </main>
   );

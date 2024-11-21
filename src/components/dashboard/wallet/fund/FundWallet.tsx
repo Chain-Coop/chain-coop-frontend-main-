@@ -35,21 +35,17 @@ const FundWallet: React.FC = () => {
     openModal(ModalTypes.Final);
   };
 
-
   return (
     <main className="font-sans">
-        <DashboardHeader
-          className="relative cursor-pointer lg:mt-[2em] items-center"
-          onClick={handleBackClick}
-        >
-          <IoIosArrowBack
-            size={25}
-            className="absolute left-0 cursor-pointer"
-          />
-          <div className="flex flex-grow items-center justify-center">
-            <div className="tracking-wide">Fund Wallet</div>
-          </div>
-        </DashboardHeader>
+      <DashboardHeader
+        className="relative cursor-pointer items-center lg:mt-[2em]"
+        onClick={handleBackClick}
+      >
+        <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
+        <div className="flex flex-grow items-center justify-center">
+          <div className="tracking-wide">Fund Wallet</div>
+        </div>
+      </DashboardHeader>
       <section className="m-auto mt-[1.5em] h-full w-full px-[1em]">
         {/* <div
           className="flex cursor-pointer items-center justify-between"
@@ -111,11 +107,9 @@ const FundWallet: React.FC = () => {
       <Modal
         isOpen={modalType === ModalTypes.Paystack}
         onClose={closeModal}
-        className="bg-white"
+        className="w-[25em] bg-white"
       >
-        <EmailAmountModal
-          closeModal={closeModal}
-        />
+        <EmailAmountModal closeModal={closeModal} />
       </Modal>
     </main>
   );
