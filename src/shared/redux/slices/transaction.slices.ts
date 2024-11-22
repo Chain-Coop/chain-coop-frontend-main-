@@ -149,38 +149,11 @@ const handleAsyncError = (error: any, thunkAPI: any) => {
   return thunkAPI.rejectWithValue(message);
 };
 
-export const UploadPaymentReceipt = createAsyncThunk(
-  "transaction/uploadPaymentReceipt",
-  async (formData: FormData, thunkAPI) => {
-    try {
-      const response = await TransactionServices.UploadPaymentReceipt(formData);
-      return { transaction: response };
-    } catch (error: any) {
-      return handleAsyncError(error, thunkAPI);
-    }
-  },
-);
-
 export const FundWallet = createAsyncThunk(
   "transaction/fundWallet",
   async (body: any, thunkAPI) => {
     try {
       const data = await TransactionServices.FundWallet(body);
-      return { transaction: data };
-    } catch (error: any) {
-      const message = error.msg;
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue(message);
-    }
-  },
-);
-
-export const PayStackMembershipSubscription = createAsyncThunk(
-  "transaction/payStackMembershipSubscription",
-  async (body: any, thunkAPI) => {
-    try {
-      const data =
-        await TransactionServices.PayStackMembershipSubscription(body);
       return { transaction: data };
     } catch (error: any) {
       const message = error.msg;
@@ -207,19 +180,6 @@ export const VerifyFundContribution = createAsyncThunk(
   async (body: any, thunkAPI) => {
     try {
       const data = await TransactionServices.VerifyFundContribution(body);
-      return { transaction: data };
-    } catch (error: any) {
-      return handleAsyncError(error, thunkAPI);
-    }
-  },
-);
-
-export const VerifyMembershipSubscription = createAsyncThunk(
-  "transaction/verifyMembershipSubscription",
-  async (params: VerificationParams, thunkAPI) => {
-    try {
-      const data =
-        await TransactionServices.VerifyMembershipSubscription(params);
       return { transaction: data };
     } catch (error: any) {
       return handleAsyncError(error, thunkAPI);
@@ -424,12 +384,9 @@ interface TransactionState {
   allFundedProjects: any;
   allBanks: any;
   contributionPlan: any;
-  uploadReceipt: any | null;
   fundUserWallet: any | null;
-  fundMembershipSubscription: any | null;
   veryfyFundUserWallet: any | null;
   veryfyFundUserContribution: any | null;
-  veryfyFundMembership: any | null;
   fundUserProject: null;
   getUserAccountName: null;
   currentProject: any | null;
@@ -458,13 +415,10 @@ const initialState: TransactionState = {
   allFundedProjects: null,
   allBanks: null,
   contributionPlan: null,
-  uploadReceipt: null,
   fundUserWallet: null,
-  fundMembershipSubscription: null,
   getUserAccountName: null,
   veryfyFundUserWallet: null,
   veryfyFundUserContribution: null,
-  veryfyFundMembership: null,
   fundUserProject: null,
   currentProject: null,
   createPin: null,
@@ -579,16 +533,6 @@ export const transactionSlice = createSlice({
       })
 
       .addCase(
-        UploadPaymentReceipt.fulfilled,
-        (state, action: PayloadAction<{ transaction: any }>) => {
-          state.uploadReceipt = action.payload.transaction;
-        },
-      )
-      .addCase(UploadPaymentReceipt.rejected, (state) => {
-        state.uploadReceipt = null;
-      })
-
-      .addCase(
         VerifyFundWallet.fulfilled,
         (state, action: PayloadAction<{ transaction: any }>) => {
           state.veryfyFundUserWallet = action.payload.transaction;
@@ -680,26 +624,6 @@ export const transactionSlice = createSlice({
     builder
       .addCase(GeneratePinOTP.rejected, (state) => {
         state.getPinOtp = null;
-      })
-
-      .addCase(
-        PayStackMembershipSubscription.fulfilled,
-        (state, action: PayloadAction<{ transaction: any }>) => {
-          state.fundMembershipSubscription = action.payload.transaction;
-        },
-      )
-      .addCase(PayStackMembershipSubscription.rejected, (state) => {
-        state.fundMembershipSubscription = null;
-      })
-
-      .addCase(
-        VerifyMembershipSubscription.fulfilled,
-        (state, action: PayloadAction<{ transaction: any }>) => {
-          state.veryfyFundMembership = action.payload.transaction;
-        },
-      )
-      .addCase(VerifyMembershipSubscription.rejected, (state) => {
-        state.veryfyFundMembership = null;
       })
 
       .addCase(WithdrawalFromWallet.pending, (state) => {

@@ -18,7 +18,7 @@ import { format, parseISO } from "date-fns";
 import { useSelector } from "react-redux";
 import { IoIosArrowBack } from "react-icons/io";
 import Modal from "../../../common/Modal";
-import PaymentChoice from "../unpaidContribution/PaymentChoice";
+import PaymentWithCard from "../unpaidContribution/PaymentWithCard";
 import PayWithPaystack from "../unpaidContribution/PayWithPaystack";
 import { Loader2, CheckCircle2, XCircle, AlertCircle } from "lucide-react";
 import { useUnPaidContribution } from "../../../../shared/Hooks/useBalance";
@@ -62,7 +62,6 @@ const statusConfig: Record<VerificationStatus, StatusConfig> = {
 const ViewContribution = () => {
   const location = useLocation();
   const contributionId = location?.state?.contributionId;
-  console.log("cc", contributionId);
   const [isContributionVisible, setIsContributionVisible] = useState(() => {
     const storedVisibility = sessionStorage.getItem(
       "contributionBalanceVisible",
@@ -381,7 +380,7 @@ const ViewContribution = () => {
         className="flex flex-col bg-[#ECE6F2] py-[2em]"
       >
         {hasCards ? (
-          <PaymentChoice contributionData={contributionId} />
+          <PaymentWithCard contributionData={contributionId} />
         ) : (
           <PayWithPaystack
             onSelect={handleDirectPayment}

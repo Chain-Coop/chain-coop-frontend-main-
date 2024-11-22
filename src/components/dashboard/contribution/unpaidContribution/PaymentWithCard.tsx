@@ -41,8 +41,7 @@ const cardColors = [
   { bg: "bg-gradient-to-r from-emerald-500 to-teal-500", text: "text-white" },
 ];
 
-const PaymentChoice = ({ contributionData }: any) => {
-  console.log("cc", contributionData);
+const PaymentWithCard = ({ contributionData }: any) => {
   const contributionId = contributionData;
   const navigate = useNavigate();
   const dispatch: AppDispatch = useAppDispatch();
@@ -259,4 +258,4 @@ const PaymentChoice = ({ contributionData }: any) => {
   );
 };
 
-export default PaymentChoice;
+export default PaymentWithCard;

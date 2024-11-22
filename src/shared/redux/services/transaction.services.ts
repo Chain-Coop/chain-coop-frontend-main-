@@ -3,43 +3,14 @@ import authHeader from "./headers";
 
 const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
-const API_URL_FUND_WALLET =
-  import.meta.env.VITE_REACT_APP_API_URL + "/wallet/fund-wallet";
-
-const API_URL_MEMBERSHIP_PAYSTACK_SUBSCRIPTION =
-  import.meta.env.VITE_REACT_APP_API_URL + "/membership/activate";
-
-const API_URL_CREATE_TRANSACTION_PIN =
-  import.meta.env.VITE_REACT_APP_API_URL + "/wallet/create-pin";
-
-const API_URL_GENERATE_PIN_OTP =
-  import.meta.env.VITE_REACT_APP_API_URL + "/wallet/generate-pin-otp";
-
 const API_URL_PAY_CONTRIBUTION =
   import.meta.env.VITE_REACT_APP_API_URL + "/contribution/pay";
 
 const API_URL_PAY_UNPAID_CONTRIBUTION =
   import.meta.env.VITE_REACT_APP_API_URL + "/contribution/charge-unpaid";
 
-const API_URL_WITHDRAW_FROM_WALLET =
-  import.meta.env.VITE_REACT_APP_API_URL + "/withdrawal/request-withdrawal";
-
-const API_URL_WITHDRAW_FROM_CONTRIBUTION =
-  import.meta.env.VITE_REACT_APP_API_URL + "/contribution/withdraw";
-
-const API_URL_VERIFY_FUND_WALLET =
-  import.meta.env.VITE_REACT_APP_API_URL + "/wallet/verify-payment";
-
 const API_URL_VERIFY_CONTRIBUTION =
   import.meta.env.VITE_REACT_APP_API_URL + `/contribution/verify-contribution`;
-
-const API_URL_VERIFY_PAYSTACK_SUBSCRIPTION =
-  import.meta.env.VITE_REACT_APP_API_URL + "/membership/verify-payment";
-
-interface VerificationParams {
-  reference: string;
-  trxref: string;
-}
 
 const handleApiError = (error: any) => {
   if (!error.response) {
@@ -49,6 +20,9 @@ const handleApiError = (error: any) => {
   }
 };
 
+//WALLET
+
+//Get wallet balance
 const GetWalletBalance = async () => {
   const url = `${API_URL}/wallet/balance`;
   try {
@@ -59,16 +33,45 @@ const GetWalletBalance = async () => {
   }
 };
 
-const GetContributionBalance = async () => {
-  const url = `${API_URL}/contribution/balance`;
+//Fund wallet
+const FundWallet = async (body: any) => {
+  const url = `${API_URL}/wallet/fund-wallet`;
   try {
-    const response = await axios.get(url, { headers: authHeader() });
-    return response.data;
+    const token = sessionStorage.getItem("userData");
+    if (!token) {
+      throw new Error("Authorization token not found.");
+    }
+    const response = await axios.post(url, body, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response?.data;
   } catch (error: any) {
     handleApiError(error);
   }
 };
 
+//Verify fund wallet
+const VerifyFundWallet = async (body: any) => {
+  const url = `${API_URL}/wallet/verify-payment`;
+  try {
+    const token = sessionStorage.getItem("userData");
+    if (!token) {
+      throw new Error("Authorization token not found.");
+    }
+    const response = await axios.post(url, body, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response?.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
+//Get user transaction history
 const GetUsersTransaction = async () => {
   const url = `${API_URL}/wallet/history`;
   try {
@@ -79,52 +82,27 @@ const GetUsersTransaction = async () => {
   }
 };
 
-const SendProposal = async (formData: FormData) => {
+// withdraw from wallet
+const WithdrawalFromWallet = async (body: any) => {
+  const url = `${API_URL}/withdrawal/request-withdrawal`;
+
   try {
-    const config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        ...authHeader(),
-      },
-    };
-    const response = await axios.post(`${API_URL}/proposals`, formData, config);
-    return response.data;
+    const response = await axios.post(url, body, {
+      headers: authHeader(),
+    });
+    return response?.data;
   } catch (error: any) {
-    handleApiError(error);
+    if (error.response.data) {
+      throw error.response.data;
+    } else {
+      throw new Error("Network Error: Please check your internet connection.");
+    }
   }
 };
 
-const GetProposal = async () => {
-  const url = `${API_URL}/proposals`;
-  try {
-    const response = await axios.get(url, { headers: authHeader() });
-    return response.data;
-  } catch (error: any) {
-    handleApiError(error);
-  }
-};
+//CONTRIBUTION
 
-const GetAllProject = async () => {
-  const url = `${API_URL}/project/all-projects`;
-  try {
-    const response = await axios.get(url, { headers: authHeader() });
-    return response.data;
-  } catch (error: any) {
-    handleApiError(error);
-  }
-};
-
-const GetAllUserFundedProject = async () => {
-  const url = `${API_URL}/project/funded`;
-  try {
-    const response = await axios.get(url, { headers: authHeader() });
-    console.log("rr", response);
-    return response.data;
-  } catch (error: any) {
-    handleApiError(error);
-  }
-};
-
+//Create contribution
 const CreateContributionPlan = async (body: any) => {
   try {
     const response = await axios.post(
@@ -140,80 +118,64 @@ const CreateContributionPlan = async (body: any) => {
   }
 };
 
-const UploadPaymentReceipt = async (formData: FormData) => {
+//Get contribution balance
+const GetContributionBalance = async () => {
+  const url = `${API_URL}/contribution/balance`;
   try {
-    const config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        ...authHeader(),
-      },
-    };
-    const response = await axios.post(
-      `${API_URL}/wallet/upload-receipt`,
-      formData,
-      config,
-    );
+    const response = await axios.get(url, { headers: authHeader() });
     return response.data;
   } catch (error: any) {
     handleApiError(error);
   }
 };
 
-const FundWallet = async (body: any) => {
+//Get contribution history
+const GetUsersContributionHistory = async (page: number, limit: number) => {
+  const url = `${API_URL}/contribution/contribute?page=${page}&limit=${limit}`;
   try {
-    const token = sessionStorage.getItem("userData");
-    if (!token) {
-      throw new Error("Authorization token not found.");
-    }
-    const response = await axios.post(API_URL_FUND_WALLET, body, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    const response = await axios.get(url, { headers: authHeader() });
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
+//Pay contribution
+const PayContribution = async (body: any) => {
+  try {
+    const response = await axios.post(API_URL_PAY_CONTRIBUTION, body, {
+      headers: authHeader(),
     });
     return response?.data;
   } catch (error: any) {
-    handleApiError(error);
+    if (error.response && error.response.data) {
+      throw error.response.data;
+    } else {
+      throw new Error("Network Error: Please check your internet connection.");
+    }
   }
 };
 
-const PayStackMembershipSubscription = async (body: any) => {
+//Get contribution track by id
+const GetContributionDetailsById = async (contributionId: any) => {
+  const url = `${API_URL}/contribution/history?contributionId=${contributionId}`;
   try {
-    const token = sessionStorage.getItem("userData");
-    if (!token) {
-      throw new Error("Authorization token not found.");
-    }
-    const response = await axios.post(
-      API_URL_MEMBERSHIP_PAYSTACK_SUBSCRIPTION,
-      body,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-    return response?.data;
-  } catch (error: any) {
-    handleApiError(error);
-  }
-};
-
-const VerifyFundWallet = async (body: any) => {
-  try {
-    const token = sessionStorage.getItem("userData");
-    if (!token) {
-      throw new Error("Authorization token not found.");
-    }
-    const response = await axios.post(API_URL_VERIFY_FUND_WALLET, body, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    const response = await axios({
+      url,
+      headers: authHeader(),
+      method: "get",
     });
-    return response?.data;
-  } catch (error: any) {
-    handleApiError(error);
+    const token = response?.data?.data?.tokens?.accessToken;
+    if (token) {
+      sessionStorage.setItem("userData", token);
+    }
+    return response.data;
+  } catch (error) {
+    throw error;
   }
 };
 
+// Verify fund contribution
 const VerifyFundContribution = async (params: any) => {
   try {
     const token = sessionStorage.getItem("userData");
@@ -235,6 +197,78 @@ const VerifyFundContribution = async (params: any) => {
   }
 };
 
+// Withdraw from contribution
+const WithdrawalFromContribution = async (body: any) => {
+  const url = `${API_URL}/contribution/withdraw`;
+  try {
+    const response = await axios.post(url, body, {
+      headers: authHeader(),
+    });
+    return response?.data;
+  } catch (error: any) {
+    if (error.response.data) {
+      throw error.response.data;
+    } else {
+      throw new Error("Network Error: Please check your internet connection.");
+    }
+  }
+};
+
+//PROPOSAL
+
+//Send Proposal
+const SendProposal = async (formData: FormData) => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        ...authHeader(),
+      },
+    };
+    const response = await axios.post(`${API_URL}/proposals`, formData, config);
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
+//Get all user Proposal
+const GetProposal = async () => {
+  const url = `${API_URL}/proposals`;
+  try {
+    const response = await axios.get(url, { headers: authHeader() });
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
+// PROJECTS
+
+//Get all projects
+const GetAllProject = async () => {
+  const url = `${API_URL}/project/all-projects`;
+  try {
+    const response = await axios.get(url, { headers: authHeader() });
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
+//Get all user funded projects
+const GetAllUserFundedProject = async () => {
+  const url = `${API_URL}/project/funded`;
+  try {
+    const response = await axios.get(url, { headers: authHeader() });
+    console.log("rr", response);
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
+// Fund a project
 const FundProject = async (body: any, projectId: string) => {
   try {
     const response = await axios.post(
@@ -250,6 +284,7 @@ const FundProject = async (body: any, projectId: string) => {
   }
 };
 
+//Get project details by id
 const GetProjectById = async (projectId: string) => {
   const url = `${API_URL}/project/${projectId}`;
   try {
@@ -260,6 +295,9 @@ const GetProjectById = async (projectId: string) => {
   }
 };
 
+// BANK ACCOUNT
+
+// Get all Banks
 const GetAllBanks = async () => {
   const url = `${API_URL}/withdrawal/all-banks`;
   try {
@@ -270,6 +308,7 @@ const GetAllBanks = async () => {
   }
 };
 
+// Get user account name
 const GetAccountName = async (body: any) => {
   try {
     const response = await axios.post(
@@ -285,10 +324,14 @@ const GetAccountName = async (body: any) => {
   }
 };
 
+// WALLET PIN
+
+// Generate OTP for wallet Pin
 const GeneratePinOTP = async () => {
+  const url = `${API_URL}/wallet/generate-pin-otp`;
   try {
     const response = await axios.post(
-      API_URL_GENERATE_PIN_OTP,
+      url,
       {},
       {
         headers: authHeader(),
@@ -304,105 +347,12 @@ const GeneratePinOTP = async () => {
   }
 };
 
+//Create pin
 const CreateTransactionPin = async (body: any) => {
-  try {
-    const response = await axios.post(API_URL_CREATE_TRANSACTION_PIN, body, {
-      headers: authHeader(),
-    });
-    return response?.data;
-  } catch (error: any) {
-    if (error.response && error.response.data) {
-      throw error.response.data;
-    } else {
-      throw new Error("Network Error: Please check your internet connection.");
-    }
-  }
-};
+  const url = `${API_URL}/wallet/create-pin`;
 
-const VerifyMembershipSubscription = async (params: VerificationParams) => {
   try {
-    const token = sessionStorage.getItem("userData");
-    if (!token) {
-      throw new Error("Authorization token not found.");
-    }
-
-    const response = await axios.get(API_URL_VERIFY_PAYSTACK_SUBSCRIPTION, {
-      params,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response?.data;
-  } catch (error: any) {
-    throw handleApiError(error);
-  }
-};
-
-const WithdrawalFromWallet = async (body: any) => {
-  try {
-    const response = await axios.post(API_URL_WITHDRAW_FROM_WALLET, body, {
-      headers: authHeader(),
-    });
-    return response?.data;
-  } catch (error: any) {
-    if (error.response.data) {
-      throw error.response.data;
-    } else {
-      throw new Error("Network Error: Please check your internet connection.");
-    }
-  }
-};
-
-const WithdrawalFromContribution = async (body: any) => {
-  try {
-    const response = await axios.post(
-      API_URL_WITHDRAW_FROM_CONTRIBUTION,
-      body,
-      {
-        headers: authHeader(),
-      },
-    );
-    return response?.data;
-  } catch (error: any) {
-    if (error.response.data) {
-      throw error.response.data;
-    } else {
-      throw new Error("Network Error: Please check your internet connection.");
-    }
-  }
-};
-
-const GetUsersContributionHistory = async (page: number, limit: number) => {
-  const url = `${API_URL}/contribution/contribute?page=${page}&limit=${limit}`;
-  try {
-    const response = await axios.get(url, { headers: authHeader() });
-    return response.data;
-  } catch (error: any) {
-    handleApiError(error);
-  }
-};
-
-const GetContributionDetailsById = async (contributionId: any) => {
-  const url = `${API_URL}/contribution/history?contributionId=${contributionId}`;
-  try {
-    const response = await axios({
-      url,
-      headers: authHeader(),
-      method: "get",
-    });
-    const token = response?.data?.data?.tokens?.accessToken;
-    if (token) {
-      sessionStorage.setItem("userData", token);
-    }
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-const PayContribution = async (body: any) => {
-  try {
-    const response = await axios.post(API_URL_PAY_CONTRIBUTION, body, {
+    const response = await axios.post(url, body, {
       headers: authHeader(),
     });
     return response?.data;
@@ -471,7 +421,6 @@ const TransactionServices = {
   GetProposal,
   GetAllProject,
   CreateContributionPlan,
-  UploadPaymentReceipt,
   FundWallet,
   VerifyFundWallet,
   FundProject,
@@ -479,8 +428,6 @@ const TransactionServices = {
   GetAllBanks,
   GetAccountName,
   CreateTransactionPin,
-  PayStackMembershipSubscription,
-  VerifyMembershipSubscription,
   WithdrawalFromWallet,
   GetAllUserFundedProject,
   GetUsersContributionHistory,

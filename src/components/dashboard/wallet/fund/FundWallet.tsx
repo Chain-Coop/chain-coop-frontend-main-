@@ -6,7 +6,6 @@ import Modal from "../../../common/Modal";
 import TransferModal from "./modal/TransferModal";
 import EmailAmountModal from "./modal/paystack/EmailAmountModal";
 import { ModalTypes } from "../../../../data/Data";
-import UploadReceiptModal from "./modal/UploadReceiptModal";
 import PaymentSuccessfull from "./modal/PaymentSuccessfull";
 import fund from "../../../../Assets/svg/dashboard/wallet/withdraw.svg";
 import debit from "../../../../Assets/svg/dashboard/wallet/debit.svg";
@@ -86,14 +85,6 @@ const FundWallet: React.FC = () => {
         className="bg-white"
       >
         <TransferModal onContinue={handleTransferContinue} />
-      </Modal>
-
-      <Modal
-        isOpen={modalType === ModalTypes.Upload}
-        onClose={closeModal}
-        className="bg-white"
-      >
-        <UploadReceiptModal onContinue={handleUploadContinue} />
       </Modal>
 
       <Modal
