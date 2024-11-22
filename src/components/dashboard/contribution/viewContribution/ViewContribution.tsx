@@ -5,6 +5,7 @@ import { AppDispatch } from "../../../../shared/redux/store";
 import {
   GetContributionDetailsById,
   PayContribution,
+  PayUnPaidContribution,
 } from "../../../../shared/redux/slices/transaction.slices";
 import { formatBalance } from "../../../../shared/utils/format";
 import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
@@ -94,15 +95,15 @@ const ViewContribution = () => {
 
     try {
       const paymentResponse = await dispatch(
-        PayContribution({
+        PayUnPaidContribution({
           contributionId,
           paymentType,
         }),
       ).unwrap();
-
-      if (paymentResponse?.landing?.payment?.info?.data) {
+      console.log("pay", paymentResponse);
+      if (paymentResponse?.landing?.charge?.info?.data) {
         window.location.href =
-          paymentResponse.landing.payment.info.data.authorization_url;
+          paymentResponse.landing.charge.info.data.authorization_url;
       } else {
         setVerificationStatus("error");
       }
@@ -154,6 +155,7 @@ const ViewContribution = () => {
 
     const {
       nextContributionDate,
+      withdrawalDate,
       amount = 0,
       history = [],
     } = contributionDetails;
@@ -171,8 +173,10 @@ const ViewContribution = () => {
           label: "Start Date",
           date: firstTransaction.Date,
           amount: firstTransaction.amount,
+          type: firstTransaction.type,
+          balance: firstTransaction.balance,
           description: "Start of regular contributions",
-          status: "Completed",
+          status: firstTransaction.status,
           reference: firstTransaction.reference,
         });
 
@@ -181,8 +185,10 @@ const ViewContribution = () => {
             label: "Cash Transfer from Savings Account",
             date: transaction.Date,
             amount: transaction.amount,
+            type: transaction.type,
+            balance: transaction.balance,
             description: "Cash Transfer from Savings Bank Account",
-            status: "Completed",
+            status: transaction.status,
             reference: transaction.reference,
           });
         });
@@ -193,6 +199,8 @@ const ViewContribution = () => {
           label: "Next Contribution",
           date: nextContributionDate,
           amount: amount,
+          type: "Credit",
+          balance: null,
           description: "Cash Transfer from Savings Bank Account",
           status: "Pending",
         });
@@ -201,12 +209,16 @@ const ViewContribution = () => {
       return steps;
     };
 
-    const getStatusStyle = (status: any) => {
-      switch (status) {
-        case "Completed":
+    const getStatusStyle = (status: string) => {
+      switch (status?.toLowerCase()) {
+        case "completed":
           return "bg-[#2EC046] text-white";
-        case "Pending":
+        case "success":
+          return "bg-[#2EC046] text-white";
+        case "pending":
           return "bg-yellow-500 text-white";
+        case "unpaid":
+          return "bg-red-500 text-white";
         default:
           return "bg-gray-200 text-gray-600";
       }
@@ -220,9 +232,29 @@ const ViewContribution = () => {
       }
     };
 
-    const isStepActive = (status: any) => {
-      return status === "Completed";
+    const isStepActive = (status: string) => {
+      return (
+        status?.toLowerCase() === "completed" ||
+        status?.toLowerCase() === "success"
+      );
     };
+
+    const formatAmount = (amount: number, type: string) => {
+      const formattedAmount = amount?.toLocaleString();
+      const isDebit = type?.toLowerCase() === "debit";
+      return (
+        <span
+          className={`text-sm font-semibold ${isDebit ? "text-red-500" : "text-[#61E532]"}`}
+        >
+          NGN {isDebit ? "-" : "+"}
+          {formattedAmount}
+        </span>
+      );
+    };
+
+    const isWithdrawalDatePassed = withdrawalDate
+      ? new Date(withdrawalDate) <= new Date()
+      : false;
 
     const steps = buildSteps();
 
@@ -231,6 +263,11 @@ const ViewContribution = () => {
         <div className="mb-4 flex flex-col gap-3 whitespace-nowrap">
           <p className="text-lg font-bold">Transaction History</p>
           <p>Effortlessly manage and monitor your financial commitment</p>
+          {isWithdrawalDatePassed && (
+            <div className="rounded-lg bg-blue-100 p-3 text-blue-700">
+              Withdrawal date has been reached. You can now withdraw your funds.
+            </div>
+          )}
         </div>
         <div className="mb-2 flex justify-between gap-3 whitespace-nowrap">
           <p className="text-lg font-medium">Monthly Contribution</p>
@@ -245,8 +282,9 @@ const ViewContribution = () => {
                     "& .MuiStepLabel-iconContainer": {
                       paddingRight: "1rem",
                       "& .MuiStepIcon-root": {
-                        color:
-                          step.status === "Completed" ? "#430280" : "#9CA3AF",
+                        color: isStepActive(step.status)
+                          ? "#430280"
+                          : "#9CA3AF",
                       },
                     },
                   }}
@@ -254,16 +292,25 @@ const ViewContribution = () => {
                   <div className="flex w-full flex-col items-start justify-between gap-2 sm:flex-row sm:gap-0">
                     <div className="min-w-0 flex-1">
                       <p className="text-lg font-medium">{step?.label}</p>
-                      <div className="gap-[1em] lg:flex">
-                        <p className="whitespace-nowrap font-semibold text-gray-700">
-                          {formatSafeDate(step.date)}
-                        </p>
-                        <p className="whitespace-nowrap font-semibold">
-                          Amount:{" "}
-                          <span className="text-sm font-semibold text-[#61E532]">
-                            NGN {step?.amount?.toLocaleString()}
-                          </span>
-                        </p>
+                      <div className="flex flex-col gap-1">
+                        <div className="flex gap-4">
+                          <p className="whitespace-nowrap font-semibold text-gray-700">
+                            {formatSafeDate(step.date)}
+                          </p>
+                          <p className="whitespace-nowrap font-semibold">
+                            Amount: {formatAmount(step?.amount, step?.type)}
+                          </p>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          {step.balance !== null && (
+                            <p className="whitespace-nowrap font-semibold">
+                              Balance:{" "}
+                              <span className="text-sm font-semibold text-blue-500">
+                                NGN {step?.balance?.toLocaleString()}
+                              </span>
+                            </p>
+                          )}
+                        </div>
                       </div>
                     </div>
                     <div className="self-start sm:ml-2 sm:self-center">

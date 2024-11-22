@@ -11,11 +11,6 @@ interface FundProjectPayload {
   projectId: string;
 }
 
-interface VerificationParams {
-  reference: string;
-  trxref: string;
-}
-
 interface ContributionHistory {
   _id: string;
   contribution: string;
@@ -28,6 +23,11 @@ interface ContributionHistory {
   createdAt: string;
   updatedAt: string;
   __v: number;
+}
+
+interface VerificationParams {
+  reference: string;
+  addCard?: boolean;
 }
 
 interface ContributionDetails {
@@ -183,6 +183,19 @@ export const VerifyFundContribution = createAsyncThunk(
       return { transaction: data };
     } catch (error: any) {
       return handleAsyncError(error, thunkAPI);
+    }
+  },
+);
+
+export const verifyUnpaidContribution = createAsyncThunk(
+  "transaction/verifyUnpaidContribution",
+  async (params: VerificationParams, thunkAPI) => {
+    try {
+      const response =
+        await TransactionServices.VerifyUnpaidFundContribution(params);
+      return { transaction: response };
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error?.msg || "Verification failed");
     }
   },
 );
@@ -387,6 +400,7 @@ interface TransactionState {
   fundUserWallet: any | null;
   veryfyFundUserWallet: any | null;
   veryfyFundUserContribution: any | null;
+  verifyUnpaidContribution: any | null;
   fundUserProject: null;
   getUserAccountName: null;
   currentProject: any | null;
@@ -419,6 +433,7 @@ const initialState: TransactionState = {
   getUserAccountName: null,
   veryfyFundUserWallet: null,
   veryfyFundUserContribution: null,
+  verifyUnpaidContribution: null,
   fundUserProject: null,
   currentProject: null,
   createPin: null,
@@ -550,6 +565,16 @@ export const transactionSlice = createSlice({
       )
       .addCase(VerifyFundContribution.rejected, (state) => {
         state.veryfyFundUserContribution = null;
+      })
+
+      .addCase(
+        verifyUnpaidContribution.fulfilled,
+        (state, action: PayloadAction<{ transaction: any }>) => {
+          state.verifyUnpaidContribution = action.payload.transaction;
+        },
+      )
+      .addCase(verifyUnpaidContribution.rejected, (state) => {
+        state.verifyUnpaidContribution = null;
       })
 
       .addCase(FundProject.fulfilled, (state, action: PayloadAction<any>) => {

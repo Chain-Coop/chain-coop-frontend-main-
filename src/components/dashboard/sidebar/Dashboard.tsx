@@ -37,6 +37,7 @@ import WithdrawContribution from "../contribution/withdrawContribution/WithdrawC
 import ManageCards from "../contribution/manageCards/ManageCards";
 import ConfirmWithdrawal from "../contribution/withdrawContribution/ConfirmAmount";
 import ManageAccountCards from "../profile/profileDetails/accountsAndCard/ManageCards";
+import VerifyUnpaidContribution from "../contribution/unpaidContribution/VerifyUnpaidContribution";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -67,6 +68,10 @@ const Dashboard = () => {
           <Route
             path="contribution/fund_contribution/verify_transaction"
             element={<VerifyContribution />}
+          />
+          <Route
+            path="contribution/fund_contribution/verify_unpaid_transaction"
+            element={<VerifyUnpaidContribution />}
           />
           <Route
             path="/contribution/contribution_details"
