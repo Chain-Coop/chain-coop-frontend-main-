@@ -351,6 +351,7 @@ export const PayUnPaidContribution = createAsyncThunk(
   async (body: any, thunkAPI) => {
     try {
       const data = await TransactionServices.PayUnPaidContribution(body);
+      console.log("dd", data);
       return { landing: data };
     } catch (error: any) {
       const message = error.msg;
@@ -755,11 +756,11 @@ export const transactionSlice = createSlice({
       .addCase(PayUnPaidContribution.pending, (state) => {
         state.loading = true;
         state.error = null;
-      });
-    builder.addCase(PayUnPaidContribution.fulfilled, (state, action) => {
-      state.fundUnPaidContribution = action.payload.landing;
-    });
-    builder
+      })
+      .addCase(PayUnPaidContribution.fulfilled, (state, action) => {
+        console.log("Action payload", action.payload);
+        state.fundUnPaidContribution = action.payload.landing;
+      })
       .addCase(PayUnPaidContribution.rejected, (state) => {
         state.fundUnPaidContribution = null;
       })
@@ -772,6 +773,7 @@ export const transactionSlice = createSlice({
         state.loading = false;
         state.removeCard = action.payload;
       })
+
       .addCase(deleteCard.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to delete card";

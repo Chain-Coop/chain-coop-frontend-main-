@@ -74,7 +74,6 @@ const ViewContribution = () => {
     setIsUnPaidVisible,
     formattedBalance: realBalance,
   } = useUnPaidContribution();
-  console.log("rea", realBalance);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -94,16 +93,17 @@ const ViewContribution = () => {
     setVerificationStatus("verifying");
 
     try {
+      console.log("Sending");
       const paymentResponse = await dispatch(
         PayUnPaidContribution({
           contributionId,
           paymentType,
         }),
       ).unwrap();
-      console.log("pay", paymentResponse);
+      console.log("completed", paymentResponse);
       if (paymentResponse?.landing?.charge?.info?.data) {
         window.location.href =
-          paymentResponse.landing.charge.info.data.authorization_url;
+          paymentResponse.landing?.charge?.info?.data?.authorization_url;
       } else {
         setVerificationStatus("error");
       }

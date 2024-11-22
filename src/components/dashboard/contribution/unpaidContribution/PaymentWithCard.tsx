@@ -10,6 +10,7 @@ import {
   GetWalletBalance,
   PayUnPaidContribution,
   VerifyFundContribution,
+  verifyUnpaidContribution,
 } from "../../../../shared/redux/slices/transaction.slices";
 
 interface Card {
@@ -81,10 +82,10 @@ const PaymentWithCard = ({ contributionData }: any) => {
             cardData: selectedCard.authCode,
           }),
         ).unwrap();
-
+        console.log("re", paymentResponse);
         verificationResponse = await dispatch(
-          VerifyFundContribution({
-            reference: paymentResponse.landing.payment.reference,
+          verifyUnpaidContribution({
+            reference: paymentResponse.landing.charge.reference,
           }),
         ).unwrap();
 
@@ -96,10 +97,9 @@ const PaymentWithCard = ({ contributionData }: any) => {
         paymentResponse = await dispatch(
           PayUnPaidContribution(basePayload),
         ).unwrap();
-
-        if (paymentResponse?.landing?.payment?.info?.data) {
+        if (paymentResponse.landing?.charge?.info?.data?.authorization_url) {
           window.location.href =
-            paymentResponse.landing.payment.info.data.authorization_url;
+            paymentResponse.landing?.charge?.info?.data?.authorization_url;
         } else {
         }
       }

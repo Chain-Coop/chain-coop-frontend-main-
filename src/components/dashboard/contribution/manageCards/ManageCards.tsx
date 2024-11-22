@@ -1,10 +1,28 @@
-import React from "react";
-import { DashboardHeader } from "../../../common/DashboardHeader";
+import React, { useState } from "react";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+} from "@mui/material";
 import { IoIosArrowBack } from "react-icons/io";
-import { useNavigate } from "react-router";
-import { useAppSelector } from "../../../../shared/redux/reduxHooks";
+import { useNavigate } from "react-router-dom";
 import trash from "../../../../Assets/svg/dashboard/contribution/trash.svg";
 import setDefault from "../../../../Assets/svg/dashboard/contribution/default.svg";
+import { toast } from "react-toastify";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../../shared/redux/reduxHooks";
+import { AppDispatch } from "../../../../shared/redux/store";
+import {
+  deleteCard,
+  GetWalletBalance,
+} from "../../../../shared/redux/slices/transaction.slices";
+import { DashboardHeader } from "../../../common/DashboardHeader";
+import useWalletBalance from "../../../../shared/Hooks/useBalance";
 
 interface Card {
   number: string;
@@ -25,17 +43,47 @@ const cardColors = [
 ];
 
 const ManageCards = () => {
+  const { cards } = useWalletBalance();
   const navigate = useNavigate();
+  const dispatch: AppDispatch = useAppDispatch();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [cardToDelete, setCardToDelete] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleBackClick = () => {
     navigate(-1);
   };
 
-  const walletData = useAppSelector(
-    (state: any) => state?.transaction?.getWalletBalance,
-  ) as WalletBalance;
+  const openDeleteConfirmation = (authCode: string) => {
+    setCardToDelete(authCode);
+    setIsDeleteModalOpen(true);
+  };
 
-  const cards = walletData?.allCards ?? [];
+  const handleDeleteCard = async () => {
+    if (!cardToDelete) return;
+
+    try {
+      setIsDeleting(true);
+      await dispatch(deleteCard({ cardId: cardToDelete })).unwrap();
+
+      await dispatch(GetWalletBalance());
+
+      toast.success("Card deleted successfully", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      setIsDeleteModalOpen(false);
+    } catch (error) {
+      console.error("Failed to delete card:", error);
+      toast.error("Failed to delete card", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    } finally {
+      setIsDeleting(false);
+      setCardToDelete(null);
+    }
+  };
 
   return (
     <main className="pb-6 font-sans">
@@ -63,7 +111,7 @@ const ManageCards = () => {
         </header>
 
         <div className="mt-4 flex flex-col gap-6">
-          {cards.map((card, idx) => (
+          {cards?.map((card: any, idx: any) => (
             <div
               key={card.authCode}
               className="flex items-center justify-between gap-4"
@@ -78,7 +126,10 @@ const ManageCards = () => {
               </div>
 
               <div className="flex gap-2">
-                <button className="flex items-center gap-2 rounded-md border border-[#F24822] bg-[#FDEEEC] px-3 py-1 text-sm text-[#F24822]">
+                <button
+                  onClick={() => openDeleteConfirmation(card.authCode)}
+                  className="flex items-center gap-2 rounded-md border border-[#F24822] bg-[#FDEEEC] px-3 py-1 text-sm text-[#F24822]"
+                >
                   <img src={trash} alt="trash_img" className="w-5" />
                   <span>Delete Card</span>
                 </button>
@@ -92,6 +143,33 @@ const ManageCards = () => {
           ))}
         </div>
       </section>
+
+      {/* MUI Deletion Confirmation Modal */}
+      <Dialog
+        open={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        aria-labelledby="delete-card-dialog-title"
+      >
+        <DialogTitle id="delete-card-dialog-title">Delete Card</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this card? This action cannot be
+            undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsDeleteModalOpen(false)} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleDeleteCard}
+            color="error"
+            disabled={isDeleting}
+          >
+            {isDeleting ? "Deleting..." : "Confirm Delete"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </main>
   );
 };

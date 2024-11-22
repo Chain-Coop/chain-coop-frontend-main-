@@ -17,8 +17,12 @@ import {
   useAppSelector,
 } from "../../../../../shared/redux/reduxHooks";
 import { AppDispatch } from "../../../../../shared/redux/store";
-import { deleteCard } from "../../../../../shared/redux/slices/transaction.slices";
+import {
+  deleteCard,
+  GetWalletBalance,
+} from "../../../../../shared/redux/slices/transaction.slices";
 import { toast } from "react-toastify";
+import useWalletBalance from "../../../../../shared/Hooks/useBalance";
 
 interface Card {
   number: string;
@@ -39,6 +43,7 @@ const cardColors = [
 ];
 
 const ManageCards = () => {
+  const { cards } = useWalletBalance();
   const navigate = useNavigate();
   const dispatch: AppDispatch = useAppDispatch();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -48,12 +53,6 @@ const ManageCards = () => {
   const handleBackClick = () => {
     navigate(-1);
   };
-
-  const walletData = useAppSelector(
-    (state: any) => state?.transaction?.getWalletBalance,
-  ) as WalletBalance;
-
-  const cards = walletData?.allCards ?? [];
 
   const openDeleteConfirmation = (authCode: string) => {
     setCardToDelete(authCode);
@@ -66,6 +65,9 @@ const ManageCards = () => {
     try {
       setIsDeleting(true);
       await dispatch(deleteCard({ cardId: cardToDelete })).unwrap();
+
+      // Refetch wallet balance after successful deletion
+      await dispatch(GetWalletBalance());
 
       toast.success("Card deleted successfully", {
         position: "top-right",
@@ -110,7 +112,7 @@ const ManageCards = () => {
         </header>
 
         <div className="mt-4 flex flex-col gap-6">
-          {cards.map((card, idx) => (
+          {cards?.map((card: any, idx: any) => (
             <div
               key={card.authCode}
               className="flex items-center justify-between gap-4"
