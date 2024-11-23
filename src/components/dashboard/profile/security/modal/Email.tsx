@@ -29,7 +29,7 @@ const EmailStep = ({ onClose, onEmailSent }: any) => {
   };
 
   return (
-    <main className="font-sans">
+    <main className="w-[25em] font-sans">
       <section className="flex flex-col gap-[1em] py-[2em]">
         <div className="text-center">
           <header>

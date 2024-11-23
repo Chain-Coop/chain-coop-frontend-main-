@@ -6,6 +6,7 @@ import { useContributionBalance } from "../../../../shared/Hooks/useBalance";
 import contributionImg from "../../../../Assets/svg/dashboard/contribution/category-contribution.svg";
 import { useUserContributionHistory } from "../../../../shared/Hooks/useUserProfile";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { motion } from "framer-motion";
 
 type Contribution = {
   _id: any | null | undefined;
@@ -21,8 +22,11 @@ type Contribution = {
 const ContributionListSkeleton: React.FC = () => (
   <div className="mt-[1em] flex h-auto w-full flex-col gap-[1em] rounded-lg bg-text2 px-2 py-[3em] text-center">
     {Array.from({ length: 3 }).map((_, index) => (
-      <div
+      <motion.div
         key={index}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: index * 0.1 }}
         className="flex w-[90%] animate-pulse flex-col gap-2 rounded-full bg-white px-[1.5em] py-2"
       >
         <div className="flex justify-between">
@@ -36,7 +40,7 @@ const ContributionListSkeleton: React.FC = () => (
           </div>
           <div className="h-6 w-32 rounded bg-gray-200"></div>
         </div>
-      </div>
+      </motion.div>
     ))}
   </div>
 );
@@ -59,7 +63,8 @@ const Contribution: React.FC = () => {
     return storedVisibility !== null ? storedVisibility === "true" : true;
   });
 
-  const totalPages = Math.max(getContributions?.totalPages || 1, 1);
+  const totalItems = getContributions?.contributions?.length || 0;
+  const totalPages = Math.ceil(totalItems / limit);
 
   const handlePrevPage = () => setPage((prev) => Math.max(1, prev - 1));
   const handleNextPage = () =>
@@ -82,7 +87,11 @@ const Contribution: React.FC = () => {
   };
 
   return (
-    <main className="pb-[1.5em] font-sans">
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="pb-[1.5em] font-sans"
+    >
       <header className="sm:mt-[0] lg:mt-[2em]">
         <DashboardHeader className="flex items-center justify-center">
           Contribution Plan
@@ -91,7 +100,11 @@ const Contribution: React.FC = () => {
 
       <section className="mt-[2em] sm:px-[1.5em] lg:mx-auto lg:w-[33em] lg:px-[0]">
         <article className="text-center text-text4">
-          <div className="mt-[2em] rounded-3xl py-[2em] shadow-md">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-[2em] rounded-3xl py-[2em] shadow-md"
+          >
             <div className="flex justify-center gap-4 font-sans">
               <p className="font-medium">Contribution Balance</p>
               <ToggleButton
@@ -118,16 +131,18 @@ const Contribution: React.FC = () => {
               )}
               <hr className="mt-[1em] h-[1px] rounded-md bg-howtext" />
             </div>
-          </div>
+          </motion.div>
 
           <section className="mt-[2em]">
             <div className="flex justify-center">
-              <button
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={fundContribution}
                 className="whitespace-nowrap rounded-full bg-inherit text-lg font-bold text-text2 shadow-lg sm:px-[1em] sm:py-[5px] lg:px-[3em] lg:py-[10px]"
               >
                 Add Savings
-              </button>
+              </motion.button>
             </div>
             <hr className="mt-[2em] w-full" />
           </section>
@@ -145,12 +160,12 @@ const Contribution: React.FC = () => {
           <div className="mt-[1em] flex h-auto flex-col gap-[1em] rounded-lg bg-text2 px-2 py-[1.5em] text-center">
             <div className="mb-3 flex items-center justify-between px-4">
               <span className="font-medium text-white">
-                Page {page}/{totalPages}
+                Page {page} of {totalPages}
               </span>
               <div className="flex gap-2 font-semibold">
                 <button
                   onClick={handlePrevPage}
-                  disabled={page === 1}
+                  disabled={page <= 1}
                   className="disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <IoIosArrowBack className="text-white" size={25} />
@@ -168,8 +183,11 @@ const Contribution: React.FC = () => {
 
             {getContributions?.contributions?.map(
               (contribution: Contribution) => (
-                <div
+                <motion.div
                   key={contribution._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  whileHover={{ scale: 1.02 }}
                   onClick={() =>
                     navigateToContributionDetails(contribution._id)
                   }
@@ -182,7 +200,9 @@ const Contribution: React.FC = () => {
                   <div className="flex justify-between">
                     <div className="flex items-center gap-3">
                       <div>
-                        <img
+                        <motion.img
+                          whileHover={{ rotate: 360 }}
+                          transition={{ duration: 0.5 }}
                           src={contributionImg}
                           alt="Contribution category icon"
                         />
@@ -197,23 +217,28 @@ const Contribution: React.FC = () => {
                       </figure>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ),
             )}
           </div>
         ) : (
-          <div className="mt-[1em] flex h-auto w-full flex-col gap-[1em] rounded-lg bg-text2 px-2 py-[3em] text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-[1em] flex h-auto w-full flex-col gap-[1em] rounded-lg bg-text2 px-2 py-[3em] text-center"
+          >
             <h2 className="text-xl font-bold text-how1">No Savings Yet</h2>
-            <p
+            <motion.p
+              whileHover={{ scale: 1.05 }}
               onClick={fundContribution}
               className="mt-[1.5em] cursor-pointer text-xl font-semibold text-how1"
             >
               Get Started
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
         )}
       </section>
-    </main>
+    </motion.main>
   );
 };
 

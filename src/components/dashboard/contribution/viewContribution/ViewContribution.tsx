@@ -4,14 +4,12 @@ import { Link } from "react-router-dom";
 import { AppDispatch } from "../../../../shared/redux/store";
 import {
   GetContributionDetailsById,
-  PayContribution,
   PayUnPaidContribution,
 } from "../../../../shared/redux/slices/transaction.slices";
 import { formatBalance } from "../../../../shared/utils/format";
 import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
 import ToggleButton from "../../../../shared/utils/ToggleButton";
 import { DashboardHeader } from "../../../common/DashboardHeader";
-import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
@@ -23,6 +21,8 @@ import PaymentWithCard from "../unpaidContribution/PaymentWithCard";
 import PayWithPaystack from "../unpaidContribution/PayWithPaystack";
 import { Loader2, CheckCircle2, XCircle, AlertCircle } from "lucide-react";
 import { useUnPaidContribution } from "../../../../shared/Hooks/useBalance";
+import { motion } from "framer-motion";
+import { Alert, Snackbar, Box } from "@mui/material";
 
 type VerificationStatus = "idle" | "verifying" | "success" | "error";
 
@@ -74,6 +74,7 @@ const ViewContribution = () => {
     setIsUnPaidVisible,
     formattedBalance: realBalance,
   } = useUnPaidContribution();
+  const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -88,37 +89,35 @@ const ViewContribution = () => {
   >("idle");
   const navigate = useNavigate();
 
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setIsProcessing(false);
+    setError(null);
+  };
+
   const handleDirectPayment = async (paymentType: "paystack") => {
     setIsProcessing(true);
     setVerificationStatus("verifying");
+    setError(null);
 
     try {
-      console.log("Sending");
       const paymentResponse = await dispatch(
         PayUnPaidContribution({
           contributionId,
           paymentType,
         }),
       ).unwrap();
-      console.log("completed", paymentResponse);
+
       if (paymentResponse?.landing?.charge?.info?.data) {
         window.location.href =
           paymentResponse.landing?.charge?.info?.data?.authorization_url;
       } else {
         setVerificationStatus("error");
+        setError("Failed to initiate payment. Please try again.");
       }
     } catch (error: any) {
-      console.log("err", error);
-
-      statusConfig.error = {
-        ...statusConfig.error,
-        message:
-          error?.message ||
-          error?.error ||
-          "Payment verification failed. Please try again.",
-      };
-
       setVerificationStatus("error");
+      setError(error || "An error occurred during payment. Please try again.");
     } finally {
       setIsProcessing(false);
     }
@@ -150,7 +149,15 @@ const ViewContribution = () => {
     }
   };
 
+  const handleCloseError = () => {
+    setError(null);
+  };
+
   const ContributionTracker = () => {
+    const { contributionDetails } = useSelector(
+      (state: any) => state?.transaction,
+    );
+
     if (!contributionDetails) return null;
 
     const {
@@ -181,13 +188,21 @@ const ViewContribution = () => {
         });
 
         sortedHistory.slice(1).forEach((transaction) => {
+          const isDebitSuccess =
+            transaction.type?.toLowerCase() === "debit" &&
+            transaction.status?.toLowerCase() === "success";
+
           steps.push({
-            label: "Cash Transfer from Savings Account",
+            label: isDebitSuccess
+              ? "Cash Transfer to Chain Co-op Wallet"
+              : "Cash Transfer from Savings Account",
             date: transaction.Date,
             amount: transaction.amount,
             type: transaction.type,
             balance: transaction.balance,
-            description: "Cash Transfer from Savings Bank Account",
+            description: isDebitSuccess
+              ? "Transfer to Chain Co-op Wallet"
+              : "Cash Transfer from Savings Bank Account",
             status: transaction.status,
             reference: transaction.reference,
           });
@@ -212,21 +227,21 @@ const ViewContribution = () => {
     const getStatusStyle = (status: string) => {
       switch (status?.toLowerCase()) {
         case "completed":
-          return "bg-[#2EC046] text-white";
+          return "bg-text2 font-semibold shadow-lg text-white";
         case "success":
-          return "bg-[#2EC046] text-white";
+          return "bg-[#4CAF50] font-semibold shadow-lg text-white";
         case "pending":
-          return "bg-yellow-500 text-white";
+          return "bg-[#B8B4B4] font-semibold shadow-lg text-white";
         case "unpaid":
-          return "bg-red-500 text-white";
+          return "bg-[#EC5246] font-semibold shadow-lg text-white";
         default:
           return "bg-gray-200 text-gray-600";
       }
     };
 
-    const formatSafeDate = (dateString: any) => {
+    const formatSafeDateTime = (dateString: any) => {
       try {
-        return format(parseISO(dateString), "EEEE: dd/MM/yyyy");
+        return format(parseISO(dateString), "EEEE: dd/MM/yyyy | HH:mm");
       } catch {
         return "Date unavailable";
       }
@@ -243,12 +258,18 @@ const ViewContribution = () => {
       const formattedAmount = amount?.toLocaleString();
       const isDebit = type?.toLowerCase() === "debit";
       return (
-        <span
-          className={`text-sm font-semibold ${isDebit ? "text-red-500" : "text-[#61E532]"}`}
-        >
-          NGN {isDebit ? "-" : "+"}
-          {formattedAmount}
-        </span>
+        <div className="flex gap-2">
+          <span className="text-sm font-medium text-gray-600">
+            {isDebit ? "Debit Amount:" : "Credit Amount:"}
+          </span>
+          <span
+            className={`text-sm font-semibold ${
+              isDebit ? "text-red-500" : "text-[#61E532]"
+            }`}
+          >
+            NGN {formattedAmount}
+          </span>
+        </div>
       );
     };
 
@@ -291,21 +312,19 @@ const ViewContribution = () => {
                 >
                   <div className="flex w-full flex-col items-start justify-between gap-2 sm:flex-row sm:gap-0">
                     <div className="min-w-0 flex-1">
-                      <p className="text-lg font-medium">{step?.label}</p>
+                      <p className="text-lg font-semibold">{step?.label}</p>
                       <div className="flex flex-col gap-1">
-                        <div className="flex gap-4">
-                          <p className="whitespace-nowrap font-semibold text-gray-700">
-                            {formatSafeDate(step.date)}
+                        <div className="flex flex-col  gap-2">
+                          <p className="whitespace-nowrap font-medium text-gray-600">
+                            {formatSafeDateTime(step.date)}
                           </p>
-                          <p className="whitespace-nowrap font-semibold">
-                            Amount: {formatAmount(step?.amount, step?.type)}
-                          </p>
+                          {formatAmount(step?.amount, step?.type)}
                         </div>
                         <div className="flex flex-col gap-1">
                           {step.balance !== null && (
-                            <p className="whitespace-nowrap font-semibold">
-                              Balance:{" "}
-                              <span className="text-sm font-semibold text-blue-500">
+                            <p className="whitespace-nowrap font-medium text-gray-600">
+                              Current Balance:{" "}
+                              <span className="font-semibold text-text2">
                                 NGN {step?.balance?.toLocaleString()}
                               </span>
                             </p>
@@ -395,20 +414,27 @@ const ViewContribution = () => {
           <hr className="mt-[2em]" />
           <section className="mb-[2em] mt-[2em]">
             <div className="flex justify-between">
-              <button
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => setIsModalOpen(true)}
                 className="whitespace-nowrap rounded-full border-2 border-gray-200 bg-inherit text-lg font-semibold shadow-lg sm:px-[1em] sm:py-[5px] lg:px-[3em] lg:py-[13px]"
               >
                 Add Money
-              </button>
+              </motion.button>
 
               <Link
                 to="/dashboard/contribution/withdraw_contribution"
                 state={{ contributionId: contributionId }}
               >
-                <button className="whitespace-nowrap rounded-full border-2 border-gray-200 bg-inherit text-lg font-semibold shadow-lg sm:px-[1em] sm:py-[5px] lg:px-[3em] lg:py-[13px]">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setIsModalOpen(true)}
+                  className="whitespace-nowrap rounded-full border-2 border-gray-200 bg-inherit text-lg font-semibold shadow-lg sm:px-[1em] sm:py-[5px] lg:px-[3em] lg:py-[13px]"
+                >
                   Withdraw
-                </button>
+                </motion.button>
               </Link>
             </div>
           </section>
@@ -420,6 +446,21 @@ const ViewContribution = () => {
         </article>
         <ContributionTracker />
       </section>
+      <Snackbar
+        open={!!error}
+        autoHideDuration={6000}
+        onClose={handleCloseError}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseError}
+          severity="error"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {error}
+        </Alert>
+      </Snackbar>
 
       <Modal
         isOpen={isModalOpen}

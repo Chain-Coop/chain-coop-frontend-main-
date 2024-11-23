@@ -5,30 +5,32 @@ export interface FormatOptions {
 }
 
 export const formatBalance = (
-  amountInNaira: number | null | undefined,  
-  options: FormatOptions = {}
+  amountInNaira: number | null | undefined,
+  options: FormatOptions = {},
 ): string => {
   const {
     showCents = true,
     useGrouping = true,
-    roundToWhole = false
+    roundToWhole = false,
   } = options;
 
   if (amountInNaira === null || amountInNaira === undefined) {
-    return '₦0';
+    return "₦0";
   }
 
-  const formatter = new Intl.NumberFormat('en-NG', {
-    style: 'currency',
-    currency: 'NGN',
+  const formatter = new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
     minimumFractionDigits: showCents ? 2 : 0,
     maximumFractionDigits: showCents ? 2 : 0,
     useGrouping: useGrouping,
   });
 
-  let formattedAmount = formatter.format(roundToWhole ? Math.round(amountInNaira) : amountInNaira);
-  formattedAmount = formattedAmount.replace('NGN', '₦');
-  formattedAmount = formattedAmount.replace('₦ ', '₦');
+  let formattedAmount = formatter.format(
+    roundToWhole ? Math.round(amountInNaira) : amountInNaira,
+  );
+  formattedAmount = formattedAmount.replace("NGN", "₦");
+  formattedAmount = formattedAmount.replace("₦ ", "₦");
 
   return formattedAmount;
 };

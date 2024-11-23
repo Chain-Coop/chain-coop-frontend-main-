@@ -3,31 +3,29 @@ import OTPInput from "react-otp-input";
 import ReactLoading from "react-loading";
 import { Primary } from "../../../../common/Button";
 
-const OtpInput = ({ otp, setOtp, onClose, onOtpEntered }:any) => {
+const OtpInput = ({ otp, setOtp, onClose, onOtpEntered }: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handlePinChange = (value:any) => {
-    const numericValue = value.replace(/[^0-9]/g, '');
+  const handlePinChange = (value: any) => {
+    const numericValue = value.replace(/[^0-9]/g, "");
     setOtp(numericValue);
     setError("");
   };
 
   const handleContinue = () => {
     if (otp.length !== 6) {
-      setError('Please enter a 6-digit OTP');
+      setError("Please enter a 6-digit OTP");
       return;
     }
-    onOtpEntered(); 
+    onOtpEntered();
   };
 
   return (
-    <div className="text-center p-4">
-      <h2 className="text-2xl font-semibold mb-2">Reset Password</h2>
-      <p className="text-gray-600 mb-4">
-        Enter Your OTP code
-      </p>
-      
+    <div className="w-[25em] p-4 text-center">
+      <h2 className="mb-2 text-2xl font-semibold">Reset Password</h2>
+      <p className="mb-4 text-gray-600">Enter Your OTP code</p>
+
       <div className="mb-6 flex justify-center">
         <OTPInput
           value={otp}
@@ -37,7 +35,7 @@ const OtpInput = ({ otp, setOtp, onClose, onOtpEntered }:any) => {
           renderInput={(props) => (
             <input
               {...props}
-              className="!w-11 !h-11 text-center bg-gray-100 border-gray-200 rounded-md text-xl"
+              className="!h-11 !w-11 rounded-md border-gray-200 bg-gray-100 text-center text-xl"
               type="text"
               inputMode="numeric"
             />
@@ -48,7 +46,7 @@ const OtpInput = ({ otp, setOtp, onClose, onOtpEntered }:any) => {
       <div className="space-y-3">
         <Primary
           onClick={handleContinue}
-          className="w-full py-2 rounded-full bg-text2 text-white"
+          className="w-full rounded-full bg-text2 py-2 text-white"
           disabled={isLoading}
         >
           Continue

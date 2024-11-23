@@ -11,6 +11,7 @@ import {
   PayContribution,
   VerifyFundContribution,
 } from "../../../../shared/redux/slices/transaction.slices";
+import { Alert, Snackbar } from "@mui/material";
 
 interface Card {
   number: string;
@@ -46,6 +47,9 @@ const PaymentWithCard = ({ contributionData }: any) => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useAppDispatch();
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [currentPage, setCurrentPage] = useState(0);
 
   const [translateX, setTranslateX] = useState(0);
@@ -67,6 +71,9 @@ const PaymentWithCard = ({ contributionData }: any) => {
   const totalPages = Math.ceil(cards.length / cardsPerPage);
 
   const handlePayment = async (paymentType: "card" | "paystack") => {
+    setError(null);
+    setIsLoading(true);
+
     try {
       const basePayload = {
         contributionId,
@@ -102,8 +109,10 @@ const PaymentWithCard = ({ contributionData }: any) => {
         } else {
         }
       }
-    } catch (error) {
-      console.log("err", error);
+    } catch (error: any) {
+      setError(error || "An error occurred during payment. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -130,8 +139,27 @@ const PaymentWithCard = ({ contributionData }: any) => {
     return cards.slice(startIndex, startIndex + cardsPerPage);
   };
 
+  const handleCloseError = () => {
+    setError(null);
+  };
+
   return (
     <main className="mx-auto max-w-2xl font-sans">
+      <Snackbar
+        open={!!error}
+        autoHideDuration={6000}
+        onClose={handleCloseError}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseError}
+          severity="error"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {error}
+        </Alert>
+      </Snackbar>
       <div className="flex flex-col gap-6 p-6">
         <header className="text-center">
           <h1 className="text-lg font-bold text-text2">Fund Contribution</h1>

@@ -9,9 +9,9 @@ import { AppDispatch } from "../../../../shared/redux/store";
 import {
   GetWalletBalance,
   PayUnPaidContribution,
-  VerifyFundContribution,
   verifyUnpaidContribution,
 } from "../../../../shared/redux/slices/transaction.slices";
+import { Alert, Snackbar } from "@mui/material";
 
 interface Card {
   number: string;
@@ -48,13 +48,10 @@ const PaymentWithCard = ({ contributionData }: any) => {
   const dispatch: AppDispatch = useAppDispatch();
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
-
+  const [error, setError] = useState<string | null>(null);
   const [translateX, setTranslateX] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const cardsPerPage = 2;
-
-  const isProcessing = useAppSelector(
-    (state: any) => state?.transaction?.loading,
-  );
 
   useEffect(() => {
     dispatch(GetWalletBalance());
@@ -68,6 +65,9 @@ const PaymentWithCard = ({ contributionData }: any) => {
   const totalPages = Math.ceil(cards.length / cardsPerPage);
 
   const handlePayment = async (paymentType: "card" | "paystack") => {
+    setError(null);
+    setIsLoading(true);
+
     try {
       const basePayload = {
         contributionId,
@@ -82,7 +82,7 @@ const PaymentWithCard = ({ contributionData }: any) => {
             cardData: selectedCard.authCode,
           }),
         ).unwrap();
-        console.log("re", paymentResponse);
+
         verificationResponse = await dispatch(
           verifyUnpaidContribution({
             reference: paymentResponse.landing.charge.reference,
@@ -92,6 +92,7 @@ const PaymentWithCard = ({ contributionData }: any) => {
         if (verificationResponse?.transaction?.statusCode === 200) {
           navigate("/dashboard/contribution");
         } else {
+          throw new Error("Payment verification failed. Please try again.");
         }
       } else {
         paymentResponse = await dispatch(
@@ -101,9 +102,18 @@ const PaymentWithCard = ({ contributionData }: any) => {
           window.location.href =
             paymentResponse.landing?.charge?.info?.data?.authorization_url;
         } else {
+          throw new Error("Failed to initiate payment. Please try again.");
         }
       }
-    } catch (error) {}
+    } catch (error: any) {
+      setError(error || "An error occurred during payment. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCloseError = () => {
+    setError(null);
   };
 
   const handleCardSelect = (card: Card) => {
@@ -131,6 +141,21 @@ const PaymentWithCard = ({ contributionData }: any) => {
 
   return (
     <main className="mx-auto max-w-2xl font-sans">
+      <Snackbar
+        open={!!error}
+        autoHideDuration={6000}
+        onClose={handleCloseError}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseError}
+          severity="error"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {error}
+        </Alert>
+      </Snackbar>
       <div className="flex flex-col gap-6 p-6">
         <header className="text-center">
           <h1 className="text-lg font-bold text-text2">Fund Contribution</h1>
@@ -168,15 +193,15 @@ const PaymentWithCard = ({ contributionData }: any) => {
                       <div
                         key={card.authCode}
                         className={`min-w-[50%] flex-shrink-0 p-2
-                    ${idx === getCurrentPageCards().length - 1 ? "pr-4" : ""}
-                  `}
+                        ${idx === getCurrentPageCards().length - 1 ? "pr-4" : ""}
+                      `}
                       >
                         <div
                           className={`cursor-pointer rounded-lg p-5 transition-all
-                      ${cardColors[idx % cardColors.length].bg}
-                      ${cardColors[idx % cardColors.length].text}
-                      ${selectedCard?.authCode === card.authCode ? "ring-2 ring-white" : ""}
-                    `}
+                          ${cardColors[idx % cardColors.length].bg}
+                          ${cardColors[idx % cardColors.length].text}
+                          ${selectedCard?.authCode === card.authCode ? "ring-2 ring-white" : ""}
+                        `}
                           onClick={() => handleCardSelect(card)}
                         >
                           <div className="flex items-start justify-between">
@@ -186,8 +211,8 @@ const PaymentWithCard = ({ contributionData }: any) => {
                             </div>
                             <div
                               className={`flex h-4 w-4 items-center justify-center rounded-full border-2 border-white
-                          ${selectedCard?.authCode === card.authCode ? "bg-white" : "bg-transparent"}
-                        `}
+                              ${selectedCard?.authCode === card.authCode ? "bg-white" : "bg-transparent"}
+                            `}
                             >
                               {selectedCard?.authCode === card.authCode && (
                                 <div className="h-2 w-2 rounded-full bg-current" />
@@ -219,10 +244,10 @@ const PaymentWithCard = ({ contributionData }: any) => {
                   </p>
                   <button
                     onClick={() => handlePayment("card")}
-                    disabled={isProcessing}
+                    disabled={isLoading}
                     className="flex w-full items-center justify-center rounded-lg bg-purple-600 px-4 py-2 font-bold text-white transition-colors hover:bg-purple-700 disabled:opacity-50"
                   >
-                    {isProcessing ? (
+                    {isLoading ? (
                       <Loader2 className="h-5 w-5 animate-spin" />
                     ) : (
                       "Proceed with Card Payment"
@@ -239,10 +264,10 @@ const PaymentWithCard = ({ contributionData }: any) => {
                   </Link>
                   <button
                     onClick={() => handlePayment("paystack")}
-                    disabled={isProcessing}
+                    disabled={isLoading}
                     className="flex items-center justify-center rounded-lg bg-purple-600 px-4 py-2 font-bold text-white transition-colors hover:bg-purple-700 disabled:opacity-50"
                   >
-                    {isProcessing ? (
+                    {isLoading ? (
                       <Loader2 className="h-5 w-5 animate-spin" />
                     ) : (
                       "Pay Direct"

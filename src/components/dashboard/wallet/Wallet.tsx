@@ -8,6 +8,7 @@ import { DashboardHeader } from "../../common/DashboardHeader";
 import withdraw_icon from "../../../Assets/svg/dashboard/wallet/withdraw.svg";
 import fund_icon from "../../../Assets/svg/dashboard/wallet/fund.svg";
 import transfer_icon from "../../../Assets/svg/dashboard/wallet/transfer.svg";
+import { motion } from "framer-motion";
 
 const Wallet = () => {
   const { isWalletVisible, setIsWalletVisible, formattedBalance } =
@@ -65,12 +66,19 @@ const Wallet = () => {
           <section className="mt-[1.5em] rounded-3xl shadow-md">
             <div className="flex items-center justify-between py-[2em] font-semibold text-howtext sm:px-[1em] lg:px-[2.5em]">
               <Link to="/dashboard/wallet/withdraw">
-                <button
-                  className="flex flex-col items-center bg-inherit text-center"
-                  onClick={withdraw}
-                >
-                  <img src={withdraw_icon} alt="withdraw_icon" />
-                  <span className="block text-memt1 lg:text-lg ">Withdraw</span>
+                <button onClick={withdraw}>
+                  <div className="flex justify-center">
+                    <img src={withdraw_icon} alt="withdraw_icon" />
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="flex flex-col items-center bg-inherit text-center"
+                  >
+                    <span className="block text-memt1 lg:text-lg ">
+                      Withdraw
+                    </span>
+                  </motion.button>
                 </button>
               </Link>
               <Link to="/dashboard/wallet/fund">

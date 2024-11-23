@@ -9,6 +9,7 @@ export default {
       xl: "1280px",
       "2xl": "1536px",
     },
+
     extend: {
       colors: {
         primary: " #E6B8D4",
@@ -53,3 +54,20 @@ export default {
     },
   },
 };
+
+const styles = `
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+`;

@@ -1,55 +1,106 @@
-import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { DashboardHeader } from "../../../common/DashboardHeader";
-import { Alert } from '@mui/material';
-import { Plan } from '../../../../data/Data';
-
+import { Alert } from "@mui/material";
+import { Plan } from "../../../../data/Data";
 
 const SavingsPlan = () => {
   const [contributionPlan, setContributionPlan] = useState("");
+  const [hoveredPlan, setHoveredPlan] = useState<number | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const { purpose } = location.state || {};
-  const [error, setError]= useState("")
+  const [error, setError] = useState("");
 
   const handleNext = () => {
     if (contributionPlan) {
       setError("");
-      navigate('/dashboard/contribution/amount', { state: { purpose, plan: contributionPlan } });
+      navigate("/dashboard/contribution/amount", {
+        state: { purpose, plan: contributionPlan },
+      });
     } else {
       setError("Please select a contribution plan");
     }
   };
 
   return (
-    <main className="font-sans pb-[1.5em]">
-      <DashboardHeader className="flex sm:mt-[0] lg:mt-[2em] items-center justify-center">
+    <main className="pb-[1.5em] font-sans">
+      <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
         Contribution Plan
       </DashboardHeader>
-      <div className='w-[90%] m-auto'>
-        <header className="flex justify-center lg:mt-[3em] mt-[1.5em] text-center">
-          <h1 className='font-semibold text-center text-xl'>How would you like to save?</h1>
+      <div className="m-auto w-[90%]">
+        <header className="mt-[1.5em] flex justify-center text-center lg:mt-[3em]">
+          <h1 className="text-center text-xl font-semibold">
+            How would you like to save?
+          </h1>
         </header>
-        {Plan.map((plan:any, index:number) => (
-          <div key={index} className='flex w-full bg-[#ECE6F2] py-[9px] rounded-lg justify-between items-center px-4 mt-8'>
-            <h3 className='font-semibold'>{plan.text}</h3>
-            <button 
-              className={`py-1 px-6 font-medium border rounded-md ${contributionPlan === plan.text ? 'bg-text2 text-white' : 'bg-white border-text2'}`}
-              onClick={() => setContributionPlan(plan.text)}
+
+        {Plan.map((plan: any, index: number) => (
+          <div
+            key={index}
+            className={`mt-8 flex w-full items-center justify-between rounded-lg px-4 py-[9px] 
+              transition-all duration-300 ease-in-out
+              ${hoveredPlan === index ? "scale-[1.02] transform bg-[#DED3EA] shadow-lg" : "bg-[#ECE6F2]"}
+              cursor-pointer`}
+            onMouseEnter={() => setHoveredPlan(index)}
+            onMouseLeave={() => setHoveredPlan(null)}
+            onClick={() => setContributionPlan(plan.text)}
+          >
+            <div className="flex flex-col">
+              <h3
+                className='${hoveredPlan === index ?
+                "scale-105" : "scale-100"} transform font-semibold transition-all duration-300 ease-in-out'
+              >
+                {plan.text}
+              </h3>
+              {hoveredPlan === index && (
+                <p className="animate-fade-in mt-1 text-sm text-gray-600">
+                  Click to select this saving plan
+                </p>
+              )}
+            </div>
+            <button
+              className={`rounded-md border px-6 py-1 font-medium transition-all duration-300 ease-in-out
+                ${
+                  contributionPlan === plan.text
+                    ? "bg-text2 text-white hover:bg-opacity-90"
+                    : "border-text2 bg-white hover:bg-text2 hover:text-white"
+                }
+                transform ${hoveredPlan === index ? "scale-105" : "scale-100"}
+                ${hoveredPlan === index ? "shadow-md" : ""}
+              `}
             >
               Select
             </button>
           </div>
         ))}
-        {error && <Alert severity="error" className="mt-4 mb-4">{error}</Alert>}
-        <div className='flex justify-between mt-[3em]'>
-          <button onClick={() => navigate(-1)} className="flex items-center">
-        <IoIosArrowDropleft size={25} />
+
+        {error && (
+          <Alert
+            severity="error"
+            className="mb-4 mt-4 transition-all duration-300 ease-in-out"
+          >
+            {error}
+          </Alert>
+        )}
+
+        <div className="mt-[3em] flex justify-between">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center transition-all duration-300 ease-in-out
+              hover:scale-110 hover:text-text2"
+          >
+            <IoIosArrowDropleft size={25} />
           </button>
           <button
-            className="bg-text2 rounded-md py-2 font-semibold px-8 text-white"
+            className="rounded-md bg-text2 px-8 py-2 font-semibold text-white
+              transition-all duration-300 ease-in-out
+              hover:scale-105 hover:bg-opacity-90 hover:shadow-lg
+              active:scale-95 active:transform
+              disabled:cursor-not-allowed disabled:opacity-50"
             onClick={handleNext}
+            disabled={!contributionPlan}
           >
             Next
           </button>

@@ -18,7 +18,7 @@ import {
   PayContribution,
 } from "../../../../shared/redux/slices/transaction.slices";
 import { AppDispatch } from "../../../../shared/redux/store";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import PaymentWithCard from "../paymentChoice.tsx/PaymentWithCard";
 import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
 import PayWithPaystack from "../paymentChoice.tsx/PayWithPaystack";
@@ -68,7 +68,7 @@ const statusConfig: Record<VerificationStatus, StatusConfig> = {
 };
 
 const StartDate: React.FC = () => {
-  const [startDate, setStartDate] = useState("");
+  const [startDate, setStartDate] = useState(formatDate(new Date())); // Initialize with today's date
   const [endDate, setEndDate] = useState("");
   const [availableEndDates, setAvailableEndDates] = useState<string[]>([]);
   const [error, setError] = useState("");
@@ -77,9 +77,8 @@ const StartDate: React.FC = () => {
   const [contributionData, setContributionData] = useState<
     ContributionResponse["result"] | null
   >(null);
-  const [verificationStatus, setVerificationStatus] = useState<
-    "idle" | "verifying" | "success" | "error"
-  >("idle");
+  const [verificationStatus, setVerificationStatus] =
+    useState<VerificationStatus>("idle");
   const [isProcessing, setIsProcessing] = useState(false);
   const [verificationErrorMessage, setVerificationErrorMessage] = useState("");
   const dispatch: AppDispatch = useAppDispatch();
@@ -98,9 +97,9 @@ const StartDate: React.FC = () => {
 
   const { purpose, plan, amount } = location.state || {};
 
-  const formatDate = (date: Date): string => {
-    return date.toISOString()?.split("T")[0];
-  };
+  function formatDate(date: Date): string {
+    return date.toISOString().split("T")[0];
+  }
 
   const calculateAvailableEndDates = (startDateStr: string) => {
     if (!startDateStr) return [];
@@ -112,8 +111,8 @@ const StartDate: React.FC = () => {
       const endDate = new Date(startDate);
       endDate.setMonth(startDate.getMonth() + i);
 
-      if (startDate?.getDate() !== endDate?.getDate()) {
-        endDate?.setDate(0);
+      if (startDate.getDate() !== endDate.getDate()) {
+        endDate.setDate(0);
       }
 
       dates.push(formatDate(endDate));
@@ -123,22 +122,9 @@ const StartDate: React.FC = () => {
   };
 
   useEffect(() => {
-    const today = formatDate(new Date());
-    document.getElementById("startDate")?.setAttribute("min", today);
+    const dates = calculateAvailableEndDates(startDate);
+    setAvailableEndDates(dates);
   }, []);
-
-  useEffect(() => {
-    if (startDate) {
-      const dates = calculateAvailableEndDates(startDate);
-      setAvailableEndDates(dates);
-      setEndDate("");
-    }
-  }, [startDate]);
-
-  const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newStartDate = e.target.value;
-    setStartDate(newStartDate);
-  };
 
   const handleEndDateChange = (event: any) => {
     setEndDate(event.target.value as string);
@@ -149,8 +135,8 @@ const StartDate: React.FC = () => {
     setLoading(true);
     setError("");
 
-    if (!startDate || !endDate) {
-      setError("Please select both start and end dates.");
+    if (!endDate) {
+      setError("Please select an end date.");
       setLoading(false);
       return;
     }
@@ -235,17 +221,14 @@ const StartDate: React.FC = () => {
           </p>
         </header>
         <div className="mt-[2em]">
-          <label htmlFor="startDate" className="mb-3 flex font-semibold">
-            Choose Start Date
-          </label>
-          <input
-            type="date"
-            id="startDate"
-            required
-            value={startDate}
-            onChange={handleStartDateChange}
-            className="input mb-5 h-[4em] w-full rounded-lg border-[1px] px-4 text-sm shadow-md"
-          />
+          <label className="mb-3 flex font-semibold">Start Date</label>
+          <div className="input mb-5 flex h-[4em] w-full items-center rounded-lg border-[1px] bg-gray-100 px-4 text-sm shadow-md">
+            {new Date(startDate).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </div>
         </div>
         <div className="mt-[2em]">
           <FormControl fullWidth>
@@ -258,7 +241,6 @@ const StartDate: React.FC = () => {
               value={endDate}
               label="Choose End Date"
               onChange={handleEndDateChange}
-              disabled={!startDate}
               className="mb-5"
               sx={{
                 height: "3.4em",
@@ -297,16 +279,22 @@ const StartDate: React.FC = () => {
         <div className="mt-[3em]">
           <Primary
             onClick={handleSubmit}
-            disabled={loading}
-            className="m-auto flex w-[80%] justify-center rounded-md bg-text2 px-8 py-[1em] text-center font-semibold text-white"
+            disabled={loading || !endDate}
+            className="m-auto flex w-[80%] justify-center rounded-md bg-text2
+              px-8 py-[1em] font-semibold
+              text-white transition-all duration-300
+              ease-in-out hover:scale-105 hover:bg-opacity-90 hover:shadow-lg active:scale-95 active:transform"
           >
             {loading ? (
-              <ReactLoading
-                color="#FFFFFF"
-                height={25}
-                width={25}
-                type="spin"
-              />
+              <div className="flex gap-1">
+                <ReactLoading
+                  color="#FFFFFF"
+                  height={25}
+                  width={25}
+                  type="spin"
+                />
+                <p>please wait...</p>
+              </div>
             ) : (
               "Submit"
             )}
@@ -342,19 +330,19 @@ const StartDate: React.FC = () => {
             setIsModalOpen(false);
           }
         }}
-        className=" bg-white"
+        className="w-[25em] bg-white"
       >
         <div className="flex w-[19em] flex-col items-center gap-4 text-center">
           {statusConfig[verificationStatus].icon}
           <h5
-            className={`text-lg font-semibold ${statusConfig[verificationStatus]?.color}`}
+            className={`text-lg font-semibold ${statusConfig[verificationStatus].color}`}
           >
-            {statusConfig[verificationStatus]?.title}
+            {statusConfig[verificationStatus].title}
           </h5>
           <p className="text-lg text-gray-500">
             {verificationStatus === "error"
               ? verificationErrorMessage
-              : statusConfig[verificationStatus]?.message}
+              : statusConfig[verificationStatus].message}
           </p>
         </div>
       </Modal>

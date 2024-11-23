@@ -68,7 +68,11 @@ const Security = () => {
           );
         case 2:
           return (
-            <Modal className="bg-[#E9E9E9]" isOpen onClose={resetStates}>
+            <Modal
+              className="w-[25em] bg-[#E9E9E9]"
+              isOpen
+              onClose={resetStates}
+            >
               <OtpInput
                 otp={otp}
                 setOtp={setOtp}
@@ -79,7 +83,11 @@ const Security = () => {
           );
         case 3:
           return (
-            <Modal className="bg-[#E9E9E9]" isOpen onClose={resetStates}>
+            <Modal
+              className="w-[25em] bg-[#E9E9E9]"
+              isOpen
+              onClose={resetStates}
+            >
               <NewPassword
                 email={profileDetails.email}
                 otp={otp}
