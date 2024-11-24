@@ -456,6 +456,9 @@ export const transactionSlice = createSlice({
     resetFundWalletStatus: (state) => {
       state.fundWalletStatus = "idle";
     },
+    clearContributionDetails: (state) => {
+      state.contributionDetails = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -791,6 +794,7 @@ export const transactionSlice = createSlice({
   },
 });
 
-export const { resetFundWalletStatus } = transactionSlice.actions;
+export const { resetFundWalletStatus, clearContributionDetails } =
+  transactionSlice.actions;
 
 export default transactionSlice.reducer;

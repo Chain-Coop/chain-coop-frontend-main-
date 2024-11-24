@@ -373,7 +373,7 @@ const GeneratePinOTP = async () => {
 
 //Create pin
 const CreateTransactionPin = async (body: any) => {
-  const url = `${API_URL}/wallet/create-pin`;
+  const url = `${API_URL}/wallet/change-pin`;
 
   try {
     const response = await axios.post(url, body, {

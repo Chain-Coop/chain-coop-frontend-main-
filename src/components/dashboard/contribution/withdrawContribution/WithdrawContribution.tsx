@@ -12,7 +12,7 @@ import { GetContributionDetailsById } from "../../../../shared/redux/slices/tran
 import { AppDispatch } from "../../../../shared/redux/store";
 import useWalletBalance from "../../../../shared/Hooks/useBalance";
 import Modal from "../../../common/Modal";
-import { format, parseISO, isAfter, isBefore, isToday } from "date-fns";
+import { format, parseISO, isAfter, isToday } from "date-fns";
 
 const WithdrawContribution = () => {
   const navigate = useNavigate();
@@ -23,6 +23,7 @@ const WithdrawContribution = () => {
   const [actualAmount, setActualAmount] = useState("");
   const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { contributionDetails } = useSelector(
     (state: any) => state?.transaction,
@@ -30,16 +31,26 @@ const WithdrawContribution = () => {
   const { formattedBalance } = useWalletBalance();
 
   useEffect(() => {
-    if (!location.state?.contributionId) {
-      navigate("/dashboard/contribution");
-      return;
-    }
+    const initializeComponent = async () => {
+      if (!location.state?.contributionId) {
+        navigate("/dashboard/contribution");
+        return;
+      }
 
-    dispatch(
-      GetContributionDetailsById({
-        contributionId: location?.state?.contributionId,
-      }),
-    );
+      try {
+        await dispatch(
+          GetContributionDetailsById({
+            contributionId: location?.state?.contributionId,
+          }),
+        ).unwrap();
+      } catch (error) {
+        setError("Failed to load contribution details");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initializeComponent();
   }, [location.state, navigate, dispatch]);
 
   const handleBackClick = () => {
@@ -48,7 +59,6 @@ const WithdrawContribution = () => {
 
   const formatNumberWithCommas = (value: string) => {
     const cleanValue = value?.replace(/[^\d.]/g, "");
-
     const parts = cleanValue.split(".");
     const wholePart = parts[0];
     const decimalPart = parts[1] || "";
@@ -56,13 +66,12 @@ const WithdrawContribution = () => {
     const formattedWholePart = wholePart?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
     return decimalPart
-      ? `${formattedWholePart}?.${decimalPart?.slice(0, 2)}`
+      ? `${formattedWholePart}.${decimalPart.slice(0, 2)}`
       : formattedWholePart;
   };
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
-
     const numericValue = inputValue?.replace(/[^\d.]/g, "");
 
     const parts = numericValue?.split(".");
@@ -88,7 +97,9 @@ const WithdrawContribution = () => {
 
     if (amountInNaira > contributionBalance) {
       setError(
-        `Insufficient balance. Your contribution balance is ${formatBalance(contributionBalance)}`,
+        `Insufficient balance. Your contribution balance is ${formatBalance(
+          contributionBalance,
+        )}`,
       );
       return;
     }
@@ -124,23 +135,51 @@ const WithdrawContribution = () => {
     navigateToConfirmation(parseFloat(actualAmount));
   };
 
-  if (!contributionDetails) {
-    return null;
+  const renderHeader = () => (
+    <DashboardHeader
+      className="relative cursor-pointer items-center lg:mt-[2em]"
+      onClick={handleBackClick}
+    >
+      <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
+      <div className="flex flex-grow items-center justify-center">
+        <div className="tracking-wide">Withdraw fund to Chain Co-op wallet</div>
+      </div>
+    </DashboardHeader>
+  );
+
+  if (isLoading) {
+    return (
+      <main className="font-sans">
+        {renderHeader()}
+        <div className="flex h-[50vh] items-center justify-center">
+          <div className="animate-pulse text-gray-500">
+            Loading contribution details...
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  if (error && !contributionDetails) {
+    return (
+      <main className="font-sans">
+        {renderHeader()}
+        <div className="mt-6 px-3">
+          <Alert severity="error">{error}</Alert>
+          <Primary
+            onClick={handleBackClick}
+            className="mt-4 w-full bg-text2 py-3 text-white"
+          >
+            Go Back
+          </Primary>
+        </div>
+      </main>
+    );
   }
 
   return (
     <main className="font-sans">
-      <DashboardHeader
-        className="relative cursor-pointer items-center lg:mt-[2em]"
-        onClick={handleBackClick}
-      >
-        <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
-        <div className="flex flex-grow items-center justify-center">
-          <div className="tracking-wide">
-            Withdraw fund to Chain Co-op wallet
-          </div>
-        </div>
-      </DashboardHeader>
+      {renderHeader()}
 
       <section className="px-3">
         <div className="mt-6 flex items-center justify-between">
@@ -160,6 +199,7 @@ const WithdrawContribution = () => {
             <span className="text-gray-400">{formattedBalance}</span>
           </div>
         </div>
+
         <div className="mt-4 flex flex-col gap-4">
           <hr className="w-full" />
           <div className="flex items-center justify-between">
@@ -204,6 +244,7 @@ const WithdrawContribution = () => {
           Continue
         </Primary>
       </section>
+
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -218,22 +259,22 @@ const WithdrawContribution = () => {
           </header>
           <div className="mb-10 font-medium">
             <p>
-              The next withdrawal date is in six months and that will be {""}
+              The next withdrawal date is in six months and that will be{" "}
               {format(
                 parseISO(contributionDetails.withdrawalDate),
                 "dd/MM/yyyy",
-              )}
-              . as selected by you.
+              )}{" "}
+              as selected by you.
             </p>
             <p>
               However, it seems you want to Withdraw before the stipulated date
-              and service fee of N2,000.00 will be charge.
+              and service fee of N2,000.00 will be charged.
             </p>
           </div>
           <div className="m-auto w-[60%]">
             <header className="text-center">
               <h2 className="text-xl font-semibold text-text2">
-                Would you like to continue ?
+                Would you like to continue?
               </h2>
             </header>
             <div className="mt-3 flex justify-between">

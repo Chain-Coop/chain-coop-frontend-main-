@@ -35,6 +35,11 @@ interface WalletBalance {
   __v: number;
 }
 
+interface PaymentWithCardProps {
+  contributionData: any;
+  onClose: () => void;
+}
+
 const cardColors = [
   { bg: "bg-gradient-to-r from-purple-500 to-purple-700", text: "text-white" },
   { bg: "bg-gradient-to-r from-pink-500 to-rose-500", text: "text-white" },
@@ -42,25 +47,27 @@ const cardColors = [
   { bg: "bg-gradient-to-r from-emerald-500 to-teal-500", text: "text-white" },
 ];
 
-const PaymentWithCard = ({ contributionData }: any) => {
+const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
+  contributionData,
+  onClose,
+}) => {
   const contributionId = contributionData.contributionId;
   const navigate = useNavigate();
   const dispatch: AppDispatch = useAppDispatch();
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
   const [currentPage, setCurrentPage] = useState(0);
-
   const [translateX, setTranslateX] = useState(0);
   const cardsPerPage = 2;
 
-  const isProcessing = useAppSelector(
-    (state: any) => state?.transaction?.loading,
-  );
-
   useEffect(() => {
     dispatch(GetWalletBalance());
+    return () => {
+      setIsLoading(false);
+      setError(null);
+      setSelectedCard(null);
+    };
   }, [dispatch]);
 
   const walletData = useAppSelector(
@@ -81,6 +88,7 @@ const PaymentWithCard = ({ contributionData }: any) => {
       };
 
       let paymentResponse, verificationResponse;
+
       if (paymentType === "card" && selectedCard) {
         paymentResponse = await dispatch(
           PayContribution({
@@ -97,26 +105,29 @@ const PaymentWithCard = ({ contributionData }: any) => {
         ).unwrap();
 
         if (verificationResponse?.transaction?.statusCode === 200) {
+          onClose();
           navigate("/dashboard/contribution");
-        } else {
         }
       } else {
         paymentResponse = await dispatch(PayContribution(basePayload)).unwrap();
 
         if (paymentResponse?.landing?.payment?.info?.data) {
+          onClose();
           window.location.href =
             paymentResponse.landing.payment.info.data.authorization_url;
-        } else {
         }
       }
     } catch (error: any) {
-      setError(error || "An error occurred during payment. Please try again.");
+      setError(
+        error?.message || "An error occurred during payment. Please try again.",
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleCardSelect = (card: Card) => {
+    setError(null);
     setSelectedCard(card);
   };
 
@@ -248,10 +259,10 @@ const PaymentWithCard = ({ contributionData }: any) => {
                   </p>
                   <button
                     onClick={() => handlePayment("card")}
-                    disabled={isProcessing}
+                    disabled={isLoading}
                     className="flex w-full items-center justify-center rounded-lg bg-purple-600 px-4 py-2 font-bold text-white transition-colors hover:bg-purple-700 disabled:opacity-50"
                   >
-                    {isProcessing ? (
+                    {isLoading ? (
                       <Loader2 className="h-5 w-5 animate-spin" />
                     ) : (
                       "Proceed with Card Payment"
@@ -268,10 +279,10 @@ const PaymentWithCard = ({ contributionData }: any) => {
                   </Link>
                   <button
                     onClick={() => handlePayment("paystack")}
-                    disabled={isProcessing}
+                    disabled={isLoading}
                     className="flex items-center justify-center rounded-lg bg-purple-600 px-4 py-2 font-bold text-white transition-colors hover:bg-purple-700 disabled:opacity-50"
                   >
-                    {isProcessing ? (
+                    {isLoading ? (
                       <Loader2 className="h-5 w-5 animate-spin" />
                     ) : (
                       "Pay Direct"

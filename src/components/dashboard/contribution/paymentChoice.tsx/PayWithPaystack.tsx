@@ -1,5 +1,6 @@
 import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
+import { Loader2 } from "lucide-react";
 import withdraw from "../../../../Assets/svg/dashboard/contribution/card.svg";
 
 interface PaymentOptionProps {
@@ -19,10 +20,11 @@ const PayWithPaystack: React.FC<PaymentOptionProps> = ({
 
       <section className="rounded-3xl bg-white p-6">
         <div
-          onClick={() => onSelect("paystack")}
-          className="flex w-full cursor-pointer flex-col justify-center gap-4 rounded-3xl bg-white p-2"
+          onClick={() => !isProcessing && onSelect("paystack")}
+          className={`flex w-full flex-col justify-center gap-4 rounded-3xl bg-white p-2 transition-all
+            ${isProcessing ? "cursor-not-allowed opacity-70" : "cursor-pointer hover:bg-gray-50"}`}
         >
-          <div className="flex justify-between">
+          <div className="flex items-center justify-between">
             <div className="flex gap-3">
               <div>
                 <img src={withdraw} alt="" />
@@ -33,7 +35,11 @@ const PayWithPaystack: React.FC<PaymentOptionProps> = ({
               </div>
             </div>
             <div>
-              <IoIosArrowForward size={25} className="cursor-pointer" />
+              {isProcessing ? (
+                <Loader2 className="h-6 w-6 animate-spin text-gray-500" />
+              ) : (
+                <IoIosArrowForward size={25} className="cursor-pointer" />
+              )}
             </div>
           </div>
         </div>

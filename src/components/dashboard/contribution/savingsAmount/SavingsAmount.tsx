@@ -84,7 +84,10 @@ const SavingsAmount = () => {
             </Alert>
           )}
           <div className="mt-[3em] flex justify-between">
-            <button onClick={() => navigate(-1)} className="flex items-center">
+            <button
+              onClick={() => navigate(-1)}
+              className="flex items-center transition-transform duration-300 hover:scale-110"
+            >
               <IoIosArrowDropleft size={25} />
             </button>
             <button
