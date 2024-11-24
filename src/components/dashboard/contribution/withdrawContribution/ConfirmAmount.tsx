@@ -115,9 +115,9 @@ const ConfirmAmount = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        className="bg-white"
+        className="w-[25em] bg-white"
       >
-        <div className="mt-[2.5em] flex flex-col justify-center">
+        <div className="flex w-[25em] flex-col justify-center">
           <img
             src={success}
             alt="Success Icon"

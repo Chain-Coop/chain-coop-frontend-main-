@@ -29,11 +29,11 @@ const EmailStep = ({ onClose, onEmailSent }: any) => {
   };
 
   return (
-    <main className="w-[25em] font-sans">
+    <main className="w-auto font-sans">
       <section className="flex flex-col gap-[1em] py-[2em]">
         <div className="text-center">
           <header>
-            <h1 className="text-lg font-semibold">Reset Password</h1>
+            <h1 className="text-xl font-semibold">Reset Password</h1>
           </header>
         </div>
 
@@ -52,7 +52,8 @@ const EmailStep = ({ onClose, onEmailSent }: any) => {
               value={email}
               readOnly
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-[10px] w-full rounded-full border-[1px] bg-gray-200 p-2 shadow-lg focus:border-none focus:outline-none focus:ring-text2"
+              className="mt-[10px] w-auto rounded-full border-[1px] bg-gray-200 px-[1.5em] py-2 shadow-lg focus:outline-none focus:ring-text2"
+              style={{ width: `${email.length + 4}ch` }}
             />
           </div>
         </div>
@@ -60,16 +61,19 @@ const EmailStep = ({ onClose, onEmailSent }: any) => {
         <Primary
           onClick={handleOtpMail}
           disabled={loading}
-          className="m-auto mt-4 flex w-[60%] justify-center rounded-full bg-text2 px-3 py-2 text-lg text-white"
+          className="m-auto mt-4 flex w-[70%] justify-center rounded-full bg-text2 px-3 py-2 text-lg text-white"
         >
           {loading ? (
-            <ReactLoading
-              color="#FFFFFF"
-              width={25}
-              height={25}
-              type="spin"
-              className="inline-block"
-            />
+            <div className="flex gap-[1em]">
+              <ReactLoading
+                color="#FFFFFF"
+                width={25}
+                height={25}
+                type="spin"
+                className="inline-block"
+              />
+              <p>please wait...</p>
+            </div>
           ) : (
             "Reset"
           )}

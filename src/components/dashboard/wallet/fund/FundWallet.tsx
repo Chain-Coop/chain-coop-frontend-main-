@@ -98,7 +98,7 @@ const FundWallet: React.FC = () => {
       <Modal
         isOpen={modalType === ModalTypes.Paystack}
         onClose={closeModal}
-        className="w-[25em] bg-white"
+        className="bg-white"
       >
         <EmailAmountModal closeModal={closeModal} />
       </Modal>

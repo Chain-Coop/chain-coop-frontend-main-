@@ -267,15 +267,15 @@ export const GeneratePinOTP = createAsyncThunk(
 
 export const CreateTransactionPin = createAsyncThunk(
   "transaction/createTransaction",
-  async (body: any, thunkAPI) => {
+  async (body: { otp: number; newpin: string }, thunkAPI) => {
     try {
-      const data = await TransactionServices.CreateTransactionPin(body);
-      return { landing: data };
+      const response = await TransactionServices.CreateTransactionPin(body);
+      return response;
     } catch (error: any) {
-      console.log("err", error);
-      const message = error.msg;
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue(message);
+      if (error?.msg) {
+        return thunkAPI.rejectWithValue(error.msg);
+      }
+      return thunkAPI.rejectWithValue("Failed to create PIN");
     }
   },
 );
@@ -634,13 +634,17 @@ export const transactionSlice = createSlice({
       .addCase(CreateTransactionPin.pending, (state) => {
         state.loading = true;
         state.error = null;
-      });
-    builder.addCase(CreateTransactionPin.fulfilled, (state, action) => {
-      state.createPin = action.payload.landing;
-    });
-    builder
-      .addCase(CreateTransactionPin.rejected, (state, action: any) => {
-        state.createPin = action.payload.landing;
+      })
+      .addCase(CreateTransactionPin.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.createPin = action.payload;
+      })
+      .addCase(CreateTransactionPin.rejected, (state, action) => {
+        console.log("acc", action.payload);
+        state.loading = false;
+        state.error = action.payload as string;
+        state.createPin = null;
       })
 
       .addCase(GeneratePinOTP.pending, (state) => {

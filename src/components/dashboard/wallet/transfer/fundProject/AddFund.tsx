@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { IoIosArrowBack, IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
+import {
+  IoIosArrowBack,
+  IoIosArrowForward,
+  IoIosArrowDown,
+} from "react-icons/io";
 import { DashboardHeader } from "../../../../common/DashboardHeader";
 import { useNavigate } from "react-router";
 import arrow from "../../../../../Assets/svg/dashboard/wallet/transfer-arrow.svg";
@@ -33,32 +37,34 @@ const AddFund = () => {
   };
 
   const formatNumberWithCommas = (value: string) => {
-    const cleanValue = value?.replace(/[^\d.]/g, '');
-    
-    const parts = cleanValue?.split('.');
-    const wholePart = parts[0];
-    const decimalPart = parts[1] || '';
+    const cleanValue = value?.replace(/[^\d.]/g, "");
 
-    const formattedWholePart = wholePart?.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    
-    return decimalPart ? `${formattedWholePart}.${decimalPart?.slice(0, 2)}` : formattedWholePart;
+    const parts = cleanValue?.split(".");
+    const wholePart = parts[0];
+    const decimalPart = parts[1] || "";
+
+    const formattedWholePart = wholePart?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    return decimalPart
+      ? `${formattedWholePart}.${decimalPart?.slice(0, 2)}`
+      : formattedWholePart;
   };
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
-    
-    const numericValue = inputValue?.replace(/[^\d.]/g, '');
-    
-    const parts = numericValue?.split('.');
+
+    const numericValue = inputValue?.replace(/[^\d.]/g, "");
+
+    const parts = numericValue?.split(".");
     let cleanValue = parts[0];
     if (parts?.length > 1) {
-      cleanValue += '.' + parts[1]?.slice(0, 2);
+      cleanValue += "." + parts[1]?.slice(0, 2);
     }
-    
+
     setActualAmount(cleanValue);
-    
+
     setDisplayAmount(formatNumberWithCommas(cleanValue));
-    
+
     setError("");
   };
 
@@ -71,22 +77,24 @@ const AddFund = () => {
     }
 
     if (amountInNaira > balanceInNaira) {
-      setError(`Insufficient balance. Your current balance is ${formattedBalance}`);
+      setError(
+        `Insufficient balance. Your current balance is ${formattedBalance}`,
+      );
       return;
     }
 
     navigate("/dashboard/wallet/transfer/confirm-amount", {
-      state: { 
+      state: {
         amountInNaira,
-        selectedProjectId: selectedProject?._id 
-      }
+        selectedProjectId: selectedProject?._id,
+      },
     });
   };
 
   return (
     <main className="font-sans">
       <DashboardHeader
-        className="relative lg:mt-[2em] cursor-pointer items-center"
+        className="relative cursor-pointer items-center lg:mt-[2em]"
         onClick={handleBackClick}
       >
         <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
@@ -108,7 +116,9 @@ const AddFund = () => {
           <div className="flex flex-col gap-2">
             <p className="font-medium">Project Fund</p>
             <span className="text-gray-400">
-              {selectedProject ? formatBalance(selectedProject?.projectPrice) : "₦0.00"}
+              {selectedProject
+                ? formatBalance(selectedProject?.projectPrice)
+                : "₦0.00"}
             </span>
           </div>
         </div>
@@ -116,15 +126,17 @@ const AddFund = () => {
           <hr className="w-full" />
           <div className="flex items-center justify-between">
             <p className="font-semibold">Amount to Invest</p>
-            <span className="text-base text-normal relative">
-              <input 
-                type="text" 
-                className="border border-gray-300 focus:border-text2 focus:outline-none focus:ring-text2 rounded-md px-3 py-2 w-full md:w-auto pl-6"
+            <span className="text-normal relative text-base">
+              <input
+                type="text"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 pl-6 focus:border-text2 focus:outline-none focus:ring-text2 md:w-auto"
                 placeholder="0.00"
-                value={displayAmount}   
+                value={displayAmount}
                 onChange={handleAmountChange}
               />
-              <span className="absolute left-2 top-1/2 transform -translate-y-1/2">₦</span>
+              <span className="absolute left-2 top-1/2 -translate-y-1/2 transform">
+                ₦
+              </span>
             </span>
           </div>
           <hr className="w-full" />
@@ -137,7 +149,9 @@ const AddFund = () => {
             {selectedProject ? (
               selectedProject.title
             ) : (
-              <span className="font-medium px-[1.5em]">--- No project selected ---</span>
+              <span className="px-[1.5em] font-medium">
+                --- No project selected ---
+              </span>
             )}
           </p>
           {dropdownVisible ? (
@@ -147,12 +161,12 @@ const AddFund = () => {
           )}
 
           {dropdownVisible && (
-            <div className="absolute h-[200px] left-0 px-[em] right-0 top-full z-10 mt-2 overflow-auto bg-white shadow-md">
+            <div className="absolute left-0 right-0 top-full z-10 mt-2 h-[200px] overflow-auto bg-white px-[em] shadow-md">
               {useProjects && useProjects?.length > 0 ? (
                 useProjects?.map((project: any) => (
                   <div
                     key={project?._id}
-                    className="cursor-pointer flex justify-between font-semibold p-2 hover:bg-gray-200"
+                    className="flex cursor-pointer justify-between p-2 font-semibold hover:bg-gray-200"
                     onClick={() => handleProjectSelect(project)}
                   >
                     <p>{project?.title}</p>
@@ -168,13 +182,15 @@ const AddFund = () => {
           )}
         </div>
         {error && (
-          <Alert severity="error" className="mt-4">{error}</Alert>
+          <Alert severity="error" className="mt-4">
+            {error}
+          </Alert>
         )}
 
         <Primary
           onClick={confirmAmount}
-          className={`mt-[2em] w-full py-3 text-white ${
-            selectedProject && displayAmount ? "bg-text2" : "bg-gray-400 cursor-not-allowed"
+          className={`mt-[2em] w-full bg-text2 py-3 text-white ${
+            selectedProject && displayAmount ? "bg-text2" : "cursor-disabled"
           }`}
           disabled={!selectedProject || !displayAmount}
         >

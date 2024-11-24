@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import OTPInput from "react-otp-input";
-import ReactLoading from "react-loading";
 import { Primary } from "../../../../common/Button";
 
 const OtpInput = ({ otp, setOtp, onClose, onOtpEntered }: any) => {
@@ -22,7 +21,7 @@ const OtpInput = ({ otp, setOtp, onClose, onOtpEntered }: any) => {
   };
 
   return (
-    <div className="w-[25em] p-4 text-center">
+    <div className="w-[25em] py-[2em] text-center">
       <h2 className="mb-2 text-2xl font-semibold">Reset Password</h2>
       <p className="mb-4 text-gray-600">Enter Your OTP code</p>
 
@@ -46,7 +45,7 @@ const OtpInput = ({ otp, setOtp, onClose, onOtpEntered }: any) => {
       <div className="space-y-3">
         <Primary
           onClick={handleContinue}
-          className="w-full rounded-full bg-text2 py-2 text-white"
+          className="m-auto w-[60%] rounded-full bg-text2 py-2 text-white"
           disabled={isLoading}
         >
           Continue

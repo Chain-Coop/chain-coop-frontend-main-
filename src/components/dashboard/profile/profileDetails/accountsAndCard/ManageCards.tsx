@@ -114,12 +114,12 @@ const ManageCards = () => {
             cards.map((card: Card, idx: number) => (
               <div
                 key={card.authCode}
-                className="flex items-center justify-between gap-4"
+                className="gap- flex items-center justify-between"
               >
                 <div
-                  className={`flex-1 cursor-pointer rounded-lg p-6 transition-all
-            ${cardColors[idx % cardColors.length].bg}
-            ${cardColors[idx % cardColors.length].text}`}
+                  className={`w-[50%] cursor-pointer rounded-lg p-6 transition-all
+                    ${cardColors[idx % cardColors.length].bg}
+                    ${cardColors[idx % cardColors.length].text}`}
                 >
                   <p>*** *** *** {card.number}</p>
                   <p>MasterCard/Mar 2026</p>
@@ -133,12 +133,12 @@ const ManageCards = () => {
                     <img src={trash} alt="trash_img" className="w-5" />
                     <span>Delete Card</span>
                   </button>
+                </div>
 
-                  <button className="flex items-center gap-2 rounded-md border border-gray-300 px-3 py-1 text-sm text-gray-700">
+                {/* <button className="flex items-center gap-2 rounded-md border border-gray-300 px-3 py-1 text-sm text-gray-700">
                     <img src={setDefault} alt="default" className="w-5" />
                     <span>Set as Default</span>
-                  </button>
-                </div>
+                  </button> */}
               </div>
             ))
           ) : (

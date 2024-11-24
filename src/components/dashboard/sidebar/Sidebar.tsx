@@ -7,7 +7,7 @@ import investor from "../../../Assets/jpg/membership/investor.jpg";
 import useUserProfile from "../../../shared/Hooks/useUserProfile";
 
 const Sidebar = () => {
-  const location = useLocation();  
+  const location = useLocation();
   const navigate = useNavigate();
   const { profileDetails } = useUserProfile();
 
@@ -26,11 +26,11 @@ const Sidebar = () => {
 
   const getButtonProps = () => {
     if (profileDetails?.membershipStatus === "inactive") {
-      return { text: "Inactive", bgColor: "bg-yellow-500" }; 
-    } else if (profileDetails?.membershipStatus === "activative") {
-      return { text: "Activated", bgColor: "bg-green-500" }; 
+      return { text: "Inactive", bgColor: "bg-yellow-500" };
+    } else if (profileDetails?.membershipStatus === "active") {
+      return { text: "Activated", bgColor: "bg-green-500" };
     }
-    return { text: "Unknown", bgColor: "bg-gray-400" }; 
+    return { text: "Unknown", bgColor: "bg-gray-400" };
   };
 
   const { text, bgColor } = getButtonProps();
@@ -38,7 +38,11 @@ const Sidebar = () => {
   return (
     <aside className="h-vh flex w-[23em] flex-col border-r border-bl bg-rec1 py-[2em] font-sans text-memt1 shadow-md">
       <div onClick={home}>
-        <img src={logo} alt="ChainCoop-logo" className="ml-[1em] cursor-pointer" />
+        <img
+          src={logo}
+          alt="ChainCoop-logo"
+          className="ml-[1em] cursor-pointer"
+        />
       </div>
       <nav className="mb-[3em] ml-5 mt-[2em] flex flex-grow flex-col">
         {sidebarLinks.map((link, index) => {
@@ -57,13 +61,19 @@ const Sidebar = () => {
                   : ""
               }`}
             >
-              <img src={link.img} alt={`${link.text} icon`} className="mr-3 h-6 w-6" />
+              <img
+                src={link.img}
+                alt={`${link.text} icon`}
+                className="mr-3 h-6 w-6"
+              />
               {link.text}
             </Link>
           );
         })}
         <section className="mt-[1em] px-4">
-          <button className={`rounded-full ${bgColor} px-[2em] py-1 text-text3 shadow-md`}>
+          <button
+            className={`rounded-full ${bgColor} px-[2em] py-1 text-text3 shadow-md`}
+          >
             {text}
           </button>
         </section>
@@ -72,7 +82,8 @@ const Sidebar = () => {
         </section>
         <section className="mt-4 flex w-[16em]">
           <p className="text-sm text-howtext">
-            This card grants you access to the Chain Coop Chain Network ecosystem. Once activated, it becomes non-transferable.
+            This card grants you access to the Chain Coop Chain Network
+            ecosystem. Once activated, it becomes non-transferable.
           </p>
         </section>
       </nav>

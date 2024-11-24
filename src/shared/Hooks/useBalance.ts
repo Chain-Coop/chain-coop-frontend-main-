@@ -146,7 +146,6 @@ export const useUnPaidContribution = () => {
   const dispatch: AppDispatch = useDispatch();
   const location = useLocation();
 
-  // Ensure you're extracting the actual contributionId value
   const contributionId = location?.state?.contributionId?.toString();
 
   const balance = useSelector(

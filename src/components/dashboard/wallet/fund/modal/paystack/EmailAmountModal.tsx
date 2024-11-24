@@ -10,28 +10,26 @@ interface EmailAmountModalProps {
   closeModal: () => void;
 }
 
-const EmailAmountModal: React.FC<EmailAmountModalProps> = ({
-  closeModal,
-}) => {
+const EmailAmountModal: React.FC<EmailAmountModalProps> = ({ closeModal }) => {
   const [amount, setAmount] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const dispatch: AppDispatch = useAppDispatch();
- 
+
   const submitData = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
+
     if (!amount || isNaN(parseFloat(amount))) {
       toast.error("Please input a valid amount");
       return;
     }
-  
+
     setLoading(true);
-      const amountInKobo = Math.round(parseFloat(amount) * 100);
+    const amountInKobo = Math.round(parseFloat(amount) * 100);
 
     let body = {
       amount: amountInKobo,
     };
-  
+
     dispatch(FundWallet(body))
       .unwrap()
       .then((response) => {
@@ -43,20 +41,21 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({
       })
       .catch((error: any) => {
         setLoading(false);
-        const errorMessage = error?.message || "An error occurred, please try again";
+        const errorMessage =
+          error?.message || "An error occurred, please try again";
         toast.error(errorMessage);
       });
   };
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (/^\d*\.?\d{0,2}$/.test(value) || value === '') {
+    if (/^\d*\.?\d{0,2}$/.test(value) || value === "") {
       setAmount(value);
     }
   };
 
   return (
-    <main className="font-sans">
+    <main className="w-[25em] font-sans">
       <div className="py-[3em]">
         <h2 className="mb-4 flex justify-center text-xl font-semibold">
           Pay with Paystack
@@ -81,7 +80,8 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({
           </div>
           <Primary
             type="submit"
-            className="mt-[1.5em] flex justify-center w-full bg-text2 py-2 text-white"
+            disabled={!amount}
+            className="mt-[1.5em] flex w-full justify-center bg-text2 py-2 text-white"
           >
             {loading ? (
               <ReactLoading
