@@ -6,16 +6,18 @@ import { Primary } from "../../common/Button";
 const HeroSection = () => {
   return (
     <main className="relative flex w-full flex-col font-sans lg:flex-row">
-      <div className="flex items-center px-4 py-5 lg:w-1/2 lg:px-[4em] lg:py-[8em]">
+      <div className="flex items-center px-4 py-5 lg:w-1/2 lg:px-[4em] lg:py-[10em]">
         <div className="max-w-xl">
-          <div className="lg:mb-6 mb-4">
-          <h1 className="text-2xl font-bold  lg:text-4xl">
-           Save in Naira, Dollars, Gold, or BTC <span className="text-text2"> with Chain Co-op</span> 
-          </h1>
+          <div className="mb-4 lg:mb-6">
+            <h1 className="text-2xl font-bold  lg:text-4xl">
+              Save in Naira, Dollars, Gold, or BTC{" "}
+              <span className="text-text2"> with Chain Co-op</span>
+            </h1>
           </div>
           <p className="mb-6 text-sm text-text1 sm:text-base lg:mb-8">
-           Introducing Chain Co-op Savings. A secure platform to save in Naira, Dollars, Gold, or BTC. Protecting 
-           your wealth and preparing you for potential loans, with a focus on financial stability over growth. 
+            Introducing Chain Co-op Savings. A secure platform to save in Naira,
+            Dollars, Gold, or BTC. Protecting your wealth and preparing you for
+            potential loans, with a focus on financial stability over growth.
           </p>
           <div className="flex flex-col gap-[2.5em] sm:flex-row sm:items-center">
             {/* <Link to="/sign-up" className="w-full sm:w-auto">
