@@ -22,12 +22,12 @@ const ProjectContent = () => {
 
     return (
       <>
-        <article 
-          className="mt-[2em] items-center rounded-xl bg-no-repeat p-[2em] cursor-pointer"
+        <article
+          className="mt-[2em] cursor-pointer items-center rounded-xl bg-no-repeat p-[2em]"
           style={{
             backgroundImage: `url(${useProjects[0]?.documentUrl})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
+            backgroundSize: "cover",
+            backgroundPosition: "center",
           }}
           onClick={() => handleProjectClick(useProjects[0]._id)}
         >
@@ -39,15 +39,15 @@ const ProjectContent = () => {
           </ComingSoon>
         </article>
 
-        <div className="mb-[2em] mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {useProjects.slice(1)?.map((project:any) => (
-            <div 
+        <div className="mb-[2em] mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
+          {useProjects.slice(1)?.map((project: any) => (
+            <div
               key={project._id}
-              className="rounded-lg bg-cover bg-center cursor-pointer"
+              className="cursor-pointer rounded-lg bg-cover bg-center"
               style={{
                 backgroundImage: `url(${project.documentUrl})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center'
+                backgroundSize: "cover",
+                backgroundPosition: "center",
               }}
               onClick={() => handleProjectClick(project._id)}
             >
@@ -55,7 +55,9 @@ const ProjectContent = () => {
                 <h1 className="text-lg font-medium uppercase text-text3">
                   {project?.title}
                 </h1>
-                <ComingSoon className="mt-4 bg-coming2">{project?.status}</ComingSoon>
+                <ComingSoon className="mt-4 bg-coming2">
+                  {project?.status}
+                </ComingSoon>
               </article>
             </div>
           ))}
@@ -69,14 +71,14 @@ const ProjectContent = () => {
       <div className="sm:px-[1em] lg:px-0">
         <section>
           <p className="text-medium font-bold">Project</p>
-          <p className="mt-[1em] font-medium text-sm">
-            {loading ? "Loading projects..." : "Click on any of the cards to view project details"}
+          <p className="mt-[1em] text-sm font-medium">
+            {loading
+              ? "Loading projects..."
+              : "Click on any of the cards to view project details"}
           </p>
         </section>
 
-        <section>
-          {renderProjects()}
-        </section>
+        <section>{renderProjects()}</section>
       </div>
     </main>
   );
@@ -84,10 +86,10 @@ const ProjectContent = () => {
 
 const SkeletonLoader = () => (
   <div className="animate-pulse">
-    <div className="mt-[2em] h-64 bg-gray-200 rounded-xl"></div>
-    <div className="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <div className="h-40 bg-gray-200 rounded-lg"></div>
-      <div className="h-40 bg-gray-200 rounded-lg"></div>
+    <div className="mt-[2em] h-64 rounded-xl bg-gray-200"></div>
+    <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <div className="h-40 rounded-lg bg-gray-200"></div>
+      <div className="h-40 rounded-lg bg-gray-200"></div>
     </div>
   </div>
 );
@@ -95,7 +97,6 @@ const SkeletonLoader = () => (
 const NoProjectsFound = () => (
   <div className="mt-[2em] text-center text-gray-500">
     <p className="text-xl font-semibold">No projects found</p>
-    <p className="mt-2">Create a new project to get started</p>
   </div>
 );
 

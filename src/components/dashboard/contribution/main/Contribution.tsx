@@ -90,23 +90,25 @@ const Contribution: React.FC = () => {
     <motion.main
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="pb-[1.5em] font-sans"
+      className="min-h-screen w-full pb-6 font-sans"
     >
-      <header className="sm:mt-[0] lg:mt-[2em]">
-        <DashboardHeader className="flex items-center justify-center">
+      <header>
+        <DashboardHeader className="flex items-center justify-center text-2xl md:text-3xl lg:text-xl">
           Contribution Plan
         </DashboardHeader>
       </header>
 
-      <section className="mt-[2em] sm:px-[1.5em] lg:mx-auto lg:w-[33em] lg:px-[0]">
-        <article className="text-center text-text4">
+      <section className="mx-auto w-full max-w-4xl px-4 md:mt-8 lg:mt-10">
+        <article className="text-center text-gray-700">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-[2em] rounded-3xl py-[2em] shadow-md"
+            className="mx-4 mt-6 rounded-3xl bg-white p-6 shadow-md md:mx-8 lg:mx-auto lg:max-w-2xl"
           >
-            <div className="flex justify-center gap-4 font-sans">
-              <p className="font-medium">Contribution Balance</p>
+            <div className="flex items-center justify-center gap-4 font-sans">
+              <p className="text-sm font-medium md:text-base">
+                Contribution Balance
+              </p>
               <ToggleButton
                 isVisible={isContributionVisible}
                 onToggle={(newVisibility) => {
@@ -133,33 +135,33 @@ const Contribution: React.FC = () => {
             </div>
           </motion.div>
 
-          <section className="mt-[2em]">
+          <section className="mt-6 md:mt-8">
             <div className="flex justify-center">
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={fundContribution}
-                className="whitespace-nowrap rounded-full bg-inherit text-lg font-bold text-text2 shadow-lg sm:px-[1em] sm:py-[5px] lg:px-[3em] lg:py-[10px]"
+                className="rounded-full bg-inherit px-8 py-2 text-base font-bold text-gray-700 shadow-lg transition-all hover:bg-gray-50 md:px-8 md:py-3 md:text-lg lg:px-12"
               >
                 Add Savings
               </motion.button>
             </div>
-            <hr className="mt-[2em] w-full" />
+            <hr className="mx-auto mt-8 w-full max-w-4xl" />
           </section>
         </article>
       </section>
 
-      <section className="mt-[2em] px-[2em]">
+      <section className="mx-auto mt-8 w-full max-w-4xl px-4 md:mt-10 lg:mt-12">
         <header>
-          <h1 className="text-xl font-bold">My Savings</h1>
+          <h1 className="text-xl font-bold md:text-2xl">My Savings</h1>
         </header>
 
         {isContributionsLoading ? (
           <ContributionListSkeleton />
         ) : getContributions?.contributions?.length > 0 ? (
-          <div className="mt-[1em] flex h-auto flex-col gap-[1em] rounded-lg bg-text2 px-2 py-[1.5em] text-center">
+          <div className="mt-4 flex h-auto flex-col gap-4 rounded-lg bg-text2 p-4 text-center md:mt-6 md:p-6">
             <div className="mb-3 flex items-center justify-between px-4">
-              <span className="font-medium text-white">
+              <span className="text-sm font-medium text-white md:text-base">
                 Page {page} of {totalPages}
               </span>
               <div className="flex gap-2 font-semibold">
@@ -168,18 +170,18 @@ const Contribution: React.FC = () => {
                   disabled={page <= 1}
                   className="disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  <IoIosArrowBack className="text-white" size={25} />
+                  <IoIosArrowBack className="text-white" size={20} />
                 </button>
                 <button
                   onClick={handleNextPage}
                   disabled={page >= totalPages}
                   className="disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  <IoIosArrowForward className="text-white" size={25} />
+                  <IoIosArrowForward className="text-white" size={20} />
                 </button>
               </div>
             </div>
-            <hr className="text-gray-500" />
+            <hr className="border-gray-500" />
 
             {getContributions?.contributions?.map(
               (contribution: Contribution) => (
@@ -191,28 +193,29 @@ const Contribution: React.FC = () => {
                   onClick={() =>
                     navigateToContributionDetails(contribution._id)
                   }
-                  className="flex w-[90%] cursor-pointer flex-col gap-2 rounded-full border-2 border-gray-500 bg-white px-[1.5em] py-2 transition-colors hover:bg-gray-50"
+                  className="mx-auto flex w-full max-w-3xl flex-col gap-2 rounded-full border-2 border-gray-500 bg-white px-4 py-2 transition-all hover:bg-gray-50 md:px-6 md:py-3"
                 >
-                  <div className="flex justify-between font-medium text-gray-500">
+                  <div className="flex justify-between text-sm font-medium text-gray-500 md:text-base">
                     <p>Savings Name</p>
                     <p>Savings Balance</p>
                   </div>
-                  <div className="flex justify-between">
-                    <div className="flex items-center gap-3">
-                      <div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 md:gap-3">
+                      <div className="w-8 md:w-10">
                         <motion.img
                           whileHover={{ rotate: 360 }}
                           transition={{ duration: 0.5 }}
                           src={contributionImg}
                           alt="Contribution category icon"
+                          className="w-full"
                         />
                       </div>
-                      <p className="text-lg font-semibold">
+                      <p className="text-base font-semibold md:text-lg">
                         {contribution?.savingsCategory}
                       </p>
                     </div>
                     <div>
-                      <figure className="text-lg font-semibold">
+                      <figure className="text-base font-semibold md:text-lg">
                         {formatCurrency(contribution?.balance)}
                       </figure>
                     </div>
@@ -225,13 +228,15 @@ const Contribution: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-[1em] flex h-auto w-full flex-col gap-[1em] rounded-lg bg-text2 px-2 py-[3em] text-center"
+            className="mt-4 flex h-auto w-full flex-col gap-4 rounded-lg bg-text2 p-6 text-center md:mt-6 md:p-8"
           >
-            <h2 className="text-xl font-bold text-how1">No Savings Yet</h2>
+            <h2 className="text-xl font-bold text-how1 md:text-2xl">
+              No Savings Yet
+            </h2>
             <motion.p
               whileHover={{ scale: 1.05 }}
               onClick={fundContribution}
-              className="mt-[1.5em] cursor-pointer text-xl font-semibold text-how1"
+              className="mt-6 cursor-pointer text-lg font-semibold text-how1 md:text-xl"
             >
               Get Started
             </motion.p>

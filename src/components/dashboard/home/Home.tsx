@@ -17,11 +17,11 @@ interface Project {
 }
 
 const ProjectsSkeleton = () => (
-  <div className="mt-4 gap-6 space-y-6 sm:flex-col lg:flex lg:flex-row lg:space-y-0">
-    <div className="flex-1 animate-pulse">
+  <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <div className="animate-pulse">
       <div className="h-48 rounded-xl bg-gray-200"></div>
     </div>
-    <div className="flex-1 animate-pulse">
+    <div className="animate-pulse">
       <div className="h-48 rounded-xl bg-gray-200"></div>
     </div>
   </div>
@@ -32,20 +32,18 @@ const Home = () => {
     useWalletBalance();
   const { profileDetails } = useUserProfile();
   const { useProjects, loading } = useAllProjects();
+  const navigate = useNavigate();
 
   const handleProjectClick = (projectId: string) => {
     navigate(`/dashboard/project/project_over-view/${projectId}`);
   };
 
-  const navigate = useNavigate();
-
   const addFund = () => {
     navigate("/dashboard/wallet");
   };
 
-  const latestProjects = React?.useMemo(() => {
+  const latestProjects = React.useMemo(() => {
     if (!useProjects) return [];
-
     return [...useProjects]
       .sort(
         (a: Project, b: Project) =>
@@ -64,11 +62,11 @@ const Home = () => {
     }
 
     return (
-      <div className="mt-4 gap-6 space-y-6 sm:flex-col lg:flex lg:flex-row lg:space-y-0">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {latestProjects.map((project: Project) => (
-          <article key={project?._id} className="flex-1">
+          <article key={project?._id}>
             <div
-              className="flex h-auto min-h-48 cursor-pointer flex-col gap-8 rounded-xl bg-cover bg-center bg-no-repeat p-3 transition-transform hover:scale-[1.02]"
+              className="flex h-48 cursor-pointer flex-col gap-8 rounded-xl bg-cover bg-center bg-no-repeat p-3 transition-transform hover:scale-[1.02]"
               style={{
                 backgroundImage: `url(${project?.documentUrl})`,
                 backgroundColor: "rgba(255, 255, 255, 0.1)",
@@ -79,7 +77,7 @@ const Home = () => {
               <h1 className="text-lg font-medium uppercase text-text3">
                 {project?.title}
               </h1>
-              <div className="mt-12">
+              <div className="mt-auto">
                 <ComingSoon className="bg-coming2">
                   {project?.status}
                 </ComingSoon>
@@ -92,8 +90,8 @@ const Home = () => {
   };
 
   return (
-    <main className="mx-auto mb-8 px-8 font-sans">
-      <header className="flex justify-between sm:mt-4 lg:mt-10">
+    <main className="mx-auto mb-8 w-full max-w-7xl px-4 font-sans lg:px-8">
+      <header className="flex items-center justify-between py-4 sm:mt-4 lg:mt-10">
         <div className="font-medium">
           <p>Welcome Back!</p>
           <p className="mt-1 font-semibold">
@@ -106,7 +104,7 @@ const Home = () => {
       </header>
 
       <section className="text-center text-text4">
-        <div className="mx-auto mt-8 rounded-3xl py-8 shadow-md">
+        <div className="mx-auto mt-8 rounded-3xl px-4 py-8 shadow-md sm:px-8">
           <div className="flex justify-center gap-4 font-sans">
             <p className="font-medium">Total Balance</p>
             <div>
@@ -122,7 +120,7 @@ const Home = () => {
               />
             </div>
           </div>
-          <div className="mx-auto mt-6 w-60 rounded-md">
+          <div className="mx-auto mt-6 w-full max-w-xs rounded-md">
             {isWalletVisible ? (
               <p className="font-bold sm:text-xl lg:text-xl">
                 {formattedBalance}
@@ -135,16 +133,19 @@ const Home = () => {
         </div>
       </section>
 
-      <div>
+      <div className="mt-8 flex w-full flex-col gap-[1.5em] px-4 sm:px-0">
         <button
           onClick={addFund}
-          className="mx-auto mt-8 w-full rounded-3xl bg-inherit py-4 text-center text-lg font-semibold text-text4 shadow-md transition-colors hover:bg-gray-50"
+          className="mx-auto w-full rounded-3xl bg-inherit py-4 text-center text-lg font-semibold text-text4 shadow-md transition-colors hover:bg-gray-50"
         >
           + Add Fund
         </button>
+        <button className="mx-auto w-full rounded-3xl bg-[#ECE6F2] py-4 text-center text-lg font-semibold text-text4 shadow-md transition-colors hover:bg-gray-50">
+          + Get a loan
+        </button>
       </div>
 
-      <section className="mt-8 w-full">{renderProjects()}</section>
+      <section className="mt-8 w-full px-4 sm:px-0">{renderProjects()}</section>
     </main>
   );
 };

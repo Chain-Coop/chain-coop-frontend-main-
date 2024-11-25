@@ -12,7 +12,7 @@ const Withdraw = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const WITHDRAWAL_LIMIT = 500000000; 
+  const WITHDRAWAL_LIMIT = 500000000;
 
   const handleBackClick = () => {
     navigate(-1);
@@ -29,9 +29,11 @@ const Withdraw = () => {
 
     const numAmount = parseFloat(inputAmount);
     if (numAmount > WITHDRAWAL_LIMIT) {
-      setError(`Amount exceeds the withdrawal limit of ${WITHDRAWAL_LIMIT.toLocaleString()} NGN.`);
+      setError(
+        `Amount exceeds the withdrawal limit of ${WITHDRAWAL_LIMIT.toLocaleString()} NGN.`,
+      );
     } else {
-      setError(""); 
+      setError("");
     }
   };
 
@@ -40,9 +42,13 @@ const Withdraw = () => {
     if (isNaN(numAmount) || numAmount <= 0) {
       setError("Please enter a valid amount.");
     } else if (numAmount > WITHDRAWAL_LIMIT) {
-      setError(`Amount exceeds the withdrawal limit of ${WITHDRAWAL_LIMIT.toLocaleString()} NGN.`);
+      setError(
+        `Amount exceeds the withdrawal limit of ${WITHDRAWAL_LIMIT.toLocaleString()} NGN.`,
+      );
     } else {
-      navigate("/dashboard/wallet/select-bank", { state: { amount: numAmount } });
+      navigate("/dashboard/wallet/select-bank", {
+        state: { amount: numAmount },
+      });
     }
   };
 
@@ -81,7 +87,7 @@ const Withdraw = () => {
       </section>
 
       <Modal isOpen={isModalOpen} onClose={toggleModal} className="bg-white">
-        <div className="mt-[2.5em]">
+        <div className="mt-[2.5em] w-[25em]">
           <header>
             <h1 className="text-center text-xl font-semibold">
               Bank Account Withdrawal
@@ -96,7 +102,9 @@ const Withdraw = () => {
             <hr className="mt-3 h-[1px] rounded-md" />
             <div className="mt-5 flex justify-between">
               <p className="text-howtext">Withdrawal limit</p>
-              <p className="font-medium">{WITHDRAWAL_LIMIT.toLocaleString()} NGN / transaction</p>
+              <p className="font-medium">
+                {WITHDRAWAL_LIMIT.toLocaleString()} NGN / transaction
+              </p>
             </div>
             <hr className="mt-3 h-[1px] rounded-md" />
             <div className="mt-[1em] w-full">
@@ -117,7 +125,9 @@ const Withdraw = () => {
                   style={{ textAlign: "right" }}
                 />
               </div>
-              {error && <p className="mt-2 text-sm font-bold text-red-500">{error}</p>}
+              {error && (
+                <p className="mt-2 text-sm font-bold text-red-500">{error}</p>
+              )}
             </div>
           </section>
           <Primary

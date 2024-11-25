@@ -13,25 +13,35 @@ const PayWithPaystack: React.FC<PaymentOptionProps> = ({
   isProcessing,
 }) => {
   return (
-    <div className="flex w-[30em] flex-col gap-6 p-6">
+    <div className="p- flex w-full flex-col gap-4 sm:w-[20em] sm:p-6 md:w-[25em] lg:w-[30em]">
       <header className="text-center">
-        <h1 className="text-lg font-bold text-text2">Fund Contribution</h1>
+        <h1 className="text-base font-bold text-text2 md:text-lg">
+          Fund Contribution
+        </h1>
       </header>
 
-      <section className="rounded-3xl bg-white p-6">
+      <section className="rounded-3xl bg-white p-4">
         <div
           onClick={() => !isProcessing && onSelect("paystack")}
-          className={`flex w-full flex-col justify-center gap-4 rounded-3xl bg-white p-2 transition-all
+          className={`flex w-full flex-col justify-center gap-4 rounded-3xl bg-white transition-all
             ${isProcessing ? "cursor-not-allowed opacity-70" : "cursor-pointer hover:bg-gray-50"}`}
         >
           <div className="flex items-center justify-between">
             <div className="flex gap-3">
               <div>
-                <img src={withdraw} alt="" />
+                <img
+                  src={withdraw}
+                  alt=""
+                  className="h-8 w-8 sm:h-10 sm:w-10"
+                />
               </div>
               <div>
-                <p className="font-medium">Pay with PayStack</p>
-                <small className="text-gray-500">Fund with Naira Cards</small>
+                <p className="text-sm font-medium md:text-base">
+                  Pay with PayStack
+                </p>
+                <small className="text-xs text-gray-500 md:text-sm">
+                  Fund with Naira Cards
+                </small>
               </div>
             </div>
             <div>

@@ -484,7 +484,7 @@ const StartDate: React.FC = () => {
         setError("Contribution plan creation failed. Please try again.");
       }
     } catch (error: any) {
-      setError(error?.error || "An error occurred. Please try again.");
+      setError(error?.msg || "An error occurred. Please try again.");
     } finally {
       setLoading(false);
     }

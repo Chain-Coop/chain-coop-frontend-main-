@@ -168,6 +168,208 @@ const ViewContribution = () => {
     setError(null);
   };
 
+  // const ContributionTracker = () => {
+  //   const { contributionDetails } = useSelector(
+  //     (state: any) => state?.transaction,
+  //   );
+
+  //   if (!contributionDetails) return null;
+
+  //   const {
+  //     nextContributionDate,
+  //     withdrawalDate,
+  //     amount = 0,
+  //     history = [],
+  //   } = contributionDetails || {};
+
+  //   const buildSteps = () => {
+  //     const steps = [];
+
+  //     const sortedHistory = [...(history || [])].sort(
+  //       (a, b) => new Date(a?.Date).getTime() - new Date(b?.Date).getTime(),
+  //     );
+
+  //     if (sortedHistory.length > 0) {
+  //       const firstTransaction = sortedHistory[0];
+  //       steps.push({
+  //         label: "Start Date",
+  //         date: firstTransaction?.Date,
+  //         amount: firstTransaction?.amount,
+  //         type: firstTransaction?.type,
+  //         balance: firstTransaction?.balance,
+  //         description: "Start of regular contributions",
+  //         status: firstTransaction?.status,
+  //         reference: firstTransaction?.reference,
+  //       });
+
+  //       sortedHistory.slice(1).forEach((transaction) => {
+  //         const isDebitSuccess =
+  //           transaction?.type?.toLowerCase() === "debit" &&
+  //           transaction?.status?.toLowerCase() === "success";
+
+  //         steps.push({
+  //           label: isDebitSuccess
+  //             ? "Cash Transfer to Chain Co-op Wallet"
+  //             : "Cash Transfer from Savings Account",
+  //           date: transaction?.Date,
+  //           amount: transaction?.amount,
+  //           type: transaction?.type,
+  //           balance: transaction?.balance,
+  //           description: isDebitSuccess
+  //             ? "Transfer to Chain Co-op Wallet"
+  //             : "Cash Transfer from Savings Bank Account",
+  //           status: transaction?.status,
+  //           reference: transaction?.reference,
+  //         });
+  //       });
+  //     }
+
+  //     if (nextContributionDate) {
+  //       steps.push({
+  //         label: "Next Contribution",
+  //         date: nextContributionDate,
+  //         amount: amount,
+  //         type: "Credit",
+  //         balance: null,
+  //         description: "Cash Transfer from Savings Bank Account",
+  //         status: "Pending",
+  //       });
+  //     }
+
+  //     return steps;
+  //   };
+
+  //   const getStatusStyle = (status?: string) => {
+  //     switch (status?.toLowerCase()) {
+  //       case "completed":
+  //         return "bg-text2 font-semibold shadow-lg text-white";
+  //       case "success":
+  //         return "bg-[#4CAF50] font-semibold shadow-lg text-white";
+  //       case "pending":
+  //         return "bg-[#B8B4B4] font-semibold shadow-lg text-white";
+  //       case "unpaid":
+  //         return "bg-[#EC5246] font-semibold shadow-lg text-white";
+  //       default:
+  //         return "bg-gray-200 text-gray-600";
+  //     }
+  //   };
+
+  //   const formatSafeDateTime = (dateString?: string) => {
+  //     try {
+  //       if (!dateString) throw new Error("No date provided");
+  //       return format(parseISO(dateString), "EEEE: dd/MM/yyyy | HH:mm");
+  //     } catch {
+  //       return "Date unavailable";
+  //     }
+  //   };
+
+  //   const isStepActive = (status?: string) => {
+  //     return (
+  //       status?.toLowerCase() === "completed" ||
+  //       status?.toLowerCase() === "success"
+  //     );
+  //   };
+
+  //   const formatAmount = (amount?: number, type?: string) => {
+  //     const formattedAmount = amount?.toLocaleString() || "0";
+  //     const isDebit = type?.toLowerCase() === "debit";
+  //     return (
+  //       <div className="flex gap-2">
+  //         <span className="text-sm font-medium text-gray-600">
+  //           {isDebit ? "Debit Amount:" : "Credit Amount:"}
+  //         </span>
+  //         <span
+  //           className={`text-sm font-semibold ${
+  //             isDebit ? "text-red-500" : "text-[#61E532]"
+  //           }`}
+  //         >
+  //           {isDebit ? "- " : "+ "}NGN {formattedAmount}
+  //         </span>
+  //       </div>
+  //     );
+  //   };
+
+  //   const isWithdrawalDatePassed = withdrawalDate
+  //     ? new Date(withdrawalDate) <= new Date()
+  //     : false;
+
+  //   const steps = buildSteps();
+
+  //   if (isLoading) {
+  //     return <TrackerSkeleton />;
+  //   }
+
+  //   return (
+  //     <section className="mt-[1em] font-sans">
+  //       <div className="mb-4 flex flex-col gap-3 whitespace-nowrap">
+  //         <p className="text-lg font-bold">Transaction History</p>
+  //         <p>Effortlessly manage and monitor your financial commitment</p>
+  //         {isWithdrawalDatePassed && (
+  //           <div className="rounded-lg bg-blue-100 p-3 text-blue-700">
+  //             Withdrawal date has been reached. You can now withdraw your funds.
+  //           </div>
+  //         )}
+  //       </div>
+  //       <div className="mb-2 flex justify-between gap-3 whitespace-nowrap">
+  //         <p className="text-lg font-medium">Monthly Contribution</p>
+  //         <p className="font-medium">Status</p>
+  //       </div>
+  //       <Box sx={{ maxWidth: "100%", marginTop: "1.5em" }}>
+  //         <Stepper orientation="vertical">
+  //           {steps.map((step, index) => (
+  //             <Step key={index} active={isStepActive(step?.status)}>
+  //               <StepLabel
+  //                 sx={{
+  //                   "& .MuiStepLabel-iconContainer": {
+  //                     paddingRight: "1rem",
+  //                     "& .MuiStepIcon-root": {
+  //                       color: isStepActive(step?.status)
+  //                         ? "#430280"
+  //                         : "#9CA3AF",
+  //                     },
+  //                   },
+  //                 }}
+  //               >
+  //                 <div className="flex w-full flex-col items-start justify-between gap-2 sm:flex-row sm:gap-0">
+  //                   <div className="min-w-0 flex-1">
+  //                     <p className="text-lg font-semibold">{step?.label}</p>
+  //                     <div className="flex flex-col gap-1">
+  //                       <div className="flex flex-col gap-2">
+  //                         <p className="whitespace-nowrap font-medium text-gray-600">
+  //                           {formatSafeDateTime(step?.date)}
+  //                         </p>
+  //                         {formatAmount(step?.amount, step?.type)}
+  //                       </div>
+  //                       <div className="flex flex-col gap-1">
+  //                         {step.balance !== null && (
+  //                           <p className="whitespace-nowrap font-medium text-gray-600">
+  //                             Current Balance:{" "}
+  //                             <span className="font-semibold text-text2">
+  //                               NGN {step?.balance?.toLocaleString()}
+  //                             </span>
+  //                           </p>
+  //                         )}
+  //                       </div>
+  //                     </div>
+  //                   </div>
+  //                   <div className="self-start sm:ml-2 sm:self-center">
+  //                     <div
+  //                       className={`w-[8em] whitespace-nowrap rounded-full px-5 py-2 text-center text-sm shadow-lg ${getStatusStyle(
+  //                         step?.status,
+  //                       )}`}
+  //                     >
+  //                       {step?.status}
+  //                     </div>
+  //                   </div>
+  //                 </div>
+  //               </StepLabel>
+  //             </Step>
+  //           ))}
+  //         </Stepper>
+  //       </Box>
+  //     </section>
+  //   );
+  // };
   const ContributionTracker = () => {
     const { contributionDetails } = useSelector(
       (state: any) => state?.transaction,
@@ -274,7 +476,7 @@ const ViewContribution = () => {
       const formattedAmount = amount?.toLocaleString() || "0";
       const isDebit = type?.toLowerCase() === "debit";
       return (
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
           <span className="text-sm font-medium text-gray-600">
             {isDebit ? "Debit Amount:" : "Credit Amount:"}
           </span>
@@ -300,21 +502,25 @@ const ViewContribution = () => {
     }
 
     return (
-      <section className="mt-[1em] font-sans">
-        <div className="mb-4 flex flex-col gap-3 whitespace-nowrap">
+      <section className="mt-4 font-sans sm:mt-6">
+        <div className="mb-4 space-y-2">
           <p className="text-lg font-bold">Transaction History</p>
-          <p>Effortlessly manage and monitor your financial commitment</p>
+          <p className="text-sm sm:text-base">
+            Effortlessly manage and monitor your financial commitment
+          </p>
           {isWithdrawalDatePassed && (
-            <div className="rounded-lg bg-blue-100 p-3 text-blue-700">
+            <div className="rounded-lg bg-blue-100 p-3 text-sm text-blue-700 sm:text-base">
               Withdrawal date has been reached. You can now withdraw your funds.
             </div>
           )}
         </div>
-        <div className="mb-2 flex justify-between gap-3 whitespace-nowrap">
-          <p className="text-lg font-medium">Monthly Contribution</p>
-          <p className="font-medium">Status</p>
+        <div className="mb-4 flex items-center justify-between">
+          <p className="text-base font-medium sm:text-lg">
+            Monthly Contribution
+          </p>
+          <p className="text-base font-medium sm:text-lg">Status</p>
         </div>
-        <Box sx={{ maxWidth: "100%", marginTop: "1.5em" }}>
+        <Box sx={{ maxWidth: "100%" }}>
           <Stepper orientation="vertical">
             {steps.map((step, index) => (
               <Step key={index} active={isStepActive(step?.status)}>
@@ -330,36 +536,32 @@ const ViewContribution = () => {
                     },
                   }}
                 >
-                  <div className="flex w-full flex-col items-start justify-between gap-2 sm:flex-row sm:gap-0">
-                    <div className="min-w-0 flex-1">
-                      <p className="text-lg font-semibold">{step?.label}</p>
-                      <div className="flex flex-col gap-1">
-                        <div className="flex flex-col gap-2">
-                          <p className="whitespace-nowrap font-medium text-gray-600">
-                            {formatSafeDateTime(step?.date)}
-                          </p>
-                          {formatAmount(step?.amount, step?.type)}
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          {step.balance !== null && (
-                            <p className="whitespace-nowrap font-medium text-gray-600">
-                              Current Balance:{" "}
-                              <span className="font-semibold text-text2">
-                                NGN {step?.balance?.toLocaleString()}
-                              </span>
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="self-start sm:ml-2 sm:self-center">
+                  <div className="flex w-full flex-col space-y-3 sm:space-y-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                      <p className="text-base font-semibold sm:text-lg">
+                        {step?.label}
+                      </p>
                       <div
-                        className={`w-[8em] whitespace-nowrap rounded-full px-5 py-2 text-center text-sm shadow-lg ${getStatusStyle(
+                        className={`mt-2 w-full max-w-[200px] rounded-full px-4 py-1.5 text-center text-sm sm:mt-0 sm:w-auto ${getStatusStyle(
                           step?.status,
                         )}`}
                       >
                         {step?.status}
                       </div>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-gray-600 sm:text-base">
+                        {formatSafeDateTime(step?.date)}
+                      </p>
+                      {formatAmount(step?.amount, step?.type)}
+                      {step.balance !== null && (
+                        <p className="text-sm font-medium text-gray-600 sm:text-base">
+                          Current Balance:{" "}
+                          <span className="font-semibold text-text2">
+                            NGN {step?.balance?.toLocaleString()}
+                          </span>
+                        </p>
+                      )}
                     </div>
                   </div>
                 </StepLabel>
@@ -370,7 +572,6 @@ const ViewContribution = () => {
       </section>
     );
   };
-
   if (isLoading) {
     return (
       <main className="pb-[1.5em] font-sans">
@@ -395,8 +596,8 @@ const ViewContribution = () => {
           {contributionDetails?.contributionPlan} Contribution Plan
         </DashboardHeader>
       </header>
-      <header className="mx-auto flex w-full max-w-md items-center justify-between gap-8 p-4">
-        <div className="left-0 ml-4">
+      <header className="mx-auto flex w-full max-w-md items-center justify-between p-4">
+        <div className="flex-shrink-0">
           <IoIosArrowBack
             onClick={handleBackClick}
             className="cursor-pointer"
@@ -404,12 +605,14 @@ const ViewContribution = () => {
           />
         </div>
         <div className="flex-1 text-center">
-          <h1 className="text-xl font-bold">
+          <h1 className="truncate text-xl font-bold">
             {contributionDetails?.savingsCategory}
           </h1>
         </div>
+        <div className="w-8 flex-shrink-0"></div>{" "}
       </header>
-      <section className="sm:px-[1.5em] lg:mx-auto lg:w-[33em] lg:px-[0]">
+
+      <section className="sm:px-[1em] lg:mx-auto lg:w-[33em] lg:px-[0]">
         <article className="text-center text-text4">
           <div className="rounded-3xl py-[2em] shadow-md">
             <div className="flex justify-center gap-4 font-sans">
@@ -439,13 +642,13 @@ const ViewContribution = () => {
             </div>
           </div>
           <section>
-            <div className="mt-[1.5em] flex justify-between rounded-2xl bg-text2 py-[1em]">
-              <div className="m-auto flex w-[35%] flex-col items-center rounded-full border-2 border-gray-500 bg-white py-2 ">
+            <div className="mt-[1.5em] flex flex-col gap-[1em]  rounded-2xl bg-text2 py-[1em] lg:justify-between">
+              <div className="flex flex-col items-center rounded-full border-2 border-gray-500 bg-white py-2 lg:w-[35%] ">
                 <p className="font-semibold text-gray-600 ">Unpaid Balance</p>
                 <p className="font-medium text-gray-400">{realBalance}</p>
               </div>
 
-              <div className="m-auto flex w-[35%] flex-col items-center rounded-full border-2 border-gray-500 bg-white py-2">
+              <div className="flex flex-col items-center rounded-full border-2 border-gray-500 bg-white py-2 lg:w-[35%]">
                 <p className="font-semibold">
                   {formatContributionDate(contributionDetails?.withdrawalDate)}
                 </p>

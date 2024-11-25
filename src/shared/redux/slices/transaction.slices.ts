@@ -694,7 +694,6 @@ export const transactionSlice = createSlice({
       .addCase(
         GetAllUserFundedProject.fulfilled,
         (state, action: PayloadAction<{ transaction: any }>) => {
-          console.log("sct", action.payload);
           state.loading = false;
           state.allFundedProjects = action.payload.transaction;
           state.error = null;

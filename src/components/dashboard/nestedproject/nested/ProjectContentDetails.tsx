@@ -1,13 +1,19 @@
 import React from "react";
-import { Primary } from "../../../common/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { formatBalance } from "../../../../shared/utils/format";
 import DOMPurify from "dompurify";
+import { Primary } from "../../../common/Button";
 import { IoIosArrowDropleft } from "react-icons/io";
 
 interface ProjectContentDetailsProps {
   project: any;
 }
+
+const LoadingIndicator = () => (
+  <div className="flex h-40 items-center justify-center">
+    <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-gray-900"></div>
+  </div>
+);
 
 const ProjectContentDetails: React.FC<ProjectContentDetailsProps> = ({
   project,
@@ -67,9 +73,3 @@ const ProjectContentDetails: React.FC<ProjectContentDetailsProps> = ({
 };
 
 export default ProjectContentDetails;
-
-const LoadingIndicator = () => (
-  <div className="flex h-40 items-center justify-center">
-    <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-gray-900"></div>
-  </div>
-);

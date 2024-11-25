@@ -4,7 +4,6 @@ import { ComingSoon } from "../../../common/Button";
 
 const PortfolioContent = () => {
   const { useUserProjects, loading } = useAllUserFundedProjects();
-  console.log("user", useUserProjects);
   const { totalFundedProjects, totalFundedAmount, fundedProjects } =
     useUserProjects || {};
 
@@ -85,7 +84,7 @@ const PortfolioContent = () => {
               </article>
             ))
           ) : (
-            <p>No projects funded yet.</p>
+            <p className="font-semibold">No projects funded yet.</p>
           )}
         </div>
       </div>

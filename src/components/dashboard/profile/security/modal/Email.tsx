@@ -44,7 +44,7 @@ const EmailStep = ({ onClose, onEmailSent }: any) => {
           >
             Email Address
           </label>
-          <div className="relative flex items-center text-center">
+          <div className="relative flex items-center">
             <input
               id="email"
               name="email"
@@ -52,8 +52,7 @@ const EmailStep = ({ onClose, onEmailSent }: any) => {
               value={email}
               readOnly
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-[10px] w-auto rounded-full border-[1px] bg-gray-200 px-[1.5em] py-2 shadow-lg focus:outline-none focus:ring-text2"
-              style={{ width: `${email.length + 4}ch` }}
+              className="mt-[10px] w-full min-w-[300px] max-w-[400px] rounded-full border-[1px] bg-gray-200 px-[1.5em] py-2 shadow-lg focus:outline-none focus:ring-text2"
             />
           </div>
         </div>

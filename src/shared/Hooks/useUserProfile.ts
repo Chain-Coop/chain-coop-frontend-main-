@@ -3,15 +3,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetUserProfile, uploadAvatar } from "../redux/slices/landing.slices";
 import { AppDispatch } from "../redux/store";
 import { setMessage } from "../redux/slices/message.slices";
-import { GetAllBanks, GetAllProject, GetAllUserFundedProject, GetProposal, GetUsersContributionHistory } from "../redux/slices/transaction.slices";
+import {
+  GetAllBanks,
+  GetAllProject,
+  GetAllUserFundedProject,
+  GetProposal,
+  GetUsersContributionHistory,
+} from "../redux/slices/transaction.slices";
 
 enum UploadFields {
-  ProfilePicture = "profilePicture", 
+  ProfilePicture = "profilePicture",
 }
 
 export const useUserProfile = () => {
   const dispatch: AppDispatch = useDispatch();
-  const profileDetails = useSelector((state: any) => state?.landing?.getProfile);
+  const profileDetails = useSelector(
+    (state: any) => state?.landing?.getProfile,
+  );
   const userToken = sessionStorage.getItem("userData");
   const [loading, setLoading] = useState(false);
 
@@ -20,8 +28,7 @@ export const useUserProfile = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    fetchUserProfile().catch((error) => {
-    });
+    fetchUserProfile().catch((error) => {});
   }, [fetchUserProfile]);
 
   const uploadUserAvatar = async (selectedFile: File) => {
@@ -29,7 +36,7 @@ export const useUserProfile = () => {
       setLoading(true);
       try {
         const formData = new FormData();
-        formData.append(UploadFields.ProfilePicture, selectedFile); 
+        formData.append(UploadFields.ProfilePicture, selectedFile);
         await dispatch(uploadAvatar(formData)).unwrap();
         await fetchUserProfile();
       } catch (error: any) {
@@ -51,7 +58,6 @@ export const useUserProfile = () => {
     fetchUserProfile,
   };
 };
-
 
 export const useProposalLength = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -82,17 +88,15 @@ export const useProposalLength = () => {
 
 export const useAllProjects = () => {
   const dispatch: AppDispatch = useDispatch();
-  
+
   const useProjects = useSelector(
-    (state: any) => state?.transaction?.allProjects
-  );
-  
-  const loading = useSelector(
-    (state: any) => state?.transaction?.loading
+    (state: any) => state?.transaction?.allProjects,
   );
 
+  const loading = useSelector((state: any) => state?.transaction?.loading);
+
   const userToken = sessionStorage.getItem("userData");
-  
+
   useEffect(() => {
     if (userToken) {
       dispatch(GetAllProject())
@@ -109,14 +113,11 @@ export const useAllProjects = () => {
   return { useProjects, loading };
 };
 
-
 export const useAllBanks = () => {
   const dispatch: AppDispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
-  const useBanks = useSelector(
-    (state: any) => state?.transaction?.allBanks,
-  );
+  const useBanks = useSelector((state: any) => state?.transaction?.allBanks);
   const userToken = sessionStorage.getItem("userData");
   useEffect(() => {
     if (userToken) {
@@ -146,19 +147,22 @@ export const usePinSetup = (isPinCreated: boolean) => {
 
   useEffect(() => {
     if (!isPinCreated) {
-      const pinSkippedAt = localStorage.getItem('pinSkippedAt');
-      
+      const pinSkippedAt = localStorage.getItem("pinSkippedAt");
+
       if (!pinSkippedAt) {
         setShowPinSetup(true);
       } else {
         const skippedTime = new Date(pinSkippedAt)?.getTime();
         const currentTime = new Date()?.getTime();
         const timeDifference = currentTime - skippedTime;
-        
-        if (timeDifference >=  60 * 1000) { 
+
+        if (timeDifference >= 60 * 1000) {
           setShowReminder(true);
         } else {
-          const timeoutId = setTimeout(() => setShowReminder(true), 2 * 60 * 1000 - timeDifference);
+          const timeoutId = setTimeout(
+            () => setShowReminder(true),
+            2 * 60 * 1000 - timeDifference,
+          );
           return () => clearTimeout(timeoutId);
         }
       }
@@ -171,48 +175,43 @@ export const usePinSetup = (isPinCreated: boolean) => {
     showReminder,
     setShowReminder,
     showSuccessModal,
-    setShowSuccessModal
+    setShowSuccessModal,
   };
 };
-
 export const useAllUserFundedProjects = () => {
   const dispatch: AppDispatch = useDispatch();
-  
-  const { allFundedProjects, loading } = useSelector((state: any) => state.transaction);
-console.log("alll",allFundedProjects)
+
+  const { allFundedProjects, loading } = useSelector(
+    (state: any) => state.transaction,
+  );
   const userToken = sessionStorage.getItem("userData");
 
   useEffect(() => {
-    if (!allFundedProjects && userToken && !loading) {
+    if (!allFundedProjects && userToken) {
       dispatch(GetAllUserFundedProject())
         .unwrap()
         .catch((error: any) => {
           dispatch(setMessage(error.message));
         });
     }
-  }, [dispatch, userToken, allFundedProjects, loading]);
+  }, [dispatch, userToken, allFundedProjects]);
 
-  return { 
-    useUserProjects: allFundedProjects, 
-    loading
+  return {
+    useUserProjects: allFundedProjects,
+    loading,
   };
 };
 
-
 export const useUserContributionHistory = (page: number, limit: number) => {
   const dispatch: AppDispatch = useDispatch();
-  
+
   const getContributions = useSelector(
-    (state: any) => state?.transaction?.getUsersContribution
+    (state: any) => state?.transaction?.getUsersContribution,
   );
-  
-  const loading = useSelector(
-    (state: any) => state?.transaction?.loading
-  );
-  
-  const error = useSelector(
-    (state: any) => state?.transaction?.error
-  );
+
+  const loading = useSelector((state: any) => state?.transaction?.loading);
+
+  const error = useSelector((state: any) => state?.transaction?.error);
 
   useEffect(() => {
     const userToken = sessionStorage.getItem("userData");
@@ -220,16 +219,16 @@ export const useUserContributionHistory = (page: number, limit: number) => {
       dispatch(GetUsersContributionHistory({ page, limit }))
         .unwrap()
         .catch((err: any) => {
-          dispatch(setMessage(err.message || 'Failed to fetch contributions'));
+          dispatch(setMessage(err.message || "Failed to fetch contributions"));
         });
     } else {
-      dispatch(setMessage('User token not found'));
+      dispatch(setMessage("User token not found"));
     }
   }, [dispatch, page, limit]);
 
   return {
     getContributions,
     isLoading: loading,
-    error
+    error,
   };
 };

@@ -140,7 +140,10 @@ const WithdrawContribution = () => {
       className="relative cursor-pointer items-center lg:mt-[2em]"
       onClick={handleBackClick}
     >
-      <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
+      <IoIosArrowBack
+        size={25}
+        className="absolute left-0 hidden cursor-pointer lg:block"
+      />
       <div className="flex flex-grow items-center justify-center">
         <div className="tracking-wide">Withdraw fund to Chain Co-op wallet</div>
       </div>
@@ -248,9 +251,9 @@ const WithdrawContribution = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        className="px-18 rounded-2xl bg-white py-6"
+        className="lg:px-18 rounded-2xl bg-white px-4 py-4 lg:py-6"
       >
-        <div className="max-w-lg">
+        <div className="lg:max-w-lg">
           <header className="mb-3 text-center">
             <h2 className="text-xl font-bold">Withdrawal Notice</h2>
           </header>
@@ -271,13 +274,13 @@ const WithdrawContribution = () => {
               and service fee of N2,000.00 will be charged.
             </p>
           </div>
-          <div className="m-auto w-[60%]">
+          <div className="m-auto lg:w-[60%]">
             <header className="text-center">
-              <h2 className="text-xl font-semibold text-text2">
+              <h2 className="font-semibold text-text2 sm:text-lg lg:text-xl">
                 Would you like to continue?
               </h2>
             </header>
-            <div className="mt-3 flex justify-between">
+            <div className="mt-3 flex justify-center gap-[3em] lg:justify-between">
               <button
                 onClick={() => setIsModalOpen(false)}
                 className="rounded-md border-2 border-black px-3 py-1"
