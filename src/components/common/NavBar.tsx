@@ -53,42 +53,42 @@ const NavBar = () => {
           toggle={toggleModal}
           fullscreen
         >
-        <ModalBody className="flex h-screen w-screen flex-col items-center justify-center bg-white p-7 text-center">
-          <div className="absolute right-8 top-12">
-            <AiOutlineClose
-              onClick={toggleModal}
-              className="text-text cursor-pointer"
-              size={40}
-            />
-          </div>
-          {navBarLinks.map((item, index) => {
-            const isActive = location.pathname === item.to; 
-            return (
-              <Link
-                key={index}
-                className={`mb-4 cursor-pointer font-sans text-xl ${
-                  isActive ? "font-bold text-text2" : "font-medium text-text4"
-                }`}
-                to={item.to}
+          <ModalBody className="flex h-screen w-screen flex-col items-center justify-center bg-white p-7 text-center">
+            <div className="absolute right-8 top-12">
+              <AiOutlineClose
                 onClick={toggleModal}
-              >
-                {item.text}
-              </Link>
-            );
-          })}
-             {/* <div className="block font-bold lg:hidden">
-            //   <LoginButton className="bg-primary  cursor-not-allowed">
-            //     Login
-            //   </LoginButton>
-            // </div> */}
-        </ModalBody>
-
+                className="text-text cursor-pointer"
+                size={40}
+              />
+            </div>
+            {navBarLinks.map((item, index) => {
+              const isActive = location.pathname === item.to;
+              return (
+                <Link
+                  key={index}
+                  className={`mb-4 cursor-pointer font-sans text-xl ${
+                    isActive ? "font-bold text-text2" : "font-medium text-text4"
+                  }`}
+                  to={item.to}
+                  onClick={toggleModal}
+                >
+                  {item.text}
+                </Link>
+              );
+            })}
+            <div className="block font-bold lg:hidden">
+              <LoginButton className="cursor-not-allowed  bg-primary">
+                Login
+              </LoginButton>
+            </div>
+          </ModalBody>
         </Modal>
-           <div className="hidden lg:block">
+
+        <div className="hidden lg:block">
           <LoginButton className="bg-primary" onClick={handleLoginClick}>
             Login
           </LoginButton>
-        </div>  
+        </div>
       </div>
     </nav>
   );
