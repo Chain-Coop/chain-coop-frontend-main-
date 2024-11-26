@@ -246,7 +246,9 @@ export const GetAccountName = createAsyncThunk(
       const data = await TransactionServices.GetAccountName(body);
       return { transaction: data };
     } catch (error: any) {
-      return handleAsyncError(error, thunkAPI);
+      return thunkAPI.rejectWithValue(
+        error?.error || "An unexpected error occurred",
+      );
     }
   },
 );
@@ -628,7 +630,8 @@ export const transactionSlice = createSlice({
         },
       )
       .addCase(GetAccountName.rejected, (state, action) => {
-        state.getUserAccountName = null;
+        state.loading = false;
+        state.error = action.payload as string;
       })
 
       .addCase(CreateTransactionPin.pending, (state) => {
@@ -641,7 +644,6 @@ export const transactionSlice = createSlice({
         state.createPin = action.payload;
       })
       .addCase(CreateTransactionPin.rejected, (state, action) => {
-        console.log("acc", action.payload);
         state.loading = false;
         state.error = action.payload as string;
         state.createPin = null;

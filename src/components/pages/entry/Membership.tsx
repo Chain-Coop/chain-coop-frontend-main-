@@ -14,13 +14,13 @@ const Membership = () => {
   return (
     <>
       <NavBar />
-      <div className="sm:mt-[1em] lg:w-[86%] w-full px-1 lg:mt-[6em] flex-col flex mx-auto">
-      <Join />
-      <Card />
-      <Revolution />
-      <How />
-      {/* <AppStore /> */}
-     </div>
+      <div className="mx-auto flex w-full flex-col px-1 lg:w-[86%]">
+        <Join />
+        <Card />
+        <Revolution />
+        <How />
+        {/* <AppStore /> */}
+      </div>
       <Footer />
     </>
   );

@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { GetAccountName } from "../../../../shared/redux/slices/transaction.slices";
 import { AppDispatch } from "../../../../shared/redux/store";
 import ReactLoading from "react-loading";
-import { Alert } from '@mui/material';
+import { Alert } from "@mui/material";
 
 interface Bank {
   id: string;
@@ -21,7 +21,7 @@ const SelectAccount = () => {
   const location = useLocation();
   const dispatch: AppDispatch = useDispatch();
   const { useBanks } = useAllBanks();
-  
+
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedBank, setSelectedBank] = useState<Bank | null>(null);
@@ -29,8 +29,8 @@ const SelectAccount = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const filteredBanks: Bank[] = useBanks?.banks?.filter((bank: Bank) => 
-    bank?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+  const filteredBanks: Bank[] = useBanks?.banks?.filter((bank: Bank) =>
+    bank?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase()),
   );
 
   const handleBackClick = () => {
@@ -42,44 +42,58 @@ const SelectAccount = () => {
     setIsOpen(false);
   };
 
-  const verifyAccount = async() => {
+  const verifyAccount = async () => {
     if (selectedBank) {
       setLoading(true);
       setError("");
       try {
-        const response = await dispatch(GetAccountName({ 
-          accountNumber, 
-          bankCode: selectedBank.code 
-        })).unwrap();
-        
+        const response = await dispatch(
+          GetAccountName({
+            accountNumber,
+            bankCode: selectedBank.code,
+          }),
+        ).unwrap();
+
         if (response.transaction.result.status) {
-          navigate("/dashboard/wallet/verify-account", { 
-            state: { 
+          navigate("/dashboard/wallet/verify-account", {
+            state: {
               accountName: response.transaction.result.data.account_name,
               accountNumber: response.transaction.result.data.account_number,
               bankName: selectedBank.name,
               bankCode: selectedBank.code,
-              amount: amount
-            }
+              amount: amount,
+            },
           });
         } else {
-          setError("Unable to verify account. Please check the details and try again.");
+          setError(
+            "Unable to verify account. Please check the details and try again.",
+          );
         }
-      } catch (error:any) {
-        setError(error || "An error occurred while verifying the account. Please try again.");
+      } catch (error: any) {
+        console.log("e", error);
+        setError(
+          error ||
+            "An error occurred while verifying the account. Please try again.",
+        );
       } finally {
         setLoading(false);
       }
     } else {
       setError("Please select a bank");
-    } 
+    }
   };
 
   return (
     <main className="font-sans">
       <header className="lg:mt-8">
-        <DashboardHeader className="relative cursor-pointer items-center" onClick={handleBackClick}>
-          <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
+        <DashboardHeader
+          className="relative cursor-pointer items-center"
+          onClick={handleBackClick}
+        >
+          <IoIosArrowBack
+            size={25}
+            className="absolute left-0 cursor-pointer"
+          />
           <div className="flex flex-grow items-center justify-center">
             <div className="tracking-wide">Select Bank</div>
           </div>
@@ -87,48 +101,51 @@ const SelectAccount = () => {
       </header>
 
       <section className="mt-8 px-4">
-
-        <div className="mt-6 relative w-full">
-          <label className="block text-sm font-semibold text-gray-700 mb-1">
+        <div className="relative mt-6 w-full">
+          <label className="mb-1 block text-sm font-semibold text-gray-700">
             Select a bank
           </label>
-          <div 
-            className="border border-gray-300 bg-white flex items-center justify-between p-3 rounded-lg cursor-pointer"
+          <div
+            className="flex cursor-pointer items-center justify-between rounded-lg border border-gray-300 bg-white p-3"
             onClick={() => setIsOpen(!isOpen)}
           >
-            <span className={`${selectedBank ? 'text-gray-900' : 'text-gray-500'}`}>
+            <span
+              className={`${selectedBank ? "text-gray-900" : "text-gray-500"}`}
+            >
               {selectedBank ? selectedBank.name : "Choose a bank"}
             </span>
             <IoIosArrowDown className="text-gray-400" />
           </div>
 
           {isOpen && (
-            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-hidden">
-              <div className="p-2 border-b sticky top-0 bg-white">
-                <div className="flex items-center bg-gray-100 rounded-md p-2">
-                  <IoIosSearch className="text-gray-500 mr-2" />
+            <div className="absolute z-10 mt-1 max-h-60 w-full overflow-hidden rounded-lg border border-gray-300 bg-white shadow-lg">
+              <div className="sticky top-0 border-b bg-white p-2">
+                <div className="flex items-center rounded-md bg-gray-100 p-2">
+                  <IoIosSearch className="mr-2 text-gray-500" />
                   <input
                     type="text"
                     placeholder="Search banks..."
-                    className="bg-transparent outline-none flex-1 w-full"
+                    className="w-full flex-1 bg-transparent outline-none"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
                 </div>
               </div>
-              <div className="overflow-y-auto max-h-55">
+              <div className="max-h-55 overflow-y-auto">
                 {filteredBanks?.length > 0 ? (
                   filteredBanks?.map((bank: Bank) => (
                     <div
                       key={bank.id}
-                      className="p-3 hover:bg-gray-100 cursor-pointer transition-colors"
+                      className="cursor-pointer p-3 transition-colors hover:bg-gray-100"
                       onClick={() => handleBankSelect(bank)}
                     >
                       {bank.name}
                     </div>
                   ))
                 ) : (
-                  <div className="p-3 text-center text-gray-500">No results found</div>
+                  <div className="p-3 text-center text-gray-500">
+                    No results found
+                  </div>
                 )}
               </div>
             </div>
@@ -136,20 +153,17 @@ const SelectAccount = () => {
         </div>
 
         {error && (
-          <Alert severity="error" className="mt-4">{error}</Alert>
+          <Alert severity="error" className="mt-4">
+            {error}
+          </Alert>
         )}
 
         <Primary
-          className="mt-8 w-full bg-text2 py-3 text-white flex justify-center items-center"
+          className="mt-8 flex w-full items-center justify-center bg-text2 py-3 text-white"
           onClick={verifyAccount}
         >
           {loading ? (
-            <ReactLoading
-              color="#FFFFFF"
-              width={25}
-              height={25}
-              type="spin"
-            />
+            <ReactLoading color="#FFFFFF" width={25} height={25} type="spin" />
           ) : (
             "Verify Account"
           )}
