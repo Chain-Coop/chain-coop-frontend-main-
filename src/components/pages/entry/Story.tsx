@@ -48,7 +48,7 @@ const Story = () => {
               </div>
               <div className="mx-auto mt-2 text-center tracking-wide lg:mt-[3em] lg:w-1/2 lg:text-start">
                 <p className="text-base md:text-lg">
-                  Chain is nigeria first digital membership cooperative,
+                  Chain is Nigeria first digital membership cooperative,
                   leveraging blockchain to offer safe, guanteed returns through
                   ethical investment. As a worker-owned co-op, we are reshaping
                   the future of work and investment

@@ -244,7 +244,7 @@ const Landing = () => {
             <h1 className="text-center text-[1.5em] font-bold sm:mt-1 sm:text-lg md:text-lg lg:text-[1.6em]">
               With a One-Time N100k Membership Fee
             </h1>
-            <div className="m-auto mt-1 text-center sm:px-2 md:text-center lg:w-[50%]">
+            <div className="m-auto mt-1 px-2 text-center md:text-center lg:w-[50%]">
               <p>
                 Secure your spot as an early member of Chain Co-op with a one
                 time N100k membership fee. Gain early access to investment
