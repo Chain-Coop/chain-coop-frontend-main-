@@ -643,12 +643,12 @@ const ViewContribution = () => {
           </div>
           <section>
             <div className="mt-6 flex flex-col gap-4 rounded-2xl bg-text2 p-4 lg:flex-row lg:items-center lg:justify-between">
-              <div className="flex w-full flex-col items-center rounded-full border-2 border-gray-500 bg-white p-4 lg:w-[35%]">
+              <div className="flex w-full flex-col items-center rounded-full border-2 border-gray-500 bg-white px-[1.5em] py-3 lg:w-[35%]">
                 <p className="font-semibold text-gray-600">Unpaid Balance</p>
                 <p className="font-medium text-gray-400">{realBalance}</p>
               </div>
 
-              <div className="flex w-full flex-col items-center rounded-full border-2 border-gray-500 bg-white p-4 lg:w-[35%]">
+              <div className="flex w-full flex-col items-center rounded-full border-2 border-gray-500 bg-white px-[1.5em] py-3 lg:w-[35%]">
                 <p className="font-semibold">
                   {formatContributionDate(contributionDetails?.withdrawalDate)}
                 </p>
