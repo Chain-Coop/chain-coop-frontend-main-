@@ -156,7 +156,8 @@ const ViewContribution = () => {
   };
 
   const formatContributionDate = (dateString?: string) => {
-    if (!dateString) return "Date not available";
+    if (!dateString)
+      return <p className="whitespace-nowrap text-sm">Date not available</p>;
     try {
       return format(parseISO(dateString), "dd/MM/yyyy");
     } catch {
@@ -443,7 +444,7 @@ const ViewContribution = () => {
                   <p className="font-medium text-gray-400">{realBalance}</p>
                 </div>
 
-                <div className="flex w-full flex-col items-center rounded-full border-2 border-gray-500 bg-white px-[1.5em] py-3 lg:w-[35%]">
+                <div className="flex w-full flex-col items-center rounded-full border-2 border-gray-500 bg-white px-[1.5em] py-3  lg:w-[35%]">
                   <p className="font-semibold">
                     {formatContributionDate(
                       contributionDetails?.withdrawalDate,
