@@ -46,28 +46,12 @@ const FundWallet: React.FC = () => {
         </div>
       </DashboardHeader>
       <section className="m-auto mt-[1.5em] h-full w-full px-[1em]">
-        {/* <div
-          className="flex cursor-pointer items-center justify-between"
-          onClick={() => openModal(ModalTypes.Transfer)}
-        >
-          <div className="flex items-center gap-4">
-            <img src={fund} alt="Withdraw" />
-            <div>
-              <h2 className="font-medium">Bank Transfer</h2>
-              <p className="text-sm font-medium text-howtext">
-                Transfer to your wallet account number
-              </p>
-            </div>
-          </div>
-          <IoIosArrowForward size={25} className="hidden lg:block" />
-        </div> */}
-        {/* <hr className="mt-3 h-[1px] rounded-md" /> */}
         <article
           className="mt-[1em] flex cursor-pointer items-center justify-between"
           onClick={() => openModal(ModalTypes.Paystack)}
         >
           <div className="flex items-center gap-4">
-            <img src={debit} alt="Withdraw" />
+            <img src={debit} alt="Withdraw" className="h-12 w-12" />
             <div>
               <h2 className="font-medium">Debit / Credit Card</h2>
               <p className="text-sm font-medium text-howtext">
@@ -78,14 +62,6 @@ const FundWallet: React.FC = () => {
           <IoIosArrowForward size={25} className="hidden lg:block" />
         </article>
       </section>
-
-      <Modal
-        isOpen={modalType === ModalTypes.Transfer}
-        onClose={closeModal}
-        className="bg-white"
-      >
-        <TransferModal onContinue={handleTransferContinue} />
-      </Modal>
 
       <Modal
         isOpen={modalType === ModalTypes.Final}

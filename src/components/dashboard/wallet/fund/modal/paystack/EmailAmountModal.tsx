@@ -55,7 +55,7 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({ closeModal }) => {
   };
 
   return (
-    <main className="w-[25em] font-sans">
+    <main className="mx-auto w-[25em] max-w-full font-sans sm:w-[90%]">
       <div className="py-[3em]">
         <h2 className="mb-4 flex justify-center text-xl font-semibold">
           Pay with Paystack
