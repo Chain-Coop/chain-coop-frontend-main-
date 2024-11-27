@@ -32,11 +32,11 @@ const DashboardNav = () => {
 
   const getButtonProps = () => {
     if (profileDetails?.membershipStatus === "pending") {
-      return { text: "Pending", bgColor: "bg-yellow-500" }; 
-    } else if (profileDetails?.membershipStatus === "activated") {
-      return { text: "Activated", bgColor: "bg-green-500" }; 
+      return { text: "Pending", bgColor: "bg-yellow-500" };
+    } else if (profileDetails?.membershipStatus === "active") {
+      return { text: "Activated", bgColor: "bg-green-500" };
     }
-    return { text: "Unknown", bgColor: "bg-gray-400" }; 
+    return { text: "Unknown", bgColor: "bg-gray-400" };
   };
 
   const { text, bgColor } = getButtonProps();
@@ -95,12 +95,18 @@ const DashboardNav = () => {
           </List>
           <div>
             <div className="mt-[1em] px-4">
-              <button className={`rounded-full ${bgColor} px-[2em] py-1 font-sans text-text3 shadow-md`}>
+              <button
+                className={`rounded-full ${bgColor} px-[2em] py-1 font-sans text-text3 shadow-md`}
+              >
                 {text}
               </button>
             </div>
             <div className="mt-[2em] px-1">
-              <img src={getMembershipImage()} className="" alt="membership-card" />
+              <img
+                src={getMembershipImage()}
+                className=""
+                alt="membership-card"
+              />
             </div>
             <div className="mt-4 flex px-3">
               <p className="font-sans text-sm text-howtext">
