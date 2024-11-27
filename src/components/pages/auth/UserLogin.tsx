@@ -132,17 +132,7 @@ const UserLogin = () => {
             </div>
           </div>
 
-          <div className="flex justify-between">
-            <div className="flex gap-3">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={toggleRememberMe}
-                className="relative checked:border-text2 checked:bg-text2"
-              />
-
-              <span className="text-text2">Remember Me</span>
-            </div>
+          <div className="flex justify-end">
             <Link to="/forget-password" className="pointer font-normal italic">
               Forgot Password ?
             </Link>

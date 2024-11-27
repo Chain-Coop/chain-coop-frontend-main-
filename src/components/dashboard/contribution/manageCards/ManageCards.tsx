@@ -8,14 +8,11 @@ import {
   Button,
 } from "@mui/material";
 import { IoIosArrowBack } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import trash from "../../../../Assets/svg/dashboard/contribution/trash.svg";
 import setDefault from "../../../../Assets/svg/dashboard/contribution/default.svg";
 import { toast } from "react-toastify";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "../../../../shared/redux/reduxHooks";
+import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
 import { AppDispatch } from "../../../../shared/redux/store";
 import {
   deleteCard,
@@ -23,6 +20,8 @@ import {
 } from "../../../../shared/redux/slices/transaction.slices";
 import { DashboardHeader } from "../../../common/DashboardHeader";
 import useWalletBalance from "../../../../shared/Hooks/useBalance";
+import noCard from "../../../../Assets/png/dashboard/noCard.png";
+import arrow from "../../../../Assets/svg/dashboard/wallet/transfer-arrow.svg";
 
 interface Card {
   number: string;
@@ -111,40 +110,61 @@ const ManageCards = () => {
         </header>
 
         <div className="mt-4 flex flex-col gap-6">
-          {cards?.map((card: any, idx: any) => (
-            <div
-              key={card.authCode}
-              className="flex items-center justify-between gap-4"
-            >
+          {cards && cards.length > 0 ? (
+            cards.map((card: Card, idx: number) => (
               <div
-                className={`flex-1 cursor-pointer rounded-lg p-6 transition-all
-                ${cardColors[idx % cardColors.length].bg}
-                ${cardColors[idx % cardColors.length].text}`}
+                key={card.authCode}
+                className="flex items-center gap-4 sm:gap-6"
               >
-                <p>*** *** *** {card.number}</p>
-                <p>MasterCard/Mar 2026</p>
-              </div>
-
-              <div className="flex gap-2">
-                <button
-                  onClick={() => openDeleteConfirmation(card.authCode)}
-                  className="flex items-center gap-2 rounded-md border border-[#F24822] bg-[#FDEEEC] px-3 py-1 text-sm text-[#F24822]"
+                <div
+                  className={`w-[50%] cursor-pointer rounded-lg p-6 transition-all
+              ${cardColors[idx % cardColors.length].bg}
+              ${cardColors[idx % cardColors.length].text}`}
                 >
-                  <img src={trash} alt="trash_img" className="w-5" />
-                  <span>Delete Card</span>
-                </button>
+                  <p className="text-sm sm:text-base">
+                    *** *** *** {card.number}
+                  </p>
+                  <p className="whitespace-nowrap text-xs sm:text-sm">
+                    MasterCard/Mar 2026
+                  </p>
+                </div>
 
-                <button className="flex items-center gap-2 rounded-md border border-gray-300 px-3 py-1 text-sm text-gray-700">
-                  <img src={setDefault} alt="default" className="w-5" />
-                  <span>Set as Default</span>
-                </button>
+                <div className="flex gap-2 sm:gap-4">
+                  <button
+                    onClick={() => openDeleteConfirmation(card.authCode)}
+                    className="flex items-center gap-2 rounded-md border border-[#F24822] bg-[#FDEEEC] px-3 py-1 text-xs text-[#F24822] sm:text-sm"
+                  >
+                    <img src={trash} alt="trash_img" className="w-4 sm:w-5" />
+                    <span>Delete Card</span>
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="flex flex-col items-center">
+              <img
+                src={noCard}
+                alt="no-card"
+                className="h-64 w-64 object-cover"
+              />
+              <div className="mt-4 flex flex-col items-center gap-4">
+                <p className="font-medium text-gray-600">
+                  There are no active cards saved yet.
+                </p>
+                <Link to="/dashboard/contribution/purpose">
+                  <div className="flex gap-2">
+                    <p className="text-lg font-semibold text-text2">
+                      Start Contribution
+                    </p>
+                    <img src={arrow} alt="arrow" className="w-4 sm:w-5" />
+                  </div>
+                </Link>
               </div>
             </div>
-          ))}
+          )}
         </div>
       </section>
 
-      {/* MUI Deletion Confirmation Modal */}
       <Dialog
         open={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}

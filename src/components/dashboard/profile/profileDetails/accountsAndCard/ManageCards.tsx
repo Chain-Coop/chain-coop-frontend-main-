@@ -114,31 +114,30 @@ const ManageCards = () => {
             cards.map((card: Card, idx: number) => (
               <div
                 key={card.authCode}
-                className="gap- flex items-center justify-between"
+                className="flex items-center gap-4 sm:gap-6"
               >
                 <div
                   className={`w-[50%] cursor-pointer rounded-lg p-6 transition-all
-                    ${cardColors[idx % cardColors.length].bg}
-                    ${cardColors[idx % cardColors.length].text}`}
+              ${cardColors[idx % cardColors.length].bg}
+              ${cardColors[idx % cardColors.length].text}`}
                 >
-                  <p>*** *** *** {card.number}</p>
-                  <p>MasterCard/Mar 2026</p>
+                  <p className="text-sm sm:text-base">
+                    *** *** *** {card.number}
+                  </p>
+                  <p className="whitespace-nowrap text-xs sm:text-sm">
+                    MasterCard/Mar 2026
+                  </p>
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex gap-2 sm:gap-4">
                   <button
                     onClick={() => openDeleteConfirmation(card.authCode)}
-                    className="flex items-center gap-2 rounded-md border border-[#F24822] bg-[#FDEEEC] px-3 py-1 text-sm text-[#F24822]"
+                    className="flex items-center gap-2 rounded-md border border-[#F24822] bg-[#FDEEEC] px-3 py-1 text-xs text-[#F24822] sm:text-sm"
                   >
-                    <img src={trash} alt="trash_img" className="w-5" />
+                    <img src={trash} alt="trash_img" className="w-4 sm:w-5" />
                     <span>Delete Card</span>
                   </button>
                 </div>
-
-                {/* <button className="flex items-center gap-2 rounded-md border border-gray-300 px-3 py-1 text-sm text-gray-700">
-                    <img src={setDefault} alt="default" className="w-5" />
-                    <span>Set as Default</span>
-                  </button> */}
               </div>
             ))
           ) : (
@@ -148,16 +147,16 @@ const ManageCards = () => {
                 alt="no-card"
                 className="h-64 w-64 object-cover"
               />
-              <div className="mt-4 flex flex-col items-center gap-[1em]">
+              <div className="mt-4 flex flex-col items-center gap-4">
                 <p className="font-medium text-gray-600">
-                  There is no active cards saved yet.
+                  There are no active cards saved yet.
                 </p>
                 <Link to="/dashboard/contribution/purpose">
                   <div className="flex gap-2">
                     <p className="text-lg font-semibold text-text2">
                       Start Contribution
                     </p>
-                    <img src={arrow} alt="arrow" />
+                    <img src={arrow} alt="arrow" className="w-4 sm:w-5" />
                   </div>
                 </Link>
               </div>
