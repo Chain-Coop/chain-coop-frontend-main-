@@ -36,57 +36,63 @@ const Sidebar = () => {
   const { text, bgColor } = getButtonProps();
 
   return (
-    <aside className="h-vh flex w-[23em] flex-col border-r border-bl bg-rec1 py-[2em] font-sans text-memt1 shadow-md">
-      <div onClick={home}>
-        <img
-          src={logo}
-          alt="ChainCoop-logo"
-          className="ml-[1em] cursor-pointer"
-        />
+    <aside className="flex h-screen flex-col border-r border-bl bg-rec1 font-sans text-memt1 shadow-md">
+      <div className="flex-shrink-0 px-[1em] py-[2em]" onClick={home}>
+        <img src={logo} alt="ChainCoop-logo" className="cursor-pointer" />
       </div>
-      <nav className="mb-[3em] ml-5 mt-[2em] flex flex-grow flex-col">
-        {sidebarLinks.map((link, index) => {
-          const isActive =
-            link.pathsToCheck?.some((path) =>
-              location.pathname.startsWith(path),
-            ) || location.pathname === link.to;
 
-          return (
-            <Link
-              key={index}
-              to={link.to}
-              className={`text flex items-center px-4 py-3 font-sans text-lg hover:bg-Dh ${
-                isActive
-                  ? "active !important border-l-2 border-text2 bg-Dh font-semibold"
-                  : ""
-              }`}
+      <div className="custom-scroll-bar flex-grow overflow-y-auto">
+        <nav className="mb-[3em] ml-5 flex flex-col">
+          {sidebarLinks.map((link, index) => {
+            const isActive =
+              link.pathsToCheck?.some((path) =>
+                location.pathname.startsWith(path),
+              ) || location.pathname === link.to;
+
+            return (
+              <Link
+                key={index}
+                to={link.to}
+                className={`text flex items-center px-4 py-3 font-sans text-lg hover:bg-Dh ${
+                  isActive
+                    ? "active !important border-l-2 border-text2 bg-Dh font-semibold"
+                    : ""
+                }`}
+              >
+                <img
+                  src={link.img}
+                  alt={`${link.text} icon`}
+                  className="mr-3 h-6 w-6"
+                />
+                {link.text}
+              </Link>
+            );
+          })}
+
+          <section className="mt-[1em] px-4">
+            <button
+              className={`rounded-full ${bgColor} px-[2em] py-1 text-text3 shadow-md`}
             >
-              <img
-                src={link.img}
-                alt={`${link.text} icon`}
-                className="mr-3 h-6 w-6"
-              />
-              {link.text}
-            </Link>
-          );
-        })}
-        <section className="mt-[1em] px-4">
-          <button
-            className={`rounded-full ${bgColor} px-[2em] py-1 text-text3 shadow-md`}
-          >
-            {text}
-          </button>
-        </section>
-        <section className="mt-[2em] w-[16em] px-1">
-          <img src={getMembershipImage()} className="" alt="membership-card" />
-        </section>
-        <section className="mt-4 flex w-[16em]">
-          <p className="text-sm text-howtext">
-            This card grants you access to the Chain Coop Chain Network
-            ecosystem. Once activated, it becomes non-transferable.
-          </p>
-        </section>
-      </nav>
+              {text}
+            </button>
+          </section>
+
+          <section className="mt-[2em] w-[16em] px-1">
+            <img
+              src={getMembershipImage()}
+              className=""
+              alt="membership-card"
+            />
+          </section>
+
+          <section className="mt-4 flex w-[16em] px-4 pb-6">
+            <p className="text-sm text-howtext">
+              This card grants you access to the Chain Coop Chain Network
+              ecosystem. Once activated, it becomes non-transferable.
+            </p>
+          </section>
+        </nav>
+      </div>
     </aside>
   );
 };

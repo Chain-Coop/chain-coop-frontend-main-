@@ -16,7 +16,7 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
   height: 1px;
 }
 
@@ -36,7 +36,7 @@ body {
 
 .custom-scrollbar {
   -ms-overflow-style: none;
-  scrollbar-width: thin;
+  scrollbar-width: 7px;
 }
 
 .custom-scrollbar::-webkit-scrollbar {

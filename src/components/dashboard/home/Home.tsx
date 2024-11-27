@@ -133,7 +133,7 @@ const Home = () => {
         </div>
       </section>
 
-      <div className="mt-8 flex w-full flex-col gap-[1.5em] px-4 sm:px-0">
+      <div className="mt-8 flex w-full flex-col gap-[1.5em] lg:px-4">
         <button
           onClick={addFund}
           className="mx-auto w-full rounded-3xl bg-inherit py-4 text-center text-lg font-semibold text-text4 shadow-md transition-colors hover:bg-gray-50"

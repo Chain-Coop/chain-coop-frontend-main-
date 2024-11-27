@@ -6,7 +6,7 @@ import { ComingSoon } from "../../common/Button";
 
 const Right = () => {
   return (
-    <aside className="h-vh flex w-full flex-col border-l border-bl bg-inherit px-[3em] py-[3em] font-sans text-memt1 shadow-md">
+    <aside className="h-vh flex w-[30em] flex-col border-l border-bl bg-inherit px-[3em] py-[3em] font-sans text-memt1 shadow-md">
       <section>
         <article className="rounded-xl bg-Dh p-[1em] shadow-md">
           <header className="text-xl font-semibold">
