@@ -11,6 +11,8 @@
 body {
   margin: 0;
   padding: 0;
+  right: 0;
+  left: 0;
 }
 
 ::-webkit-scrollbar {
@@ -25,7 +27,7 @@ body {
 }
 
 ::placeholder {
-  @apply text-gray-500 italic text-sm;
+  @apply text-sm italic text-gray-500;
 }
 
 ::-webkit-scrollbar-track {
@@ -34,7 +36,7 @@ body {
 
 .custom-scrollbar {
   -ms-overflow-style: none;
-  scrollbar-width: thin; 
+  scrollbar-width: thin;
 }
 
 .custom-scrollbar::-webkit-scrollbar {

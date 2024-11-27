@@ -23,9 +23,8 @@ const Right = () => {
           </div>
         </article>
 
-
         <hr className="mt-[1.5em] h-1" />
-     
+
         <section className="mt-[2em] flex flex-col text-text4">
           <header>
             <h2 className="text-xl font-bold">Ongoing Project of Chain Coop</h2>

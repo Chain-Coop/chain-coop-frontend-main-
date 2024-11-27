@@ -45,11 +45,11 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <main className="flex h-screen justify-between">
+    <main className="flex min-h-screen w-full flex-col lg:flex-row lg:justify-between">
       <aside className="custom-scrollbar hidden overflow-y-auto lg:block">
         <Sidebar />
       </aside>
-      <section className="custom-scrollbar overflow-y-auto sm:w-full lg:w-[55%]">
+      <section className="custom-scrollbar flex-1 overflow-y-auto sm:w-full lg:w-[55%]">
         <nav className="sm:block lg:hidden">
           <DashboardNav />
         </nav>

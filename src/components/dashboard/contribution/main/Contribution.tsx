@@ -93,7 +93,7 @@ const Contribution: React.FC = () => {
       className="min-h-screen w-full pb-6 font-sans"
     >
       <header>
-        <DashboardHeader className="flex items-center justify-center text-2xl md:text-3xl lg:text-xl">
+        <DashboardHeader className="flex w-full items-center justify-center text-2xl md:text-3xl lg:mt-[2em] lg:text-xl">
           Contribution Plan
         </DashboardHeader>
       </header>
