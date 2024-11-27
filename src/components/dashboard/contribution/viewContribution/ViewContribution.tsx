@@ -184,7 +184,6 @@ const ViewContribution = () => {
 
     const buildSteps = () => {
       const steps = [];
-
       const sortedHistory = [...(history || [])].sort(
         (a, b) => new Date(a?.Date).getTime() - new Date(b?.Date).getTime(),
       );
@@ -274,14 +273,12 @@ const ViewContribution = () => {
       const formattedAmount = amount?.toLocaleString() || "0";
       const isDebit = type?.toLowerCase() === "debit";
       return (
-        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
-          <span className="text-sm font-medium text-gray-600">
+        <div className="flex items-start gap-2">
+          <span className="whitespace-nowrap text-xs font-medium text-gray-600 sm:text-sm">
             {isDebit ? "Debit Amount:" : "Credit Amount:"}
           </span>
           <span
-            className={`text-sm font-semibold ${
-              isDebit ? "text-red-500" : "text-[#61E532]"
-            }`}
+            className={`text-sm font-semibold ${isDebit ? "text-red-500" : "text-[#61E532]"} whitespace-nowrap`}
           >
             {isDebit ? "- " : "+ "}NGN {formattedAmount}
           </span>
@@ -301,22 +298,20 @@ const ViewContribution = () => {
 
     return (
       <section className="mt-4 font-sans sm:mt-6">
-        <div className="mb-4 space-y-2">
+        <div className="mb-4 space-y-1 sm:space-y-2">
           <p className="text-lg font-bold">Transaction History</p>
-          <p className="text-sm sm:text-base">
+          <p className="text-xs sm:text-base">
             Effortlessly manage and monitor your financial commitment
           </p>
           {isWithdrawalDatePassed && (
-            <div className="rounded-lg bg-blue-100 p-3 text-sm text-blue-700 sm:text-base">
+            <div className="rounded-lg bg-blue-100 p-2 text-xs text-blue-700 sm:p-3 sm:text-base">
               Withdrawal date has been reached. You can now withdraw your funds.
             </div>
           )}
         </div>
-        <div className="mb-4 flex items-center justify-between">
-          <p className="text-base font-medium sm:text-lg">
-            Monthly Contribution
-          </p>
-          <p className="text-base font-medium sm:text-lg">Status</p>
+        <div className="mb-3 flex items-center justify-between sm:mb-4">
+          <p className="text-sm font-medium sm:text-lg">Monthly Contribution</p>
+          <p className="text-sm font-medium sm:text-lg">Status</p>
         </div>
         <Box sx={{ maxWidth: "100%" }}>
           <Stepper orientation="vertical">
@@ -334,26 +329,26 @@ const ViewContribution = () => {
                     },
                   }}
                 >
-                  <div className="flex w-full flex-col space-y-3 sm:space-y-2">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                      <p className="text-base font-semibold sm:text-lg">
+                  <div className="flex w-full flex-col space-y-2 sm:space-y-3">
+                    <div className="flex items-start justify-between sm:items-center">
+                      <p className="text-sm font-semibold sm:text-lg">
                         {step?.label}
                       </p>
                       <div
-                        className={`mt-2 w-full max-w-[200px] rounded-full px-4 py-1.5 text-center text-sm sm:mt-0 sm:w-auto ${getStatusStyle(
+                        className={`inline-flex min-w-[90px] items-center justify-center rounded-full px-3 py-1 text-xs sm:min-w-[120px] sm:px-4 sm:py-1.5 sm:text-sm ${getStatusStyle(
                           step?.status,
                         )}`}
                       >
                         {step?.status}
                       </div>
                     </div>
-                    <div className="space-y-2">
-                      <p className="text-sm font-medium text-gray-600 sm:text-base">
+                    <div className="space-y-1 sm:space-y-2">
+                      <p className="text-xs font-medium text-gray-600 sm:text-base">
                         {formatSafeDateTime(step?.date)}
                       </p>
                       {formatAmount(step?.amount, step?.type)}
                       {step.balance !== null && (
-                        <p className="text-sm font-medium text-gray-600 sm:text-base">
+                        <p className="text-xs font-medium text-gray-600 sm:text-base">
                           Current Balance:{" "}
                           <span className="font-semibold text-text2">
                             NGN {step?.balance?.toLocaleString()}
@@ -370,6 +365,7 @@ const ViewContribution = () => {
       </section>
     );
   };
+
   if (isLoading) {
     return (
       <main className="pb-[1.5em] font-sans">
@@ -464,7 +460,7 @@ const ViewContribution = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setIsModalOpen(true)}
-                  className="whitespace-nowrap rounded-full border-2 border-gray-200 bg-inherit text-lg font-semibold shadow-lg sm:px-[1em] sm:py-[5px] lg:px-[3em] lg:py-[13px]"
+                  className="whitespace-nowrap rounded-full border-2 border-gray-200 bg-inherit px-[1.5em] text-lg font-semibold shadow-lg sm:py-[5px] lg:px-[3em] lg:py-[13px]"
                 >
                   Add Money
                 </motion.button>
@@ -476,7 +472,7 @@ const ViewContribution = () => {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="whitespace-nowrap rounded-full border-2 border-gray-200 bg-inherit text-lg font-semibold shadow-lg sm:px-[1em] sm:py-[5px] lg:px-[3em] lg:py-[13px]"
+                    className="whitespace-nowrap rounded-full border-2 border-gray-200 bg-inherit px-[1.5em] text-lg font-semibold shadow-lg sm:py-[5px] lg:px-[3em] lg:py-[13px]"
                   >
                     Withdraw
                   </motion.button>
