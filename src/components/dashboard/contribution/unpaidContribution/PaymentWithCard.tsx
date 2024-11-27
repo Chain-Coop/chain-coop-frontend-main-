@@ -165,7 +165,7 @@ const PaymentWithCard = ({ contributionData }: any) => {
 
         <section
           className="rounded-2xl bg-white 
-        sm:rounded-3xl sm:p-2 lg:p-4"
+        p-4 sm:rounded-3xl lg:p-4"
         >
           <div className="flex flex-col gap-4">
             <header className="flex flex-col gap-1 text-center sm:gap-1">
@@ -176,11 +176,11 @@ const PaymentWithCard = ({ contributionData }: any) => {
             </header>
 
             <div className="relative w-full overflow-hidden">
-              <h2 className="mb-1 text-base font-bold sm:mb-2 sm:text-lg">
+              <h2 className="mb-1 px-3 text-base font-bold sm:mb-2 sm:text-lg">
                 Select Card
               </h2>
               <hr />
-              <div className="relative mt-2">
+              <div className="relative mt-2 px-3">
                 {currentPage > 0 && (
                   <button
                     onClick={handlePrev}
