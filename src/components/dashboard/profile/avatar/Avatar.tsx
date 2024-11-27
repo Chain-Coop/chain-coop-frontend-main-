@@ -31,7 +31,7 @@ const Avatar = () => {
 
   return (
     <main className="font-sans">
-      <div className="flex flex-row items-center justify-between gap-4 sm:gap-0 lg:flex-col">
+      <div className="flex flex-row items-center justify-between gap-4 lg:flex-row">
         <div className="flex items-center gap-4 sm:gap-6">
           <div>
             <label htmlFor="file-input">
@@ -68,7 +68,10 @@ const Avatar = () => {
             </span>
           </div>
         </div>
-        <IoIosArrowForward size={25} className="mt-4 text-text2 sm:mt-0" />
+        <IoIosArrowForward
+          size={25}
+          className="mt-4 hidden text-text2 sm:mt-0 lg:block"
+        />
       </div>
     </main>
   );
