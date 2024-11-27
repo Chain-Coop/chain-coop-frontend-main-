@@ -74,7 +74,7 @@ const Withdraw = () => {
             <img
               src={withdraw}
               alt="Withdraw"
-              className="h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10"
+              className="lg:h-13 lg:w-13 h-12 w-12"
             />
             <p className="text-lg font-medium">Withdraw to Bank Account</p>
           </div>
@@ -85,30 +85,36 @@ const Withdraw = () => {
           />
         </div>
       </section>
-
-      <Modal isOpen={isModalOpen} onClose={toggleModal} className="bg-white">
-        <div className="mt-[2.5em] w-[25em]">
+      <Modal
+        isOpen={isModalOpen}
+        onClose={toggleModal}
+        className="mx-4 bg-white"
+      >
+        <div className="mt-[2.5em] w-full max-w-[38em] px-4">
           <header>
-            <h1 className="text-center text-xl font-semibold">
+            <h1 className="text-center text-lg font-semibold sm:text-xl">
               Bank Account Withdrawal
             </h1>
           </header>
           <section className="mt-[2em]">
-            <hr className="h-[1px] rounded-md " />
-            <div className="mt-3 flex justify-between">
+            <hr className="h-[1px] rounded-md" />
+            <div className="mt-3 flex flex-col justify-between gap-2 text-sm sm:flex-row sm:text-base">
               <p className="text-howtext">Duration</p>
               <p className="font-medium">2-3 business days</p>
             </div>
             <hr className="mt-3 h-[1px] rounded-md" />
-            <div className="mt-5 flex justify-between">
+            <div className="mt-5 flex flex-col justify-between gap-2 text-sm sm:flex-row sm:text-base">
               <p className="text-howtext">Withdrawal limit</p>
-              <p className="font-medium">
+              <p className="whitespace-nowrap font-medium">
                 {WITHDRAWAL_LIMIT.toLocaleString()} NGN / transaction
               </p>
             </div>
             <hr className="mt-3 h-[1px] rounded-md" />
             <div className="mt-[1em] w-full">
-              <label htmlFor="amount" className="flex-start flex font-semibold">
+              <label
+                htmlFor="amount"
+                className="flex-start flex text-sm font-semibold sm:text-base"
+              >
                 Enter Amount
               </label>
               <div className="relative mt-[1em] flex w-full items-center">
@@ -121,7 +127,7 @@ const Withdraw = () => {
                   type="number"
                   value={amount}
                   onChange={handleAmountChange}
-                  className="border-border bg-input focus:border-border flex-1 rounded-lg border-[1px] bg-inherit p-3 pl-12 focus:bg-inherit focus:outline-none"
+                  className="border-border bg-input focus:border-border w-full rounded-lg border-[1px] bg-inherit p-2 pl-12 text-sm focus:bg-inherit focus:outline-none sm:p-3 sm:text-base"
                   style={{ textAlign: "right" }}
                 />
               </div>
@@ -131,7 +137,7 @@ const Withdraw = () => {
             </div>
           </section>
           <Primary
-            className="mt-[2em] w-full bg-text2 py-2 text-white"
+            className="mt-[2em] w-full bg-text2 py-2 text-sm text-white sm:text-base"
             onClick={handleContinue}
           >
             Continue

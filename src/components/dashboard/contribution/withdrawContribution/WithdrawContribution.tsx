@@ -239,8 +239,8 @@ const WithdrawContribution = () => {
 
         <Primary
           onClick={confirmAmount}
-          className={`mt-[2em] w-full py-3 text-white ${
-            displayAmount ? "bg-text2" : "cursor-not-allowed bg-gray-400"
+          className={`mt-[2em] w-full bg-text2 py-3 text-white ${
+            displayAmount ? "bg-text2" : "cursor-not-allowed"
           }`}
           disabled={!displayAmount}
         >

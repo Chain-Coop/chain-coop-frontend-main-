@@ -42,7 +42,7 @@ const History = () => {
   return (
     <main className="font-sans">
       <div className="mt-[3em] flex flex-col gap-[1.5em]">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between px-2">
           <h1 className="text-xl font-semibold text-memt1">
             Recent Transactions
           </h1>

@@ -21,15 +21,15 @@ const Wallet = () => {
 
   return (
     <main className="font-sans">
-      <div className="items-center sm:mt-[0] lg:mt-[2em]">
+      <div className="mt-0 lg:mt-8">
         <header>
           <DashboardHeader className="flex items-center justify-center">
             Chain Coop Wallet
           </DashboardHeader>
         </header>
-        <div className="mx-auto sm:px-[1.5em] lg:w-[35em]">
-          <section className="text-center text-text4">
-            <div className="mx-auto mt-[2em] rounded-3xl py-[2em] shadow-md">
+        <div className="mx-auto lg:w-[35em]">
+          <section className="px-6 text-center text-text4">
+            <div className="mx-auto mt-8 rounded-3xl py-8 shadow-md">
               <div className="flex justify-center gap-4 font-sans">
                 <p className="font-medium">Wallet Balance</p>
                 <div>
@@ -45,26 +45,21 @@ const Wallet = () => {
                   />
                 </div>
               </div>
-              <div className="mx-auto mt-[1.5em] w-[15em] rounded-md">
+              <div className="mx-auto mt-6 w-60 rounded-md">
                 {isWalletVisible ? (
-                  <p className="font-bold sm:text-xl lg:text-xl">
+                  <p className="text-xl font-bold lg:text-xl">
                     {formattedBalance}
                   </p>
                 ) : (
                   <p className="text-2xl font-bold">*********</p>
                 )}
-                <hr className="mt-[1em] h-[1px] rounded-md bg-howtext font-normal" />
+                <hr className="mt-4 h-px rounded-md bg-howtext" />
               </div>
-              {/* <div className="mt-[1em] flex justify-center gap-2">
-                <span>Total Gains</span>
-                <MdArrowOutward className="fill-act" />
-                <span className="font-semibold text-act">0%</span>
-              </div> */}
             </div>
           </section>
 
-          <section className="mt-[1.5em] rounded-3xl shadow-md">
-            <div className="flex items-center justify-between py-[2em] font-semibold text-howtext sm:px-[1em] lg:px-[2.5em]">
+          <section className="mx-auto mt-6 rounded-3xl px-4 shadow-md lg:w-[32em]">
+            <div className="flex items-center justify-between px-4 py-8 font-semibold text-howtext lg:px-10">
               <Link to="/dashboard/wallet/withdraw">
                 <button onClick={withdraw}>
                   <div className="flex justify-center">
@@ -75,7 +70,7 @@ const Wallet = () => {
                     whileTap={{ scale: 0.98 }}
                     className="flex flex-col items-center bg-inherit text-center"
                   >
-                    <span className="block text-memt1 lg:text-lg ">
+                    <span className="block text-memt1 lg:text-lg">
                       Withdraw
                     </span>
                   </motion.button>
@@ -92,13 +87,14 @@ const Wallet = () => {
               <Link to="/dashboard/wallet/transfer">
                 <button className="flex flex-col items-center bg-inherit text-center">
                   <img src={transfer_icon} alt="withdraw" />
-                  <span className="block text-memt1 lg:text-lg ">Transfer</span>
+                  <span className="block text-memt1 lg:text-lg">Transfer</span>
                 </button>
               </Link>
             </div>
           </section>
-
-          <History />
+          <section className="lg:px-6">
+            <History />
+          </section>
         </div>
       </div>
     </main>

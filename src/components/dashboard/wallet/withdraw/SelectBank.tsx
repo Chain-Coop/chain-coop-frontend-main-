@@ -120,7 +120,7 @@ const SelectBank = () => {
         <div className="flex flex-col gap-8 px-4">
           <div className="mt-8 flex w-full gap-4 rounded-lg bg-Dh px-6 py-4 font-medium">
             <img src={xlamation} alt="" />
-            <p>
+            <p className="sm:text-sm">
               Withdrawals can only be made to bank accounts that match the name
               of your Chain Coop account
             </p>
@@ -160,7 +160,7 @@ const SelectBank = () => {
           )}
 
           <button
-            className="mt-8 flex w-full justify-center gap-4 rounded-lg bg-Dh px-6 py-4 font-semibold text-text2"
+            className="mb-[2em] mt-8 flex w-full justify-center gap-4 rounded-lg bg-Dh px-6 py-4 font-semibold text-text2"
             onClick={BankAccount}
           >
             <p>

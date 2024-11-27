@@ -461,7 +461,7 @@ const ViewContribution = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setIsModalOpen(true)}
-                  className="whitespace-nowrap rounded-full border-2 border-gray-200 bg-inherit px-[1.5em] text-lg font-semibold shadow-lg sm:py-[5px] lg:px-[3em] lg:py-[13px]"
+                  className="whitespace-nowrap rounded-full border-2 border-gray-200 bg-inherit px-[1.5em] py-[5px] text-lg font-semibold shadow-lg lg:px-[3em] lg:py-[13px]"
                 >
                   Add Money
                 </motion.button>
@@ -473,7 +473,7 @@ const ViewContribution = () => {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="whitespace-nowrap rounded-full border-2 border-gray-200 bg-inherit px-[1.5em] text-lg font-semibold shadow-lg sm:py-[5px] lg:px-[3em] lg:py-[13px]"
+                    className="whitespace-nowrap rounded-full border-2 border-gray-200 bg-inherit px-[1.5em] py-[5px] text-lg font-semibold shadow-lg lg:px-[3em] lg:py-[13px]"
                   >
                     Withdraw
                   </motion.button>
