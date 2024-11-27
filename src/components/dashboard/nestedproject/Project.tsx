@@ -15,7 +15,7 @@ const Project = () => {
             Project
           </DashboardHeader>
         </header>
-        <div className="mx-auto lg:w-[34em] lg:px-0">
+        <div>
           <nav>
             <div className="mt-8 flex justify-between border-b-[1px] border-howtext px-3 text-base font-semibold">
               <div
@@ -32,7 +32,7 @@ const Project = () => {
               </div>
             </div>
           </nav>
-          <section className="mt-8 px-3">
+          <section className="mt-8 px-[1em] lg:px-[2em]">
             {activeLink === "project" && <ProjectContent />}
             {activeLink === "portfolio" && <PortfolioContent />}
           </section>
