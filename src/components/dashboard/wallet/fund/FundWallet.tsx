@@ -40,7 +40,10 @@ const FundWallet: React.FC = () => {
         className="relative cursor-pointer items-center lg:mt-[2em]"
         onClick={handleBackClick}
       >
-        <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
+        <IoIosArrowBack
+          size={25}
+          className="absolute left-2 top-1/2 -translate-y-1/2 transform cursor-pointer lg:left-0"
+        />
         <div className="flex flex-grow items-center justify-center">
           <div className="tracking-wide">Fund Wallet</div>
         </div>
@@ -59,7 +62,7 @@ const FundWallet: React.FC = () => {
               </p>
             </div>
           </div>
-          <IoIosArrowForward size={25} className="hidden lg:block" />
+          <IoIosArrowForward size={25} />
         </article>
       </section>
 

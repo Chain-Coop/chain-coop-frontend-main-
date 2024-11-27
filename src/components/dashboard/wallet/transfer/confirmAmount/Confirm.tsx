@@ -16,9 +16,10 @@ const Confirm = () => {
   const dispatch: AppDispatch = useAppDispatch();
   const [amount, setAmount] = useState<string>("");
 
-  const { contributionPlan } = location.state as {
-    contributionPlan: string;
-  } || {};
+  const { contributionPlan } =
+    (location.state as {
+      contributionPlan: string;
+    }) || {};
 
   useEffect(() => {
     if (!contributionPlan) {
@@ -35,7 +36,7 @@ const Confirm = () => {
   };
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9]/g, '');
+    const value = e.target.value.replace(/[^0-9]/g, "");
     setAmount(value);
   };
 
@@ -54,10 +55,10 @@ const Confirm = () => {
     };
 
     try {
-     const response = await dispatch(CreateContributionPlan(body)).unwrap();
-     if(response.transaction.statusCode === 201){
-      toast.success(response.transaction.message)
-     }
+      const response = await dispatch(CreateContributionPlan(body)).unwrap();
+      if (response.transaction.statusCode === 201) {
+        toast.success(response.transaction.message);
+      }
       navigate("/dashboard/contribution");
     } catch (error: any) {
       const errorMessage = error || "An error occurred";
@@ -68,13 +69,13 @@ const Confirm = () => {
   };
 
   if (!contributionPlan) {
-    return null; 
+    return null;
   }
 
   return (
     <main className="font-sans">
       <DashboardHeader
-        className="relative lg:mt-4 cursor-pointer items-center px-4 md:px-6"
+        className="relative cursor-pointer items-center px-4 md:px-6 lg:mt-4"
         onClick={handleBackClick}
       >
         <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
@@ -84,36 +85,40 @@ const Confirm = () => {
         </div>
       </DashboardHeader>
 
-      <section className="px-4 lg:py-6 md:px-6 md:py-8">
+      <section className="px-4 md:px-6 md:py-8 lg:py-6">
         <header className="mt-4 flex justify-center">
           <h1 className="text-lg font-bold">
-            NGN {amount ? parseFloat(amount).toLocaleString() : '0'}.00
+            NGN {amount ? parseFloat(amount).toLocaleString() : "0"}.00
           </h1>
         </header>
         <div className="mt-6 flex flex-col gap-4">
-          <div className="flex flex-col md:flex-row justify-between md:items-center">
-            <h1 className="font-medium text-base">Amount to Contribute
-                 ({capitalizeContributionPlan(contributionPlan)})</h1>
-            <span className="text-base text-normal">
-              <input 
-                type="text" 
+          <div className="flex flex-col justify-between md:flex-row md:items-center">
+            <h1 className="text-base font-medium">
+              Amount to Contribute (
+              {capitalizeContributionPlan(contributionPlan)})
+            </h1>
+            <span className="text-normal text-base">
+              <input
+                type="text"
                 value={amount}
                 onChange={handleAmountChange}
-                className="border border-gray-300 focus:border-text2 focus:outline-none focus:ring-text2 rounded-md px-3 py-2 w-full md:w-auto"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-text2 focus:outline-none focus:ring-text2 md:w-auto"
                 placeholder="Enter amount"
               />
             </span>
           </div>
-          <hr className="w-full my-2" />
-          <div className="flex flex-col md:flex-row justify-between md:items-center">
-            <p className="text-base text-normal">Contribution Plan</p>
-            <span className="text-base font-medium">{capitalizeContributionPlan(contributionPlan)}</span>
+          <hr className="my-2 w-full" />
+          <div className="flex flex-col justify-between md:flex-row md:items-center">
+            <p className="text-normal text-base">Contribution Plan</p>
+            <span className="text-base font-medium">
+              {capitalizeContributionPlan(contributionPlan)}
+            </span>
           </div>
-          <hr className="w-full my-2" />
+          <hr className="my-2 w-full" />
         </div>
         <div className="mt-8 flex justify-center">
           <Primary
-            className="w-full cursor-pointer px-2 max-w-md bg-text2 py-3 text-white text-base md:text-lg"
+            className="w-full max-w-md cursor-pointer bg-text2 px-2 py-3 text-base text-white md:text-lg"
             onClick={handleConfirmClick}
             disabled={loading || !amount}
           >
@@ -125,15 +130,14 @@ const Confirm = () => {
                 type="spin"
               />
             ) : (
-              <p className="font-semibold">
-               Create Contribution
-              </p>
+              <p className="font-semibold">Create Contribution</p>
             )}
           </Primary>
         </div>
         <p className="mt-6 text-center text-sm">
-          <span className="font-semibold mr-1">Note: </span>
-          Email will be sent 4 days as a reminder for your next {contributionPlan.toLowerCase()} payment
+          <span className="mr-1 font-semibold">Note: </span>
+          Email will be sent 4 days as a reminder for your next{" "}
+          {contributionPlan.toLowerCase()} payment
         </p>
       </section>
     </main>

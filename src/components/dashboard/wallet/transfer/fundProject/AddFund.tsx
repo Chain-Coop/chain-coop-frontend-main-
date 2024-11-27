@@ -124,7 +124,7 @@ const AddFund = () => {
         </div>
         <div className="mt-4 flex flex-col gap-4">
           <hr className="w-full" />
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
             <p className="font-semibold">Amount to Invest</p>
             <span className="text-normal relative text-base">
               <input
@@ -139,6 +139,7 @@ const AddFund = () => {
               </span>
             </span>
           </div>
+
           <hr className="w-full" />
         </div>
         <div
@@ -161,20 +162,22 @@ const AddFund = () => {
           )}
 
           {dropdownVisible && (
-            <div className="absolute left-0 right-0 top-full z-10 mt-2 h-[200px] overflow-auto bg-white px-[em] shadow-md">
-              {useProjects && useProjects?.length > 0 ? (
-                useProjects?.map((project: any) => (
-                  <div
-                    key={project?._id}
-                    className="flex cursor-pointer justify-between p-2 font-semibold hover:bg-gray-200"
-                    onClick={() => handleProjectSelect(project)}
-                  >
-                    <p>{project?.title}</p>
-                    <p className="text-howtext">
-                      {formatBalance(project.projectPrice)}
-                    </p>
-                  </div>
-                ))
+            <div className="absolute left-0 right-0 top-full z-10 mt-2 h-[200px] overflow-auto bg-white shadow-md">
+              {useProjects && useProjects.length > 0 ? (
+                <ul className="list-disc px-4">
+                  {useProjects.map((project: any) => (
+                    <li
+                      key={project._id}
+                      className="flex cursor-pointer justify-between p-2 font-semibold hover:bg-gray-200"
+                      onClick={() => handleProjectSelect(project)}
+                    >
+                      <span>{project.title}</span>
+                      <span className="text-howtext">
+                        {formatBalance(project.projectPrice)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               ) : (
                 <p className="p-2 text-gray-400">No projects available</p>
               )}

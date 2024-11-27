@@ -114,24 +114,21 @@ const ConfirmTransaction = () => {
           </Primary>
         </div>
       </section>
-
       <Modal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         className="bg-white"
       >
-        <div className="mt-[2.5em] flex w-[25em] flex-col justify-center">
-          <img
-            src={success}
-            alt="Success Icon"
-            className="mx-auto sm:w-[6em] lg:w-[8em]"
-          />
+        <div className="mt-[2.5em] flex flex-col items-center justify-center py-3 sm:w-full lg:w-[25em]">
+          <div className="flex items-center justify-center">
+            <img src={success} alt="Success Icon" className="" />
+          </div>
           <header>
             <h1 className="text-center text-xl font-semibold">
               Successfully Submitted
             </h1>
           </header>
-          <div className="mt-4 flex justify-center">
+          <div className="mt-4 flex w-full justify-center">
             <Primary
               className="w-[50%] bg-text2 py-2 text-white"
               onClick={handleCloseModal}
