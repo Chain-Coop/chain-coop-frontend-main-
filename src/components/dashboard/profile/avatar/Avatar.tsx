@@ -5,14 +5,21 @@ import { IoIosArrowForward } from "react-icons/io";
 import ReactLoading from "react-loading";
 
 const Avatar = () => {
-  const { profileDetails, uploadUserAvatar, loading: initialLoading, fetchUserProfile } = useUserProfile();
+  const {
+    profileDetails,
+    uploadUserAvatar,
+    loading: initialLoading,
+    fetchUserProfile,
+  } = useUserProfile();
   const [avatarLoading, setAvatarLoading] = useState(initialLoading);
 
   useEffect(() => {
     setAvatarLoading(initialLoading);
   }, [initialLoading]);
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       setAvatarLoading(true);
@@ -24,7 +31,7 @@ const Avatar = () => {
 
   return (
     <main className="font-sans">
-      <div className="flex flex-col items-center justify-between gap-4 sm:flex-row sm:gap-0">
+      <div className="flex flex-row items-center justify-between gap-4 sm:gap-0 lg:flex-col">
         <div className="flex items-center gap-4 sm:gap-6">
           <div>
             <label htmlFor="file-input">
