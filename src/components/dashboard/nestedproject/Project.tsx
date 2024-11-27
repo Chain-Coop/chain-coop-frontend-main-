@@ -4,7 +4,6 @@ import { DashboardHeader } from "../../common/DashboardHeader";
 import PortfolioContent from "./nested/PortfolioContent";
 import ProjectContent from "./nested/ProjectContent";
 
-
 const Project = () => {
   const [activeLink, setActiveLink] = useState("project");
 
@@ -18,7 +17,7 @@ const Project = () => {
         </header>
         <div className="mx-auto lg:w-[34em] lg:px-0">
           <nav>
-            <div className="mt-8 flex justify-between border-b-[1px] border-howtext text-base font-semibold sm:px-3">
+            <div className="mt-8 flex justify-between border-b-[1px] border-howtext px-3 text-base font-semibold">
               <div
                 className={`cursor-pointer ${activeLink === "project" ? "mt-4 flex w-[5em] justify-center rounded-sm border-b-[3px] border-text2" : "mt-4"}`}
                 onClick={() => setActiveLink("project")}
@@ -33,7 +32,7 @@ const Project = () => {
               </div>
             </div>
           </nav>
-          <section className="mt-8">
+          <section className="mt-8 px-3">
             {activeLink === "project" && <ProjectContent />}
             {activeLink === "portfolio" && <PortfolioContent />}
           </section>
