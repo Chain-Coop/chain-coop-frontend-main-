@@ -13,7 +13,9 @@ const ProjectContentOverView = () => {
   const [activeLink, setActiveLink] = useState("project");
   const { projectId } = useParams<{ projectId: string }>();
   const dispatch = useAppDispatch<AppDispatch>();
-  const { currentProject, loading, error } = useSelector((state: any) => state?.transaction);
+  const { currentProject, loading, error } = useSelector(
+    (state: any) => state?.transaction,
+  );
 
   const navigate = useNavigate();
 
@@ -39,17 +41,19 @@ const ProjectContentOverView = () => {
     }
     return (
       <>
-        {activeLink === "project" && <ProjectContentDetails project={currentProject} />}
+        {activeLink === "project" && (
+          <ProjectContentDetails project={currentProject} />
+        )}
         {activeLink === "portfolio" && <PortfolioContent />}
       </>
     );
   };
 
   return (
-    <main className="font-sans mb-8">
+    <main className="mb-8 font-sans">
       <div className="sm:mt-[0] lg:mt-8">
         <DashboardHeader
-          className="relative cursor-pointer lg:mt-[2em] items-center"
+          className="relative cursor-pointer items-center lg:mt-[2em]"
           onClick={handleBackClick}
         >
           <IoIosArrowBack
@@ -60,9 +64,9 @@ const ProjectContentOverView = () => {
             <div className="tracking-wide">Project Overview</div>
           </div>
         </DashboardHeader>
-        <div className="mx-auto lg:w-[34em] lg:px-0">
+        <div>
           <nav>
-            <div className="flex justify-between border-b-[1px] border-howtext text-base font-semibold sm:px-3">
+            <div className="mt-8 flex justify-between border-b-[1px] border-howtext px-3 text-base font-semibold">
               <div
                 className={`cursor-pointer ${activeLink === "project" ? "mt-4 flex w-[5em] justify-center rounded-sm border-b-[3px] border-text2" : "mt-4"}`}
                 onClick={() => setActiveLink("project")}
@@ -77,9 +81,7 @@ const ProjectContentOverView = () => {
               </div>
             </div>
           </nav>
-          <section className="mt-8">
-            {renderContent()}
-          </section>
+          <section className="mt-8">{renderContent()}</section>
         </div>
       </div>
     </main>
@@ -88,19 +90,19 @@ const ProjectContentOverView = () => {
 
 const SkeletonLoader = () => (
   <div className="animate-pulse">
-    <div className="h-8 bg-gray-200 rounded w-3/4 mb-4"></div>
-    <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
-    <div className="h-4 bg-gray-200 rounded w-2/3 mb-2"></div>
-    <div className="h-4 bg-gray-200 rounded w-1/3 mb-2"></div>
+    <div className="mb-4 h-8 w-3/4 rounded bg-gray-200"></div>
+    <div className="mb-2 h-4 w-1/2 rounded bg-gray-200"></div>
+    <div className="mb-2 h-4 w-2/3 rounded bg-gray-200"></div>
+    <div className="mb-2 h-4 w-1/3 rounded bg-gray-200"></div>
   </div>
 );
 
 const ErrorMessage = ({ message }: { message: string }) => (
-  <div className="text-red-500 font-semibold">Error: {message}</div>
+  <div className="font-semibold text-red-500">Error: {message}</div>
 );
 
 const NoProjectFound = () => (
-  <div className="text-gray-500 font-semibold">No project found</div>
+  <div className="font-semibold text-gray-500">No project found</div>
 );
 
 export default ProjectContentOverView;

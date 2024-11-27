@@ -191,6 +191,7 @@ export const useAllUserFundedProjects = () => {
       dispatch(GetAllUserFundedProject())
         .unwrap()
         .catch((error: any) => {
+          console.log("error", error);
           dispatch(setMessage(error.message));
         });
     }

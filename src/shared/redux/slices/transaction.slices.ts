@@ -119,10 +119,11 @@ export const GetAllUserFundedProject = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const data = await TransactionServices.GetAllUserFundedProject();
-      console.log("dd", data);
       return { transaction: data };
     } catch (error: any) {
-      return handleAsyncError(error, thunkAPI);
+      const message = error.msg;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
     }
   },
 );
