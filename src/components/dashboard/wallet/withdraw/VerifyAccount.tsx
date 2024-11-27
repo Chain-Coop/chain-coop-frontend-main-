@@ -13,6 +13,7 @@ import { Alert } from "@mui/material";
 import { AppDispatch } from "../../../../shared/redux/store";
 import { useDispatch } from "react-redux";
 import ReactLoading from "react-loading";
+import OtpInput from "../../../../shared/utils/OtpInput";
 
 const VerifyAccount = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,11 +41,6 @@ const VerifyAccount = () => {
       window.removeEventListener("popstate", () => {});
     };
   }, [transactionComplete, navigate]);
-
-  const handlePinChange = (pinValue: string) => {
-    const numericValue = pinValue.replace(/[^0-9]/g, "");
-    setPin(numericValue);
-  };
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -145,62 +141,36 @@ const VerifyAccount = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={toggleModal}
-        className="fle-col flex justify-center bg-white py-[3em] text-center"
+        className="fle-col flex justify-center bg-white text-center"
       >
-        <header>
-          <h1 className="text-2xl font-semibold">My Chain Co-op Pin</h1>
-          <p className="mt-1 text-howtext">Enter your transaction pin.</p>
-        </header>
-        <div className="flex justify-center">
-          <OTPInput
-            value={pin}
-            onChange={handlePinChange}
-            numInputs={4}
-            renderSeparator={<span className="w-2"></span>}
-            renderInput={(props) => (
-              <input
-                {...props}
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                onKeyDown={(e) => {
-                  if (
-                    !(
-                      (e.key >= "0" && e.key <= "9") ||
-                      e.key === "Backspace" ||
-                      e.key === "ArrowLeft" ||
-                      e.key === "ArrowRight" ||
-                      e.key === "Tab"
-                    )
-                  ) {
-                    e.preventDefault();
-                  }
-                }}
-              />
-            )}
-            skipDefaultStyles={true}
-            containerStyle={"gap-3 my-5"}
-            inputStyle={
-              "block lg:h-[55px] lg:w-[55px] sm:h-[50px] sm:w-[35px] text-center border-gray-200 rounded-md text-sm placeholder:text-gray-300 focus:border-text2 focus:ring-text2 bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-            }
-          />
-        </div>
-        {error && (
-          <Alert severity="error" className="mb-4 mt-4">
-            {error}
-          </Alert>
-        )}
-        <Primary
-          onClick={handleSubmit}
-          disabled={loading}
-          className="mt-[2em] flex w-full justify-center rounded-full bg-text2 px-2 py-2 font-semibold text-white"
-        >
-          {loading ? (
-            <ReactLoading color="#FFFFFF" height={25} width={25} type="spin" />
-          ) : (
-            "Confirm Withdrawal"
+        <div className="py-[1em] lg:py-[2em]">
+          <header>
+            <h1 className="text-2xl font-semibold">My Chain Co-op Pin</h1>
+            <p className="mt-1 text-howtext">Enter your transaction pin.</p>
+          </header>
+          <OtpInput value={pin} className="mt-[1em]" onChange={setPin} />
+          {error && (
+            <Alert severity="error" className="mb-4 mt-4">
+              {error}
+            </Alert>
           )}
-        </Primary>
+          <Primary
+            onClick={handleSubmit}
+            disabled={loading}
+            className="mt-[2em] flex w-full justify-center rounded-full bg-text2 px-2 py-2 font-semibold text-white"
+          >
+            {loading ? (
+              <ReactLoading
+                color="#FFFFFF"
+                height={25}
+                width={25}
+                type="spin"
+              />
+            ) : (
+              "Confirm Withdrawal"
+            )}
+          </Primary>
+        </div>
       </Modal>
 
       <Modal

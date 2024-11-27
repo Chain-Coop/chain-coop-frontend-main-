@@ -26,20 +26,7 @@ const OtpInput = ({ otp, setOtp, onClose, onOtpEntered }: any) => {
       <p className="mb-4 text-gray-600">Enter Your OTP code</p>
 
       <div className="mb-6 flex justify-center">
-        <OTPInput
-          value={otp}
-          onChange={handlePinChange}
-          numInputs={6}
-          renderSeparator={<span className="mx-2">-</span>}
-          renderInput={(props) => (
-            <input
-              {...props}
-              className="!h-11 !w-11 rounded-md border-gray-200 bg-gray-100 text-center text-xl"
-              type="text"
-              inputMode="numeric"
-            />
-          )}
-        />
+        <OtpInput value={otp} className="mt-[1em]" onChange={setOtp} />
       </div>
 
       <div className="space-y-3">

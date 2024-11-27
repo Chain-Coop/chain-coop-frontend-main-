@@ -1,15 +1,10 @@
 import React, { useState } from "react";
 import OTPInput from "react-otp-input";
+import OtpInput from "../../../../../shared/utils/OtpInput";
 
 const OtpPin = ({ onNext, onClose }: any) => {
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
-
-  const handlePinChange = (value: string) => {
-    const numericValue = value.replace(/[^0-9]/g, "");
-    setOtp(numericValue);
-    setError("");
-  };
 
   const handleSubmit = () => {
     if (otp.length !== 6) {
@@ -20,7 +15,7 @@ const OtpPin = ({ onNext, onClose }: any) => {
   };
 
   return (
-    <main className="w-[25em] font-sans">
+    <main className="font-sans lg:w-[25em]">
       <section className="flex flex-col gap-[1em] py-[2em]">
         <div className="flex flex-col gap-[1em] text-center">
           <header>
@@ -32,19 +27,11 @@ const OtpPin = ({ onNext, onClose }: any) => {
 
           <div className="mt-[1em] flex flex-col  items-center justify-center">
             <div className="mb-6 flex justify-center">
-              <OTPInput
+              <OtpInput
+                length={6}
                 value={otp}
-                onChange={handlePinChange}
-                numInputs={6}
-                renderSeparator={<span className="mx-2">-</span>}
-                renderInput={(props) => (
-                  <input
-                    {...props}
-                    className="!h-11 !w-11 rounded-md border-gray-200 bg-gray-100 text-center text-xl"
-                    type="text"
-                    inputMode="numeric"
-                  />
-                )}
+                className="mt-[1em]"
+                onChange={setOtp}
               />
             </div>
 
