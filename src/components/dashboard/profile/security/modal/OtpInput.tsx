@@ -6,12 +6,6 @@ const OtpInput = ({ otp, setOtp, onClose, onOtpEntered }: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handlePinChange = (value: any) => {
-    const numericValue = value.replace(/[^0-9]/g, "");
-    setOtp(numericValue);
-    setError("");
-  };
-
   const handleContinue = () => {
     if (otp.length !== 6) {
       setError("Please enter a 6-digit OTP");
