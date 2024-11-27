@@ -51,7 +51,7 @@ const PaymentWithCard = ({ contributionData }: any) => {
   const [error, setError] = useState<string | null>(null);
   const [translateX, setTranslateX] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const cardsPerPage = 2;
+  const cardsPerPage = window.innerWidth >= 640 ? 2 : 1;
 
   useEffect(() => {
     dispatch(GetWalletBalance());
@@ -123,14 +123,14 @@ const PaymentWithCard = ({ contributionData }: any) => {
   const handleNext = () => {
     if (currentPage < totalPages - 1) {
       setCurrentPage(currentPage + 1);
-      setTranslateX((currentPage + 1) * -100);
+      setTranslateX(-100 * (currentPage + 1));
     }
   };
 
   const handlePrev = () => {
     if (currentPage > 0) {
       setCurrentPage(currentPage - 1);
-      setTranslateX((currentPage - 1) * -100);
+      setTranslateX(-100 * (currentPage - 1));
     }
   };
 
@@ -175,74 +175,79 @@ const PaymentWithCard = ({ contributionData }: any) => {
               </p>
             </header>
 
-            <div className="relative w-full overflow-hidden">
+            <div className="w-full">
               <h2 className="mb-1 px-3 text-base font-bold sm:mb-2 sm:text-lg">
                 Select Card
               </h2>
               <hr />
-              <div className="relative mt-2 px-3">
-                {currentPage > 0 && (
-                  <button
-                    onClick={handlePrev}
-                    className="absolute -left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-1 shadow-lg transition-all hover:bg-gray-50 sm:-left-4 sm:p-2"
-                  >
-                    <ChevronLeft className="h-4 w-4 sm:h-6 sm:w-6" />
-                  </button>
-                )}
 
-                <div className="overflow-hidden">
-                  <div
-                    className="flex transition-transform duration-300 ease-in-out"
-                    style={{ transform: `translateX(${translateX}%)` }}
-                  >
-                    {getCurrentPageCards().map((card, idx) => (
-                      <div
-                        key={card.authCode}
-                        className={`min-w-[100%] flex-shrink-0 p-1 sm:min-w-[50%] sm:p-2
-                        ${idx === getCurrentPageCards().length - 1 ? "pr-2 sm:pr-4" : ""}
-                      `}
-                      >
+              <div className="relative mt-2">
+                <div className="mx-auto overflow-hidden px-8">
+                  {currentPage > 0 && (
+                    <button
+                      onClick={handlePrev}
+                      className="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-2 shadow-lg transition-all hover:bg-gray-50"
+                    >
+                      <ChevronLeft className="h-4 w-4 sm:h-6 sm:w-6" />
+                    </button>
+                  )}
+
+                  <div className="relative overflow-hidden">
+                    <div
+                      className="flex transition-transform duration-300 ease-in-out"
+                      style={{ transform: `translateX(${translateX}%)` }}
+                    >
+                      {cards.map((card, idx) => (
                         <div
-                          className={`cursor-pointer rounded-lg p-3 transition-all sm:p-5
-                          ${cardColors[idx % cardColors.length].bg}
-                          ${cardColors[idx % cardColors.length].text}
-                          ${selectedCard?.authCode === card.authCode ? "ring-2 ring-white" : ""}
-                        `}
-                          onClick={() => handleCardSelect(card)}
+                          key={card.authCode}
+                          className="w-full px-2 sm:w-1/2"
+                          style={{
+                            width: window.innerWidth >= 640 ? "50%" : "100%",
+                            flexShrink: 0,
+                          }}
                         >
-                          <div className="flex items-start justify-between">
-                            <div className="flex flex-col gap-2 sm:gap-3">
-                              <p className="text-sm sm:text-base">
-                                *** *** *** {card.number}
-                              </p>
-                              <p className="text-sm sm:text-base">
-                                MasterCard/Mar 2026
-                              </p>
-                            </div>
-                            <div
-                              className={`flex h-3 w-3 items-center justify-center rounded-full border-2 border-white sm:h-4 sm:w-4
-                              ${selectedCard?.authCode === card.authCode ? "bg-white" : "bg-transparent"}
-                            `}
-                            >
-                              {selectedCard?.authCode === card.authCode && (
-                                <div className="h-1.5 w-1.5 rounded-full bg-current sm:h-2 sm:w-2" />
-                              )}
+                          <div
+                            className={`h-full cursor-pointer rounded-lg p-3 transition-all sm:p-5
+                            ${cardColors[idx % cardColors.length].bg}
+                            ${cardColors[idx % cardColors.length].text}
+                            ${selectedCard?.authCode === card.authCode ? "ring-2 ring-white" : ""}
+                          `}
+                            onClick={() => handleCardSelect(card)}
+                          >
+                            <div className="flex items-start justify-between">
+                              <div className="flex flex-col gap-2 sm:gap-3">
+                                <p className="text-sm sm:text-base">
+                                  *** *** *** {card.number}
+                                </p>
+                                <p className="text-sm sm:text-base">
+                                  MasterCard/Mar 2026
+                                </p>
+                              </div>
+                              <div
+                                className={`flex h-3 w-3 items-center justify-center rounded-full border-2 border-white sm:h-4 sm:w-4
+                                ${selectedCard?.authCode === card.authCode ? "bg-white" : "bg-transparent"}
+                              `}
+                              >
+                                {selectedCard?.authCode === card.authCode && (
+                                  <div className="h-1.5 w-1.5 rounded-full bg-current sm:h-2 sm:w-2" />
+                                )}
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
 
-                {currentPage < totalPages - 1 && (
-                  <button
-                    onClick={handleNext}
-                    className="absolute -right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-1 shadow-lg transition-all hover:bg-gray-50 sm:-right-4 sm:p-2"
-                  >
-                    <ChevronRight className="h-4 w-4 sm:h-6 sm:w-6" />
-                  </button>
-                )}
+                  {currentPage < totalPages - 1 && (
+                    <button
+                      onClick={handleNext}
+                      className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-2 shadow-lg"
+                    >
+                      <ChevronRight className="h-4 w-4 sm:h-6 sm:w-6" />
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
 

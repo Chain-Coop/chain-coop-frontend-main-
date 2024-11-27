@@ -85,7 +85,7 @@ const Sidebar = () => {
             />
           </section>
 
-          <section className="mt-4 flex w-[16em] px-4 pb-6">
+          <section className="mt-4 flex">
             <p className="text-sm text-howtext">
               This card grants you access to the Chain Coop Chain Network
               ecosystem. Once activated, it becomes non-transferable.
