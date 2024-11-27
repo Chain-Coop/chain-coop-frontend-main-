@@ -71,11 +71,7 @@ const Withdraw = () => {
       <section className="m-auto mt-[2em] h-full w-full">
         <div className="flex items-center justify-between px-4 sm:px-4 lg:px-6">
           <div className="flex items-center gap-3">
-            <img
-              src={withdraw}
-              alt="Withdraw"
-              className="lg:h-13 lg:w-13 h-12 w-12"
-            />
+            <img src={withdraw} alt="Withdraw" className="h-12 w-12" />
             <p className="text-lg font-medium">Withdraw to Bank Account</p>
           </div>
           <IoIosArrowForward

@@ -15,6 +15,14 @@ import OTPInput from "react-otp-input";
 import { Alert } from "@mui/material";
 import success from "../../../../Assets/svg/auth/sucess.svg";
 
+interface BankAccount {
+  accountNumber: string;
+  bankCode: string;
+  accountName: string;
+  bankId: number;
+  _id: string;
+}
+
 const SelectBank = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -26,7 +34,9 @@ const SelectBank = () => {
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [transactionComplete, setTransactionComplete] = useState(false);
+  const [selectedAccount, setSelectedAccount] = useState<BankAccount | null>(
+    null,
+  );
 
   const handleBackClick = () => {
     navigate(-1);
@@ -44,18 +54,19 @@ const SelectBank = () => {
     accountData?.bankAccounts && accountData?.bankAccounts?.length > 0;
 
   const handleSuccessfulTransaction = () => {
-    setTransactionComplete(true);
     setIsModalOpen(false);
     setIsSuccessModalOpen(true);
-
     setPin("");
-
     setTimeout(() => {
       navigate("/dashboard/wallet", { replace: true });
     }, 3000);
   };
 
   const handleSubmit = async () => {
+    if (!selectedAccount) {
+      setError("Please select a bank account");
+      return;
+    }
     if (pin.length !== 4) {
       setError("Please enter a 4-digit PIN.");
       return;
@@ -67,8 +78,8 @@ const SelectBank = () => {
     try {
       const response = await dispatch(
         WithdrawalFromWallet({
-          accountNumber: accountData.bankAccounts[0].accountNumber,
-          bankCode: accountData.bankAccounts[0].bankCode,
+          accountNumber: selectedAccount.accountNumber,
+          bankCode: selectedAccount.bankCode,
           amount,
           pin,
         }),
@@ -89,7 +100,8 @@ const SelectBank = () => {
     }
   };
 
-  const toggleModal = () => {
+  const toggleModal = (account: any) => {
+    setSelectedAccount(account);
     setIsModalOpen(!isModalOpen);
     setPin("");
     setError("");
@@ -128,24 +140,32 @@ const SelectBank = () => {
 
           {hasBankAccount ? (
             <section>
-              <h1 className="text-lg font-bold">Existing Bank Account</h1>
-              <div className="mt-4 flex h-auto flex-col items-center gap-4 rounded-xl bg-[#ece6f2] px-2 py-6 text-center">
-                <div>
-                  <img src={withdraw} alt="withdraw" className="h-11 w-11" />
-                </div>
-                <h1 className="font-bold">
-                  {accountData.bankAccounts[0].accountName}
-                </h1>
-                <p className="font-medium text-gray-600">
-                  {accountData.bankAccounts[0].accountNumber}
-                </p>
-
-                <Primary
-                  onClick={toggleModal}
-                  className="flex w-[70%] justify-center bg-text2 py-3 text-white"
-                >
-                  Submit
-                </Primary>
+              <h1 className="text-lg font-bold">Existing Bank Accounts</h1>
+              <div className="mt-4 flex flex-col gap-4">
+                {accountData.bankAccounts.map((account: any, index: number) => (
+                  <div
+                    key={account._id}
+                    className="flex h-auto flex-col items-center gap-4 rounded-xl bg-[#ece6f2] px-2 py-6 text-center"
+                  >
+                    <div>
+                      <img
+                        src={withdraw}
+                        alt="withdraw"
+                        className="h-11 w-11"
+                      />
+                    </div>
+                    <h1 className="font-bold">{account.accountName}</h1>
+                    <p className="font-medium text-gray-600">
+                      {account.accountNumber}
+                    </p>
+                    <Primary
+                      onClick={() => toggleModal(account)}
+                      className="flex w-[70%] justify-center bg-text2 py-3 text-white"
+                    >
+                      Select Account
+                    </Primary>
+                  </div>
+                ))}
               </div>
             </section>
           ) : (
@@ -173,7 +193,7 @@ const SelectBank = () => {
       </article>
       <Modal
         isOpen={isModalOpen}
-        onClose={toggleModal}
+        onClose={() => toggleModal(null)}
         className="fle-col flex justify-center bg-white py-[3em] text-center"
       >
         <header>
