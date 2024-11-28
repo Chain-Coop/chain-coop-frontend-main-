@@ -1,6 +1,6 @@
 import React from "react";
-import { IoIosArrowForward } from "react-icons/io";
 import { Loader2 } from "lucide-react";
+import { IoIosArrowForward } from "react-icons/io";
 import withdraw from "../../../../Assets/svg/dashboard/contribution/card.svg";
 
 interface PaymentOptionProps {

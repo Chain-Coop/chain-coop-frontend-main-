@@ -9,6 +9,9 @@ import GeneratePin from "./modal/GeneratePin";
 import OtpPin from "./modal/OtpPin";
 import ChangePin from "./modal/ChangePin";
 import success from "../../../../Assets/svg/auth/sucess.svg";
+import { resetPasswordState } from "../../../../shared/redux/slices/landing.slices";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../../shared/redux/store";
 const Security = () => {
   const [passwordResetStep, setPasswordResetStep] = useState(0);
   const [pinResetStep, setPinResetStep] = useState(0);
@@ -18,6 +21,7 @@ const Security = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentModalType, setCurrentModalType] = useState("");
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const dispatch: AppDispatch = useDispatch();
 
   const resetStates = () => {
     setPasswordResetStep(0);
@@ -65,6 +69,7 @@ const Security = () => {
         setPasswordResetStep(1);
         setIsModalOpen(true);
         setOtp("");
+        dispatch(resetPasswordState());
       },
     },
   ];

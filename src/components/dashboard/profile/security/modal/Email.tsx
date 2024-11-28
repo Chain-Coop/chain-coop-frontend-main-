@@ -31,7 +31,6 @@ const EmailStep = ({ onClose, onEmailSent }: any) => {
       console.error("Failed to send OTP:", error);
     }
   };
-
   return (
     <main className="w-auto font-sans">
       <section className="flex flex-col gap-[1em] py-[2em]">

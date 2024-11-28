@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import OTPInput from "react-otp-input";
+import OtpPin from "../../../../../shared/utils/OtpInput";
 import { Primary } from "../../../../common/Button";
 
 const OtpInput = ({ otp, setOtp, onClose, onOtpEntered }: any) => {
@@ -14,13 +14,17 @@ const OtpInput = ({ otp, setOtp, onClose, onOtpEntered }: any) => {
     onOtpEntered();
   };
 
+  const handleOtpChange = (otpValue: any) => {
+    setOtp(otpValue);
+  };
+
   return (
     <div className="w-[25em] py-[2em] text-center">
       <h2 className="mb-2 text-2xl font-semibold">Reset Password</h2>
       <p className="mb-4 text-gray-600">Enter Your OTP code</p>
 
       <div className="mb-6 flex justify-center">
-        <OtpInput value={otp} className="mt-[1em]" onChange={setOtp} />
+        <OtpPin length={6} value={otp} className="mt-[1em]" onChange={setOtp} />
       </div>
 
       <div className="space-y-3">

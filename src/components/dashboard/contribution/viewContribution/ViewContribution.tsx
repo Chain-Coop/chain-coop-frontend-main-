@@ -100,13 +100,10 @@ const ViewContribution = () => {
   const hasCards = walletData?.allCards?.length > 0;
 
   const dispatch: AppDispatch = useAppDispatch();
-  const [verificationStatus, setVerificationStatus] =
-    useState<VerificationStatus>("idle");
   const navigate = useNavigate();
 
   const handleDirectPayment = async (paymentType: "paystack") => {
     setIsProcessing(true);
-    setVerificationStatus("verifying");
     setError(null);
 
     try {
@@ -121,11 +118,9 @@ const ViewContribution = () => {
         window.location.href =
           paymentResponse.landing?.charge?.info?.data?.authorization_url;
       } else {
-        setVerificationStatus("error");
         setError("Failed to initiate payment. Please try again.");
       }
     } catch (error: any) {
-      setVerificationStatus("error");
       setError(error || "An error occurred during payment. Please try again.");
     } finally {
       setIsProcessing(false);
@@ -186,12 +181,12 @@ const ViewContribution = () => {
     const buildSteps = () => {
       const steps = [];
       const sortedHistory = [...(history || [])].sort(
-        (a, b) => new Date(a?.Date).getTime() - new Date(b?.Date).getTime(),
+        (a, b) => new Date(a?.Date)?.getTime() - new Date(b?.Date)?.getTime(),
       );
 
-      if (sortedHistory.length > 0) {
+      if (sortedHistory?.length > 0) {
         const firstTransaction = sortedHistory[0];
-        steps.push({
+        steps?.push({
           label: "Start Date",
           date: firstTransaction?.Date,
           amount: firstTransaction?.amount,
@@ -202,12 +197,12 @@ const ViewContribution = () => {
           reference: firstTransaction?.reference,
         });
 
-        sortedHistory.slice(1).forEach((transaction) => {
+        sortedHistory?.slice(1).forEach((transaction) => {
           const isDebitSuccess =
             transaction?.type?.toLowerCase() === "debit" &&
             transaction?.status?.toLowerCase() === "success";
 
-          steps.push({
+          steps?.push({
             label: isDebitSuccess
               ? "Cash Transfer to Chain Co-op Wallet"
               : "Cash Transfer from Savings Account",

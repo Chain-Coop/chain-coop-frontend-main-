@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ToggleButton from "../../../../shared/utils/ToggleButton";
-import { DashboardHeader } from "../../../common/DashboardHeader";
 import { useContributionBalance } from "../../../../shared/Hooks/useBalance";
-import contributionImg from "../../../../Assets/svg/dashboard/contribution/category-contribution.svg";
 import { useUserContributionHistory } from "../../../../shared/Hooks/useUserProfile";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import ToggleButton from "../../../../shared/utils/ToggleButton";
+import contributionImg from "../../../../Assets/svg/dashboard/contribution/category-contribution.svg";
+import { DashboardHeader } from "../../../common/DashboardHeader";
 import { motion } from "framer-motion";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 type Contribution = {
   _id: any | null | undefined;
@@ -66,7 +66,7 @@ const Contribution: React.FC = () => {
   const totalItems = getContributions?.contributions?.length || 0;
   const totalPages = Math.ceil(totalItems / limit);
 
-  const handlePrevPage = () => setPage((prev) => Math.max(1, prev - 1));
+  const handlePrevPage = () => setPage((prev) => Math?.max(1, prev - 1));
   const handleNextPage = () =>
     setPage((prev) => Math.min(totalPages, prev + 1));
 

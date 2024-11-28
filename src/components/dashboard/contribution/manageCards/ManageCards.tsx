@@ -73,7 +73,6 @@ const ManageCards = () => {
       });
       setIsDeleteModalOpen(false);
     } catch (error) {
-      console.error("Failed to delete card:", error);
       toast.error("Failed to delete card", {
         position: "top-right",
         autoClose: 3000,

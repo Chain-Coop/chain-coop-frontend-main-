@@ -2,7 +2,8 @@ import React from "react";
 import newspaper from "../../../Assets/svg/dashboard/newspaper.svg";
 import { ComingSoon } from "../../common/Button";
 import { useAllProjects } from "../../../shared/Hooks/useUserProfile";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
+import { QueryClient, useQueryClient } from "react-query";
 
 interface Project {
   _id: string;
@@ -26,10 +27,15 @@ const ProjectsSkeleton = () => (
 const Right = () => {
   const { useProjects, loading } = useAllProjects();
   const navigate = useNavigate();
+  const location = useLocation();
+  const queryClient = useQueryClient();
 
-  const handleProjectClick = (projectId: string) => {
-    navigate(`/dashboard/project/project_over-view/${projectId}`);
-  };
+  const handleProjectClick = React.useCallback(
+    (projectId: string) => {
+      navigate(`/dashboard/project/project_over-view/${projectId}`);
+    },
+    [navigate],
+  );
 
   const latestProjects = React.useMemo(() => {
     if (!useProjects) return [];
@@ -41,7 +47,7 @@ const Right = () => {
       .slice(0, 2);
   }, [useProjects]);
 
-  const renderProjects = () => {
+  const renderProjects = React.useCallback(() => {
     if (loading) {
       return <ProjectsSkeleton />;
     }
@@ -72,7 +78,7 @@ const Right = () => {
         </article>
       </div>
     ));
-  };
+  }, [loading, latestProjects, handleProjectClick]);
 
   return (
     <aside className="flex min-h-screen w-[30em] flex-col border-l border-bl bg-inherit px-[3em] py-[3em] font-sans text-memt1 shadow-md">
@@ -104,4 +110,5 @@ const Right = () => {
     </aside>
   );
 };
-export default Right;
+
+export default React.memo(Right);

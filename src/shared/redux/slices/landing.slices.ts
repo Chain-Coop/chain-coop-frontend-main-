@@ -134,7 +134,13 @@ const initialState = {
 export const landingSlice = createSlice({
   name: "landing",
   initialState,
-  reducers: {},
+  reducers: {
+    resetPasswordState: (state) => {
+      state.success = false;
+      state.error = null;
+      state.isLoading = false;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(RegisterUser.fulfilled, (state, action) => {
       state.getUserRegistered = action.payload.landing;
@@ -195,4 +201,6 @@ export const landingSlice = createSlice({
 });
 
 const { reducer } = landingSlice;
+
+export const { resetPasswordState } = landingSlice.actions;
 export default reducer;
