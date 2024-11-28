@@ -68,10 +68,10 @@ const Avatar = () => {
             </span>
           </div>
         </div>
-        <IoIosArrowForward
+        {/* <IoIosArrowForward
           size={25}
           className="mt-4 hidden text-text2 sm:mt-0 lg:block"
-        />
+        /> */}
       </div>
     </main>
   );

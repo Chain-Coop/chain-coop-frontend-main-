@@ -31,8 +31,8 @@ const DashboardNav = () => {
   };
 
   const getButtonProps = () => {
-    if (profileDetails?.membershipStatus === "pending") {
-      return { text: "Pending", bgColor: "bg-yellow-500" };
+    if (profileDetails?.membershipStatus === "inactive") {
+      return { text: "Inactive", bgColor: "bg-yellow-500" };
     } else if (profileDetails?.membershipStatus === "active") {
       return { text: "Activated", bgColor: "bg-green-500" };
     }
