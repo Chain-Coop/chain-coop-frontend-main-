@@ -100,7 +100,7 @@ const Security = () => {
                 otp={otp}
                 setOtp={setOtp}
                 onClose={handleModalClose}
-                onOtpEntered={() => setPasswordResetStep(2)}
+                onOtpEntered={() => setPasswordResetStep(3)}
               />
             </Modal>
           );

@@ -10,19 +10,23 @@ const EmailStep = ({ onClose, onEmailSent }: any) => {
   const [email, setEmail] = useState("");
   const dispatch: AppDispatch = useDispatch();
   const { profileDetails } = useUserProfile();
-  const { isLoading, error } = useSelector((state: any) => state.landing);
+  const { isLoading, error, success } = useSelector(
+    (state: any) => state.landing,
+  );
 
   useEffect(() => {
     setEmail(profileDetails?.email);
   }, [profileDetails?.email]);
 
+  useEffect(() => {
+    if (success) {
+      onEmailSent();
+    }
+  }, [success, onEmailSent]);
+
   const handleOtpMail = async () => {
     try {
-      const response = await dispatch(ResetPassword({ email }));
-
-      if (response.payload && response.payload.status === 200) {
-        onEmailSent();
-      }
+      await dispatch(ResetPassword({ email }));
     } catch (error) {
       console.error("Failed to send OTP:", error);
     }

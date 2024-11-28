@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import useUserProfile, {
   useAllProjects,
@@ -7,6 +7,8 @@ import { ComingSoon } from "../../common/Button";
 import { IoIosNotifications } from "react-icons/io";
 import useWalletBalance from "../../../shared/Hooks/useBalance";
 import ToggleButton from "../../../shared/utils/ToggleButton";
+import { Modal, Box, IconButton } from "@mui/material";
+import loan from "../../../Assets/svg/dashboard/loan.svg";
 
 interface Project {
   _id: string;
@@ -28,6 +30,7 @@ const ProjectsSkeleton = () => (
 );
 
 const Home = () => {
+  const [isLoanModalOpen, setIsLoanModalOpen] = useState(false);
   const { isWalletVisible, setIsWalletVisible, formattedBalance } =
     useWalletBalance();
   const { profileDetails } = useUserProfile();
@@ -40,6 +43,27 @@ const Home = () => {
 
   const addFund = () => {
     navigate("/dashboard/wallet");
+  };
+
+  const handleLoanClick = () => {
+    setIsLoanModalOpen(true);
+  };
+
+  const closeLoanModal = () => {
+    setIsLoanModalOpen(false);
+  };
+
+  const modalStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: { xs: "90%", sm: "450px" },
+    bgcolor: "background.paper",
+    borderRadius: "16px",
+    boxShadow: 24,
+    p: 4,
+    outline: "none",
   };
 
   const latestProjects = React.useMemo(() => {
@@ -140,12 +164,51 @@ const Home = () => {
         >
           + Add Fund
         </button>
-        <button className="mx-auto w-full rounded-3xl bg-[#ECE6F2] py-4 text-center text-lg font-semibold text-text4 shadow-md transition-colors hover:bg-gray-50">
+        <button
+          onClick={handleLoanClick}
+          className="mx-auto w-full rounded-3xl bg-[#ECE6F2] py-4 text-center text-lg font-semibold text-text4 shadow-md transition-colors hover:bg-gray-50"
+        >
           + Get a loan
         </button>
       </div>
 
       <section className="mt-8 w-full px-4 sm:px-0">{renderProjects()}</section>
+
+      <Modal
+        open={isLoanModalOpen}
+        onClose={closeLoanModal}
+        aria-labelledby="loan-modal"
+        aria-describedby="loan-modal-description"
+      >
+        <Box sx={modalStyle}>
+          <IconButton
+            aria-label="close"
+            onClick={closeLoanModal}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: "text.secondary",
+            }}
+          ></IconButton>
+          <div className="py-[1.5em]">
+            <div className="lg:max-w-lg">
+              <header className="mb-3 flex items-center justify-center gap-2 text-center">
+                <h2 className="text-xl font-bold text-text2">Loan Notice</h2>
+                <img src={loan} alt="loan" />
+              </header>
+              <section className="mt-4">
+                <p className="text-center font-medium">
+                  You don't have any active loan yet.
+                </p>
+                <p className="mt-2 text-center font-medium">
+                  We'll let you know when you're available for one.
+                </p>
+              </section>
+            </div>
+          </div>
+        </Box>
+      </Modal>
     </main>
   );
 };
