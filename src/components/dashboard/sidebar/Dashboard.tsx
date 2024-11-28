@@ -104,7 +104,7 @@ const Dashboard = () => {
 
           <Route path="project" element={<Project />} />
           <Route
-            path="project/project_over-view/:projectId"
+            path="project/project_over-view"
             element={<ProjectContentOverView />}
           />
 

@@ -7,8 +7,10 @@ const ProjectContent = () => {
   const { useProjects, loading } = useAllProjects();
   const navigate = useNavigate();
 
-  const handleProjectClick = (projectId: string) => {
-    navigate(`/dashboard/project/project_over-view/${projectId}`);
+  const handleProjectClick = (projectId: any) => {
+    navigate(`/dashboard/project/project_over-view`, {
+      state: { projectId },
+    });
   };
 
   const renderProjects = () => {

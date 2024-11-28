@@ -14,12 +14,8 @@ const OtpInput = ({ otp, setOtp, onClose, onOtpEntered }: any) => {
     onOtpEntered();
   };
 
-  const handleOtpChange = (otpValue: any) => {
-    setOtp(otpValue);
-  };
-
   return (
-    <div className="w-[25em] py-[2em] text-center">
+    <div className="py-[2em] text-center lg:w-[25em]">
       <h2 className="mb-2 text-2xl font-semibold">Reset Password</h2>
       <p className="mb-4 text-gray-600">Enter Your OTP code</p>
 

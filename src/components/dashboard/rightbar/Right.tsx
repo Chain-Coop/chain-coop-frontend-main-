@@ -2,8 +2,7 @@ import React from "react";
 import newspaper from "../../../Assets/svg/dashboard/newspaper.svg";
 import { ComingSoon } from "../../common/Button";
 import { useAllProjects } from "../../../shared/Hooks/useUserProfile";
-import { useNavigate, useLocation } from "react-router";
-import { QueryClient, useQueryClient } from "react-query";
+import { useNavigate } from "react-router";
 
 interface Project {
   _id: string;
@@ -27,15 +26,12 @@ const ProjectsSkeleton = () => (
 const Right = () => {
   const { useProjects, loading } = useAllProjects();
   const navigate = useNavigate();
-  const location = useLocation();
-  const queryClient = useQueryClient();
 
-  const handleProjectClick = React.useCallback(
-    (projectId: string) => {
-      navigate(`/dashboard/project/project_over-view/${projectId}`);
-    },
-    [navigate],
-  );
+  const handleProjectClick = (projectId: any) => {
+    navigate(`/dashboard/project/project_over-view`, {
+      state: { projectId },
+    });
+  };
 
   const latestProjects = React.useMemo(() => {
     if (!useProjects) return [];

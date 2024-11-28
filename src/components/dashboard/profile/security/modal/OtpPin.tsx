@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import OTPInput from "react-otp-input";
 import OtpInput from "../../../../../shared/utils/OtpInput";
 
 const OtpPin = ({ onNext, onClose }: any) => {

@@ -474,7 +474,7 @@ const SelectBank = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={() => toggleModal(null)}
-        className="fle-col flex justify-center bg-white text-center"
+        className="fle-col flex justify-center bg-white text-center lg:w-[25em]"
       >
         <div className="py-[1em] lg:py-[2em]">
           <header>

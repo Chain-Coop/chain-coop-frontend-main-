@@ -77,10 +77,7 @@ const NavBar = () => {
               );
             })}
             <div className="block font-bold lg:hidden">
-              <LoginButton
-                onClick={handleLoginClick}
-                className="cursor-not-allowed  bg-primary"
-              >
+              <LoginButton onClick={handleLoginClick} className="bg-primary">
                 Login
               </LoginButton>
             </div>

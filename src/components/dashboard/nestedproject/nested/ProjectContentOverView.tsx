@@ -3,7 +3,7 @@ import { DashboardHeader } from "../../../common/DashboardHeader";
 import ProjectContentDetails from "./ProjectContentDetails";
 import PortfolioContent from "./PortfolioContent";
 import { IoIosArrowBack } from "react-icons/io";
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { AppDispatch } from "../../../../shared/redux/store";
 import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
 import { useSelector } from "react-redux";
@@ -11,7 +11,8 @@ import { GetProjectById } from "../../../../shared/redux/slices/transaction.slic
 
 const ProjectContentOverView = () => {
   const [activeLink, setActiveLink] = useState("project");
-  const { projectId } = useParams<{ projectId: string }>();
+  const location = useLocation();
+  const { projectId } = location.state || {};
   const dispatch = useAppDispatch<AppDispatch>();
   const { currentProject, loading, error } = useSelector(
     (state: any) => state?.transaction,

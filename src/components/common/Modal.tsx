@@ -78,7 +78,7 @@ const Modal = ({
           src={cancel}
           alt="cancel"
           onClick={onClose}
-          className="absolute right-2 top-4 h-9 w-9 cursor-pointer hover:text-gray-700 sm:right-4 lg:top-2 lg:h-6 lg:w-6"
+          className="absolute right-4 top-4 h-10 w-10 cursor-pointer hover:text-gray-700 lg:right-2 lg:top-2 lg:h-12 lg:w-12"
         />
         <div className="mt-4 sm:mt-5">{children}</div>
       </div>
