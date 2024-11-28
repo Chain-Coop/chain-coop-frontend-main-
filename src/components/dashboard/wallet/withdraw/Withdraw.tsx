@@ -86,7 +86,7 @@ const Withdraw = () => {
         onClose={toggleModal}
         className="mx-4 bg-white"
       >
-        <div className="mt-[2.5em] w-full max-w-[38em] px-4">
+        <div className="mt-[2.5em] w-full max-w-[39em] px-4">
           <header>
             <h1 className="text-center text-lg font-semibold sm:text-xl">
               Bank Account Withdrawal

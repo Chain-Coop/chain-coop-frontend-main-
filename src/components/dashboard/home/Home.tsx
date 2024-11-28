@@ -203,7 +203,7 @@ const Home = () => {
                   You don't have any active loan yet.
                 </p>
                 <p className="mt-2 text-center font-medium">
-                  We'll let you know when you're available for one.
+                  Stay tuned! We’ll notify you when you become eligible for one.
                 </p>
               </section>
             </div>
