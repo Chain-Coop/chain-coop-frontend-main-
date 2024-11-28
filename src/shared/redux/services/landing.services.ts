@@ -5,9 +5,8 @@ import React from "react";
 const API_URL_REGISTER_USER =
   import.meta.env.VITE_REACT_APP_API_URL + "/auth/register";
 
-  const API_URL_NEWS_LETTER =
+const API_URL_NEWS_LETTER =
   import.meta.env.VITE_REACT_APP_API_URL + "/news-letter/join";
-
 
 const API_URL_LOGIN_USER =
   import.meta.env.VITE_REACT_APP_API_URL + "/auth/login";
@@ -19,8 +18,10 @@ const API_URL_PUBLIC_CONTACT =
   import.meta.env.VITE_REACT_APP_API_URL + "/contact-us";
 
 const API_URL_UPLOAD_AVATAR =
-import.meta.env.VITE_REACT_APP_API_URL + "/profile/upload_profile_picture";
+  import.meta.env.VITE_REACT_APP_API_URL + "/profile/upload_profile_picture";
 
+const API_URL_RESET_PASSWORD =
+  import.meta.env.VITE_REACT_APP_API_URL + "/auth/forget_password";
 
 const RegisterUser = async (body: any) => {
   try {
@@ -48,11 +49,9 @@ const LoginUser = async (body: any) => {
   }
 };
 
-
 const JoinNewsLetter = async (body: any) => {
   try {
     const response = await axios.post(API_URL_NEWS_LETTER, body, {});
-    console.log("res",response)
     return response;
   } catch (error: any) {
     if (error.response && error.response.data) {
@@ -83,6 +82,25 @@ export async function FORGOT_PASSWORD(endpoint: string, data: any) {
   }
 }
 
+const ResetPassword = async (body: any) => {
+  try {
+    const response = await axios.post(API_URL_RESET_PASSWORD, body, {});
+    return response;
+    console.log("Ree", response);
+    const token = response.data.token;
+    if (token) {
+      sessionStorage.setItem("userData", token);
+      return response?.data;
+    }
+  } catch (error: any) {
+    if (error.response && error.response.data) {
+      throw error.response.data;
+    } else {
+      throw new Error("Network Error: Please check your internet connection.");
+    }
+  }
+};
+
 export async function RESEND_LOGIN_OTP(endpoint: string, data: any) {
   const url = import.meta.env.VITE_REACT_APP_API_URL + endpoint;
   try {
@@ -100,6 +118,7 @@ export async function RESET_PASSWORD(endpoint: string, data: any) {
     return error.response;
   }
 }
+
 const PublicContact = async (body: any) => {
   try {
     const response = await axios.post(API_URL_PUBLIC_CONTACT, body, {
@@ -162,7 +181,8 @@ const LandingServices = {
   PublicContact,
   GetUserProfile,
   UploadAvatar,
-  JoinNewsLetter
+  JoinNewsLetter,
+  ResetPassword,
 };
 
 export default LandingServices;

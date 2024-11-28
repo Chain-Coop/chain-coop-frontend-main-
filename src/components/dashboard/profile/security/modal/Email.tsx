@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Primary } from "../../../../common/Button";
-import { FORGOT_PASSWORD } from "../../../../../shared/redux/services/landing.services";
 import ReactLoading from "react-loading";
 import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
+import { ResetPassword } from "../../../../../shared/redux/slices/landing.slices";
+import { AppDispatch } from "../../../../../shared/redux/store";
 
 const EmailStep = ({ onClose, onEmailSent }: any) => {
   const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
+  const dispatch: AppDispatch = useDispatch();
   const { profileDetails } = useUserProfile();
+  const { isLoading, error } = useSelector((state: any) => state.landing);
 
   useEffect(() => {
     setEmail(profileDetails?.email);
@@ -15,16 +18,13 @@ const EmailStep = ({ onClose, onEmailSent }: any) => {
 
   const handleOtpMail = async () => {
     try {
-      setLoading(true);
-      const endpoint = `/auth/forget_password`;
-      const response = await FORGOT_PASSWORD(endpoint, { email });
-      if (response.status === 200) {
+      const response = await dispatch(ResetPassword({ email }));
+
+      if (response.payload && response.payload.status === 200) {
         onEmailSent();
       }
     } catch (error) {
       console.error("Failed to send OTP:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -57,12 +57,14 @@ const EmailStep = ({ onClose, onEmailSent }: any) => {
           </div>
         </div>
 
+        {error && <p className="text-center text-red-500">{error}</p>}
+
         <Primary
           onClick={handleOtpMail}
-          disabled={loading}
+          disabled={isLoading}
           className="m-auto mt-4 flex w-[70%] justify-center rounded-full bg-text2 px-3 py-2 text-lg text-white"
         >
-          {loading ? (
+          {isLoading ? (
             <div className="flex gap-[1em]">
               <ReactLoading
                 color="#FFFFFF"

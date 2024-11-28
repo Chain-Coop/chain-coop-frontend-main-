@@ -3,7 +3,6 @@ import { setMessage } from "./message.slices";
 import LandingServices from "../services/landing.services";
 import React from "react";
 
-
 export const RegisterUser = createAsyncThunk(
   "landing/registerUser",
   async (body: any, thunkAPI) => {
@@ -37,8 +36,8 @@ export const JoinNewsLetter = createAsyncThunk(
   async (body: any, thunkAPI) => {
     try {
       const response = await LandingServices.JoinNewsLetter(body);
-      console.log("rrr",response)
-      return response ;
+      console.log("rrr", response);
+      return response;
     } catch (error: any) {
       const message = error.msg;
       thunkAPI.dispatch(setMessage(message));
@@ -46,7 +45,6 @@ export const JoinNewsLetter = createAsyncThunk(
     }
   },
 );
-
 
 export const VerifyUserAuth = createAsyncThunk(
   "landing/verifyauth",
@@ -64,7 +62,7 @@ export const VerifyUserAuth = createAsyncThunk(
 
 export const PublicContact = createAsyncThunk(
   "landing/publicContact",
-  async (body:any, thunkAPI) => {
+  async (body: any, thunkAPI) => {
     try {
       const data = await LandingServices.PublicContact(body);
       return { landing: data };
@@ -104,6 +102,20 @@ export const uploadAvatar = createAsyncThunk(
   },
 );
 
+export const ResetPassword = createAsyncThunk(
+  "landing/resetPassword",
+  async (body: any, thunkAPI) => {
+    try {
+      const data = await LandingServices.ResetPassword(body);
+      return data;
+    } catch (error: any) {
+      const message = error.msg;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
 const initialState = {
   getUserRegistered: null,
   getloginUser: null,
@@ -113,6 +125,10 @@ const initialState = {
   getUserPin: null,
   getProfile: null,
   avatarUrl: null,
+  resetUserPassword: null,
+  isLoading: false,
+  error: null,
+  success: false,
 };
 
 export const landingSlice = createSlice({
@@ -157,11 +173,23 @@ export const landingSlice = createSlice({
     builder.addCase(uploadAvatar.fulfilled, (state, action) => {
       state.avatarUrl = action.payload.data.publicURL;
     });
-    builder.addCase(JoinNewsLetter.fulfilled, (state:any, action) => {
+    builder.addCase(JoinNewsLetter.fulfilled, (state: any, action) => {
       state.newsLetter = action.payload;
     });
     builder.addCase(JoinNewsLetter.rejected, (state) => {
       state.newsLetter = null;
+    });
+    builder.addCase(ResetPassword.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(ResetPassword.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.success = true;
+      state.resetUserPassword = action.payload;
+    });
+    builder.addCase(ResetPassword.rejected, (state) => {
+      state.isLoading = false;
+      state.resetUserPassword = null;
     });
   },
 });

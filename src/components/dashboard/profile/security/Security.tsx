@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import Modal from "../../../common/Modal";
 import Email from "./modal/Email";
@@ -9,7 +9,6 @@ import GeneratePin from "./modal/GeneratePin";
 import OtpPin from "./modal/OtpPin";
 import ChangePin from "./modal/ChangePin";
 import success from "../../../../Assets/svg/auth/sucess.svg";
-
 const Security = () => {
   const [passwordResetStep, setPasswordResetStep] = useState(0);
   const [pinResetStep, setPinResetStep] = useState(0);
@@ -39,6 +38,10 @@ const Security = () => {
     setIsModalOpen(false);
     setIsSuccessModalOpen(true);
   };
+
+  const handleEmailSent = useCallback(() => {
+    setPasswordResetStep(2);
+  }, []);
 
   const handleSuccessModalClose = () => {
     setIsSuccessModalOpen(false);
@@ -75,14 +78,14 @@ const Security = () => {
           return (
             <Modal
               className="bg-[#E9E9E9] px-[3em]"
-              isOpen
+              isOpen={true}
               onClose={handleModalClose}
             >
               <Email
                 email={email}
                 setEmail={setEmail}
                 onClose={handleModalClose}
-                onEmailSent={() => setPasswordResetStep(2)}
+                onEmailSent={handleEmailSent}
               />
             </Modal>
           );
@@ -90,14 +93,14 @@ const Security = () => {
           return (
             <Modal
               className="w-[25em] bg-[#E9E9E9]"
-              isOpen
+              isOpen={true}
               onClose={handleModalClose}
             >
               <OtpInput
                 otp={otp}
                 setOtp={setOtp}
                 onClose={handleModalClose}
-                onOtpEntered={() => setPasswordResetStep(3)}
+                onOtpEntered={() => setPasswordResetStep(2)}
               />
             </Modal>
           );
@@ -105,7 +108,7 @@ const Security = () => {
           return (
             <Modal
               className="w-[25em] bg-[#E9E9E9]"
-              isOpen
+              isOpen={true}
               onClose={handleModalClose}
             >
               <NewPassword
@@ -116,6 +119,8 @@ const Security = () => {
               />
             </Modal>
           );
+        default:
+          return null;
       }
     }
     if (currentModalType === "pin") {
@@ -185,6 +190,7 @@ const Security = () => {
       </section>
 
       {renderModal()}
+
       <Modal
         isOpen={isSuccessModalOpen}
         onClose={handleSuccessModalClose}

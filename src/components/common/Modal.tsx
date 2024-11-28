@@ -40,6 +40,7 @@
 // };
 
 // export default Modal;
+
 import React from "react";
 import { useEffect } from "react";
 import cancel from "../../Assets/svg/cancel.svg";
