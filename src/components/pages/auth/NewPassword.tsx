@@ -67,8 +67,8 @@ const NewPassword = () => {
   };
 
   return (
-    <main className="flex h-screen items-center justify-center bg-log font-sans">
-      <section className="text-center sm:w-full lg:w-[45%]">
+    <main className="flex h-screen items-center justify-center bg-log px-[1em] font-sans">
+      <section className="w-full text-center lg:w-[45%]">
         <header className="px-[2em]">
           <h1 className="mb-4 font-sans text-3xl font-bold text-text2">
             Reset Password
@@ -90,7 +90,7 @@ const NewPassword = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="create new password"
-                className="mb-5 h-[4em] w-full rounded-full focus:border-text2 focus:outline-none focus:ring-text2 px-4 text-sm shadow-md"
+                className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
               />
               <button
                 type="button"
@@ -120,7 +120,7 @@ const NewPassword = () => {
                 value={confirmPassword}
                 name="confirmPassword"
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="mb-5 h-[4em] focus:border-text2 focus:outline-none focus:ring-text2 w-full rounded-full px-4 text-sm shadow-md"
+                className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
               />
               <button
                 type="button"

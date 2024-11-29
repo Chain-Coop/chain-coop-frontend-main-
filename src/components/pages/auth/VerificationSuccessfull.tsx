@@ -31,7 +31,7 @@ const VerificationSuccessfull = () => {
           <div>
             <Primary
               onClick={goToReset}
-              className="w-[10em] rounded-full bg-text2 py-3 font-medium text-text5 sm:text-lg  lg:mt-[2em]"
+              className="mt-[1em] w-[10em] rounded-full bg-text2 py-3 font-medium text-text5 sm:text-lg  lg:mt-[2em]"
             >
               Continue
             </Primary>

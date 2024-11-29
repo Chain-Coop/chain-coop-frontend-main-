@@ -32,7 +32,7 @@ const ForgetPassword = () => {
   };
 
   return (
-    <main className="flex h-screen items-center justify-center bg-log font-sans">
+    <main className="flex h-screen items-center justify-center bg-log px-3 font-sans">
       <section className="text-center lg:w-[49%]">
         <div className="px-[2em]">
           <img

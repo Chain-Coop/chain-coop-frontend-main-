@@ -174,7 +174,7 @@ const ResetPassword = () => {
           <Primary
             onClick={ResendOtp}
             loading={loading}
-            className="w-[12em] rounded-full bg-text2 py-3 font-medium text-text5 sm:text-lg lg:mt-[2em]"
+            className="mt-[1em] w-[12em] rounded-full bg-text2 py-3 font-medium text-text5 sm:text-lg lg:mt-[2em]"
           >
             {loading ? (
               <ReactLoading
