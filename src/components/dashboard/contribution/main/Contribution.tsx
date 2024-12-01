@@ -90,7 +90,7 @@ const Contribution: React.FC = () => {
     <motion.main
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="min-h-screen w-full pb-6 font-sans"
+      className="pb- min-h-screen w-full font-sans"
     >
       <header>
         <DashboardHeader className="flex w-full items-center justify-center text-2xl md:text-3xl lg:mt-[2em] lg:text-xl">
