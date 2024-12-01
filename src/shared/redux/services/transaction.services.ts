@@ -23,9 +23,6 @@ const handleApiError = (error: any) => {
   }
 };
 
-//WALLET
-
-//Get wallet balance
 const GetWalletBalance = async () => {
   const url = `${API_URL}/wallet/balance`;
   try {
@@ -36,7 +33,6 @@ const GetWalletBalance = async () => {
   }
 };
 
-//Fund wallet
 const FundWallet = async (body: any) => {
   const url = `${API_URL}/wallet/fund-wallet`;
   try {
@@ -55,7 +51,6 @@ const FundWallet = async (body: any) => {
   }
 };
 
-//Verify fund wallet
 const VerifyFundWallet = async (body: any) => {
   const url = `${API_URL}/wallet/verify-payment`;
   try {
@@ -74,7 +69,6 @@ const VerifyFundWallet = async (body: any) => {
   }
 };
 
-//Get user transaction history
 const GetUsersTransaction = async () => {
   const url = `${API_URL}/wallet/history`;
   try {
@@ -85,7 +79,6 @@ const GetUsersTransaction = async () => {
   }
 };
 
-// withdraw from wallet
 const WithdrawalFromWallet = async (body: any) => {
   const url = `${API_URL}/withdrawal/request-withdrawal`;
 
@@ -103,9 +96,6 @@ const WithdrawalFromWallet = async (body: any) => {
   }
 };
 
-//CONTRIBUTION
-
-//Create contribution
 const CreateContributionPlan = async (body: any) => {
   try {
     const response = await axios.post(
@@ -121,7 +111,6 @@ const CreateContributionPlan = async (body: any) => {
   }
 };
 
-//Get contribution balance
 const GetContributionBalance = async () => {
   const url = `${API_URL}/contribution/balance`;
   try {
@@ -132,7 +121,6 @@ const GetContributionBalance = async () => {
   }
 };
 
-//Get contribution history
 const GetUsersContributionHistory = async (page: number, limit: number) => {
   const url = `${API_URL}/contribution/contribute?page=${page}&limit=${limit}`;
   try {
@@ -143,7 +131,6 @@ const GetUsersContributionHistory = async (page: number, limit: number) => {
   }
 };
 
-//Pay contribution
 const PayContribution = async (body: any) => {
   try {
     const response = await axios.post(API_URL_PAY_CONTRIBUTION, body, {
@@ -159,7 +146,6 @@ const PayContribution = async (body: any) => {
   }
 };
 
-//Get contribution track by id
 const GetContributionDetailsById = async (contributionId: any) => {
   const url = `${API_URL}/contribution/history?contributionId=${contributionId}`;
   try {
@@ -178,7 +164,6 @@ const GetContributionDetailsById = async (contributionId: any) => {
   }
 };
 
-// Verify fund contribution
 const VerifyFundContribution = async (params: any) => {
   try {
     const token = sessionStorage.getItem("userData");
@@ -221,7 +206,6 @@ const VerifyUnpaidFundContribution = async (params: any) => {
   }
 };
 
-// Withdraw from contribution
 const WithdrawalFromContribution = async (body: any) => {
   const url = `${API_URL}/contribution/withdraw`;
   try {
@@ -238,9 +222,6 @@ const WithdrawalFromContribution = async (body: any) => {
   }
 };
 
-//PROPOSAL
-
-//Send Proposal
 const SendProposal = async (formData: FormData) => {
   try {
     const config = {
@@ -256,7 +237,6 @@ const SendProposal = async (formData: FormData) => {
   }
 };
 
-//Get all user Proposal
 const GetProposal = async () => {
   const url = `${API_URL}/proposals`;
   try {
@@ -267,9 +247,6 @@ const GetProposal = async () => {
   }
 };
 
-// PROJECTS
-
-//Get all projects
 const GetAllProject = async () => {
   const url = `${API_URL}/project/all-projects`;
   try {
@@ -280,7 +257,6 @@ const GetAllProject = async () => {
   }
 };
 
-//Get all user funded projects
 const GetAllUserFundedProject = async () => {
   const url = `${API_URL}/project/funded`;
   try {
@@ -292,7 +268,6 @@ const GetAllUserFundedProject = async () => {
   }
 };
 
-// Fund a project
 const FundProject = async (body: any, projectId: string) => {
   try {
     const response = await axios.post(
@@ -308,7 +283,6 @@ const FundProject = async (body: any, projectId: string) => {
   }
 };
 
-//Get project details by id
 const GetProjectById = async (projectId: string) => {
   const url = `${API_URL}/project/${projectId}`;
   try {
@@ -319,9 +293,6 @@ const GetProjectById = async (projectId: string) => {
   }
 };
 
-// BANK ACCOUNT
-
-// Get all Banks
 const GetAllBanks = async () => {
   const url = `${API_URL}/withdrawal/all-banks`;
   try {
@@ -332,7 +303,6 @@ const GetAllBanks = async () => {
   }
 };
 
-// Get user account name
 const GetAccountName = async (body: any) => {
   try {
     const response = await axios.post(
@@ -348,9 +318,6 @@ const GetAccountName = async (body: any) => {
   }
 };
 
-// WALLET PIN
-
-// Generate OTP for wallet Pin
 const GeneratePinOTP = async () => {
   const url = `${API_URL}/wallet/generate-pin-otp`;
   try {
@@ -371,7 +338,6 @@ const GeneratePinOTP = async () => {
   }
 };
 
-//Create pin
 const CreateTransactionPin = async (body: any) => {
   const url = `${API_URL}/wallet/change-pin`;
 

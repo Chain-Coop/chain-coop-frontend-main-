@@ -4,6 +4,11 @@ import imageLeft from "../../../Assets/png/home/what-we-doL.png";
 import imageRight from "../../../Assets/png/home/what-we-doR.png";
 import NavBar from "../../common/NavBar";
 import lady from "../../../Assets/png/home/lady.png";
+import investor from "../../../Assets/png/home/investor.png";
+import investor2 from "../../../Assets/png/home/investor2.png";
+import investor3 from "../../../Assets/png/home/investor3.png";
+import investor4 from "../../../Assets/png/home/investor4.png";
+import investor5 from "../../../Assets/png/home/investor5.png";
 import rectangle from "../../../Assets/png/home/who-lady.png";
 import innovation from "../../../Assets/png/home/innovation.png";
 import kyc from "../../../Assets/png/home/Co-op-PX4.png";
@@ -87,31 +92,31 @@ const Landing = () => {
                   className="h-[8em] w-[8em] object-cover"
                 />
                 <img
-                  src={lady}
+                  src={investor}
                   alt="lady"
                   className="h-[8em] w-[8em] object-cover"
                 />
               </div>
               <div className="mt-[2.7em] flex flex-col gap-[2em]">
                 <img
-                  src={lady}
+                  src={investor2}
                   alt="lady"
                   className="h-[8em] w-[8em] object-cover"
                 />
                 <img
-                  src={lady}
+                  src={investor4}
                   alt="lady"
                   className="h-[8em] w-[8em] object-cover"
                 />
               </div>
               <div className="flex flex-col gap-[2.7em]">
                 <img
-                  src={lady}
+                  src={investor3}
                   alt="lady"
                   className="h-[8em] w-[8em] object-cover"
                 />
                 <img
-                  src={lady}
+                  src={investor5}
                   alt="lady"
                   className="h-[8em] w-[8em] object-cover"
                 />
