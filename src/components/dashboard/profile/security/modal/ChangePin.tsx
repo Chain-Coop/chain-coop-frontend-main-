@@ -9,9 +9,10 @@ import OtpInput from "../../../../../shared/utils/OtpInput";
 interface ChangePinProps {
   otp: string;
   onClose: () => void;
+  onSuccess: () => void;
 }
 
-const ChangePin: React.FC<ChangePinProps> = ({ otp, onClose }) => {
+const ChangePin: React.FC<ChangePinProps> = ({ otp, onClose, onSuccess }) => {
   const dispatch = useDispatch<AppDispatch>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -39,7 +40,7 @@ const ChangePin: React.FC<ChangePinProps> = ({ otp, onClose }) => {
     )
       .unwrap()
       .then(() => {
-        onClose();
+        onSuccess();
       })
       .catch((error: any) => {
         setError(error || "Failed to create PIN");

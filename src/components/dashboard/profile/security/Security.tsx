@@ -13,6 +13,7 @@ import { resetPasswordState } from "../../../../shared/redux/slices/landing.slic
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../shared/redux/store";
 const Security = () => {
+  const dispatch: AppDispatch = useDispatch();
   const [passwordResetStep, setPasswordResetStep] = useState(0);
   const [pinResetStep, setPinResetStep] = useState(0);
   const [email, setEmail] = useState("");
@@ -21,7 +22,7 @@ const Security = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentModalType, setCurrentModalType] = useState("");
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-  const dispatch: AppDispatch = useDispatch();
+  const [isPinSuccessModalOpen, setIsPinSuccessModalOpen] = useState(false);
 
   const resetStates = () => {
     setPasswordResetStep(0);
@@ -31,6 +32,17 @@ const Security = () => {
     setIsModalOpen(false);
     setCurrentModalType("");
     setIsSuccessModalOpen(false);
+    setIsPinSuccessModalOpen(false);
+  };
+
+  const handlePinSuccess = () => {
+    setIsModalOpen(false);
+    setIsPinSuccessModalOpen(true);
+  };
+
+  const handlePinSuccessModalClose = () => {
+    setIsPinSuccessModalOpen(false);
+    resetStates();
   };
 
   const handleModalClose = () => {
@@ -164,7 +176,11 @@ const Security = () => {
               isOpen
               onClose={handleModalClose}
             >
-              <ChangePin otp={otp} onClose={handleModalClose} />
+              <ChangePin
+                onSuccess={handlePinSuccess}
+                otp={otp}
+                onClose={handleModalClose}
+              />
             </Modal>
           );
       }
@@ -213,6 +229,21 @@ const Security = () => {
             className="sm:w-[6em] lg:w-[8em]"
           />
           <p className="text-center font-medium">Password Reset Successfully</p>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={isPinSuccessModalOpen}
+        onClose={handlePinSuccessModalClose}
+        className="bg-white"
+      >
+        <div className="mt-[2.5em] flex w-[25em] flex-col items-center gap-[1.5em] py-[1em] lg:py-[2em]">
+          <img
+            src={success}
+            alt="Success Icon"
+            className="sm:w-[6em] lg:w-[8em]"
+          />
+          <p className="text-center font-semibold">PIN Successfully Changed</p>
         </div>
       </Modal>
     </main>
