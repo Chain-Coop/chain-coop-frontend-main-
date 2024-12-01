@@ -9,6 +9,7 @@ import useWalletBalance from "../../../shared/Hooks/useBalance";
 import ToggleButton from "../../../shared/utils/ToggleButton";
 import { Modal, Box, IconButton } from "@mui/material";
 import loan from "../../../Assets/svg/dashboard/loan.svg";
+import { Link } from "react-router-dom";
 
 interface Project {
   _id: string;
@@ -42,6 +43,7 @@ const Home = () => {
       state: { projectId },
     });
   };
+
   const addFund = () => {
     navigate("/dashboard/wallet");
   };
@@ -123,9 +125,9 @@ const Home = () => {
             {profileDetails?.username || "user"}
           </p>
         </div>
-        <div>
+        <Link to="/dashboard/notification">
           <IoIosNotifications className="cursor-pointer fill-text4" size={27} />
-        </div>
+        </Link>
       </header>
 
       <section className="text-center text-text4">

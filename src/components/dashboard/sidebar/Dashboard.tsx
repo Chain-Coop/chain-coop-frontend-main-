@@ -22,7 +22,6 @@ import TransferWallet from "../wallet/transfer/main/Transfer";
 import AddFund from "../wallet/transfer/fundProject/AddFund";
 import ProfileTransactions from "../profile/profileDetails/transactions/Transactions";
 import Shares from "../shares/main/Shares";
-import ContactUs from "../contact/main/ContactUs";
 import VerifyTransaction from "../wallet/fund/verifyTransaction/VerifyTransaction";
 import ConfirmTransaction from "../wallet/transfer/fundContribution/confirmTransaction";
 import ProjectContentOverView from "../nestedproject/nested/ProjectContentOverView";
@@ -37,6 +36,7 @@ import ManageCards from "../contribution/manageCards/ManageCards";
 import ConfirmWithdrawal from "../contribution/withdrawContribution/ConfirmAmount";
 import ManageAccountCards from "../profile/profileDetails/accountsAndCard/ManageCards";
 import VerifyUnpaidContribution from "../contribution/unpaidContribution/VerifyUnpaidContribution";
+import Notification from "../notification/Notification";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -119,7 +119,7 @@ const Dashboard = () => {
             element={<ProfileTransactions />}
           />
           <Route path="profile/manage-cards" element={<ManageAccountCards />} />
-          <Route path="contact_us" element={<ContactUs />} />
+          <Route path="notification" element={<Notification />} />
         </Routes>
       </section>
       <aside className="hidden h-screen overflow-y-auto lg:block lg:w-[35%]">

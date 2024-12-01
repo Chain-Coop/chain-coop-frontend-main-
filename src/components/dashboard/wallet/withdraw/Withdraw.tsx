@@ -54,20 +54,15 @@ const Withdraw = () => {
 
   return (
     <main className="font-sans">
-      <header className="lg:mt-[2em]">
-        <DashboardHeader
-          className="relative cursor-pointer items-center"
-          onClick={handleBackClick}
-        >
-          <IoIosArrowBack
-            size={25}
-            className="absolute left-0 cursor-pointer"
-          />
-          <div className="flex flex-grow items-center justify-center">
-            <div className="tracking-wide">Withdraw</div>
-          </div>
-        </DashboardHeader>
-      </header>
+      <DashboardHeader
+        className="relative cursor-pointer items-center lg:mt-[2em]"
+        onClick={handleBackClick}
+      >
+        <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
+        <div className="flex flex-grow items-center justify-center">
+          <div className="tracking-wide">Withdraw</div>
+        </div>
+      </DashboardHeader>
       <section className="m-auto mt-[2em] h-full w-full">
         <div className="flex items-center justify-between px-4 sm:px-4 lg:px-6">
           <div className="flex items-center gap-3">
