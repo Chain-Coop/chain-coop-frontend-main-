@@ -199,9 +199,9 @@ const Security = () => {
       <Modal
         isOpen={isSuccessModalOpen}
         onClose={handleSuccessModalClose}
-        className="bg-white py-[2em]"
+        className="bg-white "
       >
-        <div className="mt-[2.5em] flex w-[25em] flex-col items-center gap-[1.5em]">
+        <div className="mt-[2.5em] flex w-[25em] flex-col items-center gap-[1.5em] py-[1em] lg:py-[2em]">
           <header>
             <h1 className="text-center text-2xl font-semibold">
               Reset Password
