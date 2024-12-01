@@ -22,7 +22,9 @@ const Notification = () => {
           className="absolute left-0 cursor-pointer transition-opacity hover:opacity-75"
         />
         <div className="flex flex-grow items-center justify-center">
-          <div className="text-base tracking-wide">Notification</div>
+          <div className="text-2xl tracking-wide md:text-3xl lg:text-xl">
+            Notification
+          </div>
         </div>
       </DashboardHeader>
 

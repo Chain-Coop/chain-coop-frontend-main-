@@ -23,7 +23,7 @@ const Wallet = () => {
     <main className="font-sans">
       <div className="mt-0 lg:mt-8">
         <header>
-          <DashboardHeader className="flex items-center justify-center">
+          <DashboardHeader className="flex items-center justify-center text-2xl tracking-wide md:text-3xl lg:text-xl">
             Chain Coop Wallet
           </DashboardHeader>
         </header>
