@@ -194,7 +194,7 @@ const Contribution: React.FC = () => {
                     onClick={() =>
                       navigateToContributionDetails(contribution._id)
                     }
-                    className="mx-auto flex w-full max-w-3xl flex-col gap-2 rounded-full border-2 border-gray-500 bg-white px-4 py-2 transition-all hover:bg-gray-50 md:px-6 md:py-3"
+                    className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-full border-2 border-gray-500 bg-white px-4 py-2 transition-all hover:bg-gray-50 md:px-6 md:py-3"
                   >
                     <div className="flex justify-between text-sm font-medium text-gray-500 md:text-base">
                       <p>Savings Name</p>

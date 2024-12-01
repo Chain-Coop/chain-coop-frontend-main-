@@ -14,7 +14,7 @@ const Notification = () => {
   return (
     <main className="min-h-screen w-full font-sans">
       <DashboardHeader
-        className="relative mt-2 cursor-pointer items-center md:mt-4 lg:mt-8"
+        className="relative cursor-pointer items-center md:mt-4 lg:mt-8"
         onClick={handleBackClick}
       >
         <IoIosArrowBack

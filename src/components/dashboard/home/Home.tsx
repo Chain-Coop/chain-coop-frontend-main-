@@ -126,7 +126,11 @@ const Home = () => {
           </p>
         </div>
         <Link to="/dashboard/notification">
-          <IoIosNotifications className="cursor-pointer fill-text4" size={27} />
+          <IoIosNotifications
+            title="notification"
+            className="cursor-pointer fill-text4"
+            size={27}
+          />
         </Link>
       </header>
 
