@@ -3,12 +3,6 @@ import authHeader from "./headers";
 
 const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
-const API_URL_PAY_CONTRIBUTION =
-  import.meta.env.VITE_REACT_APP_API_URL + "/contribution/pay";
-
-const API_URL_PAY_UNPAID_CONTRIBUTION =
-  import.meta.env.VITE_REACT_APP_API_URL + "/contribution/charge-unpaid";
-
 const API_URL_VERIFY_CONTRIBUTION =
   import.meta.env.VITE_REACT_APP_API_URL + `/contribution/verify-contribution`;
 
@@ -132,8 +126,9 @@ const GetUsersContributionHistory = async (page: number, limit: number) => {
 };
 
 const PayContribution = async (body: any) => {
+  const url = `${API_URL}/contribution/pay`;
   try {
-    const response = await axios.post(API_URL_PAY_CONTRIBUTION, body, {
+    const response = await axios.post(url, body, {
       headers: authHeader(),
     });
     return response?.data;
@@ -355,8 +350,9 @@ const CreateTransactionPin = async (body: any) => {
   }
 };
 const PayUnPaidContribution = async (body: any) => {
+  const url = `${API_URL}/contribution/charge-unpaid`;
   try {
-    const response = await axios.post(API_URL_PAY_UNPAID_CONTRIBUTION, body, {
+    const response = await axios.post(url, body, {
       headers: authHeader(),
     });
     return response?.data;
