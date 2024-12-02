@@ -5,17 +5,27 @@ import explore2 from "../../../Assets/png/home/prooject2.png";
 import explore3 from "../../../Assets/png/home/project3.png";
 import person1 from "../../../Assets/png/home/Co-op-PX1.png";
 import person2 from "../../../Assets/png/home/Co-op-PX2.png";
+import { motion } from "framer-motion";
 
 const Explore = () => {
   return (
     <main className="flex h-full items-center justify-center font-sans sm:mt-[1em] lg:mt-[5em]">
       <section className="lg:w-[89%] lg:px-[0]">
         <header className="py-8 text-center text-text4">
-          {" "}
-          <h1 className="mb-2 font-bold sm:text-[1em] md:text-2xl lg:text-3xl">
+          <motion.h1
+            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: -100 }}
+            transition={{ duration: 0.5 }}
+            className="mb-2 font-bold sm:text-[1em] md:text-2xl lg:text-3xl"
+          >
             Explore Our Investment Opportunities
-          </h1>
-          <div className="m-auto lg:w-[53%]">
+          </motion.h1>
+          <motion.div
+            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: -100 }}
+            transition={{ duration: 0.5 }}
+            className="m-auto lg:w-[53%]"
+          >
             <p className="font-sans lg:mt-[1.5em]">
               Access low risk options that prioritize keeping your money safe.
             </p>
@@ -24,7 +34,7 @@ const Explore = () => {
               businesses backed by the power of blockchain and cooperative
               ownership.
             </p>
-          </div>
+          </motion.div>
         </header>
 
         <div className="wrapper flex w-full flex-wrap items-center justify-center gap-[24px]">
