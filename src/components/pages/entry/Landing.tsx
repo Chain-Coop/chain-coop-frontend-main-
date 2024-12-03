@@ -232,7 +232,12 @@ const Landing = () => {
 
                 <div className="m-auto flex w-full flex-col gap-12 lg:w-[85%]">
                   <div className="flex flex-col justify-between lg:flex-row">
-                    <div className="flex w-full  flex-col gap-4 text-center lg:w-[45%]">
+                    <motion.div
+                      whileInView={{ opacity: 1, x: 0 }}
+                      initial={{ opacity: 0, x: -100 }}
+                      transition={{ duration: 0.5 }}
+                      className="flex w-full  flex-col gap-4 text-center lg:w-[45%]"
+                    >
                       <p className="text-center text-sm text-gray-500 sm:text-base">
                         At Chain Co-op, Members are innovators, tech
                         enthusiasts, Employees, and investors who believe in
@@ -243,7 +248,7 @@ const Landing = () => {
                         Anyone can join and contribute to shaping a transparent,
                         tech-powered cooperative economy.
                       </p>
-                    </div>
+                    </motion.div>
                     <div className="mt-6 w-full lg:mt-0 lg:w-[32%]">
                       <img
                         src={rectangle}
@@ -261,7 +266,12 @@ const Landing = () => {
                         className="h-auto w-full object-cover"
                       />
                     </div>
-                    <div className="mt-auto flex w-full flex-col gap-4 lg:w-[48%]">
+                    <motion.div
+                      whileInView={{ opacity: 1, x: 0 }}
+                      initial={{ opacity: 0, x: 100 }}
+                      transition={{ duration: 1 }}
+                      className="mt-auto flex w-full flex-col gap-4 lg:w-[48%]"
+                    >
                       <p className="text-center text-sm text-gray-500 sm:text-base lg:text-start">
                         At Chain Co-op, members are innovators, tech
                         enthusiasts, Employees, and investors who believe in
@@ -272,13 +282,13 @@ const Landing = () => {
                         Anyone can join and contribute to shipping a
                         transparent, tech-powered cooperative economy.
                       </p>
-                    </div>
+                    </motion.div>
                   </div>
                 </div>
               </div>
             </section>
           </section>
-          <div className=" mt-[2.5em]">
+          <motion.div className=" mt-[2.5em]">
             <h1 className="text-center text-[1.5em] font-bold sm:mt-2 sm:text-lg md:text-lg lg:text-[1.6em]">
               Become an Early Member
             </h1>
@@ -293,7 +303,7 @@ const Landing = () => {
                 on long-term financial success.
               </p>
             </div>
-          </div>
+          </motion.div>
           <div className="mt-[2em] flex flex-wrap items-center justify-center sm:flex-col sm:space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
             <div className="mt-[2em] flex flex-col items-center">
               <div className="flex flex-wrap justify-center sm:space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
