@@ -14,6 +14,7 @@ import innovation from "../../../Assets/png/home/innovation.png";
 import kyc from "../../../Assets/png/home/Co-op-PX4.png";
 import Footer from "../../common/Footer";
 import { earlyMemberCircleText } from "../../../data/Data";
+import { motion } from "framer-motion";
 
 const Landing = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -43,18 +44,33 @@ const Landing = () => {
         >
           <section className="relative mx-auto flex w-full flex-col items-center px-2 text-center lg:w-[74%] lg:py-[4em]">
             <div className="relative z-10 text-center">
-              <h1 className="text-[1.5em] font-semibold sm:mt-2 sm:text-[1.5em] lg:text-[2.5em]">
+              <motion.h1
+                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: -100 }}
+                transition={{ duration: 1.1 }}
+                className="text-[1.5em] font-semibold sm:mt-2 sm:text-[1.5em] lg:text-[2.5em]"
+              >
                 What We Do
-              </h1>
-              <p className="mt-4 text-xs text-gray-500 sm:text-sm lg:text-base">
+              </motion.h1>
+              <motion.p
+                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: -100 }}
+                transition={{ duration: 1 }}
+                className="mt-4 text-xs text-gray-500 sm:text-sm lg:text-base"
+              >
                 Chain Co-op is a worker-owned, tech driven cooperative that
                 facilitates sustainable investment through modern technology
-              </p>
-              <p className="mt-4 text-xs text-gray-500 sm:text-sm lg:text-base">
+              </motion.p>
+              <motion.p
+                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: -100 }}
+                transition={{ duration: 0.5 }}
+                className="mt-4 text-xs text-gray-500 sm:text-sm lg:text-base"
+              >
                 We partner with investors and like-minded business who aim to
                 grow through ethical, transparent, investment that contribute to
                 the cooperative shared economy
-              </p>
+              </motion.p>
             </div>
           </section>
 
@@ -68,7 +84,12 @@ const Landing = () => {
                 backgroundRepeat: "no-repeat",
               }}
             >
-              <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center sm:px-8 lg:px-[5em]">
+              <motion.div
+                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, x: -100 }}
+                transition={{ duration: 0.5 }}
+                className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center sm:px-8 lg:px-[5em]"
+              >
                 <h2 className="mb-4 text-xl font-semibold sm:text-2xl lg:text-3xl">
                   As an Investor
                 </h2>
@@ -81,7 +102,7 @@ const Landing = () => {
                   driven ventures, and you enjoy fixed, legally guaranteed
                   returns that promote long-term wealth growth.
                 </p>
-              </div>
+              </motion.div>
             </div>
 
             <div className="hidden justify-between py-[3em] lg:flex lg:w-1/3">
@@ -132,7 +153,12 @@ const Landing = () => {
                 backgroundRepeat: "no-repeat",
               }}
             >
-              <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center sm:px-8 lg:px-[5em]">
+              <motion.div
+                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, x: 100 }}
+                transition={{ duration: 1 }}
+                className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center sm:px-8 lg:px-[5em]"
+              >
                 <h2 className="mb-4 text-xl font-semibold sm:text-2xl lg:text-3xl">
                   As Employee
                 </h2>
@@ -148,12 +174,17 @@ const Landing = () => {
                 <p className="ml-5 mt-[1em] text-sm lg:text-base">
                   Your voice shapes the future of our cooperative
                 </p>
-              </div>
+              </motion.div>
             </div>
           </section>
 
           <div className="m-auto mt-8 flex w-full flex-col justify-between px-2 lg:mt-[12em] lg:w-[80%] lg:flex-row lg:px-0">
-            <div className="flex w-full flex-col gap-[2em] lg:w-[50%]">
+            <motion.div
+              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, x: -100 }}
+              transition={{ duration: 0.5 }}
+              className="flex w-full flex-col gap-[2em] lg:w-[50%]"
+            >
               <h2 className="text-center text-xl font-semibold sm:text-center lg:text-start">
                 How Our Membership Works
               </h2>
@@ -166,7 +197,7 @@ const Landing = () => {
                 annual dividends, and the ability to vote on strategic decisions
                 that shape the cooperative's future.
               </p>
-            </div>
+            </motion.div>
             <div className="mt-4 lg:mt-0">
               <img
                 src={kyc}
@@ -190,9 +221,14 @@ const Landing = () => {
           <section className="relative z-10 flex flex-col pt-8 lg:-mt-3 lg:flex-row">
             <section className="inset-0 mt-[2em] w-full">
               <div className="w-full bg-[#ece6f2] px-3  py-8 sm:py-12 lg:px-7">
-                <h2 className="mb-8 text-center text-[1.5em] font-bold lg:text-[2em]">
+                <motion.h2
+                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: -100 }}
+                  transition={{ duration: 0.5 }}
+                  className="mb-8 text-center text-[1.5em] font-bold lg:text-[2em]"
+                >
                   Who is a member?
-                </h2>
+                </motion.h2>
 
                 <div className="m-auto flex w-full flex-col gap-12 lg:w-[85%]">
                   <div className="flex flex-col justify-between lg:flex-row">
