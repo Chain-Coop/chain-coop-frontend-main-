@@ -347,6 +347,7 @@ const Landing = () => {
     window.scrollTo(0, 0);
     setIsLoaded(true);
   }, []);
+
   const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
     visible: {
