@@ -20,11 +20,9 @@ const ConfirmAmount = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Add state for the values with default
   const [amountInNaira, setAmountInNaira] = useState<number | null>(null);
   const [contributionId, setContributionId] = useState<string | null>(null);
 
-  // Validate and set the state values on component mount
   useEffect(() => {
     if (!location.state) {
       setError("Missing required information. Please try again.");
@@ -172,9 +170,9 @@ const ConfirmAmount = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        className="w-[90%] rounded-lg bg-white p-4 sm:w-[70%] md:w-[50%] lg:w-[25em]"
+        className="w-[90%] rounded-lg bg-white"
       >
-        <div className="flex w-full flex-col justify-center">
+        <div className="flex flex-col justify-center py-[1em] lg:w-[25em]">
           <img
             src={success}
             alt="Success Icon"

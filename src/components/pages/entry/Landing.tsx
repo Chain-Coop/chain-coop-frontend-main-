@@ -443,7 +443,6 @@ const Landing = () => {
             variants={staggerContainer}
             className="relative mx-auto flex w-full flex-col items-center px-2 text-center lg:w-[74%] lg:py-[4em]"
           >
-            {/* What We Do section */}
             <div className="relative z-10 text-center">
               <motion.h1
                 variants={fadeInUp}

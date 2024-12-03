@@ -280,7 +280,7 @@ const WithdrawContribution = () => {
                 Would you like to continue?
               </h2>
             </header>
-            <div className="mt-3 flex justify-center gap-[3em] lg:justify-between">
+            <div className="m-auto mt-3 flex justify-center gap-[3em] lg:w-[50%] lg:justify-between">
               <button
                 onClick={() => setIsModalOpen(false)}
                 className="rounded-md border-2 border-black px-3 py-1"

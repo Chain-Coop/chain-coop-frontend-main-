@@ -12,17 +12,6 @@ interface Project {
   createdAt: string;
 }
 
-const ProjectsSkeleton = () => (
-  <div className="mt-[1em] space-y-4">
-    <div className="animate-pulse">
-      <div className="h-48 rounded-xl bg-gray-200"></div>
-    </div>
-    <div className="animate-pulse">
-      <div className="h-48 rounded-xl bg-gray-200"></div>
-    </div>
-  </div>
-);
-
 const Right = () => {
   const { useProjects, loading } = useAllProjects();
   const navigate = useNavigate();
@@ -44,10 +33,6 @@ const Right = () => {
   }, [useProjects]);
 
   const renderProjects = React.useCallback(() => {
-    if (loading) {
-      return <ProjectsSkeleton />;
-    }
-
     if (!latestProjects?.length) {
       return null;
     }

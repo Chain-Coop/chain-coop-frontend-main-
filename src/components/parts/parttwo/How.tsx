@@ -2,15 +2,55 @@ import React from "react";
 import step1 from "../../../Assets/png/home/howto-step1.png";
 import step2 from "../../../Assets/png/home/howto-step2.png";
 import step3 from "../../../Assets/png/home/howto-step3.png";
+import { motion } from "framer-motion";
 
 const How = () => {
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3,
+      },
+    },
+  };
+
+  const articleVariant = {
+    hidden: { opacity: 0, x: -50 },
+    show: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
     <main className="m-auto mt-[3em] w-[100%] font-sans sm:px-[1em] lg:mt-[8em]">
       <header className="flex justify-center">
-        <h1 className="text-3xl font-bold">How to Get started</h1>
+        <motion.h1
+          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: -100 }}
+          transition={{ duration: 0.5 }}
+          className="text-3xl font-bold"
+        >
+          How to Get started
+        </motion.h1>
       </header>
-      <section className="mt-8 flex flex-col px-4 lg:flex-row lg:space-x-9">
-        <article className="relative my-4 flex w-full flex-col justify-between rounded-xl bg-how1 p-[3em] sm:h-[411px] md:h-[250px] lg:h-[411px] lg:w-1/3">
+      <motion.section
+        variants={container}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-50px" }}
+        className="mt-8 flex flex-col px-4 lg:flex-row lg:space-x-9"
+      >
+        <motion.article
+          variants={articleVariant}
+          whileHover={{ scale: 1.02 }}
+          className="relative my-4 flex w-full flex-col justify-between rounded-xl bg-how1 p-[3em] sm:h-[411px] md:h-[250px] lg:h-[411px] lg:w-1/3"
+        >
           <img
             src={step1}
             className="absolute inset-0 mx-auto self-center object-cover"
@@ -26,9 +66,13 @@ const How = () => {
               business growth.
             </p>
           </div>
-        </article>
+        </motion.article>
 
-        <article className="relative my-4 flex w-full flex-col justify-between rounded-xl bg-how2 p-[3em] sm:h-[411px] md:h-[250px] lg:h-[411px] lg:w-1/3">
+        <motion.article
+          variants={articleVariant}
+          whileHover={{ scale: 1.02 }}
+          className="relative my-4 flex w-full flex-col justify-between rounded-xl bg-how2 p-[3em] sm:h-[411px] md:h-[250px] lg:h-[411px] lg:w-1/3"
+        >
           <img
             src={step2}
             className="absolute inset-0 mx-auto self-center object-cover"
@@ -43,9 +87,13 @@ const How = () => {
               your membership card.
             </p>
           </div>
-        </article>
+        </motion.article>
 
-        <article className="relative my-4 flex w-full flex-col justify-between rounded-xl bg-how3 p-[3em] sm:h-[411px] md:h-[280px] lg:h-[411px] lg:w-1/3">
+        <motion.article
+          variants={articleVariant}
+          whileHover={{ scale: 1.02 }}
+          className="relative my-4 flex w-full flex-col justify-between rounded-xl bg-how3 p-[3em] sm:h-[411px] md:h-[280px] lg:h-[411px] lg:w-1/3"
+        >
           <img
             src={step3}
             className="absolute inset-0 mx-auto self-center object-cover"
@@ -61,8 +109,8 @@ const How = () => {
               portfolio.
             </p>
           </div>
-        </article>
-      </section>
+        </motion.article>
+      </motion.section>
     </main>
   );
 };

@@ -82,6 +82,7 @@ const VerifyAccount = () => {
           bankCode,
           amount,
           pin,
+          bankName,
         }),
       ).unwrap();
 

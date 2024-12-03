@@ -1,13 +1,11 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useUserProfile from "../../../../shared/Hooks/useUserProfile";
 import { DashboardHeader } from "../../../common/DashboardHeader";
 import Modal from "../../../common/Modal";
-import TransferModal from "./modal/TransferModal";
 import EmailAmountModal from "./modal/paystack/EmailAmountModal";
 import { ModalTypes } from "../../../../data/Data";
 import PaymentSuccessfull from "./modal/PaymentSuccessfull";
-import fund from "../../../../Assets/svg/dashboard/wallet/withdraw.svg";
 import debit from "../../../../Assets/svg/dashboard/wallet/debit.svg";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
@@ -25,14 +23,6 @@ const FundWallet: React.FC = () => {
   };
 
   const closeModal = () => setModalType(null);
-
-  const handleTransferContinue = () => {
-    openModal(ModalTypes.Upload);
-  };
-
-  const handleUploadContinue = () => {
-    openModal(ModalTypes.Final);
-  };
 
   return (
     <main className="font-sans">

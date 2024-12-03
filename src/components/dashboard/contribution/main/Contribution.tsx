@@ -160,7 +160,7 @@ const Contribution: React.FC = () => {
           {isContributionsLoading ? (
             <ContributionListSkeleton />
           ) : getContributions?.contributions?.length > 0 ? (
-            <div className="mt-4 flex h-auto flex-col gap-4 rounded-lg bg-text2 p-4 text-center md:mt-6 md:p-6">
+            <div className="mb-3 mt-4 flex h-auto flex-col gap-4 rounded-lg bg-text2 p-4 text-center md:mt-6 md:p-6">
               <div className="mb-3 flex items-center justify-between px-4">
                 <span className="text-sm font-medium text-white md:text-base">
                   Page {page} of {totalPages}

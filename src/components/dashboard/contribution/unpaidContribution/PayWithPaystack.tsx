@@ -13,7 +13,7 @@ const PayWithPaystack: React.FC<PaymentOptionProps> = ({
   isProcessing,
 }) => {
   return (
-    <div className="p- flex w-full flex-col gap-4 sm:w-[20em] sm:p-6 md:w-[25em] lg:w-[30em]">
+    <div className="flex w-full flex-col gap-4 sm:w-[20em] sm:py-10 md:w-[25em] lg:w-[30em]">
       <header className="text-center">
         <h1 className="text-base font-bold text-text2 md:text-lg">
           Fund Contribution
