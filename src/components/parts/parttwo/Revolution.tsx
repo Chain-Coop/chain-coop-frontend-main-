@@ -104,6 +104,7 @@
 // };
 
 // export default Revolution;
+
 import React from "react";
 import { motion } from "framer-motion";
 
@@ -195,7 +196,7 @@ const Revolution = () => {
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}
       variants={containerVariants}
-      className="mx-auto flex items-center justify-center font-sans sm:mt-[2em] sm:px-[7px] lg:mt-[5em] lg:px-0"
+      className="mx-auto mt-[2em] flex items-center justify-center px-[1px] font-sans lg:mt-[5em] lg:px-0"
     >
       <section className="w-full max-w-7xl">
         <motion.header
@@ -223,7 +224,7 @@ const Revolution = () => {
           </motion.article>
         </motion.header>
 
-        <motion.div variants={containerVariants} className="space-y-8">
+        <motion.div variants={containerVariants} className="space-y-8 px-4">
           {rectangleContent.map((content, index) => (
             <motion.section
               key={index}

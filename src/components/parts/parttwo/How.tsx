@@ -5,11 +5,11 @@ import step3 from "../../../Assets/png/home/howto-step3.png";
 
 const How = () => {
   return (
-    <main className="font-sans mt-[3em] w-[100%] m-auto sm:px-[1em] lg:mt-[8em]">
+    <main className="m-auto mt-[3em] w-[100%] font-sans sm:px-[1em] lg:mt-[8em]">
       <header className="flex justify-center">
         <h1 className="text-3xl font-bold">How to Get started</h1>
       </header>
-      <section className="mt-8 flex flex-col lg:flex-row lg:space-x-9">
+      <section className="mt-8 flex flex-col px-4 lg:flex-row lg:space-x-9">
         <article className="relative my-4 flex w-full flex-col justify-between rounded-xl bg-how1 p-[3em] sm:h-[411px] md:h-[250px] lg:h-[411px] lg:w-1/3">
           <img
             src={step1}
@@ -22,8 +22,8 @@ const How = () => {
             </h1>
             <p className="mt-4 font-sans font-medium text-howtext">
               Complete our KYC process for safe, compliant registration. Once
-              verified, you can invest in projects and drive sustainable business
-              growth.
+              verified, you can invest in projects and drive sustainable
+              business growth.
             </p>
           </div>
         </article>
@@ -56,8 +56,9 @@ const How = () => {
               Use the Coop <br /> Wallet
             </h1>
             <p className="mt-4 font-medium text-howtext">
-              Soon you will be able to use the Coop wallet to access the ecosystem,
-              invest in innovative business, and track your portfolio.
+              Soon you will be able to use the Coop wallet to access the
+              ecosystem, invest in innovative business, and track your
+              portfolio.
             </p>
           </div>
         </article>
