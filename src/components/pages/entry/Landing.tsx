@@ -347,14 +347,15 @@ const Landing = () => {
     window.scrollTo(0, 0);
     setIsLoaded(true);
   }, []);
-
-  // Animation variants
   const fadeInUp = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
     },
   };
 
@@ -362,25 +363,44 @@ const Landing = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { duration: 0.8, ease: "easeOut" },
+      transition: {
+        duration: 0.8,
+        ease: "easeOut",
+      },
     },
   };
 
-  const slideIn = {
+  const slideInLeft = {
     hidden: { x: -50, opacity: 0 },
     visible: {
       x: 0,
       opacity: 1,
-      transition: { duration: 0.6, ease: "easeOut" },
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
     },
   };
 
-  const staggerChildren = {
+  const slideInRight = {
+    hidden: { x: 50, opacity: 0 },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const staggerContainer = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
         staggerChildren: 0.2,
+        delayChildren: 0.1,
       },
     },
   };
@@ -390,7 +410,10 @@ const Landing = () => {
     visible: {
       scale: 1,
       opacity: 1,
-      transition: { duration: 0.5, ease: "easeOut" },
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
     },
   };
 
@@ -415,10 +438,11 @@ const Landing = () => {
           <motion.section
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={fadeInUp}
+            viewport={{ once: false, amount: 0.3 }}
+            variants={staggerContainer}
             className="relative mx-auto flex w-full flex-col items-center px-2 text-center lg:w-[74%] lg:py-[4em]"
           >
+            {/* What We Do section */}
             <div className="relative z-10 text-center">
               <motion.h1
                 variants={fadeInUp}
@@ -447,12 +471,12 @@ const Landing = () => {
           <motion.section
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={staggerChildren}
+            viewport={{ once: false, amount: 0.3 }}
+            variants={staggerContainer}
             className="relative z-10 flex w-full flex-col pt-8 text-white lg:-mt-1 lg:flex-row"
           >
             <motion.div
-              variants={slideIn}
+              variants={slideInLeft}
               className="relative h-[300px] w-full sm:mb-3 lg:h-[450px] lg:w-1/3"
               style={{
                 backgroundImage: `url(${imageRight})`,
@@ -535,7 +559,7 @@ const Landing = () => {
             </motion.div>
 
             <motion.div
-              variants={slideIn}
+              variants={slideInRight}
               className="relative h-[300px] w-full lg:h-[450px] lg:w-1/3"
               style={{
                 backgroundImage: `url(${imageLeft})`,
@@ -579,12 +603,12 @@ const Landing = () => {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={staggerChildren}
+            viewport={{ once: false, amount: 0.3 }}
+            variants={staggerContainer}
             className="m-auto mt-8 flex w-full flex-col justify-between px-2 lg:mt-[12em] lg:w-[80%] lg:flex-row lg:px-0"
           >
             <motion.div
-              variants={slideIn}
+              variants={slideInRight}
               className="flex w-full flex-col gap-[2em] lg:w-[50%]"
             >
               <h2 className="text-center text-xl font-semibold sm:text-center lg:text-start">
@@ -624,7 +648,7 @@ const Landing = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
-            variants={staggerChildren}
+            variants={staggerContainer}
             className="relative z-10 flex flex-col pt-8 lg:-mt-3 lg:flex-row"
           >
             <section className="inset-0 mt-[2em] w-full">
@@ -713,7 +737,7 @@ const Landing = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
-            variants={staggerChildren}
+            variants={staggerContainer}
             className="mt-[2.5em]"
           >
             <motion.h1
@@ -744,8 +768,8 @@ const Landing = () => {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={staggerChildren}
+            viewport={{ once: false, amount: 0.3 }}
+            variants={staggerContainer}
             className="mt-[2em] flex flex-wrap items-center justify-center sm:flex-col sm:space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0"
           >
             <div className="mt-[2em] flex flex-col items-center">
@@ -756,6 +780,9 @@ const Landing = () => {
                     <motion.div
                       key={index}
                       variants={circleAnimation}
+                      whileInView="visible"
+                      initial="hidden"
+                      viewport={{ once: false, amount: 0.3 }}
                       className="relative mt-4 flex h-[320px] w-[320px] items-center justify-center bg-[#e3d9ec] px-2 lg:mt-0"
                       style={{
                         borderRadius: "50%",
@@ -781,6 +808,9 @@ const Landing = () => {
               {earlyMemberCircleText.fourthBox && (
                 <motion.div
                   variants={circleAnimation}
+                  whileInView="visible"
+                  initial="hidden"
+                  viewport={{ once: false, amount: 0.3 }}
                   className="relative mt-6 flex h-[320px] w-[320px] items-center justify-center bg-[#e3d9ec] px-2"
                   style={{
                     borderRadius: "50%",
