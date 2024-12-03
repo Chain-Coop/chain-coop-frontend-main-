@@ -143,7 +143,7 @@ const VerifyAccount = () => {
         onClose={toggleModal}
         className="fle-col flex justify-center bg-white text-center"
       >
-        <div className="py-[1em] lg:py-[2em]">
+        <div className="py-[1em] lg:w-[25em] lg:py-[2em]">
           <header>
             <h1 className="text-2xl font-semibold">My Chain Co-op Pin</h1>
             <p className="mt-1 text-howtext">Enter your transaction pin.</p>

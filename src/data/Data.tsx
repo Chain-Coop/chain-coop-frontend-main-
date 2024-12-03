@@ -1,7 +1,6 @@
-import lagosStateLogo from "../Assets/jpg/home/lagos-state.jpg"
-import ministryOfCommerce from "../Assets/jpg/home/ministry-work.jpg"
-import synWave from "../Assets/jpg/home/syn-wave.jpg"
-import google from "../Assets/jpg/home/google.jpg"
+import lagosStateLogo from "../Assets/jpg/home/lagos-state.jpg";
+import ministryOfCommerce from "../Assets/jpg/home/ministry-work.jpg";
+import synWave from "../Assets/jpg/home/syn-wave.jpg";
 import person1 from "../Assets/png/home/Co-op-PX1.png";
 import person2 from "../Assets/png/home/Co-op-PX2.png";
 import person3 from "../Assets/png/home/Co-op-PX3.png";
@@ -121,7 +120,8 @@ export const becomeData = [
   },
   {
     title: "Shape the Future of Chain Co-op",
-    paragraph: "Vote on critical decisions, share your insights, and help guide growth of our worker-owned cooperative.",
+    paragraph:
+      "Vote on critical decisions, share your insights, and help guide growth of our worker-owned cooperative.",
   },
 ];
 
@@ -139,51 +139,38 @@ export const meetImage = [
 
 export const trustedPartners = [
   { src: lagosStateLogo },
-  {src: synWave},
-  {src: google},
+  { src: synWave },
   { src: ministryOfCommerce },
   { src: lagosStateLogo },
-  {src: synWave},
-  {src: google},
+  { src: synWave },
   { src: ministryOfCommerce },
   { src: lagosStateLogo },
-  {src: synWave},
-  {src: google},
+  { src: synWave },
   { src: ministryOfCommerce },
   { src: lagosStateLogo },
-  {src: synWave},
-  {src: google},
+  { src: synWave },
   { src: ministryOfCommerce },
   { src: lagosStateLogo },
-  {src: synWave},
-  {src: google},
+  { src: synWave },
   { src: ministryOfCommerce },
-  {src: synWave},
-  {src: google},
+  { src: synWave },
   { src: lagosStateLogo },
-  {src: synWave},
-  {src: google},
+  { src: synWave },
   { src: ministryOfCommerce },
   { src: lagosStateLogo },
-  {src: synWave},
-  {src: google},
+  { src: synWave },
   { src: ministryOfCommerce },
   { src: lagosStateLogo },
-  {src: synWave},
-  {src: google},
+  { src: synWave },
   { src: ministryOfCommerce },
   { src: lagosStateLogo },
-  {src: synWave},
-  {src: google},
+  { src: synWave },
   { src: ministryOfCommerce },
   { src: lagosStateLogo },
-  {src: synWave},
-  {src: google},
+  { src: synWave },
   { src: ministryOfCommerce },
-  {src: synWave},
-  {src: google},
+  { src: synWave },
 ];
-
 
 export const customerCardData = [
   {
@@ -243,7 +230,6 @@ export const MembershipFeePioneerCardData = [
   },
 ];
 
-
 export const CustomerFeeExplorerCardData = [
   {
     paragraph: "Installmentall payment is allowed till fee is completed",
@@ -255,7 +241,6 @@ export const CustomerFeeExplorerCardData = [
     paragraph: "Invest in the coop network business",
   },
 ];
-
 
 //Footer Links
 export const company = [
@@ -308,10 +293,10 @@ export const Explore = [
 
 export const Contacts = [
   {
-text: "Lets build a better future together!"
+    text: "Lets build a better future together!",
   },
   {
-    text: "Visit us at No. 9 Ogunlana Street, Ikosi"
+    text: "Visit us at No. 9 Ogunlana Street, Ikosi",
   },
   {
     text: "Ketu, Lagos, Nigeria",
@@ -329,23 +314,23 @@ export enum ModalTypes {
   Upload = "upload",
   Final = "final",
   Paystack = "paystack",
-  PaymentPlan="PaymentPlan",
-  ContributionPlan="ContributionPlan"
+  PaymentPlan = "PaymentPlan",
+  ContributionPlan = "ContributionPlan",
 }
 
 export const steps = [
-  { label: 'January',status:"Completed",comment:"Payment Made" },
-  { label: 'February',status:"Completedd",comment:"Payment Made" },
-  { label: 'March',status:"Completed",comment:"Payment Made" },
-  { label: 'April',status:"Completed",comment:"Payment Made" },
-  { label: 'May',status:"Completed",comment:"Payment Made" },
-  { label: 'June',status:"Completed",comment:"Payment Made" },
-  { label: 'July',status:"Completed",comment:"Payment Made" },
-  { label: 'August',status:"Completed",comment:"Payment Made" },
-  { label: 'September',status:"In Progress",comment:"Payment Pending" },
-  { label: 'October',status:"In Progress",comment:"Payment Pending" },
-  { label: 'November',status:"In Progress",comment:"Payment Pending" },
-  { label: 'December',status:"In Progress",comment:"Payment Pending" }
+  { label: "January", status: "Completed", comment: "Payment Made" },
+  { label: "February", status: "Completedd", comment: "Payment Made" },
+  { label: "March", status: "Completed", comment: "Payment Made" },
+  { label: "April", status: "Completed", comment: "Payment Made" },
+  { label: "May", status: "Completed", comment: "Payment Made" },
+  { label: "June", status: "Completed", comment: "Payment Made" },
+  { label: "July", status: "Completed", comment: "Payment Made" },
+  { label: "August", status: "Completed", comment: "Payment Made" },
+  { label: "September", status: "In Progress", comment: "Payment Pending" },
+  { label: "October", status: "In Progress", comment: "Payment Pending" },
+  { label: "November", status: "In Progress", comment: "Payment Pending" },
+  { label: "December", status: "In Progress", comment: "Payment Pending" },
 ];
 
 export const earlyMemberCircleText = {
@@ -371,7 +356,7 @@ export const earlyMemberCircleText = {
   },
 };
 
-export const  SavingOn = [
+export const SavingOn = [
   { text: "House Rent" },
   { text: "School Fees" },
   { text: "Food" },
@@ -379,8 +364,4 @@ export const  SavingOn = [
   { text: "Car" },
 ];
 
-export const Plan = [
-  { text: "Monthly" },
-  { text: "Daily" },
-];
-
+export const Plan = [{ text: "Monthly" }, { text: "Daily" }];
