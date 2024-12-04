@@ -19,6 +19,7 @@ interface Bank {
 const SelectAccount = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  console.log("loca", location);
   const dispatch: AppDispatch = useDispatch();
   const { useBanks } = useAllBanks();
 
@@ -44,6 +45,7 @@ const SelectAccount = () => {
 
   const verifyAccount = async () => {
     if (selectedBank) {
+      console.log("selected bank");
       setLoading(true);
       setError("");
       try {
@@ -51,6 +53,7 @@ const SelectAccount = () => {
           GetAccountName({
             accountNumber,
             bankCode: selectedBank.code,
+            bankName: selectedBank.name,
           }),
         ).unwrap();
 

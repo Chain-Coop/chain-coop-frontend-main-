@@ -14,7 +14,7 @@ import { AppDispatch } from "../../../../shared/redux/store";
 import { Alert } from "@mui/material";
 import success from "../../../../Assets/svg/auth/sucess.svg";
 import OtpInput from "../../../../shared/utils/OtpInput";
-
+import { RxDotFilled } from "react-icons/rx";
 interface BankAccount {
   accountNumber: string;
   bankCode: string;
@@ -150,9 +150,15 @@ const SelectBank = () => {
                       />
                     </div>
                     <h1 className="font-bold">{account.accountName}</h1>
-                    <p className="font-medium text-gray-600">
-                      {account.accountNumber}
-                    </p>
+                    <div className="flex items-center">
+                      <p className="font-medium text-gray-600">
+                        {account?.bankName}
+                      </p>
+                      <RxDotFilled className="text-gray-500" />
+                      <p className="font-medium text-gray-600">
+                        {account.accountNumber}
+                      </p>
+                    </div>
                     <Primary
                       onClick={() => toggleModal(account)}
                       className="flex w-[70%] justify-center bg-text2 py-3 text-white"
