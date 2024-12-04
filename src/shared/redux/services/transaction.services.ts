@@ -141,8 +141,12 @@ const PayContribution = async (body: any) => {
   }
 };
 
-const GetContributionDetailsById = async (contributionId: any) => {
-  const url = `${API_URL}/contribution/history?contributionId=${contributionId}`;
+const GetContributionDetailsById = async (
+  contributionId: any,
+  page: number,
+  limit: number,
+) => {
+  const url = `${API_URL}/contribution/history?contributionId=${contributionId}?page=${page}&limit=${limit}`;
   try {
     const response = await axios({
       url,
@@ -256,7 +260,6 @@ const GetAllUserFundedProject = async () => {
   const url = `${API_URL}/project/funded`;
   try {
     const response = await axios.get(url, { headers: authHeader() });
-    console.log("rr", response);
     return response.data;
   } catch (error: any) {
     handleApiError(error);

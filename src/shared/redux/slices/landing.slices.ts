@@ -36,7 +36,6 @@ export const JoinNewsLetter = createAsyncThunk(
   async (body: any, thunkAPI) => {
     try {
       const response = await LandingServices.JoinNewsLetter(body);
-      console.log("rrr", response);
       return response;
     } catch (error: any) {
       const message = error.msg;

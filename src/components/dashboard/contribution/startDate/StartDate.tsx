@@ -17,12 +17,11 @@ import {
   GetWalletBalance,
   PayContribution,
 } from "../../../../shared/redux/slices/transaction.slices";
-import { AppDispatch } from "../../../../shared/redux/store";
+import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
 import { useSelector } from "react-redux";
 import PaymentWithCard from "../paymentChoice.tsx/PaymentWithCard";
-import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
 import PayWithPaystack from "../paymentChoice.tsx/PayWithPaystack";
-import { Loader2 } from "lucide-react";
+import { AppDispatch } from "../../../../shared/redux/store";
 
 interface ContributionResponse {
   result: {
@@ -32,9 +31,11 @@ interface ContributionResponse {
 }
 
 const StartDate: React.FC = () => {
-  const [startDate, setStartDate] = useState(formatDate(new Date()));
+  const today = formatDate(new Date());
+  const startDate = today;
   const [endDate, setEndDate] = useState("");
   const [availableEndDates, setAvailableEndDates] = useState<string[]>([]);
+  const [customEndDate, setCustomEndDate] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,12 +43,20 @@ const StartDate: React.FC = () => {
     ContributionResponse["result"] | null
   >(null);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
-  const dispatch: AppDispatch = useAppDispatch();
+  const [useCustomDate, setUseCustomDate] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch: AppDispatch = useAppDispatch();
 
   const { purpose, plan, amount } = location.state || {};
+  const isDaily = plan?.toLowerCase() === "daily";
+  const isMonthly = plan?.toLowerCase() === "monthly";
+
+  const MIN_DAILY_DAYS = 7;
+  const MAX_YEARS = 2;
+  const PRESET_DAILY_INTERVALS = [7, 14, 30, 60, 90, 180, 365, 730];
+  const PRESET_MONTHLY_INTERVALS = Array.from({ length: 24 }, (_, i) => i + 1);
 
   useEffect(() => {
     dispatch(GetWalletBalance());
@@ -62,33 +71,123 @@ const StartDate: React.FC = () => {
     return date.toISOString().split("T")[0];
   }
 
+  function addDays(date: Date, days: number): Date {
+    const newDate = new Date(date);
+    newDate.setDate(date.getDate() + days);
+    return newDate;
+  }
+
+  function addMonths(date: Date, months: number): Date {
+    const newDate = new Date(date);
+    const targetMonth = newDate.getMonth() + months;
+    const year = newDate.getFullYear() + Math.floor(targetMonth / 12);
+    const month = targetMonth % 12;
+
+    newDate.setDate(1);
+    newDate.setFullYear(year);
+    newDate.setMonth(month);
+
+    const originalDay = date.getDate();
+    const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
+    newDate.setDate(Math.min(originalDay, lastDayOfMonth));
+
+    return newDate;
+  }
+
   const calculateAvailableEndDates = (startDateStr: string) => {
     if (!startDateStr) return [];
 
     const dates: string[] = [];
     const startDate = new Date(startDateStr);
 
-    for (let i = 1; i <= 12; i++) {
-      const endDate = new Date(startDate);
-      endDate.setMonth(startDate.getMonth() + i);
-
-      if (startDate.getDate() !== endDate.getDate()) {
-        endDate.setDate(0);
-      }
-
-      dates.push(formatDate(endDate));
+    if (isDaily) {
+      PRESET_DAILY_INTERVALS.forEach((days) => {
+        dates.push(formatDate(addDays(startDate, days)));
+      });
+    } else if (isMonthly) {
+      PRESET_MONTHLY_INTERVALS.forEach((months) => {
+        const endDate = addMonths(startDate, months);
+        dates.push(formatDate(endDate));
+      });
     }
 
     return dates;
   };
 
+  const getDateDifference = (start: string, end: string) => {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    if (isDaily) {
+      const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays === 1 ? "1 day" : `${diffDays} days`;
+    } else {
+      const diffMonths =
+        (endDate.getFullYear() - startDate.getFullYear()) * 12 +
+        (endDate.getMonth() - startDate.getMonth());
+
+      return `${diffMonths} ${diffMonths === 1 ? "month" : "months"}`;
+    }
+  };
+
+  const validateCustomEndDate = (customDate: string): boolean => {
+    if (!customDate) return false;
+
+    const start = new Date(startDate);
+    const end = new Date(customDate);
+
+    if (end <= start) {
+      setError("End date must be after start date");
+      return false;
+    }
+
+    const diffTime = Math.abs(end.getTime() - start.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (isDaily && diffDays < MIN_DAILY_DAYS) {
+      setError(`Minimum duration is ${MIN_DAILY_DAYS} days`);
+      return false;
+    }
+
+    const maxDate = addMonths(start, MAX_YEARS * 12);
+    if (end > maxDate) {
+      setError(`Maximum duration is ${MAX_YEARS} years`);
+      return false;
+    }
+
+    return true;
+  };
+
   useEffect(() => {
     const dates = calculateAvailableEndDates(startDate);
     setAvailableEndDates(dates);
+    setEndDate("");
+    setCustomEndDate("");
+    setUseCustomDate(false);
   }, [startDate]);
 
   const handleEndDateChange = (event: any) => {
-    setEndDate(event.target.value as string);
+    const value = event.target.value;
+    if (value === "custom" && isDaily) {
+      setUseCustomDate(true);
+      setEndDate("");
+    } else {
+      setUseCustomDate(false);
+      setEndDate(value);
+      setCustomEndDate("");
+    }
+    setError("");
+  };
+
+  const handleCustomEndDateChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const value = event.target.value;
+    setCustomEndDate(value);
+    if (validateCustomEndDate(value)) {
+      setError("");
+    }
   };
 
   const handleModalClose = () => {
@@ -99,27 +198,27 @@ const StartDate: React.FC = () => {
 
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
+
+    const finalEndDate = useCustomDate ? customEndDate : endDate;
+
+    if (!finalEndDate) {
+      setError("Please select or enter an end date.");
+      return;
+    }
+
+    if (useCustomDate && !validateCustomEndDate(customEndDate)) {
+      return;
+    }
+
     setLoading(true);
     setError("");
-
-    if (!endDate) {
-      setError("Please select an end date.");
-      setLoading(false);
-      return;
-    }
-
-    if (!availableEndDates.includes(endDate)) {
-      setError("Please select a valid monthly interval from the start date");
-      setLoading(false);
-      return;
-    }
 
     const body = {
       savingsCategory: purpose,
       contributionPlan: plan,
       amount,
       startDate,
-      endDate,
+      endDate: finalEndDate,
     };
 
     try {
@@ -166,6 +265,12 @@ const StartDate: React.FC = () => {
     }
   };
 
+  const formattedStartDate = new Date(startDate).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   return (
     <main className="pb-[1.5em] font-sans">
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
@@ -175,19 +280,15 @@ const StartDate: React.FC = () => {
         <header className="mt-[1.5em] flex flex-col justify-center text-center lg:mt-[3em]">
           <h1 className="text-center text-xl font-bold">{plan} Contribution</h1>
           <p className="mt-[1em] text-center font-medium">
-            You are about to save NGN{amount} {plan} into your contribution
-            amount
+            You are about to save NGN{amount} {plan.toLowerCase()} into your
+            contribution amount
           </p>
         </header>
         <div className="mt-[2em]">
-          <label className="mb-3 flex font-semibold">Start Date</label>
-          <div className="input mb-5 flex h-[4em] w-full items-center rounded-lg border-[1px] bg-gray-100 px-4 text-sm shadow-md">
-            {new Date(startDate).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </div>
+          <label className="mb-3 flex font-semibold">Start Date (Today)</label>
+          <p className="input mb-5 flex h-[4em] w-full items-center rounded-lg border-[1px] bg-gray-100 px-4 text-sm shadow-md">
+            {formattedStartDate}
+          </p>
         </div>
         <div className="mt-[2em]">
           <FormControl fullWidth>
@@ -197,7 +298,7 @@ const StartDate: React.FC = () => {
             <Select
               labelId="end-date-label"
               id="end-date-select"
-              value={endDate}
+              value={useCustomDate ? "custom" : endDate}
               label="Choose End Date"
               onChange={handleEndDateChange}
               className="mb-5"
@@ -217,18 +318,44 @@ const StartDate: React.FC = () => {
               <MenuItem value="">
                 <em>Select end date</em>
               </MenuItem>
-              {availableEndDates.map((date, index) => (
+              {availableEndDates.map((date) => (
                 <MenuItem key={date} value={date}>
-                  {new Date(date).toLocaleDateString("en-US", {
+                  {new Date(date)?.toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
                   })}{" "}
-                  ({index + 1} {index === 0 ? "month" : "months"})
+                  ({getDateDifference(startDate, date)})
                 </MenuItem>
               ))}
+              {isDaily && (
+                <MenuItem value="custom">
+                  <em>Set custom end date</em>
+                </MenuItem>
+              )}
             </Select>
           </FormControl>
+
+          {useCustomDate && isDaily && (
+            <div className="mt-4">
+              <label className="mb-2 block text-sm font-medium">
+                Custom End Date
+              </label>
+              <input
+                type="date"
+                value={customEndDate}
+                onChange={handleCustomEndDateChange}
+                min={formatDate(addDays(new Date(startDate), MIN_DAILY_DAYS))}
+                max={formatDate(addMonths(new Date(startDate), MAX_YEARS * 12))}
+                className="input mb-2 h-[4em] w-full rounded-lg border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
+              />
+              {customEndDate && (
+                <p className="text-sm text-gray-600">
+                  Duration: {getDateDifference(startDate, customEndDate)}
+                </p>
+              )}
+            </div>
+          )}
         </div>
         {error && (
           <Alert severity="error" className="mb-4 mt-4">
@@ -238,7 +365,7 @@ const StartDate: React.FC = () => {
         <div className="mt-[3em]">
           <Primary
             onClick={handleSubmit}
-            disabled={loading || !endDate}
+            disabled={loading || (!endDate && !customEndDate)}
             className="m-auto flex w-[80%] justify-center rounded-md bg-text2
               px-8 py-[1em] font-semibold
               text-white transition-all duration-300

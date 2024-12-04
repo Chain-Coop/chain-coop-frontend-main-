@@ -328,9 +328,20 @@ export const GetUsersContributionHistory = createAsyncThunk(
 
 export const GetContributionDetailsById = createAsyncThunk(
   "transaction/getContributionDetailsById",
-  async ({ contributionId }: { contributionId: any }) => {
-    const response =
-      await TransactionServices.GetContributionDetailsById(contributionId);
+  async ({
+    contributionId,
+    page,
+    limit,
+  }: {
+    contributionId: any;
+    page: number;
+    limit: number;
+  }) => {
+    const response = await TransactionServices.GetContributionDetailsById(
+      contributionId,
+      page,
+      limit,
+    );
     return response;
   },
 );
@@ -354,7 +365,6 @@ export const PayUnPaidContribution = createAsyncThunk(
   async (body: any, thunkAPI) => {
     try {
       const data = await TransactionServices.PayUnPaidContribution(body);
-      console.log("dd", data);
       return { landing: data };
     } catch (error: any) {
       const message = error.msg;
@@ -767,7 +777,6 @@ export const transactionSlice = createSlice({
         state.error = null;
       })
       .addCase(PayUnPaidContribution.fulfilled, (state, action) => {
-        console.log("Action payload", action.payload);
         state.fundUnPaidContribution = action.payload.landing;
       })
       .addCase(PayUnPaidContribution.rejected, (state) => {
