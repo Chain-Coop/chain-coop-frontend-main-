@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import useUserProfile from "../../../../shared/Hooks/useUserProfile";
 import user from "../../../../Assets/png/dashboard/avatar.png";
-import { IoIosArrowForward } from "react-icons/io";
+import tier from "../../../../Assets/svg/dashboard/tier.svg";
 import ReactLoading from "react-loading";
 
 const Avatar = () => {
@@ -63,9 +63,15 @@ const Avatar = () => {
             </label>
           </div>
           <div className="flex flex-col items-center gap-2 sm:items-start sm:gap-4">
-            <span className="text-lg font-semibold">
+            <span className="text-lg font-bold">
               {profileDetails?.username || "user"}
             </span>
+            <div className="flex items-center gap-1">
+              <div>
+                <img src={tier} alt="tier" className="w-5" />
+              </div>
+              <p className="font-bold">Tier 0</p>
+            </div>
           </div>
         </div>
         {/* <IoIosArrowForward
