@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { handleLogout } from "../../../../shared/utils/auth";
 import { IoIosNotifications } from "react-icons/io";
 import Avatar from "../avatar/Avatar";
@@ -14,12 +14,12 @@ const Profile = () => {
     <main className="font-sans">
       <section>
         <header className="flex h-[2.5em] w-full items-center justify-between bg-text2 px-[1.5em] font-sans text-xl font-semibold text-text5 lg:mt-[2em]">
-          <div>
+          <Link to="/dashboard/notification">
             <IoIosNotifications
               className="cursor-pointer fill-text3"
               size={27}
             />
-          </div>
+          </Link>
           <div>
             <h2>Profile</h2>
           </div>
