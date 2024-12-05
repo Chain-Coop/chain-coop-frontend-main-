@@ -146,7 +146,7 @@ const GetContributionDetailsById = async (
   page: number,
   limit: number,
 ) => {
-  const url = `${API_URL}/contribution/history?contributionId=${contributionId}?page=${page}&limit=${limit}`;
+  const url = `${API_URL}/contribution/history?contributionId=${contributionId}&page=${page}&limit=${limit}`;
   try {
     const response = await axios({
       url,
