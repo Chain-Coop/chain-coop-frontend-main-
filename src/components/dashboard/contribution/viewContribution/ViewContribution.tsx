@@ -617,7 +617,7 @@ const ViewContribution = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const ITEMS_PER_PAGE = 12;
+  const ITEMS_PER_PAGE = 3;
 
   const walletData = useSelector(
     (state: any) => state?.transaction?.getWalletBalance,
