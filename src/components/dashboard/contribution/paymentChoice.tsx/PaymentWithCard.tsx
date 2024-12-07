@@ -1,38 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  useAppSelector,
-  useAppDispatch,
-} from "../../../../shared/redux/reduxHooks";
+import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
 import { Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { AppDispatch } from "../../../../shared/redux/store";
 import {
-  GetWalletBalance,
+  GetWalletCard,
   PayContribution,
   VerifyFundContribution,
 } from "../../../../shared/redux/slices/transaction.slices";
 import { Alert, Snackbar } from "@mui/material";
+import useUserProfile, {
+  useUserCard,
+} from "../../../../shared/Hooks/useUserProfile";
 
 interface Card {
   number: string;
   authCode: string;
   isPreferred: boolean;
   failedAttempts: number;
-}
-
-interface WalletBalance {
-  hasWithdrawnBefore: boolean;
-  _id: string;
-  balance: number;
-  pin: string;
-  user: string;
-  isPinCreated: boolean;
-  bankAccounts: any[];
-  fundedProjects: any[];
-  allCards: Card[];
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
 }
 
 interface PaymentWithCardProps {
@@ -51,6 +36,8 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
   contributionData,
   onClose,
 }) => {
+  const { profileDetails } = useUserProfile();
+  const { useWalletCards } = useUserCard();
   const contributionId = contributionData.contributionId;
   const navigate = useNavigate();
   const dispatch: AppDispatch = useAppDispatch();
@@ -62,19 +49,10 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
   const cardsPerPage = 2;
 
   useEffect(() => {
-    dispatch(GetWalletBalance());
-    return () => {
-      setIsLoading(false);
-      setError(null);
-      setSelectedCard(null);
-    };
+    dispatch(GetWalletCard());
   }, [dispatch]);
 
-  const walletData = useAppSelector(
-    (state: any) => state?.transaction?.getWalletBalance,
-  ) as WalletBalance;
-
-  const cards = walletData?.allCards ?? [];
+  const cards = useWalletCards?.cards ?? [];
   const totalPages = Math.ceil(cards.length / cardsPerPage);
 
   const handlePayment = async (paymentType: "card" | "paystack") => {
@@ -94,7 +72,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
           PayContribution({
             ...basePayload,
             cardData: selectedCard.authCode,
-            userId: walletData?.user,
+            userId: profileDetails._id,
           }),
         ).unwrap();
 
@@ -114,13 +92,11 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
         if (paymentResponse?.landing?.payment?.info?.data) {
           onClose();
           window.location.href =
-            paymentResponse.landing.payment.info.data.authorization_url;
+            paymentResponse?.landing?.payment?.info?.data?.authorization_url;
         }
       }
     } catch (error: any) {
-      setError(
-        error?.message || "An error occurred during payment. Please try again.",
-      );
+      setError(error || "An error occurred during payment. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -210,7 +186,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
                     className="flex transition-transform duration-300 ease-in-out"
                     style={{ transform: `translateX(${translateX}%)` }}
                   >
-                    {getCurrentPageCards().map((card, idx) => (
+                    {getCurrentPageCards().map((card: any, idx: number) => (
                       <div
                         key={card.authCode}
                         className={`min-w-[100%] flex-shrink-0 p-1 sm:min-w-[50%] sm:p-2

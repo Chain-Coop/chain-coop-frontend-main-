@@ -14,14 +14,14 @@ import { Primary } from "../../../common/Button";
 import ReactLoading from "react-loading";
 import {
   CreateContributionPlan,
-  GetWalletBalance,
+  GetWalletCard,
   PayContribution,
 } from "../../../../shared/redux/slices/transaction.slices";
 import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
-import { useSelector } from "react-redux";
 import PaymentWithCard from "../paymentChoice.tsx/PaymentWithCard";
 import PayWithPaystack from "../paymentChoice.tsx/PayWithPaystack";
 import { AppDispatch } from "../../../../shared/redux/store";
+import { useUserCard } from "../../../../shared/Hooks/useUserProfile";
 
 interface ContributionResponse {
   result: {
@@ -31,6 +31,7 @@ interface ContributionResponse {
 }
 
 const StartDate: React.FC = () => {
+  const { useWalletCards } = useUserCard();
   const today = formatDate(new Date());
   const startDate = today;
   const [endDate, setEndDate] = useState("");
@@ -59,13 +60,10 @@ const StartDate: React.FC = () => {
   const PRESET_MONTHLY_INTERVALS = Array.from({ length: 24 }, (_, i) => i + 1);
 
   useEffect(() => {
-    dispatch(GetWalletBalance());
+    dispatch(GetWalletCard());
   }, [dispatch]);
 
-  const walletData = useSelector(
-    (state: any) => state?.transaction?.getWalletBalance,
-  );
-  const hasCards = walletData?.allCards?.length > 0;
+  const hasCards = useWalletCards?.cards ?? [];
 
   function formatDate(date: Date): string {
     return date.toISOString().split("T")[0];
