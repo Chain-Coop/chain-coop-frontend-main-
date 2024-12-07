@@ -19,19 +19,15 @@ import {
   GetWalletBalance,
 } from "../../../../shared/redux/slices/transaction.slices";
 import { DashboardHeader } from "../../../common/DashboardHeader";
-import useWalletBalance from "../../../../shared/Hooks/useBalance";
 import noCard from "../../../../Assets/png/dashboard/noCard.png";
 import arrow from "../../../../Assets/svg/dashboard/wallet/transfer-arrow.svg";
+import { useUserCard } from "../../../../shared/Hooks/useUserProfile";
 
 interface Card {
   number: string;
   authCode: string;
   isPreferred: boolean;
   failedAttempts: number;
-}
-
-interface WalletBalance {
-  allCards: Card[];
 }
 
 const cardColors = [
@@ -42,7 +38,7 @@ const cardColors = [
 ];
 
 const ManageCards = () => {
-  const { cards } = useWalletBalance();
+  const { useWalletCards } = useUserCard();
   const navigate = useNavigate();
   const dispatch: AppDispatch = useAppDispatch();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -109,10 +105,10 @@ const ManageCards = () => {
         </header>
 
         <div className="mt-4 flex flex-col gap-6">
-          {cards && cards.length > 0 ? (
-            cards.map((card: Card, idx: number) => (
+          {useWalletCards && useWalletCards?.cards?.length > 0 ? (
+            useWalletCards?.cards?.map((card: Card, idx: number) => (
               <div
-                key={card.authCode}
+                key={card?.authCode}
                 className="flex items-center gap-4 sm:gap-6"
               >
                 <div
@@ -121,7 +117,7 @@ const ManageCards = () => {
               ${cardColors[idx % cardColors.length].text}`}
                 >
                   <p className="text-sm sm:text-base">
-                    *** *** *** {card.number}
+                    *** *** *** {card?.number}
                   </p>
                   <p className="whitespace-nowrap text-xs sm:text-sm">
                     MasterCard/Mar 2026
@@ -130,7 +126,7 @@ const ManageCards = () => {
 
                 <div className="flex gap-2 sm:gap-4">
                   <button
-                    onClick={() => openDeleteConfirmation(card.authCode)}
+                    onClick={() => openDeleteConfirmation(card?.authCode)}
                     className="flex items-center gap-2 rounded-md border border-[#F24822] bg-[#FDEEEC] px-3 py-1 text-xs text-[#F24822] sm:text-sm"
                   >
                     <img src={trash} alt="trash_img" className="w-4 sm:w-5" />

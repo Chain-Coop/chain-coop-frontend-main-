@@ -27,6 +27,16 @@ const GetWalletBalance = async () => {
   }
 };
 
+const GetWalletCard = async () => {
+  const url = `${API_URL}/wallet/cards`;
+  try {
+    const response = await axios.get(url, { headers: authHeader() });
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
 const FundWallet = async (body: any) => {
   const url = `${API_URL}/wallet/fund-wallet`;
   try {
@@ -428,6 +438,7 @@ const TransactionServices = {
   GetUnPaidBalance,
   GeneratePinOTP,
   VerifyUnpaidFundContribution,
+  GetWalletCard,
 };
 
 export default TransactionServices;

@@ -54,6 +54,18 @@ export const GetWalletBalance = createAsyncThunk(
   },
 );
 
+export const GetWalletCard = createAsyncThunk(
+  "transaction/getWalletCard",
+  async (_, thunkAPI) => {
+    try {
+      const data = await TransactionServices.GetWalletCard();
+      return { transaction: data };
+    } catch (error: any) {
+      return handleAsyncError(error, thunkAPI);
+    }
+  },
+);
+
 export const GetContributionBalance = createAsyncThunk(
   "transaction/getContributionBalance",
   async (_, thunkAPI) => {
@@ -400,6 +412,7 @@ export const GetUnPaidBalance = createAsyncThunk(
 
 interface TransactionState {
   getWalletBalance: any | null;
+  getWalletCard: any | null;
   getUnPaidContributionBalance: any | null;
   getContributionBalance: any | null;
   getUsersTransaction: any | null;
@@ -432,6 +445,7 @@ interface TransactionState {
 
 const initialState: TransactionState = {
   getWalletBalance: null,
+  getWalletCard: null,
   getUnPaidContributionBalance: null,
   getContributionBalance: null,
   getUsersTransaction: null,
@@ -483,6 +497,16 @@ export const transactionSlice = createSlice({
       )
       .addCase(GetWalletBalance.rejected, (state) => {
         state.getWalletBalance = null;
+      })
+
+      .addCase(
+        GetWalletCard.fulfilled,
+        (state, action: PayloadAction<{ transaction: any }>) => {
+          state.getWalletCard = action.payload.transaction;
+        },
+      )
+      .addCase(GetWalletCard.rejected, (state) => {
+        state.getWalletCard = null;
       })
 
       .addCase(GetContributionBalance.pending, (state) => {

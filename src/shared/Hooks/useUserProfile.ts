@@ -9,6 +9,7 @@ import {
   GetAllUserFundedProject,
   GetProposal,
   GetUsersContributionHistory,
+  GetWalletCard,
 } from "../redux/slices/transaction.slices";
 
 enum UploadFields {
@@ -231,4 +232,31 @@ export const useUserContributionHistory = (page: number, limit: number) => {
     isLoading: loading,
     error,
   };
+};
+
+export const useUserCard = () => {
+  const dispatch: AppDispatch = useDispatch();
+
+  const useWalletCards = useSelector(
+    (state: any) => state?.transaction?.getWalletCard,
+  );
+
+  const loading = useSelector((state: any) => state?.transaction?.loading);
+
+  const userToken = sessionStorage.getItem("userData");
+
+  useEffect(() => {
+    if (userToken) {
+      dispatch(GetWalletCard())
+        .unwrap()
+        .catch((error: any) => {
+          const errorMessage = error.message;
+          dispatch(setMessage(errorMessage));
+        });
+    } else {
+      dispatch(setMessage("Token not found"));
+    }
+  }, [dispatch, userToken]);
+
+  return { useWalletCards, loading };
 };
