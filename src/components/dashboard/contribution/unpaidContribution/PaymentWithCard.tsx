@@ -108,6 +108,14 @@ const PaymentWithCard = ({ contributionData, onClose }: any) => {
     }
   };
 
+  const formatCardNumber = (last4: string) => {
+    return `**** **** **** ${last4}`;
+  };
+
+  const formatExpiryDate = (month: string, year: string) => {
+    return `${month.padStart(2, "0")}/${year.slice(-2)}`;
+  };
+
   return (
     <main className="mx-auto max-w-2xl font-sans">
       <Snackbar
@@ -186,11 +194,20 @@ const PaymentWithCard = ({ contributionData, onClose }: any) => {
                             <div className="flex items-start justify-between">
                               <div className="flex flex-col gap-2 sm:gap-3">
                                 <p className="text-sm sm:text-base">
-                                  *** *** *** {card.number}
+                                  {formatCardNumber(card?.last4)}
                                 </p>
-                                <p className="text-sm sm:text-base">
-                                  MasterCard/Mar 2026
-                                </p>
+                                <div className="mt-2 flex items-center justify-between">
+                                  <p className="text-xs sm:text-sm">
+                                    {card.brand.toUpperCase()} • {card?.bank}
+                                  </p>
+                                  {/* <p className="text-xs sm:text-sm">
+                                    Expires{" "}
+                                    {formatExpiryDate(
+                                      card?.exp_month,
+                                      card?.exp_year,
+                                    )}
+                                  </p> */}
+                                </div>
                               </div>
                               <div
                                 className={`flex h-3 w-3 items-center justify-center rounded-full border-2 border-white sm:h-4 sm:w-4

@@ -13,12 +13,13 @@ import useUserProfile, {
 } from "../../../../shared/Hooks/useUserProfile";
 
 interface Card {
-  number: string;
-  authCode: string;
-  isPreferred: boolean;
-  failedAttempts: number;
   authorization_code: string;
-  last4: number;
+  last4: string;
+  exp_month: string;
+  exp_year: string;
+  card_type: string;
+  bank: string;
+  brand: string;
 }
 
 interface PaymentWithCardProps {
@@ -116,6 +117,14 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
     setError(null);
   };
 
+  const formatCardNumber = (last4: string) => {
+    return `**** **** **** ${last4}`;
+  };
+
+  const formatExpiryDate = (month: string, year: string) => {
+    return `${month.padStart(2, "0")}/${year.slice(-2)}`;
+  };
+
   return (
     <main className="mx-auto max-w-2xl font-sans">
       <Snackbar
@@ -187,18 +196,27 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
                             className={`h-full cursor-pointer rounded-lg p-3 transition-all sm:p-5
                             ${cardColors[idx % cardColors.length].bg}
                             ${cardColors[idx % cardColors.length].text}
-                            ${selectedCard?.authCode === card.authCode ? "ring-2 ring-white" : ""}
+                            ${selectedCard?.authorization_code === card.authorization_code ? "ring-2 ring-white" : ""}
                           `}
                             onClick={() => handleCardSelect(card)}
                           >
                             <div className="flex items-start justify-between">
                               <div className="flex flex-col gap-2 sm:gap-3">
                                 <p className="text-sm sm:text-base">
-                                  *** *** *** {card.number}
+                                  {formatCardNumber(card?.last4)}
                                 </p>
-                                <p className="text-sm sm:text-base">
-                                  MasterCard/Mar 2026
-                                </p>
+                                <div className="mt-2 flex items-center justify-between">
+                                  <p className="text-xs sm:text-sm">
+                                    {card.brand.toUpperCase()} • {card?.bank}
+                                  </p>
+                                  {/* <p className="text-xs sm:text-sm">
+                                    Expires{" "}
+                                    {formatExpiryDate(
+                                      card?.exp_month,
+                                      card?.exp_year,
+                                    )}
+                                  </p> */}
+                                </div>
                               </div>
                               <div
                                 className={`flex h-3 w-3 items-center justify-center rounded-full border-2 border-white sm:h-4 sm:w-4

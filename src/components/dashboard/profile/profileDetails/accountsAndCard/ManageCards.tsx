@@ -20,6 +20,7 @@ import { useUserCard } from "../../../../../shared/Hooks/useUserProfile";
 import { DashboardHeader } from "../../../../common/DashboardHeader";
 
 import trash from "../../../../../Assets/svg/dashboard/contribution/trash.svg";
+import defaultCard from "../../../../../Assets/svg/dashboard/contribution/default.svg";
 import noCard from "../../../../../Assets/png/dashboard/noCard.png";
 import arrow from "../../../../../Assets/svg/dashboard/wallet/transfer-arrow.svg";
 
@@ -141,6 +142,13 @@ const ManageCards = () => {
                   <img src={trash} alt="Delete" className="w-4 sm:w-5" />
                   <span>Delete Card</span>
                 </button>
+                {/* <button
+                  onClick={() => openDeleteConfirmation(card)}
+                  className="flex items-center gap-2 rounded-md border border-[#F24822] bg-[#FDEEEC] px-3 py-1 text-xs text-[#F24822] sm:text-sm"
+                >
+                  <img src={defaultCard} alt="Delete" className="w-4 sm:w-5" />
+                  <span>Set as Default</span>
+                </button> */}
               </div>
             ))
           ) : (
