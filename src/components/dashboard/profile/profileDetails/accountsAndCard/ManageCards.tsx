@@ -115,17 +115,17 @@ const ManageCards = () => {
             useWalletCards.cards.map((card: Card, idx: number) => (
               <div
                 key={card.authorization_code}
-                className="flex items-center gap-4 sm:gap-6"
+                className="flex w-full flex-col items-center gap-4 sm:flex-row sm:gap-6"
               >
                 <div
-                  className={`w-[50%] cursor-pointer rounded-lg p-6 transition-all
-                    ${cardColors[idx % cardColors.length].bg}
-                    ${cardColors[idx % cardColors.length].text}`}
+                  className={`w-full cursor-pointer rounded-lg p-4 transition-all sm:w-[50%] sm:p-6
+          ${cardColors[idx % cardColors.length].bg}
+          ${cardColors[idx % cardColors.length].text}`}
                 >
                   <p className="text-sm sm:text-base">
                     {formatCardNumber(card.last4)}
                   </p>
-                  <div className="mt-2 flex items-center justify-between">
+                  <div className="mt-2 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
                     <p className="text-xs sm:text-sm">
                       {card.brand.toUpperCase()} • {card.bank}
                     </p>
@@ -137,18 +137,11 @@ const ManageCards = () => {
 
                 <button
                   onClick={() => openDeleteConfirmation(card)}
-                  className="flex items-center gap-2 rounded-md border border-[#F24822] bg-[#FDEEEC] px-3 py-1 text-xs text-[#F24822] sm:text-sm"
+                  className="flex w-full items-center justify-center gap-2 rounded-md border border-[#F24822] bg-[#FDEEEC] px-3 py-2 text-xs text-[#F24822] sm:w-auto sm:text-sm"
                 >
                   <img src={trash} alt="Delete" className="w-4 sm:w-5" />
                   <span>Delete Card</span>
                 </button>
-                {/* <button
-                  onClick={() => openDeleteConfirmation(card)}
-                  className="flex items-center gap-2 rounded-md border border-[#F24822] bg-[#FDEEEC] px-3 py-1 text-xs text-[#F24822] sm:text-sm"
-                >
-                  <img src={defaultCard} alt="Delete" className="w-4 sm:w-5" />
-                  <span>Set as Default</span>
-                </button> */}
               </div>
             ))
           ) : (
