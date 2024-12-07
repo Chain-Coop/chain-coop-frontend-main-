@@ -3,12 +3,6 @@ import authHeader from "./headers";
 
 const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
-const API_URL_VERIFY_CONTRIBUTION =
-  import.meta.env.VITE_REACT_APP_API_URL + `/contribution/verify-contribution`;
-
-const API_URL_VERIFY_UNPAID_CONTRIBUTION =
-  import.meta.env.VITE_REACT_APP_API_URL + `/contribution/verify-unpaid`;
-
 const handleApiError = (error: any) => {
   if (!error.response) {
     throw new Error("Network Error: Please check your internet connection.");
@@ -170,48 +164,6 @@ const GetContributionDetailsById = async (
     return response.data;
   } catch (error) {
     throw error;
-  }
-};
-
-const VerifyFundContribution = async (params: any) => {
-  try {
-    const token = sessionStorage.getItem("userData");
-    if (!token) {
-      throw new Error("Authorization token not found.");
-    }
-    const queryString = `reference=${params.reference}${params.addCard ? "&addCard=true" : ""}`;
-    const response = await axios.get(
-      `${API_URL_VERIFY_CONTRIBUTION}?${queryString}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-    return response?.data;
-  } catch (error: any) {
-    handleApiError(error);
-  }
-};
-
-const VerifyUnpaidFundContribution = async (params: any) => {
-  try {
-    const token = sessionStorage.getItem("userData");
-    if (!token) {
-      throw new Error("Authorization token not found.");
-    }
-    const queryString = `reference=${params.reference}${params.addCard ? "&addCard=true" : ""}`;
-    const response = await axios.get(
-      `${API_URL_VERIFY_UNPAID_CONTRIBUTION}?${queryString}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-    return response?.data;
-  } catch (error: any) {
-    handleApiError(error);
   }
 };
 
@@ -429,7 +381,6 @@ const TransactionServices = {
   WithdrawalFromWallet,
   GetAllUserFundedProject,
   GetUsersContributionHistory,
-  VerifyFundContribution,
   GetContributionDetailsById,
   PayContribution,
   WithdrawalFromContribution,
@@ -437,7 +388,6 @@ const TransactionServices = {
   deleteCard,
   GetUnPaidBalance,
   GeneratePinOTP,
-  VerifyUnpaidFundContribution,
   GetWalletCard,
 };
 

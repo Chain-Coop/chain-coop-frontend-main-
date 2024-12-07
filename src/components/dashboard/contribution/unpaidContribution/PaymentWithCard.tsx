@@ -7,32 +7,19 @@ import {
 import { Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { AppDispatch } from "../../../../shared/redux/store";
 import {
-  GetWalletBalance,
+  GetWalletCard,
   PayUnPaidContribution,
-  verifyUnpaidContribution,
 } from "../../../../shared/redux/slices/transaction.slices";
 import { Alert, Snackbar } from "@mui/material";
+import { useUserCard } from "../../../../shared/Hooks/useUserProfile";
 
 interface Card {
   number: string;
   authCode: string;
   isPreferred: boolean;
   failedAttempts: number;
-}
-
-interface WalletBalance {
-  hasWithdrawnBefore: boolean;
-  _id: string;
-  balance: number;
-  pin: string;
-  user: string;
-  isPinCreated: boolean;
-  bankAccounts: any[];
-  fundedProjects: any[];
-  allCards: Card[];
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
+  authorization_code: string;
+  last4: number;
 }
 
 const cardColors = [
@@ -42,7 +29,8 @@ const cardColors = [
   { bg: "bg-gradient-to-r from-emerald-500 to-teal-500", text: "text-white" },
 ];
 
-const PaymentWithCard = ({ contributionData }: any) => {
+const PaymentWithCard = ({ contributionData, onClose }: any) => {
+  const { useWalletCards } = useUserCard();
   const contributionId = contributionData;
   const navigate = useNavigate();
   const dispatch: AppDispatch = useAppDispatch();
@@ -54,14 +42,10 @@ const PaymentWithCard = ({ contributionData }: any) => {
   const cardsPerPage = window.innerWidth >= 640 ? 2 : 1;
 
   useEffect(() => {
-    dispatch(GetWalletBalance());
+    dispatch(GetWalletCard());
   }, [dispatch]);
 
-  const walletData = useAppSelector(
-    (state: any) => state?.transaction?.getWalletBalance,
-  ) as WalletBalance;
-
-  const cards = walletData?.allCards ?? [];
+  const cards = useWalletCards?.cards ?? [];
   const totalPages = Math.ceil(cards.length / cardsPerPage);
 
   const handlePayment = async (paymentType: "card" | "paystack") => {
@@ -74,26 +58,16 @@ const PaymentWithCard = ({ contributionData }: any) => {
         paymentType,
       };
 
-      let paymentResponse, verificationResponse;
+      let paymentResponse;
       if (paymentType === "card" && selectedCard) {
         paymentResponse = await dispatch(
           PayUnPaidContribution({
             ...basePayload,
-            cardData: selectedCard.authCode,
+            cardData: selectedCard.authorization_code,
           }),
         ).unwrap();
-
-        verificationResponse = await dispatch(
-          verifyUnpaidContribution({
-            reference: paymentResponse.landing.charge.reference,
-          }),
-        ).unwrap();
-
-        if (verificationResponse?.transaction?.statusCode === 200) {
-          navigate("/dashboard/contribution");
-        } else {
-          throw new Error("Payment verification failed. Please try again.");
-        }
+        onClose();
+        navigate("/dashboard/contribution");
       } else {
         paymentResponse = await dispatch(
           PayUnPaidContribution(basePayload),
@@ -132,11 +106,6 @@ const PaymentWithCard = ({ contributionData }: any) => {
       setCurrentPage(currentPage - 1);
       setTranslateX(-100 * (currentPage - 1));
     }
-  };
-
-  const getCurrentPageCards = () => {
-    const startIndex = currentPage * cardsPerPage;
-    return cards.slice(startIndex, startIndex + cardsPerPage);
   };
 
   return (
@@ -197,7 +166,7 @@ const PaymentWithCard = ({ contributionData }: any) => {
                       className="flex transition-transform duration-300 ease-in-out"
                       style={{ transform: `translateX(${translateX}%)` }}
                     >
-                      {cards.map((card, idx) => (
+                      {cards.map((card: any, idx: number) => (
                         <div
                           key={card.authCode}
                           className="w-full px-2 sm:w-1/2"
@@ -225,10 +194,11 @@ const PaymentWithCard = ({ contributionData }: any) => {
                               </div>
                               <div
                                 className={`flex h-3 w-3 items-center justify-center rounded-full border-2 border-white sm:h-4 sm:w-4
-                                ${selectedCard?.authCode === card.authCode ? "bg-white" : "bg-transparent"}
+                                ${selectedCard?.authorization_code === card.authorization_code ? "bg-white" : "bg-transparent"}
                               `}
                               >
-                                {selectedCard?.authCode === card.authCode && (
+                                {selectedCard?.authCode ===
+                                  card.authorization_code && (
                                   <div className="h-1.5 w-1.5 rounded-full bg-current sm:h-2 sm:w-2" />
                                 )}
                               </div>
@@ -255,7 +225,7 @@ const PaymentWithCard = ({ contributionData }: any) => {
               {selectedCard ? (
                 <div className="flex w-full flex-col gap-2">
                   <p className="text-center text-xs text-gray-600 sm:text-sm">
-                    Selected card ending in {selectedCard.number}
+                    Selected card ending in {selectedCard.last4}
                   </p>
                   <button
                     onClick={() => handlePayment("card")}
