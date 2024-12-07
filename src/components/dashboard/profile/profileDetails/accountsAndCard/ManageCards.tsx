@@ -327,14 +327,23 @@ const ManageCards = () => {
                 className="flex flex-col items-start gap-4 sm:flex-row sm:items-center"
               >
                 <div
-                  className={`w-full rounded-lg p-6 transition-all sm:w-[60%]
+                  className={`w-full rounded-lg p-4 transition-all sm:w-[60%] sm:p-6
                     ${cardColors[idx % cardColors.length].bg}
                     ${cardColors[idx % cardColors.length].text}`}
                 >
-                  <p className="mb-2 text-base sm:text-lg">
-                    {formatCardNumber(card.last4)}
-                  </p>
-                  <div className="flex flex-col justify-between gap-2 sm:flex-row">
+                  <div className="mb-3 flex items-center justify-between">
+                    <p className="text-base sm:text-lg">
+                      {formatCardNumber(card.last4)}
+                    </p>
+                    <button
+                      onClick={() => openDeleteConfirmation(card)}
+                      className="flex items-center gap-2 rounded-md border border-white bg-white/10 px-3 py-1 text-xs text-white backdrop-blur-sm sm:hidden"
+                    >
+                      <img src={trash} alt="Delete" className="w-4" />
+                      <span>Delete</span>
+                    </button>
+                  </div>
+                  <div className="flex items-center justify-between">
                     <p className="text-sm">
                       {card.brand.toUpperCase()} • {card.bank}
                     </p>
@@ -346,9 +355,9 @@ const ManageCards = () => {
 
                 <button
                   onClick={() => openDeleteConfirmation(card)}
-                  className="flex items-center gap-2 rounded-md border border-[#F24822] bg-[#FDEEEC] px-3 py-1 text-xs text-[#F24822] transition-colors hover:bg-[#fce0dc] sm:text-sm"
+                  className="hidden items-center gap-2 rounded-md border border-[#F24822] bg-[#FDEEEC] px-3 py-1 text-sm text-[#F24822] transition-colors hover:bg-[#fce0dc] sm:flex"
                 >
-                  <img src={trash} alt="Delete" className="w-4 sm:w-5" />
+                  <img src={trash} alt="Delete" className="w-5" />
                   <span>Delete Card</span>
                 </button>
               </div>
