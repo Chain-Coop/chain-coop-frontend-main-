@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import bell from "../../../../Assets/png/dashboard/notification.png";
 import { useAllNotification } from "../../../../shared/Hooks/useUserProfile";
+import { GoDotFill } from "react-icons/go";
 
 const NotificationSkeleton = () => (
   <div className="animate-pulse space-y-4">
@@ -55,14 +56,12 @@ const AllNotification = () => {
   if (loading && isInitialLoad) {
     return (
       <div className="space-y-4">
-        {[...Array(3)].map((_, index) => (
-          <NotificationSkeleton key={index} />
-        ))}
+        {[...Array(3)]?.map((_, index) => <NotificationSkeleton key={index} />)}
       </div>
     );
   }
 
-  if (!updates || updates.length === 0) {
+  if (!updates || updates?.length === 0) {
     return (
       <section className="mx-auto mt-8 max-w-4xl p-4 md:mt-12 md:p-6 lg:mt-16 lg:p-8">
         <div className="flex flex-col items-center gap-4 px-0 text-center md:gap-6 lg:gap-8">
@@ -91,25 +90,25 @@ const AllNotification = () => {
     <main className="h-auto space-y-4 font-sans">
       {updates.map((notification: any, index: number) => (
         <section
-          key={notification._id}
+          key={notification?._id}
           className="flex flex-col gap-[1em] rounded-lg bg-gray-100 px-[1em] py-[1em]"
         >
           <div className="flex items-start gap-4">
             <div className="flex-shrink-0">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white font-semibold text-black">
-                {getInitial(notification.title)}
+              <div className="flex h-11 w-9 items-center justify-center rounded-full bg-white text-lg font-bold text-black">
+                {getInitial(notification?.title)}
               </div>
             </div>
             <div className="flex-grow">
               <div className="flex gap-2">
-                {!notification.isRead && (
-                  <div className="h-3 w-6 rounded-full bg-green-500"></div>
+                {!notification?.isRead && (
+                  <GoDotFill className="text-green-500" size={25} />
                 )}
                 <p
-                  className={`font-medium ${notification.isRead ? "text-blue-600" : "text-gray-800"}`}
+                  className={`text-sm  font-medium ${notification?.isRead ? "text-blue-600" : "text-gray-800"}`}
                 >
                   {truncateText(
-                    notification.message.replace(/<[^>]*>/g, ""),
+                    notification?.message?.replace(/<[^>]*>/g, ""),
                     100,
                   )}
                 </p>
@@ -118,14 +117,14 @@ const AllNotification = () => {
           </div>
           <div className="flex justify-between">
             <p
-              className={`italic ${notification.isRead ? "text-blue-400" : "text-gray-400"}`}
+              className={`italic ${notification?.isRead ? "text-text2" : "text-gray-400"}`}
             >
-              {notification.isRead ? "Read" : "Unread"}
+              {notification?.isRead ? "Read" : "Unread"}
             </p>
             <p
-              className={`italic ${notification.isRead ? "text-blue-400" : "text-gray-400"}`}
+              className={`italic ${notification?.isRead ? "text-text2" : "text-gray-400"}`}
             >
-              {formatDate(notification.createdAt)}
+              {formatDate(notification?.createdAt)}
             </p>
           </div>
         </section>
@@ -133,13 +132,13 @@ const AllNotification = () => {
 
       {totalPages > 1 && (
         <div className="mt-4 flex justify-center gap-2">
-          {[...Array(totalPages)].map((_, index) => (
+          {[...Array(totalPages)]?.map((_, index) => (
             <button
               key={index}
               onClick={() => fetchNotification(index + 1, itemsPerPage)}
               className={`h-8 w-8 rounded-full ${
                 currentPage === index + 1
-                  ? "bg-blue-600 text-white"
+                  ? "bg-text2 text-white"
                   : "bg-gray-200 text-gray-600"
               }`}
             >
@@ -163,7 +162,7 @@ const AllNotification = () => {
             Previous
           </button>
 
-          {[...Array(totalPages)].map((_, index) => {
+          {[...Array(totalPages)]?.map((_, index) => {
             const pageNumber = index + 1;
             if (
               pageNumber === 1 ||
