@@ -76,7 +76,6 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
-  const [translateX, setTranslateX] = useState(0);
   const cardsPerPage = 2;
   const navigate = useNavigate();
 
@@ -85,7 +84,6 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
   }, [dispatch]);
 
   const cards = useWalletCards?.cards ?? [];
-  const totalPages = Math.ceil(cards.length / cardsPerPage);
 
   const handlePayment = async (paymentType: "card" | "paystack") => {
     setError(null);
