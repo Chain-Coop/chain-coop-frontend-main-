@@ -17,7 +17,7 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import { format, parseISO } from "date-fns";
 import { useSelector } from "react-redux";
-import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Modal from "../../../common/Modal";
 import PaymentWithCard from "../unpaidContribution/PaymentWithCard";
 import PayWithPaystack from "../unpaidContribution/PayWithPaystack";
@@ -400,12 +400,9 @@ const ViewContribution = () => {
                 : "bg-text2 text-white hover:bg-opacity-90"
             }`}
           >
-            <IoIosArrowBack className="mr-1" size={20} />
-            Previous
+            <IoIosArrowBack className="text-white" size={20} />
           </button>
-
           <span className="text-sm font-medium">Page {currentPage}</span>
-
           <button
             onClick={handleNextPage}
             disabled={!hasMore}
@@ -415,8 +412,7 @@ const ViewContribution = () => {
                 : "bg-text2 text-white hover:bg-opacity-90"
             }`}
           >
-            Next
-            <IoIosArrowBack className="ml-1 rotate-180" size={20} />
+            <IoIosArrowForward className="text-white" size={20} />
           </button>
         </div>
       </section>

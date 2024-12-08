@@ -11,6 +11,7 @@ import {
   GetUsersContributionHistory,
   GetWalletCard,
 } from "../redux/slices/transaction.slices";
+import { getAllNotification } from "../redux/slices/notification.slices";
 
 enum UploadFields {
   ProfilePicture = "profilePicture",
@@ -259,4 +260,41 @@ export const useUserCard = () => {
   }, [dispatch, userToken]);
 
   return { useWalletCards, loading };
+};
+
+export const useAllNotification = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const updates = useSelector(
+    (state: any) =>
+      state?.notificationApplication?.allNotification?.notifications,
+  );
+  const totalPages = useSelector(
+    (state: any) => state?.notificationApplication?.allNotification?.totalPages,
+  );
+  const currentPage = useSelector(
+    (state: any) =>
+      state?.notificationApplication?.allNotification?.currentPage,
+  );
+  const loading = useSelector(
+    (state: any) => state?.notificationApplication?.loading,
+  );
+  const error = useSelector(
+    (state: any) => state?.notificationApplication?.error,
+  );
+
+  const fetchNotification = useCallback(
+    (page: number, limit: number) => {
+      dispatch(getAllNotification({ page, limit }));
+    },
+    [dispatch],
+  );
+
+  return {
+    updates,
+    totalPages,
+    currentPage,
+    loading,
+    error,
+    fetchNotification,
+  };
 };

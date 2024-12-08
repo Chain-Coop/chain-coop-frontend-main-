@@ -34,7 +34,7 @@ import ViewContribution from "../contribution/viewContribution/ViewContribution"
 import WithdrawContribution from "../contribution/withdrawContribution/WithdrawContribution";
 import ConfirmWithdrawal from "../contribution/withdrawContribution/ConfirmAmount";
 import ManageAccountCards from "../profile/profileDetails/accountsAndCard/ManageCards";
-import Notification from "../notification/Notification";
+import Notification from "../notification/main/Notification";
 
 const Dashboard = () => {
   useEffect(() => {
