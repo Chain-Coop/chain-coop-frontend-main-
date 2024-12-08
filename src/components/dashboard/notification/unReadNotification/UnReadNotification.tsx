@@ -145,7 +145,7 @@ const UnReadNotification = () => {
             </div>
           </div>
           <div className="flex justify-between">
-            <p className="flex items-center items-center italic text-gray-400">
+            <p className="flex items-center italic text-gray-400">
               <IoCheckmarkDoneSharp />
               Unread
             </p>
