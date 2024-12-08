@@ -2,26 +2,22 @@ import React, { useEffect, useState } from "react";
 import bell from "../../../../Assets/png/dashboard/notification.png";
 import { useAllNotification } from "../../../../shared/Hooks/useUserProfile";
 import { GoDotFill } from "react-icons/go";
-
-const NotificationSkeleton = () => (
-  <div className="animate-pulse space-y-4">
-    <div className="flex flex-col gap-[1em] rounded-lg bg-gray-100 px-[1em] py-[1em]">
-      <div className="flex items-center gap-4">
-        <div className="h-8 w-8 rounded-full bg-gray-300"></div>
-        <div className="h-4 w-3/4 rounded bg-gray-300"></div>
-      </div>
-      <div className="flex justify-between">
-        <div className="h-3 w-16 rounded bg-gray-300"></div>
-        <div className="h-3 w-24 rounded bg-gray-300"></div>
-      </div>
-    </div>
-  </div>
-);
+import { NotificationSkeleton } from "../main/Notification";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../../shared/redux/store";
+import { updateNotificationStatus } from "../../../../shared/redux/slices/notification.slices";
+import Modal from "../../../common/Modal";
+import ViewNotificationDetailsRead from "../ViewNotificationDetails/ViewNotificationDetailsRead";
+import { IoCheckmarkDoneSharp } from "react-icons/io5";
 
 const UnReadNotification = () => {
   const { updates, fetchNotification, currentPage, loading, totalPages } =
     useAllNotification();
+  const dispatch: AppDispatch = useDispatch();
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [isNewsModalOpen, setNewsModalOpen] = useState(false);
+  const [selectedNotification, setSelectedNotification] = useState(null);
+
   const itemsPerPage = 10;
 
   useEffect(() => {
@@ -31,6 +27,38 @@ const UnReadNotification = () => {
     };
     loadInitialData();
   }, [fetchNotification]);
+
+  const handleUpdateStatus = async (notification: any) => {
+    if (!notification?._id) {
+      console.error("No notification ID found");
+      return;
+    }
+
+    try {
+      await dispatch(updateNotificationStatus(notification._id));
+      await fetchNotification(currentPage, itemsPerPage);
+      handleCloseModal();
+    } catch (error) {
+      console.error("Failed to update notification status:", error);
+    }
+  };
+
+  const handleOpenModal = async (notification: any) => {
+    setSelectedNotification(notification);
+    setNewsModalOpen(true);
+
+    try {
+      await dispatch(updateNotificationStatus(updates.id));
+      await fetchNotification(currentPage, itemsPerPage);
+    } catch (error) {
+      console.error("Failed to update notification status:", error);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setNewsModalOpen(false);
+    setSelectedNotification(null);
+  };
 
   const handlePageChange = (page: number) => {
     fetchNotification(page, itemsPerPage);
@@ -95,7 +123,8 @@ const UnReadNotification = () => {
       {unreadNotifications.map((notification: any, index: number) => (
         <section
           key={notification?._id}
-          className="flex flex-col gap-[1em] rounded-lg bg-gray-100 px-[1em] py-[1em]"
+          onClick={() => handleOpenModal(notification)}
+          className="flex cursor-pointer flex-col gap-[1em] rounded-lg bg-gray-100 px-[1em] py-[1em]"
         >
           <div className="flex items-start gap-4">
             <div className="flex-shrink-0">
@@ -116,7 +145,10 @@ const UnReadNotification = () => {
             </div>
           </div>
           <div className="flex justify-between">
-            <p className="italic text-gray-400">Unread</p>
+            <p className="flex items-center items-center italic text-gray-400">
+              <IoCheckmarkDoneSharp />
+              Unread
+            </p>
             <p className="italic text-gray-400">
               {formatDate(notification?.createdAt)}
             </p>
@@ -180,6 +212,19 @@ const UnReadNotification = () => {
             Next
           </button>
         </div>
+      )}
+      {selectedNotification && (
+        <Modal
+          isOpen={isNewsModalOpen}
+          onClose={handleCloseModal}
+          data-aos="zoom-in"
+          className="bg-white"
+        >
+          <ViewNotificationDetailsRead
+            notificationDetails={selectedNotification}
+            handleUpdateStatus={handleUpdateStatus}
+          />
+        </Modal>
       )}
     </main>
   );

@@ -14,6 +14,19 @@ export const getAllNotification = createAsyncThunk(
   },
 );
 
+export const updateNotificationStatus = createAsyncThunk(
+  "notificationApplication/updateNotificationStatus",
+  async (notificationId: string, thunkAPI) => {
+    try {
+      const response =
+        await notificationServices.updateNotificationStatus(notificationId);
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
 interface ApplicationState {
   loading: boolean;
   error: string | null;
@@ -23,6 +36,7 @@ interface ApplicationState {
     currentPage: number;
     totalCount: number;
   };
+  updateNotification: null;
 }
 
 const initialState: ApplicationState = {
@@ -34,6 +48,7 @@ const initialState: ApplicationState = {
     currentPage: 1,
     totalCount: 0,
   },
+  updateNotification: null,
 };
 
 export const notificationSlice = createSlice({
@@ -64,6 +79,21 @@ export const notificationSlice = createSlice({
       .addCase(getAllNotification.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch news";
+      })
+      .addCase(updateNotificationStatus.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        updateNotificationStatus.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.loading = false;
+          state.updateNotification = action.payload;
+        },
+      )
+      .addCase(updateNotificationStatus.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to update Notification";
       });
   },
 });

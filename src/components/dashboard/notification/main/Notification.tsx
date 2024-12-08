@@ -7,6 +7,21 @@ import UnReadNotification from "../unReadNotification/UnReadNotification";
 import AllNotification from "../allNotification/AllNotification";
 import ReadNotification from "../readNotification/ReadNotification";
 
+export const NotificationSkeleton = () => (
+  <div className="animate-pulse space-y-4">
+    <div className="flex flex-col gap-[1em] rounded-lg bg-gray-100 px-[1em] py-[1em]">
+      <div className="flex items-center gap-4">
+        <div className="h-8 w-8 rounded-full bg-gray-300"></div>
+        <div className="h-4 w-3/4 rounded bg-gray-300"></div>
+      </div>
+      <div className="flex justify-between">
+        <div className="h-3 w-16 rounded bg-gray-300"></div>
+        <div className="h-3 w-24 rounded bg-gray-300"></div>
+      </div>
+    </div>
+  </div>
+);
+
 const Notification = () => {
   const [activeLink, setActiveLink] = useState("allNotification");
   const navigate = useNavigate();

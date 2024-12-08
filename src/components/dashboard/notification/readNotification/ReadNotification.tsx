@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from "react";
 import bell from "../../../../Assets/png/dashboard/notification.png";
 import { useAllNotification } from "../../../../shared/Hooks/useUserProfile";
-
-const NotificationSkeleton = () => (
-  <div className="animate-pulse space-y-4">
-    <div className="flex flex-col gap-[1em] rounded-lg bg-gray-100 px-[1em] py-[1em]">
-      <div className="flex items-center gap-4">
-        <div className="h-8 w-8 rounded-full bg-gray-300"></div>
-        <div className="h-4 w-3/4 rounded bg-gray-300"></div>
-      </div>
-      <div className="flex justify-between">
-        <div className="h-3 w-16 rounded bg-gray-300"></div>
-        <div className="h-3 w-24 rounded bg-gray-300"></div>
-      </div>
-    </div>
-  </div>
-);
+import { NotificationSkeleton } from "../main/Notification";
+import { IoCheckmarkDoneSharp } from "react-icons/io5";
+import ViewNotificationDetailsRead from "../ViewNotificationDetails/ViewNotificationDetailsRead";
+import Modal from "../../../common/Modal";
 
 const ReadNotification = () => {
   const { updates, fetchNotification, currentPage, loading, totalPages } =
     useAllNotification();
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [isNewsModalOpen, setNewsModalOpen] = useState(false);
+  const [selectedNotification, setSelectedNotification] = useState(null);
   const itemsPerPage = 10;
+
+  const handleOpenModal = async (notification: any) => {
+    setSelectedNotification(notification);
+    setNewsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setNewsModalOpen(false);
+    setSelectedNotification(null);
+  };
 
   useEffect(() => {
     const loadInitialData = async () => {
@@ -94,7 +95,8 @@ const ReadNotification = () => {
       {readNotifications.map((notification: any, index: number) => (
         <section
           key={notification?._id}
-          className="flex flex-col gap-[1em] rounded-lg bg-gray-100 px-[1em] py-[1em]"
+          onClick={() => handleOpenModal(notification)}
+          className="flex cursor-pointer flex-col gap-[1em] rounded-lg bg-gray-100 px-[1em] py-[1em]"
         >
           <div className="flex items-start gap-4">
             <div className="flex-shrink-0">
@@ -104,7 +106,7 @@ const ReadNotification = () => {
             </div>
             <div className="flex-grow">
               <div className="flex gap-2">
-                <p className="text-sm font-medium text-blue-600">
+                <p className="text-sm font-medium text-gray-800">
                   {truncateText(
                     notification?.message?.replace(/<[^>]*>/g, ""),
                     100,
@@ -114,8 +116,11 @@ const ReadNotification = () => {
             </div>
           </div>
           <div className="flex justify-between">
-            <p className="italic text-text2">Read</p>
-            <p className="italic text-text2">
+            <p className="flex items-center italic text-green-600">
+              <IoCheckmarkDoneSharp className="text-green-600" />
+              Read
+            </p>
+            <p className="italic text-green-600">
               {formatDate(notification?.createdAt)}
             </p>
           </div>
@@ -178,6 +183,18 @@ const ReadNotification = () => {
             Next
           </button>
         </div>
+      )}
+      {selectedNotification && (
+        <Modal
+          isOpen={isNewsModalOpen}
+          onClose={handleCloseModal}
+          data-aos="zoom-in"
+          className="bg-white"
+        >
+          <ViewNotificationDetailsRead
+            notificationDetails={selectedNotification}
+          />
+        </Modal>
       )}
     </main>
   );

@@ -2,6 +2,12 @@ import React, { useEffect, useState } from "react";
 import bell from "../../../../Assets/png/dashboard/notification.png";
 import { useAllNotification } from "../../../../shared/Hooks/useUserProfile";
 import { GoDotFill } from "react-icons/go";
+import { IoCheckmarkDoneSharp } from "react-icons/io5";
+import ViewNotificationDetailsRead from "../ViewNotificationDetails/ViewNotificationDetailsRead";
+import Modal from "../../../common/Modal";
+import { updateNotificationStatus } from "../../../../shared/redux/slices/notification.slices";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../../shared/redux/store";
 
 const NotificationSkeleton = () => (
   <div className="animate-pulse space-y-4">
@@ -21,7 +27,11 @@ const NotificationSkeleton = () => (
 const AllNotification = () => {
   const { updates, fetchNotification, currentPage, loading, totalPages } =
     useAllNotification();
+  const dispatch: AppDispatch = useDispatch();
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [isNewsModalOpen, setNewsModalOpen] = useState(false);
+  const [selectedNotification, setSelectedNotification] = useState(null);
+
   const itemsPerPage = 10;
 
   useEffect(() => {
@@ -31,6 +41,30 @@ const AllNotification = () => {
     };
     loadInitialData();
   }, [fetchNotification]);
+
+  const handleOpenModal = async (notification: any) => {
+    setSelectedNotification(notification);
+    setNewsModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setNewsModalOpen(false);
+    setSelectedNotification(null);
+  };
+
+  const handleUpdateStatus = async (notification: any) => {
+    if (!notification?._id) {
+      console.error("No notification ID found");
+      return;
+    }
+
+    try {
+      await dispatch(updateNotificationStatus(notification._id));
+      await fetchNotification(currentPage, itemsPerPage);
+      handleCloseModal();
+    } catch (error) {
+      console.error("Failed to update notification status:", error);
+    }
+  };
 
   const handlePageChange = (page: number) => {
     fetchNotification(page, itemsPerPage);
@@ -91,7 +125,8 @@ const AllNotification = () => {
       {updates.map((notification: any, index: number) => (
         <section
           key={notification?._id}
-          className="flex flex-col gap-[1em] rounded-lg bg-gray-100 px-[1em] py-[1em]"
+          onClick={() => handleOpenModal(notification)}
+          className="flex cursor-pointer flex-col gap-[1em] rounded-lg bg-gray-100 px-[1em] py-[1em]"
         >
           <div className="flex items-start gap-4">
             <div className="flex-shrink-0">
@@ -105,7 +140,7 @@ const AllNotification = () => {
                   <GoDotFill className="text-green-500" size={25} />
                 )}
                 <p
-                  className={`text-sm  font-medium ${notification?.isRead ? "text-blue-600" : "text-gray-800"}`}
+                  className={`text-sm  font-medium ${notification?.isRead ? "text-gray-700" : "text-gray-800"}`}
                 >
                   {truncateText(
                     notification?.message?.replace(/<[^>]*>/g, ""),
@@ -119,10 +154,20 @@ const AllNotification = () => {
             <p
               className={`italic ${notification?.isRead ? "text-text2" : "text-gray-400"}`}
             >
-              {notification?.isRead ? "Read" : "Unread"}
+              {notification?.isRead ? (
+                <p className="flex items-center text-green-600">
+                  <IoCheckmarkDoneSharp className="text-green-600" />
+                  Read
+                </p>
+              ) : (
+                <p className="flex items-center">
+                  <IoCheckmarkDoneSharp />
+                  UnRead
+                </p>
+              )}
             </p>
             <p
-              className={`italic ${notification?.isRead ? "text-text2" : "text-gray-400"}`}
+              className={`italic ${notification?.isRead ? "text-green-600" : "text-gray-400"}`}
             >
               {formatDate(notification?.createdAt)}
             </p>
@@ -204,6 +249,19 @@ const AllNotification = () => {
             Next
           </button>
         </div>
+      )}
+      {selectedNotification && (
+        <Modal
+          isOpen={isNewsModalOpen}
+          onClose={handleCloseModal}
+          data-aos="zoom-in"
+          className="bg-white"
+        >
+          <ViewNotificationDetailsRead
+            notificationDetails={selectedNotification}
+            handleUpdateStatus={handleUpdateStatus}
+          />
+        </Modal>
       )}
     </main>
   );
