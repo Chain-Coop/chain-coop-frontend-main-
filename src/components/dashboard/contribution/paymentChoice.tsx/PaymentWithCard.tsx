@@ -129,19 +129,11 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
     setSelectedCard(card);
   };
 
-  const handleNext = () => {
-    if (currentPage < totalPages - 1) {
-      setCurrentPage(currentPage + 1);
-      setTranslateX(-100 * (currentPage + 1));
-    }
-  };
+  const handleNext = () =>
+    currentPage < cards.length - 1 && setCurrentPage((prev) => prev + 1);
 
-  const handlePrev = () => {
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
-      setTranslateX(-100 * (currentPage - 1));
-    }
-  };
+  const handlePrev = () =>
+    currentPage > 0 && setCurrentPage((prev) => prev - 1);
 
   const handleCloseError = () => {
     setError(null);

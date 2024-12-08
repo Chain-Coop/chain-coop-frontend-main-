@@ -105,9 +105,7 @@ const PaymentWithCard = ({ contributionData, onClose }: any) => {
         }
       }
     } catch (error: any) {
-      setError(
-        error?.message || "An error occurred during payment. Please try again.",
-      );
+      setError(error || "An error occurred during payment. Please try again.");
     } finally {
       setIsLoading(false);
     }
