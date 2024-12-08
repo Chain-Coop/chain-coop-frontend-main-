@@ -32,7 +32,6 @@ import SavingsAmount from "../contribution/savingsAmount/SavingsAmount";
 import VerifyContribution from "../contribution/main/VerifyContribution";
 import ViewContribution from "../contribution/viewContribution/ViewContribution";
 import WithdrawContribution from "../contribution/withdrawContribution/WithdrawContribution";
-import ManageCards from "../contribution/manageCards/ManageCards";
 import ConfirmWithdrawal from "../contribution/withdrawContribution/ConfirmAmount";
 import ManageAccountCards from "../profile/profileDetails/accountsAndCard/ManageCards";
 import Notification from "../notification/Notification";
@@ -77,7 +76,6 @@ const Dashboard = () => {
             element={<ConfirmWithdrawal />}
           />
 
-          <Route path="/contribution/manage_cards" element={<ManageCards />} />
           <Route path="wallet/*" element={<Wallet />} />
           <Route path="wallet/withdraw" element={<Withdraw />} />
           <Route path="wallet/select-bank" element={<SelectBank />} />
