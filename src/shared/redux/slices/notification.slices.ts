@@ -6,8 +6,9 @@ export const getAllNotification = createAsyncThunk(
   async ({ page, limit }: { page: number; limit: number }) => {
     const response = await notificationServices.getAllNotification(page, limit);
     return {
-      notifications: response.data,
-      totalPages: response.data.totalPages,
+      notifications: response.notifications,
+      totalPages: Math.ceil(response.totalCount / limit),
+      totalCount: response.totalCount,
       currentPage: page,
     };
   },
@@ -20,6 +21,7 @@ interface ApplicationState {
     notifications: any[];
     totalPages: number;
     currentPage: number;
+    totalCount: number;
   };
 }
 
@@ -30,6 +32,7 @@ const initialState: ApplicationState = {
     notifications: [],
     totalPages: 0,
     currentPage: 1,
+    totalCount: 0,
   },
 };
 
@@ -51,6 +54,7 @@ export const notificationSlice = createSlice({
             notifications: any[];
             totalPages: number;
             currentPage: number;
+            totalCount: number;
           }>,
         ) => {
           state.loading = false;

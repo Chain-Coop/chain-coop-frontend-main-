@@ -275,6 +275,9 @@ export const useAllNotification = () => {
     (state: any) =>
       state?.notificationApplication?.allNotification?.currentPage,
   );
+  const totalCount = useSelector(
+    (state: any) => state?.notificationApplication?.allNotification?.totalCount,
+  );
   const loading = useSelector(
     (state: any) => state?.notificationApplication?.loading,
   );
@@ -283,7 +286,7 @@ export const useAllNotification = () => {
   );
 
   const fetchNotification = useCallback(
-    (page: number, limit: number) => {
+    (page: number = 1, limit: number = 10) => {
       dispatch(getAllNotification({ page, limit }));
     },
     [dispatch],
@@ -293,6 +296,7 @@ export const useAllNotification = () => {
     updates,
     totalPages,
     currentPage,
+    totalCount,
     loading,
     error,
     fetchNotification,

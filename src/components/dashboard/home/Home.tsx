@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import useUserProfile, {
+  useAllNotification,
   useAllProjects,
 } from "../../../shared/Hooks/useUserProfile";
 import { ComingSoon } from "../../common/Button";
@@ -34,6 +35,7 @@ const Home = () => {
   const [isLoanModalOpen, setIsLoanModalOpen] = useState(false);
   const { isWalletVisible, setIsWalletVisible, formattedBalance } =
     useWalletBalance();
+  const { totalCount } = useAllNotification();
   const { profileDetails } = useUserProfile();
   const { useProjects, loading } = useAllProjects();
   const navigate = useNavigate();
@@ -126,11 +128,21 @@ const Home = () => {
           </p>
         </div>
         <Link to="/dashboard/notification">
-          <IoIosNotifications
-            title="notification"
-            className="cursor-pointer fill-text4"
-            size={27}
-          />
+          <button
+            className="relative inline-flex items-center"
+            aria-label="View notifications"
+          >
+            <IoIosNotifications
+              className="cursor-pointer"
+              size={27}
+              aria-hidden="true"
+            />
+            {totalCount > 0 && (
+              <span className="absolute -right-2 -top-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
+                {totalCount > 99 ? "99+" : totalCount}
+              </span>
+            )}
+          </button>
         </Link>
       </header>
 

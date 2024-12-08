@@ -1,77 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import { DashboardHeader } from "../../../common/DashboardHeader";
-// import { IoIosArrowBack } from "react-icons/io";
-// import { useNavigate } from "react-router";
-// import bell from "../../../Assets/png/dashboard/notification.png";
-// import { useDispatch } from "react-redux";
-// import { AppDispatch } from "../../../../shared/redux/store";
-// import { useAllNotification } from "../../../../shared/Hooks/useUserProfile";
-
-// const Notification = () => {
-// const navigate = useNavigate();
-// const dispatch: AppDispatch = useDispatch();
-// const { updates, fetchNotification, currentPage, loading } =
-//   useAllNotification();
-// const [activeLink, setActiveLink] = useState("basicInfo");
-
-// const [isInitialLoad, setIsInitialLoad] = useState(true);
-// const itemsPerPage = 10;
-
-// useEffect(() => {
-//   const loadInitialData = async () => {
-//     await fetchNotification(currentPage, itemsPerPage);
-//     setIsInitialLoad(false);
-//   };
-//   loadInitialData();
-// }, [fetchNotification, currentPage, itemsPerPage]);
-
-// const handleBackClick = () => {
-//   navigate(-1);
-// };
-
-//   return (
-//     <main className="min-h-screen w-full font-sans">
-// <DashboardHeader
-//   className="relative cursor-pointer items-center md:mt-4 lg:mt-8"
-//   onClick={handleBackClick}
-// >
-//   <IoIosArrowBack
-//     size={25}
-//     className="absolute left-0 cursor-pointer transition-opacity hover:opacity-75"
-//   />
-// <div className="flex flex-grow items-center justify-center">
-//   <div className="text-2xl tracking-wide md:text-3xl lg:text-xl">
-//     Notification
-//   </div>
-// </div>
-// </DashboardHeader>
-
-// <section className="mx-auto mt-8 max-w-4xl p-4 md:mt-12 md:p-6 lg:mt-16 lg:p-8">
-//   <div className="flex flex-col items-center gap-4 px-4 text-center md:gap-6 lg:gap-8">
-//     <div className="flex justify-center">
-//       <img
-//         src={bell}
-//         className="h-32 w-32 object-contain md:h-40 md:w-40 lg:h-48 lg:w-48"
-//         alt="notification bell"
-//       />
-//     </div>
-//     <header>
-//       <h1 className="text-lg font-bold md:text-xl lg:text-2xl">
-//         Currently, no updates at this time!
-//       </h1>
-//     </header>
-//     <p className="max-w-md text-sm font-semibold text-gray-600 md:text-base lg:text-lg">
-//       You will see a notification here when something happens in your
-//       workspace.
-//     </p>
-//   </div>
-// </section>
-//     </main>
-//   );
-// };
-
-// export default Notification;
-
 import React from "react";
 import { useState } from "react";
 import { DashboardHeader } from "../../../common/DashboardHeader";
@@ -108,9 +34,9 @@ const Notification = () => {
           className="absolute left-4 cursor-pointer transition-opacity hover:opacity-75 md:left-6"
         />
         <div className="flex flex-grow items-center justify-center">
-          <h1 className="text-xl font-medium tracking-wide md:text-2xl lg:text-3xl">
-            Notifications
-          </h1>
+          <div className="text-2xl tracking-wide md:text-3xl lg:text-xl">
+            Notification
+          </div>
         </div>
       </DashboardHeader>
 
@@ -147,7 +73,7 @@ const Notification = () => {
                 </div>
               </div>
             </nav>
-            <section>
+            <section className="mt-6">
               {activeLink === "allNotification" && <AllNotification />}
               {activeLink === "unReadNotification" && <UnReadNotification />}
               {activeLink === "readNotification" && <ReadNotification />}
