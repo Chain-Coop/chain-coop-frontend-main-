@@ -64,7 +64,7 @@ const Details = () => {
       </section>
 
       <Modal
-        className="w-[25em] bg-[#E9E9E9]"
+        className="bg-white"
         isOpen={showTierOneModal}
         onClose={handleModalClose}
       >
