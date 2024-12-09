@@ -8,7 +8,7 @@ interface TierOneFirstModalProps {
 const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({ onClose }) => {
   return (
     <main className="w-full max-w-[28em] px-2 text-center font-sans md:px-5">
-      <section className="flex flex-col gap-4 py-6 md:gap-6 md:py-8">
+      <section className="gap- md:gap- flex flex-col py-6 md:py-8">
         <div className="flex justify-center">
           <img
             src={kyc}
@@ -21,7 +21,7 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({ onClose }) => {
             Complete the Tier 0 for KYC Verification
           </h2>
         </header>
-        <article className="px-2 sm:px-4">
+        <article className="mt-2 px-2 sm:px-4">
           <p className="text-sm font-medium">
             Please submit this documents to verify your profile
           </p>
