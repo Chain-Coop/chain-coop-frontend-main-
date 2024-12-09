@@ -274,9 +274,6 @@ export const Explore = [
     text: "Projects",
     to: "/membership",
   },
-  // {
-  //   text: "Blog",
-  // },
 ];
 
 // export const Legal = [

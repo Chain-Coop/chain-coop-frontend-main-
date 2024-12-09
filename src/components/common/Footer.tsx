@@ -18,6 +18,7 @@ const Footer = () => {
   const [loading, setLoading] = useState(false);
 
   const joinNews = (e: any) => {
+    e.preventDefault();
     if (!email) return;
     setLoading(true);
     let body = {
