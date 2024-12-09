@@ -23,7 +23,7 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({ onClose }) => {
         </header>
         <article className="mt-2 px-2 sm:px-4">
           <p className="text-sm font-medium">
-            Please submit this documents to verify your profile
+            Please submit these documents to verify your profile
           </p>
         </article>
       </section>
