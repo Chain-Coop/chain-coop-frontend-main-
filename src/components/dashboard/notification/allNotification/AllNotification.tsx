@@ -8,21 +8,7 @@ import Modal from "../../../common/Modal";
 import { updateNotificationStatus } from "../../../../shared/redux/slices/notification.slices";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../shared/redux/store";
-
-const NotificationSkeleton = () => (
-  <div className="animate-pulse space-y-4">
-    <div className="flex flex-col gap-[1em] rounded-lg bg-gray-100 px-[1em] py-[1em]">
-      <div className="flex items-center gap-4">
-        <div className="h-8 w-8 rounded-full bg-gray-300"></div>
-        <div className="h-4 w-3/4 rounded bg-gray-300"></div>
-      </div>
-      <div className="flex justify-between">
-        <div className="h-3 w-16 rounded bg-gray-300"></div>
-        <div className="h-3 w-24 rounded bg-gray-300"></div>
-      </div>
-    </div>
-  </div>
-);
+import { NotificationSkeleton } from "../main/Notification";
 
 const AllNotification = () => {
   const { updates, fetchNotification, currentPage, loading, totalPages } =
@@ -31,6 +17,7 @@ const AllNotification = () => {
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [isNewsModalOpen, setNewsModalOpen] = useState(false);
   const [selectedNotification, setSelectedNotification] = useState(null);
+  const [expandedMonth, setExpandedMonth] = useState<string | null>(null);
 
   const itemsPerPage = 10;
 
@@ -42,10 +29,28 @@ const AllNotification = () => {
     loadInitialData();
   }, [fetchNotification]);
 
+  const groupByMonth = (notifications: any) => {
+    const grouped = notifications.reduce((acc: any, notification: any) => {
+      const date = new Date(notification.createdAt);
+      const month = date.toLocaleString("default", { month: "long" });
+      const year = date.getFullYear();
+      const key = `${month} ${year}`;
+
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(notification);
+      return acc;
+    }, {});
+
+    return Object.entries(grouped);
+  };
+
   const handleOpenModal = async (notification: any) => {
     setSelectedNotification(notification);
     setNewsModalOpen(true);
   };
+
   const handleCloseModal = () => {
     setNewsModalOpen(false);
     setSelectedNotification(null);
@@ -66,10 +71,14 @@ const AllNotification = () => {
     }
   };
 
-  const handlePageChange = (page: number) => {
-    fetchNotification(page, itemsPerPage);
-    window.scrollTo(0, 0);
+  const handleViewAll = (monthYear: string) => {
+    if (expandedMonth === monthYear) {
+      setExpandedMonth(null);
+    } else {
+      setExpandedMonth(monthYear);
+    }
   };
+
   const getInitial = (title: string) => {
     return title.charAt(0).toUpperCase();
   };
@@ -120,136 +129,101 @@ const AllNotification = () => {
     );
   }
 
+  const groupedNotifications = groupByMonth(updates);
+
   return (
     <main className="h-auto space-y-4 font-sans">
-      {updates.map((notification: any, index: number) => (
-        <section
-          key={notification?._id}
-          onClick={() => handleOpenModal(notification)}
-          className="flex cursor-pointer flex-col gap-[1em] rounded-lg bg-gray-100 px-[1em] py-[1em]"
-        >
-          <div className="flex items-start gap-4">
-            <div className="flex-shrink-0">
-              <div className="flex h-11 w-9 items-center justify-center rounded-full bg-white text-lg font-bold text-black">
-                {getInitial(notification?.title)}
-              </div>
-            </div>
-            <div className="flex-grow">
-              <div className="flex gap-2">
-                {!notification?.isRead && (
-                  <GoDotFill className="text-green-500" size={25} />
-                )}
-                <p
-                  className={`text-sm  font-medium ${notification?.isRead ? "text-gray-700" : "text-gray-800"}`}
-                >
-                  {truncateText(
-                    notification?.message?.replace(/<[^>]*>/g, ""),
-                    100,
-                  )}
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-between">
-            <p
-              className={`italic ${notification?.isRead ? "text-text2" : "text-gray-400"}`}
-            >
-              {notification?.isRead ? (
-                <p className="flex items-center text-green-600">
-                  <IoCheckmarkDoneSharp className="text-green-600" />
-                  Read
-                </p>
-              ) : (
-                <p className="flex items-center">
-                  <IoCheckmarkDoneSharp />
-                  UnRead
-                </p>
-              )}
-            </p>
-            <p
-              className={`italic ${notification?.isRead ? "text-green-600" : "text-gray-400"}`}
-            >
-              {formatDate(notification?.createdAt)}
-            </p>
-          </div>
-        </section>
-      ))}
+      {groupedNotifications.map(([monthYear, monthNotifications]: any) => {
+        const isExpanded = expandedMonth === monthYear;
+        const displayNotifications = isExpanded
+          ? monthNotifications
+          : monthNotifications.slice(0, 3);
 
-      {totalPages > 1 && (
-        <div className="mt-4 flex justify-center gap-2">
-          {[...Array(totalPages)]?.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => fetchNotification(index + 1, itemsPerPage)}
-              className={`h-8 w-8 rounded-full ${
-                currentPage === index + 1
-                  ? "bg-text2 text-white"
-                  : "bg-gray-200 text-gray-600"
-              }`}
-            >
-              {index + 1}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {totalPages > 1 && (
-        <div className="mt-6 flex items-center justify-center gap-2">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className={`rounded-lg px-4 py-2 ${
-              currentPage === 1
-                ? "cursor-not-allowed bg-gray-200 text-gray-500"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
-          >
-            Previous
-          </button>
-
-          {[...Array(totalPages)]?.map((_, index) => {
-            const pageNumber = index + 1;
-            if (
-              pageNumber === 1 ||
-              pageNumber === totalPages ||
-              (pageNumber >= currentPage - 1 && pageNumber <= currentPage + 1)
-            ) {
-              return (
+        return (
+          <div key={monthYear} className="mb-8">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-lg font-semibold">{monthYear}</h2>
+              {monthNotifications.length > 3 && (
                 <button
-                  key={pageNumber}
-                  onClick={() => handlePageChange(pageNumber)}
-                  className={`h-8 w-8 rounded-lg ${
-                    currentPage === pageNumber
-                      ? "bg-purple-600 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
+                  onClick={() => handleViewAll(monthYear)}
+                  className="text-sm font-medium text-text2 hover:text-purple-700"
                 >
-                  {pageNumber}
+                  {isExpanded ? (
+                    <p className="font-semibold"></p>
+                  ) : (
+                    <p>View All</p>
+                  )}
                 </button>
-              );
-            }
-            if (
-              pageNumber === currentPage - 2 ||
-              pageNumber === currentPage + 2
-            ) {
-              return <span key={pageNumber}>...</span>;
-            }
-            return null;
-          })}
+              )}
+            </div>
+            <div className="space-y-4">
+              {displayNotifications.map((notification: any) => (
+                <section
+                  key={notification?._id}
+                  onClick={() => handleOpenModal(notification)}
+                  className="flex cursor-pointer flex-col gap-[1em] rounded-lg bg-gray-100 px-[1em] py-[1em]"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="flex h-11 w-9 items-center justify-center rounded-full bg-white text-lg font-bold text-black">
+                        {getInitial(notification?.title)}
+                      </div>
+                    </div>
+                    <div className="flex-grow">
+                      <div className="flex gap-2">
+                        {!notification?.isRead && (
+                          <GoDotFill className="text-green-500" size={25} />
+                        )}
+                        <p
+                          className={`text-sm font-medium ${
+                            notification?.isRead
+                              ? "text-gray-700"
+                              : "text-gray-800"
+                          }`}
+                        >
+                          {truncateText(
+                            notification?.message?.replace(/<[^>]*>/g, ""),
+                            100,
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex justify-between">
+                    <p
+                      className={`italic ${
+                        notification?.isRead ? "text-text2" : "text-gray-400"
+                      }`}
+                    >
+                      {notification?.isRead ? (
+                        <p className="flex items-center text-green-600">
+                          <IoCheckmarkDoneSharp className="text-green-600" />
+                          Read
+                        </p>
+                      ) : (
+                        <p className="flex items-center">
+                          <IoCheckmarkDoneSharp />
+                          UnRead
+                        </p>
+                      )}
+                    </p>
+                    <p
+                      className={`italic ${
+                        notification?.isRead
+                          ? "text-green-600"
+                          : "text-gray-400"
+                      }`}
+                    >
+                      {formatDate(notification?.createdAt)}
+                    </p>
+                  </div>
+                </section>
+              ))}
+            </div>
+          </div>
+        );
+      })}
 
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className={`rounded-lg px-4 py-2 ${
-              currentPage === totalPages
-                ? "cursor-not-allowed bg-gray-200 text-gray-500"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
-          >
-            Next
-          </button>
-        </div>
-      )}
       {selectedNotification && (
         <Modal
           isOpen={isNewsModalOpen}

@@ -20,6 +20,8 @@ const CreateAccount = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -56,6 +58,8 @@ const CreateAccount = () => {
     dispatch(RegisterUser(body))
       .unwrap()
       .then(() => {
+        setFirstName("");
+        setLastName("");
         setEmail("");
         setUsername("");
         setPhoneNumber("");
@@ -89,6 +93,46 @@ const CreateAccount = () => {
           </p>
         </div>
         <form onSubmit={registerUser}>
+          <div className="mt-[1em]">
+            <label
+              htmlFor="firstName"
+              className="mb-3 flex text-base font-semibold text-text1"
+            >
+              First Name
+            </label>
+            <input
+              type="firstName"
+              id="firstName"
+              name="firstName"
+              onChange={(e) => setFirstName(e.target.value)}
+              value={firstName}
+              required
+              disabled={loading}
+              placeholder="first name"
+              className="mb-5 h-[4em] w-full rounded-full border-[1px] px-4 text-sm  shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
+            />
+          </div>
+
+          <div className="mt-[1em]">
+            <label
+              htmlFor="lastName"
+              className="mb-3 flex text-base font-semibold text-text1"
+            >
+              Last Name
+            </label>
+            <input
+              type="lastName"
+              id="lastName"
+              name="lastName"
+              onChange={(e) => setLastName(e.target.value)}
+              value={lastName}
+              required
+              disabled={loading}
+              placeholder="last name"
+              className="mb-5 h-[4em] w-full rounded-full border-[1px] px-4 text-sm  shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
+            />
+          </div>
+
           <div className="mt-[1em]">
             <label
               htmlFor="email-input"
@@ -170,16 +214,16 @@ const CreateAccount = () => {
               Password
             </label>
             <div className="relative flex items-center">
-            <input
-              id="password-input"
-              type={passwordType} 
-              placeholder="Password"
-              value={password}
-              required
-              disabled={loading}
-              onChange={(e) => setPassword(e.target.value)}
-              className="input mb-5 h-[4em] w-full items-center rounded-full border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-          />
+              <input
+                id="password-input"
+                type={passwordType}
+                placeholder="Password"
+                value={password}
+                required
+                disabled={loading}
+                onChange={(e) => setPassword(e.target.value)}
+                className="input mb-5 h-[4em] w-full items-center rounded-full border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
+              />
 
               <button
                 type="button"
@@ -197,7 +241,7 @@ const CreateAccount = () => {
           <EnterButton
             type="submit"
             disabled={loading}
-            className="cursor-pointer flex text-center justify-center bg-text2 text-white"
+            className="flex cursor-pointer justify-center bg-text2 text-center text-white"
           >
             {loading ? (
               <ReactLoading
