@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -14,6 +14,53 @@ import { AppDispatch } from "../../../shared/redux/store";
 import usePasswordToggle from "../../../shared/utils/usePasswordToggle";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import CustomSelect from "../../../shared/utils/CustomSelect";
+
+const PhoneNumberInput = ({ value, onChange, disabled = false }: any) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let inputValue = e.target.value;
+
+    inputValue = inputValue.replace(/\D/g, "");
+
+    inputValue = inputValue.slice(0, 10);
+
+    const formattedNumber = inputValue ? `+234${inputValue}` : "";
+
+    if (inputValue.length === 10) {
+      const isValid = /^[789]\d{9}$/.test(inputValue);
+      if (!isValid) {
+        toast.error("Please enter a valid Nigerian phone number");
+        return;
+      }
+    }
+
+    onChange(formattedNumber);
+  };
+
+  const displayValue = React.useMemo(() => {
+    return value?.startsWith("+234") ? value.slice(4) : value;
+  }, [value]);
+
+  return (
+    <div className="relative flex items-center">
+      <div className="pointer-events-none absolute left-4 text-gray-600">
+        +234
+      </div>
+      <input
+        ref={inputRef}
+        type="tel"
+        inputMode="numeric"
+        pattern="[0-9]*"
+        value={displayValue || ""}
+        onChange={handleChange}
+        disabled={disabled}
+        placeholder="*********"
+        className="h-[4em] w-full rounded-full border-[1px] pl-16 pr-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
+      />
+    </div>
+  );
+};
 
 const CreateAccount = () => {
   useEffect(() => {
@@ -49,6 +96,8 @@ const CreateAccount = () => {
     setLoading(true);
 
     const body = {
+      firstName: firstName,
+      lastName: lastName,
       email: email,
       username: username,
       phoneNumber: phoneNumber,
@@ -180,22 +229,17 @@ const CreateAccount = () => {
             >
               Phone Number
             </label>
-            <input
-              type="number"
-              name="phoneNumber"
-              id="phoneNumber-input"
-              onChange={(e) => setPhoneNumber(e.target.value)}
+            <PhoneNumberInput
               value={phoneNumber}
-              required
+              onChange={setPhoneNumber}
               disabled={loading}
-              placeholder="phone number"
-              className="mb-5 h-[4em] w-full rounded-full  border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
             />
           </div>
+
           <div>
             <label
               htmlFor="membership-input"
-              className="mb-3 flex font-semibold text-text1"
+              className="mb-3 mt-4 flex font-semibold text-text1"
             >
               Membership Type
             </label>

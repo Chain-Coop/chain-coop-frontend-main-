@@ -31,19 +31,19 @@ const AllNotification = () => {
 
   const groupByMonth = (notifications: any) => {
     const grouped = notifications.reduce((acc: any, notification: any) => {
-      const date = new Date(notification.createdAt);
-      const month = date.toLocaleString("default", { month: "long" });
-      const year = date.getFullYear();
+      const date = new Date(notification?.createdAt);
+      const month = date?.toLocaleString("default", { month: "long" });
+      const year = date?.getFullYear();
       const key = `${month} ${year}`;
 
       if (!acc[key]) {
         acc[key] = [];
       }
-      acc[key].push(notification);
+      acc[key]?.push(notification);
       return acc;
     }, {});
 
-    return Object.entries(grouped);
+    return Object?.entries(grouped);
   };
 
   const handleOpenModal = async (notification: any) => {
