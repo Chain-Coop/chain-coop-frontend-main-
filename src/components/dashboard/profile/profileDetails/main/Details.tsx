@@ -3,10 +3,12 @@ import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../../../common/Modal";
 import TierOneFirstModal from "../kyc/teirOne/TierOneFirstModal";
+import TierOneSecondModal from "../kyc/teirOne/TeirOneSecondModal";
 
 const Details = () => {
   const navigate = useNavigate();
   const [showTierOneModal, setShowTierOneModal] = useState(false);
+  const [showSecondModal, setShowSecondModal] = useState(false);
 
   const sections = [
     {
@@ -22,6 +24,12 @@ const Details = () => {
   ];
 
   const handleModalClose = () => {
+    setShowTierOneModal(false);
+    setShowSecondModal(false);
+  };
+
+  const handleStepOneClick = () => {
+    setShowSecondModal(true);
     setShowTierOneModal(false);
   };
 
@@ -68,7 +76,18 @@ const Details = () => {
         isOpen={showTierOneModal}
         onClose={handleModalClose}
       >
-        <TierOneFirstModal onClose={handleModalClose} />
+        <TierOneFirstModal
+          onClose={handleModalClose}
+          onStepOneClick={handleStepOneClick}
+        />
+      </Modal>
+
+      <Modal
+        className="bg-white"
+        isOpen={showSecondModal}
+        onClose={handleModalClose}
+      >
+        <TierOneSecondModal onClose={handleModalClose} />
       </Modal>
     </main>
   );
