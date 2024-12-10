@@ -1,6 +1,5 @@
 import axios from "axios";
 import authHeader from "./headers";
-import React from "react";
 
 const API_URL_REGISTER_USER =
   import.meta.env.VITE_REACT_APP_API_URL + "/auth/register";
@@ -86,7 +85,6 @@ const ResetPassword = async (body: any) => {
   try {
     const response = await axios.post(API_URL_RESET_PASSWORD, body, {});
     return response;
-    console.log("Ree", response);
     const token = response.data.token;
     if (token) {
       sessionStorage.setItem("userData", token);

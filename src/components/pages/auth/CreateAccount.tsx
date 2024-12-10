@@ -15,7 +15,11 @@ import usePasswordToggle from "../../../shared/utils/usePasswordToggle";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import CustomSelect from "../../../shared/utils/CustomSelect";
 
-const PhoneNumberInput = ({ value, onChange, disabled = false }: any) => {
+export const PhoneNumberInput = ({
+  value,
+  onChange,
+  disabled = false,
+}: any) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

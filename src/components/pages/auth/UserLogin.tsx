@@ -10,12 +10,10 @@ import { toast } from "react-toastify";
 import ReactLoading from "react-loading";
 import usePasswordToggle from "../../../shared/utils/usePasswordToggle";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
-import { saveRememberMe } from "../../../shared/utils/auth";
 
 const UserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const [passwordType, togglePasswordType] = usePasswordToggle();
@@ -46,13 +44,6 @@ const UserLogin = () => {
       .then((response) => {
         setLoading(false);
         if (response.landing.role === "user") {
-          if (rememberMe) {
-            saveRememberMe(email, password);
-          } else {
-            sessionStorage.removeItem("email");
-            sessionStorage.removeItem("encryptedPassword");
-            sessionStorage.removeItem("rememberMe");
-          }
           navigate("/dashboard");
         } else {
           toast.error("You do not have access to this dashboard.");
@@ -62,10 +53,6 @@ const UserLogin = () => {
         setLoading(false);
         toast.error(error);
       });
-  };
-
-  const toggleRememberMe = () => {
-    setRememberMe(!rememberMe);
   };
 
   return (

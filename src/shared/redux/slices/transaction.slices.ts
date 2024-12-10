@@ -25,11 +25,6 @@ interface ContributionHistory {
   __v: number;
 }
 
-interface VerificationParams {
-  reference: string;
-  addCard?: boolean;
-}
-
 interface ContributionDetails {
   startDate: string;
   nextContributionDate: string;
