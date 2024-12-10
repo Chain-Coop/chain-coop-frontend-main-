@@ -1,8 +1,8 @@
 import React from "react";
 import "./explore.css";
-import explore1 from "../../../Assets/png/home/automated-ai.png";
-import explore2 from "../../../Assets/png/home/savings-group.png";
-import explore3 from "../../../Assets/png/home/savings-credit.png";
+import explore1 from "../../../../Assets/png/home/automated-ai.png";
+import explore2 from "../../../../Assets/png/home/savings-group.png";
+import explore3 from "../../../../Assets/png/home/savings-credit.png";
 import { motion } from "framer-motion";
 import { Primary } from "../../../common/Button";
 import Modal from "../../../common/Modal";
