@@ -23,12 +23,10 @@ const Join = () => {
               transition={{ duration: 0.7 }}
               className="font-medium lg:text-lg"
             >
-              Becoming a Chain Co-op is simple and secure. Your membership is
-              represented{" "}
-              <span className="ml-2 text-red-500">by a digital NFT Card </span>
-              ensuring your ownership and invesment are securely tracked through
-              block chain. Limited to 3000 early members - don't miss your
-              chance.
+              Becoming a Chain Co-op is simple and secure. Your membership
+              ensures that your ownership and investment are effortlessly
+              tracked. with only limited spots for early members, seize this
+              exclusive opportunity to elevate your financial power.
             </motion.p>
           </article>
         </div>

@@ -43,18 +43,17 @@ const Explore = () => {
               <img src={explore1} alt="Location Unknown" />
             </div>
             <div className="details">
-              <h1>Automated Ai Learning Platform</h1>
+              <h1>GROUP SAVINGS CYCLE</h1>
               <p className="desc">
-                Our upcoming project leverages cutting-edge AI to streamline
-                learning processes, designed to enhance productivity and unlock
-                new growth opportunities for forward-thinking companies.
+                Get access to 5x your funds in Naira, Dollars, BTC, and more
+                automaticallyand secured by Chain Co-op
               </p>
               <div className="tags">
-                <span className="tag">Investment</span>
                 <span className="tag">Growth</span>
-                <span className="tag">Innovation</span>
+                <span className="tag">Partnership</span>
+                <span className="tag">Funding</span>
               </div>
-              <div className="cast">
+              {/* <div className="cast">
                 <h3>Cast</h3>
                 <ul>
                   <li>
@@ -72,7 +71,7 @@ const Explore = () => {
                     />
                   </li>
                 </ul>
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -81,35 +80,15 @@ const Explore = () => {
               <img src={explore2} alt="explore-img" />
             </div>
             <div className="details">
-              <h1>Automated Ai Learning Platform</h1>
+              <h1>SAVINGS AND CREDIT AS A SERVICE</h1>
               <p className="desc">
-                Our upcoming project leverages cutting-edge AI to streamline
-                learning processes, designed to enhance productivity and unlock
-                new growth opportunities for forward-thinking companies.
+                Launch your savings ad credit solution effortlessly using our
+                API, and unlock endless opportunities for financial freedom.
               </p>
               <div className="tags">
-                <span className="tag">Investment</span>
-                <span className="tag">Growth</span>
-                <span className="tag">Innovation</span>
-              </div>
-              <div className="cast">
-                <h3>Cast</h3>
-                <ul>
-                  <li>
-                    <img
-                      src={person1}
-                      alt="Marco Andrews"
-                      title="Marco Andrews"
-                    />
-                  </li>
-                  <li>
-                    <img
-                      src={person2}
-                      alt="Rebecca Floyd"
-                      title="Rebecca Floyd"
-                    />
-                  </li>
-                </ul>
+                <span className="tag">Automation</span>
+                <span className="tag"> Partnership</span>
+                <span className="tag"> Developers </span>
               </div>
             </div>
           </div>
@@ -121,33 +100,13 @@ const Explore = () => {
             <div className="details">
               <h1>Automated Ai Learning Platform</h1>
               <p className="desc">
-                Our upcoming project leverages cutting-edge AI to streamline
-                learning processes, designed to enhance productivity and unlock
-                new growth opportunities for forward-thinking companies.
+                Our AI-Driven Learning Platform will change how members learn
+                and grow. Stay tuned for its launch.
               </p>
               <div className="tags">
-                <span className="tag">Investment</span>
                 <span className="tag">Growth</span>
-                <span className="tag">Innovation</span>
-              </div>
-              <div className="cast">
-                <h3>Cast</h3>
-                <ul>
-                  <li>
-                    <img
-                      src={person1}
-                      alt="Marco Andrews"
-                      title="Marco Andrews"
-                    />
-                  </li>
-                  <li>
-                    <img
-                      src={person2}
-                      alt="Rebecca Floyd"
-                      title="Rebecca Floyd"
-                    />
-                  </li>
-                </ul>
+                <span className="tag">Education</span>
+                <span className="tag">Partnership</span>
               </div>
             </div>
           </div>

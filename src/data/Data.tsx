@@ -228,6 +228,9 @@ export const MembershipFeePioneerCardData = [
   {
     paragraph: "Discounted the coop network product and services",
   },
+  {
+    paragraph: " Mint NFT after 6 months of saving ",
+  },
 ];
 
 export const CustomerFeeExplorerCardData = [
@@ -239,6 +242,9 @@ export const CustomerFeeExplorerCardData = [
   },
   {
     paragraph: "Invest in the coop network business",
+  },
+  {
+    paragraph: " Mint NFT after 6 months of saving ",
   },
 ];
 
