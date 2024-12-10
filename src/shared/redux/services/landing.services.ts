@@ -1,30 +1,13 @@
 import axios from "axios";
 import authHeader from "./headers";
 
-const API_URL_REGISTER_USER =
-  import.meta.env.VITE_REACT_APP_API_URL + "/auth/register";
-
-const API_URL_NEWS_LETTER =
-  import.meta.env.VITE_REACT_APP_API_URL + "/news-letter/join";
-
-const API_URL_LOGIN_USER =
-  import.meta.env.VITE_REACT_APP_API_URL + "/auth/login";
-
-const API_URL_VERIFY_USER =
-  import.meta.env.VITE_REACT_APP_API_URL + "/auth/verify_otp";
-
-const API_URL_PUBLIC_CONTACT =
-  import.meta.env.VITE_REACT_APP_API_URL + "/contact-us";
-
-const API_URL_UPLOAD_AVATAR =
-  import.meta.env.VITE_REACT_APP_API_URL + "/profile/upload_profile_picture";
-
-const API_URL_RESET_PASSWORD =
-  import.meta.env.VITE_REACT_APP_API_URL + "/auth/forget_password";
+const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
 const RegisterUser = async (body: any) => {
+  const url = `${API_URL}/auth/register`;
+
   try {
-    const response = await axios.post(API_URL_REGISTER_USER, body, {});
+    const response = await axios.post(url, body, {});
     return response.data;
   } catch (error: any) {
     throw error.response.data;
@@ -32,8 +15,10 @@ const RegisterUser = async (body: any) => {
 };
 
 const LoginUser = async (body: any) => {
+  const url = `${API_URL}/auth/login`;
+
   try {
-    const response = await axios.post(API_URL_LOGIN_USER, body, {});
+    const response = await axios.post(url, body, {});
     const token = response.data.token;
     if (token) {
       sessionStorage.setItem("userData", token);
@@ -49,8 +34,10 @@ const LoginUser = async (body: any) => {
 };
 
 const JoinNewsLetter = async (body: any) => {
+  const url = `${API_URL}/news-letter/join`;
+
   try {
-    const response = await axios.post(API_URL_NEWS_LETTER, body, {});
+    const response = await axios.post(url, body, {});
     return response;
   } catch (error: any) {
     if (error.response && error.response.data) {
@@ -62,8 +49,10 @@ const JoinNewsLetter = async (body: any) => {
 };
 
 const VerifyUserAuth = async (body: any) => {
+  const url = `${API_URL}/auth/verify_otp`;
+
   try {
-    const response = await axios.post(API_URL_VERIFY_USER, body, {
+    const response = await axios.post(url, body, {
       headers: authHeader(),
     });
     return response.data;
@@ -82,14 +71,11 @@ export async function FORGOT_PASSWORD(endpoint: string, data: any) {
 }
 
 const ResetPassword = async (body: any) => {
+  const url = `${API_URL}/auth/forget_password`;
+
   try {
-    const response = await axios.post(API_URL_RESET_PASSWORD, body, {});
+    const response = await axios.post(url, body, {});
     return response;
-    const token = response.data.token;
-    if (token) {
-      sessionStorage.setItem("userData", token);
-      return response?.data;
-    }
   } catch (error: any) {
     if (error.response && error.response.data) {
       throw error.response.data;
@@ -118,8 +104,10 @@ export async function RESET_PASSWORD(endpoint: string, data: any) {
 }
 
 const PublicContact = async (body: any) => {
+  const url = `${API_URL}/contact-us`;
+
   try {
-    const response = await axios.post(API_URL_PUBLIC_CONTACT, body, {
+    const response = await axios.post(url, body, {
       headers: authHeader(),
     });
     return response.data;
@@ -152,8 +140,10 @@ const GetUserProfile = async () => {
 };
 
 const UploadAvatar = async (body: any) => {
+  const url = `${API_URL}/profile/upload_profile_picture`;
+
   try {
-    const response = await axios.post(API_URL_UPLOAD_AVATAR, body, {
+    const response = await axios.post(url, body, {
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem("userData")}`,
       },

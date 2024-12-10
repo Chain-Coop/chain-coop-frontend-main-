@@ -36,7 +36,7 @@ const Become = () => {
             transition={{ duration: 0.5 }}
             className="text-xl font-bold md:text-2xl lg:text-3xl"
           >
-            Join Chain Coop with a one-time
+            Join for Free and Get Access to Safe Savings
           </motion.h1>
           <motion.h1
             whileInView={{ opacity: 1, y: 0 }}
@@ -44,15 +44,15 @@ const Become = () => {
             transition={{ duration: 0.5 }}
             className="mb-4 text-xl font-bold md:text-2xl lg:text-3xl"
           >
-            membership of N100k
+            options and Future Loan Futures
           </motion.h1>
           <motion.p
             whileInView={{ opacity: 1, x: 0 }}
             initial={{ opacity: 0 }}
             className="mx-auto max-w-2xl px-4 text-sm md:text-base lg:text-lg"
           >
-            Join for Free and access safe saving options and future loan
-            opportunities
+            Access inflation resistant savings options in Naira, Dollars, Gold,
+            or BTC.
           </motion.p>
         </header>
         <motion.div

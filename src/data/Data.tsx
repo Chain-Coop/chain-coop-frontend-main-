@@ -106,7 +106,7 @@ export const becomeData = [
   {
     title: "Legally Guaranteed Returns",
     paragraph:
-      "As a Chain Co-op member, your investment are protected by cooperative laws giving you peace of mind with annual dividends based on your contributions.Get legally backed savings with Naira, Dollars, Gold, or BTC, with the security of cooperative laws.",
+      "As a Chain Co-op member, your savings are protected under cooperative laws giving you financial security. Save in Naira, Dollars, Gold, or BTC all withing the framework of legally backed cooperative policies. Your contributions are saved, transparent, and secure.",
   },
 
   {
@@ -114,9 +114,9 @@ export const becomeData = [
     paragraph: "Develop Strategies Build Your Portfolio, and Track Success.",
   },
   {
-    title: "Grow Your Network with Industry Experts",
+    title: "Unlock Your Financial Power with Effortless Savings Circle",
     paragraph:
-      "Meet others focused on saving, learn how to protect your money, and connect with fiancial experts.",
+      "Enjoy effortless growth and access to loans, all while your savings are securely protected.",
   },
   {
     title: "Shape the Future of Chain Co-op",
@@ -347,9 +347,9 @@ export const earlyMemberCircleText = {
     p2: "Engage in strategic decisions share your ideas, and actively contribute to the growth and success of the cooperative ",
   },
   fourthBox: {
-    title: "Expand Your Network",
-    p: "Expand your network with  fellow investors, through entrepreneurs, and tech innovators through exclusive member meetings, online discussions and live events",
-    p2: "Collabrate with industry leaders and enhance your investment strategies within our growing cooperative community.",
+    title: "Your Financial Power with Effortless Savings Cycles:",
+    p: "with Chain Co-op group savings cycles, you can effortlessly boost your funds in Dollars, BTC, and more.",
+    p2: "Enjoy effortless growth, inflation protection and access to loand, all while your savings are securely protected.",
   },
 };
 
