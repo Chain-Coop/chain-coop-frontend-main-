@@ -1,11 +1,12 @@
 import React from "react";
 import "./explore.css";
-import explore1 from "../../../Assets/png/home/project1.png";
-import explore2 from "../../../Assets/png/home/prooject2.png";
-import explore3 from "../../../Assets/png/home/project3.png";
-import person1 from "../../../Assets/png/home/Co-op-PX1.png";
-import person2 from "../../../Assets/png/home/Co-op-PX2.png";
+import explore1 from "../../../Assets/png/home/automated-ai.png";
+import explore2 from "../../../Assets/png/home/savings-group.png";
+import explore3 from "../../../Assets/png/home/savings-credit.png";
 import { motion } from "framer-motion";
+import { Primary } from "../../../common/Button";
+import Modal from "../../../common/Modal";
+import AutomatedLearningPlatform from "./details/AutomatedLearningPlatform";
 
 const Explore = () => {
   return (
@@ -53,25 +54,9 @@ const Explore = () => {
                 <span className="tag">Partnership</span>
                 <span className="tag">Funding</span>
               </div>
-              {/* <div className="cast">
-                <h3>Cast</h3>
-                <ul>
-                  <li>
-                    <img
-                      src={person1}
-                      alt="Marco Andrews"
-                      title="Marco Andrews"
-                    />
-                  </li>
-                  <li>
-                    <img
-                      src={person2}
-                      alt="Rebecca Floyd"
-                      title="Rebecca Floyd"
-                    />
-                  </li>
-                </ul>
-              </div> */}
+              <Primary className="mt-8 rounded-md bg-text2 px-5 py-2 font-semibold text-white transition-transform duration-300 hover:scale-110">
+                Learn More
+              </Primary>
             </div>
           </div>
 
@@ -91,6 +76,9 @@ const Explore = () => {
                 <span className="tag"> Developers </span>
               </div>
             </div>
+            <Primary className="mt-8 rounded-md bg-text2 px-5 py-2 font-semibold text-white transition-transform duration-300 hover:scale-110">
+              Learn More
+            </Primary>
           </div>
 
           <div className="card">
@@ -108,10 +96,19 @@ const Explore = () => {
                 <span className="tag">Education</span>
                 <span className="tag">Partnership</span>
               </div>
+              <Primary className="mt-8 rounded-md bg-text2 px-5 py-2 font-semibold text-white transition-transform duration-300 hover:scale-110">
+                Learn More
+              </Primary>
             </div>
           </div>
         </div>
       </section>
+      {/* <Modal className="bg-white" onClose={handleModalClose}>
+        <AutomatedLearningPlatform
+          onClose={handleModalClose}
+          onStepOneClick={handleStepOneClick}
+        />
+      </Modal> */}
     </main>
   );
 };
