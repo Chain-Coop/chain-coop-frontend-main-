@@ -46,7 +46,7 @@ const Purpose = () => {
           </h1>
         </header>
 
-        {SavingOn.map((purpose, index) => (
+        {SavingOn?.map((purpose, index) => (
           <div
             key={index}
             className={`mt-8 flex w-full items-center justify-between rounded-lg px-4 py-[9px] 

@@ -11,6 +11,7 @@ import { Alert, Snackbar } from "@mui/material";
 import useUserProfile, {
   useUserCard,
 } from "../../../../shared/Hooks/useUserProfile";
+import { CardBrandLogo } from "../../../../shared/utils/Helpers";
 
 interface Card {
   authorization_code: string;
@@ -48,22 +49,6 @@ const Chip = () => (
   </div>
 );
 
-const CardBrandLogo = ({ brand }: { brand: string }) => {
-  const logoStyle =
-    "absolute right-4 bottom-4 h-6 w-10 rounded bg-white/90 flex items-center justify-center font-bold";
-
-  switch (brand.toLowerCase()) {
-    case "visa":
-      return <div className={logoStyle + " text-blue-600"}>VISA</div>;
-    case "mastercard":
-      return <div className={logoStyle + " text-red-600"}>MC</div>;
-    case "verve":
-      return <div className={logoStyle + " text-green-600"}>VERVE</div>;
-    default:
-      return <div className={logoStyle + " text-gray-600"}>{brand}</div>;
-  }
-};
-
 const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
   contributionData,
   onClose,
@@ -76,7 +61,6 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
-  const cardsPerPage = 2;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -128,7 +112,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
   };
 
   const handleNext = () =>
-    currentPage < cards.length - 1 && setCurrentPage((prev) => prev + 1);
+    currentPage < cards?.length - 1 && setCurrentPage((prev) => prev + 1);
 
   const handlePrev = () =>
     currentPage > 0 && setCurrentPage((prev) => prev - 1);
@@ -182,7 +166,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
             </header>
 
             <div className="relative">
-              {cards.length > 0 ? (
+              {cards?.length > 0 ? (
                 <>
                   <div className="relative mx-auto w-full overflow-hidden px-4 sm:w-[25em] sm:px-6">
                     {currentPage > 0 && (
@@ -198,13 +182,13 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
                       <div
                         onClick={() => handleCardSelect(cards[currentPage])}
                         className={`group relative aspect-[1.6/1] w-full cursor-pointer rounded-xl bg-gradient-to-r px-3 py-2 shadow-lg transition-all hover:shadow-xl sm:px-4
-                          ${cardDesigns[cards[currentPage].brand.toLowerCase() as keyof typeof cardDesigns] || cardDesigns.default}
+                          ${cardDesigns[cards[currentPage]?.brand?.toLowerCase() as keyof typeof cardDesigns] || cardDesigns?.default}
                           ${selectedCard?.authorization_code === cards[currentPage].authorization_code ? "ring-2 ring-white" : ""}`}
                       >
                         <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 opacity-0 transition-opacity group-hover:opacity-100" />
 
                         <div className="mb-3 text-sm font-bold text-white/90 sm:mb-4 sm:text-base">
-                          {cards[currentPage].bank.toUpperCase()}
+                          {cards[currentPage]?.bank?.toUpperCase()}
                         </div>
 
                         <Chip />
@@ -228,7 +212,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
                       </div>
                     )}
 
-                    {currentPage < cards.length - 1 && (
+                    {currentPage < cards?.length - 1 && (
                       <button
                         onClick={handleNext}
                         className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-1.5 shadow-lg sm:p-2"
@@ -239,7 +223,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
                   </div>
 
                   <div className="mt-4 flex justify-center gap-1">
-                    {cards.map((_: any, idx: number) => (
+                    {cards?.map((_: any, idx: number) => (
                       <div
                         key={idx}
                         className={`h-1.5 w-1.5 rounded-full transition-all ${

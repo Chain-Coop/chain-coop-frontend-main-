@@ -20,6 +20,7 @@ import { useUserCard } from "../../../../../shared/Hooks/useUserProfile";
 import { DashboardHeader } from "../../../../common/DashboardHeader";
 import noCard from "../../../../../Assets/png/dashboard/noCard.png";
 import arrow from "../../../../../Assets/svg/dashboard/wallet/transfer-arrow.svg";
+import { CardBrandLogo } from "../../../../../shared/utils/Helpers";
 
 interface Card {
   authorization_code: string;
@@ -51,22 +52,6 @@ const Chip = () => (
     </div>
   </div>
 );
-
-const CardBrandLogo = ({ brand }: { brand: string }) => {
-  const logoStyle =
-    "absolute right-6 bottom-6 h-8 w-12 rounded bg-white/90 flex items-center justify-center font-bold";
-
-  switch (brand.toLowerCase()) {
-    case "visa":
-      return <div className={logoStyle + " text-blue-600"}>VISA</div>;
-    case "mastercard":
-      return <div className={logoStyle + " text-red-600"}>MC</div>;
-    case "verve":
-      return <div className={logoStyle + " text-green-600"}>VERVE</div>;
-    default:
-      return <div className={logoStyle + " text-gray-600"}>{brand}</div>;
-  }
-};
 
 const ManageCards = () => {
   const { useWalletCards } = useUserCard();

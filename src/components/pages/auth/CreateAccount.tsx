@@ -1,9 +1,8 @@
-import React, { useRef } from "react";
+import React from "react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { RegisterUser } from "../../../shared/redux/slices/landing.slices";
-import ToggleButton from "../../../shared/utils/ToggleButton";
 import { EnterButton } from "../../common/Button";
 import logo from "../../../Assets/svg/auth/logo.svg";
 import { FaArrowLeft } from "react-icons/fa6";
@@ -14,57 +13,7 @@ import { AppDispatch } from "../../../shared/redux/store";
 import usePasswordToggle from "../../../shared/utils/usePasswordToggle";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import CustomSelect from "../../../shared/utils/CustomSelect";
-
-export const PhoneNumberInput = ({
-  value,
-  onChange,
-  disabled = false,
-}: any) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let inputValue = e.target.value;
-
-    inputValue = inputValue.replace(/\D/g, "");
-
-    inputValue = inputValue.slice(0, 10);
-
-    const formattedNumber = inputValue ? `+234${inputValue}` : "";
-
-    if (inputValue.length === 10) {
-      const isValid = /^[789]\d{9}$/.test(inputValue);
-      if (!isValid) {
-        toast.error("Please enter a valid Nigerian phone number");
-        return;
-      }
-    }
-
-    onChange(formattedNumber);
-  };
-
-  const displayValue = React.useMemo(() => {
-    return value?.startsWith("+234") ? value.slice(4) : value;
-  }, [value]);
-
-  return (
-    <div className="relative flex items-center">
-      <div className="pointer-events-none absolute left-4 text-gray-600">
-        +234
-      </div>
-      <input
-        ref={inputRef}
-        type="tel"
-        inputMode="numeric"
-        pattern="[0-9]*"
-        value={displayValue || ""}
-        onChange={handleChange}
-        disabled={disabled}
-        placeholder="*********"
-        className="h-[4em] w-full rounded-full border-[1px] pl-16 pr-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-      />
-    </div>
-  );
-};
+import { PhoneNumberInput } from "../../../shared/utils/Helpers";
 
 const CreateAccount = () => {
   useEffect(() => {
@@ -80,6 +29,7 @@ const CreateAccount = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [passwordType, togglePasswordType] = usePasswordToggle();
+  const [isPhoneValid, setIsPhoneValid] = useState(false);
   const [confirmPasswordType, toggleConfirmPasswordType] = usePasswordToggle();
 
   const navigate = useNavigate();
@@ -97,6 +47,10 @@ const CreateAccount = () => {
 
   const registerUser = (e: any) => {
     e.preventDefault();
+    if (!isPhoneValid) {
+      return;
+    }
+
     setLoading(true);
 
     const body = {
@@ -237,6 +191,7 @@ const CreateAccount = () => {
               value={phoneNumber}
               onChange={setPhoneNumber}
               disabled={loading}
+              onValidityChange={setIsPhoneValid}
             />
           </div>
 
@@ -288,7 +243,7 @@ const CreateAccount = () => {
           </div>
           <EnterButton
             type="submit"
-            disabled={loading}
+            disabled={loading || !isPhoneValid}
             className="flex cursor-pointer justify-center bg-text2 text-center text-white"
           >
             {loading ? (

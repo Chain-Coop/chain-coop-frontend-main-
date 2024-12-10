@@ -70,14 +70,10 @@ const Avatar = () => {
               <div>
                 <img src={tier} alt="tier" className="w-5" />
               </div>
-              <p className="font-bold">Tier 0</p>
+              <p className="font-bold">Tier {profileDetails?.Tier || 0}</p>
             </div>
           </div>
         </div>
-        {/* <IoIosArrowForward
-          size={25}
-          className="mt-4 hidden text-text2 sm:mt-0 lg:block"
-        /> */}
       </div>
     </main>
   );

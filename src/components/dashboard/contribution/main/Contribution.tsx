@@ -68,7 +68,7 @@ const Contribution: React.FC = () => {
 
   const handlePrevPage = () => setPage((prev) => Math?.max(1, prev - 1));
   const handleNextPage = () =>
-    setPage((prev) => Math.min(totalPages, prev + 1));
+    setPage((prev) => Math?.min(totalPages, prev + 1));
 
   const navigateToContributionDetails = (contributionId: string) => {
     if (!contributionId) return;

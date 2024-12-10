@@ -6,19 +6,33 @@ import Avatar from "../avatar/Avatar";
 import Details from "../profileDetails/main/Details";
 import Security from "../security/Security";
 import About from "../about/About";
+import { useAllNotification } from "../../../../shared/Hooks/useUserProfile";
 
 const Profile = () => {
   const navigate = useNavigate();
+  const { totalCount } = useAllNotification();
 
   return (
     <main className="font-sans">
       <section>
         <header className="flex h-[2.5em] w-full items-center justify-between bg-text2 px-[1.5em] font-sans text-xl font-semibold text-text5 lg:mt-[2em]">
           <Link to="/dashboard/notification">
-            <IoIosNotifications
-              className="cursor-pointer fill-text3"
-              size={27}
-            />
+            <button
+              className="relative inline-flex items-center"
+              aria-label="View notifications"
+            >
+              <IoIosNotifications
+                className="cursor-pointer"
+                size={27}
+                fill="white"
+                aria-hidden="true"
+              />
+              {totalCount > 0 && (
+                <span className="absolute -right-2 -top-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
+                  {totalCount > 99 ? "99+" : totalCount}
+                </span>
+              )}
+            </button>
           </Link>
           <div>
             <h2>Profile</h2>

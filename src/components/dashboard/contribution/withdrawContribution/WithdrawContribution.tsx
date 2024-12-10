@@ -7,17 +7,18 @@ import { Alert } from "@mui/material";
 import { DashboardHeader } from "../../../common/DashboardHeader";
 import { formatBalance } from "../../../../shared/utils/format";
 import { Primary } from "../../../common/Button";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { GetContributionDetailsById } from "../../../../shared/redux/slices/transaction.slices";
 import { AppDispatch } from "../../../../shared/redux/store";
 import useWalletBalance from "../../../../shared/Hooks/useBalance";
 import Modal from "../../../common/Modal";
 import { format, parseISO, isAfter, isToday } from "date-fns";
+import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
 
 const WithdrawContribution = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch: AppDispatch = useAppDispatch();
 
   const [displayAmount, setDisplayAmount] = useState("");
   const [actualAmount, setActualAmount] = useState("");

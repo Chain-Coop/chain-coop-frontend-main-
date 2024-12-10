@@ -31,7 +31,7 @@ const PayWithPaystack: React.FC<PaymentOptionProps> = ({
               <div>
                 <img
                   src={withdraw}
-                  alt=""
+                  alt="withdraw"
                   className="h-8 w-8 sm:h-10 sm:w-10"
                 />
               </div>

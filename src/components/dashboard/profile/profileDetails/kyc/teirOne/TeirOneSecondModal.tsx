@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { PhoneNumberInput } from "../../../../../pages/auth/CreateAccount";
 import { Primary } from "../../../../../common/Button";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../../shared/redux/store";
 import { toast } from "react-toastify";
 import { phoneNumberOtp } from "../../../../../../shared/redux/slices/kyc.slices";
 import ReactLoading from "react-loading";
+import { PhoneNumberInput } from "../../../../../../shared/utils/Helpers";
 
 interface TierOneFirstModalProps {
   onClose: () => void;
@@ -13,13 +13,13 @@ interface TierOneFirstModalProps {
 
 const TeirOneSecondModal: React.FC<TierOneFirstModalProps> = ({ onClose }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [isPhoneValid, setIsPhoneValid] = useState(false);
   const [loading, setLoading] = useState(false);
   const dispatch: AppDispatch = useDispatch();
 
   const getOtp = (e: any) => {
     e.preventDefault();
     if (!phoneNumber) {
-      toast.error("Please fill in all fields.");
       return;
     }
 
@@ -67,6 +67,7 @@ const TeirOneSecondModal: React.FC<TierOneFirstModalProps> = ({ onClose }) => {
             value={phoneNumber}
             onChange={setPhoneNumber}
             disabled={loading}
+            onValidityChange={setIsPhoneValid}
           />
         </div>
 
@@ -74,7 +75,8 @@ const TeirOneSecondModal: React.FC<TierOneFirstModalProps> = ({ onClose }) => {
           <Primary
             className="flex w-[70%] justify-center bg-text2 py-2 text-white"
             onClick={getOtp}
-            disabled={loading}
+            type="submit"
+            disabled={loading || !isPhoneValid}
           >
             {loading ? (
               <ReactLoading

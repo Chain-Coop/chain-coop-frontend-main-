@@ -147,10 +147,13 @@ const PayContribution = async (body: any) => {
 
 const GetContributionDetailsById = async (
   contributionId: any,
-  page: number,
-  limit: number,
+  page?: number,
+  limit?: number,
 ) => {
-  const url = `${API_URL}/contribution/history?contributionId=${contributionId}&page=${page}&limit=${limit}`;
+  const url = `${API_URL}/contribution/history?contributionId=${contributionId}${
+    page ? `&page=${page}` : ""
+  }${limit ? `&limit=${limit}` : ""}`;
+
   try {
     const response = await axios({
       url,

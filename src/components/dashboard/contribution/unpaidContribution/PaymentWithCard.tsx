@@ -9,6 +9,7 @@ import {
 } from "../../../../shared/redux/slices/transaction.slices";
 import { Alert, Snackbar } from "@mui/material";
 import { useUserCard } from "../../../../shared/Hooks/useUserProfile";
+import { CardBrandLogo } from "../../../../shared/utils/Helpers";
 
 interface Card {
   authorization_code: string;
@@ -40,22 +41,6 @@ const Chip = () => (
     </div>
   </div>
 );
-
-const CardBrandLogo = ({ brand }: { brand: string }) => {
-  const logoStyle =
-    "absolute right-4 bottom-4 h-6 w-10 rounded bg-white/90 flex items-center justify-center font-bold";
-
-  switch (brand.toLowerCase()) {
-    case "visa":
-      return <div className={logoStyle + " text-blue-600"}>VISA</div>;
-    case "mastercard":
-      return <div className={logoStyle + " text-red-600"}>MC</div>;
-    case "verve":
-      return <div className={logoStyle + " text-green-600"}>VERVE</div>;
-    default:
-      return <div className={logoStyle + " text-gray-600"}>{brand}</div>;
-  }
-};
 
 const PaymentWithCard = ({ contributionData, onClose }: any) => {
   const { useWalletCards } = useUserCard();

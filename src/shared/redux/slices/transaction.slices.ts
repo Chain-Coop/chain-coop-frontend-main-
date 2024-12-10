@@ -316,8 +316,8 @@ export const GetContributionDetailsById = createAsyncThunk(
     limit,
   }: {
     contributionId: any;
-    page: number;
-    limit: number;
+    page?: number;
+    limit?: number;
   }) => {
     const response = await TransactionServices.GetContributionDetailsById(
       contributionId,
