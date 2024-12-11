@@ -337,7 +337,9 @@ const ViewContribution = () => {
           )}
         </div>
         <div className="mb-3 flex items-center justify-between sm:mb-4">
-          <p className="text-sm font-medium sm:text-lg">Monthly Contribution</p>
+          <p className="text-sm font-medium sm:text-lg">
+            {contributionDetails?.contributionPlan} Contribution Plan
+          </p>
           <p className="text-sm font-medium sm:text-lg">Status</p>
         </div>
         <Box sx={{ maxWidth: "100%" }}>

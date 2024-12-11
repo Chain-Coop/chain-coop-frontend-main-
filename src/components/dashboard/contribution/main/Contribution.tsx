@@ -9,8 +9,8 @@ import { motion } from "framer-motion";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 type Contribution = {
-  _id: any | null | undefined;
-  contributionId: string;
+  _id: string;
+  contributionId?: string;
   savingsCategory: string;
   balance: number;
   contributionPlan?: string;
@@ -51,11 +51,13 @@ const Contribution: React.FC = () => {
     useContributionBalance();
   const [page, setPage] = useState(1);
   const limit = 10;
+
   const {
     getContributions,
     isLoading: isContributionsLoading,
     error,
   } = useUserContributionHistory(page, limit);
+
   const [isContributionVisible, setIsContributionVisible] = useState(() => {
     const storedVisibility = sessionStorage.getItem(
       "contributionBalanceVisible",
@@ -63,12 +65,21 @@ const Contribution: React.FC = () => {
     return storedVisibility !== null ? storedVisibility === "true" : true;
   });
 
-  const totalItems = getContributions?.contributions?.length || 0;
-  const totalPages = Math.ceil(totalItems / limit);
+  const totalPages = getContributions?.totalPages || 1;
+  const currentPage = parseInt(getContributions?.currentPage || "1");
+  const contributions = getContributions?.contributions || [];
 
-  const handlePrevPage = () => setPage((prev) => Math?.max(1, prev - 1));
-  const handleNextPage = () =>
-    setPage((prev) => Math?.min(totalPages, prev + 1));
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setPage(currentPage + 1);
+    }
+  };
 
   const navigateToContributionDetails = (contributionId: string) => {
     if (!contributionId) return;
@@ -90,7 +101,7 @@ const Contribution: React.FC = () => {
     <motion.main
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="pb- min-h-screen w-full font-sans"
+      className="min-h-screen w-full font-sans"
     >
       <header>
         <DashboardHeader className="flex w-full items-center justify-center text-2xl md:text-3xl lg:mt-[2em] lg:text-xl">
@@ -159,71 +170,69 @@ const Contribution: React.FC = () => {
 
           {isContributionsLoading ? (
             <ContributionListSkeleton />
-          ) : getContributions?.contributions?.length > 0 ? (
+          ) : contributions?.length > 0 ? (
             <div className="mb-3 mt-4 flex h-auto flex-col gap-4 rounded-lg bg-text2 p-4 text-center md:mt-6 md:p-6">
               <div className="mb-3 flex items-center justify-between px-4">
                 <span className="text-sm font-medium text-white md:text-base">
-                  Page {page} of {totalPages}
+                  Page {currentPage} of {totalPages}
                 </span>
                 <div className="flex gap-2 font-semibold">
                   <button
                     onClick={handlePrevPage}
-                    disabled={page <= 1}
-                    className="disabled:cursor-not-allowed disabled:opacity-50"
+                    disabled={currentPage <= 1}
+                    className="rounded p-1 text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    <IoIosArrowBack className="text-white" size={20} />
+                    <IoIosArrowBack size={20} />
                   </button>
                   <button
                     onClick={handleNextPage}
-                    disabled={page >= totalPages}
-                    className="disabled:cursor-not-allowed disabled:opacity-50"
+                    disabled={currentPage >= totalPages}
+                    className="rounded p-1 text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    <IoIosArrowForward className="text-white" size={20} />
+                    <IoIosArrowForward size={20} />
                   </button>
                 </div>
               </div>
               <hr className="border-gray-500" />
 
-              {getContributions?.contributions?.map(
-                (contribution: Contribution) => (
-                  <motion.div
-                    key={contribution._id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    whileHover={{ scale: 1.02 }}
-                    onClick={() =>
-                      navigateToContributionDetails(contribution._id)
-                    }
-                    className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-full border-2 border-gray-500 bg-white px-4 py-2 transition-all hover:bg-gray-50 md:px-6 md:py-3"
-                  >
-                    <div className="flex justify-between text-sm font-medium text-gray-500 md:text-base">
-                      <p>Savings Name</p>
-                      <p>Savings Balance</p>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 md:gap-3">
-                        <div className="w-8 md:w-10">
-                          <motion.img
-                            whileHover={{ rotate: 360 }}
-                            transition={{ duration: 0.5 }}
-                            src={contributionImg}
-                            alt="Contribution category icon"
-                            className="w-full"
-                          />
-                        </div>
-                        <p className="text-base font-semibold md:text-lg">
-                          {contribution?.savingsCategory}
-                        </p>
+              {contributions.map((contribution: Contribution) => (
+                <motion.div
+                  key={contribution._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  whileHover={{ scale: 1.02 }}
+                  onClick={() =>
+                    navigateToContributionDetails(contribution._id)
+                  }
+                  className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-full border-2 border-gray-500 bg-white px-4 py-2 transition-all hover:bg-gray-50 md:px-6 md:py-3"
+                >
+                  <div className="flex justify-between text-sm font-medium text-gray-500 md:text-base">
+                    <p>Savings Name</p>
+                    <p>Savings Balance</p>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 md:gap-3">
+                      <div className="w-8 md:w-10">
+                        <motion.img
+                          whileHover={{ rotate: 360 }}
+                          transition={{ duration: 0.5 }}
+                          src={contributionImg}
+                          alt="Contribution category icon"
+                          className="w-full"
+                        />
                       </div>
-                      <div>
-                        <figure className="text-base font-semibold md:text-lg">
-                          {formatCurrency(contribution?.balance)}
-                        </figure>
-                      </div>
+                      <p className="text-base font-semibold md:text-lg">
+                        {contribution?.savingsCategory}
+                      </p>
                     </div>
-                  </motion.div>
-                ),
-              )}
+                    <div>
+                      <figure className="text-base font-semibold md:text-lg">
+                        {formatCurrency(contribution?.balance)}
+                      </figure>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           ) : (
             <motion.div
