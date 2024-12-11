@@ -106,7 +106,7 @@ export const becomeData = [
   {
     title: "Legally Guaranteed Returns",
     paragraph:
-      "As a Chain Co-op member, your savings are protected under cooperative laws giving you financial security. Save in Naira, Dollars, Gold, or BTC all withing the framework of legally backed cooperative policies. Your contributions are saved, transparent, and secure.",
+      "As a Chain Co-op member, your savings are protected under cooperative laws giving you financial security. Save in Naira, Dollars, Gold, or BTC and more. All within the framework of legally backed cooperative policies.",
   },
 
   {
@@ -180,10 +180,11 @@ export const customerCardData = [
     paragraph: "Invest in the Coop Network business",
   },
   {
-    paragraph: " Mint NFT after 6 months of saving",
+    paragraph: "Mint NFT after 6 months of saving",
   },
   {
-    paragraph: "Access to saving individual saving Cycles (Naira Dollar)",
+    paragraph:
+      "Access to individual, group, BREAD, BTC, and other saving cycles.",
   },
 ];
 
@@ -226,7 +227,7 @@ export const employeeCardData = [
     paragraph: " Mint NFT after 6 months of saving",
   },
   {
-    paragraph: "Dividend on all Co-op business",
+    paragraph: "Eacr dividend on all Co-op business",
   },
   {
     paragraph: "Access to all savings features and Receive Yeilds on savings",
@@ -363,18 +364,18 @@ export const earlyMemberCircleText = {
   },
   secondBox: {
     title: "Access Exclusive Investment Rounds",
-    p: "As a chain Co-op member, you gain exlcusive access to high growth business investment rounds",
-    p2: "Build your portfolio with high trasparency, track your performance through quarterly reports, and grow your wealth in sustainable ventures.",
+    p: "Access Exclusive Savings: Build a stable inflation-protected savings portfolio",
+    p2: "Track your contributions, monitor your financial security progress, and prepare for potential loan opportunities with regular updates on your savings growth.",
   },
   thirdBox: {
     title: "Vote and Engage with Chain Coop Network",
-    p: "Chain Co-op member, you can vote on key decision that shape the cooperative future",
-    p2: "Engage in strategic decisions share your ideas, and actively contribute to the growth and success of the cooperative ",
+    p: "Vote and Shape Savings Policies: influence decisions on Chain Co-op savings-focused initiatives.",
+    p2: "Share your ideas on loadn eligibility, inflation protection, and asset classes to support a financial secure",
   },
   fourthBox: {
     title: "Your Financial Power with Effortless Savings Cycles:",
     p: "with Chain Co-op group savings cycles, you can effortlessly boost your funds in Dollars, BTC, and more.",
-    p2: "Enjoy effortless growth, inflation protection and access to loand, all while your savings are securely protected.",
+    p2: "Enjoy effortless growth, inflation protection and access to loan all while your savings are securely protected.",
   },
 };
 

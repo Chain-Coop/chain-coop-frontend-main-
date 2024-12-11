@@ -199,10 +199,14 @@ const Story = () => {
                   <h1 className="w-full text-center text-xl font-bold md:text-3xl lg:w-[60%] lg:text-left">
                     Join Our Tech-Driven Cooperative
                   </h1>
-                  <p className="mt-2 w-full text-center text-sm md:text-base lg:w-[55%] lg:text-start">
-                    A one time 100k membership access grants you access to
-                    exclusive investment rounds, the power to vote on
-                    cooperative decisions that inpact your future
+                  <p className="mt-2 w-full text-center text-sm font-medium text-gray-700 md:text-base lg:text-start">
+                    Join Our Tech-Driven Cooperative
+                  </p>
+                  <p className="mt-2 w-full text-center text-sm font-medium text-gray-700 md:text-base lg:w-[90%] lg:text-start">
+                    Become a part of Chain-op where innovation meets
+                    collaboration. Enjoy secure savings options engage in
+                    community-driven decisions and grow your financial future
+                    with cooperative support.
                   </p>
                   <div className="mt-3 flex w-full flex-col gap-2 font-medium lg:gap-7">
                     <p className="flex items-center gap-3 text-base">
@@ -211,7 +215,7 @@ const Story = () => {
                     </p>
                     <p className="flex items-center gap-3 text-base">
                       <img src={mark} alt="svg-image" className="h-5 w-5" />
-                      Access Exclusive Investment Rounds
+                      Access Exclusive Financial Opportunities
                     </p>
                     <p className="flex items-center gap-3 text-base">
                       <img src={mark} alt="svg-image" className="h-5 w-5" />
@@ -219,7 +223,7 @@ const Story = () => {
                     </p>
                     <p className="flex items-center gap-3 text-base">
                       <img src={mark} alt="svg-image" className="h-5 w-5" />
-                      Vote and Engage with Chain Coop Network
+                      Vote and Shape the Future
                     </p>
                   </div>
                 </div>

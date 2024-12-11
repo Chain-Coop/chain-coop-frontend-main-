@@ -36,23 +36,16 @@ const Become = () => {
             transition={{ duration: 0.5 }}
             className="text-xl font-bold md:text-2xl lg:text-3xl"
           >
-            Join for Free and Get Access to Safe Savings
+            Save Your Tomorrow with Stable, Inflation-Resistant Options{" "}
           </motion.h1>
-          <motion.h1
-            whileInView={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: -100 }}
-            transition={{ duration: 0.5 }}
-            className="mb-4 text-xl font-bold md:text-2xl lg:text-3xl"
-          >
-            options and Future Loan Futures
-          </motion.h1>
+
           <motion.p
             whileInView={{ opacity: 1, x: 0 }}
             initial={{ opacity: 0 }}
             className="mx-auto max-w-2xl px-4 text-sm md:text-base lg:text-lg"
           >
-            Access inflation resistant savings options in Naira, Dollars, Gold,
-            or BTC.
+            Protect your wealth by savings in Naira, Dollars, Gold or BTC to
+            preserve value over time
           </motion.p>
         </header>
         <motion.div

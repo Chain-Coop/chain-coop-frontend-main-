@@ -33,7 +33,7 @@ const HeroSection = () => {
             variants={container(1)}
             initial="hidden"
             animate="visible"
-            className="mb-6 text-sm text-text1 sm:text-base lg:mb-8"
+            className="mb-6 text-sm text-gray-600 sm:text-base lg:mb-8"
           >
             Introducing Chain Co-op Savings. A secure platform to save in Naira,
             Dollars, Gold, or BTC. Protecting your wealth and preparing you for

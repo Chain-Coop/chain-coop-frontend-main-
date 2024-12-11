@@ -77,12 +77,9 @@ const How = () => {
             alt="Step 2"
           />
           <div>
-            <h1 className="text-2xl font-bold text-howtext">
-              Purchase Your <br /> Card
-            </h1>
+            <h1 className="text-2xl font-bold text-howtext">Complete KYC</h1>
             <p className="mt-4 font-medium text-howtext">
-              Purchase Your Membership Card - Your ticket to co-op dividends and
-              decision making
+              Complete KYC to activate savings and loan features.
             </p>
           </div>
         </motion.article>
