@@ -73,16 +73,17 @@ const Explore = () => {
             <div className="poster">
               <img src={explore1} alt="Location Unknown" />
             </div>
+
             <div className="details">
-              <h1>GROUP SAVINGS CYCLE</h1>
+              <h1>Automated Ai Learning Platform</h1>
               <p className="desc">
-                Get access to 5x your funds in Naira, Dollars, BTC, and more
-                automaticallyand secured by Chain Co-op.
+                Our AI-Driven Learning Platform will change how members learn
+                and grow. Stay tuned for its launch.
               </p>
               <div className="tags">
                 <span className="tag">Growth</span>
+                <span className="tag">Education</span>
                 <span className="tag">Partnership</span>
-                <span className="tag">Funding</span>
               </div>
               <Primary
                 onClick={handleFirstModalOpen}
@@ -97,16 +98,17 @@ const Explore = () => {
             <div className="poster">
               <img src={explore2} alt="explore-img" />
             </div>
+
             <div className="details">
-              <h1>SAVINGS AND CREDIT AS A SERVICE</h1>
+              <h1>GROUP SAVINGS CYCLE</h1>
               <p className="desc">
-                Launch your savings ad credit solution effortlessly using our
-                API, and unlock endless opportunities for financial freedom.
+                Get access to 5x your funds in Naira, Dollars, BTC, and more
+                automaticallyand secured by Chain Co-op.
               </p>
               <div className="tags">
-                <span className="tag">Automation</span>
-                <span className="tag"> Partnership</span>
-                <span className="tag"> Developers </span>
+                <span className="tag">Growth</span>
+                <span className="tag">Partnership</span>
+                <span className="tag">Funding</span>
               </div>
               <Primary
                 onClick={handleSecondModalOpen}
@@ -122,15 +124,15 @@ const Explore = () => {
               <img src={explore3} alt="Location Unknown" />
             </div>
             <div className="details">
-              <h1>Automated Ai Learning Platform</h1>
+              <h1>SAVINGS AND CREDIT AS A SERVICE</h1>
               <p className="desc">
-                Our AI-Driven Learning Platform will change how members learn
-                and grow. Stay tuned for its launch.
+                Launch your savings ad credit solution effortlessly using our
+                API, and unlock endless opportunities for financial freedom.
               </p>
               <div className="tags">
-                <span className="tag">Growth</span>
-                <span className="tag">Education</span>
-                <span className="tag">Partnership</span>
+                <span className="tag">Automation</span>
+                <span className="tag"> Partnership</span>
+                <span className="tag"> Developers </span>
               </div>
               <Primary
                 onClick={handleThirdModalOpen}
