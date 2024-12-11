@@ -423,15 +423,10 @@ const Landing = () => {
           >
             <motion.h1
               variants={fadeInUp}
-              className="text-center text-[1.5em] font-bold sm:mt-2 sm:text-lg md:text-lg lg:text-[1.6em]"
+              className="mx-auto text-center text-[1.5em] text-lg font-bold tracking-wide sm:mt-2 md:text-lg lg:w-[50%] lg:text-[1.6em]"
             >
-              Join and Multiply Your Savings with our exclusive
-            </motion.h1>
-            <motion.h1
-              variants={fadeInUp}
-              className="text-center text-[1.5em] font-bold sm:mt-1 sm:text-lg md:text-lg lg:text-[1.6em]"
-            >
-              Dollar Group Cycles.
+              Join and Multiply Your Savings with our exclusive Dollar Group
+              Cycles.
             </motion.h1>
             <motion.div
               variants={fadeInUp}
@@ -440,7 +435,7 @@ const Landing = () => {
               <p>
                 Access 5x your funds by Participating in Chain Co-op Poweful
                 Group Savings Cycles{" "}
-                <span className="text-xl font-bold">
+                <span className="font-bold lg:text-xl">
                   -Limited Spots Available!
                 </span>
               </p>
