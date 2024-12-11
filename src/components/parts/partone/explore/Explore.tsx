@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./explore.css";
 import explore1 from "../../../../Assets/png/home/automated-ai.png";
 import explore2 from "../../../../Assets/png/home/savings-group.png";
@@ -6,9 +6,39 @@ import explore3 from "../../../../Assets/png/home/savings-credit.png";
 import { motion } from "framer-motion";
 import { Primary } from "../../../common/Button";
 import Modal from "../../../common/Modal";
-import AutomatedLearningPlatform from "./details/AutomatedLearningPlatform";
+import FirstModal from "./details/FirstModal";
+import SecondModal from "./details/SecondModal";
+import ThirdModal from "./details/ThirdModal";
 
 const Explore = () => {
+  const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
+  const [isSecondModalOpen, setIsSecodModalOpen] = useState(false);
+  const [isThirdModalOpen, setIsThirdModalOpen] = useState(false);
+
+  const handleFirstModalOpen = () => {
+    setIsFirstModalOpen(true);
+  };
+
+  const handleFirstModalClose = () => {
+    setIsFirstModalOpen(false);
+  };
+
+  const handleSecondModalOpen = () => {
+    setIsSecodModalOpen(true);
+  };
+
+  const handleSecondModalClose = () => {
+    setIsSecodModalOpen(false);
+  };
+
+  const handleThirdModalOpen = () => {
+    setIsThirdModalOpen(true);
+  };
+
+  const handleThirdModalClose = () => {
+    setIsThirdModalOpen(false);
+  };
+
   return (
     <main className="flex h-full items-center justify-center font-sans sm:mt-[1em] lg:mt-[5em]">
       <section className="lg:w-[89%] lg:px-[0]">
@@ -47,14 +77,17 @@ const Explore = () => {
               <h1>GROUP SAVINGS CYCLE</h1>
               <p className="desc">
                 Get access to 5x your funds in Naira, Dollars, BTC, and more
-                automaticallyand secured by Chain Co-op
+                automaticallyand secured by Chain Co-op.
               </p>
               <div className="tags">
                 <span className="tag">Growth</span>
                 <span className="tag">Partnership</span>
                 <span className="tag">Funding</span>
               </div>
-              <Primary className="mt-8 rounded-md bg-text2 px-5 py-2 font-semibold text-white transition-transform duration-300 hover:scale-110">
+              <Primary
+                onClick={handleFirstModalOpen}
+                className="mt-8 rounded-md bg-text2 px-5 py-2 font-semibold text-white transition-transform duration-300 hover:scale-110"
+              >
                 Learn More
               </Primary>
             </div>
@@ -75,10 +108,13 @@ const Explore = () => {
                 <span className="tag"> Partnership</span>
                 <span className="tag"> Developers </span>
               </div>
+              <Primary
+                onClick={handleSecondModalOpen}
+                className="mt-8 rounded-md bg-text2 px-5 py-2 font-semibold text-white transition-transform duration-300 hover:scale-110"
+              >
+                Learn More
+              </Primary>
             </div>
-            <Primary className="mt-8 rounded-md bg-text2 px-5 py-2 font-semibold text-white transition-transform duration-300 hover:scale-110">
-              Learn More
-            </Primary>
           </div>
 
           <div className="card">
@@ -96,19 +132,37 @@ const Explore = () => {
                 <span className="tag">Education</span>
                 <span className="tag">Partnership</span>
               </div>
-              <Primary className="mt-8 rounded-md bg-text2 px-5 py-2 font-semibold text-white transition-transform duration-300 hover:scale-110">
+              <Primary
+                onClick={handleThirdModalOpen}
+                className="mt-8 rounded-md bg-text2 px-5 py-2 font-semibold text-white transition-transform duration-300 hover:scale-110"
+              >
                 Learn More
               </Primary>
             </div>
           </div>
         </div>
       </section>
-      {/* <Modal className="bg-white" onClose={handleModalClose}>
-        <AutomatedLearningPlatform
-          onClose={handleModalClose}
-          onStepOneClick={handleStepOneClick}
-        />
-      </Modal> */}
+      <Modal
+        isOpen={isFirstModalOpen}
+        className="bg-white"
+        onClose={handleFirstModalClose}
+      >
+        <FirstModal />
+      </Modal>
+      <Modal
+        isOpen={isSecondModalOpen}
+        className="bg-white"
+        onClose={handleSecondModalClose}
+      >
+        <SecondModal />
+      </Modal>
+      <Modal
+        isOpen={isThirdModalOpen}
+        className="bg-white"
+        onClose={handleThirdModalClose}
+      >
+        <ThirdModal />
+      </Modal>
     </main>
   );
 };

@@ -222,7 +222,7 @@ const Story = () => {
                     </p>
                   </div>
                 </div>
-                <div className="hidden lg:absolute lg:right-[-12.5%] lg:block lg:w-1/2">
+                <div className="hidden lg:absolute lg:right-[-16.5%] lg:block lg:w-1/2">
                   <img
                     src={Rectangle}
                     alt="rectangle-background"
