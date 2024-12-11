@@ -35,6 +35,7 @@ import WithdrawContribution from "../contribution/withdrawContribution/WithdrawC
 import ConfirmWithdrawal from "../contribution/withdrawContribution/ConfirmAmount";
 import ManageAccountCards from "../profile/profileDetails/accountsAndCard/ManageCards";
 import Notification from "../notification/main/Notification";
+import ContributionCurrencyType from "../contribution/main/contributionType/ContributionCurrencyType";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -58,6 +59,10 @@ const Dashboard = () => {
           <Route path="contribution/plan" element={<SavingsPlan />} />
           <Route path="contribution/date" element={<StartDate />} />
           <Route path="contribution/amount" element={<SavingsAmount />} />
+          <Route
+            path="contribution/contribution_cuurency_type"
+            element={<ContributionCurrencyType />}
+          />
           <Route
             path="contribution/fund_contribution/verify_transaction"
             element={<VerifyContribution />}

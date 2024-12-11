@@ -78,7 +78,7 @@ const Contribution: React.FC = () => {
   };
 
   const fundContribution = () => {
-    navigate("/dashboard/contribution/purpose");
+    navigate("/dashboard/contribution/contribution_cuurency_type");
   };
 
   const formatCurrency = (amount: number) => {
