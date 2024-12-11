@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowDropleft } from "react-icons/io";
-import { DashboardHeader } from "../../../common/DashboardHeader";
+import { DashboardHeader } from "../../../../common/DashboardHeader";
 import {
   Alert,
   Select,
@@ -9,19 +9,19 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
-import Modal from "../../../common/Modal";
-import { Primary } from "../../../common/Button";
+import Modal from "../../../../common/Modal";
+import { Primary } from "../../../../common/Button";
 import ReactLoading from "react-loading";
 import {
   CreateContributionPlan,
   GetWalletCard,
   PayContribution,
-} from "../../../../shared/redux/slices/transaction.slices";
-import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
+} from "../../../../../shared/redux/slices/transaction.slices";
+import { useAppDispatch } from "../../../../../shared/redux/reduxHooks";
 import PaymentWithCard from "../paymentChoice.tsx/PaymentWithCard";
 import PayWithPaystack from "../paymentChoice.tsx/PayWithPaystack";
-import { AppDispatch } from "../../../../shared/redux/store";
-import { useUserCard } from "../../../../shared/Hooks/useUserProfile";
+import { AppDispatch } from "../../../../../shared/redux/store";
+import { useUserCard } from "../../../../../shared/Hooks/useUserProfile";
 
 interface ContributionResponse {
   result: {

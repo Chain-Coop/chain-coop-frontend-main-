@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowDropleft } from "react-icons/io";
-import { DashboardHeader } from "../../../common/DashboardHeader";
+import { DashboardHeader } from "../../../../common/DashboardHeader";
 import { Alert } from "@mui/material";
-import { Plan } from "../../../../data/Data";
+import { Plan } from "../../../../../data/Data";
 
 const SavingsPlan = () => {
   const [contributionPlan, setContributionPlan] = useState("");
@@ -27,7 +27,7 @@ const SavingsPlan = () => {
   return (
     <main className="pb-[1.5em] font-sans">
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
-        Contribution Plan
+        Flexible Savings
       </DashboardHeader>
       <div className="m-auto w-[90%]">
         <header className="mt-[1.5em] flex justify-center text-center lg:mt-[3em]">
@@ -94,12 +94,12 @@ const SavingsPlan = () => {
             <IoIosArrowDropleft size={25} />
           </button>
           <button
-            className="rounded-md bg-text2 px-8 py-2 font-semibold text-white
+            className="cursor-not-allowed rounded-md bg-text2 px-8 py-2 font-semibold text-white
               transition-all duration-300 ease-in-out
               hover:scale-105 hover:bg-opacity-90 hover:shadow-lg
               active:scale-95 active:transform
               disabled:cursor-not-allowed disabled:opacity-50"
-            onClick={handleNext}
+            // onClick={handleNext}
             disabled={!contributionPlan}
           >
             Next

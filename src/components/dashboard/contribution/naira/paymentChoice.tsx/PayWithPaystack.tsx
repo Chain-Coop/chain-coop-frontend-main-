@@ -1,7 +1,7 @@
 import React from "react";
-import { IoIosArrowForward } from "react-icons/io";
 import { Loader2 } from "lucide-react";
-import withdraw from "../../../../Assets/svg/dashboard/contribution/card.svg";
+import { IoIosArrowForward } from "react-icons/io";
+import withdraw from "../../../../../Assets/svg/dashboard/contribution/card.svg";
 
 interface PaymentOptionProps {
   onSelect: (paymentType: "paystack") => void;
@@ -31,7 +31,7 @@ const PayWithPaystack: React.FC<PaymentOptionProps> = ({
               <div>
                 <img
                   src={withdraw}
-                  alt=""
+                  alt="withdraw"
                   className="h-8 w-8 sm:h-10 sm:w-10"
                 />
               </div>

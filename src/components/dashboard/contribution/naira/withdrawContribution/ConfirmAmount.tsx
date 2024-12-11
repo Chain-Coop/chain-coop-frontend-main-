@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate, useLocation } from "react-router";
-import { Primary } from "../../../common/Button";
-import { formatBalance } from "../../../../shared/utils/format";
+import { Primary } from "../../../../common/Button";
+import { formatBalance } from "../../../../../shared/utils/format";
 import { useDispatch } from "react-redux";
-import { WithdrawalFromContribution } from "../../../../shared/redux/slices/transaction.slices";
-import { AppDispatch } from "../../../../shared/redux/store";
+import { WithdrawalFromContribution } from "../../../../../shared/redux/slices/transaction.slices";
+import { AppDispatch } from "../../../../../shared/redux/store";
 import { Alert } from "@mui/material";
 import ReactLoading from "react-loading";
-import Modal from "../../../common/Modal";
-import success from "../../../../Assets/svg/auth/sucess.svg";
-import { DashboardHeader } from "../../../common/DashboardHeader";
+import Modal from "../../../../common/Modal";
+import success from "../../../../../Assets/svg/auth/sucess.svg";
+import { DashboardHeader } from "../../../../common/DashboardHeader";
 
 const ConfirmAmount = () => {
   const navigate = useNavigate();

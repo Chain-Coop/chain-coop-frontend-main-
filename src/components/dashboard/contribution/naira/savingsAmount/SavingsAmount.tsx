@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowDropleft } from "react-icons/io";
-import { DashboardHeader } from "../../../common/DashboardHeader";
+import { DashboardHeader } from "../../../../common/DashboardHeader";
 import { Alert } from "@mui/material";
 
 const MIN_AMOUNT = 2000;

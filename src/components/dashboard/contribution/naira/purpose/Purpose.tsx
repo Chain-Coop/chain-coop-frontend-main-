@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DashboardHeader } from "../../../common/DashboardHeader";
+import { DashboardHeader } from "../../../../common/DashboardHeader";
 import { Alert } from "@mui/material";
 import { IoIosArrowDropleft } from "react-icons/io";
-import { SavingOn } from "../../../../data/Data";
+import { SavingOn } from "../../../../../data/Data";
 
 const Purpose = () => {
   const [savingsCategory, setSavingsCategory] = useState("");

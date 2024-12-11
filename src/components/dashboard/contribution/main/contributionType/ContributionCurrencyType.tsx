@@ -44,7 +44,7 @@ const ContributionCurrencyType = () => {
     if (cryptoType === "Naira") {
       navigate("/dashboard/contribution/purpose");
     } else {
-      navigate("/dashboard/contribution/plan", {
+      navigate("/dashboard/contribution/crypto/plan", {
         state: { purpose, plan: cryptoType },
       });
     }

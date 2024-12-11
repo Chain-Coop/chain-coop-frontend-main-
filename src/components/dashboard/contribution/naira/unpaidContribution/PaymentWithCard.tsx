@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
+import { useAppDispatch } from "../../../../../shared/redux/reduxHooks";
 import { Loader2, ChevronLeft, ChevronRight } from "lucide-react";
-import { AppDispatch } from "../../../../shared/redux/store";
+import { AppDispatch } from "../../../../../shared/redux/store";
 import {
   GetWalletCard,
-  PayContribution,
-} from "../../../../shared/redux/slices/transaction.slices";
+  PayUnPaidContribution,
+} from "../../../../../shared/redux/slices/transaction.slices";
 import { Alert, Snackbar } from "@mui/material";
-import useUserProfile, {
-  useUserCard,
-} from "../../../../shared/Hooks/useUserProfile";
-import { CardBrandLogo } from "../../../../shared/utils/Helpers";
+import { useUserCard } from "../../../../../shared/Hooks/useUserProfile";
+import { CardBrandLogo } from "../../../../../shared/utils/Helpers";
 
 interface Card {
   authorization_code: string;
@@ -21,11 +19,6 @@ interface Card {
   card_type: string;
   bank: string;
   brand: string;
-}
-
-interface PaymentWithCardProps {
-  contributionData: any;
-  onClose: () => void;
 }
 
 const cardDesigns = {
@@ -49,19 +42,15 @@ const Chip = () => (
   </div>
 );
 
-const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
-  contributionData,
-  onClose,
-}) => {
-  const { profileDetails } = useUserProfile();
+const PaymentWithCard = ({ contributionData, onClose }: any) => {
   const { useWalletCards } = useUserCard();
-  const contributionId = contributionData.contributionId;
+  const contributionId = contributionData;
+  const navigate = useNavigate();
   const dispatch: AppDispatch = useAppDispatch();
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
+  const [currentPage, setCurrentPage] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0);
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(GetWalletCard());
@@ -80,23 +69,24 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
       };
 
       let paymentResponse;
-
       if (paymentType === "card" && selectedCard) {
         paymentResponse = await dispatch(
-          PayContribution({
+          PayUnPaidContribution({
             ...basePayload,
             cardData: selectedCard.authorization_code,
-            userId: profileDetails._id,
           }),
         ).unwrap();
+        onClose();
         navigate("/dashboard/contribution");
       } else {
-        paymentResponse = await dispatch(PayContribution(basePayload)).unwrap();
-
-        if (paymentResponse?.landing?.payment?.info?.data) {
-          onClose();
+        paymentResponse = await dispatch(
+          PayUnPaidContribution(basePayload),
+        ).unwrap();
+        if (paymentResponse.landing?.charge?.info?.data?.authorization_url) {
           window.location.href =
-            paymentResponse?.landing?.payment?.info?.data?.authorization_url;
+            paymentResponse.landing?.charge?.info?.data?.authorization_url;
+        } else {
+          throw new Error("Failed to initiate payment. Please try again.");
         }
       }
     } catch (error: any) {
@@ -106,28 +96,20 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
     }
   };
 
-  const handleCardSelect = (card: Card) => {
-    setError(null);
-    setSelectedCard(card);
-  };
+  const handleCloseError = () => setError(null);
+
+  const handleCardSelect = (card: Card) => setSelectedCard(card);
 
   const handleNext = () =>
-    currentPage < cards?.length - 1 && setCurrentPage((prev) => prev + 1);
+    currentPage < cards.length - 1 && setCurrentPage((prev) => prev + 1);
 
   const handlePrev = () =>
     currentPage > 0 && setCurrentPage((prev) => prev - 1);
 
-  const handleCloseError = () => {
-    setError(null);
-  };
+  const formatCardNumber = (last4: string) => `**** **** **** ${last4}`;
 
-  const formatCardNumber = (last4: string) => {
-    return `**** **** **** ${last4}`;
-  };
-
-  const formatExpiryDate = (month: string, year: string) => {
-    return `${month.padStart(2, "0")}/${year.slice(-2)}`;
-  };
+  const formatExpiryDate = (month: string, year: string) =>
+    `${month.padStart(2, "0")}/${year.slice(-2)}`;
 
   return (
     <main className="mx-auto w-full max-w-md px-4 font-sans sm:px-6">
@@ -166,7 +148,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
             </header>
 
             <div className="relative">
-              {cards?.length > 0 ? (
+              {cards.length > 0 ? (
                 <>
                   <div className="relative mx-auto w-full overflow-hidden px-4 sm:w-[25em] sm:px-6">
                     {currentPage > 0 && (
@@ -182,13 +164,13 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
                       <div
                         onClick={() => handleCardSelect(cards[currentPage])}
                         className={`group relative aspect-[1.6/1] w-full cursor-pointer rounded-xl bg-gradient-to-r px-3 py-2 shadow-lg transition-all hover:shadow-xl sm:px-4
-                          ${cardDesigns[cards[currentPage]?.brand?.toLowerCase() as keyof typeof cardDesigns] || cardDesigns?.default}
+                          ${cardDesigns[cards[currentPage].brand.toLowerCase() as keyof typeof cardDesigns] || cardDesigns.default}
                           ${selectedCard?.authorization_code === cards[currentPage].authorization_code ? "ring-2 ring-white" : ""}`}
                       >
                         <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 opacity-0 transition-opacity group-hover:opacity-100" />
 
                         <div className="mb-3 text-sm font-bold text-white/90 sm:mb-4 sm:text-base">
-                          {cards[currentPage]?.bank?.toUpperCase()}
+                          {cards[currentPage].bank.toUpperCase()}
                         </div>
 
                         <Chip />
@@ -212,7 +194,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
                       </div>
                     )}
 
-                    {currentPage < cards?.length - 1 && (
+                    {currentPage < cards.length - 1 && (
                       <button
                         onClick={handleNext}
                         className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-1.5 shadow-lg sm:p-2"
@@ -223,7 +205,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
                   </div>
 
                   <div className="mt-4 flex justify-center gap-1">
-                    {cards?.map((_: any, idx: number) => (
+                    {cards.map((_: any, idx: number) => (
                       <div
                         key={idx}
                         className={`h-1.5 w-1.5 rounded-full transition-all ${

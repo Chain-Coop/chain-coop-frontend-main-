@@ -25,14 +25,15 @@ import Shares from "../shares/main/Shares";
 import VerifyTransaction from "../wallet/fund/verifyTransaction/VerifyTransaction";
 import ConfirmTransaction from "../wallet/transfer/fundContribution/confirmTransaction";
 import ProjectContentOverView from "../nestedproject/nested/ProjectContentOverView";
-import Purpose from "../contribution/purpose/Purpose";
-import SavingsPlan from "../contribution/savingsPlan/SavingsPlan";
-import StartDate from "../contribution/startDate/StartDate";
-import SavingsAmount from "../contribution/savingsAmount/SavingsAmount";
+import Purpose from "../contribution/naira/purpose/Purpose";
+import SavingsPlan from "../contribution/naira/savingsPlan/SavingsPlan";
+import CryptoSavingsPlan from "../contribution/crypto/savingsPlan/SavingsPlan";
+import StartDate from "../contribution/naira/startDate/StartDate";
+import SavingsAmount from "../contribution/naira/savingsAmount/SavingsAmount";
 import VerifyContribution from "../contribution/main/VerifyContribution";
 import ViewContribution from "../contribution/viewContribution/ViewContribution";
-import WithdrawContribution from "../contribution/withdrawContribution/WithdrawContribution";
-import ConfirmWithdrawal from "../contribution/withdrawContribution/ConfirmAmount";
+import WithdrawContribution from "../contribution/naira/withdrawContribution/WithdrawContribution";
+import ConfirmWithdrawal from "../contribution/naira/withdrawContribution/ConfirmAmount";
 import ManageAccountCards from "../profile/profileDetails/accountsAndCard/ManageCards";
 import Notification from "../notification/main/Notification";
 import ContributionCurrencyType from "../contribution/main/contributionType/ContributionCurrencyType";
@@ -57,6 +58,10 @@ const Dashboard = () => {
           <Route path="contribution" element={<Contribution />} />
           <Route path="contribution/purpose" element={<Purpose />} />
           <Route path="contribution/plan" element={<SavingsPlan />} />
+          <Route
+            path="contribution/crypto/plan"
+            element={<CryptoSavingsPlan />}
+          />
           <Route path="contribution/date" element={<StartDate />} />
           <Route path="contribution/amount" element={<SavingsAmount />} />
           <Route

@@ -19,8 +19,8 @@ import { format, parseISO } from "date-fns";
 import { useSelector } from "react-redux";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Modal from "../../../common/Modal";
-import PaymentWithCard from "../unpaidContribution/PaymentWithCard";
-import PayWithPaystack from "../unpaidContribution/PayWithPaystack";
+import PaymentWithCard from "../naira/unpaidContribution/PaymentWithCard";
+import PayWithPaystack from "../naira/unpaidContribution/PayWithPaystack";
 import { useUnPaidContribution } from "../../../../shared/Hooks/useBalance";
 import { motion } from "framer-motion";
 import { Alert, Snackbar, Box } from "@mui/material";
@@ -442,7 +442,9 @@ const ViewContribution = () => {
     <main className="pb-[1.5em] font-sans">
       <header className="sm:mt-[0] lg:mt-[2em]">
         <DashboardHeader className="flex items-center justify-center">
-          {contributionDetails?.contributionPlan} Contribution Plan
+          Fexible Savings ({""}
+          {contributionDetails?.contributionPlan}
+          {""})
         </DashboardHeader>
       </header>
       <section className="px-3">
