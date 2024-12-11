@@ -169,21 +169,22 @@ const Story = () => {
                 Our Story
               </h1>
               <p className="mt-2 text-sm tracking-wide md:text-base lg:px-0">
-                A Tech-driven worker owned Cooperative, Built for a better
-                future.
+                Chain Co-op: the cooperative savings solution for modern
+                Nigerians -save in various assets and prepare for future
+                financial opportunities through blockchain-backed security.
               </p>
             </header>
 
             <div className="m-auto mt-2 flex flex-col lg:mt-[3em] lg:w-full lg:gap-8 lg:text-start">
               <div className="flex flex-col lg:mt-[7em] lg:flex-row">
-                <div className="lg:w- lg:block">
+                <div className="lg:w-1/2">
                   <img
                     src={image1}
                     alt="people-image"
                     className="h-auto w-full rounded-lg object-cover"
                   />
                 </div>
-                <div className="mx-auto mt-2  text-center tracking-wide lg:mt-[2em] lg:w-1/2 lg:px-8 lg:text-start">
+                <div className="mx-auto mt-2 text-center tracking-wide lg:mt-[2em] lg:w-1/2 lg:px-8 lg:text-start">
                   <p className="text-base md:text-lg">
                     Chain is Nigeria first digital membership cooperative,
                     leveraging blockchain to offer safe, guanteed returns
@@ -222,16 +223,16 @@ const Story = () => {
                     </p>
                   </div>
                 </div>
-                <div className="hidden lg:absolute lg:right-[-16.5%] lg:block lg:w-1/2">
+                <div className="relative mt-4 lg:absolute lg:right-[-16.5%] lg:mt-0 lg:w-1/2">
                   <img
                     src={Rectangle}
                     alt="rectangle-background"
-                    className="absolute right-0 top-0 h-[200%] w-[130%] object-cover"
+                    className="hidden lg:absolute lg:right-0 lg:top-0 lg:block lg:h-[200%] lg:w-[130%] lg:object-cover"
                   />
                   <img
                     src={image2}
                     alt="people-image"
-                    className="h-aut relative z-10 w-[%] -translate-x-[35%] translate-y-[50%]"
+                    className="h-auto w-full rounded-lg object-cover lg:relative lg:z-10 lg:w-[100%] lg:-translate-x-[35%] lg:translate-y-[50%] lg:rounded-none"
                   />
                 </div>
               </div>

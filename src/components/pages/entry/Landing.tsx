@@ -98,7 +98,7 @@ const Landing = () => {
     <>
       <NavBar />
       <main
-        className={`relative font-sans transition-opacity duration-300 ${
+        className={`relative mb-[2em] font-sans transition-opacity duration-300 ${
           isLoaded ? "opacity-100" : "opacity-0"
         }`}
       >
@@ -425,94 +425,94 @@ const Landing = () => {
               variants={fadeInUp}
               className="text-center text-[1.5em] font-bold sm:mt-2 sm:text-lg md:text-lg lg:text-[1.6em]"
             >
-              Become an Early Member
+              Join and Multiply Your Savings with our exclusive
             </motion.h1>
             <motion.h1
               variants={fadeInUp}
               className="text-center text-[1.5em] font-bold sm:mt-1 sm:text-lg md:text-lg lg:text-[1.6em]"
             >
-              With a One-Time N100k Membership Fee
+              Dollar Group Cycles.
             </motion.h1>
             <motion.div
               variants={fadeInUp}
               className="m-auto mt-1 px-2 text-center md:text-center lg:w-[50%]"
             >
               <p>
-                Secure your spot as an early member of Chain Co-op with a one
-                time N100k membership fee. Gain early access to investment
-                round, and become part of growing tech-powered community focused
-                on long-term financial success.
+                Access 5x your funds by Participating in Chain Co-op Poweful
+                Group Savings Cycles{" "}
+                <span className="text-xl font-bold">
+                  -Limited Spots Available!
+                </span>
               </p>
             </motion.div>
           </motion.div>
-
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: false, amount: 0.3 }}
             variants={staggerContainer}
-            className="mt-[2em] flex flex-wrap items-center justify-center sm:flex-col sm:space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0"
+            className="mt-[2em] flex flex-col items-center"
           >
-            <div className="mt-[2em] flex flex-col items-center">
-              <div className="flex flex-wrap justify-center sm:space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
-                {Object.entries(earlyMemberCircleText)
-                  .slice(0, 3)
-                  .map(([key, content], index) => (
-                    <motion.div
-                      key={index}
-                      variants={circleAnimation}
-                      whileInView="visible"
-                      initial="hidden"
-                      viewport={{ once: false, amount: 0.3 }}
-                      className="relative mt-4 flex h-[320px] w-[320px] items-center justify-center bg-[#e3d9ec] px-2 lg:mt-0"
-                      style={{
-                        borderRadius: "50%",
-                        overflow: "hidden",
-                      }}
-                    >
-                      <div className="text-center">
-                        <div className="px-[1.7em]">
-                          <h1 className="text-[1em] text-lg font-bold text-text2">
-                            {content.title}
-                          </h1>
-                        </div>
-
-                        <div className="px-3 text-center text-sm font-medium">
-                          <p className="mt-[5px]">{content.p}</p>
-                          <p className="mt-[8px]">{content.p2}</p>
-                        </div>
+            <div className="flex flex-wrap justify-center gap-[1em] lg:flex-row lg:gap-[3em]">
+              {Object.entries(earlyMemberCircleText)
+                .slice(0, 2)
+                .map(([key, content], index) => (
+                  <motion.div
+                    key={index}
+                    variants={circleAnimation}
+                    whileInView="visible"
+                    initial="hidden"
+                    viewport={{ once: false, amount: 0.3 }}
+                    className="relative flex h-[320px] w-[320px] items-center justify-center bg-[#e3d9ec] px-2"
+                    style={{
+                      borderRadius: "50%",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <div className="text-center">
+                      <div className="px-[1.7em]">
+                        <h1 className="text-[1em] text-lg font-bold text-text2">
+                          {content.title}
+                        </h1>
                       </div>
-                    </motion.div>
-                  ))}
-              </div>
-
-              {earlyMemberCircleText.fourthBox && (
-                <motion.div
-                  variants={circleAnimation}
-                  whileInView="visible"
-                  initial="hidden"
-                  viewport={{ once: false, amount: 0.3 }}
-                  className="relative mt-6 flex h-[320px] w-[320px] items-center justify-center bg-[#e3d9ec] px-2"
-                  style={{
-                    borderRadius: "50%",
-                    overflow: "hidden",
-                  }}
-                >
-                  <div className="text-center">
-                    <h1 className="text-[1em] text-lg font-bold text-text2">
-                      {earlyMemberCircleText.fourthBox.title}
-                    </h1>
-                    <div className="px-3 text-center text-sm font-medium">
-                      <p className="mt-[5px]">
-                        {earlyMemberCircleText.fourthBox.p}
-                      </p>
-                      <p className="mt-[8px]">
-                        {earlyMemberCircleText.fourthBox.p2}
-                      </p>
+                      <div className="px-3 text-center text-sm font-medium">
+                        <p className="mt-[5px]">{content.p}</p>
+                        <p className="mt-[8px]">{content.p2}</p>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              )}
+                  </motion.div>
+                ))}
+            </div>
+
+            <div className="mt-4 flex flex-wrap justify-center gap-[1em] lg:flex-row lg:gap-[3em]">
+              {Object.entries(earlyMemberCircleText)
+                .slice(2)
+                .map(([key, content], index) => (
+                  <motion.div
+                    key={index + 2}
+                    variants={circleAnimation}
+                    whileInView="visible"
+                    initial="hidden"
+                    viewport={{ once: false, amount: 0.3 }}
+                    className="relative flex h-[320px] w-[320px] items-center justify-center bg-[#e3d9ec] px-2"
+                    style={{
+                      borderRadius: "50%",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <div className="text-center">
+                      <div className="px-[1.7em]">
+                        <h1 className="text-[1em] text-lg font-bold text-text2">
+                          {content.title}
+                        </h1>
+                      </div>
+                      <div className="px-3 text-center text-sm font-medium">
+                        <p className="mt-[5px]">{content.p}</p>
+                        <p className="mt-[8px]">{content.p2}</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
             </div>
           </motion.div>
         </div>

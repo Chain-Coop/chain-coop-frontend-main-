@@ -179,6 +179,12 @@ export const customerCardData = [
   {
     paragraph: "Invest in the Coop Network business",
   },
+  {
+    paragraph: " Mint NFT after 6 months of saving",
+  },
+  {
+    paragraph: "Access to saving individual saving Cycles (Naira Dollar)",
+  },
 ];
 
 export const investorCardData = [
@@ -194,6 +200,13 @@ export const investorCardData = [
   {
     paragraph: "Discounted products & services",
   },
+  {
+    paragraph: " Mint NFT after 6 months of saving",
+  },
+  {
+    paragraph:
+      "Access to savings individual savings Cycles, Group saving Dollar, BREAD, BTC and more.",
+  },
 ];
 
 export const employeeCardData = [
@@ -208,6 +221,18 @@ export const employeeCardData = [
   },
   {
     paragraph: "Discounted products & services",
+  },
+  {
+    paragraph: " Mint NFT after 6 months of saving",
+  },
+  {
+    paragraph: "Dividend on all Co-op business",
+  },
+  {
+    paragraph: "Access to all savings features and Receive Yeilds on savings",
+  },
+  {
+    paragraph: "Access to microcredit with 0% interest rate",
   },
 ];
 
@@ -228,9 +253,6 @@ export const MembershipFeePioneerCardData = [
   {
     paragraph: "Discounted the coop network product and services",
   },
-  {
-    paragraph: " Mint NFT after 6 months of saving ",
-  },
 ];
 
 export const CustomerFeeExplorerCardData = [
@@ -242,9 +264,6 @@ export const CustomerFeeExplorerCardData = [
   },
   {
     paragraph: "Invest in the coop network business",
-  },
-  {
-    paragraph: " Mint NFT after 6 months of saving ",
   },
 ];
 
