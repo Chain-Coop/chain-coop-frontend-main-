@@ -40,9 +40,9 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({ closeModal }) => {
         }
       })
       .catch((error: any) => {
+        console.log("Err", error);
         setLoading(false);
-        const errorMessage =
-          error?.message || "An error occurred, please try again";
+        const errorMessage = error || "An error occurred, please try again";
         toast.error(errorMessage);
       });
   };

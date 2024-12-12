@@ -4,11 +4,13 @@ import { useNavigate } from "react-router-dom";
 import Modal from "../../../../common/Modal";
 import TierOneFirstModal from "../kyc/teirOne/TierOneFirstModal";
 import TierOneSecondModal from "../kyc/teirOne/TeirOneSecondModal";
+import TierOneThirdModal from "../kyc/teirOne/TeirOneThirdModal";
 
 const Details = () => {
   const navigate = useNavigate();
   const [showTierOneModal, setShowTierOneModal] = useState(false);
   const [showSecondModal, setShowSecondModal] = useState(false);
+  const [showThirdModal, setShowThirdModal] = useState(false);
 
   const sections = [
     {
@@ -26,11 +28,17 @@ const Details = () => {
   const handleModalClose = () => {
     setShowTierOneModal(false);
     setShowSecondModal(false);
+    setShowThirdModal(false);
   };
 
   const handleStepOneClick = () => {
     setShowSecondModal(true);
     setShowTierOneModal(false);
+  };
+
+  const handleStepTwoSuccess = () => {
+    setShowSecondModal(false);
+    setShowThirdModal(true);
   };
 
   const handleSectionClick = (section: any) => {
@@ -87,7 +95,18 @@ const Details = () => {
         isOpen={showSecondModal}
         onClose={handleModalClose}
       >
-        <TierOneSecondModal onClose={handleModalClose} />
+        <TierOneSecondModal
+          onClose={handleModalClose}
+          onSuccess={handleStepTwoSuccess}
+        />
+      </Modal>
+
+      <Modal
+        className="bg-white"
+        isOpen={showThirdModal}
+        onClose={handleModalClose}
+      >
+        <TierOneThirdModal onClose={handleModalClose} />
       </Modal>
     </main>
   );

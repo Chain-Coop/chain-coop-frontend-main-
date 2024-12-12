@@ -187,7 +187,7 @@ export const landingSlice = createSlice({
     builder.addCase(ResetPassword.pending, (state, action) => {
       state.isLoading = true;
     });
-    builder.addCase(ResetPassword.fulfilled, (state, action) => {
+    builder.addCase(ResetPassword.fulfilled, (state: any, action) => {
       state.isLoading = false;
       state.success = true;
       state.resetUserPassword = action.payload;

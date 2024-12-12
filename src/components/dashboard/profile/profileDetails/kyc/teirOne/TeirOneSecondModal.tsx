@@ -1,40 +1,34 @@
 import React, { useState } from "react";
-import { Primary } from "../../../../../common/Button";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../../shared/redux/store";
 import { toast } from "react-toastify";
-import { phoneNumberOtp } from "../../../../../../shared/redux/slices/kyc.slices";
-import ReactLoading from "react-loading";
-import { PhoneNumberInput } from "../../../../../../shared/utils/Helpers";
+import { kycWhatsAppOtp } from "../../../../../../shared/redux/slices/kyc.slices";
 
-interface TierOneFirstModalProps {
+interface TierOneSecondModalProps {
   onClose: () => void;
+  onSuccess: () => void;
 }
 
-const TeirOneSecondModal: React.FC<TierOneFirstModalProps> = ({ onClose }) => {
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [isPhoneValid, setIsPhoneValid] = useState(false);
+const TeirOneSecondModal: React.FC<TierOneSecondModalProps> = ({
+  onClose,
+  onSuccess,
+}) => {
   const [loading, setLoading] = useState(false);
   const dispatch: AppDispatch = useDispatch();
 
   const getOtp = (e: any) => {
     e.preventDefault();
-    if (!phoneNumber) {
-      return;
-    }
 
     setLoading(true);
-    let body = {
-      phoneNumber: phoneNumber,
-    };
 
-    dispatch(phoneNumberOtp(body))
+    dispatch(kycWhatsAppOtp())
       .unwrap()
-      .then(() => {
+      .then((response) => {
         setLoading(false);
+        toast.success(response.message);
+        onSuccess();
       })
       .catch((error: any) => {
-        console.log("err", error);
         setLoading(false);
         toast.error(error);
       });
@@ -42,53 +36,50 @@ const TeirOneSecondModal: React.FC<TierOneFirstModalProps> = ({ onClose }) => {
 
   return (
     <main className="w-full max-w-[28em] px-2 font-sans md:px-5">
-      <section className="flex flex-col gap-3 py-6 md:py-8">
+      <section className="flex flex-col gap-3 py-10 md:py-8">
         <div className="mt-[1em] flex flex-col gap-1">
           <header className="text-center sm:px-4">
             <h2 className="text-base font-bold leading-tight sm:text-lg md:text-lg">
-              Update your phone number
+              Whatsapp Phone Number Validation
             </h2>
           </header>
           <article className="px-2 text-center sm:px-3">
             <p className="text-sm font-medium text-gray-600">
-              Upload your phone number for verification process
+              To verify your account, please provide an active Whatsapp number
+              and potential verification calls will be done.
             </p>
           </article>
         </div>
 
-        <div className="mt-[1em]">
-          <label
-            htmlFor="phoneNumber-input"
-            className="mb-3 flex font-sans font-semibold text-text2"
-          >
-            Enter your Phone number
-          </label>
-          <PhoneNumberInput
-            value={phoneNumber}
-            onChange={setPhoneNumber}
-            disabled={loading}
-            onValidityChange={setIsPhoneValid}
-          />
-        </div>
-
         <div className="mt-[1em] flex justify-center">
-          <Primary
-            className="flex w-[70%] justify-center bg-text2 py-2 text-white"
+          <button
             onClick={getOtp}
-            type="submit"
-            disabled={loading || !isPhoneValid}
+            disabled={loading}
+            className={`text-center text-lg font-semibold text-text2 ${loading ? "cursor-not-allowed opacity-50" : ""}`}
           >
             {loading ? (
-              <ReactLoading
-                color="#FFFFFF"
-                width={25}
-                height={25}
-                type="spin"
-              />
+              <div className="flex items-center justify-center">
+                <svg className="mr-3 h-5 w-5 animate-spin" viewBox="0 0 24 24">
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                Generating...
+              </div>
             ) : (
-              "Next"
+              "Generate OTP"
             )}
-          </Primary>
+          </button>
         </div>
       </section>
     </main>
