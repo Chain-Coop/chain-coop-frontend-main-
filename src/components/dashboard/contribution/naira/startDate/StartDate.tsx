@@ -33,7 +33,7 @@ interface ContributionResponse {
 
 const StartDate: React.FC = () => {
   const { useWalletCards } = useUserCard();
-  console.log("iuuujjjjj", useWalletCards);
+  console.log("usewalll", useWalletCards);
   const today = formatDate(new Date());
   const startDate = today;
   const [endDate, setEndDate] = useState("");
@@ -50,7 +50,6 @@ const StartDate: React.FC = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  console.log("ll", location);
   const dispatch: AppDispatch = useAppDispatch();
 
   const { purpose, plan, amount, currency } = location.state || {};
@@ -67,8 +66,8 @@ const StartDate: React.FC = () => {
     dispatch(GetWalletCard());
   }, [dispatch]);
 
-  const hasCards = useWalletCards?.cards ?? [];
-  console.log("wa", hasCards);
+  const hasCards = (useWalletCards?.cards ?? []).length > 0;
+  console.log("hass", hasCards);
   function formatDate(date: Date): string {
     return date.toISOString().split("T")[0];
   }
