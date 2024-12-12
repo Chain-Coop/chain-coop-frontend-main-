@@ -1,35 +1,35 @@
 import React, { useState, useEffect } from "react";
-import useUserProfile from "../../../../../../../shared/Hooks/useUserProfile";
-import OtpPin from "../../../../../../../shared/utils/OtpInput";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../../../shared/redux/store";
-import { kycPhoneOtp } from "../../../../../../../shared/redux/slices/kyc.slices";
-import { Alert } from "@mui/material";
+import OtpPin from "../../../../../../../shared/utils/OtpInput";
 import { Primary } from "../../../../../../common/Button";
 import ReactLoading from "react-loading";
+import { Alert } from "@mui/material";
 import { toast } from "react-toastify";
-import { VerifykycPhoneOtp } from "../../../../../../../shared/redux/slices/kyc.slices";
+import {
+  kycWhatsAppOtp,
+  VerifykycWhatsAppOtp,
+} from "../../../../../../../shared/redux/slices/kyc.slices";
 
-interface TierOneThirdModalProps {
+interface WhatsAppVerificationModalProps {
   reference: string;
   onClose: () => void;
-  onSwitchToWhatsapp: () => void;
+  onBack: () => void;
   onVerificationSuccess: () => void;
 }
 
-const TierOneThirdModal: React.FC<TierOneThirdModalProps> = ({
-  onClose,
-  onSwitchToWhatsapp,
-  onVerificationSuccess,
+const WhatsAppVerificationModal: React.FC<WhatsAppVerificationModalProps> = ({
   reference,
+  onClose,
+  onBack,
+  onVerificationSuccess,
 }) => {
-  const { profileDetails } = useUserProfile();
+  const dispatch: AppDispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const [timeLeft, setTimeLeft] = useState(360);
-  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
     if (timeLeft <= 0) return;
@@ -59,7 +59,7 @@ const TierOneThirdModal: React.FC<TierOneThirdModalProps> = ({
 
     try {
       await dispatch(
-        VerifykycPhoneOtp({
+        VerifykycWhatsAppOtp({
           code: code,
           reference: reference,
         }),
@@ -71,13 +71,14 @@ const TierOneThirdModal: React.FC<TierOneThirdModalProps> = ({
       setLoading(false);
     }
   };
-  const getOtp = async (e: React.MouseEvent) => {
+
+  const resendCode = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (timeLeft > 0) return;
 
     setResendLoading(true);
     try {
-      const response = await dispatch(kycPhoneOtp()).unwrap();
+      const response = await dispatch(kycWhatsAppOtp()).unwrap();
       toast.success(response.message);
       setTimeLeft(360);
     } catch (error: any) {
@@ -93,15 +94,12 @@ const TierOneThirdModal: React.FC<TierOneThirdModalProps> = ({
         <div className="flex flex-col gap-2">
           <header className="text-center">
             <h2 className="text-lg font-bold leading-tight md:text-xl">
-              Enter OTP Verification Code
+              Enter WhatsApp Verification Code
             </h2>
           </header>
           <article className="text-center">
             <p className="text-gray-600 sm:text-base">
-              A 6 digit code has been sent to{" "}
-              <span className="font-semibold">
-                {profileDetails.phoneNumber}
-              </span>
+              A 6 digit code has been sent to your WhatsApp
             </p>
           </article>
         </div>
@@ -120,7 +118,7 @@ const TierOneThirdModal: React.FC<TierOneThirdModalProps> = ({
                 Time remaining: {formatTime(timeLeft)}
               </p>
               <button
-                onClick={getOtp}
+                onClick={resendCode}
                 disabled={timeLeft > 0 || resendLoading}
                 className={`text-sm font-semibold md:text-base ${
                   timeLeft > 0
@@ -150,7 +148,7 @@ const TierOneThirdModal: React.FC<TierOneThirdModalProps> = ({
         )}
       </section>
 
-      <div className="mt-6 flex justify-center  px-4">
+      <div className="mt-6 flex justify-center px-4">
         <Primary
           className="w-full max-w-md bg-text2 py-3 text-white transition-all hover:bg-text2/90"
           onClick={verifyCode}
@@ -171,18 +169,12 @@ const TierOneThirdModal: React.FC<TierOneThirdModalProps> = ({
         </Primary>
       </div>
       <div className="mt-3">
-        <p>
-          Didn't receive code?{" "}
-          <span
-            onClick={onSwitchToWhatsapp}
-            className="cursor-pointer font-semibold text-text2"
-          >
-            Use a Whatsapp number instead
-          </span>
-        </p>
+        <button onClick={onBack} className="text-sm font-semibold text-red-500">
+          Back
+        </button>
       </div>
     </main>
   );
 };
 
-export default TierOneThirdModal;
+export default WhatsAppVerificationModal;

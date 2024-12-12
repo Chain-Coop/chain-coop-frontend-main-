@@ -7,6 +7,7 @@ import TierOneSecondModal from "../kyc/teirOne/phoneNumber/TeirOneSecondModal";
 import TierOneThirdModal from "../kyc/teirOne/phoneNumber/TeirOneThirdModal";
 import WhatsappOtpModal from "../kyc/teirOne/whatsapp/WhatsappOtpModal";
 import SuccessModal from "../kyc/teirOne/phoneNumber/SuccessModal";
+import WhatsappVerificationModal from "../kyc/teirOne/whatsapp/WhatsappVerificationModal";
 
 const Details = () => {
   const navigate = useNavigate();
@@ -16,6 +17,9 @@ const Details = () => {
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [otpReference, setOtpReference] = useState<string>("");
+  const [showWhatsAppVerificationModal, setShowWhatsAppVerificationModal] =
+    useState(false);
+  const [whatsAppReference, setWhatsAppReference] = useState<string>("");
 
   const sections = [
     {
@@ -35,11 +39,13 @@ const Details = () => {
     setShowSecondModal(false);
     setShowThirdModal(false);
     setShowWhatsAppModal(false);
+    setShowWhatsAppVerificationModal(false);
     setShowSuccessModal(false);
   };
 
   const handleVerificationSuccess = () => {
     setShowThirdModal(false);
+    setShowWhatsAppVerificationModal(false);
     setShowSuccessModal(true);
   };
 
@@ -70,6 +76,12 @@ const Details = () => {
     } else if (section.onClick) {
       section.onClick();
     }
+  };
+
+  const handleWhatsAppOtpSuccess = (reference: string) => {
+    setWhatsAppReference(reference);
+    setShowWhatsAppModal(false);
+    setShowWhatsAppVerificationModal(true);
   };
 
   return (
@@ -142,7 +154,30 @@ const Details = () => {
         isOpen={showWhatsAppModal}
         onClose={handleModalClose}
       >
-        <WhatsappOtpModal onClose={handleModalClose} onBack={handleBackToSMS} />
+        <WhatsappOtpModal
+          onClose={handleModalClose}
+          onBack={() => {
+            setShowWhatsAppModal(false);
+            setShowThirdModal(true);
+          }}
+          onOtpSuccess={handleWhatsAppOtpSuccess}
+        />
+      </Modal>
+
+      <Modal
+        className="bg-white"
+        isOpen={showWhatsAppVerificationModal}
+        onClose={handleModalClose}
+      >
+        <WhatsappVerificationModal
+          reference={whatsAppReference}
+          onClose={handleModalClose}
+          onBack={() => {
+            setShowWhatsAppVerificationModal(false);
+            setShowWhatsAppModal(true);
+          }}
+          onVerificationSuccess={handleVerificationSuccess}
+        />
       </Modal>
 
       <Modal

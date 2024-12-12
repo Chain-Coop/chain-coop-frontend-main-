@@ -1,42 +1,36 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../../../shared/redux/store";
-import { Primary } from "../../../../../../common/Button";
-import ReactLoading from "react-loading";
-import { Alert } from "@mui/material";
 import { toast } from "react-toastify";
-import { kycPhoneOtp } from "../../../../../../../shared/redux/slices/kyc.slices";
+import { kycWhatsAppOtp } from "../../../../../../../shared/redux/slices/kyc.slices";
 
 interface WhatsAppVerificationModalProps {
   onClose: () => void;
   onBack: () => void;
+  onOtpSuccess: (reference: string) => void;
 }
 
-const WhatsAppVerificationModal: React.FC<WhatsAppVerificationModalProps> = ({
+const WhatsappOtpModal: React.FC<WhatsAppVerificationModalProps> = ({
   onClose,
   onBack,
+  onOtpSuccess,
 }) => {
   const dispatch: AppDispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [phone, setPhone] = useState("");
-  const [error, setError] = useState("");
 
-  const getOtp = (e: any) => {
+  const getOtp = async (e: React.MouseEvent) => {
     e.preventDefault();
 
     setLoading(true);
-
-    dispatch(kycPhoneOtp())
-      .unwrap()
-      .then((response) => {
-        setLoading(false);
-        toast.success(response.message);
-        // onSuccess();
-      })
-      .catch((error: any) => {
-        setLoading(false);
-        toast.error(error);
-      });
+    try {
+      const response = await dispatch(kycWhatsAppOtp()).unwrap();
+      toast.success(response.message);
+      onOtpSuccess(response.reference);
+    } catch (error: any) {
+      toast.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -45,12 +39,12 @@ const WhatsAppVerificationModal: React.FC<WhatsAppVerificationModalProps> = ({
         <div className="mt-[1em] flex flex-col gap-1">
           <header className="text-center sm:px-4">
             <h2 className="text-base font-bold leading-tight sm:text-lg md:text-lg">
-              Update your Phone Number
+              WhatsApp Verification
             </h2>
           </header>
           <article className="px-2 text-center sm:px-3">
             <p className="text-sm font-medium text-gray-600">
-              Upload your phone number for verification process.
+              Generate an OTP code that will be sent to your WhatsApp number.
             </p>
           </article>
         </div>
@@ -87,7 +81,7 @@ const WhatsAppVerificationModal: React.FC<WhatsAppVerificationModalProps> = ({
         </div>
         <button
           onClick={onBack}
-          className="mt-2 text-sm font-semibold text-text2 hover:text-text2/80"
+          className="mt-2 text-sm font-semibold text-red-500"
         >
           Back to SMS verification
         </button>
@@ -96,4 +90,4 @@ const WhatsAppVerificationModal: React.FC<WhatsAppVerificationModalProps> = ({
   );
 };
 
-export default WhatsAppVerificationModal;
+export default WhatsappOtpModal;

@@ -1,5 +1,4 @@
 import React from "react";
-import { CheckCircle } from "lucide-react";
 import success from "../../../../../../../Assets/png/dashboard/success.png";
 
 const SuccessModal = ({ onClose }: any) => {

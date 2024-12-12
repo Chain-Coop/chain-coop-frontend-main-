@@ -18,16 +18,17 @@ const kycPhoneOtp = async () => {
     }
   }
 };
-export const VerifykycPhoneOtp = async (
-  codeData: { code: string; reference: string }, // Added reference to the type
-) => {
+export const VerifykycPhoneOtp = async (codeData: {
+  code: string;
+  reference: string;
+}) => {
   const url = `${API_URL}/kyc/verify-otp`;
   try {
     const response = await axios.post(
       url,
       {
         code: codeData.code,
-        reference: codeData.reference, // Include reference in request body
+        reference: codeData.reference,
       },
       {
         headers: authHeader(),
@@ -36,7 +37,6 @@ export const VerifykycPhoneOtp = async (
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      console.log("Err", error);
       throw error.response.data;
     } else {
       throw new Error("Network Error: Please check your internet connection.");
@@ -59,12 +59,18 @@ const kycWhatsAppOtp = async () => {
   }
 };
 
-export const VerifykycWhatsAppOtp = async (codeData: { code: string }) => {
+export const VerifykycWhatsAppOtp = async (codeData: {
+  code: string;
+  reference: string;
+}) => {
   const url = `${API_URL}/kyc/verifywaotp`;
   try {
     const response = await axios.post(
       url,
-      { code: codeData.code },
+      {
+        code: codeData.code,
+        reference: codeData.reference,
+      },
       {
         headers: authHeader(),
       },
