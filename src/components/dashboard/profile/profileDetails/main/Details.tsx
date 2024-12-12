@@ -2,15 +2,20 @@ import React, { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../../../common/Modal";
-import TierOneFirstModal from "../kyc/teirOne/TierOneFirstModal";
-import TierOneSecondModal from "../kyc/teirOne/TeirOneSecondModal";
-import TierOneThirdModal from "../kyc/teirOne/TeirOneThirdModal";
+import TierOneFirstModal from "../kyc/teirOne/phoneNumber/TierOneFirstModal";
+import TierOneSecondModal from "../kyc/teirOne/phoneNumber/TeirOneSecondModal";
+import TierOneThirdModal from "../kyc/teirOne/phoneNumber/TeirOneThirdModal";
+import WhatsappOtpModal from "../kyc/teirOne/whatsapp/WhatsappOtpModal";
+import SuccessModal from "../kyc/teirOne/phoneNumber/SuccessModal";
 
 const Details = () => {
   const navigate = useNavigate();
   const [showTierOneModal, setShowTierOneModal] = useState(false);
   const [showSecondModal, setShowSecondModal] = useState(false);
   const [showThirdModal, setShowThirdModal] = useState(false);
+  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [otpReference, setOtpReference] = useState<string>("");
 
   const sections = [
     {
@@ -29,6 +34,13 @@ const Details = () => {
     setShowTierOneModal(false);
     setShowSecondModal(false);
     setShowThirdModal(false);
+    setShowWhatsAppModal(false);
+    setShowSuccessModal(false);
+  };
+
+  const handleVerificationSuccess = () => {
+    setShowThirdModal(false);
+    setShowSuccessModal(true);
   };
 
   const handleStepOneClick = () => {
@@ -36,8 +48,19 @@ const Details = () => {
     setShowTierOneModal(false);
   };
 
-  const handleStepTwoSuccess = () => {
+  const handleStepTwoSuccess = (reference: string) => {
+    setOtpReference(reference);
     setShowSecondModal(false);
+    setShowThirdModal(true);
+  };
+
+  const handleSwitchToWhatsapp = () => {
+    setShowThirdModal(false);
+    setShowWhatsAppModal(true);
+  };
+
+  const handleBackToSMS = () => {
+    setShowWhatsAppModal(false);
     setShowThirdModal(true);
   };
 
@@ -106,7 +129,28 @@ const Details = () => {
         isOpen={showThirdModal}
         onClose={handleModalClose}
       >
-        <TierOneThirdModal onClose={handleModalClose} />
+        <TierOneThirdModal
+          reference={otpReference}
+          onClose={handleModalClose}
+          onSwitchToWhatsapp={handleSwitchToWhatsapp}
+          onVerificationSuccess={handleVerificationSuccess}
+        />
+      </Modal>
+
+      <Modal
+        className="bg-white"
+        isOpen={showWhatsAppModal}
+        onClose={handleModalClose}
+      >
+        <WhatsappOtpModal onClose={handleModalClose} onBack={handleBackToSMS} />
+      </Modal>
+
+      <Modal
+        className="bg-white"
+        isOpen={showSuccessModal}
+        onClose={handleModalClose}
+      >
+        <SuccessModal onClose={handleModalClose} />
       </Modal>
     </main>
   );

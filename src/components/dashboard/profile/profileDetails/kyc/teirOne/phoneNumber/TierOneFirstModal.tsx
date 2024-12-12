@@ -1,5 +1,5 @@
 import React from "react";
-import kyc from "../../../../../../Assets/png/kyc/teir-one.png";
+import kyc from "../../../../../../../Assets/png/kyc/teir-one.png";
 interface TierOneFirstModalProps {
   onClose: () => void;
   onStepOneClick: () => void;

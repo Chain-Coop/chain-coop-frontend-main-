@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../../../../shared/redux/store";
+import { AppDispatch } from "../../../../../../../shared/redux/store";
 import { toast } from "react-toastify";
-import { kycWhatsAppOtp } from "../../../../../../shared/redux/slices/kyc.slices";
+import { kycPhoneOtp } from "../../../../../../../shared/redux/slices/kyc.slices";
 
 interface TierOneSecondModalProps {
   onClose: () => void;
-  onSuccess: () => void;
+  onSuccess: (reference: string) => void;
 }
 
 const TeirOneSecondModal: React.FC<TierOneSecondModalProps> = ({
@@ -21,12 +21,12 @@ const TeirOneSecondModal: React.FC<TierOneSecondModalProps> = ({
 
     setLoading(true);
 
-    dispatch(kycWhatsAppOtp())
+    dispatch(kycPhoneOtp())
       .unwrap()
       .then((response) => {
         setLoading(false);
         toast.success(response.message);
-        onSuccess();
+        onSuccess(response.reference);
       })
       .catch((error: any) => {
         setLoading(false);
@@ -40,13 +40,12 @@ const TeirOneSecondModal: React.FC<TierOneSecondModalProps> = ({
         <div className="mt-[1em] flex flex-col gap-1">
           <header className="text-center sm:px-4">
             <h2 className="text-base font-bold leading-tight sm:text-lg md:text-lg">
-              Whatsapp Phone Number Validation
+              Update your Phone Number
             </h2>
           </header>
           <article className="px-2 text-center sm:px-3">
             <p className="text-sm font-medium text-gray-600">
-              To verify your account, please provide an active Whatsapp number
-              and potential verification calls will be done.
+              Upload your phone number for verification process.
             </p>
           </article>
         </div>

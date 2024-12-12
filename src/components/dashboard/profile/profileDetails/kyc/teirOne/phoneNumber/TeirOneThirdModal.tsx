@@ -1,22 +1,28 @@
 import React, { useState, useEffect } from "react";
-import useUserProfile from "../../../../../../shared/Hooks/useUserProfile";
-import OtpPin from "../../../../../../shared/utils/OtpInput";
+import useUserProfile from "../../../../../../../shared/Hooks/useUserProfile";
+import OtpPin from "../../../../../../../shared/utils/OtpInput";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../../../../shared/redux/store";
-import {
-  kycWhatsAppOtp,
-  VerifykycWhatsAppOtp,
-} from "../../../../../../shared/redux/slices/kyc.slices";
+import { AppDispatch } from "../../../../../../../shared/redux/store";
+import { kycWhatsAppOtp } from "../../../../../../../shared/redux/slices/kyc.slices";
 import { Alert } from "@mui/material";
-import { Primary } from "../../../../../common/Button";
+import { Primary } from "../../../../../../common/Button";
 import ReactLoading from "react-loading";
 import { toast } from "react-toastify";
+import { VerifykycPhoneOtp } from "../../../../../../../shared/redux/slices/kyc.slices";
 
 interface TierOneThirdModalProps {
+  reference: string;
   onClose: () => void;
+  onSwitchToWhatsapp: () => void;
+  onVerificationSuccess: () => void;
 }
 
-const TierOneThirdModal: React.FC<TierOneThirdModalProps> = ({ onClose }) => {
+const TierOneThirdModal: React.FC<TierOneThirdModalProps> = ({
+  onClose,
+  onSwitchToWhatsapp,
+  onVerificationSuccess,
+  reference,
+}) => {
   const { profileDetails } = useUserProfile();
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
@@ -52,15 +58,19 @@ const TierOneThirdModal: React.FC<TierOneThirdModalProps> = ({ onClose }) => {
     setError("");
 
     try {
-      await dispatch(VerifykycWhatsAppOtp({ code: code })).unwrap();
-      onClose();
+      await dispatch(
+        VerifykycPhoneOtp({
+          code: code,
+          reference: reference,
+        }),
+      ).unwrap();
+      onVerificationSuccess();
     } catch (error: any) {
       setError(error.message || "An error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
   };
-
   const getOtp = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (timeLeft > 0) return;
@@ -78,7 +88,7 @@ const TierOneThirdModal: React.FC<TierOneThirdModalProps> = ({ onClose }) => {
   };
 
   return (
-    <main className="w-full max-w-[28em] px-4 py-6 font-sans md:px-8 md:py-8">
+    <main className="w-full max-w-[30em] px-3 py-6 font-sans md:px-8 md:py-8">
       <section className="flex flex-col gap-4 md:gap-6">
         <div className="flex flex-col gap-2">
           <header className="text-center">
@@ -152,6 +162,17 @@ const TierOneThirdModal: React.FC<TierOneThirdModalProps> = ({ onClose }) => {
             "Verify"
           )}
         </Primary>
+      </div>
+      <div className="mt-3">
+        <p>
+          Didn't receive code?{" "}
+          <span
+            onClick={onSwitchToWhatsapp}
+            className="cursor-pointer font-semibold text-text2"
+          >
+            Use a Whatsapp number instead
+          </span>
+        </p>
       </div>
     </main>
   );

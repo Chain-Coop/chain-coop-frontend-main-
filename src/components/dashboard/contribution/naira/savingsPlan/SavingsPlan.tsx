@@ -10,14 +10,14 @@ const SavingsPlan = () => {
   const [hoveredPlan, setHoveredPlan] = useState<number | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const { purpose } = location.state || {};
+  const { purpose, currency } = location.state || {};
   const [error, setError] = useState("");
 
   const handleNext = () => {
     if (contributionPlan) {
       setError("");
       navigate("/dashboard/contribution/amount", {
-        state: { purpose, plan: contributionPlan },
+        state: { purpose, plan: contributionPlan, currency },
       });
     } else {
       setError("Please select a contribution plan");

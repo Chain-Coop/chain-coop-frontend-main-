@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { DashboardHeader } from "../../../../common/DashboardHeader";
 import { Alert } from "@mui/material";
 import { IoIosArrowDropleft } from "react-icons/io";
@@ -10,6 +10,8 @@ const Purpose = () => {
   const [otherCategory, setOtherCategory] = useState("");
   const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { currency } = location.state || {};
   const [error, setError] = useState("");
 
   const handleNext = () => {
@@ -22,7 +24,7 @@ const Purpose = () => {
       const finalCategory =
         savingsCategory === "Others" ? otherCategory : savingsCategory;
       navigate("/dashboard/contribution/plan", {
-        state: { purpose: finalCategory },
+        state: { purpose: finalCategory, currency },
       });
     }
   };

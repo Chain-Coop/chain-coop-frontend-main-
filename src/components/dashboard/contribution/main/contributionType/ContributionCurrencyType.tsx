@@ -24,8 +24,6 @@ const ContributionCurrencyType = () => {
   const [selectedCurrency, setSelectedCurrency] = useState<string>("");
   const [selectedCryptoType, setSelectedCryptoType] = useState<string>("");
   const navigate = useNavigate();
-  const location = useLocation();
-  const { purpose } = location.state || {};
   const [error, setError] = useState("");
 
   const handleCategorySelect = (category: string) => {
@@ -42,10 +40,20 @@ const ContributionCurrencyType = () => {
 
     setError("");
     if (cryptoType === "Naira") {
-      navigate("/dashboard/contribution/purpose");
+      navigate("/dashboard/contribution/purpose", {
+        state: { currency: "Naira" },
+      });
     } else {
+      if (cryptoType === "Cryptocurrency" && !selectedCryptoType) {
+        setError("Please select a cryptocurrency type");
+        return;
+      }
+
       navigate("/dashboard/contribution/crypto/plan", {
-        state: { purpose, plan: cryptoType },
+        state: {
+          currency: "Cryptocurrency",
+          cryptoType: selectedCryptoType,
+        },
       });
     }
   };
