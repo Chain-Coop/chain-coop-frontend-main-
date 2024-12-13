@@ -8,6 +8,7 @@ import TierOneThirdModal from "../kyc/teirOne/phoneNumber/TeirOneThirdModal";
 import WhatsappOtpModal from "../kyc/teirOne/whatsapp/WhatsappOtpModal";
 import SuccessModal from "../kyc/teirOne/phoneNumber/SuccessModal";
 import WhatsappVerificationModal from "../kyc/teirOne/whatsapp/WhatsappVerificationModal";
+import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 
 const Details = () => {
   const navigate = useNavigate();
@@ -20,6 +21,8 @@ const Details = () => {
   const [showWhatsAppVerificationModal, setShowWhatsAppVerificationModal] =
     useState(false);
   const [whatsAppReference, setWhatsAppReference] = useState<string>("");
+
+  const { profileDetails } = useUserProfile();
 
   const sections = [
     {

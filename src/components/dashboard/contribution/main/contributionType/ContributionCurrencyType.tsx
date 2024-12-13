@@ -49,9 +49,8 @@ const ContributionCurrencyType = () => {
         return;
       }
 
-      navigate("/dashboard/contribution/crypto/plan", {
+      navigate("/dashboard/contribution/crypto/purpose", {
         state: {
-          currency: "Cryptocurrency",
           cryptoType: selectedCryptoType,
         },
       });

@@ -26,10 +26,13 @@ import VerifyTransaction from "../wallet/fund/verifyTransaction/VerifyTransactio
 import ConfirmTransaction from "../wallet/transfer/fundContribution/confirmTransaction";
 import ProjectContentOverView from "../nestedproject/nested/ProjectContentOverView";
 import Purpose from "../contribution/naira/purpose/Purpose";
+import CryptoPurpose from "../contribution/crypto/purpose/Purpose";
 import SavingsPlan from "../contribution/naira/savingsPlan/SavingsPlan";
 import CryptoSavingsPlan from "../contribution/crypto/savingsPlan/SavingsPlan";
 import StartDate from "../contribution/naira/startDate/StartDate";
+import CryptoStartDate from "../contribution/crypto/startDatte/StartDate";
 import SavingsAmount from "../contribution/naira/savingsAmount/SavingsAmount";
+import SavingsCryptoAmount from "../contribution/crypto/savingsAmount/SavingsAmount";
 import VerifyContribution from "../contribution/main/VerifyContribution";
 import ViewContribution from "../contribution/viewContribution/ViewContribution";
 import WithdrawContribution from "../contribution/naira/withdrawContribution/WithdrawContribution";
@@ -57,13 +60,25 @@ const Dashboard = () => {
 
           <Route path="contribution" element={<Contribution />} />
           <Route path="contribution/purpose" element={<Purpose />} />
+          <Route
+            path="contribution/crypto/purpose"
+            element={<CryptoPurpose />}
+          />
           <Route path="contribution/plan" element={<SavingsPlan />} />
           <Route
             path="contribution/crypto/plan"
             element={<CryptoSavingsPlan />}
           />
           <Route path="contribution/date" element={<StartDate />} />
+          <Route
+            path="contribution/crypto/date"
+            element={<CryptoStartDate />}
+          />
           <Route path="contribution/amount" element={<SavingsAmount />} />
+          <Route
+            path="contribution/crypto/amount"
+            element={<SavingsCryptoAmount />}
+          />
           <Route
             path="contribution/contribution_cuurency_type"
             element={<ContributionCurrencyType />}

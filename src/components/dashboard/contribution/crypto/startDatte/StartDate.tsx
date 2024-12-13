@@ -18,11 +18,11 @@ import {
   PayContribution,
 } from "../../../../../shared/redux/slices/transaction.slices";
 import { useAppDispatch } from "../../../../../shared/redux/reduxHooks";
-import PaymentWithCard from "../paymentChoice.tsx/PaymentWithCard";
-import PayWithPaystack from "../paymentChoice.tsx/PayWithPaystack";
-import { AppDispatch } from "../../../../../shared/redux/store";
-import { useUserCard } from "../../../../../shared/Hooks/useUserProfile";
 import { Currency } from "lucide-react";
+import { AppDispatch } from "../../../../../shared/redux/store";
+import PaymentWithCard from "../../naira/paymentChoice.tsx/PaymentWithCard";
+import PayWithPaystack from "../../naira/paymentChoice.tsx/PayWithPaystack";
+import { useUserCard } from "../../../../../shared/Hooks/useUserProfile";
 
 interface ContributionResponse {
   result: {
@@ -33,7 +33,6 @@ interface ContributionResponse {
 
 const StartDate: React.FC = () => {
   const { useWalletCards } = useUserCard();
-  console.log("usewalll", useWalletCards);
   const today = formatDate(new Date());
   const startDate = today;
   const [endDate, setEndDate] = useState("");
@@ -52,8 +51,7 @@ const StartDate: React.FC = () => {
   const location = useLocation();
   const dispatch: AppDispatch = useAppDispatch();
 
-  const { purpose, plan, amount, currency } = location.state || {};
-  console.log("cuu", currency);
+  const { purpose, plan, amount, cryptoType } = location.state || {};
   const isDaily = plan?.toLowerCase() === "daily";
   const isMonthly = plan?.toLowerCase() === "monthly";
 
@@ -219,7 +217,7 @@ const StartDate: React.FC = () => {
       amount,
       startDate,
       endDate: finalEndDate,
-      currency: currency,
+      currency: cryptoType,
     };
 
     try {

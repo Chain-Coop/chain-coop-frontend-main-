@@ -18,6 +18,7 @@ const kycPhoneOtp = async () => {
     }
   }
 };
+
 export const VerifykycPhoneOtp = async (codeData: {
   code: string;
   reference: string;
@@ -78,7 +79,22 @@ export const VerifykycWhatsAppOtp = async (codeData: {
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      console.log("Err", error);
+      throw error.response.data;
+    } else {
+      throw new Error("Network Error: Please check your internet connection.");
+    }
+  }
+};
+
+const ActivateCryptoWallet = async () => {
+  const url = `${API_URL}/web3/activate`;
+  try {
+    const response = await axios.post(url, null, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
       throw error.response.data;
     } else {
       throw new Error("Network Error: Please check your internet connection.");
@@ -91,6 +107,7 @@ const KycServices = {
   VerifykycWhatsAppOtp,
   kycPhoneOtp,
   VerifykycPhoneOtp,
+  ActivateCryptoWallet,
 };
 
 export default KycServices;

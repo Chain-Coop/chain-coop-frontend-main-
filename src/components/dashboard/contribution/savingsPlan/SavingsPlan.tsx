@@ -10,14 +10,14 @@ const SavingsPlan = () => {
   const [hoveredPlan, setHoveredPlan] = useState<number | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const { purpose, cryptoType } = location.state || {};
+  const { purpose, currency } = location.state || {};
   const [error, setError] = useState("");
 
   const handleNext = () => {
     if (contributionPlan) {
       setError("");
-      navigate("/dashboard/contribution/crypto/amount", {
-        state: { purpose, plan: contributionPlan, cryptoType },
+      navigate("/dashboard/contribution/amount", {
+        state: { purpose, plan: contributionPlan, currency },
       });
     } else {
       setError("Please select a contribution plan");
@@ -27,7 +27,7 @@ const SavingsPlan = () => {
   return (
     <main className="pb-[1.5em] font-sans">
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
-        Flexible Savings
+        Contribution Plan
       </DashboardHeader>
       <div className="m-auto w-[90%]">
         <header className="mt-[1.5em] flex justify-center text-center lg:mt-[3em]">
@@ -94,11 +94,11 @@ const SavingsPlan = () => {
             <IoIosArrowDropleft size={25} />
           </button>
           <button
-            className=" rounded-md bg-text2 px-8 py-2 font-semibold text-white
+            className="rounded-md bg-text2 px-8 py-2 font-semibold text-white
               transition-all duration-300 ease-in-out
               hover:scale-105 hover:bg-opacity-90 hover:shadow-lg
               active:scale-95 active:transform
-         disabled:opacity-50"
+              disabled:cursor-not-allowed disabled:opacity-50"
             onClick={handleNext}
             disabled={!contributionPlan}
           >

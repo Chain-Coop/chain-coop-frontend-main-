@@ -14,6 +14,7 @@ interface FundProjectPayload {
 interface ContributionHistory {
   _id: string;
   contribution: string;
+  currency: string;
   user: string;
   amount: number;
   Date: string;
@@ -35,6 +36,7 @@ interface ContributionDetails {
   savingsCategory: string;
   balance: number;
   history: ContributionHistory[];
+  currency: string;
 }
 
 export const GetWalletBalance = createAsyncThunk(
@@ -713,6 +715,7 @@ export const transactionSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.contributionDetails = {
+          currency: action.payload.currency,
           startDate: action.payload.startDate,
           nextContributionDate: action.payload.nextContributionDate,
           withdrawalDate: action.payload.withdrawalDate,
