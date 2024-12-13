@@ -87,7 +87,7 @@ export const VerifykycWhatsAppOtp = async (codeData: {
 };
 
 const ActivateCryptoWallet = async () => {
-  const url = `${API_URL}/web3/activate`;
+  const url = `${API_URL}/web3/account/activate`;
   try {
     const response = await axios.post(url, null, {
       headers: authHeader(),
@@ -101,6 +101,23 @@ const ActivateCryptoWallet = async () => {
     }
   }
 };
+const GetCryptoWalletBalance = async () => {
+  const url = `${API_URL}/web3/balance/token/3`;
+  try {
+    const response = await axios({
+      url,
+      headers: authHeader(),
+      method: "get",
+    });
+    const token = response?.data?.data?.tokens?.accessToken;
+    if (token) {
+      sessionStorage.setItem("userData", token);
+    }
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 const KycServices = {
   kycWhatsAppOtp,
@@ -108,6 +125,7 @@ const KycServices = {
   kycPhoneOtp,
   VerifykycPhoneOtp,
   ActivateCryptoWallet,
+  GetCryptoWalletBalance,
 };
 
 export default KycServices;

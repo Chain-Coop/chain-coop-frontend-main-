@@ -10,40 +10,7 @@ import { AppDispatch } from "../redux/store";
 import { formatBalance } from "../utils/format";
 import { setMessage } from "../redux/slices/message.slices";
 import { useLocation } from "react-router";
-
-// export const useWalletBalance = () => {
-//   const dispatch: AppDispatch = useDispatch();
-
-//   const balance = useSelector(
-//     (state: any) => state?.transaction?.getWalletBalance,
-//   );
-//   const [isWalletVisible, setIsWalletVisible] = useState(() => {
-//     const storedVisibility = sessionStorage.getItem("walletBalanceVisible");
-//     return storedVisibility !== null ? storedVisibility === "true" : true;
-//   });
-
-//   useEffect(() => {
-//     const userToken = sessionStorage.getItem("userData");
-//     if (userToken) {
-//       dispatch(GetWalletBalance())
-//         .unwrap()
-//         .catch((error: any) => {
-//           console.log(error);
-//         });
-//     }
-//   }, [dispatch]);
-
-//   const balanceInNaira = balance?.balance || 0;
-
-//   const formattedBalance = formatBalance(balanceInNaira);
-
-//   return {
-//     isWalletVisible,
-//     setIsWalletVisible,
-//     formattedBalance,
-//     balanceInNaira,
-//   };
-// };
+import { GetCryptoWalletBalance } from "../redux/slices/kyc.slices";
 
 export const useWalletBalance = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -176,6 +143,30 @@ export const useUnPaidContribution = () => {
     setIsUnPaidVisible,
     formattedBalance,
     balanceInNaira,
+  };
+};
+
+export const useCryptoWallet = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { cryptoBalance, loading, error } = useSelector(
+    (state: any) => state.kyc,
+  );
+  console.log("walletBalance");
+
+  const fetchWalletBalance = () => {
+    dispatch(GetCryptoWalletBalance());
+  };
+
+  useEffect(() => {
+    fetchWalletBalance();
+  }, []);
+
+  return {
+    cryptoBalance,
+    loading,
+    error,
+    fetchWalletBalance,
   };
 };
 
