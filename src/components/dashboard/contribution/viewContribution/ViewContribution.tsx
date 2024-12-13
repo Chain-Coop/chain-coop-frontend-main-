@@ -485,8 +485,8 @@ const ViewContribution = () => {
             <div className="flex justify-between">
               <h1 className="text-lg font-bold text-gray-500">
                 {contributionDetails?.currency
-                  ? `${contributionDetails.currency} SAVINGS`
-                  : "SAVINGS"}
+                  ? `${contributionDetails.currency} Savings`
+                  : "Savings"}
               </h1>
               {contributionDetails?.currency &&
                 ["BTC", "ETH"].includes(contributionDetails.currency) && (
