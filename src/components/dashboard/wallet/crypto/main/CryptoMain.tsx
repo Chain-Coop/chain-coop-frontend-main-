@@ -118,51 +118,56 @@ const CryptoMain = () => {
 
           {profileDetails?.isWalletActivated === true ? (
             <div className="mx-auto mt-8 rounded-3xl border-2 border-gray-300 py-[3.5em] shadow-lg">
-              <div className="flex justify-center gap-4 font-sans">
-                <p className="font-medium">Total Crypto Wallet Balance</p>
-                <div>
-                  <ToggleButton
-                    isVisible={isWalletVisible}
-                    onToggle={(newVisibility) => {
-                      setIsWalletVisible(newVisibility);
-                      sessionStorage.setItem(
-                        "walletBalanceVisible",
-                        newVisibility.toString(),
-                      );
-                    }}
-                  />
+              {/* Balance and Toggle Section */}
+              <div className="flex flex-col items-center justify-center gap-4">
+                <div className="flex items-center gap-4 font-sans">
+                  <p className="font-medium">Total Crypto Wallet Balance</p>
+                  <div>
+                    <ToggleButton
+                      isVisible={isWalletVisible}
+                      onToggle={(newVisibility) => {
+                        setIsWalletVisible(newVisibility);
+                        sessionStorage.setItem(
+                          "walletBalanceVisible",
+                          newVisibility.toString(),
+                        );
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="mx-auto mt-6 w-60 rounded-md">
-                {isWalletVisible ? (
-                  <p className="text-xl font-bold lg:text-xl">${Balance}</p>
-                ) : (
-                  <p className="text-2xl font-bold">*********</p>
-                )}
-                <hr className="mt-4 h-px rounded-md bg-howtext" />
-              </div>
-              <div className="m-auto mt-[1em] flex w-[73%] justify-between gap-[1em] px-[1.5em]">
-                <h1 className="whitespace-nowrap font-semibold">
-                  User Address
-                </h1>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={cryptoWalletDetails?.address || ""}
-                    readOnly
-                    className="h-8 w-[280px] overflow-hidden text-ellipsis whitespace-nowrap rounded-lg border-2 border-gray-400 pl-3 pr-10 font-mono text-sm"
-                  />
-                  <button
-                    onClick={handleCopy}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 transform rounded-md p-1 text-gray-500 transition-all duration-200 hover:bg-gray-100 hover:text-gray-700"
-                    title={copied ? "Copied!" : "Copy address"}
-                  >
-                    {copied ? (
-                      <Check className="h-4 w-4 text-green-500" />
-                    ) : (
-                      <Copy className="h-4 w-4" />
-                    )}
-                  </button>
+
+                {/* Balance Display */}
+                <div className="w-60 text-center">
+                  {isWalletVisible ? (
+                    <p className="text-xl font-bold lg:text-xl">${Balance}</p>
+                  ) : (
+                    <p className="text-2xl font-bold">*********</p>
+                  )}
+                  <hr className="mt-4 h-px rounded-md bg-howtext" />
+                </div>
+
+                {/* Address Section */}
+                <div className="mt-[1em] flex flex-col items-center gap-4">
+                  <h1 className="font-semibold">User Address</h1>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={cryptoWalletDetails?.address || ""}
+                      readOnly
+                      className="h-8 w-[280px] overflow-hidden text-ellipsis whitespace-nowrap rounded-lg border-2 border-gray-400 pl-3 pr-10 font-mono text-sm"
+                    />
+                    <button
+                      onClick={handleCopy}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 transform rounded-md p-1 text-gray-500 transition-all duration-200 hover:bg-gray-100 hover:text-gray-700"
+                      title={copied ? "Copied!" : "Copy address"}
+                    >
+                      {copied ? (
+                        <Check className="h-4 w-4 text-green-500" />
+                      ) : (
+                        <Copy className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
