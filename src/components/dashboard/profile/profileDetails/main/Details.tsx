@@ -22,8 +22,6 @@ const Details = () => {
     useState(false);
   const [whatsAppReference, setWhatsAppReference] = useState<string>("");
 
-  const { profileDetails } = useUserProfile();
-
   const sections = [
     {
       title: "ID Verification",

@@ -44,6 +44,7 @@ export const VerifykycPhoneOtp = async (codeData: {
     }
   }
 };
+
 const kycWhatsAppOtp = async () => {
   const url = `${API_URL}/kyc/sendwaotp`;
   try {

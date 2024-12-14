@@ -148,11 +148,15 @@ export const useUnPaidContribution = () => {
 
 export const useCryptoWallet = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const [isWalletVisible, setIsWalletVisible] = useState(() => {
+    const storedVisibility = sessionStorage.getItem("walletBalanceVisible");
+    return storedVisibility !== null ? storedVisibility === "true" : true;
+  });
 
   const { cryptoBalance, loading, error } = useSelector(
     (state: any) => state.kyc,
   );
-  console.log("walletBalance");
+  const Balance = cryptoBalance?.bal || 0;
 
   const fetchWalletBalance = () => {
     dispatch(GetCryptoWalletBalance());
@@ -163,9 +167,11 @@ export const useCryptoWallet = () => {
   }, []);
 
   return {
-    cryptoBalance,
+    isWalletVisible,
+    setIsWalletVisible,
     loading,
     error,
+    Balance,
     fetchWalletBalance,
   };
 };

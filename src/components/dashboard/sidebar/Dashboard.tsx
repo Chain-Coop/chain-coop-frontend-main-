@@ -40,6 +40,7 @@ import ConfirmWithdrawal from "../contribution/naira/withdrawContribution/Confir
 import ManageAccountCards from "../profile/profileDetails/accountsAndCard/ManageCards";
 import Notification from "../notification/main/Notification";
 import ContributionCurrencyType from "../contribution/main/contributionType/ContributionCurrencyType";
+import CryptoMain from "../wallet/crypto/main/CryptoMain";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -102,6 +103,7 @@ const Dashboard = () => {
           />
 
           <Route path="wallet/*" element={<Wallet />} />
+          <Route path="wallet/crypto_wallet" element={<CryptoMain />} />
           <Route path="wallet/withdraw" element={<Withdraw />} />
           <Route path="wallet/select-bank" element={<SelectBank />} />
           <Route path="wallet/bank-account" element={<BankAccount />} />

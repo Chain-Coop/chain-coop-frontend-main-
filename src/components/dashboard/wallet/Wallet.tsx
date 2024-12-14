@@ -19,6 +19,10 @@ const Wallet = () => {
     navigate("/dashboard/wallet/withdraw");
   };
 
+  const switchToCrypto = () => {
+    navigate("/dashboard/wallet/crypto_wallet");
+  };
+
   return (
     <main className="font-sans">
       <div className="mt-0 lg:mt-8">
@@ -29,9 +33,18 @@ const Wallet = () => {
         </header>
         <div className="mx-auto lg:w-[35em]">
           <section className="px-6 text-center text-text4">
+            <div className="flex justify-end py-[1.5em]">
+              <button
+                onClick={switchToCrypto}
+                className="flex w-auto transform items-center gap-2 rounded-lg bg-[#29004D] px-6 font-semibold text-white transition-all duration-300
+        hover:scale-105 active:scale-95 lg:py-2"
+              >
+                Switch to Crypto Wallet
+              </button>
+            </div>
             <div className="mx-auto mt-8 rounded-3xl py-8 shadow-md">
               <div className="flex justify-center gap-4 font-sans">
-                <p className="font-medium">Wallet Balance</p>
+                <p className="font-medium">Naira Wallet Balance</p>
                 <div>
                   <ToggleButton
                     isVisible={isWalletVisible}

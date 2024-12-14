@@ -75,7 +75,6 @@ export const GetCryptoWalletBalance = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const data = await KycServices.GetCryptoWalletBalance();
-      console.log("dd", data);
       return data;
     } catch (error: any) {
       const message = error.message;
