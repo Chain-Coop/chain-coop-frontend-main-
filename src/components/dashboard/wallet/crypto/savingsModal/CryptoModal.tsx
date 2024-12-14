@@ -112,7 +112,7 @@ const CryptoModal = ({ onClose }: any) => {
           </section>
           <section className="w-[23em]">
             <div>
-              <label htmlFor="tokenId" className="mb-3 flex text-gray-400">
+              <label htmlFor="tokenId" className="mb-3 flex">
                 Token
               </label>
               <input
@@ -125,10 +125,7 @@ const CryptoModal = ({ onClose }: any) => {
             </div>
 
             <div>
-              <label
-                htmlFor="initialSaveAmount"
-                className="mb-3 flex text-gray-400"
-              >
+              <label htmlFor="initialSaveAmount" className="mb-3 flex">
                 Deposit Amount
               </label>
               <input
@@ -146,7 +143,7 @@ const CryptoModal = ({ onClose }: any) => {
             </div>
 
             <div>
-              <label htmlFor="goalAmount" className="mb-1 flex text-gray-400">
+              <label htmlFor="goalAmount" className="mb-1 flex">
                 Target Amount
               </label>
               <input
@@ -161,10 +158,7 @@ const CryptoModal = ({ onClose }: any) => {
             </div>
 
             <div>
-              <label
-                htmlFor="reasonForSaving"
-                className="mb-1 flex text-gray-400"
-              >
+              <label htmlFor="reasonForSaving" className="mb-1 flex">
                 Saving Description
               </label>
               <input
@@ -179,7 +173,7 @@ const CryptoModal = ({ onClose }: any) => {
             </div>
 
             <div>
-              <label htmlFor="duration" className="mb-3 flex text-gray-400">
+              <label htmlFor="duration" className="mb-3 flex">
                 Duration
               </label>
               <input

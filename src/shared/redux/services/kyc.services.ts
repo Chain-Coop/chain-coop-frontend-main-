@@ -155,6 +155,24 @@ const CreatePool = async (body: any) => {
   }
 };
 
+const GetAllUserPools = async () => {
+  const url = `${API_URL}/web3/saving/userPools`;
+  try {
+    const response = await axios({
+      url,
+      headers: authHeader(),
+      method: "get",
+    });
+    const token = response?.data?.data?.tokens?.accessToken;
+    if (token) {
+      sessionStorage.setItem("userData", token);
+    }
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const KycServices = {
   kycWhatsAppOtp,
   VerifykycWhatsAppOtp,
@@ -164,6 +182,7 @@ const KycServices = {
   GetCryptoWalletBalance,
   GetCryptoWalletDetails,
   CreatePool,
+  GetAllUserPools,
 };
 
 export default KycServices;

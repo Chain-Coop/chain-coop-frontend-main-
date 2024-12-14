@@ -11,6 +11,7 @@ import { formatBalance } from "../utils/format";
 import { setMessage } from "../redux/slices/message.slices";
 import { useLocation } from "react-router";
 import {
+  GetAllUserPools,
   GetCryptoWalletBalance,
   GetCryptoWalletDetails,
 } from "../redux/slices/kyc.slices";
@@ -197,6 +198,25 @@ export const useCryptoWalletDetails = () => {
     loading,
     error,
     cryptoWalletDetails,
+  };
+};
+
+export const useAllUserPools = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { userPools, loading, error } = useSelector((state: any) => state.kyc);
+  const fetchWalletBalance = () => {
+    dispatch(GetAllUserPools());
+  };
+  console.log("uuu", userPools);
+  useEffect(() => {
+    fetchWalletBalance();
+  }, []);
+
+  return {
+    loading,
+    error,
+    userPools,
   };
 };
 
