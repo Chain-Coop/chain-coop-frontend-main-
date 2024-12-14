@@ -117,8 +117,7 @@ const CryptoMain = () => {
           </div>
 
           {profileDetails?.isWalletActivated === true ? (
-            <div className="mx-auto mt-8 rounded-3xl border-2 border-gray-300 py-[3.5em] shadow-lg">
-              {/* Balance and Toggle Section */}
+            <div className="mx-auto mt-8 rounded-3xl border-2 border-gray-300 py-[2em] shadow-lg">
               <div className="flex flex-col items-center justify-center gap-4">
                 <div className="flex items-center gap-4 font-sans">
                   <p className="font-medium">Total Crypto Wallet Balance</p>
@@ -136,7 +135,6 @@ const CryptoMain = () => {
                   </div>
                 </div>
 
-                {/* Balance Display */}
                 <div className="w-60 text-center">
                   {isWalletVisible ? (
                     <p className="text-xl font-bold lg:text-xl">${Balance}</p>
@@ -146,7 +144,6 @@ const CryptoMain = () => {
                   <hr className="mt-4 h-px rounded-md bg-howtext" />
                 </div>
 
-                {/* Address Section */}
                 <div className="mt-[1em] flex flex-col items-center gap-4">
                   <h1 className="font-semibold">User Address</h1>
                   <div className="relative">
@@ -276,7 +273,7 @@ const CryptoMain = () => {
         </section>
       </div>
       <Modal className="bg-white" isOpen={isModalOpen} onClose={toggleModal}>
-        <CryptoModal />
+        <CryptoModal onClose={toggleModal} />
       </Modal>
     </main>
   );

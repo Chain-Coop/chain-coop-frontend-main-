@@ -185,7 +185,6 @@ export const useCryptoWalletDetails = () => {
   const { cryptoWalletDetails, loading, error } = useSelector(
     (state: any) => state.kyc,
   );
-  console.log("cryptoWalletDetails", cryptoWalletDetails);
   const fetchWalletBalance = () => {
     dispatch(GetCryptoWalletDetails());
   };

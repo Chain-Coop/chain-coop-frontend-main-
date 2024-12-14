@@ -139,6 +139,22 @@ const GetCryptoWalletDetails = async () => {
   }
 };
 
+const CreatePool = async (body: any) => {
+  const url = `${API_URL}/web3/saving/openPool`;
+  try {
+    const response = await axios.post(url, body, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw error.response.data;
+    } else {
+      throw new Error("Network Error: Please check your internet connection.");
+    }
+  }
+};
+
 const KycServices = {
   kycWhatsAppOtp,
   VerifykycWhatsAppOtp,
@@ -147,6 +163,7 @@ const KycServices = {
   ActivateCryptoWallet,
   GetCryptoWalletBalance,
   GetCryptoWalletDetails,
+  CreatePool,
 };
 
 export default KycServices;
