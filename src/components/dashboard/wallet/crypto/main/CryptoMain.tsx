@@ -6,7 +6,10 @@ import { AppDispatch } from "../../../../../shared/redux/store";
 import { ActivateCryptoWallet } from "../../../../../shared/redux/slices/kyc.slices";
 import { toast } from "react-toastify";
 import walletActivated from "../../../../../Assets/svg/dashboard/walletActivated.svg";
-import { useCryptoWallet } from "../../../../../shared/Hooks/useBalance";
+import {
+  useCryptoWallet,
+  useCryptoWalletDetails,
+} from "../../../../../shared/Hooks/useBalance";
 import ToggleButton from "../../../../../shared/utils/ToggleButton";
 import { Link } from "react-router-dom";
 import withdraw_icon from "../../../../../Assets/svg/dashboard/wallet/withdraw.svg";
@@ -19,6 +22,7 @@ import usdc from "../../../../../Assets/svg/dashboard/usdc.svg";
 import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 import Modal from "../../../../common/Modal";
 import CryptoModal from "../savingsModal/CryptoModal";
+import { Copy, Check } from "lucide-react";
 
 const CryptoMain = () => {
   const {
@@ -29,13 +33,23 @@ const CryptoMain = () => {
     setIsWalletVisible,
   } = useCryptoWallet();
   const { profileDetails } = useUserProfile();
+  const { cryptoWalletDetails } = useCryptoWalletDetails();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const dispatch: AppDispatch = useAppDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
+  };
+
+  const handleCopy = () => {
+    if (cryptoWalletDetails?.address) {
+      navigator.clipboard.writeText(cryptoWalletDetails.address);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   const tokenList = [
@@ -127,15 +141,28 @@ const CryptoMain = () => {
                 )}
                 <hr className="mt-4 h-px rounded-md bg-howtext" />
               </div>
-              <div className="m-auto mt-[1em] flex w-[70%] justify-between px-[1.5em]">
-                <h1 className="font-semibold">User Address</h1>
-                <div>
+              <div className="m-auto mt-[1em] flex w-[73%] justify-between gap-[1em] px-[1.5em]">
+                <h1 className="whitespace-nowrap font-semibold">
+                  User Address
+                </h1>
+                <div className="relative">
                   <input
-                    type="tel"
-                    className="h-8 rounded-lg border-2 border-gray-400"
-                    name=""
-                    id=""
+                    type="text"
+                    value={cryptoWalletDetails?.address || ""}
+                    readOnly
+                    className="h-8 w-[280px] overflow-hidden text-ellipsis whitespace-nowrap rounded-lg border-2 border-gray-400 pl-3 pr-10 font-mono text-sm"
                   />
+                  <button
+                    onClick={handleCopy}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 transform rounded-md p-1 text-gray-500 transition-all duration-200 hover:bg-gray-100 hover:text-gray-700"
+                    title={copied ? "Copied!" : "Copy address"}
+                  >
+                    {copied ? (
+                      <Check className="h-4 w-4 text-green-500" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                  </button>
                 </div>
               </div>
             </div>

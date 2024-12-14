@@ -83,10 +83,24 @@ export const GetCryptoWalletBalance = createAsyncThunk(
   },
 );
 
+export const GetCryptoWalletDetails = createAsyncThunk(
+  "kyc/getCryptoWalletDetails",
+  async (_, thunkAPI) => {
+    try {
+      const data = await KycServices.GetCryptoWalletDetails();
+      return data;
+    } catch (error: any) {
+      const message = error.message;
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
 interface KycState {
   kycOtp: Record<string, any> | null;
   actvateCryptWallet: Record<string, any> | null;
   cryptoBalance: string | null;
+  cryptoWalletDetails: Record<string, any> | null;
   kycPhoneNumOtp: Record<string, any> | null;
   verifySmsOtp: string | null;
   verifyWhatAppOtp: string | null;
@@ -99,6 +113,7 @@ const initialState: KycState = {
   actvateCryptWallet: null,
   verifySmsOtp: null,
   verifyWhatAppOtp: null,
+  cryptoWalletDetails: null,
   kycPhoneNumOtp: null,
   cryptoBalance: null,
   loading: false,
@@ -197,6 +212,20 @@ export const kycSlice = createSlice({
         state.error = null;
       })
       .addCase(GetCryptoWalletBalance.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+
+      .addCase(GetCryptoWalletDetails.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(GetCryptoWalletDetails.fulfilled, (state, action) => {
+        state.loading = false;
+        state.cryptoWalletDetails = action.payload.data;
+        state.error = null;
+      })
+      .addCase(GetCryptoWalletDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

@@ -10,7 +10,10 @@ import { AppDispatch } from "../redux/store";
 import { formatBalance } from "../utils/format";
 import { setMessage } from "../redux/slices/message.slices";
 import { useLocation } from "react-router";
-import { GetCryptoWalletBalance } from "../redux/slices/kyc.slices";
+import {
+  GetCryptoWalletBalance,
+  GetCryptoWalletDetails,
+} from "../redux/slices/kyc.slices";
 
 export const useWalletBalance = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -173,6 +176,28 @@ export const useCryptoWallet = () => {
     error,
     Balance,
     fetchWalletBalance,
+  };
+};
+
+export const useCryptoWalletDetails = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { cryptoWalletDetails, loading, error } = useSelector(
+    (state: any) => state.kyc,
+  );
+  console.log("cryptoWalletDetails", cryptoWalletDetails);
+  const fetchWalletBalance = () => {
+    dispatch(GetCryptoWalletDetails());
+  };
+
+  useEffect(() => {
+    fetchWalletBalance();
+  }, []);
+
+  return {
+    loading,
+    error,
+    cryptoWalletDetails,
   };
 };
 
