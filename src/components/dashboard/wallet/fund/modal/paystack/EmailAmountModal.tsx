@@ -18,16 +18,31 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({ closeModal }) => {
   const submitData = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!amount || isNaN(parseFloat(amount))) {
-      toast.error("Please input a valid amount");
+    if (!amount) {
+      toast.error("Please enter an amount");
+      return;
+    }
+
+    const numAmount = parseFloat(amount);
+    if (isNaN(numAmount)) {
+      toast.error("Please enter a valid number");
+      return;
+    }
+
+    if (numAmount <= 0) {
+      toast.error("Amount must be greater than 0");
+      return;
+    }
+
+    if (numAmount > 100000) {
+      toast.error("Amount exceeds maximum limit");
       return;
     }
 
     setLoading(true);
-    const amountInKobo = Math.round(parseFloat(amount) * 100);
 
-    let body = {
-      amount: amountInKobo,
+    const body = {
+      amount: numAmount,
     };
 
     dispatch(FundWallet(body))
@@ -37,12 +52,14 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({ closeModal }) => {
         const paymentUrl = response?.transaction?.paymentUrl;
         if (paymentUrl) {
           window.location.href = paymentUrl;
+        } else {
+          toast.error("Invalid payment URL received");
         }
       })
       .catch((error: any) => {
-        console.log("Err", error);
         setLoading(false);
-        const errorMessage = error || "An error occurred, please try again";
+        const errorMessage =
+          error?.message || "An error occurred, please try again";
         toast.error(errorMessage);
       });
   };
@@ -52,6 +69,16 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({ closeModal }) => {
     if (/^\d*\.?\d{0,2}$/.test(value) || value === "") {
       setAmount(value);
     }
+  };
+
+  const formatAmount = (value: string) => {
+    if (!value) return "";
+    const numValue = parseFloat(value);
+    if (isNaN(numValue)) return value;
+    return new Intl.NumberFormat("en-NG", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(numValue);
   };
 
   return (
@@ -68,19 +95,27 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({ closeModal }) => {
             >
               Amount (NGN)
             </label>
-            <input
-              type="text"
-              id="amount"
-              required
-              value={amount}
-              onChange={handleAmountChange}
-              placeholder="0.00"
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-text2 focus:outline-none focus:ring-text2 sm:text-sm"
-            />
+            <div className="relative mt-1">
+              <span className="absolute left-3 top-2 text-gray-500">₦</span>
+              <input
+                type="text"
+                id="amount"
+                required
+                value={amount}
+                onChange={handleAmountChange}
+                placeholder="0.00"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-8 py-2 shadow-sm focus:border-text2 focus:outline-none focus:ring-text2 sm:text-sm"
+              />
+            </div>
+            {amount && (
+              <p className="mt-1 text-sm text-gray-500">
+                You will be charged: ₦{formatAmount(amount)}
+              </p>
+            )}
           </div>
           <Primary
             type="submit"
-            disabled={!amount}
+            disabled={!amount || loading}
             className="mt-[1.5em] flex w-full justify-center bg-text2 py-2 text-white"
           >
             {loading ? (
@@ -91,7 +126,7 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({ closeModal }) => {
                 type="spin"
               />
             ) : (
-              "Pay with Paystack"
+              `Pay ₦${amount || "0.00"}`
             )}
           </Primary>
         </form>
