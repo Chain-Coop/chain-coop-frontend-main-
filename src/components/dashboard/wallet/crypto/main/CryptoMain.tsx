@@ -7,7 +7,6 @@ import { ActivateCryptoWallet } from "../../../../../shared/redux/slices/kyc.sli
 import { toast } from "react-toastify";
 import walletActivated from "../../../../../Assets/svg/dashboard/walletActivated.svg";
 import {
-  useAllUserPools,
   useCryptoWallet,
   useCryptoWalletDetails,
 } from "../../../../../shared/Hooks/useBalance";
@@ -35,7 +34,6 @@ const CryptoMain = () => {
   } = useCryptoWallet();
   const { profileDetails } = useUserProfile();
   const { cryptoWalletDetails } = useCryptoWalletDetails();
-  const { userPools } = useAllUserPools();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const dispatch: AppDispatch = useAppDispatch();

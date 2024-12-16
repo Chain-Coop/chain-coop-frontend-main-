@@ -41,6 +41,7 @@ import ManageAccountCards from "../profile/profileDetails/accountsAndCard/Manage
 import Notification from "../notification/main/Notification";
 import ContributionCurrencyType from "../contribution/main/contributionType/ContributionCurrencyType";
 import CryptoMain from "../wallet/crypto/main/CryptoMain";
+import CryproSavings from "../contribution/crypto/main/CryproSavings";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -60,6 +61,7 @@ const Dashboard = () => {
           <Route path="/" element={<Home />} />
 
           <Route path="contribution" element={<Contribution />} />
+          <Route path="contribution/crypto" element={<CryproSavings />} />
           <Route path="contribution/purpose" element={<Purpose />} />
           <Route
             path="contribution/crypto/purpose"

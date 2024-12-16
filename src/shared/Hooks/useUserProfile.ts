@@ -12,6 +12,7 @@ import {
   GetWalletCard,
 } from "../redux/slices/transaction.slices";
 import { getAllNotification } from "../redux/slices/notification.slices";
+import { GetAllUserPools } from "../redux/slices/kyc.slices";
 
 enum UploadFields {
   ProfilePicture = "profilePicture",
@@ -300,5 +301,24 @@ export const useAllNotification = () => {
     loading,
     error,
     fetchNotification,
+  };
+};
+
+export const useAllUserPools = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { userPools, loading, error } = useSelector((state: any) => state.kyc);
+  const fetchWalletBalance = () => {
+    dispatch(GetAllUserPools());
+  };
+  console.log("uuu", userPools);
+  useEffect(() => {
+    fetchWalletBalance();
+  }, []);
+
+  return {
+    loading,
+    error,
+    userPools,
   };
 };

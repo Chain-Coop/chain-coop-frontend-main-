@@ -1,17 +1,23 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useContributionBalance } from "../../../../shared/Hooks/useBalance";
-import { useUserContributionHistory } from "../../../../shared/Hooks/useUserProfile";
-import ToggleButton from "../../../../shared/utils/ToggleButton";
-import contributionImg from "../../../../Assets/svg/dashboard/contribution/category-contribution.svg";
-import { DashboardHeader } from "../../../common/DashboardHeader";
+import {
+  useContributionBalance,
+  useCryptoWallet,
+} from "../../../../../shared/Hooks/useBalance";
+import {
+  useAllUserPools,
+  useUserContributionHistory,
+} from "../../../../../shared/Hooks/useUserProfile";
+import ToggleButton from "../../../../../shared/utils/ToggleButton";
+import contributionImg from "../../../../../Assets/svg/dashboard/contribution/category-contribution.svg";
+import { DashboardHeader } from "../../../../common/DashboardHeader";
 import { motion } from "framer-motion";
 import {
   IoIosArrowBack,
   IoIosArrowForward,
   IoIosArrowDown,
 } from "react-icons/io";
-import Modal from "../../../common/Modal";
+import Modal from "../../../../common/Modal";
 
 type Contribution = {
   _id: string;
@@ -32,7 +38,7 @@ const ContributionListSkeleton: React.FC = () => (
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: index * 0.1 }}
-        className="flex w-[90%] animate-pulse flex-col gap-2 rounded-full bg-white px-[1.5em] py-2"
+        className="flex w-[90%] animate-pulse flex-col gap-2 rounded-3xl bg-white px-[1.5em] py-2"
       >
         <div className="flex justify-between">
           <div className="h-4 w-1/4 rounded bg-gray-200"></div>
@@ -50,13 +56,20 @@ const ContributionListSkeleton: React.FC = () => (
   </div>
 );
 
-const Contribution: React.FC = () => {
+const CryptoSavings: React.FC = () => {
   const navigate = useNavigate();
-  const { formattedBalance, isLoading: isBalanceLoading } =
-    useContributionBalance();
+  const {
+    Balance,
+    loading: cryptoBalanceLoading,
+    error: cryptoBalanceError,
+    isWalletVisible,
+    setIsWalletVisible,
+  } = useCryptoWallet();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [savingsType, setSavingsType] = useState<"naira" | "crypto">("naira");
+  const [savingsType, setSavingsType] = useState<"naira" | "crypto">("crypto");
   const [page, setPage] = useState(1);
+  const { userPools } = useAllUserPools();
+  console.log("user", userPools);
   const limit = 10;
 
   const {
@@ -98,7 +111,7 @@ const Contribution: React.FC = () => {
   const handleSavingsTypeChange = (type: "naira" | "crypto") => {
     setSavingsType(type);
     if (type === "crypto") {
-      navigate("/dashboard/contribution/crypto");
+      navigate("/dashboard/contribution");
     }
     setIsModalOpen(false);
   };
@@ -123,142 +136,159 @@ const Contribution: React.FC = () => {
       className="min-h-screen w-full font-sans"
     >
       <header>
-        <DashboardHeader className="flex w-full items-center justify-center text-2xl md:text-3xl lg:mt-[2em] lg:text-xl">
+        <DashboardHeader className="flex w-full items-center justify-center text-xl sm:text-2xl lg:mt-6 lg:text-2xl">
           Contribution Plan
         </DashboardHeader>
       </header>
 
-      <main className="lg:px-4">
-        <section className="mx-auto w-full max-w-4xl px-4 md:mt-8 lg:mt-10">
+      <main className="px-3 sm:px-4 lg:px-6">
+        <section className="mx-auto w-full max-w-4xl">
           <article className="text-center text-gray-700">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mx-4 mt-6 rounded-3xl bg-white p-8 shadow-md md:mx-8 lg:mx-auto lg:max-w-2xl"
+              className="mx-2 mt-4 rounded-2xl bg-white p-4 shadow-md sm:mx-4 sm:mt-6 sm:p-6 lg:mx-auto lg:max-w-2xl"
             >
-              <div className="flex justify-end py-3">
+              <div className="flex justify-end py-2">
                 <button
                   onClick={toggleModal}
-                  className="flex w-auto transform items-center gap-2 rounded-lg bg-[#E3D9E6] px-6 font-semibold text-text2 transition-all duration-300
-                  hover:scale-105 active:scale-95 lg:py-2"
+                  className="flex items-center gap-1 rounded-lg bg-[#E3D9E6] px-3 py-1 text-sm font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:gap-2 sm:px-4 sm:py-2 sm:text-base"
                 >
-                  Naira Savings
+                  Crypto Savings
                   <IoIosArrowDown />
                 </button>
               </div>
-              <div className="flex items-center justify-center gap-4 font-sans">
-                <p className="text-sm font-medium md:text-base">
+
+              <div className="flex items-center justify-center gap-2 sm:gap-4">
+                <p className="text-xs font-medium sm:text-sm lg:text-base">
                   Total Contribution Balance
                 </p>
                 <ToggleButton
-                  isVisible={isContributionVisible}
+                  isVisible={isWalletVisible}
                   onToggle={(newVisibility) => {
-                    setIsContributionVisible(newVisibility);
+                    setIsWalletVisible(newVisibility);
                     sessionStorage.setItem(
-                      "contributionBalanceVisible",
+                      "walletBalanceVisible",
                       newVisibility.toString(),
                     );
                   }}
                 />
               </div>
 
-              <div className="mx-auto mt-[1.5em] w-[15em] rounded-md">
-                {isBalanceLoading ? (
-                  <div className="h-8 animate-pulse rounded bg-gray-200"></div>
+              <div className="mx-auto mt-4 w-full max-w-[240px] rounded-md sm:mt-6">
+                {cryptoBalanceLoading ? (
+                  <div className="h-6 animate-pulse rounded bg-gray-200 sm:h-8"></div>
                 ) : isContributionVisible ? (
-                  <p className="font-bold sm:text-xl lg:text-xl">
-                    {formattedBalance}
+                  <p className="text-lg font-bold sm:text-xl lg:text-2xl">
+                    ${Balance}
                   </p>
                 ) : (
-                  <p className="text-2xl font-bold">*********</p>
+                  <p className="text-lg font-bold sm:text-xl">*********</p>
                 )}
-                <hr className="mt-[1em] h-[1px] rounded-md bg-howtext" />
+                <hr className="mt-3 h-[1px] rounded-md bg-howtext sm:mt-4" />
               </div>
             </motion.div>
 
-            <section className="mt-6 md:mt-8">
+            <section className="mt-4 sm:mt-6">
               <div className="flex justify-center">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={fundContribution}
-                  className="rounded-full bg-inherit px-8 py-2 text-base font-bold text-gray-700 shadow-lg transition-all hover:bg-gray-50 md:px-8 md:py-3 md:text-lg lg:px-12"
+                  className="rounded-full bg-inherit px-6 py-2 text-sm font-bold text-gray-700 shadow-lg transition-all hover:bg-gray-50 sm:px-8 sm:text-base lg:px-10"
                 >
                   Add Savings
                 </motion.button>
               </div>
-              <hr className="mx-auto mt-8 w-full max-w-4xl" />
+              <hr className="mx-auto mt-6 w-full max-w-4xl sm:mt-8" />
             </section>
           </article>
         </section>
 
-        <section className="mx-auto mt-8 w-full max-w-4xl px-4 md:mt-10 lg:mt-12">
+        <section className="mx-auto mt-6 w-full max-w-4xl sm:mt-8 lg:mt-10">
           <header>
-            <h1 className="text-xl font-bold md:text-2xl">My Savings</h1>
+            <h1 className="text-lg font-bold sm:text-xl lg:text-2xl">
+              My Savings
+            </h1>
           </header>
 
           {isContributionsLoading ? (
             <ContributionListSkeleton />
-          ) : contributions?.length > 0 ? (
-            <div className="mb-3 mt-4 flex h-auto flex-col gap-4 rounded-lg bg-text2 p-4 text-center md:mt-6 md:p-6">
-              <div className="mb-3 flex items-center justify-between px-4">
-                <span className="text-sm font-medium text-white md:text-base">
+          ) : userPools.length > 0 ? (
+            <div className="mt-4 flex h-auto flex-col gap-3 rounded-lg bg-text2 p-3 text-center sm:mt-6 sm:gap-4 sm:p-4 lg:p-6">
+              <div className="flex items-center justify-between px-2 sm:px-4">
+                <span className="text-xs font-medium text-white sm:text-sm">
                   Page {currentPage} of {totalPages}
                 </span>
-                <div className="flex gap-2 font-semibold">
+                <div className="flex gap-1 sm:gap-2">
                   <button
                     onClick={handlePrevPage}
                     disabled={currentPage <= 1}
                     className="rounded p-1 text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    <IoIosArrowBack size={20} />
+                    <IoIosArrowBack className="h-4 w-4 sm:h-5 sm:w-5" />
                   </button>
                   <button
                     onClick={handleNextPage}
                     disabled={currentPage >= totalPages}
                     className="rounded p-1 text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    <IoIosArrowForward size={20} />
+                    <IoIosArrowForward className="h-4 w-4 sm:h-5 sm:w-5" />
                   </button>
                 </div>
               </div>
               <hr className="border-gray-500" />
 
-              {contributions.map((contribution: Contribution) => (
+              {userPools.map((pools: any) => (
                 <motion.div
-                  key={contribution._id}
+                  key={pools.poolIndex}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  whileHover={{ scale: 1.02 }}
-                  onClick={() =>
-                    navigateToContributionDetails(contribution._id)
-                  }
-                  className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-full border-2 border-gray-500 bg-white px-4 py-2 transition-all hover:bg-gray-50 md:px-6 md:py-3"
+                  whileHover={{ scale: 1.01 }}
+                  onClick={() => navigateToContributionDetails(pools.poolIndex)}
+                  className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-2xl border border-gray-300 bg-white p-3 transition-all hover:bg-gray-50 sm:gap-3 sm:p-4"
                 >
-                  <div className="flex justify-between text-sm font-medium text-gray-500 md:text-base">
-                    <p>Savings Name</p>
-                    <p>Savings Balance</p>
+                  <div className="flex justify-between text-xs font-medium text-gray-500 sm:text-sm">
+                    <p>Savings Token: {pools?.symbol}</p>
+                    <p>Target: ${pools?.goalAmount}</p>
                   </div>
+
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 md:gap-3">
-                      <div className="w-8 md:w-10">
-                        <motion.img
-                          whileHover={{ rotate: 360 }}
-                          transition={{ duration: 0.5 }}
-                          src={contributionImg}
-                          alt="Contribution category icon"
-                          className="w-full"
-                        />
-                      </div>
-                      <p className="text-base font-semibold md:text-lg">
-                        {contribution?.savingsCategory}
-                      </p>
+                    <p className="text-sm font-bold sm:text-base">
+                      {pools?.Reason}
+                    </p>
+                    <p className="text-sm font-semibold sm:text-base">
+                      Deposited:{" "}
+                      <span className="font-bold text-text2">
+                        ${pools?.amountSaved}
+                      </span>
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-medium sm:text-sm">Duration</p>
+                    <p className="text-xs font-semibold sm:text-sm">
+                      Balance:{" "}
+                      <span className="text-gray-800">
+                        ${pools?.amountSaved}
+                      </span>
+                    </p>
+                  </div>
+
+                  <hr className="my-1" />
+
+                  <div className="flex justify-between">
+                    <div className="flex gap-2 sm:gap-3">
+                      <button className="rounded-lg border border-text2 px-2 py-1 text-xs font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:px-3 sm:text-sm">
+                        Withdraw
+                      </button>
+                      <button className="rounded-lg bg-[#ECE6F2] px-2 py-1 text-xs font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:px-3 sm:text-sm">
+                        Update
+                      </button>
                     </div>
-                    <div>
-                      <figure className="text-base font-semibold md:text-lg">
-                        {formatCurrency(contribution?.balance)}
-                      </figure>
-                    </div>
+                    <button className="rounded-lg bg-[#ECE6F2] px-2 py-1 text-xs font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:px-3 sm:text-sm">
+                      Details
+                    </button>
                   </div>
                 </motion.div>
               ))}
@@ -267,15 +297,15 @@ const Contribution: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-4 flex h-auto w-full flex-col gap-4 rounded-lg bg-text2 p-6 text-center md:mt-6 md:p-8"
+              className="mt-4 flex h-auto w-full flex-col gap-4 rounded-lg bg-text2 p-4 text-center sm:mt-6 sm:p-6"
             >
-              <h2 className="text-xl font-bold text-how1 md:text-2xl">
+              <h2 className="text-lg font-bold text-how1 sm:text-xl lg:text-2xl">
                 No Savings Yet
               </h2>
               <motion.p
                 whileHover={{ scale: 1.05 }}
                 onClick={fundContribution}
-                className="mt-6 cursor-pointer text-lg font-semibold text-how1 md:text-xl"
+                className="mt-4 cursor-pointer text-base font-semibold text-how1 sm:mt-6 sm:text-lg"
               >
                 Get Started
               </motion.p>
@@ -287,33 +317,20 @@ const Contribution: React.FC = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={toggleModal}
-        className="mx-auto w-full max-w-sm rounded-lg bg-white"
+        className="mx-auto w-[90%] max-w-sm rounded-lg bg-white"
       >
-        <div className="w-full px-4 py-6 sm:px-6">
+        <div className="w-full px-4 py-5 sm:px-6">
           <header>
-            <h1 className="text-center text-lg font-semibold text-gray-500 sm:text-xl">
+            <h1 className="text-center text-base font-semibold text-gray-500 sm:text-lg">
               Choose Savings Plan
             </h1>
           </header>
-          <div className="mt-6 flex flex-col gap-4">
+          <div className="mt-4 flex flex-col gap-3 sm:mt-6 sm:gap-4">
             <div className="flex items-center justify-between">
               <h3
-                className={`font-semibold ${savingsType === "naira" ? "text-[#000080]" : "text-gray-600"}`}
-              >
-                Naira Savings
-              </h3>
-              <input
-                type="radio"
-                className="h-4 w-4 cursor-pointer accent-[#000080]"
-                name="savingsType"
-                checked={savingsType === "naira"}
-                onChange={() => handleSavingsTypeChange("naira")}
-              />
-            </div>
-            <hr className="border-gray-200" />
-            <div className="flex items-center justify-between">
-              <h3
-                className={`font-semibold ${savingsType === "crypto" ? "text-[#000080]" : "text-gray-600"}`}
+                className={`text-sm font-semibold sm:text-base ${
+                  savingsType === "crypto" ? "text-[#000080]" : "text-gray-600"
+                }`}
               >
                 Crypto Savings
               </h3>
@@ -325,6 +342,23 @@ const Contribution: React.FC = () => {
                 onChange={() => handleSavingsTypeChange("crypto")}
               />
             </div>
+            <hr className="border-gray-200" />
+            <div className="flex items-center justify-between">
+              <h3
+                className={`text-sm font-semibold sm:text-base ${
+                  savingsType === "naira" ? "text-[#000080]" : "text-gray-600"
+                }`}
+              >
+                Naira Savings
+              </h3>
+              <input
+                type="radio"
+                className="h-4 w-4 cursor-pointer accent-[#000080]"
+                name="savingsType"
+                checked={savingsType === "naira"}
+                onChange={() => handleSavingsTypeChange("naira")}
+              />
+            </div>
           </div>
         </div>
       </Modal>
@@ -332,4 +366,4 @@ const Contribution: React.FC = () => {
   );
 };
 
-export default Contribution;
+export default CryptoSavings;
