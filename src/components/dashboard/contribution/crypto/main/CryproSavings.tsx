@@ -9,7 +9,6 @@ import {
   useUserContributionHistory,
 } from "../../../../../shared/Hooks/useUserProfile";
 import ToggleButton from "../../../../../shared/utils/ToggleButton";
-import contributionImg from "../../../../../Assets/svg/dashboard/contribution/category-contribution.svg";
 import { DashboardHeader } from "../../../../common/DashboardHeader";
 import { motion } from "framer-motion";
 import {
@@ -18,17 +17,6 @@ import {
   IoIosArrowDown,
 } from "react-icons/io";
 import Modal from "../../../../common/Modal";
-
-type Contribution = {
-  _id: string;
-  contributionId?: string;
-  savingsCategory: string;
-  balance: number;
-  contributionPlan?: string;
-  startDate?: string;
-  nextContributionDate?: string;
-  amount?: number;
-};
 
 const ContributionListSkeleton: React.FC = () => (
   <div className="mt-[1em] flex h-auto w-full flex-col gap-[1em] rounded-lg bg-text2 px-2 py-[3em] text-center">
@@ -69,7 +57,6 @@ const CryptoSavings: React.FC = () => {
   const [savingsType, setSavingsType] = useState<"naira" | "crypto">("crypto");
   const [page, setPage] = useState(1);
   const { userPools } = useAllUserPools();
-  console.log("user", userPools);
   const limit = 10;
 
   const {
@@ -110,7 +97,7 @@ const CryptoSavings: React.FC = () => {
 
   const handleSavingsTypeChange = (type: "naira" | "crypto") => {
     setSavingsType(type);
-    if (type === "crypto") {
+    if (type === "naira") {
       navigate("/dashboard/contribution");
     }
     setIsModalOpen(false);
