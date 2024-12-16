@@ -56,7 +56,7 @@ const CryptoSavings: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [savingsType, setSavingsType] = useState<"naira" | "crypto">("crypto");
   const [page, setPage] = useState(1);
-  const { userPools } = useAllUserPools();
+  const { userPools = [] } = useAllUserPools() || {};
   const limit = 10;
 
   const {
@@ -71,19 +71,17 @@ const CryptoSavings: React.FC = () => {
     );
     return storedVisibility !== null ? storedVisibility === "true" : true;
   });
-
   const totalPages = getContributions?.totalPages || 1;
   const currentPage = parseInt(getContributions?.currentPage || "1");
-  const contributions = getContributions?.contributions || [];
 
   const handlePrevPage = () => {
-    if (currentPage > 1) {
+    if (currentPage > 1 && !isContributionsLoading) {
       setPage(currentPage - 1);
     }
   };
 
   const handleNextPage = () => {
-    if (currentPage < totalPages) {
+    if (currentPage < totalPages && !isContributionsLoading) {
       setPage(currentPage + 1);
     }
   };
@@ -201,7 +199,7 @@ const CryptoSavings: React.FC = () => {
 
           {isContributionsLoading ? (
             <ContributionListSkeleton />
-          ) : userPools.length > 0 ? (
+          ) : userPools?.length > 0 ? (
             <div className="mt-4 flex h-auto flex-col gap-3 rounded-lg bg-text2 p-3 text-center sm:mt-6 sm:gap-4 sm:p-4 lg:p-6">
               <div className="flex items-center justify-between px-2 sm:px-4">
                 <span className="text-xs font-medium text-white sm:text-sm">

@@ -307,11 +307,10 @@ export const useAllNotification = () => {
 export const useAllUserPools = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { userPools, loading, error } = useSelector((state: any) => state.kyc);
+  const { userPools, loading, error } = useSelector((state: any) => state?.kyc);
   const fetchWalletBalance = () => {
     dispatch(GetAllUserPools());
   };
-  console.log("uuu", userPools);
   useEffect(() => {
     fetchWalletBalance();
   }, []);
