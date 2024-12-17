@@ -41,7 +41,7 @@ const ContributionCurrencyType = () => {
     setError("");
     if (cryptoType === "Naira") {
       navigate("/dashboard/contribution/purpose", {
-        state: { currency: "Naira" },
+        state: { currency: "NGN" },
       });
     } else {
       if (cryptoType === "Cryptocurrency" && !selectedCryptoType) {

@@ -143,11 +143,12 @@ const Landing = () => {
             whileInView="visible"
             viewport={{ once: false, amount: 0.3 }}
             variants={staggerContainer}
-            className="relative z-10 flex w-full flex-col pt-8 text-white lg:-mt-1 lg:flex-row"
+            className="relative z-10 flex w-full flex-col gap-6 pt-8 text-white sm:gap-8 lg:-mt-1 lg:flex-row lg:gap-0"
           >
+            {/* Customer Section */}
             <motion.div
               variants={slideInLeft}
-              className="relative h-[300px] w-full sm:mb-3 lg:h-[450px] lg:w-1/3"
+              className="relative h-[300px] w-full sm:h-[350px] md:h-[400px] lg:h-[450px] lg:w-1/3"
               style={{
                 backgroundImage: `url(${imageRight})`,
                 backgroundSize: "cover",
@@ -155,7 +156,7 @@ const Landing = () => {
                 backgroundRepeat: "no-repeat",
               }}
             >
-              <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center sm:px-8 lg:px-[5em]">
+              <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center sm:px-8 md:px-10 lg:px-[5em]">
                 <motion.h2
                   variants={fadeInUp}
                   className="mb-4 text-xl font-semibold sm:text-2xl lg:text-3xl"
@@ -164,7 +165,7 @@ const Landing = () => {
                 </motion.h2>
                 <motion.p
                   variants={fadeInUp}
-                  className="mr-5 text-sm lg:text-base"
+                  className="mr-2 text-sm sm:mr-3 md:mr-4 lg:mr-5 lg:text-base"
                 >
                   You gained access to secure savings options designed to
                   protect your wealth and hedge against inflation. Save in
@@ -173,7 +174,7 @@ const Landing = () => {
                 </motion.p>
                 <motion.p
                   variants={fadeInUp}
-                  className="mr-5 mt-[1em] text-sm lg:text-base"
+                  className="mr-2 mt-[1em] text-sm sm:mr-3 md:mr-4 lg:mr-5 lg:text-base"
                 >
                   Your savings contribute to sustainable, blockchain-driven
                   ventures, with opportunities to invest directly in the
@@ -181,7 +182,7 @@ const Landing = () => {
                 </motion.p>
                 <motion.p
                   variants={fadeInUp}
-                  className="mr-5 mt-[1em] text-sm lg:text-base"
+                  className="mr-2 mt-[1em] text-sm sm:mr-3 md:mr-4 lg:mr-5 lg:text-base"
                 >
                   Enjoy the potentials for yield profits and Access to the group
                   savings circles through a trusted, legally backed cooperative.
@@ -189,9 +190,10 @@ const Landing = () => {
               </div>
             </motion.div>
 
+            {/* Middle Images Section */}
             <motion.div
               variants={fadeIn}
-              className="hidden justify-between py-[3em] lg:flex lg:w-1/3"
+              className="hidden lg:flex lg:w-1/3 lg:justify-between lg:py-[3em]"
             >
               <div className="mt-[1.5em] flex flex-col justify-between">
                 <motion.img
@@ -237,9 +239,10 @@ const Landing = () => {
               </div>
             </motion.div>
 
+            {/* Investor Section */}
             <motion.div
               variants={slideInRight}
-              className="relative h-[300px] w-full lg:h-[450px] lg:w-1/3"
+              className="relative h-[300px] w-full sm:h-[350px] md:h-[400px] lg:h-[450px] lg:w-1/3"
               style={{
                 backgroundImage: `url(${imageLeft})`,
                 backgroundSize: "cover",
@@ -247,7 +250,7 @@ const Landing = () => {
                 backgroundRepeat: "no-repeat",
               }}
             >
-              <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center sm:px-8 lg:px-[5em]">
+              <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center sm:px-8 md:px-10 lg:px-[5em]">
                 <motion.h2
                   variants={fadeInUp}
                   className="mb-4 text-xl font-semibold sm:text-2xl lg:text-3xl"
@@ -256,14 +259,14 @@ const Landing = () => {
                 </motion.h2>
                 <motion.p
                   variants={fadeInUp}
-                  className="ml-5 text-sm lg:text-base"
+                  className="ml-2 text-sm sm:ml-3 md:ml-4 lg:ml-5 lg:text-base"
                 >
                   Enjoy all the benefits Chain Co-op has to offer. you again
                   access to high growth business and early investment rounds
                 </motion.p>
                 <motion.p
                   variants={fadeInUp}
-                  className="ml-5 mt-[1em] text-sm lg:text-base"
+                  className="ml-2 mt-[1em] text-sm sm:ml-3 md:ml-4 lg:ml-5 lg:text-base"
                 >
                   Your investment directly support sustainable blockchain driven
                   ventures and you emjoy fixd legally guaranteed returns that
@@ -271,7 +274,7 @@ const Landing = () => {
                 </motion.p>
                 <motion.p
                   variants={fadeInUp}
-                  className="ml-5 mt-[1em] text-sm lg:text-base"
+                  className="ml-2 mt-[1em] text-sm sm:ml-3 md:ml-4 lg:ml-5 lg:text-base"
                 >
                   Secure your future with Exclusive savings and sustainable
                   Opportunities.

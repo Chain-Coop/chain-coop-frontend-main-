@@ -351,7 +351,6 @@ const deleteCard = async (body: { cardId: string }) => {
 
     return response.data;
   } catch (error) {
-    console.error("Delete card error:", error);
     throw error;
   }
 };

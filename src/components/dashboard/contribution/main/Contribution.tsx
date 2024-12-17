@@ -120,7 +120,7 @@ const Contribution: React.FC = () => {
     <motion.main
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="min-h-screen w-full font-sans"
+      className="mb-2 min-h-screen w-full font-sans"
     >
       <header>
         <DashboardHeader className="flex w-full items-center justify-center text-2xl md:text-3xl lg:mt-[2em] lg:text-xl">
@@ -139,8 +139,8 @@ const Contribution: React.FC = () => {
               <div className="flex justify-end py-3">
                 <button
                   onClick={toggleModal}
-                  className="flex w-auto transform items-center gap-2 rounded-lg bg-[#E3D9E6] px-6 font-semibold text-text2 transition-all duration-300
-                  hover:scale-105 active:scale-95 lg:py-2"
+                  className="flex w-auto transform items-center gap-2 rounded-lg bg-[#E3D9E6] px-6 py-3 font-semibold text-text2 transition-all duration-300 hover:scale-105
+                  active:scale-95 md:py-3 lg:py-2"
                 >
                   Naira Savings
                   <IoIosArrowDown />

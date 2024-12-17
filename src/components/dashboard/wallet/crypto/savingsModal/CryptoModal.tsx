@@ -97,7 +97,7 @@ const CryptoModal = ({ onClose }: any) => {
   const today = new Date().toISOString().split("T")[0];
 
   return (
-    <main className="w-full max-w-[28em] px-2 font-sans md:px-5">
+    <main className="w-full px-4 font-sans sm:px-6 md:px-8 lg:max-w-[28em] lg:px-2">
       <section className="gap flex flex-col">
         <div className="flex flex-col gap-1">
           <header className="text-center sm:px-4">
@@ -105,13 +105,19 @@ const CryptoModal = ({ onClose }: any) => {
               Crypto Savings
             </h2>
           </header>
+
           <section>
             <div className="mt-2 flex justify-center">
-              <img src={cryptoSavings} alt="savings-crypt" />
+              <img
+                src={cryptoSavings}
+                alt="savings-crypt"
+                className="h-auto max-w-full"
+              />
             </div>
           </section>
-          <section className="w-[23em]">
-            <div>
+
+          <section className="mx-auto w-full sm:w-[90%] md:w-[85%] lg:w-[23em]">
+            <div className="mb-4">
               <label htmlFor="tokenId" className="mb-3 flex">
                 Token
               </label>
@@ -124,7 +130,7 @@ const CryptoModal = ({ onClose }: any) => {
               />
             </div>
 
-            <div>
+            <div className="mb-4">
               <label htmlFor="initialSaveAmount" className="mb-3 flex">
                 Deposit Amount
               </label>
@@ -142,7 +148,7 @@ const CryptoModal = ({ onClose }: any) => {
               )}
             </div>
 
-            <div>
+            <div className="mb-4">
               <label htmlFor="goalAmount" className="mb-1 flex">
                 Target Amount
               </label>
@@ -157,7 +163,7 @@ const CryptoModal = ({ onClose }: any) => {
               />
             </div>
 
-            <div>
+            <div className="mb-4">
               <label htmlFor="reasonForSaving" className="mb-1 flex">
                 Saving Description
               </label>
@@ -172,7 +178,7 @@ const CryptoModal = ({ onClose }: any) => {
               />
             </div>
 
-            <div>
+            <div className="mb-4">
               <label htmlFor="duration" className="mb-3 flex">
                 Duration
               </label>
@@ -187,11 +193,11 @@ const CryptoModal = ({ onClose }: any) => {
           </section>
         </div>
 
-        <div className="flex justify-center">
+        <div className="flex justify-center px-4 sm:px-0">
           <button
             onClick={handleSubmit}
             disabled={loading || !isFormValid()}
-            className="flex w-full transform items-center justify-center gap-2 rounded-lg bg-text2 px-9 py-2 text-center font-semibold text-white transition-all duration-300 hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-70"
+            className="flex w-full transform items-center justify-center gap-2 rounded-lg bg-text2 px-6 py-2 text-center font-semibold text-white transition-all duration-300 hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-70 sm:px-9"
           >
             {loading ? (
               <div className="flex items-center justify-center text-center">

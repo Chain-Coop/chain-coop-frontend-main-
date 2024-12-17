@@ -33,7 +33,6 @@ interface ContributionResponse {
 
 const StartDate: React.FC = () => {
   const { useWalletCards } = useUserCard();
-  console.log("usewalll", useWalletCards);
   const today = formatDate(new Date());
   const startDate = today;
   const [endDate, setEndDate] = useState("");
@@ -53,7 +52,6 @@ const StartDate: React.FC = () => {
   const dispatch: AppDispatch = useAppDispatch();
 
   const { purpose, plan, amount, currency } = location.state || {};
-  console.log("cuu", currency);
   const isDaily = plan?.toLowerCase() === "daily";
   const isMonthly = plan?.toLowerCase() === "monthly";
 

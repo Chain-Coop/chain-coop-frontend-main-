@@ -68,6 +68,7 @@ export const GetContributionBalance = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const data = await TransactionServices.GetContributionBalance();
+      console.log("Ddd", data);
       return { transaction: data };
     } catch (error: any) {
       return handleAsyncError(error, thunkAPI);

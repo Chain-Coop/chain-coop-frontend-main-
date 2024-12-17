@@ -36,7 +36,7 @@ const Wallet = () => {
             <div className="flex justify-end py-[1.5em]">
               <button
                 onClick={switchToCrypto}
-                className="flex w-auto transform items-center gap-2 rounded-lg bg-[#29004D] px-6 font-semibold text-white transition-all duration-300
+                className="flex w-auto transform items-center gap-2 rounded-lg bg-[#29004D] px-6 py-3 font-semibold text-white transition-all duration-300
         hover:scale-105 active:scale-95 lg:py-2"
               >
                 Switch to Crypto Wallet

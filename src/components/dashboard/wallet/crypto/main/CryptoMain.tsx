@@ -25,14 +25,8 @@ import CryptoModal from "../savingsModal/CryptoModal";
 import { Copy, Check } from "lucide-react";
 
 const CryptoMain = () => {
-  const {
-    Balance,
-    loading: cryptoBalanceLoading,
-    error: cryptoBalanceError,
-    isWalletVisible,
-    setIsWalletVisible,
-  } = useCryptoWallet();
-  const { profileDetails } = useUserProfile();
+  const { Balance, isWalletVisible, setIsWalletVisible } = useCryptoWallet();
+  const { profileDetails, fetchUserProfile } = useUserProfile();
   const { cryptoWalletDetails } = useCryptoWalletDetails();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -83,6 +77,7 @@ const CryptoMain = () => {
     try {
       const response = await dispatch(ActivateCryptoWallet()).unwrap();
       toast.success(response.message);
+      await fetchUserProfile();
     } catch (error: any) {
       toast.error(error);
     } finally {
@@ -101,16 +96,16 @@ const CryptoMain = () => {
       </div>
       <div className="mx-auto lg:w-[35em]">
         <section className="px-6 text-center text-text4">
-          <div className="flex justify-between py-[1.5em]">
+          <div className="flex flex-col gap-3 py-[1.5em] sm:flex-row sm:justify-between sm:gap-4">
             {profileDetails?.isWalletActivated === true && (
-              <div className="flex w-auto transform items-center gap-2 rounded-lg border-2 border-text2 bg-[#ECE6F2] px-3 font-medium text-text2 transition-all duration-300 hover:scale-105 active:scale-95 lg:py-2">
+              <div className="flex w-full transform items-center justify-center gap-2 rounded-lg border-2 border-text2 bg-[#ECE6F2] px-3 py-2 font-medium text-text2 transition-all duration-300 hover:scale-105 active:scale-95 sm:w-auto sm:justify-start lg:py-2">
                 Wallet Activated
                 <img src={walletActivated} alt="walletActivated" />
               </div>
             )}
             <button
               onClick={switchToNaira}
-              className="flex w-auto transform items-center gap-2 rounded-lg bg-[#29004D] px-6 font-semibold text-white transition-all duration-300 hover:scale-105 active:scale-95 lg:py-2"
+              className="flex w-full transform items-center justify-center gap-2 rounded-lg bg-[#29004D] px-6 py-2 font-semibold text-white transition-all duration-300 hover:scale-105 active:scale-95 sm:w-auto lg:py-2"
             >
               Switch to Naira Wallet
             </button>
@@ -271,96 +266,6 @@ const CryptoMain = () => {
             </Link>
           </div>
         </section>
-        {/* <section className="mx-auto mt-8 w-full max-w-4xl px-4 md:mt-10 lg:mt-12">
-          <header>
-            <h1 className="text-xl font-bold md:text-2xl">My Savings</h1>
-          </header>
-
-          {isContributionsLoading ? (
-            <ContributionListSkeleton />
-          ) : contributions?.length > 0 ? (
-            <div className="mb-3 mt-4 flex h-auto flex-col gap-4 rounded-lg bg-text2 p-4 text-center md:mt-6 md:p-6">
-              <div className="mb-3 flex items-center justify-between px-4">
-                <span className="text-sm font-medium text-white md:text-base">
-                  Page {currentPage} of {totalPages}
-                </span>
-                <div className="flex gap-2 font-semibold">
-                  <button
-                    onClick={handlePrevPage}
-                    disabled={currentPage <= 1}
-                    className="rounded p-1 text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    <IoIosArrowBack size={20} />
-                  </button>
-                  <button
-                    onClick={handleNextPage}
-                    disabled={currentPage >= totalPages}
-                    className="rounded p-1 text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    <IoIosArrowForward size={20} />
-                  </button>
-                </div>
-              </div>
-              <hr className="border-gray-500" />
-
-              {contributions.map((contribution: Contribution) => (
-                <motion.div
-                  key={contribution._id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  whileHover={{ scale: 1.02 }}
-                  onClick={() =>
-                    navigateToContributionDetails(contribution._id)
-                  }
-                  className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-full border-2 border-gray-500 bg-white px-4 py-2 transition-all hover:bg-gray-50 md:px-6 md:py-3"
-                >
-                  <div className="flex justify-between text-sm font-medium text-gray-500 md:text-base">
-                    <p>Savings Name</p>
-                    <p>Savings Balance</p>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 md:gap-3">
-                      <div className="w-8 md:w-10">
-                        <motion.img
-                          whileHover={{ rotate: 360 }}
-                          transition={{ duration: 0.5 }}
-                          src={contributionImg}
-                          alt="Contribution category icon"
-                          className="w-full"
-                        />
-                      </div>
-                      <p className="text-base font-semibold md:text-lg">
-                        {contribution?.savingsCategory}
-                      </p>
-                    </div>
-                    <div>
-                      <figure className="text-base font-semibold md:text-lg">
-                        {formatCurrency(contribution?.balance)}
-                      </figure>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-4 flex h-auto w-full flex-col gap-4 rounded-lg bg-text2 p-6 text-center md:mt-6 md:p-8"
-            >
-              <h2 className="text-xl font-bold text-how1 md:text-2xl">
-                No Savings Yet
-              </h2>
-              <motion.p
-                whileHover={{ scale: 1.05 }}
-                onClick={fundContribution}
-                className="mt-6 cursor-pointer text-lg font-semibold text-how1 md:text-xl"
-              >
-                Get Started
-              </motion.p>
-            </motion.div>
-          )}
-        </section> */}
       </div>
       <Modal className="bg-white" isOpen={isModalOpen} onClose={toggleModal}>
         <CryptoModal onClose={toggleModal} />

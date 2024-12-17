@@ -42,6 +42,7 @@ import Notification from "../notification/main/Notification";
 import ContributionCurrencyType from "../contribution/main/contributionType/ContributionCurrencyType";
 import CryptoMain from "../wallet/crypto/main/CryptoMain";
 import CryproSavings from "../contribution/crypto/main/CryproSavings";
+import WithdrawCrypto from "../contribution/crypto/withdrawCrypto/WithdrawCrypto";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -98,6 +99,10 @@ const Dashboard = () => {
           <Route
             path="/contribution/withdraw_contribution"
             element={<WithdrawContribution />}
+          />
+          <Route
+            path="/contribution/withdraw_crypto"
+            element={<WithdrawCrypto />}
           />
           <Route
             path="/contribution/withdraw_contribution/confirm-amount"

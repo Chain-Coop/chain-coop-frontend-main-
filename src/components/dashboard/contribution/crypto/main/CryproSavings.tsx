@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  useContributionBalance,
-  useCryptoWallet,
-} from "../../../../../shared/Hooks/useBalance";
+import { useCryptoWallet } from "../../../../../shared/Hooks/useBalance";
 import {
   useAllUserPools,
   useUserContributionHistory,
@@ -17,6 +14,10 @@ import {
   IoIosArrowDown,
 } from "react-icons/io";
 import Modal from "../../../../common/Modal";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../../../shared/redux/store";
+import { UpdateUserPool } from "../../../../../shared/redux/slices/kyc.slices";
+import { toast } from "react-toastify";
 
 const ContributionListSkeleton: React.FC = () => (
   <div className="mt-[1em] flex h-auto w-full flex-col gap-[1em] rounded-lg bg-text2 px-2 py-[3em] text-center">
@@ -49,14 +50,21 @@ const CryptoSavings: React.FC = () => {
   const {
     Balance,
     loading: cryptoBalanceLoading,
-    error: cryptoBalanceError,
     isWalletVisible,
     setIsWalletVisible,
   } = useCryptoWallet();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [updatePayment, setUpdatePayment] = useState(false);
   const [savingsType, setSavingsType] = useState<"naira" | "crypto">("crypto");
+  const [amount, setAmount] = useState("");
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const { userPools = [] } = useAllUserPools() || {};
+  const [selectedPool, setSelectedPool] = useState<{
+    poolId_bytes: string;
+    tokenAddressToSaveWith: string;
+  } | null>(null);
+  const dispatch: AppDispatch = useDispatch();
   const limit = 10;
 
   const {
@@ -86,12 +94,12 @@ const CryptoSavings: React.FC = () => {
     }
   };
 
-  const navigateToContributionDetails = (contributionId: string) => {
-    if (!contributionId) return;
-    navigate(`/dashboard/contribution/contribution_details`, {
-      state: { contributionId },
-    });
-  };
+  // const navigateToContributionDetails = (contributionId: string) => {
+  //   if (!contributionId) return;
+  //   navigate(`/dashboard/contribution/contribution_details`, {
+  //     state: { contributionId },
+  //   });
+  // };
 
   const handleSavingsTypeChange = (type: "naira" | "crypto") => {
     setSavingsType(type);
@@ -105,13 +113,53 @@ const CryptoSavings: React.FC = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  const toggleUpdatePaymentModal = (pool?: any) => {
+    if (pool) {
+      setSelectedPool({
+        poolId_bytes: pool.poolIndex,
+        tokenAddressToSaveWith: pool.tokenToSaveWith,
+      });
+    } else {
+      setSelectedPool(null);
+    }
+    setUpdatePayment(!updatePayment);
+  };
+
   const fundContribution = () => {
     navigate("/dashboard/contribution/contribution_cuurency_type");
   };
 
-  const formatCurrency = (amount: number) => {
-    if (!amount && amount !== 0) return "₦ 0";
-    return `₦ ${amount.toLocaleString()}`;
+  const SubmitPayment = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (
+      !selectedPool ||
+      !amount ||
+      isNaN(Number(amount)) ||
+      Number(amount) <= 0
+    ) {
+      toast.error("Please enter a valid amount");
+      return;
+    }
+
+    setLoading(true);
+    const body = {
+      amount,
+      poolId_bytes: selectedPool.poolId_bytes,
+      tokenAddressToSaveWith: selectedPool.tokenAddressToSaveWith,
+    };
+
+    dispatch(UpdateUserPool(body))
+      .unwrap()
+      .then((response) => {
+        setLoading(false);
+        toast.success("Payment Updated Successfully");
+        toggleUpdatePaymentModal();
+      })
+      .catch((error: any) => {
+        setLoading(false);
+        toast.error(error?.message || "Failed to update payment");
+      });
   };
 
   return (
@@ -137,7 +185,7 @@ const CryptoSavings: React.FC = () => {
               <div className="flex justify-end py-2">
                 <button
                   onClick={toggleModal}
-                  className="flex items-center gap-1 rounded-lg bg-[#E3D9E6] px-3 py-1 text-sm font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:gap-2 sm:px-4 sm:py-2 sm:text-base"
+                  className="flex items-center gap-2 rounded-lg bg-[#E3D9E6] px-4 py-3 text-sm font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:text-base lg:gap-1 lg:px-3 lg:py-1"
                 >
                   Crypto Savings
                   <IoIosArrowDown />
@@ -224,18 +272,17 @@ const CryptoSavings: React.FC = () => {
               </div>
               <hr className="border-gray-500" />
 
-              {userPools.map((pools: any) => (
+              {userPools?.map((pools: any) => (
                 <motion.div
                   key={pools.poolIndex}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   whileHover={{ scale: 1.01 }}
-                  onClick={() => navigateToContributionDetails(pools.poolIndex)}
                   className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-2xl border border-gray-300 bg-white p-3 transition-all hover:bg-gray-50 sm:gap-3 sm:p-4"
                 >
                   <div className="flex justify-between text-xs font-medium text-gray-500 sm:text-sm">
                     <p>Savings Token: {pools?.symbol}</p>
-                    <p>Target: ${pools?.goalAmount}</p>
+                    <p>Target Amount: ${pools?.goalAmount}</p>
                   </div>
 
                   <div className="flex items-center justify-between">
@@ -243,7 +290,7 @@ const CryptoSavings: React.FC = () => {
                       {pools?.Reason}
                     </p>
                     <p className="text-sm font-semibold sm:text-base">
-                      Deposited:{" "}
+                      Deposited Amount:{" "}
                       <span className="font-bold text-text2">
                         ${pools?.amountSaved}
                       </span>
@@ -253,7 +300,7 @@ const CryptoSavings: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <p className="text-xs font-medium sm:text-sm">Duration</p>
                     <p className="text-xs font-semibold sm:text-sm">
-                      Balance:{" "}
+                      Current Balance:{" "}
                       <span className="text-gray-800">
                         ${pools?.amountSaved}
                       </span>
@@ -267,7 +314,10 @@ const CryptoSavings: React.FC = () => {
                       <button className="rounded-lg border border-text2 px-2 py-1 text-xs font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:px-3 sm:text-sm">
                         Withdraw
                       </button>
-                      <button className="rounded-lg bg-[#ECE6F2] px-2 py-1 text-xs font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:px-3 sm:text-sm">
+                      <button
+                        onClick={() => toggleUpdatePaymentModal(pools)}
+                        className="rounded-lg bg-[#ECE6F2] px-2 py-1 text-xs font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:px-3 sm:text-sm"
+                      >
                         Update
                       </button>
                     </div>
@@ -345,6 +395,76 @@ const CryptoSavings: React.FC = () => {
               />
             </div>
           </div>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={updatePayment}
+        onClose={toggleUpdatePaymentModal}
+        className="bg-white"
+      >
+        <div className="max-w-[28em] px-4 py-5 sm:px-6">
+          <header>
+            <h1 className="text-center text-2xl font-bold text-text2 sm:text-lg">
+              Update Payment
+            </h1>
+          </header>
+          <article>
+            <p className="text-center font-medium">
+              The deposit amount will be credited manually from your crypto
+              wallet.
+            </p>
+          </article>
+          <form action="">
+            <div className="mt-[1.5em]">
+              <label htmlFor="email" className="mb-3 flex text-text2">
+                Enter Amount
+              </label>
+              <input
+                type="amount"
+                id="amount"
+                disabled={loading}
+                required
+                placeholder="enter your amount"
+                onChange={(e) => setAmount(e.target.value)}
+                className="input mb-5 h-[4em] w-full rounded-2xl border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
+              />
+            </div>
+
+            <div className="mt-[1.5em] flex justify-center">
+              <button
+                onClick={SubmitPayment}
+                disabled={loading}
+                className="flex w-full transform items-center justify-center gap-2 rounded-lg bg-text2 px-9 py-2 text-center font-semibold text-white transition-all duration-300 hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                {loading ? (
+                  <div className="flex items-center justify-center text-center">
+                    <svg
+                      className="mr-3 h-5 w-5 animate-spin"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Updating Payment...
+                  </div>
+                ) : (
+                  "Submmit"
+                )}
+              </button>
+            </div>
+          </form>
         </div>
       </Modal>
     </motion.main>
