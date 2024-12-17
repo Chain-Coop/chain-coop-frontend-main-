@@ -18,7 +18,10 @@ const CryptoModal = ({ onClose }: any) => {
   const dispatch: AppDispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
   const { Balance } = useCryptoWallet();
+  const DESCRIPTION_MAX_LENGTH = 30;
+
   const [formData, setFormData] = useState<FormData>({
     tokenId: 3,
     initialSaveAmount: "",
@@ -30,6 +33,7 @@ const CryptoModal = ({ onClose }: any) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setError("");
+    setDescriptionError("");
 
     if (id === "duration") {
       const selectedDate = new Date(value).getTime();
@@ -52,6 +56,17 @@ const CryptoModal = ({ onClose }: any) => {
         ...prevState,
         [id]: value,
       }));
+    } else if (id === "reasonForSaving") {
+      if (value.length > DESCRIPTION_MAX_LENGTH) {
+        setDescriptionError(
+          `Description cannot exceed ${DESCRIPTION_MAX_LENGTH} characters`,
+        );
+        return;
+      }
+      setFormData((prevState) => ({
+        ...prevState,
+        [id]: value,
+      }));
     } else {
       setFormData((prevState) => ({
         ...prevState,
@@ -61,6 +76,13 @@ const CryptoModal = ({ onClose }: any) => {
   };
 
   const handleSubmit = async () => {
+    if (formData.reasonForSaving.length > DESCRIPTION_MAX_LENGTH) {
+      setDescriptionError(
+        `Description cannot exceed ${DESCRIPTION_MAX_LENGTH} characters`,
+      );
+      return;
+    }
+
     const depositAmount = parseFloat(formData.initialSaveAmount);
     const currentBalance = parseFloat(Balance || "0");
 
@@ -90,6 +112,7 @@ const CryptoModal = ({ onClose }: any) => {
       formData.initialSaveAmount !== "" &&
       formData.goalAmount !== "" &&
       formData.reasonForSaving !== "" &&
+      formData.reasonForSaving.length <= DESCRIPTION_MAX_LENGTH &&
       depositAmount <= currentBalance
     );
   };
@@ -98,6 +121,7 @@ const CryptoModal = ({ onClose }: any) => {
 
   return (
     <main className="w-full px-4 font-sans sm:px-6 md:px-8 lg:max-w-[28em] lg:px-2">
+      <p>.</p>
       <section className="gap flex flex-col">
         <div className="flex flex-col gap-1">
           <header className="text-center sm:px-4">
@@ -174,8 +198,21 @@ const CryptoModal = ({ onClose }: any) => {
                 onChange={handleChange}
                 required
                 placeholder="enter your savings description"
-                className="input mb-3 h-[3em] w-full rounded-full border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
+                className="input mb-1 h-[3em] w-full rounded-full border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
               />
+              <div className="flex justify-between px-4">
+                <span
+                  className={`text-xs ${descriptionError ? "text-red-500" : "text-gray-500"}`}
+                >
+                  {formData.reasonForSaving.length}/{DESCRIPTION_MAX_LENGTH}{" "}
+                  characters
+                </span>
+                {descriptionError && (
+                  <span className="text-xs text-red-500">
+                    {descriptionError}
+                  </span>
+                )}
+              </div>
             </div>
 
             <div className="mb-4">

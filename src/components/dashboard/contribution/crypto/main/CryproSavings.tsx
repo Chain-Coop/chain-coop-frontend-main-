@@ -88,6 +88,13 @@ const CryptoSavings: React.FC = () => {
     }
   };
 
+  const formatDuration = (durationInSeconds: any) => {
+    const daysRemaining = Math.ceil(
+      parseInt(durationInSeconds) / (24 * 60 * 60),
+    );
+    return `Ends in ${daysRemaining} Days`;
+  };
+
   const handleNextPage = () => {
     if (currentPage < totalPages && !isContributionsLoading) {
       setPage(currentPage + 1);
@@ -180,12 +187,13 @@ const CryptoSavings: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mx-2 mt-4 rounded-2xl bg-white p-4 shadow-md sm:mx-4 sm:mt-6 sm:p-6 lg:mx-auto lg:max-w-2xl"
+              className="mx-4 mt-6 rounded-3xl bg-white p-8 shadow-md md:mx-8 lg:mx-auto lg:max-w-2xl"
             >
               <div className="flex justify-end py-2">
                 <button
                   onClick={toggleModal}
-                  className="flex items-center gap-2 rounded-lg bg-[#E3D9E6] px-4 py-3 text-sm font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:text-base lg:gap-1 lg:px-3 lg:py-1"
+                  className="flex w-auto transform items-center gap-2 rounded-lg bg-[#E3D9E6] px-6 py-3 font-semibold text-text2 transition-all duration-300 hover:scale-105
+                  active:scale-95 md:py-3 lg:py-2"
                 >
                   Crypto Savings
                   <IoIosArrowDown />
@@ -298,7 +306,12 @@ const CryptoSavings: React.FC = () => {
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <p className="text-xs font-medium sm:text-sm">Duration</p>
+                    <p className="text-sm font-semibold">
+                      Duration:{" "}
+                      <span className="text-gray-500">
+                        {formatDuration(pools?.Duration)}
+                      </span>
+                    </p>
                     <p className="text-xs font-semibold sm:text-sm">
                       Current Balance:{" "}
                       <span className="text-gray-800">
