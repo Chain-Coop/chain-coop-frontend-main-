@@ -44,19 +44,10 @@ const Details = () => {
             <button className="rounded-full bg-[#FF0000] px-[1em] py-[2px] font-semibold text-white">
               Upgrade
             </button>
-            <div
-              className="cursor-pointer"
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowTierOneModal(true);
-              }}
-            >
-              <IoIosArrowForward size={15} className="text-text2" />
-            </div>
           </div>
         </div>
       ) : null,
-      onClick: undefined,
+      onClick: () => setShowTierOneModal(true),
     },
     {
       title: "Accounts & Card",
