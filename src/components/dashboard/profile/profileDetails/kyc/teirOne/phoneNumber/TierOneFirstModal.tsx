@@ -39,14 +39,16 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
         <div className="flex flex-col gap-4">
           <div className="flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-sm">
             <div className="flex flex-col gap-1">
-              <h3 className="text-sm font-bold text-gray-900">Manage Limit</h3>
+              <h3 className="text-sm font-bold text-gray-900">
+                {isVerified ? "Current Limit" : "Manage Limit"}
+              </h3>
               <p className="text-xs text-gray-500">
-                Daily Transaction Limit: N0.00
+                Daily Transaction Limit: {isVerified ? "N20,000" : "N0.00"}
               </p>
             </div>
-            <button className="rounded bg-red-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-600">
+            <div className="rounded bg-red-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-600">
               Upgrade
-            </button>
+            </div>
           </div>
 
           <div
@@ -60,9 +62,9 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
               <p className="text-xs text-gray-500">Upload your Phone number</p>
             </div>
             {isVerified ? (
-              <button className="rounded bg-green-500  px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-red-600">
+              <div className="rounded bg-green-500 px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-green-600">
                 Done
-              </button>
+              </div>
             ) : (
               <button className="rounded-full bg-gray-100 p-2">
                 <svg
@@ -81,7 +83,6 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
             )}
           </div>
 
-          {/* BVN Step */}
           <div
             className={`flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-sm ${
               !isVerified ? "cursor-not-allowed opacity-50" : "cursor-pointer"
