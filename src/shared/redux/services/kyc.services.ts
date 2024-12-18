@@ -103,7 +103,7 @@ const ActivateCryptoWallet = async () => {
   }
 };
 
-const GetCryptoWalletBalance = async () => {
+const GetTotalCryptoWalletBalance = async () => {
   const url = `${API_URL}/web3/balance/total`;
   try {
     const response = await axios({
@@ -213,7 +213,7 @@ const KycServices = {
   kycPhoneOtp,
   VerifykycPhoneOtp,
   ActivateCryptoWallet,
-  GetCryptoWalletBalance,
+  GetTotalCryptoWalletBalance,
   GetCryptoWalletDetails,
   CreatePool,
   GetAllUserPools,

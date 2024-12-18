@@ -56,7 +56,7 @@ const CryptoMain = () => {
   };
 
   const handleCopy = (address: string) => {
-    navigator.clipboard.writeText(address);
+    navigator?.clipboard.writeText(address);
     setCopiedStates((prev) => ({ ...prev, [address]: true }));
     setTimeout(() => {
       setCopiedStates((prev) => ({ ...prev, [address]: false }));
@@ -112,11 +112,6 @@ const CryptoMain = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const truncateAddress = (address: string) => {
-    if (!address) return "";
-    return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
   return (
@@ -241,7 +236,7 @@ const CryptoMain = () => {
         <section className="mx-auto mt-6 px-4 lg:w-[32em]">
           <h1 className="text-lg font-semibold">Token Balance</h1>
           <div className="mt-[1em] flex flex-col gap-[1em]">
-            {tokenList.map((list, index) => (
+            {tokenList?.map((list, index) => (
               <div
                 key={index}
                 className="flex flex-col rounded-lg border-2 border-gray-300 p-4"
@@ -250,37 +245,39 @@ const CryptoMain = () => {
                   <div className="flex items-center gap-3">
                     <div>
                       <img
-                        src={list.img}
-                        alt={list.symbol}
+                        src={list?.img}
+                        alt={list?.symbol}
                         className="h-8 w-8"
                       />
                     </div>
                     <div className="flex flex-col gap-1">
-                      <p className="font-medium text-gray-400">{list.symbol}</p>
-                      <p className="font-bold">{list.title}</p>
+                      <p className="font-medium text-gray-400">
+                        {list?.symbol}
+                      </p>
+                      <p className="font-bold">{list?.title}</p>
                     </div>
                   </div>
                   <div>
-                    <p className="font-bold">${list.token.balance}</p>
+                    <p className="font-bold">${list?.token?.balance}</p>
                   </div>
                 </div>
 
-                {list.token.tokenAddress && (
+                {list?.token?.tokenAddress && (
                   <div className="flex">
                     <div className="mt-2 flex w-[200px] items-center justify-between rounded-md border border-gray-200 bg-gray-50 px-3 py-1.5">
                       <span className="font-mono text-sm text-gray-600">
-                        {`${list.token.tokenAddress.slice(0, 6)}...${list.token.tokenAddress.slice(-4)}`}
+                        {`${list?.token?.tokenAddress?.slice(0, 6)}...${list?.token?.tokenAddress?.slice(-4)}`}
                       </span>
                       <button
-                        onClick={() => handleCopy(list.token.tokenAddress)}
+                        onClick={() => handleCopy(list?.token?.tokenAddress)}
                         className="ml-2 text-gray-500 hover:text-gray-700"
                         title={
-                          copiedStates[list.token.tokenAddress]
+                          copiedStates[list?.token?.tokenAddress]
                             ? "Copied!"
                             : "Copy address"
                         }
                       >
-                        {copiedStates[list.token.tokenAddress] ? (
+                        {copiedStates[list?.token?.tokenAddress] ? (
                           <Check className="h-4 w-4 text-green-500" />
                         ) : (
                           <Copy className="h-4 w-4" />

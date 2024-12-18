@@ -13,7 +13,7 @@ import { useLocation } from "react-router";
 import {
   GetAllUserPools,
   GetAllUserTokens,
-  GetCryptoWalletBalance,
+  GetTotalCryptoWalletBalance,
   GetCryptoWalletDetails,
 } from "../redux/slices/kyc.slices";
 
@@ -164,7 +164,7 @@ export const useCryptoWallet = () => {
   const Balance = cryptoBalance || 0;
 
   const fetchWalletBalance = () => {
-    dispatch(GetCryptoWalletBalance());
+    dispatch(GetTotalCryptoWalletBalance());
   };
 
   useEffect(() => {

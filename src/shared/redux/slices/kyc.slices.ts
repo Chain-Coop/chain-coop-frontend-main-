@@ -70,11 +70,11 @@ export const VerifykycWhatsAppOtp = createAsyncThunk(
   },
 );
 
-export const GetCryptoWalletBalance = createAsyncThunk(
+export const GetTotalCryptoWalletBalance = createAsyncThunk(
   "kyc/getCryptoWalletBalance",
   async (_, thunkAPI) => {
     try {
-      const data = await KycServices.GetCryptoWalletBalance();
+      const data = await KycServices.GetTotalCryptoWalletBalance();
       return data;
     } catch (error: any) {
       const message = error.message;
@@ -264,16 +264,16 @@ export const kycSlice = createSlice({
           (action.payload as string) || "Failed to activate crypto wallet";
       })
 
-      .addCase(GetCryptoWalletBalance.pending, (state) => {
+      .addCase(GetTotalCryptoWalletBalance.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(GetCryptoWalletBalance.fulfilled, (state, action) => {
+      .addCase(GetTotalCryptoWalletBalance.fulfilled, (state, action) => {
         state.loading = false;
         state.cryptoBalance = action.payload.data;
         state.error = null;
       })
-      .addCase(GetCryptoWalletBalance.rejected, (state, action) => {
+      .addCase(GetTotalCryptoWalletBalance.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
