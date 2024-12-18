@@ -12,6 +12,7 @@ import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 
 const Details = () => {
   const navigate = useNavigate();
+  const { profileDetails } = useUserProfile();
   const [showTierOneModal, setShowTierOneModal] = useState(false);
   const [showSecondModal, setShowSecondModal] = useState(false);
   const [showThirdModal, setShowThirdModal] = useState(false);
@@ -24,10 +25,26 @@ const Details = () => {
 
   const sections = [
     {
-      title: "ID Verification",
-      status: "0/2 verified",
-      statusColor: "bg-red-600",
-      onClick: () => setShowTierOneModal(true),
+      title: profileDetails?.isVerified ? "Manage Limit" : "ID Verification",
+      description: profileDetails?.isVerified ? (
+        <div className="flex justify-between gap-[1em]">
+          <p className="text-sm text-gray-500">
+            Daily Credit Limit: N20000 Daily withdrawal Limit: N500
+          </p>
+          <button className="rounded-full bg-[#FF0000] px-[1em] py-[2px] font-semibold text-white">
+            Upgrade
+          </button>
+        </div>
+      ) : (
+        <div className="flex items-center">
+          <button className="rounded-full bg-red-600 px-4 py-1 text-sm font-medium text-white shadow-md">
+            0/2 verified
+          </button>
+        </div>
+      ),
+      onClick: profileDetails?.isVerified
+        ? undefined
+        : () => setShowTierOneModal(true),
     },
     {
       title: "Accounts & Card",
@@ -66,11 +83,6 @@ const Details = () => {
     setShowWhatsAppModal(true);
   };
 
-  const handleBackToSMS = () => {
-    setShowWhatsAppModal(false);
-    setShowThirdModal(true);
-  };
-
   const handleSectionClick = (section: any) => {
     if (section.to) {
       navigate(section.to);
@@ -91,7 +103,7 @@ const Details = () => {
         <h2 className="font-semibold text-howtext">PROFILE</h2>
       </header>
       <section className="mt-[1.2em]">
-        {sections.map((section, index) => (
+        {sections?.map((section, index) => (
           <div
             key={index}
             className="mb-2 flex cursor-pointer flex-col"
@@ -99,15 +111,11 @@ const Details = () => {
           >
             <hr className="h-[1px] rounded-full bg-gray-200" />
             <div className="flex items-center justify-between py-1">
-              <span className="font-semibold">{section.title}</span>
+              <div className="flex flex-col">
+                <span className="font-semibold">{section.title}</span>
+                {section.description}
+              </div>
               <div className="flex items-center">
-                {section.status && (
-                  <button
-                    className={`rounded-full px-4 py-1 text-sm font-medium text-white shadow-md ${section.statusColor}`}
-                  >
-                    {section.status}
-                  </button>
-                )}
                 <IoIosArrowForward size={15} className="text-text2" />
               </div>
             </div>

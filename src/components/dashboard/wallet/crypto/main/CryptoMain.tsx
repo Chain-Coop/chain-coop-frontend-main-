@@ -40,9 +40,7 @@ interface TokenListItem {
 
 const CryptoMain = () => {
   const { Balance, isWalletVisible, setIsWalletVisible } = useCryptoWallet();
-  console.log("Balance:", Balance);
   const { userTokens } = useAllUserTokens();
-  console.log("TokenList:", userTokens);
   const { profileDetails, fetchUserProfile } = useUserProfile();
   const { cryptoWalletDetails } = useCryptoWalletDetails();
   const navigate = useNavigate();
