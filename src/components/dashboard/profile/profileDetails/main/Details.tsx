@@ -25,26 +25,38 @@ const Details = () => {
 
   const sections = [
     {
-      title: profileDetails?.isVerified ? "Manage Limit" : "ID Verification",
-      description: profileDetails?.isVerified ? (
-        <div className="flex justify-between gap-[1em]">
-          <p className="text-sm text-gray-500">
-            Daily Credit Limit: N20000 Daily withdrawal Limit: N500
-          </p>
-          <button className="rounded-full bg-[#FF0000] px-[1em] py-[2px] font-semibold text-white">
-            Upgrade
-          </button>
-        </div>
+      title: profileDetails?.isVerified ? (
+        "Manage Limit"
       ) : (
-        <div className="flex items-center">
+        <div className="flex w-full items-center justify-between">
+          <span>ID Verification</span>
           <button className="rounded-full bg-red-600 px-4 py-1 text-sm font-medium text-white shadow-md">
             0/2 verified
           </button>
         </div>
       ),
-      onClick: profileDetails?.isVerified
-        ? undefined
-        : () => setShowTierOneModal(true),
+      description: profileDetails?.isVerified ? (
+        <div className="flex items-center justify-between gap-[1em]">
+          <p className="text-sm text-gray-500">
+            Daily Credit Limit: N20,000 Daily withdrawal Limit: N500
+          </p>
+          <div className="flex items-center gap-2">
+            <button className="rounded-full bg-[#FF0000] px-[1em] py-[2px] font-semibold text-white">
+              Upgrade
+            </button>
+            <div
+              className="cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowTierOneModal(true);
+              }}
+            >
+              <IoIosArrowForward size={15} className="text-text2" />
+            </div>
+          </div>
+        </div>
+      ) : null,
+      onClick: undefined,
     },
     {
       title: "Accounts & Card",
@@ -110,12 +122,12 @@ const Details = () => {
             onClick={() => handleSectionClick(section)}
           >
             <hr className="h-[1px] rounded-full bg-gray-200" />
-            <div className="flex items-center justify-between py-1">
-              <div className="flex flex-col">
-                <span className="font-semibold">{section.title}</span>
+            <div className="flex w-full items-center justify-between py-1">
+              <div className="flex w-full flex-col">
+                <div className="font-semibold">{section.title}</div>
                 {section.description}
               </div>
-              <div className="flex items-center">
+              <div className="ml-2 flex items-center">
                 <IoIosArrowForward size={15} className="text-text2" />
               </div>
             </div>
@@ -131,6 +143,7 @@ const Details = () => {
         <TierOneFirstModal
           onClose={handleModalClose}
           onStepOneClick={handleStepOneClick}
+          isVerified={profileDetails?.isVerified}
         />
       </Modal>
 
