@@ -12,6 +12,7 @@ import { setMessage } from "../redux/slices/message.slices";
 import { useLocation } from "react-router";
 import {
   GetAllUserPools,
+  GetAllUserTokens,
   GetCryptoWalletBalance,
   GetCryptoWalletDetails,
 } from "../redux/slices/kyc.slices";
@@ -51,45 +52,6 @@ export const useWalletBalance = () => {
     cards,
   };
 };
-
-// export const useContributionBalance = () => {
-//   const dispatch: AppDispatch = useDispatch();
-//   const balance = useSelector(
-//     (state: any) => state?.transaction?.getContributionBalance,
-//   );
-//   const loading = useSelector((state: any) => state?.transaction?.loading);
-//   const error = useSelector((state: any) => state?.transaction?.error);
-//   const [isContributionVisible, setIsContributionVisible] = useState(() => {
-//     const storedVisibility = sessionStorage.getItem(
-//       "contributionBalanceVisible",
-//     );
-//     return storedVisibility !== null ? storedVisibility === "true" : true;
-//   });
-
-//   useEffect(() => {
-//     const userToken = sessionStorage.getItem("userData");
-//     if (userToken) {
-//       dispatch(GetContributionBalance())
-//         .unwrap()
-//         .catch((err: any) => {
-//           dispatch(setMessage(err.message || "Failed to fetch balance"));
-//         });
-//     } else {
-//       dispatch(setMessage("User token not found"));
-//     }
-//   }, [dispatch]);
-
-//   const balanceInNaira = balance?.totalBalance || 0;
-//   const formattedBalance = formatBalance(balanceInNaira);
-
-//   return {
-//     isContributionVisible,
-//     setIsContributionVisible,
-//     formattedBalance,
-//     isLoading: loading,
-//     error,
-//   };
-// };
 
 export const useContributionBalance = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -244,10 +206,11 @@ export const useAllUserPools = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { userPools, loading, error } = useSelector((state: any) => state.kyc);
+
   const fetchWalletBalance = () => {
     dispatch(GetAllUserPools());
   };
-  console.log("uuu", userPools);
+
   useEffect(() => {
     fetchWalletBalance();
   }, []);
@@ -256,6 +219,26 @@ export const useAllUserPools = () => {
     loading,
     error,
     userPools,
+  };
+};
+
+export const useAllUserTokens = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { userTokens, loading, error } = useSelector((state: any) => state.kyc);
+
+  const fetchUserTokens = () => {
+    dispatch(GetAllUserTokens());
+  };
+
+  useEffect(() => {
+    fetchUserTokens();
+  }, []);
+
+  return {
+    loading,
+    error,
+    userTokens,
   };
 };
 

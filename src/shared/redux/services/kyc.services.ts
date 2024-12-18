@@ -189,6 +189,24 @@ const UpdateUserPool = async (body: any) => {
   }
 };
 
+const GetAllUserTokens = async () => {
+  const url = `${API_URL}/web3/balance/tokens`;
+  try {
+    const response = await axios({
+      url,
+      headers: authHeader(),
+      method: "get",
+    });
+    const token = response?.data?.data?.tokens?.accessToken;
+    if (token) {
+      sessionStorage.setItem("userData", token);
+    }
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const KycServices = {
   kycWhatsAppOtp,
   VerifykycWhatsAppOtp,
@@ -200,6 +218,7 @@ const KycServices = {
   CreatePool,
   GetAllUserPools,
   UpdateUserPool,
+  GetAllUserTokens,
 };
 
 export default KycServices;

@@ -7,6 +7,7 @@ import { ActivateCryptoWallet } from "../../../../../shared/redux/slices/kyc.sli
 import { toast } from "react-toastify";
 import walletActivated from "../../../../../Assets/svg/dashboard/walletActivated.svg";
 import {
+  useAllUserTokens,
   useCryptoWallet,
   useCryptoWalletDetails,
 } from "../../../../../shared/Hooks/useBalance";
@@ -24,46 +25,74 @@ import Modal from "../../../../common/Modal";
 import CryptoModal from "../savingsModal/CryptoModal";
 import { Copy, Check } from "lucide-react";
 
+interface TokenInfo {
+  tokenAddress: string;
+  balance: number;
+  tokenSymbol: string;
+}
+
+interface TokenListItem {
+  img: string;
+  symbol: string;
+  title: string;
+  token: TokenInfo;
+}
+
 const CryptoMain = () => {
   const { Balance, isWalletVisible, setIsWalletVisible } = useCryptoWallet();
+  const { userTokens } = useAllUserTokens();
   const { profileDetails, fetchUserProfile } = useUserProfile();
   const { cryptoWalletDetails } = useCryptoWalletDetails();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const dispatch: AppDispatch = useAppDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>(
+    {},
+  );
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const handleCopy = () => {
-    if (cryptoWalletDetails?.address) {
-      navigator.clipboard.writeText(cryptoWalletDetails.address);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
+  const handleCopy = (address: string) => {
+    navigator.clipboard.writeText(address);
+    setCopiedStates((prev) => ({ ...prev, [address]: true }));
+    setTimeout(() => {
+      setCopiedStates((prev) => ({ ...prev, [address]: false }));
+    }, 2000);
   };
 
-  const tokenList = [
+  const getDefaultToken = (): TokenInfo => ({
+    tokenAddress: "",
+    balance: 0,
+    tokenSymbol: "",
+  });
+
+  const tokenList: TokenListItem[] = [
     {
       img: lisk,
-      label: "Lisk",
+      symbol: "LSK",
       title: "Lisk",
-      amount: "0.00",
+      token:
+        userTokens?.find((t: any) => t.tokenSymbol === "LSK") ||
+        getDefaultToken(),
     },
     {
       img: eth,
-      label: "USDT",
+      symbol: "LUSD",
       title: "Ethereum",
-      amount: "0.00",
+      token:
+        userTokens?.find((t: any) => t.tokenSymbol === "LUSD") ||
+        getDefaultToken(),
     },
     {
       img: usdc,
-      label: "USDC",
+      symbol: "WUSDC",
       title: "Dollar",
-      amount: Balance || "0.00",
+      token:
+        userTokens?.find((t: any) => t.tokenSymbol === "WUSDC") ||
+        getDefaultToken(),
     },
   ];
 
@@ -71,7 +100,7 @@ const CryptoMain = () => {
     navigate("/dashboard/wallet");
   };
 
-  const activateWallet = async (e: React.MouseEvent) => {
+  const activateWallet = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setLoading(true);
     try {
@@ -83,6 +112,11 @@ const CryptoMain = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const truncateAddress = (address: string) => {
+    if (!address) return "";
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
   return (
@@ -119,13 +153,7 @@ const CryptoMain = () => {
                   <div>
                     <ToggleButton
                       isVisible={isWalletVisible}
-                      onToggle={(newVisibility) => {
-                        setIsWalletVisible(newVisibility);
-                        sessionStorage.setItem(
-                          "walletBalanceVisible",
-                          newVisibility.toString(),
-                        );
-                      }}
+                      onToggle={setIsWalletVisible}
                     />
                   </div>
                 </div>
@@ -149,11 +177,17 @@ const CryptoMain = () => {
                       className="h-8 w-[280px] overflow-hidden text-ellipsis whitespace-nowrap rounded-lg border-2 border-gray-400 pl-3 pr-10 font-mono text-sm"
                     />
                     <button
-                      onClick={handleCopy}
+                      onClick={() =>
+                        handleCopy(cryptoWalletDetails?.address || "")
+                      }
                       className="absolute right-2 top-1/2 -translate-y-1/2 transform rounded-md p-1 text-gray-500 transition-all duration-200 hover:bg-gray-100 hover:text-gray-700"
-                      title={copied ? "Copied!" : "Copy address"}
+                      title={
+                        copiedStates[cryptoWalletDetails?.address || ""]
+                          ? "Copied!"
+                          : "Copy address"
+                      }
                     >
-                      {copied ? (
+                      {copiedStates[cryptoWalletDetails?.address || ""] ? (
                         <Check className="h-4 w-4 text-green-500" />
                       ) : (
                         <Copy className="h-4 w-4" />
@@ -210,22 +244,51 @@ const CryptoMain = () => {
             {tokenList.map((list, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between gap-[1em] rounded-lg border-2 border-gray-300 px-[1em] py-1"
+                className="flex flex-col rounded-lg border-2 border-gray-300 p-4"
               >
-                <div className="flex gap-[1em]">
+                <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div>
-                      <img src={list?.img} alt={list.label} />
+                      <img
+                        src={list.img}
+                        alt={list.symbol}
+                        className="h-8 w-8"
+                      />
                     </div>
                     <div className="flex flex-col gap-1">
-                      <p className="font-medium text-gray-400">{list.label}</p>
+                      <p className="font-medium text-gray-400">{list.symbol}</p>
                       <p className="font-bold">{list.title}</p>
                     </div>
                   </div>
+                  <div>
+                    <p className="font-bold">${list.token.balance}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-bold">${list.amount}</p>
-                </div>
+
+                {list.token.tokenAddress && (
+                  <div className="flex">
+                    <div className="mt-2 flex w-[200px] items-center justify-between rounded-md border border-gray-200 bg-gray-50 px-3 py-1.5">
+                      <span className="font-mono text-sm text-gray-600">
+                        {`${list.token.tokenAddress.slice(0, 6)}...${list.token.tokenAddress.slice(-4)}`}
+                      </span>
+                      <button
+                        onClick={() => handleCopy(list.token.tokenAddress)}
+                        className="ml-2 text-gray-500 hover:text-gray-700"
+                        title={
+                          copiedStates[list.token.tokenAddress]
+                            ? "Copied!"
+                            : "Copy address"
+                        }
+                      >
+                        {copiedStates[list.token.tokenAddress] ? (
+                          <Check className="h-4 w-4 text-green-500" />
+                        ) : (
+                          <Copy className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>

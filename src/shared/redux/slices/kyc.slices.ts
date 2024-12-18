@@ -137,6 +137,19 @@ export const UpdateUserPool = createAsyncThunk(
   },
 );
 
+export const GetAllUserTokens = createAsyncThunk(
+  "kyc/getAllUserTokens",
+  async (_, thunkAPI) => {
+    try {
+      const data = await KycServices.GetAllUserTokens();
+      return data;
+    } catch (error: any) {
+      const message = error.message;
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
 interface KycState {
   kycOtp: Record<string, any> | null;
   actvateCryptWallet: Record<string, any> | null;
@@ -148,6 +161,7 @@ interface KycState {
   registerUserPool: null;
   updateRegisteredUserPool: null;
   userPools: Record<string, any> | null;
+  userTokens: string | null;
   loading: boolean;
   error: string | null;
 }
@@ -163,6 +177,7 @@ const initialState: KycState = {
   registerUserPool: null,
   updateRegisteredUserPool: null,
   userPools: null,
+  userTokens: null,
   loading: false,
   error: null,
 };
@@ -320,6 +335,20 @@ export const kycSlice = createSlice({
         state.loading = false;
         state.updateRegisteredUserPool = null;
         state.error = (action.payload as string) || "Failed to update Pool";
+      })
+
+      .addCase(GetAllUserTokens.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(GetAllUserTokens.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userTokens = action.payload.data;
+        state.error = null;
+      })
+      .addCase(GetAllUserTokens.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });
