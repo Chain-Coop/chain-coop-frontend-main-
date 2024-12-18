@@ -40,7 +40,9 @@ interface TokenListItem {
 
 const CryptoMain = () => {
   const { Balance, isWalletVisible, setIsWalletVisible } = useCryptoWallet();
+  console.log("Balance:", Balance);
   const { userTokens } = useAllUserTokens();
+  console.log("TokenList:", userTokens);
   const { profileDetails, fetchUserProfile } = useUserProfile();
   const { cryptoWalletDetails } = useCryptoWalletDetails();
   const navigate = useNavigate();
@@ -75,7 +77,7 @@ const CryptoMain = () => {
       symbol: "LSK",
       title: "Lisk",
       token:
-        userTokens?.find((t: any) => t.tokenSymbol === "LSK") ||
+        userTokens?.find((t: any) => t?.tokenSymbol === "LSK") ||
         getDefaultToken(),
     },
     {
@@ -83,7 +85,7 @@ const CryptoMain = () => {
       symbol: "LUSD",
       title: "Ethereum",
       token:
-        userTokens?.find((t: any) => t.tokenSymbol === "LUSD") ||
+        userTokens?.find((t: any) => t?.tokenSymbol === "LUSD") ||
         getDefaultToken(),
     },
     {
@@ -155,7 +157,12 @@ const CryptoMain = () => {
 
                 <div className="w-60 text-center">
                   {isWalletVisible ? (
-                    <p className="text-xl font-bold lg:text-xl">${Balance}</p>
+                    <p className="text-xl font-bold lg:text-xl">
+                      $
+                      {typeof Balance === "number"
+                        ? Balance.toFixed(2)
+                        : "0.00"}
+                    </p>
                   ) : (
                     <p className="text-2xl font-bold">*********</p>
                   )}
