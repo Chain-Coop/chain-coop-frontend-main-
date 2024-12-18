@@ -104,7 +104,7 @@ const ActivateCryptoWallet = async () => {
 };
 
 const GetCryptoWalletBalance = async () => {
-  const url = `${API_URL}/web3/balance/token/3`;
+  const url = `${API_URL}/web3/balance/total`;
   try {
     const response = await axios({
       url,

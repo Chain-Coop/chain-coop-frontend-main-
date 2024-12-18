@@ -161,7 +161,7 @@ export const useCryptoWallet = () => {
   const { cryptoBalance, loading, error } = useSelector(
     (state: any) => state.kyc,
   );
-  const Balance = cryptoBalance?.bal || 0;
+  const Balance = cryptoBalance || 0;
 
   const fetchWalletBalance = () => {
     dispatch(GetCryptoWalletBalance());
