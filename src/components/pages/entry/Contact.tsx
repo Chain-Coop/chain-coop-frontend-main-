@@ -173,7 +173,9 @@ const Contact = () => {
               <section className="absolute inset-0 flex items-center justify-center text-text5 lg:pb-[8em]">
                 <div className="mx-auto w-[75%] space-y-4">
                   <div className="space-y-2">
-                    <h1 className="text-lg font-semibold">Connect With Us</h1>
+                    <h1 className="ml-5 text-lg font-semibold">
+                      Connect With Us
+                    </h1>
                     <div className="flex items-center gap-2 rounded-md bg-fbg p-2">
                       <FiPhoneCall size={20} />
                       <p className="text-sm">+234 809 322 7696</p>
