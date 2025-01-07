@@ -3,27 +3,27 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { DashboardHeader } from "../../../common/DashboardHeader";
 import { Primary } from "../../../common/Button";
 import { IoIosArrowBack } from "react-icons/io";
-import { FormControl, InputLabel, OutlinedInput } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { FormControl, InputLabel, OutlinedInput } from "@mui/material";
+import { styled } from "@mui/material/styles";
 
 const CustomOutlinedInput = styled(OutlinedInput)(({ theme }) => ({
-  '& .MuiOutlinedInput-notchedOutline': {
-    borderColor: '#E5E7EB',
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderColor: "#E5E7EB",
   },
-  '&:hover .MuiOutlinedInput-notchedOutline': {
-    borderColor: '#000080',
+  "&:hover .MuiOutlinedInput-notchedOutline": {
+    borderColor: "#000080",
   },
-  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-    borderColor: '#000080',
+  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+    borderColor: "#000080",
   },
-  '& input': {
-    padding: '14px',
-  }
+  "& input": {
+    padding: "14px",
+  },
 }));
 
 const CustomInputLabel = styled(InputLabel)({
-  '&.Mui-focused': {
-    color: '#000080',
+  "&.Mui-focused": {
+    color: "#000080",
   },
 });
 
@@ -39,7 +39,9 @@ const BankAccount = () => {
     navigate(-1);
   };
 
-  const handleAccountNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAccountNumberChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setAccountNumber(e.target.value);
     setError("");
   };
@@ -72,7 +74,8 @@ const BankAccount = () => {
       </header>
       <section className="mt-8 px-4">
         <p className="font-medium">
-          Please, only add a bank account that you own. Transactions to accounts that don't belong to you will be flagged
+          Please, only add a bank account that you own. Transactions to accounts
+          that don't belong to you will be flagged
         </p>
 
         <div className="mt-6">
@@ -86,10 +89,14 @@ const BankAccount = () => {
               value={accountNumber}
               onChange={handleAccountNumberChange}
               label="Account Number"
-              inputProps={{ maxLength: 10 }}
+              inputProps={{
+                maxLength: 10,
+                inputMode: "numeric",
+                pattern: "[0-9]*",
+              }}
             />
           </FormControl>
-          {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
+          {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
         </div>
         <Primary
           className="mt-8 w-full bg-text2 py-3 text-white"

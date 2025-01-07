@@ -19,6 +19,7 @@ interface BankAccount {
   accountNumber: string;
   bankCode: string;
   accountName: string;
+  bankName: string;
   bankId: number;
   _id: string;
 }
@@ -81,6 +82,7 @@ const SelectBank = () => {
           accountNumber: selectedAccount.accountNumber,
           bankCode: selectedAccount.bankCode,
           amount,
+          bankName: selectedAccount.bankName,
           pin,
         }),
       ).unwrap();

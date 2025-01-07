@@ -46,6 +46,7 @@ const PortfolioContent = () => {
             <div className="rounded-lg bg-rec1 p-6 text-center shadow-md">
               <p className="text-xl font-medium text-fade">Net Worth Asset</p>
               <h2 className="text-2xl font-bold text-text4">
+                ₦
                 {totalFundedProjects?.toLocaleString("en-NG", {
                   minimumFractionDigits: 2,
                 })}

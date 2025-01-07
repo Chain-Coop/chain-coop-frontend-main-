@@ -124,11 +124,12 @@ const AddFund = () => {
         </div>
         <div className="mt-4 flex flex-col gap-4">
           <hr className="w-full" />
-          <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
-            <p className="font-semibold">Amount to Invest</p>
+          <div className="flex-co flex gap-2 lg:flex-row lg:items-center lg:justify-between">
+            <p className="whitespace-nowrap font-semibold">Amount to Invest</p>
             <span className="text-normal relative text-base">
               <input
                 type="text"
+                required
                 className="w-full rounded-md border border-gray-300 px-3 py-2 pl-6 focus:border-text2 focus:outline-none focus:ring-text2 md:w-auto"
                 placeholder="0.00"
                 value={displayAmount}

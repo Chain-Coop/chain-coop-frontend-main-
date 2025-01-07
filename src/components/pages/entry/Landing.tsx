@@ -24,6 +24,7 @@ const Landing = () => {
     setIsLoaded(true);
   }, []);
 
+  // Animation variants remain the same
   const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
     visible: {
@@ -95,7 +96,7 @@ const Landing = () => {
   };
 
   return (
-    <>
+    <div className="overflow-x-hidden">
       <NavBar />
       <main
         className={`relative mb-[2em] font-sans transition-opacity duration-300 ${
@@ -103,7 +104,7 @@ const Landing = () => {
         }`}
       >
         <div
-          className="relative"
+          className="relative w-full"
           style={{
             backgroundImage: `url(${background})`,
             backgroundSize: "cover",
@@ -117,9 +118,9 @@ const Landing = () => {
             whileInView="visible"
             viewport={{ once: false, amount: 0.3 }}
             variants={staggerContainer}
-            className="relative mx-auto flex w-full flex-col items-center px-2 text-center lg:w-[74%] lg:py-[4em]"
+            className="relative mx-auto flex w-full flex-col items-center px-4 text-center lg:w-[74%] lg:px-2 lg:py-[4em]"
           >
-            <div className="relative z-10 text-center">
+            <div className="relative z-10 max-w-full text-center">
               <motion.h1
                 variants={fadeInUp}
                 className="text-[1.5em] font-semibold sm:mt-2 sm:text-[1.5em] lg:text-[2.5em]"
@@ -143,7 +144,7 @@ const Landing = () => {
             whileInView="visible"
             viewport={{ once: false, amount: 0.3 }}
             variants={staggerContainer}
-            className="relative z-10 flex w-full flex-col gap-6 pt-8 text-white sm:gap-8 lg:-mt-1 lg:flex-row lg:gap-0"
+            className="relative z-10 flex w-full flex-col gap-6 overflow-hidden pt-8 text-white sm:gap-8 lg:-mt-1 lg:flex-row lg:gap-0"
           >
             {/* Customer Section */}
             <motion.div
@@ -163,10 +164,7 @@ const Landing = () => {
                 >
                   As a Customer
                 </motion.h2>
-                <motion.p
-                  variants={fadeInUp}
-                  className="mr-8 text-sm md:mr-4 lg:mr-5 lg:text-base"
-                >
+                <motion.p variants={fadeInUp} className="text-sm lg:text-base">
                   You gained access to secure savings options designed to
                   protect your wealth and hedge against inflation. Save in
                   stable assets like USDT or USDC, ensuring stability in
@@ -174,7 +172,7 @@ const Landing = () => {
                 </motion.p>
                 <motion.p
                   variants={fadeInUp}
-                  className="mr-8 mt-[1em] text-sm md:mr-4 lg:mr-5 lg:text-base"
+                  className="mt-[1em] text-sm lg:text-base"
                 >
                   Your savings contribute to sustainable, blockchain-driven
                   ventures, with opportunities to invest directly in the
@@ -182,7 +180,7 @@ const Landing = () => {
                 </motion.p>
                 <motion.p
                   variants={fadeInUp}
-                  className="mr-9 mt-[1em] text-sm md:mr-4 lg:mr-5 lg:text-base"
+                  className="mt-[1em] text-sm lg:text-base"
                 >
                   Enjoy the potentials for yield profits and Access to the group
                   savings circles through a trusted, legally backed cooperative.
@@ -257,16 +255,13 @@ const Landing = () => {
                 >
                   As an Investor
                 </motion.h2>
-                <motion.p
-                  variants={fadeInUp}
-                  className="ml-8 text-sm md:ml-4 lg:ml-5 lg:text-base"
-                >
+                <motion.p variants={fadeInUp} className="text-sm lg:text-base">
                   Enjoy all the benefits Chain Co-op has to offer. you again
                   access to high growth business and early investment rounds
                 </motion.p>
                 <motion.p
                   variants={fadeInUp}
-                  className="ml-8 mt-[1em] text-sm md:ml-4 lg:ml-5 lg:text-base"
+                  className="mt-[1em] text-sm lg:text-base"
                 >
                   Your investment directly support sustainable blockchain driven
                   ventures and you emjoy fixd legally guaranteed returns that
@@ -274,7 +269,7 @@ const Landing = () => {
                 </motion.p>
                 <motion.p
                   variants={fadeInUp}
-                  className="ml-8 mt-[1em] text-sm md:ml-4 lg:ml-5 lg:text-base"
+                  className="mt-[1em] text-sm lg:text-base"
                 >
                   Secure your future with Exclusive savings and sustainable
                   Opportunities.
@@ -288,7 +283,7 @@ const Landing = () => {
             whileInView="visible"
             viewport={{ once: false, amount: 0.3 }}
             variants={staggerContainer}
-            className="m-auto mt-8 flex w-full flex-col justify-between px-2 lg:mt-[12em] lg:w-[80%] lg:flex-row lg:px-0"
+            className="m-auto mt-8 flex w-full flex-col justify-between px-4 lg:mt-[12em] lg:w-[80%] lg:flex-row lg:px-0"
           >
             <motion.div
               variants={slideInRight}
@@ -311,14 +306,14 @@ const Landing = () => {
               <img
                 src={kyc}
                 alt="group"
-                className="h-auto w-full object-cover lg:h-[] lg:w-[400px]"
+                className="h-auto w-full object-cover lg:h-auto lg:w-[400px]"
               />
             </motion.div>
           </motion.div>
         </div>
 
         <div
-          className="relative overflow-hidden"
+          className="relative w-full overflow-hidden"
           style={{
             backgroundImage: `url(${background})`,
             backgroundSize: "cover",
@@ -335,7 +330,7 @@ const Landing = () => {
             className="relative z-10 flex flex-col pt-8 lg:-mt-3 lg:flex-row"
           >
             <section className="inset-0 mt-[2em] w-full">
-              <div className="w-full bg-[#ece6f2] px-3 py-8 sm:py-12 lg:px-7">
+              <div className="w-full bg-[#ece6f2] px-4 py-8 sm:py-12 lg:px-7">
                 <motion.h2
                   variants={fadeInUp}
                   className="mb-8 text-center text-[1.5em] font-bold lg:text-[2em]"
@@ -422,18 +417,18 @@ const Landing = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={staggerContainer}
-            className="mt-[2.5em]"
+            className="mt-[2.5em] px-4"
           >
             <motion.h1
               variants={fadeInUp}
-              className="mx-auto text-center text-[1.5em] text-lg font-bold tracking-wide sm:mt-2 md:text-lg lg:w-[50%] lg:text-[1.6em]"
+              className="mx-auto text-center text-[1.5em] font-bold tracking-wide sm:mt-2 md:text-lg lg:w-[50%] lg:text-[1.6em]"
             >
               Join and Multiply Your Savings with our exclusive Dollar Group
               Cycles.
             </motion.h1>
             <motion.div
               variants={fadeInUp}
-              className="m-auto mt-1 px-2 text-center md:text-center lg:w-[50%]"
+              className="m-auto mt-1 text-center md:text-center lg:w-[50%]"
             >
               <p>
                 Access 5x your funds by Participating in Chain Co-op Poweful
@@ -444,12 +439,13 @@ const Landing = () => {
               </p>
             </motion.div>
           </motion.div>
+
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: false, amount: 0.3 }}
             variants={staggerContainer}
-            className="mt-[2em] flex flex-col items-center"
+            className="mt-[2em] flex flex-col items-center px-4"
           >
             <div className="flex flex-wrap justify-center gap-[1em] lg:flex-row lg:gap-[3em]">
               {Object.entries(earlyMemberCircleText)
@@ -516,7 +512,7 @@ const Landing = () => {
         </div>
       </main>
       <Footer />
-    </>
+    </div>
   );
 };
 
