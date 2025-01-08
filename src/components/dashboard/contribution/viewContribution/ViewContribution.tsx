@@ -81,6 +81,17 @@ const TrackerSkeleton: React.FC = () => (
   </div>
 );
 
+const isDateValid = (dateString?: string) => {
+  if (!dateString) return false;
+  try {
+    const date = new Date(dateString);
+    const currentDate = new Date();
+    return date > currentDate;
+  } catch {
+    return false;
+  }
+};
+
 const ViewContribution = () => {
   const location = useLocation();
   const contributionId = location?.state?.contributionId;
@@ -198,7 +209,6 @@ const ViewContribution = () => {
   const handleCloseError = () => {
     setError(null);
   };
-
   const ContributionTracker = () => {
     const { contributionDetails } = useSelector(
       (state: any) => state?.transaction,
@@ -266,7 +276,8 @@ const ViewContribution = () => {
         });
       }
 
-      if (nextContributionDate) {
+      // Only add next contribution date if it's valid and in the future
+      if (isDateValid(nextContributionDate)) {
         steps.push({
           label: "Next Contribution",
           date: nextContributionDate,
@@ -347,7 +358,7 @@ const ViewContribution = () => {
             Effortlessly manage and monitor your financial commitment
           </p>
           {isWithdrawalDatePassed && (
-            <div className="rounded-lg bg-blue-100 p-2 text-xs text-blue-700 sm:p-3 sm:text-base">
+            <div className="rounded-lg bg-green-100 p-2 text-xs text-green-700 sm:p-3 sm:text-base">
               Withdrawal date has been reached. You can now withdraw your funds.
             </div>
           )}
@@ -563,9 +574,13 @@ const ViewContribution = () => {
               </div>
             </section>
             <span className="mt-[1em] font-semibold text-gray-500">
-              Next Contribution is:{" "}
-              {formatContributionDate(
-                contributionDetails?.nextContributionDate,
+              {isDateValid(contributionDetails?.nextContributionDate) && (
+                <span className="mt-[1em] font-semibold text-gray-500">
+                  Next Contribution is:{" "}
+                  {formatContributionDate(
+                    contributionDetails?.nextContributionDate,
+                  )}
+                </span>
               )}
             </span>
             <hr className="mt-[2em] w-full" />

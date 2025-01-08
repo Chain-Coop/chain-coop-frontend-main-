@@ -48,24 +48,24 @@ const ProjectContentDetails: React.FC<ProjectContentDetailsProps> = ({
             className="rounded-lg"
           />
         </div>
-        <div className="flex flex-col gap-[1em]">
+        {/* <div className="flex flex-col gap-[1em]">
           <p className="font-medium text-howtext">Project Price</p>
           <p className="font-bold">
             This Project is available for {formatBalance(project?.projectPrice)}{" "}
             {}
           </p>
-        </div>
+        </div> */}
         <div className="flex items-center justify-between">
           <IoIosArrowDropleft
             size={25}
             onClick={back}
             className="cursor-pointer transition-transform duration-300 hover:scale-110"
           />
-          <Link to="/dashboard/wallet/transfer/fund-project">
+          {/* <Link to="/dashboard/wallet/transfer/fund-project">
             <Primary className="mt-8 rounded-md bg-text2 px-5 py-2 font-semibold text-white transition-transform duration-300 hover:scale-110">
               Purchase
             </Primary>
-          </Link>
+          </Link> */}
         </div>
       </div>
     </main>
