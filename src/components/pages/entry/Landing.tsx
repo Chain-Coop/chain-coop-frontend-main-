@@ -157,7 +157,7 @@ const Landing = () => {
                 backgroundRepeat: "no-repeat",
               }}
             >
-              <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center sm:px-8 md:px-10 lg:px-[4em]">
+              <div className="absolute inset-0 flex flex-col items-center justify-center px-4 pr-[4em] text-center sm:px-8 md:px-10 lg:px-[4em] lg:pr-0">
                 <motion.h2
                   variants={fadeInUp}
                   className="mb-4 text-xl font-semibold sm:text-2xl lg:text-3xl"
@@ -248,7 +248,7 @@ const Landing = () => {
                 backgroundRepeat: "no-repeat",
               }}
             >
-              <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center sm:px-8 md:px-10 lg:px-[4em]">
+              <div className="absolute inset-0 flex flex-col items-center justify-center px-4 pl-[4em] text-center sm:px-8 md:px-10 lg:px-[4em] lg:pl-0">
                 <motion.h2
                   variants={fadeInUp}
                   className="mb-4 text-xl font-semibold sm:text-2xl lg:text-3xl"

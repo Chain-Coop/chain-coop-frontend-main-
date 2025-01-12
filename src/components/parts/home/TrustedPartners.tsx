@@ -1,6 +1,6 @@
 import React from "react";
 import { trustedPartners } from "../../../data/Data";
-import "../../parts/partone/animation.css";
+import "../../parts/home/animation.css";
 
 interface TrustedPartner {
   src: string;

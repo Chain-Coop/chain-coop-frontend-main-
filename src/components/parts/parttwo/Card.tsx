@@ -4,9 +4,9 @@ import {
   investorCardData,
   employeeCardData,
 } from "../../../data/Data";
-import member from "../../../Assets/jpg/membership/customer.jpg";
+import saver from "../../../Assets/png/home/saver-membership-card.png";
 import investor from "../../../Assets/jpg/membership/investor.jpg";
-import employee from "../../../Assets/jpg/membership/employee.jpg";
+import member from "../../../Assets/png/home/cooperative-membership-card.png";
 import dot from "../../../Assets/svg/membership/radio-button.svg";
 import { motion } from "framer-motion";
 
@@ -73,8 +73,8 @@ const Card = () => {
       <section className="mt-8 flex flex-col justify-between lg:flex-row lg:space-x-8">
         {[
           {
-            img: member,
-            title: "Customer Membership Card",
+            img: saver,
+            title: "Saving Membership Card-Fee",
             data: customerCardData,
           },
           {
@@ -84,10 +84,10 @@ const Card = () => {
             contribution: "N100k",
           },
           {
-            img: employee,
-            title: "Employee Membership Card",
+            img: member,
+            title: "Co-operative Partner",
             data: employeeCardData,
-            contribution: "N100k",
+            contribution: "N200k",
           },
         ].map((card, index) => (
           <motion.div
@@ -117,7 +117,7 @@ const Card = () => {
                     variants={textVariants}
                     className="font-bold lg:text-center"
                   >
-                    Member's Contribution: {card.contribution}
+                    One Time Membership Fee: {card.contribution}
                   </motion.h2>
                 )}
                 <motion.ul className="mt-2 space-y-3 text-text1">

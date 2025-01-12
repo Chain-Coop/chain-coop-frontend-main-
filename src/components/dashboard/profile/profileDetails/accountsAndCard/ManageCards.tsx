@@ -180,7 +180,7 @@ const ManageCards = () => {
                     </svg>
                     Delete Card
                   </button>
-                  <button className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-blue-500 bg-blue-50 px-4 py-2 text-sm text-blue-500 transition-colors hover:bg-blue-100 sm:flex-none">
+                  {/* <button className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-blue-500 bg-blue-50 px-4 py-2 text-sm text-blue-500 transition-colors hover:bg-blue-100 sm:flex-none">
                     <svg
                       className="h-4 w-4"
                       fill="none"
@@ -195,7 +195,7 @@ const ManageCards = () => {
                       />
                     </svg>
                     Set Default
-                  </button>
+                  </button> */}
                 </div>
               </div>
             ))

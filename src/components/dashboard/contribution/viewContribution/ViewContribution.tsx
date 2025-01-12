@@ -276,7 +276,6 @@ const ViewContribution = () => {
         });
       }
 
-      // Only add next contribution date if it's valid and in the future
       if (isDateValid(nextContributionDate)) {
         steps.push({
           label: "Next Contribution",
