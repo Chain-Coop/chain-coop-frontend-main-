@@ -124,7 +124,7 @@ const ManageCards = () => {
 
         <div className="mt-4 flex flex-col gap-6">
           {useWalletCards?.cards?.length > 0 ? (
-            useWalletCards.cards.map((card: Card) => (
+            useWalletCards?.cards?.map((card: Card) => (
               <div
                 key={card.authorization_code}
                 className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6"

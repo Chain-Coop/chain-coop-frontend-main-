@@ -146,10 +146,9 @@ const Landing = () => {
             variants={staggerContainer}
             className="relative z-10 flex w-full flex-col gap-6 overflow-hidden pt-8 text-white sm:gap-8 lg:-mt-1 lg:flex-row lg:gap-0"
           >
-            {/* Customer Section */}
             <motion.div
               variants={slideInLeft}
-              className="relative h-[370px] w-full md:h-[400px] lg:h-[450px] lg:w-1/3"
+              className="relative h-[370px] w-full md:h-[400px] lg:h-[450px] lg:w-[38%]"
               style={{
                 backgroundImage: `url(${imageRight})`,
                 backgroundSize: "cover",
@@ -157,7 +156,7 @@ const Landing = () => {
                 backgroundRepeat: "no-repeat",
               }}
             >
-              <div className="absolute inset-0 flex flex-col items-center justify-center px-4 pr-[4em] text-center sm:px-8 md:px-10 lg:px-[4em] lg:pr-0">
+              <div className="absolute inset-0 flex flex-col justify-center px-16 lg:px-20">
                 <motion.h2
                   variants={fadeInUp}
                   className="mb-4 text-xl font-semibold sm:text-2xl lg:text-3xl"
@@ -165,10 +164,9 @@ const Landing = () => {
                   As a Customer
                 </motion.h2>
                 <motion.p variants={fadeInUp} className="text-sm lg:text-base">
-                  You gained access to secure savings options designed to
-                  protect your wealth and hedge against inflation. Save in
-                  stable assets like USDT or USDC, ensuring stability in
-                  uncertain times.
+                  You gain access to secure savings options designed to protect
+                  your wealth and hedge against inflation. Save in stable assets
+                  like USDT or USDC, ensuring stability in uncertain times.
                 </motion.p>
                 <motion.p
                   variants={fadeInUp}
@@ -182,13 +180,12 @@ const Landing = () => {
                   variants={fadeInUp}
                   className="mt-[1em] text-sm lg:text-base"
                 >
-                  Enjoy the potentials for yield profits and Access to the group
+                  Enjoy the potentials for yield profits and access to the group
                   savings circles through a trusted, legally backed cooperative.
                 </motion.p>
               </div>
             </motion.div>
 
-            {/* Middle Images Section */}
             <motion.div
               variants={fadeIn}
               className="hidden lg:flex lg:w-1/3 lg:justify-between lg:py-[3em]"
@@ -236,11 +233,9 @@ const Landing = () => {
                 />
               </div>
             </motion.div>
-
-            {/* Investor Section */}
             <motion.div
               variants={slideInRight}
-              className="relative h-[370px] w-full md:h-[400px] lg:h-[450px] lg:w-1/3"
+              className="relative h-[370px] w-full md:h-[400px] lg:h-[450px] lg:w-[38%]"
               style={{
                 backgroundImage: `url(${imageLeft})`,
                 backgroundSize: "cover",
@@ -248,7 +243,7 @@ const Landing = () => {
                 backgroundRepeat: "no-repeat",
               }}
             >
-              <div className="absolute inset-0 flex flex-col items-center justify-center px-4 pl-[4em] text-center sm:px-8 md:px-10 lg:px-[4em] lg:pl-0">
+              <div className="absolute inset-0 flex flex-col justify-center px-16 lg:px-20">
                 <motion.h2
                   variants={fadeInUp}
                   className="mb-4 text-xl font-semibold sm:text-2xl lg:text-3xl"
@@ -256,23 +251,23 @@ const Landing = () => {
                   As an Investor
                 </motion.h2>
                 <motion.p variants={fadeInUp} className="text-sm lg:text-base">
-                  Enjoy all the benefits Chain Co-op has to offer. you again
-                  access to high growth business and early investment rounds
+                  Enjoy all the benefits Chain Co-op has to offer. You gain
+                  access to high growth business and early investment rounds.
                 </motion.p>
                 <motion.p
                   variants={fadeInUp}
                   className="mt-[1em] text-sm lg:text-base"
                 >
-                  Your investment directly support sustainable blockchain driven
-                  ventures and you emjoy fixd legally guaranteed returns that
-                  promote long-term wealth growth.
+                  Your investment directly supports sustainable
+                  blockchain-driven ventures and you enjoy fixed legally
+                  guaranteed returns that promote long-term wealth growth.
                 </motion.p>
                 <motion.p
                   variants={fadeInUp}
                   className="mt-[1em] text-sm lg:text-base"
                 >
-                  Secure your future with Exclusive savings and sustainable
-                  Opportunities.
+                  Secure your future with exclusive savings and sustainable
+                  opportunities.
                 </motion.p>
               </div>
             </motion.div>
