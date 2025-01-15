@@ -416,7 +416,7 @@ const Landing = () => {
           >
             <motion.h1
               variants={fadeInUp}
-              className="mx-auto text-center text-[1.5em] font-bold tracking-wide sm:mt-2 md:text-lg lg:w-[50%] lg:text-[1.6em]"
+              className="mx-auto text-center text-lg font-bold tracking-wide sm:mt-2 md:text-lg lg:w-[50%] lg:text-[1.6em]"
             >
               Join and Multiply Your Savings with our exclusive Dollar Group
               Cycles.
