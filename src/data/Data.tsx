@@ -290,16 +290,16 @@ export const company = [
 export const Explore = [
   {
     text: "Why Chain Coop",
-    to: "/",
+    to: "/why-chain-co-op",
   },
   {
     text: "Membership Cards",
     to: "/membership",
   },
-  {
-    text: "Projects",
-    to: "/membership",
-  },
+  // {
+  //   text: "Projects",
+  //   to: "/membership",
+  // },
 ];
 
 // export const Legal = [
