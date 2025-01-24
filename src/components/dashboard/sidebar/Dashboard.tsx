@@ -6,6 +6,7 @@ import DashboardNav from "../../common/DashboardNav";
 import Sidebar from "./Sidebar";
 import Home from "../home/Home";
 import Contribution from "../contribution/main/Contribution";
+import CryptoContribution from "../contribution/contributionType/crypto/main/Contribution";
 import Wallet from "../wallet/Wallet";
 import Project from "../nestedproject/Project";
 import Proposal from "../proposal/Proposal";
@@ -24,25 +25,28 @@ import ProfileTransactions from "../profile/profileDetails/transactions/Transact
 import Shares from "../shares/main/Shares";
 import VerifyTransaction from "../wallet/fund/verifyTransaction/VerifyTransaction";
 import ConfirmTransaction from "../wallet/transfer/fundContribution/confirmTransaction";
-import ProjectContentOverView from "../nestedproject/nested/ProjectContentOverView";
-import Purpose from "../contribution/naira/purpose/Purpose";
-import CryptoPurpose from "../contribution/crypto/purpose/Purpose";
-import SavingsPlan from "../contribution/naira/savingsPlan/SavingsPlan";
-import CryptoSavingsPlan from "../contribution/crypto/savingsPlan/SavingsPlan";
-import StartDate from "../contribution/naira/startDate/StartDate";
-import CryptoStartDate from "../contribution/crypto/startDatte/StartDate";
-import SavingsAmount from "../contribution/naira/savingsAmount/SavingsAmount";
-import SavingsCryptoAmount from "../contribution/crypto/savingsAmount/SavingsAmount";
-import VerifyContribution from "../contribution/main/VerifyContribution";
-import ViewContribution from "../contribution/viewContribution/ViewContribution";
-import WithdrawContribution from "../contribution/naira/withdrawContribution/WithdrawContribution";
-import ConfirmWithdrawal from "../contribution/naira/withdrawContribution/ConfirmAmount";
+// import ProjectContentOverView from "../nestedproject/nested/ProjectContentOverView";
+import Purpose from "../contribution/contributionType/naira/flexiblePlan/Purpose";
+import CryptoPurpose from "../contribution/contributionType/crypto/flexiblePlan/ContributionCurrencyType";
+import LockPurpose from "../contribution/contributionType/naira/lockPlan/Purpose";
+import SavingsPlan from "../contribution/contributionType/naira/flexiblePlan/SavingsPlan";
+import LockPlan from "../contribution/contributionType/naira/lockPlan/SavingsPlan";
+import StrictLockPurpose from "../contribution/contributionType/naira/strictLockPlan/Purpose";
+import StartDate from "../contribution/contributionType/naira/flexiblePlan/StartDate";
+import LockStartDate from "../contribution/contributionType/naira/lockPlan/StartDate";
+import StrictLockStartDate from "../contribution/contributionType/naira/strictLockPlan/StartDate";
+import SavingsAmount from "../contribution/contributionType/naira/flexiblePlan/SavingsAmount";
+import LockSavingsAmount from "../contribution/contributionType/naira/lockPlan/SavingsAmount";
+import StrictLockSavingsAmount from "../contribution/contributionType/naira/strictLockPlan/SavingsAmount";
+import WithdrawContribution from "../contribution/withdrawContribution/WithdrawContribution";
+import ConfirmWithdrawal from "../contribution/withdrawContribution/ConfirmAmount";
 import ManageAccountCards from "../profile/profileDetails/accountsAndCard/ManageCards";
 import Notification from "../notification/main/Notification";
-import ContributionCurrencyType from "../contribution/main/contributionType/ContributionCurrencyType";
+import ContributionCurrencyType from "../contribution/contributionType/naira/flexiblePlan/ContributionCurrencyType";
+import LockContributionCurrencyType from "../contribution/contributionType/naira/lockPlan/ContributionCurrencyType";
+import StrictLockContributionCurrencyType from "../contribution/contributionType/naira/strictLockPlan/ContributionCurrencyType";
+
 import CryptoMain from "../wallet/crypto/main/CryptoMain";
-import CryproSavings from "../contribution/crypto/main/CryproSavings";
-import WithdrawCrypto from "../contribution/crypto/withdrawCrypto/WithdrawCrypto";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -62,51 +66,61 @@ const Dashboard = () => {
           <Route path="/" element={<Home />} />
 
           <Route path="contribution" element={<Contribution />} />
-          <Route path="contribution/crypto" element={<CryproSavings />} />
-          <Route path="contribution/purpose" element={<Purpose />} />
           <Route
-            path="contribution/crypto/purpose"
+            path="contribution/crypto_contribution"
+            element={<CryptoContribution />}
+          />
+          <Route
+            path="contribution/flexible/crypto_purpose"
             element={<CryptoPurpose />}
           />
+
+          <Route path="contribution/purpose" element={<Purpose />} />
           <Route path="contribution/plan" element={<SavingsPlan />} />
-          <Route
-            path="contribution/crypto/plan"
-            element={<CryptoSavingsPlan />}
-          />
           <Route path="contribution/date" element={<StartDate />} />
-          <Route
-            path="contribution/crypto/date"
-            element={<CryptoStartDate />}
-          />
           <Route path="contribution/amount" element={<SavingsAmount />} />
-          <Route
-            path="contribution/crypto/amount"
-            element={<SavingsCryptoAmount />}
-          />
           <Route
             path="contribution/contribution_cuurency_type"
             element={<ContributionCurrencyType />}
           />
-          <Route
-            path="contribution/fund_contribution/verify_transaction"
-            element={<VerifyContribution />}
-          />
 
-          <Route
-            path="/contribution/contribution_details"
-            element={<ViewContribution />}
-          />
           <Route
             path="/contribution/withdraw_contribution"
             element={<WithdrawContribution />}
           />
-          <Route
-            path="/contribution/withdraw_crypto"
-            element={<WithdrawCrypto />}
-          />
+
           <Route
             path="/contribution/withdraw_contribution/confirm-amount"
             element={<ConfirmWithdrawal />}
+          />
+
+          <Route
+            path="contribution/lock/contribution_curency_type"
+            element={<LockContributionCurrencyType />}
+          />
+          <Route path="contribution/lock/purpose" element={<LockPurpose />} />
+          <Route path="contribution/lock_plan" element={<LockPlan />} />
+          <Route
+            path="contribution/lock/amount"
+            element={<LockSavingsAmount />}
+          />
+          <Route path="contribution/lock/date" element={<LockStartDate />} />
+
+          <Route
+            path="contribution/strict_lock/contribution_curency_type"
+            element={<StrictLockContributionCurrencyType />}
+          />
+          <Route
+            path="contribution/strict_lock/purpose"
+            element={<StrictLockPurpose />}
+          />
+          <Route
+            path="contribution/strict_lock/amount"
+            element={<StrictLockSavingsAmount />}
+          />
+          <Route
+            path="contribution/strict_lock/date"
+            element={<StrictLockStartDate />}
           />
 
           <Route path="wallet/*" element={<Wallet />} />

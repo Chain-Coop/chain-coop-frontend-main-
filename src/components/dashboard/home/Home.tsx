@@ -40,11 +40,11 @@ const Home = () => {
   const { useProjects, loading } = useAllProjects();
   const navigate = useNavigate();
 
-  const handleProjectClick = (projectId: any) => {
-    navigate(`/dashboard/project/project_over-view`, {
-      state: { projectId },
-    });
-  };
+  // const handleProjectClick = (projectId: any) => {
+  //   navigate(`/dashboard/project/project_over-view`, {
+  //     state: { projectId },
+  //   });
+  // };
 
   const addFund = () => {
     navigate("/dashboard/wallet");
@@ -95,13 +95,13 @@ const Home = () => {
         {latestProjects.map((project: Project) => (
           <article key={project?._id}>
             <div
-              className="flex h-48 cursor-pointer flex-col gap-8 rounded-xl bg-cover bg-center bg-no-repeat p-3 transition-transform hover:scale-[1.02]"
+              className="flex h-48 flex-col gap-8 rounded-xl bg-cover bg-center bg-no-repeat p-3 transition-transform hover:scale-[1.02]"
               style={{
                 backgroundImage: `url(${project?.documentUrl})`,
                 backgroundColor: "rgba(255, 255, 255, 0.1)",
                 backgroundBlendMode: "overlay",
               }}
-              onClick={() => handleProjectClick(project._id)}
+              // onClick={() => handleProjectClick(project._id)}
             >
               <h1 className="text-lg font-medium uppercase text-text3">
                 {project?.title}
@@ -147,7 +147,7 @@ const Home = () => {
       </header>
 
       <section className="text-center text-text4">
-        <div className="mx-auto mt-8 rounded-3xl px-4 py-8 shadow-md sm:px-8">
+        <div className="mx-4 mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-16 shadow-md md:mx-8 lg:mx-auto lg:max-w-2xl">
           <div className="flex justify-center gap-4 font-sans">
             <p className="font-medium">Total Balance</p>
             <div>

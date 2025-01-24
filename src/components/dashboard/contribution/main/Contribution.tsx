@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useContributionBalance } from "../../../../shared/Hooks/useBalance";
 import { useUserContributionHistory } from "../../../../shared/Hooks/useUserProfile";
 import ToggleButton from "../../../../shared/utils/ToggleButton";
@@ -98,17 +98,13 @@ const Contribution: React.FC = () => {
   const handleSavingsTypeChange = (type: "naira" | "crypto") => {
     setSavingsType(type);
     if (type === "crypto") {
-      navigate("/dashboard/contribution/crypto");
+      navigate("/dashboard/contribution/crypto_contribution");
     }
     setIsModalOpen(false);
   };
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
-  };
-
-  const fundContribution = () => {
-    navigate("/dashboard/contribution/contribution_cuurency_type");
   };
 
   const formatCurrency = (amount: number) => {
@@ -134,12 +130,12 @@ const Contribution: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mx-4 mt-6 rounded-3xl bg-white p-8 shadow-md md:mx-8 lg:mx-auto lg:max-w-2xl"
+              className="mx-4 mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md md:mx-8 lg:mx-auto lg:max-w-2xl"
             >
               <div className="flex justify-end py-3">
                 <button
                   onClick={toggleModal}
-                  className="flex w-auto transform items-center gap-2 rounded-lg bg-[#E3D9E6] px-6 py-3 font-semibold text-text2 transition-all duration-300 hover:scale-105
+                  className="flex w-auto transform items-center  gap-2 rounded-lg border-[3px] border-gray-200 bg-[#E3D9E6] px-6 py-3 text-lg font-semibold text-text2 transition-all duration-300 hover:scale-105
                   active:scale-95 md:py-3 lg:py-2"
                 >
                   Naira Savings
@@ -177,17 +173,36 @@ const Contribution: React.FC = () => {
             </motion.div>
 
             <section className="mt-6 md:mt-8">
-              <div className="flex justify-center">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={fundContribution}
-                  className="rounded-full bg-inherit px-8 py-2 text-base font-bold text-gray-700 shadow-lg transition-all hover:bg-gray-50 md:px-8 md:py-3 md:text-lg lg:px-12"
-                >
-                  Add Savings
-                </motion.button>
+              <div className="grid w-[80%] grid-cols-1 gap-4 md:grid-cols-2">
+                <Link to="/dashboard/contribution/contribution_cuurency_type">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 md:py-3 md:text-lg"
+                  >
+                    Flexible Savings
+                  </motion.button>
+                </Link>
+                <Link to="/dashboard/contribution/lock/contribution_curency_type">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 md:py-3 md:text-lg"
+                  >
+                    Lock Savings
+                  </motion.button>
+                </Link>
+                <Link to="/dashboard/contribution/strict_lock/contribution_curency_type">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 md:py-3 md:text-lg"
+                  >
+                    Strict Lock Savings
+                  </motion.button>
+                </Link>
               </div>
-              <hr className="mx-auto mt-8 w-full max-w-4xl" />
+              <hr className="mx-auto mt-8 w-full max-w-2xl" />
             </section>
           </article>
         </section>
@@ -272,13 +287,6 @@ const Contribution: React.FC = () => {
               <h2 className="text-xl font-bold text-how1 md:text-2xl">
                 No Savings Yet
               </h2>
-              <motion.p
-                whileHover={{ scale: 1.05 }}
-                onClick={fundContribution}
-                className="mt-6 cursor-pointer text-lg font-semibold text-how1 md:text-xl"
-              >
-                Get Started
-              </motion.p>
             </motion.div>
           )}
         </section>

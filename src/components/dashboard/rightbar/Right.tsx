@@ -16,11 +16,11 @@ const Right = () => {
   const { useProjects, loading } = useAllProjects();
   const navigate = useNavigate();
 
-  const handleProjectClick = (projectId: any) => {
-    navigate(`/dashboard/project/project_over-view`, {
-      state: { projectId },
-    });
-  };
+  // const handleProjectClick = (projectId: any) => {
+  //   navigate(`/dashboard/project/project_over-view`, {
+  //     state: { projectId },
+  //   });
+  // };
 
   const latestProjects = React.useMemo(() => {
     if (!useProjects) return [];
@@ -40,7 +40,7 @@ const Right = () => {
     return latestProjects?.map((project: Project) => (
       <div key={project._id} className="mt-[1em] h-[200px] w-full px-[1em]">
         <article
-          className="h-full cursor-pointer rounded-2xl bg-no-repeat p-[1em] transition-transform hover:scale-[1.02]"
+          className="h-full rounded-2xl bg-no-repeat p-[1em] transition-transform hover:scale-[1.02]"
           style={{
             backgroundImage: `url(${project.documentUrl})`,
             backgroundSize: "contain",
@@ -48,7 +48,7 @@ const Right = () => {
             backgroundColor: "rgba(255, 255, 255, 0.1)",
             backgroundBlendMode: "overlay",
           }}
-          onClick={() => handleProjectClick(project._id)}
+          // onClick={() => handleProjectClick(project._id)}
         >
           <h1 className="p-[1em] text-lg font-medium uppercase text-text3">
             {project?.title}
@@ -59,7 +59,11 @@ const Right = () => {
         </article>
       </div>
     ));
-  }, [loading, latestProjects, handleProjectClick]);
+  }, [
+    loading,
+    latestProjects,
+    // handleProjectClick
+  ]);
 
   return (
     <aside className="flex min-h-screen w-[30em] flex-col border-l border-bl bg-inherit px-[3em] py-[3em] font-sans text-memt1 shadow-md">

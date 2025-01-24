@@ -308,7 +308,7 @@ const CryptoMain = () => {
                 <span className="block text-memt1 lg:text-lg">Withdraw</span>
               </motion.button>
             </Link>
-            <motion.button
+            {/* <motion.button
               onClick={toggleModal}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -318,7 +318,7 @@ const CryptoMain = () => {
               <span className="block text-memt1 lg:text-lg">
                 Save in Crypto
               </span>
-            </motion.button>
+            </motion.button> */}
             <Link to="">
               <motion.button
                 whileHover={{ scale: 1.02 }}

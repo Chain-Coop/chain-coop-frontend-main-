@@ -42,7 +42,7 @@ const Wallet = () => {
                 Switch to Crypto Wallet
               </button>
             </div>
-            <div className="mx-auto mt-8 rounded-3xl py-8 shadow-md">
+            <div className="mx-4 mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-16 shadow-md md:mx-8 lg:mx-auto lg:max-w-2xl">
               <div className="flex justify-center gap-4 font-sans">
                 <p className="font-medium">Naira Wallet Balance</p>
                 <div>
