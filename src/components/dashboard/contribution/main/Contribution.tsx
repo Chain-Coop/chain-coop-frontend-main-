@@ -174,7 +174,7 @@ const Contribution: React.FC = () => {
 
             <section className="mt-6 md:mt-8">
               <div className="grid w-[80%] grid-cols-1 gap-4 md:grid-cols-2">
-                <Link to="/dashboard/contribution/contribution_cuurency_type">
+                <Link to="/dashboard/contribution/contribution_curency_type">
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
