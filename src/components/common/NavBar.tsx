@@ -61,8 +61,8 @@ const NavBar = () => {
                 size={40}
               />
             </div>
-            {navBarLinks.map((item, index) => {
-              const isActive = location.pathname === item.to;
+            {navBarLinks?.map((item, index) => {
+              const isActive = location?.pathname === item.to;
               return (
                 <Link
                   key={index}

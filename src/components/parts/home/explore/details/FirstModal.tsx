@@ -1,5 +1,5 @@
 import React from "react";
-import explore1 from "../../../../../Assets/jpg/home/automated-mini.jpg";
+import explore1 from "../../../../../Assets/png/home/automated-ai.png";
 import { Primary } from "../../../../common/Button";
 
 const FirstModal = () => {
