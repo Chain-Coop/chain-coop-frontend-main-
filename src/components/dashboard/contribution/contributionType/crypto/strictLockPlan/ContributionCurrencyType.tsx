@@ -33,7 +33,7 @@ const ContributionCurrencyType = () => {
     setFormData((prev) => ({
       ...prev,
       currency: category,
-      cryptoType: "", // Reset crypto type when changing currency
+      cryptoType: "",
     }));
   };
 
@@ -45,7 +45,6 @@ const ContributionCurrencyType = () => {
   };
 
   const handleNext = () => {
-    // Validate form data
     if (!formData.title) {
       setError("Please enter a savings title");
       return;
@@ -62,7 +61,7 @@ const ContributionCurrencyType = () => {
     }
 
     setError("");
-    navigate("/dashboard/contribution/flexible_crypto/date", {
+    navigate("/dashboard/contribution/strict_lock_crypto/date", {
       state: formData,
     });
   };
@@ -70,15 +69,16 @@ const ContributionCurrencyType = () => {
   return (
     <main className="pb-[1.5em] font-sans">
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
-        Flexible Savings
+        Strict Lock Savings
       </DashboardHeader>
       <div className="m-auto w-[90%]">
         <header className="mt-[1.5em] lg:mt-[3em]">
           <h1 className="text-xl font-semibold md:text-2xl lg:text-2xl">
-            Flexible Savings
+            Strict Lock Savings
           </h1>
           <p className="mt-[1em] font-medium">
-            You can save and withdraw anytime you want.
+            You can save one-time and withdrawal will be locked untill saving
+            duration is complete
           </p>
         </header>
 

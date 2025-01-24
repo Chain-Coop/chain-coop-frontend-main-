@@ -133,7 +133,7 @@ const CryptoSavings: React.FC = () => {
   };
 
   const fundContribution = () => {
-    navigate("/dashboard/contribution/contribution_cuurency_type");
+    navigate("/dashboard/contribution/contribution_curency_type");
   };
 
   const SubmitPayment = (e: React.FormEvent) => {
@@ -242,7 +242,7 @@ const CryptoSavings: React.FC = () => {
                   </motion.button>
                 </Link>
 
-                <Link to="/dashboard/contribution/strict_lock/contribution_curency_type">
+                <Link to="/dashboard/contribution/strict_lock/crypto_purpose">
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}

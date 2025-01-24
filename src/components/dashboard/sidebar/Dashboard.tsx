@@ -6,6 +6,7 @@ import DashboardNav from "../../common/DashboardNav";
 import Sidebar from "./Sidebar";
 import Home from "../home/Home";
 import Contribution from "../contribution/main/Contribution";
+import ContributionDetails from "../contribution/viewContribution/ViewContribution";
 import CryptoContribution from "../contribution/contributionType/crypto/main/Contribution";
 import Wallet from "../wallet/Wallet";
 import Project from "../nestedproject/Project";
@@ -28,11 +29,14 @@ import ConfirmTransaction from "../wallet/transfer/fundContribution/confirmTrans
 // import ProjectContentOverView from "../nestedproject/nested/ProjectContentOverView";
 import Purpose from "../contribution/contributionType/naira/flexiblePlan/Purpose";
 import CryptoPurpose from "../contribution/contributionType/crypto/flexiblePlan/ContributionCurrencyType";
+import StrictLockCryptoPurpose from "../contribution/contributionType/crypto/strictLockPlan/ContributionCurrencyType";
 import LockPurpose from "../contribution/contributionType/naira/lockPlan/Purpose";
 import SavingsPlan from "../contribution/contributionType/naira/flexiblePlan/SavingsPlan";
 import LockPlan from "../contribution/contributionType/naira/lockPlan/SavingsPlan";
 import StrictLockPurpose from "../contribution/contributionType/naira/strictLockPlan/Purpose";
 import StartDate from "../contribution/contributionType/naira/flexiblePlan/StartDate";
+import FlexibleCryptoStartDate from "../contribution/contributionType/crypto/flexiblePlan/StartDate";
+import StrictLockCryptoStartDate from "../contribution/contributionType/crypto/strictLockPlan/StartDate";
 import LockStartDate from "../contribution/contributionType/naira/lockPlan/StartDate";
 import StrictLockStartDate from "../contribution/contributionType/naira/strictLockPlan/StartDate";
 import SavingsAmount from "../contribution/contributionType/naira/flexiblePlan/SavingsAmount";
@@ -67,6 +71,10 @@ const Dashboard = () => {
 
           <Route path="contribution" element={<Contribution />} />
           <Route
+            path="contribution/contribution_details"
+            element={<ContributionDetails />}
+          />
+          <Route
             path="contribution/crypto_contribution"
             element={<CryptoContribution />}
           />
@@ -74,13 +82,25 @@ const Dashboard = () => {
             path="contribution/flexible/crypto_purpose"
             element={<CryptoPurpose />}
           />
+          <Route
+            path="contribution/strict_lock/crypto_purpose"
+            element={<StrictLockCryptoPurpose />}
+          />
+          <Route
+            path="contribution/flexible_crypto/date"
+            element={<FlexibleCryptoStartDate />}
+          />
+          <Route
+            path="contribution/strict_lock_crypto/date"
+            element={<StrictLockCryptoStartDate />}
+          />
 
           <Route path="contribution/purpose" element={<Purpose />} />
           <Route path="contribution/plan" element={<SavingsPlan />} />
           <Route path="contribution/date" element={<StartDate />} />
           <Route path="contribution/amount" element={<SavingsAmount />} />
           <Route
-            path="contribution/contribution_cuurency_type"
+            path="contribution/contribution_curency_type"
             element={<ContributionCurrencyType />}
           />
 
