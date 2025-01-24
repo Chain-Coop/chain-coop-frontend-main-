@@ -74,20 +74,20 @@ const Explore = () => {
               <img src={explore1} alt="Location Unknown" />
             </div>
 
-            <div className="details">
+            <div className="details flex flex-col gap-3">
               <h1>Automated Ai Learning Platform</h1>
-              <p className="desc">
+              <p className="text-#000a font-medium">
                 Our AI-Driven Learning Platform will change how members learn
                 and grow. Stay tuned for its launch.
               </p>
-              <div className="tags">
+              <div className="tags text-text2">
                 <span className="tag">Growth</span>
                 <span className="tag">Education</span>
                 <span className="tag">Partnership</span>
               </div>
               <Primary
                 onClick={handleFirstModalOpen}
-                className="mt-8 rounded-md bg-text2 px-5 py-2 font-semibold text-white transition-transform duration-300 hover:scale-110"
+                className="mt-8 w-[9em] rounded-md bg-text2 px-5 py-2 font-semibold text-white transition-transform duration-300 hover:scale-110"
               >
                 Learn More
               </Primary>
@@ -99,20 +99,21 @@ const Explore = () => {
               <img src={explore2} alt="explore-img" />
             </div>
 
-            <div className="details">
+            <div className="details flex flex-col gap-3">
               <h1>GROUP SAVINGS CYCLE</h1>
-              <p className="desc">
+              <p className="text-#000a font-medium">
                 Get access to 5x your funds in Naira, Dollars, BTC, and more
                 automaticallyand secured by Chain Co-op.
               </p>
-              <div className="tags">
+
+              <div className="tags text-text2">
                 <span className="tag">Growth</span>
                 <span className="tag">Partnership</span>
                 <span className="tag">Funding</span>
               </div>
               <Primary
                 onClick={handleSecondModalOpen}
-                className="mt-8 rounded-md bg-text2 px-5 py-2 font-semibold text-white transition-transform duration-300 hover:scale-110"
+                className="mt-8 w-[9em] rounded-md bg-text2 px-5 py-2 font-semibold text-white transition-transform duration-300 hover:scale-110"
               >
                 Learn More
               </Primary>
@@ -123,20 +124,20 @@ const Explore = () => {
             <div className="poster">
               <img src={explore3} alt="Location Unknown" />
             </div>
-            <div className="details">
+            <div className="details flex flex-col gap-3">
               <h1>SAVINGS AND CREDIT AS A SERVICE</h1>
-              <p className="desc">
+              <p className="text-#000a font-medium">
                 Launch your savings ad credit solution effortlessly using our
                 API, and unlock endless opportunities for financial freedom.
               </p>
-              <div className="tags">
+              <div className="tags text-text2">
                 <span className="tag">Automation</span>
                 <span className="tag"> Partnership</span>
                 <span className="tag"> Developers </span>
               </div>
               <Primary
                 onClick={handleThirdModalOpen}
-                className="mt-8 rounded-md bg-text2 px-5 py-2 font-semibold text-white transition-transform duration-300 hover:scale-110"
+                className="mt-8 w-[9em] rounded-md bg-text2 px-5 py-2 font-semibold text-white transition-transform duration-300 hover:scale-110"
               >
                 Learn More
               </Primary>
