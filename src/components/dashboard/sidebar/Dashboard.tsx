@@ -129,12 +129,12 @@ const Dashboard = () => {
             path="wallet/transfer/confirm-amount"
             element={<ConfirmTransaction />}
           />
-
+          {/* 
           <Route path="project" element={<Project />} />
           <Route
             path="project/project_over-view"
             element={<ProjectContentOverView />}
-          />
+          /> */}
 
           <Route path="proposal/*" element={<Proposal />} />
           <Route path="proposal/submit-proposal" element={<SubmitProposal />} />

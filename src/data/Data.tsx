@@ -38,12 +38,12 @@ export const sidebarLinks = [
     to: "/dashboard/wallet",
     pathsToCheck: ["/dashboard/wallet"],
   },
-  {
-    img: project,
-    text: "Project",
-    to: "/dashboard/project",
-    pathsToCheck: ["/dashboard/project"],
-  },
+  // {
+  //   img: project,
+  //   text: "Project",
+  //   to: "/dashboard/project",
+  //   pathsToCheck: ["/dashboard/project"],
+  // },
   // {
   //   img: shares,
   //   text: "My Shares",

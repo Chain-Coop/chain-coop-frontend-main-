@@ -1,5 +1,5 @@
 import React from "react";
-import explore2 from "../../../../../Assets/png/home/group-savings.png";
+import explore2 from "../../../../../Assets/png/home/savings-group-mini.png";
 import { Primary } from "../../../../common/Button";
 
 const SecondModal = () => {

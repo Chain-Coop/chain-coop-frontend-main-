@@ -217,9 +217,6 @@ const Home = () => {
                 <img src={loan} alt="loan" />
               </header>
               <section className="mt-4">
-                <p className="text-center font-medium">
-                  You don't have any active loan yet.
-                </p>
                 <p className="mt-2 text-center font-medium">
                   Stay tuned! We’ll notify you when you become eligible for one.
                 </p>
