@@ -40,12 +40,6 @@ const Home = () => {
   const { useProjects, loading } = useAllProjects();
   const navigate = useNavigate();
 
-  // const handleProjectClick = (projectId: any) => {
-  //   navigate(`/dashboard/project/project_over-view`, {
-  //     state: { projectId },
-  //   });
-  // };
-
   const addFund = () => {
     navigate("/dashboard/wallet");
   };
@@ -119,7 +113,7 @@ const Home = () => {
   };
 
   return (
-    <main className="mb-8 w-full px-5 max-w-7xl font-sans lg:px-8">
+    <main className="mb-8 w-full max-w-7xl px-5 font-sans lg:px-8">
       <header className="flex items-center justify-between py-4 sm:mt-4 lg:mt-10">
         <div className="font-medium">
           <p>Welcome Back!</p>
