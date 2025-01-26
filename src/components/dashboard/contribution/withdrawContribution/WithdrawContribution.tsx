@@ -210,7 +210,7 @@ const WithdrawContribution = () => {
             <p className="font-semibold">Amount to Withdraw</p>
             <span className="text-normal relative text-base">
               <input
-                type="text"
+                type="tel"
                 className="w-full rounded-md border border-gray-300 px-3 py-2 pl-6 focus:border-text2 focus:outline-none focus:ring-text2 md:w-auto"
                 placeholder="0.00"
                 value={displayAmount}

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import useUserProfile from "../../../../shared/Hooks/useUserProfile";
 import user from "../../../../Assets/png/dashboard/avatar.png";
 import tier from "../../../../Assets/svg/dashboard/tier.svg";
-import ReactLoading from "react-loading";
 
 const Avatar = () => {
   const {
@@ -37,13 +36,9 @@ const Avatar = () => {
             <label htmlFor="file-input">
               <div className="relative h-24 w-24 cursor-pointer overflow-hidden rounded-full bg-gray-200">
                 {avatarLoading ? (
-                  <ReactLoading
-                    color="#ffffff"
-                    width={50}
-                    height={50}
-                    type="spin"
-                    className="absolute inset-0 m-auto"
-                  />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-12 h-12 border-4 border-text2 border-t-transparent rounded-full animate-spin"></div>
+                  </div>
                 ) : (
                   <img
                     src={profileDetails?.profilePhoto?.url || user}

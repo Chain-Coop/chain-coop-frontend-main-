@@ -119,7 +119,7 @@ const Home = () => {
   };
 
   return (
-    <main className="mx-auto mb-8 w-full max-w-7xl px-4 font-sans lg:px-8">
+    <main className="mb-8 w-full max-w-7xl font-sans lg:px-8">
       <header className="flex items-center justify-between py-4 sm:mt-4 lg:mt-10">
         <div className="font-medium">
           <p>Welcome Back!</p>
@@ -147,7 +147,7 @@ const Home = () => {
       </header>
 
       <section className="text-center text-text4">
-        <div className="mx-4 mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-16 shadow-md md:mx-8 lg:mx-auto lg:max-w-2xl">
+        <div className="mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-16 shadow-md md:mx-8 lg:mx-auto lg:max-w-2xl">
           <div className="flex justify-center gap-4 font-sans">
             <p className="font-medium">Total Balance</p>
             <div>

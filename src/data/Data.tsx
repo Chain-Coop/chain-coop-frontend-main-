@@ -80,11 +80,11 @@ export const dashboardNav = [
     text: "Wallet",
     to: "/dashboard/wallet",
   },
-  {
-    img: project,
-    text: "Project",
-    to: "/dashboard/project",
-  },
+  // {
+  //   img: project,
+  //   text: "Project",
+  //   to: "/dashboard/project",
+  // },
   // {
   //   img: shares,
   //   text: "My Shares",
