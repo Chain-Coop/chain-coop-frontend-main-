@@ -1,5 +1,6 @@
 import lagosStateLogo from "../Assets/jpg/home/lagos-state.jpg";
 import ministryOfCommerce from "../Assets/jpg/home/ministry-work.jpg";
+import lisk from "../Assets/svg/dashboard/token_lisk.svg";
 import synWave from "../Assets/jpg/home/syn-wave.jpg";
 import person1 from "../Assets/png/home/Co-op-PX1.png";
 import person2 from "../Assets/png/home/Co-op-PX2.png";
@@ -141,34 +142,44 @@ export const trustedPartners = [
   { src: lagosStateLogo },
   { src: synWave },
   { src: ministryOfCommerce },
+  { src: lisk },
   { src: lagosStateLogo },
   { src: synWave },
   { src: ministryOfCommerce },
+  { src: lisk },
   { src: lagosStateLogo },
   { src: synWave },
   { src: ministryOfCommerce },
+  { src: lisk },
   { src: lagosStateLogo },
   { src: synWave },
   { src: ministryOfCommerce },
+  { src: lisk },
   { src: lagosStateLogo },
   { src: synWave },
   { src: ministryOfCommerce },
+  { src: lisk },
   { src: synWave },
   { src: lagosStateLogo },
   { src: synWave },
   { src: ministryOfCommerce },
+  { src: lisk },
   { src: lagosStateLogo },
   { src: synWave },
   { src: ministryOfCommerce },
+  { src: lisk },
   { src: lagosStateLogo },
   { src: synWave },
   { src: ministryOfCommerce },
+  { src: lisk },
   { src: lagosStateLogo },
   { src: synWave },
   { src: ministryOfCommerce },
+  { src: lisk },
   { src: lagosStateLogo },
   { src: synWave },
   { src: ministryOfCommerce },
+  { src: lisk },
   { src: synWave },
 ];
 
