@@ -14,15 +14,12 @@ import {
 import ToggleButton from "../../../../../shared/utils/ToggleButton";
 import { Link } from "react-router-dom";
 import withdraw_icon from "../../../../../Assets/svg/dashboard/wallet/withdraw.svg";
-import fund_icon from "../../../../../Assets/svg/dashboard/wallet/fund.svg";
 import transfer_icon from "../../../../../Assets/svg/dashboard/wallet/transfer.svg";
 import { motion } from "framer-motion";
 import lisk from "../../../../../Assets/svg/dashboard/token_lisk.svg";
 import eth from "../../../../../Assets/svg/dashboard/Group 99764.png";
 import usdc from "../../../../../Assets/svg/dashboard/usdc.svg";
 import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
-import Modal from "../../../../common/Modal";
-import CryptoModal from "../savingsModal/CryptoModal";
 import { Copy, Check } from "lucide-react";
 
 interface TokenInfo {
@@ -50,10 +47,6 @@ const CryptoMain = () => {
   const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>(
     {},
   );
-
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
 
   const handleCopy = (address: string) => {
     navigator?.clipboard.writeText(address);
@@ -123,8 +116,8 @@ const CryptoMain = () => {
           </DashboardHeader>
         </header>
       </div>
-      <div className="mx-auto lg:w-[35em]">
-        <section className="px-6 text-center text-text4">
+      <div className="mx-auto py-[2em] lg:px-7">
+        <section className="text-center text-text4">
           <div className="flex flex-col gap-3 py-[1.5em] sm:flex-row sm:justify-between sm:gap-4">
             {profileDetails?.isWalletActivated === true && (
               <div className="flex w-full transform items-center justify-center gap-2 rounded-lg border-2 border-text2 bg-[#ECE6F2] px-3 py-2 font-medium text-text2 transition-all duration-300 hover:scale-105 active:scale-95 sm:w-auto sm:justify-start lg:py-2">
@@ -141,7 +134,7 @@ const CryptoMain = () => {
           </div>
 
           {profileDetails?.isWalletActivated === true ? (
-            <div className="mx-auto mt-8 rounded-3xl border-2 border-gray-300 py-[2em] shadow-lg">
+            <div className="mt-8 rounded-3xl border-2 border-gray-300 py-[2em] shadow-lg">
               <div className="flex flex-col items-center justify-center gap-4">
                 <div className="flex items-center gap-4 font-sans">
                   <p className="font-medium">Total Crypto Wallet Balance</p>
@@ -238,7 +231,7 @@ const CryptoMain = () => {
           )}
         </section>
 
-        <section className="mx-auto mt-6 px-4 lg:w-[32em]">
+        <section className="mt-6">
           <h1 className="text-lg font-semibold">Token Balance</h1>
           <div className="mt-[1em] flex flex-col gap-[1em]">
             {tokenList?.map((list, index) => (
@@ -296,7 +289,7 @@ const CryptoMain = () => {
           </div>
         </section>
 
-        <section className="mx-auto mt-6 rounded-3xl px-4 shadow-md lg:w-[32em]">
+        <section className="mt-6 rounded-3xl border-gray-300 border-[2px] px-4 shadow-md lg:w-[25em]">
           <div className="flex items-center justify-between px-4 py-8 font-semibold text-howtext lg:px-10">
             <Link to="">
               <motion.button
@@ -308,17 +301,7 @@ const CryptoMain = () => {
                 <span className="block text-memt1 lg:text-lg">Withdraw</span>
               </motion.button>
             </Link>
-            {/* <motion.button
-              onClick={toggleModal}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="flex flex-col items-center bg-inherit text-center"
-            >
-              <img src={fund_icon} alt="fund_icon" />
-              <span className="block text-memt1 lg:text-lg">
-                Save in Crypto
-              </span>
-            </motion.button> */}
+
             <Link to="">
               <motion.button
                 whileHover={{ scale: 1.02 }}
@@ -332,9 +315,6 @@ const CryptoMain = () => {
           </div>
         </section>
       </div>
-      <Modal className="bg-white" isOpen={isModalOpen} onClose={toggleModal}>
-        <CryptoModal onClose={toggleModal} />
-      </Modal>
     </main>
   );
 };

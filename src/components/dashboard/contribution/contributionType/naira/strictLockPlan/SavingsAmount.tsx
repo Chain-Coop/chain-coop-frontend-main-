@@ -11,7 +11,7 @@ const SavingsAmount = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [error, setError] = useState("");
-  const { purpose, currency } = location.state || {};
+  const { purpose, currency, savingsType } = location.state || {};
 
   const formatAmount = (value: string) => {
     const numbers = value.replace(/\D/g, "");
@@ -43,6 +43,7 @@ const SavingsAmount = () => {
           purpose,
           amount: numericAmount,
           currency,
+          savingsType
         },
       });
     }
@@ -51,16 +52,18 @@ const SavingsAmount = () => {
   return (
     <main className="pb-[1.5em] font-sans">
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
-        Strict Lock Savings
+        Contribution Plan
       </DashboardHeader>
       <div className="m-auto w-[90%]">
-        <header className="mt-[1.5em] flex flex-col lg:mt-[3em]">
-          <h1 className="text-2xl font-bold">Strict Lock Contribution</h1>
+        <header className="mt-[1.5em] flex flex-col justify-center text-center lg:mt-[3em]">
+          <h1 className="text-center text-2xl font-bold">
+            Strict Lock Contribution
+          </h1>
           <p>Enter the amount you want to lock</p>
         </header>
         <div className="mt-[2em]">
-          <label htmlFor="amount" className="mb-3 flex text-text2">
-            Amount
+          <label htmlFor="amount" className="mb-3 font-semibold flex text-text2">
+            Enter the save amount
           </label>
           <div className="relative">
             <input
@@ -70,17 +73,17 @@ const SavingsAmount = () => {
               value={amount}
               onChange={handleAmountChange}
               placeholder="0"
-              className="input mb-5 h-[4em] w-full rounded-full border-[1px] pl-8 pr-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
+              className={`input mb-5 h-[4em] w-full rounded-full border-[1px] pl-8 pr-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2 ${
+                error ? 'border-red-500 bg-red-50' : ''
+              }`}
             />
           </div>
-          <p className="mt-2 text-sm text-gray-500">
-            Minimum contribution amount: ₦{MIN_AMOUNT.toLocaleString()}
-          </p>
           {error && (
             <Alert severity="error" className="mb-4 mt-4">
               {error}
             </Alert>
           )}
+        
           <div className="mt-[3em] flex justify-between">
             <button
               onClick={() => navigate(-1)}
@@ -94,9 +97,6 @@ const SavingsAmount = () => {
               hover:scale-105 hover:bg-opacity-90 hover:shadow-lg
               active:scale-95 active:transform"
               onClick={handleNext}
-              disabled={
-                !amount || Number(amount.replace(/,/g, "")) < MIN_AMOUNT
-              }
             >
               Next
             </button>
@@ -106,5 +106,4 @@ const SavingsAmount = () => {
     </main>
   );
 };
-
 export default SavingsAmount;

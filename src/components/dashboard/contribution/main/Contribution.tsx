@@ -174,7 +174,10 @@ const Contribution: React.FC = () => {
 
             <section className="mt-6 md:mt-8">
               <div className="grid w-[80%] grid-cols-1 gap-4 md:grid-cols-2">
-                <Link to="/dashboard/contribution/contribution_curency_type">
+                <Link
+                  to="/dashboard/contribution/contribution_curency_type"
+                  state={{ savingsType: "Flexible" }}
+                >
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -183,7 +186,11 @@ const Contribution: React.FC = () => {
                     Flexible Savings
                   </motion.button>
                 </Link>
-                <Link to="/dashboard/contribution/lock/contribution_curency_type">
+
+                <Link
+                  to="/dashboard/contribution/lock/contribution_curency_type"
+                  state={{ savingsType: "Lock" }}
+                >
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -192,7 +199,11 @@ const Contribution: React.FC = () => {
                     Lock Savings
                   </motion.button>
                 </Link>
-                <Link to="/dashboard/contribution/strict_lock/contribution_curency_type">
+
+                <Link
+                  to="/dashboard/contribution/strict_lock/contribution_curency_type"
+                  state={{ savingsType: "Strict" }}
+                >
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}

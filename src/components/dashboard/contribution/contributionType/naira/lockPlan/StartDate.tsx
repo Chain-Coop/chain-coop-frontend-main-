@@ -51,7 +51,7 @@ const StartDate: React.FC = () => {
   const location = useLocation();
   const dispatch: AppDispatch = useAppDispatch();
 
-  const { purpose, plan, amount, currency } = location.state || {};
+  const { purpose, plan, amount, currency, savingsType } = location.state || {};
   const isDaily = plan?.toLowerCase() === "daily";
   const isMonthly = plan?.toLowerCase() === "monthly";
 
@@ -218,6 +218,7 @@ const StartDate: React.FC = () => {
       startDate,
       endDate: finalEndDate,
       currency: currency,
+      savingsType: savingsType,
     };
 
     try {
@@ -273,11 +274,11 @@ const StartDate: React.FC = () => {
   return (
     <main className="pb-[1.5em] font-sans">
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
-        Contribution Plan
+        Lock Savings
       </DashboardHeader>
       <div className="m-auto w-[90%]">
         <header className="mt-[1.5em] flex flex-col justify-center text-center lg:mt-[3em]">
-          <h1 className="text-center text-xl font-bold">{plan} Contribution</h1>
+          <h1 className="text-center text-2xl font-bold">{plan} Contribution</h1>
           <p className="mt-[1em] text-center font-medium">
             You are about to save NGN{amount} {plan.toLowerCase()} into your
             contribution amount

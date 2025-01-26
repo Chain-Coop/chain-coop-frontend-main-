@@ -51,6 +51,7 @@ import LockContributionCurrencyType from "../contribution/contributionType/naira
 import StrictLockContributionCurrencyType from "../contribution/contributionType/naira/strictLockPlan/ContributionCurrencyType";
 
 import CryptoMain from "../wallet/crypto/main/CryptoMain";
+import Preview from "../contribution/contributionType/naira/strictLockPlan/Preview";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -141,6 +142,10 @@ const Dashboard = () => {
           <Route
             path="contribution/strict_lock/date"
             element={<StrictLockStartDate />}
+          />
+          <Route
+            path="contribution/strict_lock/preview"
+            element={<Preview />}
           />
 
           <Route path="wallet/*" element={<Wallet />} />

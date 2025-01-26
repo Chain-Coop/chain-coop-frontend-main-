@@ -11,7 +11,7 @@ const Purpose = () => {
   const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const { currency } = location.state || {};
+  const { currency,  savingsType } = location.state || {};
   const [error, setError] = useState("");
 
   const handleNext = () => {
@@ -24,7 +24,7 @@ const Purpose = () => {
       const finalCategory =
         savingsCategory === "Others" ? otherCategory : savingsCategory;
       navigate("/dashboard/contribution/plan", {
-        state: { purpose: finalCategory, currency },
+        state: { purpose: finalCategory, currency, savingsType },
       });
     }
   };

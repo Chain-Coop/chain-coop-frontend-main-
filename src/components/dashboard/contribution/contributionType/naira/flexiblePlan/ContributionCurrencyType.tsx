@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { Alert } from "@mui/material";
 import NigerianFlag from "../../../../../../Assets/svg/dashboard/contribution/NigerianFlag.svg";
@@ -17,6 +17,8 @@ const ContributionCurrencyType = () => {
   const [cryptoType, setCryptoType] = useState("");
   const navigate = useNavigate();
   const [error, setError] = useState("");
+   const location = useLocation();
+    const { savingsType } = location.state || {};
 
   const handleNext = () => {
     if (!cryptoType) {
@@ -26,7 +28,7 @@ const ContributionCurrencyType = () => {
 
     setError("");
     navigate("/dashboard/contribution/purpose", {
-      state: { currency: "NGN" },
+      state: { currency: "NGN",  savingsType },
     });
   };
 

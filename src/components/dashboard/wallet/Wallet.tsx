@@ -31,8 +31,8 @@ const Wallet = () => {
             Chain Coop Wallet
           </DashboardHeader>
         </header>
-        <div className="mx-auto lg:w-[35em]">
-          <section className="px-6 text-center text-text4">
+       <div className="lg:px-7">
+          <section className="text-center text-text4">
             <div className="flex justify-end py-[1.5em]">
               <button
                 onClick={switchToCrypto}
@@ -71,7 +71,7 @@ const Wallet = () => {
             </div>
           </section>
 
-          <section className="mx-auto mt-6 rounded-3xl px-4 shadow-md lg:w-[32em]">
+          <section className="mt-6 rounded-3xl px-4 shadow-md">
             <div className="flex items-center justify-between px-4 py-8 font-semibold text-howtext lg:px-10">
               <Link to="/dashboard/wallet/withdraw">
                 <button onClick={withdraw}>
@@ -105,7 +105,7 @@ const Wallet = () => {
               </Link>
             </div>
           </section>
-          <section className="lg:px-6">
+          <section className="py-[1.5em]">
             <History />
           </section>
         </div>
