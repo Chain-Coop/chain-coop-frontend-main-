@@ -1,5 +1,13 @@
 import React, { useRef } from "react";
 import { toast } from "react-toastify";
+import { 
+  formatDate, 
+  addDays, 
+  addMonths, 
+  getDateDifference, 
+  calculateAvailableEndDates, 
+  validateCustomEndDate 
+} from '../utils/format';
 
 interface PhoneNumberInputProps {
   value: string;
@@ -41,13 +49,11 @@ export const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
     let inputValue = e.target.value;
 
     inputValue = inputValue.replace(/\D/g, "");
-
     inputValue = inputValue.slice(0, 10);
 
     const formattedNumber = inputValue ? `+234${inputValue}` : "";
 
     validateNigerianNumber(formattedNumber);
-
     onChange(formattedNumber);
   };
 

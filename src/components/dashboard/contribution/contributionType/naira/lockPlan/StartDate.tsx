@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowDropleft } from "react-icons/io";
-import {
-  Alert,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-} from "@mui/material";
+import { Alert, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import Modal from "../../../../../common/Modal";
 import { Primary } from "../../../../../common/Button";
 import ReactLoading from "react-loading";
@@ -19,10 +13,17 @@ import {
 import { useAppDispatch } from "../../../../../../shared/redux/reduxHooks";
 import PaymentWithCard from "../../../paymentChoice.tsx/PaymentWithCard";
 import PayWithPaystack from "../../../paymentChoice.tsx/PayWithPaystack";
-import { Currency } from "lucide-react";
 import { useUserCard } from "../../../../../../shared/Hooks/useUserProfile";
 import { AppDispatch } from "../../../../../../shared/redux/store";
 import { DashboardHeader } from "../../../../../common/DashboardHeader";
+import { 
+  formatDate, 
+  addDays, 
+  addMonths, 
+  getDateDifference, 
+  calculateAvailableEndDates, 
+  validateCustomEndDate 
+} from '../../../../../../shared/utils/format';
 
 interface ContributionResponse {
   result: {
@@ -41,9 +42,7 @@ const StartDate: React.FC = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [contributionData, setContributionData] = useState<
-    ContributionResponse["result"] | null
-  >(null);
+  const [contributionData, setContributionData] = useState<ContributionResponse["result"] | null>(null);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [useCustomDate, setUseCustomDate] = useState(false);
 
@@ -53,112 +52,18 @@ const StartDate: React.FC = () => {
 
   const { purpose, plan, amount, currency, savingsType } = location.state || {};
   const isDaily = plan?.toLowerCase() === "daily";
-  const isMonthly = plan?.toLowerCase() === "monthly";
 
   const MIN_DAILY_DAYS = 7;
   const MAX_YEARS = 2;
-  const PRESET_DAILY_INTERVALS = [7, 14, 30, 60, 90, 180, 365, 730];
-  const PRESET_MONTHLY_INTERVALS = Array.from({ length: 24 }, (_, i) => i + 1);
 
   useEffect(() => {
     dispatch(GetWalletCard());
   }, [dispatch]);
 
   const hasCards = (useWalletCards?.cards ?? []).length > 0;
-  function formatDate(date: Date): string {
-    return date.toISOString().split("T")[0];
-  }
-
-  function addDays(date: Date, days: number): Date {
-    const newDate = new Date(date);
-    newDate.setDate(date.getDate() + days);
-    return newDate;
-  }
-
-  function addMonths(date: Date, months: number): Date {
-    const newDate = new Date(date);
-    const targetMonth = newDate.getMonth() + months;
-    const year = newDate.getFullYear() + Math.floor(targetMonth / 12);
-    const month = targetMonth % 12;
-
-    newDate.setDate(1);
-    newDate.setFullYear(year);
-    newDate.setMonth(month);
-
-    const originalDay = date.getDate();
-    const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
-    newDate.setDate(Math.min(originalDay, lastDayOfMonth));
-
-    return newDate;
-  }
-
-  const calculateAvailableEndDates = (startDateStr: string) => {
-    if (!startDateStr) return [];
-
-    const dates: string[] = [];
-    const startDate = new Date(startDateStr);
-
-    if (isDaily) {
-      PRESET_DAILY_INTERVALS.forEach((days) => {
-        dates.push(formatDate(addDays(startDate, days)));
-      });
-    } else if (isMonthly) {
-      PRESET_MONTHLY_INTERVALS.forEach((months) => {
-        const endDate = addMonths(startDate, months);
-        dates.push(formatDate(endDate));
-      });
-    }
-
-    return dates;
-  };
-
-  const getDateDifference = (start: string, end: string) => {
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-
-    if (isDaily) {
-      const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      return diffDays === 1 ? "1 day" : `${diffDays} days`;
-    } else {
-      const diffMonths =
-        (endDate.getFullYear() - startDate.getFullYear()) * 12 +
-        (endDate.getMonth() - startDate.getMonth());
-
-      return `${diffMonths} ${diffMonths === 1 ? "month" : "months"}`;
-    }
-  };
-
-  const validateCustomEndDate = (customDate: string): boolean => {
-    if (!customDate) return false;
-
-    const start = new Date(startDate);
-    const end = new Date(customDate);
-
-    if (end <= start) {
-      setError("End date must be after start date");
-      return false;
-    }
-
-    const diffTime = Math.abs(end.getTime() - start.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    if (isDaily && diffDays < MIN_DAILY_DAYS) {
-      setError(`Minimum duration is ${MIN_DAILY_DAYS} days`);
-      return false;
-    }
-
-    const maxDate = addMonths(start, MAX_YEARS * 12);
-    if (end > maxDate) {
-      setError(`Maximum duration is ${MAX_YEARS} years`);
-      return false;
-    }
-
-    return true;
-  };
 
   useEffect(() => {
-    const dates = calculateAvailableEndDates(startDate);
+    const dates = calculateAvailableEndDates(startDate, isDaily ? 'daily' : 'monthly');
     setAvailableEndDates(dates);
     setEndDate("");
     setCustomEndDate("");
@@ -178,13 +83,14 @@ const StartDate: React.FC = () => {
     setError("");
   };
 
-  const handleCustomEndDateChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleCustomEndDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setCustomEndDate(value);
-    if (validateCustomEndDate(value)) {
+    const validation = validateCustomEndDate(startDate, value, { type: isDaily ? 'daily' : 'monthly' });
+    if (validation.isValid) {
       setError("");
+    } else {
+      setError(validation.error || "");
     }
   };
 
@@ -204,7 +110,9 @@ const StartDate: React.FC = () => {
       return;
     }
 
-    if (useCustomDate && !validateCustomEndDate(customEndDate)) {
+    const validation = validateCustomEndDate(startDate, finalEndDate, { type: isDaily ? 'daily' : 'monthly' });
+    if (!validation.isValid) {
+      setError(validation.error || "");
       return;
     }
 
@@ -249,8 +157,7 @@ const StartDate: React.FC = () => {
 
       if (paymentResponse?.landing?.payment?.info?.data) {
         handleModalClose();
-        window.location.href =
-          paymentResponse.landing.payment.info.data.authorization_url;
+        window.location.href = paymentResponse.landing.payment.info.data.authorization_url;
       } else {
         setError("Unable to process payment. Please try again.");
       }
@@ -325,7 +232,7 @@ const StartDate: React.FC = () => {
                     month: "long",
                     day: "numeric",
                   })}{" "}
-                  ({getDateDifference(startDate, date)})
+                  ({getDateDifference(startDate, date, isDaily ? 'daily' : 'monthly')})
                 </MenuItem>
               ))}
               {isDaily && (
@@ -351,7 +258,7 @@ const StartDate: React.FC = () => {
               />
               {customEndDate && (
                 <p className="text-sm text-gray-600">
-                  Duration: {getDateDifference(startDate, customEndDate)}
+                  Duration: {getDateDifference(startDate, customEndDate, isDaily ? 'daily' : 'monthly')}
                 </p>
               )}
             </div>

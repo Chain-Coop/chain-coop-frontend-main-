@@ -35,22 +35,15 @@ export const formatBalance = (
   return formattedAmount;
 };
 
-export const formatDayAndDate = (dateString: any) => {
-  const date = new Date(dateString);
-  const options: any = {
-    weekday: "short",
-    day: "numeric",
-  };
-  const formattedDate = date.toLocaleDateString("en-US", options);
-  const [weekday, day] = formattedDate.split(" ");
-  return `${day}, ${weekday}`;
-};
+export function formatDate(date: Date): string {
+  return date.toISOString().split("T")[0];
+}
 
-export const formatMonthAndYear = (dateString: any) => {
-  const date = new Date(dateString);
-  const options: any = { month: "long", year: "numeric" };
-  return date.toLocaleDateString("en-US", options);
-};
+export function addDays(date: Date, days: number): Date {
+  const newDate = new Date(date);
+  newDate.setDate(date.getDate() + days);
+  return newDate;
+}
 
 export const formatRelativeTime = (dateString: any) => {
   const now: any = new Date();
@@ -73,10 +66,133 @@ export const formatRelativeTime = (dateString: any) => {
   }
 };
 
-export const formatPayStackAmount = (value: string) => {
-  const cleanedValue = value.replace(/,/g, "");
-  if (isNaN(Number(cleanedValue))) return value;
+export const formatMonthAndYear = (dateString: any) => {
+  const date = new Date(dateString);
+  const options: any = { month: "long", year: "numeric" };
+  return date.toLocaleDateString("en-US", options);
+};
 
-  const formattedValue = Number(cleanedValue).toLocaleString("en-NG");
-  return formattedValue;
+export function addMonths(date: Date, months: number): Date {
+  const newDate = new Date(date);
+  const targetMonth = newDate.getMonth() + months;
+  const year = newDate.getFullYear() + Math.floor(targetMonth / 12);
+  const month = targetMonth % 12;
+
+  newDate.setDate(1);
+  newDate.setFullYear(year);
+  newDate.setMonth(month);
+
+  const originalDay = date.getDate();
+  const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
+  newDate.setDate(Math.min(originalDay, lastDayOfMonth));
+
+  return newDate;
+}
+
+export function getDateDifference(
+  start: string,
+  end: string,
+  type: "daily" | "monthly" = "daily",
+): string {
+  const startDate = new Date(start);
+  const endDate = new Date(end);
+
+  if (type === "daily") {
+    const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays === 1 ? "1 day" : `${diffDays} days`;
+  } else {
+    const diffMonths =
+      (endDate.getFullYear() - startDate.getFullYear()) * 12 +
+      (endDate.getMonth() - startDate.getMonth());
+
+    return `${diffMonths} ${diffMonths === 1 ? "month" : "months"}`;
+  }
+}
+
+export function calculateAvailableEndDates(
+  startDateStr: string,
+  type: "daily" | "monthly",
+  config?: {
+    dailyIntervals?: number[];
+    monthlyIntervals?: number[];
+  },
+): string[] {
+  if (!startDateStr) return [];
+
+  const dates: string[] = [];
+  const startDate = new Date(startDateStr);
+
+  const PRESET_DAILY_INTERVALS = config?.dailyIntervals || [
+    7, 14, 30, 60, 90, 180, 365, 730,
+  ];
+  const PRESET_MONTHLY_INTERVALS =
+    config?.monthlyIntervals || Array.from({ length: 24 }, (_, i) => i + 1);
+
+  if (type === "daily") {
+    PRESET_DAILY_INTERVALS.forEach((days) => {
+      dates.push(formatDate(addDays(startDate, days)));
+    });
+  } else if (type === "monthly") {
+    PRESET_MONTHLY_INTERVALS.forEach((months) => {
+      const endDate = addMonths(startDate, months);
+      dates.push(formatDate(endDate));
+    });
+  }
+
+  return dates;
+}
+
+export function validateCustomEndDate(
+  startDate: string,
+  customDate: string,
+  config?: {
+    minDays?: number;
+    maxYears?: number;
+    type?: "daily" | "monthly";
+  },
+): { isValid: boolean; error?: string } {
+  const MIN_DAILY_DAYS = config?.minDays || 7;
+  const MAX_YEARS = config?.maxYears || 2;
+  const type = config?.type || "daily";
+
+  if (!customDate) return { isValid: false, error: "End date is required" };
+
+  const start = new Date(startDate);
+  const end = new Date(customDate);
+
+  if (end <= start) {
+    return { isValid: false, error: "End date must be after start date" };
+  }
+
+  const diffTime = Math.abs(end.getTime() - start.getTime());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  if (type === "daily" && diffDays < MIN_DAILY_DAYS) {
+    return {
+      isValid: false,
+      error: `Minimum duration is ${MIN_DAILY_DAYS} days`,
+    };
+  }
+
+  const maxDate = addMonths(start, MAX_YEARS * 12);
+  if (end > maxDate) {
+    return {
+      isValid: false,
+      error: `Maximum duration is ${MAX_YEARS} years`,
+    };
+  }
+
+  return { isValid: true };
+}
+
+export const formatDayAndDate = (dateString: any) => {
+  const date = new Date(dateString);
+  const options: any = {
+    weekday: "short",
+    day: "numeric",
+  };
+  const formattedDate = date.toLocaleDateString("en-US", options);
+  const [weekday, day] = formattedDate.split(" ");
+  return `${day}, ${weekday}`;
 };
