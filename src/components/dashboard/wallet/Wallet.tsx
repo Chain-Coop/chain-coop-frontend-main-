@@ -71,8 +71,8 @@ const Wallet = () => {
             </div>
           </section>
 
-          <section className="mt-6 rounded-3xl px-4 shadow-md">
-            <div className="flex items-center justify-between px-4 py-8 font-semibold text-howtext lg:px-10">
+          <section className="mt-6 rounded-3xl mx-auto px-4 shadow-md">
+            <div className="flex items-center justify-between px-3 py-8 font-semibold text-howtext lg:px-10">
               <Link to="/dashboard/wallet/withdraw">
                 <button onClick={withdraw}>
                   <div className="flex justify-center">

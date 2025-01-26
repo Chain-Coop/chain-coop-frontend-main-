@@ -125,17 +125,17 @@ const Contribution: React.FC = () => {
       </header>
 
       <main className="lg:px-4">
-        <section className="mx-auto w-full max-w-4xl px-4 md:mt-8 lg:mt-10">
+        <section className="w-full px-4 md:mt-8 lg:mt-10">
           <article className="text-center text-gray-700">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mx-4 mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md md:mx-8 lg:mx-auto lg:max-w-2xl"
+              className="mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md md:mx-8 lg:mx-auto lg:max-w-2xl"
             >
               <div className="flex justify-end py-3">
                 <button
                   onClick={toggleModal}
-                  className="flex w-auto transform items-center  gap-2 rounded-lg border-[3px] border-gray-200 bg-[#E3D9E6] px-6 py-3 text-lg font-semibold text-text2 transition-all duration-300 hover:scale-105
+                  className="flex w-auto transform items-center  gap-2 rounded-lg border-[3px] border-gray-200 bg-[#E3D9E6] px-6 py-2 text-lg font-semibold text-text2 transition-all duration-300 hover:scale-105
                   active:scale-95 md:py-3 lg:py-2"
                 >
                   Naira Savings

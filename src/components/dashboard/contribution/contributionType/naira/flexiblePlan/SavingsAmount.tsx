@@ -68,7 +68,7 @@ const SavingsAmount = () => {
           </label>
           <div className="relative">
             <input
-              type="text"
+              type="tel"
               id="amount"
               required
               value={amount}
