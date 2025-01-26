@@ -116,7 +116,7 @@ const CryptoMain = () => {
           </DashboardHeader>
         </header>
       </div>
-      <div className="mx-auto py-[2em] lg:px-7">
+      <div className="mx-auto px-4 py-[2em] lg:px-7">
         <section className="text-center text-text4">
           <div className="flex flex-col gap-3 py-[1.5em] sm:flex-row sm:justify-between sm:gap-4">
             {profileDetails?.isWalletActivated === true && (
@@ -289,7 +289,7 @@ const CryptoMain = () => {
           </div>
         </section>
 
-        <section className="mt-6 rounded-3xl border-gray-300 border-[2px] px-4 shadow-md lg:w-[25em]">
+        <section className="mt-6 rounded-3xl border-[2px] border-gray-300 px-4 shadow-md lg:w-[25em]">
           <div className="flex items-center justify-between px-4 py-8 font-semibold text-howtext lg:px-10">
             <Link to="">
               <motion.button
