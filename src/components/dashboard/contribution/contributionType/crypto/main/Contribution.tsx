@@ -192,7 +192,7 @@ const CryptoSavings: React.FC = () => {
               <div className="flex justify-end py-2">
                 <button
                   onClick={toggleModal}
-                  className="flex w-auto transform items-center gap-2 rounded-lg bg-[#E3D9E6] px-6 py-2 font-semibold text-text2 transition-all duration-300 hover:scale-105
+            className="flex w-auto transform items-center  gap-2 rounded-lg border-[3px] border-gray-200 bg-[#E3D9E6] px-6 py-2 text-lg font-semibold text-text2 transition-all duration-300 hover:scale-105
                   active:scale-95 md:py-3 lg:py-2"
                 >
                   Crypto Savings

@@ -1,22 +1,3 @@
-import CryptoJS from 'crypto-js';
-
-const SECRET_KEY = import.meta.env.VITE_REACT_SECRET_KEY || '';
-export const encryptData = (data: string): string => {
-  return CryptoJS.AES.encrypt(data, SECRET_KEY).toString();
-};
-
-export const decryptData = (ciphertext: string): string => {
-  const bytes = CryptoJS.AES.decrypt(ciphertext, SECRET_KEY);
-  return bytes.toString(CryptoJS.enc.Utf8);
-};
-
-export const saveRememberMe = (email: string, password: string) => {
-  const encryptedPassword = encryptData(password);
-  sessionStorage.setItem("email", email);
-  sessionStorage.setItem("encryptedPassword", encryptedPassword);
-  sessionStorage.setItem("rememberMe", "true");
-};
-
 export const handleLogout = async (navigate: any) => {
   try {
     // 1. Try server logout first
@@ -44,7 +25,7 @@ export const handleLogout = async (navigate: any) => {
 
     navigate("/");
   } catch (error) {
-    console.error('Logout error:', error);
+    console.error("Logout error:", error);
     navigate("/");
   }
 };
