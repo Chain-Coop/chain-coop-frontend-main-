@@ -8,7 +8,7 @@ import ReactLoading from "react-loading";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import OtpInput from "../../../shared/utils/OtpInput";
-import { Primary } from "../../common/Button";
+import { brandPrimary } from "../../common/Button";
 
 const UserLoginOtp = () => {
   const navigate = useNavigate();

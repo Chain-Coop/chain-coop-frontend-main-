@@ -5,7 +5,7 @@ import X from "../../Assets/png/home/twitterx.png";
 // import instagram from "../../Assets/png/home/instagram.png";
 // import facebook from "../../Assets/png/home/facebook.png";
 import linkedin from "../../Assets/png/home/linkedin.png";
-// import { Primary } from "./Button";
+// import {brandPrimary } from "./Button";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../shared/redux/store";
 import { toast } from "react-toastify";

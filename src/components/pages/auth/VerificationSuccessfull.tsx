@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Primary } from "../../common/Button";
+import { brandPrimary } from "../../common/Button";
 import success from "../../../Assets/svg/auth/sucess.svg";
 
 const VerificationSuccessfull = () => {
@@ -24,7 +24,10 @@ const VerificationSuccessfull = () => {
             className="mx-auto mb-4 sm:w-[6em] lg:w-[8em]"
           />
           <div className="sm:px-1">
-            <p className="font-medium text-text1 sm:text-lg">
+            <p
+              className="text- textPrimary font-medium
+ sm:text-lg"
+            >
               {`We've sent a verification code to your email. Use it to securely reset your password.`}
             </p>
           </div>

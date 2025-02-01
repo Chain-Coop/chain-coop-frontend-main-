@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Primary } from "../../../../common/Button";
+import { brandPrimary } from "../../../../common/Button";
 import ReactLoading from "react-loading";
 import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 import { ResetPassword } from "../../../../../shared/redux/slices/landing.slices";

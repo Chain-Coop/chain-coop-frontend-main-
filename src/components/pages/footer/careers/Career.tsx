@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import NavBar from "../../../common/NavBar";
-import { Primary } from "../../../common/Button";
+import { brandPrimary } from "../../../common/Button";
 import hero from "../../../../Assets/png/footer/career/image1.png";
 
 const Career = () => {
@@ -17,12 +17,12 @@ const Career = () => {
           <div className="flex w-full flex-col p-[2em] lg:w-1/2 lg:p-[4em]">
             <div className="m-auto flex flex-col ">
               <div className="lg:space-y-3">
-                <h1 className="lg:text-4xl text-xl font-bold">
+                <h1 className="text-xl font-bold lg:text-4xl">
                   <span className="text-text2">Join Our</span> Worker-Owned
                 </h1>
-                <h1 className="lg:text-4xl text-xl font-bold">Team</h1>
+                <h1 className="text-xl font-bold lg:text-4xl">Team</h1>
               </div>
-              <div className="lg:mt-[1.5em] mt-[10px]">
+              <div className="mt-[10px] lg:mt-[1.5em]">
                 <p>
                   Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                   Voluptates numquam voluptatum vel sunt dolorem doloremque.
@@ -31,7 +31,7 @@ const Career = () => {
               <Primary className="mt-[1.5em] w-[50%] rounded-md bg-text2 px-2 py-3 text-text5 lg:w-[25%]">
                 Join Us
               </Primary>
-              <p className="text-text2 mt-[1.5em] font-medium">
+              <p className="mt-[1.5em] font-medium text-text2">
                 +50 Open positions available for Job Openings
               </p>
             </div>

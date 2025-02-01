@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { DashboardHeader } from "../../../common/DashboardHeader";
-import { Primary } from "../../../common/Button";
+import { brandPrimary } from "../../../common/Button";
 import { IoIosArrowBack, IoIosSearch, IoIosArrowDown } from "react-icons/io";
 import { useAllBanks } from "../../../../shared/Hooks/useUserProfile";
 import { useDispatch } from "react-redux";

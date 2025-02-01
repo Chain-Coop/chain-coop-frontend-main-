@@ -205,7 +205,8 @@ const CreateAccount = () => {
           <div>
             <label
               htmlFor="firstName"
-              className="mb-2 flex text-base font-semibold text-text1"
+              className="text- textPrimary mb-2 flex text-base font-semibold
+"
             >
               First Name
             </label>
@@ -225,7 +226,8 @@ const CreateAccount = () => {
           <div>
             <label
               htmlFor="lastName"
-              className="mb-2 flex text-base font-semibold text-text1"
+              className="text- textPrimary mb-2 flex text-base font-semibold
+"
             >
               Last Name
             </label>
@@ -245,7 +247,8 @@ const CreateAccount = () => {
           <div>
             <label
               htmlFor="email-input"
-              className="mb-2 flex text-base font-semibold text-text1"
+              className="text- textPrimary mb-2 flex text-base font-semibold
+"
             >
               Email Address
             </label>
@@ -265,7 +268,8 @@ const CreateAccount = () => {
           <div>
             <label
               htmlFor="username-input"
-              className="mb-2 flex font-semibold text-text1"
+              className="text- textPrimary mb-2 flex font-semibold
+"
             >
               Username
             </label>
@@ -285,7 +289,8 @@ const CreateAccount = () => {
           <div>
             <label
               htmlFor="phoneNumber-input"
-              className="mb-2 flex font-sans font-semibold text-text1"
+              className="text- textPrimary mb-2 flex font-sans font-semibold
+"
             >
               Phone Number
             </label>
@@ -300,7 +305,8 @@ const CreateAccount = () => {
           <div>
             <label
               htmlFor="membership-input"
-              className="mb-2 flex font-semibold text-text1"
+              className="text- textPrimary mb-2 flex font-semibold
+"
             >
               Membership Type
             </label>
@@ -318,7 +324,8 @@ const CreateAccount = () => {
           <div>
             <label
               htmlFor="password-input"
-              className="mb-2 flex font-semibold text-text1"
+              className="text- textPrimary mb-2 flex font-semibold
+"
             >
               Password
             </label>
@@ -377,7 +384,8 @@ const CreateAccount = () => {
           <div>
             <label
               htmlFor="confirm-password-input"
-              className="mb-2 flex font-semibold text-text1"
+              className="text- textPrimary mb-2 flex font-semibold
+"
             >
               Confirm Password
             </label>
@@ -445,7 +453,10 @@ const CreateAccount = () => {
         </div>
 
         <div className="mb-[1em] flex justify-center">
-          <p className="font-sans font-semibold text-text1">
+          <p
+            className="text- textPrimary font-sans font-semibold
+"
+          >
             Have an account?
             <span className="ml-2 font-sans font-medium text-text2">
               <Link to="/login">Sign in</Link>

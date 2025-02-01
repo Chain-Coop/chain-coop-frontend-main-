@@ -5,7 +5,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import withdraw from "../../../../Assets/svg/dashboard/wallet/withdraw.svg";
 import xlamation from "../../../../Assets/svg/dashboard/wallet/xclamation.svg";
 import { useAppSelector } from "../../../../shared/redux/reduxHooks";
-import { Primary } from "../../../common/Button";
+import { brandPrimary } from "../../../common/Button";
 import Modal from "../../../common/Modal";
 import ReactLoading from "react-loading";
 import { WithdrawalFromWallet } from "../../../../shared/redux/slices/transaction.slices";

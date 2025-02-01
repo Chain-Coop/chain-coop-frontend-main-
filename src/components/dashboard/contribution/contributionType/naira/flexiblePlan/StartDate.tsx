@@ -1,34 +1,40 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowDropleft } from "react-icons/io";
-import { Alert, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import {
+  Alert,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
 import ReactLoading from "react-loading";
 
 import Modal from "../../../../../common/Modal";
-import { Primary } from "../../../../../common/Button";
+import { brandPrimary } from "../../../../../common/Button";
 import { DashboardHeader } from "../../../../../common/DashboardHeader";
 
 import { useAppDispatch } from "../../../../../../shared/redux/reduxHooks";
 import { AppDispatch } from "../../../../../../shared/redux/store";
 import { useUserCard } from "../../../../../../shared/Hooks/useUserProfile";
 
-import { 
-  CreateContributionPlan, 
-  GetWalletCard, 
-  PayContribution 
+import {
+  CreateContributionPlan,
+  GetWalletCard,
+  PayContribution,
 } from "../../../../../../shared/redux/slices/transaction.slices";
 
 import PaymentWithCard from "../../../paymentChoice.tsx/PaymentWithCard";
 import PayWithPaystack from "../../../paymentChoice.tsx/PayWithPaystack";
 
-import { 
-  formatDate, 
-  addDays, 
-  addMonths, 
-  getDateDifference, 
-  calculateAvailableEndDates, 
-  validateCustomEndDate 
-} from '../../../../../../shared/utils/format';
+import {
+  formatDate,
+  addDays,
+  addMonths,
+  getDateDifference,
+  calculateAvailableEndDates,
+  validateCustomEndDate,
+} from "../../../../../../shared/utils/format";
 
 interface ContributionResponse {
   result: {
@@ -46,7 +52,9 @@ const StartDate: React.FC = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [contributionData, setContributionData] = useState<ContributionResponse["result"] | null>(null);
+  const [contributionData, setContributionData] = useState<
+    ContributionResponse["result"] | null
+  >(null);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [useCustomDate, setUseCustomDate] = useState(false);
 
@@ -64,7 +72,10 @@ const StartDate: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const dates = calculateAvailableEndDates(today, isDaily ? "daily" : "monthly");
+    const dates = calculateAvailableEndDates(
+      today,
+      isDaily ? "daily" : "monthly",
+    );
     setAvailableEndDates(dates);
     setEndDate("");
     setCustomEndDate("");
@@ -84,10 +95,14 @@ const StartDate: React.FC = () => {
     setError("");
   };
 
-  const handleCustomEndDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCustomEndDateChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const value = event.target.value;
     setCustomEndDate(value);
-    const validation = validateCustomEndDate(today, value, { type: isDaily ? "daily" : "monthly" });
+    const validation = validateCustomEndDate(today, value, {
+      type: isDaily ? "daily" : "monthly",
+    });
     setError(validation.isValid ? "" : validation.error || "");
   };
 
@@ -107,7 +122,9 @@ const StartDate: React.FC = () => {
       return;
     }
 
-    const validation = validateCustomEndDate(today, finalEndDate, { type: isDaily ? "daily" : "monthly" });
+    const validation = validateCustomEndDate(today, finalEndDate, {
+      type: isDaily ? "daily" : "monthly",
+    });
     if (!validation.isValid) {
       setError(validation.error || "Invalid end date");
       return;
@@ -123,7 +140,7 @@ const StartDate: React.FC = () => {
       startDate: today,
       endDate: finalEndDate,
       currency: currency,
-      savingsType: savingsType
+      savingsType: savingsType,
     };
 
     try {
@@ -154,12 +171,16 @@ const StartDate: React.FC = () => {
 
       if (paymentResponse?.landing?.payment?.info?.data) {
         handleModalClose();
-        window.location.href = paymentResponse.landing.payment.info.data.authorization_url;
+        window.location.href =
+          paymentResponse.landing.payment.info.data.authorization_url;
       } else {
         setError("Unable to process payment. Please try again.");
       }
     } catch (error: any) {
-      const errorMessage = typeof error === "string" ? error : error?.error || "Payment verification failed. Please try again.";
+      const errorMessage =
+        typeof error === "string"
+          ? error
+          : error?.error || "Payment verification failed. Please try again.";
       setError(errorMessage);
     } finally {
       setIsProcessingPayment(false);
@@ -177,12 +198,15 @@ const StartDate: React.FC = () => {
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
         Contribution Plan
       </DashboardHeader>
-      
+
       <div className="m-auto w-[90%]">
         <header className="mt-[1.5em] flex flex-col justify-center text-center lg:mt-[3em]">
-          <h1 className="text-center text-2xl font-bold">{plan} Contribution</h1>
+          <h1 className="text-center text-2xl font-bold">
+            {plan} Contribution
+          </h1>
           <p className="mt-[1em] text-center font-medium">
-            You are about to save NGN{amount} {plan.toLowerCase()} into your contribution amount
+            You are about to save NGN{amount} {plan.toLowerCase()} into your
+            contribution amount
           </p>
         </header>
 
@@ -207,9 +231,15 @@ const StartDate: React.FC = () => {
               className="mb-5"
               sx={{
                 height: "3.4em",
-                "& .MuiOutlinedInput-notchedOutline": { borderRadius: "0.5rem" },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "#440080" },
-                "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#440080" },
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderRadius: "0.5rem",
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#440080",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#440080",
+                },
               }}
             >
               <MenuItem value="">
@@ -222,7 +252,13 @@ const StartDate: React.FC = () => {
                     month: "long",
                     day: "numeric",
                   })}{" "}
-                  ({getDateDifference(today, date, isDaily ? "daily" : "monthly")})
+                  (
+                  {getDateDifference(
+                    today,
+                    date,
+                    isDaily ? "daily" : "monthly",
+                  )}
+                  )
                 </MenuItem>
               ))}
               {isDaily && (
@@ -248,7 +284,12 @@ const StartDate: React.FC = () => {
               />
               {customEndDate && (
                 <p className="text-sm text-gray-600">
-                  Duration: {getDateDifference(today, customEndDate, isDaily ? "daily" : "monthly")}
+                  Duration:{" "}
+                  {getDateDifference(
+                    today,
+                    customEndDate,
+                    isDaily ? "daily" : "monthly",
+                  )}
                 </p>
               )}
             </div>
@@ -269,7 +310,12 @@ const StartDate: React.FC = () => {
           >
             {loading ? (
               <div className="flex gap-1">
-                <ReactLoading color="#FFFFFF" height={25} width={25} type="spin" />
+                <ReactLoading
+                  color="#FFFFFF"
+                  height={25}
+                  width={25}
+                  type="spin"
+                />
                 <p>please wait...</p>
               </div>
             ) : (

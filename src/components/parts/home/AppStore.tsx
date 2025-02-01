@@ -4,15 +4,21 @@ import playstore from "../../../Assets/png/home/playstore.png";
 
 const AppStore = () => {
   return (
-    <main className="mx-auto flex items-center justify-center w-[90%] m-auto font-sans sm:mt-[2em] lg:h-screen ">
+    <main className="m-auto mx-auto flex w-[90%] items-center justify-center font-sans sm:mt-[2em] lg:h-screen ">
       <section className="flex w-full justify-center">
         <div className="lg:px-17 flex rounded-2xl bg-text5  sm:px-[1em]">
           <div className="flex-1 self-center sm:px-0 sm:py-[1em] lg:px-[3em]">
-            <h1 className="text-text1 sm:text-xl sm:font-semibold lg:text-2xl lg:font-bold">
+            <h1
+              className="text- textPrimary
+ sm:text-xl sm:font-semibold lg:text-2xl lg:font-bold"
+            >
               Your Tech driven investment App
             </h1>
             <div className="sm:mt-[1.5em] lg:mt-[4em]">
-              <p className="font-semibold text-text1">
+              <p
+                className="text- textPrimary font-semibold
+"
+              >
                 Experience the Power of Coop Wallet, Powered by Chain Coop
                 Network, a business oriented Community Designed as a Cooperative
                 for Open and Digital Membership, Simplifying Investing, Ensuring

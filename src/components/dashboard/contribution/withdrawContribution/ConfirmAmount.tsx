@@ -8,7 +8,7 @@ import success from "../../../../Assets/svg/auth/sucess.svg";
 import { AppDispatch } from "../../../../shared/redux/store";
 import { WithdrawalFromContribution } from "../../../../shared/redux/slices/transaction.slices";
 import { DashboardHeader } from "../../../common/DashboardHeader";
-import { Primary } from "../../../common/Button";
+import { brandPrimary } from "../../../common/Button";
 import { formatBalance } from "../../../../shared/utils/format";
 import Modal from "../../../common/Modal";
 

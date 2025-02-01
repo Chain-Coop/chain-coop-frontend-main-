@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../../../shared/redux/store";
 import { kycPhoneOtp } from "../../../../../../../shared/redux/slices/kyc.slices";
 import { Alert } from "@mui/material";
-import { Primary } from "../../../../../../common/Button";
+import { brandPrimary } from "../../../../../../common/Button";
 import ReactLoading from "react-loading";
 import { toast } from "react-toastify";
 import { VerifykycPhoneOtp } from "../../../../../../../shared/redux/slices/kyc.slices";

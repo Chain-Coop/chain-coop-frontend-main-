@@ -76,14 +76,20 @@ const Blogs = () => {
                 </div>
               </div>
             </div>
-            <div className="bg-blog h-full rounded-2xl px-[3em] pb-[2em] pt-[3em] text-center shadow-md lg:w-[35%]">
+            <div className="h-full rounded-2xl bg-blog px-[3em] pb-[2em] pt-[3em] text-center shadow-md lg:w-[35%]">
               <h1 className="text-xl font-bold">Categories</h1>
               <div className="mt-[2em] flex flex-col space-y-2">
                 <div className="flex flex-wrap justify-center gap-2 lg:justify-between">
-                  <Blog className="rounded-full border-2 border-text1 px-2">
+                  <Blog
+                    className="border- textPrimary rounded-full border-2
+ px-2"
+                  >
                     Block Chain
                   </Blog>
-                  <Blog className="rounded-full border-2 border-text1 px-2">
+                  <Blog
+                    className="border- textPrimary rounded-full border-2
+ px-2"
+                  >
                     Investment
                   </Blog>
                 </div>
@@ -93,7 +99,7 @@ const Blogs = () => {
           <div className="mt-[3em]">
             <h1 className="text-2xl font-bold">Block Chain</h1>
             <div className="mt-[1em] flex flex-col gap-4 lg:flex-row lg:flex-wrap">
-              <div className="border-border h-full w-full border-3 shadow-md lg:w-[30%]">
+              <div className="border-border border-3 h-full w-full shadow-md lg:w-[30%]">
                 <img
                   src={machine}
                   alt="Secondary Image"

@@ -10,7 +10,7 @@ import tweeter from "../../../Assets/svg/contact/tweeter.svg";
 import linkdln from "../../../Assets/svg/contact/linkdln.svg";
 import medium from "../../../Assets/svg/contact/medium.svg";
 import circle from "../../../Assets/png/contact/circle.png";
-import { Primary } from "../../common/Button";
+import { brandPrimary } from "../../common/Button";
 import { useDispatch } from "react-redux";
 import { PublicContact } from "../../../shared/redux/slices/landing.slices";
 import { toast } from "react-toastify";

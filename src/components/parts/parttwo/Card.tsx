@@ -120,7 +120,10 @@ const Card = () => {
                     One Time Membership Fee: {card.contribution}
                   </motion.h2>
                 )}
-                <motion.ul className="mt-2 space-y-3 text-text1">
+                <motion.ul
+                  className="text- textPrimary mt-2 space-y-3
+"
+                >
                   {card.data.map((item, idx) => (
                     <motion.li
                       key={idx}

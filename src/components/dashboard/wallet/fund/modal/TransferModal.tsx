@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Primary } from "../../../../common/Button";
+import { brandPrimary } from "../../../../common/Button";
 
 const TransferModal = ({ onContinue }: any) => {
   return (

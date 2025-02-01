@@ -1,6 +1,6 @@
 import React from "react";
 import explore2 from "../../../../../Assets/png/home/savings-credit-mini.png";
-import { Primary } from "../../../../common/Button";
+import { brandPrimary } from "../../../../common/Button";
 
 const ThirdModal = () => {
   return (

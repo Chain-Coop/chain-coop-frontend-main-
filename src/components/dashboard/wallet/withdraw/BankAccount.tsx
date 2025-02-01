@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { DashboardHeader } from "../../../common/DashboardHeader";
-import { Primary } from "../../../common/Button";
+import { brandPrimary } from "../../../common/Button";
 import { IoIosArrowBack } from "react-icons/io";
 import { FormControl, InputLabel, OutlinedInput } from "@mui/material";
 import { styled } from "@mui/material/styles";

@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
 import Modal from "../../../common/Modal";
-import { Primary } from "../../../common/Button";
+import { brandPrimary } from "../../../common/Button";
 import { DashboardHeader } from "../../../common/DashboardHeader";
 import { IoIosArrowBack } from "react-icons/io";
 import withdraw_icon from "../../../../Assets/svg/dashboard/wallet/withdraw.svg";

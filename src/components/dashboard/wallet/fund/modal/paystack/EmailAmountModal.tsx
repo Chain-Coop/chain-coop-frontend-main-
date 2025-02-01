@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Primary } from "../../../../../common/Button";
+import { brandPrimary } from "../../../../../common/Button";
 import { useAppDispatch } from "../../../../../../shared/redux/reduxHooks";
 import { AppDispatch } from "../../../../../../shared/redux/store";
 import { toast } from "react-toastify";

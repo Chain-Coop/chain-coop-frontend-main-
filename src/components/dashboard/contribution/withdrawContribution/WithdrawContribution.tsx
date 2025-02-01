@@ -12,7 +12,7 @@ import useWalletBalance from "../../../../shared/Hooks/useBalance";
 import { GetContributionDetailsById } from "../../../../shared/redux/slices/transaction.slices";
 import { formatBalance } from "../../../../shared/utils/format";
 import { DashboardHeader } from "../../../common/DashboardHeader";
-import { Primary } from "../../../common/Button";
+import { brandPrimary } from "../../../common/Button";
 import Modal from "../../../common/Modal";
 
 const WithdrawContribution = () => {

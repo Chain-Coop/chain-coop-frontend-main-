@@ -70,7 +70,10 @@ const Team = () => {
                 <img src={member.image} alt={`${member.name} image`} />
                 <div className="mt-[2.5em] flex w-[50%] flex-col items-center gap-[2em] text-center">
                   <header>
-                    <h1 className="text-2xl font-bold text-text1">
+                    <h1
+                      className="text- textPrimary text-2xl font-bold
+"
+                    >
                       {member.name}
                     </h1>
                   </header>
@@ -107,7 +110,10 @@ const Team = () => {
                   <img src={member.image} alt={`${member.name} image`} />
                   <div className="mt-[2.5em] flex w-[50%] flex-col items-center gap-[2em] text-center">
                     <header>
-                      <h1 className="text-2xl font-bold text-text1">
+                      <h1
+                        className="text- textPrimary text-2xl font-bold
+"
+                      >
                         {member.name}
                       </h1>
                     </header>

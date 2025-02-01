@@ -6,7 +6,7 @@ import {
   formatRelativeTime,
 } from "../../../../shared/utils/format";
 import transact from "../../../../Assets/png/dashboard/wallet/transaction.png";
-import { Primary } from "../../../common/Button";
+import { brandPrimary } from "../../../common/Button";
 import { useUserTransaction } from "../../../../shared/Hooks/useBalance";
 import Tooltip from "@mui/material/Tooltip";
 

@@ -40,6 +40,12 @@ const Home = () => {
   const { useProjects, loading } = useAllProjects();
   const navigate = useNavigate();
 
+  // const handleProjectClick = (projectId: any) => {
+  //   navigate(`/dashboard/project/project_over-view`, {
+  //     state: { projectId },
+  //   });
+  // };
+
   const addFund = () => {
     navigate("/dashboard/wallet");
   };

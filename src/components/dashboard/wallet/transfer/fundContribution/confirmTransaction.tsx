@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { DashboardHeader } from "../../../../common/DashboardHeader";
 import { useNavigate, useLocation } from "react-router";
-import { Primary } from "../../../../common/Button";
+import { brandPrimary } from "../../../../common/Button";
 import { formatBalance } from "../../../../../shared/utils/format";
 import { useDispatch } from "react-redux";
 import { FundProject } from "../../../../../shared/redux/slices/transaction.slices";

@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router";
-import { Primary } from "../../common/Button";
+import { brandPrimary } from "../../common/Button";
 import success from "../../../Assets/svg/auth/sucess.svg";
 
 const PaaswordRessetSuccessfull = () => {
@@ -20,7 +20,10 @@ const PaaswordRessetSuccessfull = () => {
             className="mx-auto mb-4 sm:w-[6em] lg:w-[8em]"
           />
           <div>
-            <p className="font-medium text-text1 sm:text-lg lg:text-xl">
+            <p
+              className="text- textPrimary font-medium
+ sm:text-lg lg:text-xl"
+            >
               Password Reset Successful
             </p>
           </div>

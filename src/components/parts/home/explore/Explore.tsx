@@ -4,7 +4,7 @@ import explore1 from "../../../../Assets/png/home/automated-ai.png";
 import explore2 from "../../../../Assets/png/home/group-savings.png";
 import explore3 from "../../../../Assets/png/home/savings-credit-service.png";
 import { motion } from "framer-motion";
-import { Primary } from "../../../common/Button";
+import { brandPrimary } from "../../../common/Button";
 import Modal from "../../../common/Modal";
 import FirstModal from "./details/FirstModal";
 import SecondModal from "./details/SecondModal";

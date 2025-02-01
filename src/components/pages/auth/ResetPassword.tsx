@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { RESEND_LOGIN_OTP } from "../../../shared/redux/services/landing.services";
-import { Primary } from "../../common/Button";
+import { brandPrimary } from "../../common/Button";
 import ReactLoading from "react-loading";
 import { toast } from "react-toastify";
 import OtpInput from "../../../shared/utils/OtpInput";

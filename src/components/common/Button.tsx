@@ -3,7 +3,8 @@ import React from "react";
 export const LoginButton = ({ onClick, children, className }:any) => {
   return (
     <button
-      className={`${className} flex justify-center top-[26px] h-[50px] w-[150px] gap-[16px] rounded-md  p-[8px] text-center font-sans text-[20px] leading-6 text-text1  lg:block`}
+      className={`${className} flex justify-center top-[26px] h-[50px] w-[150px] gap-[16px] rounded-md  p-[8px] text-center font-sans text-[20px] leading-6 text- textPrimary
+  lg:block`}
       onClick={onClick}
     >
       {children}
@@ -11,7 +12,7 @@ export const LoginButton = ({ onClick, children, className }:any) => {
   );
 };
 
-export const Primary = ({ children, className, onClick, disabled }:any) => {
+export constbrandPrimary = ({ children, className, onClick, disabled }:any) => {
   return (
     <button
       onClick={onClick}

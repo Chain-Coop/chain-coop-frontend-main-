@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { Alert } from "@mui/material";
 import Modal from "../../../../../common/Modal";
-import { Primary } from "../../../../../common/Button";
+import { brandPrimary } from "../../../../../common/Button";
 import ReactLoading from "react-loading";
 import {
   CreateContributionPlan,
