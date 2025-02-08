@@ -91,18 +91,6 @@ const Footer = () => {
                 guarantees returns through cutting-edge blockchain technology
                 and sustainable business investments.
               </Typography>
-              <div>
-                <Typography variant="small" className="font-medium text-text3">
-                  Chain Co-op Statute & Legal Structure
-                </Typography>
-                <Typography
-                  variant="small"
-                  className="mt-1 font-medium text-text3"
-                >
-                  Understand the legal framework and cooperative governance that
-                  protect your investment.
-                </Typography>
-              </div>
             </section>
 
             <section className="w-full space-y-4">
@@ -144,10 +132,9 @@ const Footer = () => {
               >
                 Contact
               </Typography>
-              <div>
+              <div className="flex flex-col gap-3">
                 <Typography className="font-light text-text3">
-                  Let's build a better future together! Ketu, Lagos, or reach
-                  out via email or phone. Join Chain Coop today!
+                  Let's build a better future together!
                 </Typography>
                 <Typography className="font-light text-text3">
                   info@chaincooperative.com

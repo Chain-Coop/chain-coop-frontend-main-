@@ -1,15 +1,3 @@
-export const LoginButton = ({ onClick, children, className }: any) => {
-  return (
-    <button
-      className={`${className} text- textPrimary top-[26px] flex h-[50px] w-[150px] justify-center  gap-[16px] rounded-md p-[8px] text-center font-sans text-[20px] leading-6
-  lg:block`}
-      onClick={onClick}
-    >
-      {children}
-    </button>
-  );
-};
-
 export const Primary = ({ children, className, onClick, disabled }: any) => {
   return (
     <button

@@ -267,7 +267,7 @@ const WhyChainCoop = () => {
               </MotionTypography>
               <Typography
                 variants={fadeInUp}
-                className="mt-4 text-xs font-normal text-gray-500 sm:text-sm lg:text-base"
+                className="mt-4 text-sm font-normal text-gray-500 sm:text-sm lg:text-base"
               >
                 Access 5x Your Funds by Participating in Chain Co-Op Powerful
                 Saving Cycles
