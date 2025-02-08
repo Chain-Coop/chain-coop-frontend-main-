@@ -69,7 +69,6 @@ const PartnerWithUs = () => {
             minHeight: "100vh",
           }}
         >
-          {/* Hero Section */}
           <motion.section
             initial="hidden"
             whileInView="visible"
@@ -104,7 +103,6 @@ const PartnerWithUs = () => {
             </div>
           </motion.section>
 
-          {/* Why Join Section */}
           <motion.section
             initial="hidden"
             whileInView="visible"
@@ -117,7 +115,7 @@ const PartnerWithUs = () => {
                 variant="h1"
                 className="text-2xl font-bold sm:text-3xl"
               >
-                Why join Chain Coop?
+                Why join Chain Co-op?
               </Typography>
               <Typography
                 variant="small"
@@ -143,21 +141,18 @@ const PartnerWithUs = () => {
             />
           </motion.section>
 
-          {/* Benefits Section */}
           <motion.section className="relative mx-auto flex w-full flex-col items-center px-4 py-12 text-center lg:w-[80%] lg:px-2 lg:py-[8em]">
             <Typography
               variant="h3"
               className="mb-8 text-xl font-bold sm:text-2xl lg:mb-12"
             >
-              Interested in Chain Coop? Discover the benefits of
+              Interested in Chain Co-op? Discover the benefits of
               <br className="hidden sm:block" />
               membership and partnership
             </Typography>
 
             <div className="flex w-full flex-col gap-8">
-              {/* Benefits Grid */}
               <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-                {/* Trusted & Regulated Platform */}
                 <div className="flex flex-col gap-4 text-left sm:flex-row">
                   <div className="flex-shrink-0">
                     <img
@@ -184,7 +179,6 @@ const PartnerWithUs = () => {
                   </div>
                 </div>
 
-                {/* Bank-Grade Security */}
                 <div className="flex flex-col gap-4 text-left sm:flex-row">
                   <div className="flex-shrink-0">
                     <img src={bank} alt="bank" className="mx-auto sm:mx-0" />
@@ -207,7 +201,6 @@ const PartnerWithUs = () => {
                   </div>
                 </div>
 
-                {/* Expand Your Reach */}
                 <div className="flex flex-col gap-4 text-left sm:flex-row">
                   <div className="flex-shrink-0">
                     <img
@@ -234,7 +227,6 @@ const PartnerWithUs = () => {
                   </div>
                 </div>
 
-                {/* Drive Financial Inclusion */}
                 <div className="flex flex-col gap-4 text-left sm:flex-row">
                   <div className="flex-shrink-0">
                     <img src={drive} alt="drive" className="mx-auto sm:mx-0" />

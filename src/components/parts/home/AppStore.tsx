@@ -8,7 +8,6 @@ const AppStore = () => {
       <section className="mx-auto max-w-6xl">
         <div className="overflow-hidden rounded-2xl bg-text5 p-6 sm:p-8 md:p-12">
           <div className="flex flex-col lg:flex-row lg:items-center lg:gap-12">
-            {/* Text Content */}
             <div className="flex-1 space-y-6">
               <h1 className="text-textPrimary text-xl font-semibold sm:text-2xl md:text-3xl lg:text-4xl">
                 Chain Co-op wallet-
@@ -17,7 +16,7 @@ const AppStore = () => {
               <p className="text-textPrimary text-sm sm:text-base md:text-lg">
                 Your secure savings app. Track, save and earn as your prepare
                 for potential loan access and inflation hedging all withing
-                Nigeria's first tech driven coope savings platform.
+                Nigeria's first tech driven co-op savings platform.
               </p>
 
               <div className="pt-4 sm:pt-6 md:pt-8">
