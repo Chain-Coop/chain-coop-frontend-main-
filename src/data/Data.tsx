@@ -212,12 +212,20 @@ export const Company = [
     text: "Team",
     to: "/team",
   },
+  {
+    text: "About Us",
+    to: "/about-us",
+  },
 ];
 
 export const Explore = [
   {
     text: "Why Chain Coop",
     to: "/why-chain-co-op",
+  },
+  {
+    text: "Partnership",
+    to: "/partner-with-us",
   },
 ];
 
