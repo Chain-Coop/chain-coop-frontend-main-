@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
 import { IoIosArrowDropleft } from "react-icons/io";
@@ -11,7 +11,7 @@ const Purpose = () => {
   const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const { currency,savingsType } = location.state || {};
+  const { currency, savingsType } = location.state || {};
   const [error, setError] = useState("");
 
   const handleNext = () => {

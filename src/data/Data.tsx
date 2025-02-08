@@ -206,13 +206,6 @@ export const CustomerFeeExplorerCardData = [
   },
 ];
 
-export const company = [
-  {
-    text: "About Us",
-    to: "/our-story",
-  },
-];
-
 export const Explore = [
   {
     text: "Why Chain Coop",

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { company, Contacts, Explore, Legal } from "../../data/Data";
+import { Contacts, Explore, Legal } from "../../data/Data";
 import X from "../../Assets/png/home/twitterx.png";
 import linkedin from "../../Assets/png/home/linkedin.png";
 import { useDispatch } from "react-redux";
@@ -102,25 +102,6 @@ const Footer = () => {
                   Understand the legal framework and cooperative governance that
                   protect your investment.
                 </Typography>
-              </div>
-            </section>
-
-            <section className="w-full space-y-4">
-              <Typography
-                variant="h2"
-                className="text-sm font-semibold text-text3"
-              >
-                Company
-              </Typography>
-              <div>
-                {company.map((data, index) => (
-                  <Typography
-                    className="mb-2 font-light text-text3"
-                    key={index}
-                  >
-                    <Link to={data.to}>{data.text}</Link>
-                  </Typography>
-                ))}
               </div>
             </section>
 
