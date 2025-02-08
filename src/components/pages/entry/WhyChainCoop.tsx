@@ -108,20 +108,20 @@ const WhyChainCoop = () => {
             whileInView="visible"
             viewport={{ once: false, amount: 0.3 }}
             variants={staggerContainer}
-            className="relative mx-auto flex w-full flex-col items-center px-4 py-8 text-center md:py-12 lg:w-[95%] lg:px-2 lg:py-[4em]"
+            className="relative mx-auto flex w-full flex-col items-center py-8 text-center md:py-12 lg:w-[95%] lg:px-2 lg:py-[4em]"
           >
-            <div className="relative z-10 max-w-full px-2 text-center md:px-8">
+            <div className="relative z-10 max-w-full px-1 text-center md:px-1 lg:px-2">
               <MotionTypography
                 variant="h1"
                 variants={fadeInUp}
                 className="text-xl font-bold sm:mt-2 md:text-[2em] lg:text-3xl"
               >
-                Building communal wealth for Africans{" "}
-                <br className="hidden sm:block" /> one person at a time.
+                Building communal wealth for Africans one{" "}
+                <br className="hidden sm:block" /> person at a time.
               </MotionTypography>
               <Typography
                 variants={fadeInUp}
-                className="mx-auto mt-4 max-w-2xl text-sm font-normal text-gray-500 md:text-base lg:text-base"
+                className="mx-auto mt-4 text-sm font-normal text-gray-500 md:text-base lg:max-w-2xl lg:text-base"
               >
                 Chain Co-op provides a secure platform for members to save,
                 hedge against inflation, and access loans, creating a
@@ -256,7 +256,7 @@ const WhyChainCoop = () => {
             variants={staggerContainer}
             className="relative mx-auto flex w-full flex-col items-center px-4 lg:w-[74%] lg:px-2 lg:py-[4em]"
           >
-            <div className="relative z-10 max-w-full px-2 text-center sm:px-4">
+            <div className="relative  z-10 mt-[1.5em] max-w-full px-2 text-center sm:px-4">
               <MotionTypography
                 variant="h1"
                 variants={fadeInUp}
@@ -387,7 +387,7 @@ const WhyChainCoop = () => {
             whileInView="visible"
             viewport={{ once: false, amount: 0.3 }}
             variants={staggerContainer}
-            className="relative mx-auto flex w-full flex-col items-center px-4 pt-8 sm:pt-12 lg:w-[74%] lg:px-2 lg:py-[4em]"
+            className="relative mx-auto  flex w-full flex-col items-center px-4 pt-8 sm:pt-12 lg:w-[74%] lg:px-2 lg:py-[4em]"
           >
             <div className="mt-8 flex w-full flex-col gap-12 sm:mt-12 sm:gap-16 lg:mt-16 lg:gap-24">
               <motion.div

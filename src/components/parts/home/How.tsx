@@ -107,9 +107,11 @@ const How = () => {
           </motion.article>
         ))}
       </motion.section>
-
-      <div className="mt-3 flex flex-col gap-3 text-center">
-        <Typography variant="h5">
+      <div className="mt-3 flex flex-col gap-3 text-center sm:px-4 lg:px-0">
+        <Typography
+          variant="h5"
+          className="text-base sm:text-lg md:text-xl lg:text-2xl"
+        >
           It's simply not savings--it's smarter, more secure, and more rewarding
           savings
         </Typography>

@@ -27,9 +27,9 @@ const Explore = () => {
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: -100 }}
             transition={{ duration: 0.5 }}
-            className="mx-auto max-w-xl px-4"
+            className="mx-auto max-w-xl px-3"
           >
-            <Typography className="whi mb-6 text-sm font-normal md:text-base lg:text-lg">
+            <Typography className="mb-6 text-sm font-normal md:text-base lg:text-lg">
               Join hundreds of others using our smart lock savings options
             </Typography>
 
