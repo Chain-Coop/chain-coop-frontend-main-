@@ -7,7 +7,7 @@ import {
 import { DashboardHeader } from "../../../../common/DashboardHeader";
 import { useNavigate } from "react-router";
 import arrow from "../../../../../Assets/svg/dashboard/wallet/transfer-arrow.svg";
-import { Primary } from "../../../../common/Button";
+import { brandPrimary } from "../../../../common/Button";
 import { useAllProjects } from "../../../../../shared/Hooks/useUserProfile";
 import useWalletBalance from "../../../../../shared/Hooks/useBalance";
 import { Alert } from "@mui/material";

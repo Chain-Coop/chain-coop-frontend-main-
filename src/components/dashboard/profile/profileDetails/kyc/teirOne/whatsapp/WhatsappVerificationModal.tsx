@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../../../shared/redux/store";
 import OtpPin from "../../../../../../../shared/utils/OtpInput";
-import { Primary } from "../../../../../../common/Button";
+import { brandPrimary } from "../../../../../../common/Button";
 import ReactLoading from "react-loading";
 import { Alert } from "@mui/material";
 import { toast } from "react-toastify";

@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { formatBalance } from "../../../../shared/utils/format";
 import DOMPurify from "dompurify";
-import { Primary } from "../../../common/Button";
+import { brandPrimary } from "../../../common/Button";
 import { IoIosArrowDropleft } from "react-icons/io";
 
 interface ProjectContentDetailsProps {

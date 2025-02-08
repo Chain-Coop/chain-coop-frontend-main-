@@ -10,12 +10,12 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react",
-    "types": ["vite/client"]
+    "jsx": "react-jsx",
+    "types": ["node"]
   },
-  "include": ["src", "App.tsx", "image.d.ts"]
+  "include": ["src", "App.tsx", "image.d.ts", "src/material-tailwind.d.ts"]
 }

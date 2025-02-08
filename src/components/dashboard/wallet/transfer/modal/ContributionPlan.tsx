@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Primary } from "../../../../common/Button";
+import { brandPrimary } from "../../../../common/Button";
 
 interface ContributionPlanProps {
   onConfirm: (selectedPlan: string) => void;
@@ -14,12 +14,14 @@ const ContributionPlan: React.FC<ContributionPlanProps> = ({ onConfirm }) => {
 
   const handleConfirm = () => {
     if (selectedOption) {
-      onConfirm(selectedOption.charAt(0).toUpperCase() + selectedOption.slice(1));
+      onConfirm(
+        selectedOption.charAt(0).toUpperCase() + selectedOption.slice(1),
+      );
     }
   };
 
   return (
-    <main className="font-sans py-9">
+    <main className="py-9 font-sans">
       <header className="flex flex-col gap-2 text-center">
         <h2 className="text-lg font-semibold">Contribution Plan</h2>
         <p className="font-medium">Select a plan for your contribution</p>

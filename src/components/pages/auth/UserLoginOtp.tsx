@@ -1,20 +1,22 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../shared/redux/store";
 import { VerifyUserAuth } from "../../../shared/redux/slices/landing.slices";
 import { RESEND_LOGIN_OTP } from "../../../shared/redux/services/landing.services";
 import { useNavigate, useLocation } from "react-router-dom";
-import ReactLoading from "react-loading";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import OtpInput from "../../../shared/utils/OtpInput";
-import { Primary } from "../../common/Button";
+import { Button } from "@material-tailwind/react";
 
 const UserLoginOtp = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [loading, setLoading] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [isResending, setIsResending] = useState(false);
   const [otp, setOtp] = useState("");
+  const [resendDisabled, setResendDisabled] = useState(false);
+  const [resendTimer, setResendTimer] = useState(0);
 
   const dispatch: AppDispatch = useDispatch();
 
@@ -29,29 +31,46 @@ const UserLoginOtp = () => {
   };
 
   const verifyUserData = (otpValue: string) => {
-    setLoading(true);
+    setIsVerifying(true);
     dispatch(VerifyUserAuth({ otp: otpValue, email }))
       .unwrap()
       .then(() => {
-        setLoading(false);
+        setIsVerifying(false);
         toast.success("Account verified successfully");
         navigate("/login");
       })
       .catch((error) => {
-        setLoading(false);
+        setIsVerifying(false);
+        setOtp("");
         toast.error(error);
       });
   };
 
+  const startResendTimer = () => {
+    setResendDisabled(true);
+    setResendTimer(30);
+    const interval = setInterval(() => {
+      setResendTimer((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          setResendDisabled(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
   const ResendOtp = async () => {
-    setLoading(true);
+    setIsResending(true);
     try {
       const response = await RESEND_LOGIN_OTP("/auth/resend_otp", { email });
-      setLoading(false);
       toast.success(response.data.msg);
+      startResendTimer();
     } catch (error: any) {
-      setLoading(false);
       toast.error(error);
+    } finally {
+      setIsResending(false);
     }
   };
 
@@ -74,22 +93,17 @@ const UserLoginOtp = () => {
             </div>
           </div>
 
-          <Primary
+          <Button
             onClick={ResendOtp}
-            loading={loading}
-            className="m-auto flex w-[12em] justify-center rounded-full bg-text2 px-2 py-3 text-center font-medium text-text5 sm:text-lg lg:mt-[2em]"
+            disabled={isVerifying || isResending || resendDisabled}
+            className="m-auto mt-6 flex w-[12em] justify-center rounded-full bg-text2 px-2 py-3 text-center font-medium normal-case text-text5 disabled:opacity-50 sm:text-lg lg:mt-[2em]"
           >
-            {loading ? (
-              <ReactLoading
-                color="#FFFFFF"
-                width={25}
-                height={25}
-                type="spin"
-              />
-            ) : (
-              "Resend OTP"
-            )}
-          </Primary>
+            {isResending
+              ? "Resending..."
+              : resendDisabled
+                ? `Resend OTP (${resendTimer}s)`
+                : "Resend OTP"}
+          </Button>
         </div>
       </section>
     </main>

@@ -1,9 +1,8 @@
-import React from "react";
-
-export const LoginButton = ({ onClick, children, className }:any) => {
+export const LoginButton = ({ onClick, children, className }: any) => {
   return (
     <button
-      className={`${className} flex justify-center top-[26px] h-[50px] w-[150px] gap-[16px] rounded-md  p-[8px] text-center font-sans text-[20px] leading-6 text-text1  lg:block`}
+      className={`${className} text- textPrimary top-[26px] flex h-[50px] w-[150px] justify-center  gap-[16px] rounded-md p-[8px] text-center font-sans text-[20px] leading-6
+  lg:block`}
       onClick={onClick}
     >
       {children}
@@ -11,7 +10,7 @@ export const LoginButton = ({ onClick, children, className }:any) => {
   );
 };
 
-export const Primary = ({ children, className, onClick, disabled }:any) => {
+export const Primary = ({ children, className, onClick, disabled }: any) => {
   return (
     <button
       onClick={onClick}
@@ -23,17 +22,17 @@ export const Primary = ({ children, className, onClick, disabled }:any) => {
   );
 };
 
-export const ComingSoon = ({ children, className }:any) => {
+export const ComingSoon = ({ children, className }: any) => {
   return (
     <button
-      className={`font-base cursor-not-allowed rounded-xl flex justify-center  px-[15px] py-[6px] font-sans font-semibold ${className}`}
+      className={`font-base flex cursor-not-allowed justify-center rounded-xl  px-[15px] py-[6px] font-sans font-semibold ${className}`}
     >
       {children}
     </button>
   );
 };
 
-export const Blog = ({ children, className }:any) => {
+export const Blog = ({ children, className }: any) => {
   return (
     <button className={`font-base cursor-not-allowed ${className}`}>
       {children}
@@ -41,11 +40,17 @@ export const Blog = ({ children, className }:any) => {
   );
 };
 
-export const EnterButton = ({ children, className, onClick, disabled,type }:any) => {
+export const EnterButton = ({
+  children,
+  className,
+  onClick,
+  disabled,
+  type,
+}: any) => {
   return (
     <div className="relative mb-[1em]">
       <button
-        className={`relative w-full flex justify-center rounded-full bg-text2 p-[15px] font-medium text-text5  ${className}  ${disabled ? "disabled" : ""}`}
+        className={`relative flex w-full justify-center rounded-full bg-text2 p-[15px] font-medium text-text5  ${className}  ${disabled ? "disabled" : ""}`}
         onClick={onClick}
         disabled={disabled}
         type={type}

@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowDropleft } from "react-icons/io";
-import { Alert, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import {
+  Alert,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
 import Modal from "../../../../../common/Modal";
-import { Primary } from "../../../../../common/Button";
+import { brandPrimary } from "../../../../../common/Button";
 import ReactLoading from "react-loading";
 import {
   CreateContributionPlan,
@@ -16,14 +22,14 @@ import PayWithPaystack from "../../../paymentChoice.tsx/PayWithPaystack";
 import { useUserCard } from "../../../../../../shared/Hooks/useUserProfile";
 import { AppDispatch } from "../../../../../../shared/redux/store";
 import { DashboardHeader } from "../../../../../common/DashboardHeader";
-import { 
-  formatDate, 
-  addDays, 
-  addMonths, 
-  getDateDifference, 
-  calculateAvailableEndDates, 
-  validateCustomEndDate 
-} from '../../../../../../shared/utils/format';
+import {
+  formatDate,
+  addDays,
+  addMonths,
+  getDateDifference,
+  calculateAvailableEndDates,
+  validateCustomEndDate,
+} from "../../../../../../shared/utils/format";
 
 interface ContributionResponse {
   result: {
@@ -42,7 +48,9 @@ const StartDate: React.FC = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [contributionData, setContributionData] = useState<ContributionResponse["result"] | null>(null);
+  const [contributionData, setContributionData] = useState<
+    ContributionResponse["result"] | null
+  >(null);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [useCustomDate, setUseCustomDate] = useState(false);
 
@@ -63,7 +71,10 @@ const StartDate: React.FC = () => {
   const hasCards = (useWalletCards?.cards ?? []).length > 0;
 
   useEffect(() => {
-    const dates = calculateAvailableEndDates(startDate, isDaily ? 'daily' : 'monthly');
+    const dates = calculateAvailableEndDates(
+      startDate,
+      isDaily ? "daily" : "monthly",
+    );
     setAvailableEndDates(dates);
     setEndDate("");
     setCustomEndDate("");
@@ -83,10 +94,14 @@ const StartDate: React.FC = () => {
     setError("");
   };
 
-  const handleCustomEndDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCustomEndDateChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const value = event.target.value;
     setCustomEndDate(value);
-    const validation = validateCustomEndDate(startDate, value, { type: isDaily ? 'daily' : 'monthly' });
+    const validation = validateCustomEndDate(startDate, value, {
+      type: isDaily ? "daily" : "monthly",
+    });
     if (validation.isValid) {
       setError("");
     } else {
@@ -110,7 +125,9 @@ const StartDate: React.FC = () => {
       return;
     }
 
-    const validation = validateCustomEndDate(startDate, finalEndDate, { type: isDaily ? 'daily' : 'monthly' });
+    const validation = validateCustomEndDate(startDate, finalEndDate, {
+      type: isDaily ? "daily" : "monthly",
+    });
     if (!validation.isValid) {
       setError(validation.error || "");
       return;
@@ -157,7 +174,8 @@ const StartDate: React.FC = () => {
 
       if (paymentResponse?.landing?.payment?.info?.data) {
         handleModalClose();
-        window.location.href = paymentResponse.landing.payment.info.data.authorization_url;
+        window.location.href =
+          paymentResponse.landing.payment.info.data.authorization_url;
       } else {
         setError("Unable to process payment. Please try again.");
       }
@@ -185,7 +203,9 @@ const StartDate: React.FC = () => {
       </DashboardHeader>
       <div className="m-auto w-[90%]">
         <header className="mt-[1.5em] flex flex-col justify-center text-center lg:mt-[3em]">
-          <h1 className="text-center text-2xl font-bold">{plan} Contribution</h1>
+          <h1 className="text-center text-2xl font-bold">
+            {plan} Contribution
+          </h1>
           <p className="mt-[1em] text-center font-medium">
             You are about to save NGN{amount} {plan.toLowerCase()} into your
             contribution amount
@@ -232,7 +252,13 @@ const StartDate: React.FC = () => {
                     month: "long",
                     day: "numeric",
                   })}{" "}
-                  ({getDateDifference(startDate, date, isDaily ? 'daily' : 'monthly')})
+                  (
+                  {getDateDifference(
+                    startDate,
+                    date,
+                    isDaily ? "daily" : "monthly",
+                  )}
+                  )
                 </MenuItem>
               ))}
               {isDaily && (
@@ -258,7 +284,12 @@ const StartDate: React.FC = () => {
               />
               {customEndDate && (
                 <p className="text-sm text-gray-600">
-                  Duration: {getDateDifference(startDate, customEndDate, isDaily ? 'daily' : 'monthly')}
+                  Duration:{" "}
+                  {getDateDifference(
+                    startDate,
+                    customEndDate,
+                    isDaily ? "daily" : "monthly",
+                  )}
                 </p>
               )}
             </div>

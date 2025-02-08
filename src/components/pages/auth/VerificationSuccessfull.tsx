@@ -1,7 +1,6 @@
-import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Primary } from "../../common/Button";
 import success from "../../../Assets/svg/auth/sucess.svg";
+import { Button, Typography } from "@material-tailwind/react";
 
 const VerificationSuccessfull = () => {
   const location = useLocation();
@@ -24,17 +23,18 @@ const VerificationSuccessfull = () => {
             className="mx-auto mb-4 sm:w-[6em] lg:w-[8em]"
           />
           <div className="sm:px-1">
-            <p className="font-medium text-text1 sm:text-lg">
-              {`We've sent a verification code to your email. Use it to securely reset your password.`}
-            </p>
+            <Typography className="text- textPrimary font-medium sm:text-lg">
+              We've sent a verification code to your email. Use it to securely
+              reset your password.
+            </Typography>
           </div>
           <div>
-            <Primary
+            <Button
               onClick={goToReset}
               className="mt-[1em] w-[10em] rounded-full bg-text2 py-3 font-medium text-text5 sm:text-lg  lg:mt-[2em]"
             >
               Continue
-            </Primary>
+            </Button>
           </div>
         </div>
       </section>

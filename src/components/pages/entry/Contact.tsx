@@ -10,13 +10,13 @@ import tweeter from "../../../Assets/svg/contact/tweeter.svg";
 import linkdln from "../../../Assets/svg/contact/linkdln.svg";
 import medium from "../../../Assets/svg/contact/medium.svg";
 import circle from "../../../Assets/png/contact/circle.png";
-import { Primary } from "../../common/Button";
 import { useDispatch } from "react-redux";
 import { PublicContact } from "../../../shared/redux/slices/landing.slices";
 import { toast } from "react-toastify";
 import ReactLoading from "react-loading";
 import "../../../general.css";
 import { AppDispatch } from "../../../shared/redux/store";
+import { Button } from "@material-tailwind/react";
 
 const Contact = () => {
   const [loading, setLoading] = useState(false);
@@ -149,7 +149,7 @@ const Contact = () => {
                   </div>
                 </div>
 
-                <Primary
+                <Button
                   type="submit"
                   className="w-full bg-text2 px-6 py-3 text-text5 md:w-auto lg:px-[2.5em]"
                 >
@@ -163,13 +163,12 @@ const Contact = () => {
                   ) : (
                     "Send"
                   )}
-                </Primary>
+                </Button>
               </form>
             </div>
             <div className="relative mt-12 w-full md:mt-16 lg:mt-0 lg:w-[500px]">
               <img src={circle} alt="" className="h-auto w-full" />
 
-              {/* Adjusted content position to fit within circle */}
               <section className="absolute inset-0 flex items-center justify-center text-text5 lg:pb-[8em]">
                 <div className="mx-auto w-[75%] space-y-4">
                   <div className="space-y-2">

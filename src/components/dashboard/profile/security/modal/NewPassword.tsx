@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import usePasswordToggle from "../../../../../shared/utils/usePasswordToggle";
-import { Primary } from "../../../../common/Button";
+import { brandPrimary } from "../../../../common/Button";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import { RESET_PASSWORD } from "../../../../../shared/redux/services/landing.services";
 import ReactLoading from "react-loading";

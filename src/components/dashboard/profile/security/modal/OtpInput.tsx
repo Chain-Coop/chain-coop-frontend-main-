@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import OtpPin from "../../../../../shared/utils/OtpInput";
-import { Primary } from "../../../../common/Button";
+import { brandPrimary } from "../../../../common/Button";
 
 const OtpInput = ({ otp, setOtp, onClose, onOtpEntered }: any) => {
   const [isLoading, setIsLoading] = useState(false);
