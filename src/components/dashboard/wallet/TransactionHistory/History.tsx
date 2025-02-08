@@ -6,9 +6,9 @@ import {
   formatRelativeTime,
 } from "../../../../shared/utils/format";
 import transact from "../../../../Assets/png/dashboard/wallet/transaction.png";
-import { brandPrimary } from "../../../common/Button";
 import { useUserTransaction } from "../../../../shared/Hooks/useBalance";
 import Tooltip from "@mui/material/Tooltip";
+import { Button } from "@material-tailwind/react";
 
 const History = () => {
   const { getTransaction } = useUserTransaction();
@@ -47,12 +47,12 @@ const History = () => {
             Recent Transactions
           </h1>
           {getTransaction && getTransaction.length > 3 && (
-            <Primary
+            <Button
               className="flex items-center rounded-lg border-[2px] border-text2 bg-inherit px-3 py-1 text-sm font-semibold text-memt1 md:px-4 md:text-base"
               onClick={handleViewAll}
             >
               {showAll ? "Close" : "View All"}
-            </Primary>
+            </Button>
           )}
         </div>
 

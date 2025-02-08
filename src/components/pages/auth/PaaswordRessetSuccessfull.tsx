@@ -1,7 +1,6 @@
-import React from "react";
 import { useNavigate } from "react-router";
-import { brandPrimary } from "../../common/Button";
 import success from "../../../Assets/svg/auth/sucess.svg";
+import { Button } from "@material-tailwind/react";
 
 const PaaswordRessetSuccessfull = () => {
   const navigate = useNavigate();
@@ -28,12 +27,12 @@ const PaaswordRessetSuccessfull = () => {
             </p>
           </div>
 
-          <Primary
+          <Button
             className="w-[10em] rounded-full bg-text2 py-3 font-medium text-text5 sm:text-lg lg:mt-[2em]"
             onClick={login}
           >
             Continue
-          </Primary>
+          </Button>
         </div>
       </section>
     </main>

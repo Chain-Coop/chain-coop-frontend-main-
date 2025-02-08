@@ -1,12 +1,11 @@
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { handleLogout } from "../../../../shared/utils/auth";
 import { IoIosNotifications } from "react-icons/io";
 import Avatar from "../avatar/Avatar";
 import Details from "../profileDetails/main/Details";
 import Security from "../security/Security";
-import About from "../about/About";
 import { useAllNotification } from "../../../../shared/Hooks/useUserProfile";
+import { Button, Typography } from "@material-tailwind/react";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -35,15 +34,15 @@ const Profile = () => {
             </button>
           </Link>
           <div>
-            <h2>Profile</h2>
+            <Typography className="text-md font-semibold">Profile</Typography>
           </div>
           <div className="sm:hidden lg:block">
-            <button
-              className="rounded-full bg-text3 px-[1.8em] py-[2px] text-lg font-semibold text-text2"
+            <Button
+              className="rounded-full bg-text3 px-[1.8em] py-[2px] text-sm font-bold text-text2"
               onClick={() => handleLogout(navigate)}
             >
               Logout
-            </button>
+            </Button>
           </div>
         </header>
       </section>
@@ -51,7 +50,6 @@ const Profile = () => {
         <Avatar />
         <Details />
         <Security />
-        {/* <About /> */}
       </section>
     </main>
   );

@@ -87,7 +87,7 @@ const DashboardNav = () => {
                   <img src={item.img} alt="imgs" />
                   <ListItemText
                     className="ml-2 font-extrabold"
-                    brandPrimary={item.text}
+                    primary={item.text}
                   />
                 </ListItemButton>
               </ListItem>

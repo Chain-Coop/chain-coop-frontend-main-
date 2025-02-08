@@ -1,15 +1,15 @@
-import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AppDispatch } from "../../../shared/redux/store";
 import { LoginUser } from "../../../shared/redux/slices/landing.slices";
 import { useDispatch } from "react-redux";
-import { EnterButton } from "../../common/Button";
 import logo from "../../../Assets/svg/auth/logo.svg";
 import { toast } from "react-toastify";
-import ReactLoading from "react-loading";
 import usePasswordToggle from "../../../shared/utils/usePasswordToggle";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
+import { Button, Typography } from "@material-tailwind/react";
+import { ROUTES } from "../../../shared/routes";
+import FormInput from "../../common/FormInput";
 
 const UserLogin = () => {
   const [email, setEmail] = useState("");
@@ -67,86 +67,65 @@ const UserLogin = () => {
           />
           <h1 className="mb-4 text-3xl font-bold text-text2">Welcome Back</h1>
           <div className="w-full lg:px-[5em]">
-            <p className="text-center font-medium text-howtext">
-              {`Let's get you logged in to get back to building your investment
-              portfolio and track your growth.`}
-            </p>
+            <Typography className="text-center font-medium text-howtext">
+              Let's get you logged in to get back to building your investment
+              portfolio and track your growth.
+            </Typography>
           </div>
         </header>
-        <form onSubmit={loginUserData}>
-          <div className="mt-[2em]">
-            <label htmlFor="email" className="mb-3 flex text-text2">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              disabled={loading}
-              required
-              placeholder="enter your e-mail"
-              onChange={(e) => setEmail(e.target.value)}
-              className="input mb-5 h-[4em] w-full rounded-full border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-            />
-          </div>
+        <form onSubmit={loginUserData} className="flex flex-col gap-5">
+          <FormInput
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+            autoComplete="new-email"
+            disabled={loading}
+          />
 
-          <div>
-            <label htmlFor="password-input" className="mb-3 flex text-text2">
-              Password
-            </label>
-            <div className="relative flex items-center">
-              <input
-                id="password-input"
-                type={passwordType}
-                value={password}
-                placeholder="Password"
-                required
-                disabled={loading}
-                onChange={(e) => setPassword(e.target.value)}
-                className="input mb-5 h-[4em] w-full rounded-full border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-              />
-              <button
-                type="button"
-                onClick={togglePasswordType}
-                className="absolute right-4 mb-3 self-center"
-              >
+          <FormInput
+            label="Password"
+            type={passwordType}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            autoComplete="new-password"
+            disabled={loading}
+            rightElement={
+              <button type="button" onClick={togglePasswordType}>
                 {passwordType === "password" ? (
                   <MdOutlineVisibilityOff />
                 ) : (
                   <MdOutlineVisibility />
                 )}
               </button>
-            </div>
-          </div>
+            }
+          />
 
           <div className="flex justify-end">
-            <Link to="/forget-password" className="pointer font-normal italic">
+            <Link
+              to={ROUTES.forget_password}
+              className="pointer font-normal italic"
+            >
               Forgot Password ?
             </Link>
           </div>
 
-          <EnterButton
-            onClick={loginUserData}
-            className="mt-[2em] flex justify-center text-center"
+          <Button
+            type="submit"
+            className="relative mt-[2em] flex w-full items-center justify-center rounded-full bg-text2 p-4 text-center text-sm font-semibold normal-case text-text5"
             disabled={loading}
+            loading={loading}
           >
-            {loading ? (
-              <ReactLoading
-                color="#FFFFFF"
-                width={25}
-                height={25}
-                type="spin"
-              />
-            ) : (
-              "Log in"
-            )}
-          </EnterButton>
+            {loading ? "Logging in..." : "Log in"}
+          </Button>
 
-          <div className="flex justify-center">
+          <div className="mt-4 flex justify-center">
             <p>
               {`Don't have an account?`}
               <Link
-                to="/sign-up"
+                to={ROUTES.sign_up}
                 className="ml-2 cursor-pointer font-medium text-text2"
               >
                 Sign Up Now

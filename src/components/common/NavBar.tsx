@@ -1,29 +1,24 @@
-import React from "react";
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { navBarLinks } from "../../data/Data";
-import { LoginButton } from "./Button";
 import { Modal, ModalBody } from "reactstrap";
 import logo from "../../Assets/svg/home/chain-logo.svg";
 import { HiOutlineBars3 } from "react-icons/hi2";
 import { AiOutlineClose } from "react-icons/ai";
+import { Button, Typography } from "@material-tailwind/react";
+import { ROUTES } from "../../shared/routes";
 
 const NavBar = () => {
   const [modal, setModal] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
 
   const toggleModal = () => {
     setModal(!modal);
   };
 
-  const handleLoginClick = () => {
-    navigate("/login");
-  };
-
   return (
     <nav className="relative  left-0 top-0 flex h-[75px] w-full items-center border-b border-text5 bg-white font-sans">
-      <div className="mx-auto flex w-[92%] items-center justify-between">
+      <div className="mx-auto flex w-[87%] items-center justify-between">
         <Link to="/">
           <img src={logo} className="w-[9em]" alt="Chain Co-op Logo" />
         </Link>
@@ -35,7 +30,7 @@ const NavBar = () => {
                 isActive={location.pathname === link.to}
                 to={link.to}
               >
-                {link.text}
+                <Typography className="font-normal">{link.text}</Typography>
               </NavLink>
             ))}
           </div>
@@ -77,17 +72,21 @@ const NavBar = () => {
               );
             })}
             <div className="block font-bold lg:hidden">
-              <LoginButton onClick={handleLoginClick} className="bg-primary">
-                Login
-              </LoginButton>
+              <Link to={ROUTES.sign_in}>
+                <Button className="text- textPrimary top-[26px] flex h-[50px] w-[150px] justify-center gap-[16px]  rounded-md bg-primary p-[8px] text-center font-sans text-[20px] leading-6 lg:block">
+                  Login
+                </Button>
+              </Link>
             </div>
           </ModalBody>
         </Modal>
 
         <div className="hidden lg:block">
-          <LoginButton className="bg-primary" onClick={handleLoginClick}>
-            Login
-          </LoginButton>
+          <Link to={ROUTES.sign_in}>
+            <Button className="rounded-md bg-primary px-7 py-3 normal-case text-black lg:block">
+              <span className="text-sm font-semibold">Get Started</span>
+            </Button>
+          </Link>
         </div>
       </div>
     </nav>

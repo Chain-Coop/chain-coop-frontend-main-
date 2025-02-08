@@ -1,4 +1,6 @@
-export default {
+import withMT from "@material-tailwind/react/utils/withMT";
+
+export default withMT({
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     screens: {
@@ -51,21 +53,5 @@ export default {
       },
     },
   },
-};
+});
 
-const styles = `
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.3s ease-in-out;
-}
-`;

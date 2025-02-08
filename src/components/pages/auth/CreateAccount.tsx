@@ -3,19 +3,19 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { RegisterUser } from "../../../shared/redux/slices/landing.slices";
-import { EnterButton } from "../../common/Button";
 import logo from "../../../Assets/svg/auth/logo.svg";
 import { FaArrowLeft } from "react-icons/fa6";
 import { toast } from "react-toastify";
-import ReactLoading from "react-loading";
 import "react-toastify/dist/ReactToastify.css";
 import { AppDispatch } from "../../../shared/redux/store";
 import usePasswordToggle from "../../../shared/utils/usePasswordToggle";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import { PhoneNumberInput } from "../../../shared/utils/Helpers";
 import Select from "react-select";
+import { Button, Typography } from "@material-tailwind/react";
+import { ROUTES } from "../../../shared/routes";
+import FormInput from "../../common/FormInput";
 
-// Password strength checker
 const checkPasswordStrength = (
   password: string,
 ): { score: number; message: string } => {
@@ -194,97 +194,61 @@ const CreateAccount = () => {
             className="mx-auto mb-4 h-[5em] cursor-pointer"
             onClick={home}
           />
-          <h1 className="mb-4 text-3xl font-bold text-text2">
+          <Typography
+            variant="h1"
+            className="mb-4 text-3xl font-bold text-text2"
+          >
             Create Your Account
-          </h1>
-          <p className="font-medium text-howtext">
+          </Typography>
+          <Typography className="font-medium text-howtext">
             Start building your investment portfolio and track your growth
-          </p>
+          </Typography>
         </div>
+
         <form className="flex flex-col gap-6" onSubmit={registerUser}>
-          <div>
-            <label
-              htmlFor="firstName"
-              className="text- textPrimary mb-2 flex text-base font-semibold
-"
-            >
-              First Name
-            </label>
-            <input
-              type="firstName"
-              id="firstName"
-              name="firstName"
-              onChange={(e) => setFirstName(e.target.value)}
-              value={firstName}
-              required
-              disabled={loading}
-              placeholder="first name"
-              className="h-[4em] w-full rounded-full border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-            />
-          </div>
+          <FormInput
+            label="First Name"
+            type="text"
+            id="firstName"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder="first name"
+            disabled={loading}
+            required
+          />
 
-          <div>
-            <label
-              htmlFor="lastName"
-              className="text- textPrimary mb-2 flex text-base font-semibold
-"
-            >
-              Last Name
-            </label>
-            <input
-              type="lastName"
-              id="lastName"
-              name="lastName"
-              onChange={(e) => setLastName(e.target.value)}
-              value={lastName}
-              required
-              disabled={loading}
-              placeholder="last name"
-              className="h-[4em] w-full rounded-full border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-            />
-          </div>
+          <FormInput
+            label="Last Name"
+            type="text"
+            id="lastName"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            placeholder="last name"
+            disabled={loading}
+            required
+          />
 
-          <div>
-            <label
-              htmlFor="email-input"
-              className="text- textPrimary mb-2 flex text-base font-semibold
-"
-            >
-              Email Address
-            </label>
-            <input
-              type="email"
-              id="email-input"
-              name="email"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-              required
-              disabled={loading}
-              placeholder="e-mail address"
-              className="h-[4em] w-full rounded-full border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-            />
-          </div>
+          <FormInput
+            label="Email Address"
+            type="email"
+            id="email-input"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="e-mail address"
+            disabled={loading}
+            required
+          />
 
-          <div>
-            <label
-              htmlFor="username-input"
-              className="text- textPrimary mb-2 flex font-semibold
-"
-            >
-              Username
-            </label>
-            <input
-              type="text"
-              id="username-input"
-              name="username"
-              onChange={(e) => setUsername(e.target.value)}
-              value={username}
-              required
-              disabled={loading}
-              placeholder="username"
-              className="h-[4em] w-full rounded-full border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-            />
-          </div>
+          <FormInput
+            label="Username"
+            type="text"
+            id="username-input"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="username"
+            disabled={loading}
+            required
+          />
 
           <div>
             <label
@@ -302,148 +266,107 @@ const CreateAccount = () => {
             />
           </div>
 
-          <div>
-            <label
-              htmlFor="membership-input"
-              className="text- textPrimary mb-2 flex font-semibold
-"
-            >
-              Membership Type
-            </label>
-            <Select
-              value={membershipOptions.find(
-                (option) => option.value === membershipType,
-              )}
-              onChange={(option: any) => setMembershipType(option?.value || "")}
-              options={membershipOptions}
-              styles={customSelectStyles}
-              isDisabled={loading}
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="password-input"
-              className="text- textPrimary mb-2 flex font-semibold
-"
-            >
-              Password
-            </label>
-            <div className="relative flex items-center">
-              <input
-                id="password-input"
-                type={passwordType}
-                placeholder="Password"
-                value={password}
-                required
-                disabled={loading}
-                onChange={(e) => setPassword(e.target.value)}
-                className="input h-[4em] w-full items-center rounded-full border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
+          <FormInput
+            label="Membership Type"
+            customInput={
+              <Select
+                value={membershipOptions.find(
+                  (option) => option.value === membershipType,
+                )}
+                onChange={(option) => setMembershipType(option?.value || "")}
+                options={membershipOptions}
+                styles={customSelectStyles}
+                isDisabled={loading}
               />
-              <button
-                type="button"
-                onClick={togglePasswordType}
-                className="absolute right-4"
-              >
+            }
+          />
+
+          <FormInput
+            label="Password"
+            type={passwordType}
+            id="password-input"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            disabled={loading}
+            autoComplete="new-password"
+            required
+            rightElement={
+              <button type="button" onClick={togglePasswordType}>
                 {passwordType === "password" ? (
                   <MdOutlineVisibilityOff />
                 ) : (
                   <MdOutlineVisibility />
                 )}
               </button>
-            </div>
-            {password && (
-              <div className="mt-2">
-                <div className="mb-1 flex h-1 overflow-hidden rounded-full bg-gray-200">
-                  {[1, 2, 3, 4, 5].map((index) => (
-                    <div
-                      key={index}
-                      className={`flex-1 ${
-                        index <= passwordStrength.score
-                          ? getPasswordStrengthColor(passwordStrength.score)
-                          : "bg-gray-200"
-                      }`}
-                    />
-                  ))}
-                </div>
-                <p
-                  className={`text-sm ${
-                    passwordStrength.score <= 2
-                      ? "text-red-500"
-                      : passwordStrength.score === 3
-                        ? "text-yellow-500"
-                        : "text-green-500"
-                  }`}
-                >
-                  Password Strength: {passwordStrength.message}
-                </p>
-              </div>
-            )}
-          </div>
+            }
+            helperText={
+              password && (
+                <>
+                  <div className="mb-1 flex h-1 overflow-hidden rounded-full bg-gray-200">
+                    {[1, 2, 3, 4, 5].map((index) => (
+                      <div
+                        key={index}
+                        className={`flex-1 ${
+                          index <= passwordStrength.score
+                            ? getPasswordStrengthColor(passwordStrength.score)
+                            : "bg-gray-200"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <p
+                    className={`text-sm ${
+                      passwordStrength.score <= 2
+                        ? "text-red-500"
+                        : passwordStrength.score === 3
+                          ? "text-yellow-500"
+                          : "text-green-500"
+                    }`}
+                  >
+                    Password Strength: {passwordStrength.message}
+                  </p>
+                </>
+              )
+            }
+          />
 
-          <div>
-            <label
-              htmlFor="confirm-password-input"
-              className="text- textPrimary mb-2 flex font-semibold
-"
-            >
-              Confirm Password
-            </label>
-            <div className="relative flex items-center">
-              <input
-                id="confirm-password-input"
-                type={confirmPasswordType}
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                required
-                disabled={loading}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className={`input h-[4em] w-full items-center rounded-full border-[1px] px-4 text-sm shadow-md focus:outline-none ${
-                  !passwordsMatch && confirmPassword
-                    ? "border-red-500 focus:border-red-500 focus:ring-red-500"
-                    : "focus:border-text2 focus:ring-text2"
-                }`}
-              />
-              <button
-                type="button"
-                onClick={toggleConfirmPasswordType}
-                className="absolute right-4"
-              >
+          <FormInput
+            label="Confirm Password"
+            type={confirmPasswordType}
+            id="confirm-password-input"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Confirm Password"
+            disabled={loading}
+            required
+            error={
+              !passwordsMatch && confirmPassword ? "Passwords do not match" : ""
+            }
+            rightElement={
+              <button type="button" onClick={toggleConfirmPasswordType}>
                 {confirmPasswordType === "password" ? (
                   <MdOutlineVisibilityOff />
                 ) : (
                   <MdOutlineVisibility />
                 )}
               </button>
-            </div>
-            {!passwordsMatch && confirmPassword && (
-              <p className="mt-2 text-sm text-red-500">
-                Passwords do not match
-              </p>
-            )}
-          </div>
+            }
+          />
 
-          <EnterButton
+          <Button
             type="submit"
+            className="relative mt-[2em] flex w-full items-center justify-center rounded-full bg-text2 p-4 text-center text-sm font-semibold normal-case text-text5"
             disabled={
               loading ||
               !isPhoneValid ||
               !passwordsMatch ||
               passwordStrength.score < 3
             }
-            className="mt-2 flex cursor-pointer justify-center bg-text2 text-center text-white"
+            loading={loading}
           >
-            {loading ? (
-              <ReactLoading
-                color="#FFFFFF"
-                width={25}
-                height={25}
-                type="spin"
-              />
-            ) : (
-              "Sign up"
-            )}
-          </EnterButton>
+            {loading ? "Signing up..." : "Signup"}
+          </Button>
         </form>
         <div
           className="absolute left-0 top-0 ml-[4em] mt-[4em] cursor-pointer sm:hidden lg:block"
@@ -452,14 +375,14 @@ const CreateAccount = () => {
           <FaArrowLeft size={35} fill="#440080" />
         </div>
 
-        <div className="mb-[1em] flex justify-center">
+        <div className="flex justify-center py-5">
           <p
             className="text- textPrimary font-sans font-semibold
 "
           >
             Have an account?
             <span className="ml-2 font-sans font-medium text-text2">
-              <Link to="/login">Sign in</Link>
+              <Link to={ROUTES.sign_in}>Sign in</Link>
             </span>
           </p>
         </div>

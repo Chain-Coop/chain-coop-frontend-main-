@@ -1,12 +1,11 @@
-import { EnterButton } from "../../common/Button";
-import React from "react";
 import { MdOutlineVisibilityOff, MdOutlineVisibility } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { RESET_PASSWORD } from "../../../shared/redux/services/landing.services";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import ReactLoading from "react-loading";
+import { Button } from "@material-tailwind/react";
+import FormInput from "../../common/FormInput";
 
 const NewPassword = () => {
   const [passwordType, setPasswordType] = useState("password");
@@ -78,54 +77,43 @@ const NewPassword = () => {
           onSubmit={resetPasswordFunc}
           className="mt-[3em] w-full sm:px-[1em]"
         >
-          <div>
-            <label htmlFor="password-input" className="mb-3 flex text-text2">
-              Enter New Password
-            </label>
-            <div className="relative flex items-center">
-              <input
-                id="password-input"
-                name="password"
-                type={passwordType}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="create new password"
-                className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-              />
-              <button
-                type="button"
-                className="absolute right-4 mb-3 flex"
-                onClick={togglePassword}
-              >
+          <FormInput
+            label="Enter New Password"
+            id="password-input"
+            name="password"
+            type={passwordType}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="create new password"
+            required
+            labelClassName="text-text2"
+            rightElement={
+              <button type="button" onClick={togglePassword} className="flex">
                 {passwordType === "password" ? (
                   <MdOutlineVisibilityOff />
                 ) : (
                   <MdOutlineVisibility />
                 )}
               </button>
-            </div>
-          </div>
-          <div className="lg:mt-[1.5em]">
-            <label
-              htmlFor="confirm-password-input"
-              className="mb-3 flex text-text2"
-            >
-              Re-Enter New Password
-            </label>
-            <div className="relative flex items-center">
-              <input
-                placeholder="confirm new password"
-                id="confirm-password-input"
-                type={confirmPasswordType}
-                value={confirmPassword}
-                name="confirmPassword"
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="mb-5 h-[4em] w-full rounded-full px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-              />
+            }
+          />
+
+          <FormInput
+            label="Re-Enter New Password"
+            id="confirm-password-input"
+            name="confirmPassword"
+            type={confirmPasswordType}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="confirm new password"
+            required
+            wrapperClassName="lg:mt-[1.5em]"
+            labelClassName="text-text2"
+            rightElement={
               <button
                 type="button"
-                className="absolute right-4 mb-3 flex"
                 onClick={toggleConfirmPassword}
+                className="flex"
               >
                 {confirmPasswordType === "password" ? (
                   <MdOutlineVisibilityOff />
@@ -133,21 +121,18 @@ const NewPassword = () => {
                   <MdOutlineVisibility />
                 )}
               </button>
-            </div>
-          </div>
+            }
+          />
+
           <div className="mt-[1em] sm:px-[1em]">
-            <EnterButton disabled={loading} type="submit" className="mt-[2em]">
-              {loading ? (
-                <ReactLoading
-                  color="#FFFFFF"
-                  width={25}
-                  height={25}
-                  type="spin"
-                />
-              ) : (
-                "Submit"
-              )}
-            </EnterButton>
+            <Button
+              type="submit"
+              className="relative mt-[2em] flex w-full items-center justify-center rounded-full bg-text2 p-4 text-center text-sm font-semibold text-text5"
+              disabled={loading}
+              loading={loading}
+            >
+              {loading ? "Submitting..." : "Submit"}
+            </Button>
           </div>
         </form>
       </section>

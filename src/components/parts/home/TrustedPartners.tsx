@@ -1,6 +1,6 @@
 import React from "react";
+import Marquee from "react-fast-marquee";
 import { trustedPartners } from "../../../data/Data";
-import "../../parts/home/animation.css";
 
 interface TrustedPartner {
   src: string;
@@ -8,20 +8,24 @@ interface TrustedPartner {
 
 const TrustedPartners: React.FC = () => {
   return (
-    <main className="logos flex justify-center shadow-md sm:py-[15px] lg:p-[2rem]">
-      <div className="logos-slide flex w-[96vw] items-center justify-between whitespace-nowrap">
-        <div className="flex sm:mt-4">
-          {trustedPartners.map((img: TrustedPartner, index: number) => (
+    <div className="w-full bg-white py-8 shadow-md">
+      <h2 className="mb-6 px-8 text-lg font-bold text-[#440080]">
+        Our Trusted Partners
+      </h2>
+
+      <Marquee speed={40} gradient={true} pauseOnHover={true}>
+        <div className="flex items-center">
+          {trustedPartners.map((partner: TrustedPartner, index: number) => (
             <img
               key={index}
-              src={img.src}
-              alt={`Image ${index + 1}`}
-              className="mr-4 h-[5em]"
+              src={partner.src}
+              alt={`Partner ${index + 1}`}
+              className="mx-4 h-12 w-auto sm:h-16"
             />
           ))}
         </div>
-      </div>
-    </main>
+      </Marquee>
+    </div>
   );
 };
 

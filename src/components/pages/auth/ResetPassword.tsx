@@ -1,15 +1,14 @@
-import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { RESEND_LOGIN_OTP } from "../../../shared/redux/services/landing.services";
-import { brandPrimary } from "../../common/Button";
-import ReactLoading from "react-loading";
 import { toast } from "react-toastify";
 import OtpInput from "../../../shared/utils/OtpInput";
+import { Button } from "@material-tailwind/react";
 
 const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState("");
+  const [timer, setTimer] = useState(0);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -22,26 +21,37 @@ const ResetPassword = () => {
     }
   }, [otp]);
 
-  const handleOtpChange = (otpValue: any) => {
-    setOtp(otpValue);
-  };
+  useEffect(() => {
+    const countdown = timer > 0 && setInterval(() => setTimer(timer - 1), 1000);
+    return () => {
+      if (countdown) clearInterval(countdown);
+    };
+  }, [timer]);
 
   const ResendOtp = async () => {
+    if (timer > 0) return;
     setLoading(true);
     const endpoint = `/auth/resend_otp`;
     try {
       const response = await RESEND_LOGIN_OTP(endpoint, { email });
-      setLoading(false);
       toast.success(response.data.msg);
+      setTimer(30);
     } catch (response: any) {
-      setLoading(false);
       toast.error(response.data.msg);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleSubmit = () => {
     navigate(`/new-password?otp=${otp}&email=${email}`);
     setLoading(false);
+  };
+
+  const getButtonText = () => {
+    if (loading) return "Sending OTP...";
+    if (timer > 0) return `Resend OTP (${timer}s)`;
+    return "Resend OTP";
   };
 
   return (
@@ -68,23 +78,15 @@ const ResetPassword = () => {
             </div>
           </form>
 
-          <Primary
-            onClick={ResendOtp}
-            loading={loading}
-            className="mt-[1em] w-[12em] rounded-full bg-text2 py-3 font-medium text-text5 sm:text-lg lg:mt-[2em]"
-          >
-            {loading ? (
-              <ReactLoading
-                color="#FFFFFF"
-                width={25}
-                height={25}
-                type="spin"
-                className="inline-block"
-              />
-            ) : (
-              "Resend OTP"
-            )}
-          </Primary>
+          <div className="mt-[1em] h-16 lg:mt-[2em]">
+            <Button
+              onClick={ResendOtp}
+              className="w-[12em] rounded-full bg-text2 py-3 font-medium text-text5 sm:text-lg"
+              disabled={loading || timer > 0}
+            >
+              {getButtonText()}
+            </Button>
+          </div>
         </div>
       </section>
     </main>

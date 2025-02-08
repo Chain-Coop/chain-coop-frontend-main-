@@ -12,6 +12,8 @@ import {
   IoIosArrowDown,
 } from "react-icons/io";
 import Modal from "../../../common/Modal";
+import { Button, Typography } from "@material-tailwind/react";
+import { ROUTES } from "../../../../shared/routes";
 
 type Contribution = {
   _id: string;
@@ -133,19 +135,22 @@ const Contribution: React.FC = () => {
               className="mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md md:mx-8 lg:mx-auto lg:max-w-2xl"
             >
               <div className="flex justify-end py-3">
-                <button
+                <Button
                   onClick={toggleModal}
-                  className="flex w-auto transform items-center  gap-2 rounded-lg border-[3px] border-gray-200 bg-[#E3D9E6] px-6 py-2 text-lg font-semibold text-text2 transition-all duration-300 hover:scale-105
+                  className="text-md flex w-auto transform  items-center gap-2 rounded-lg border-[3px] border-gray-200 bg-[#E3D9E6] px-6 py-2 font-semibold text-text2 transition-all duration-300 hover:scale-105
                   active:scale-95 md:py-3 lg:py-2"
                 >
                   Naira Savings
                   <IoIosArrowDown />
-                </button>
+                </Button>
               </div>
               <div className="flex items-center justify-center gap-4 font-sans">
-                <p className="text-sm font-medium md:text-base">
+                <Typography
+                  variant="small"
+                  className="text-sm font-medium md:text-base"
+                >
                   Total Contribution Balance
-                </p>
+                </Typography>
                 <ToggleButton
                   isVisible={isContributionVisible}
                   onToggle={(newVisibility) => {
@@ -162,11 +167,13 @@ const Contribution: React.FC = () => {
                 {isBalanceLoading ? (
                   <div className="h-8 animate-pulse rounded bg-gray-200"></div>
                 ) : isContributionVisible ? (
-                  <p className="font-bold sm:text-xl lg:text-xl">
+                  <Typography className="font-bold sm:text-xl lg:text-xl">
                     {formattedBalance}
-                  </p>
+                  </Typography>
                 ) : (
-                  <p className="text-2xl font-bold">*********</p>
+                  <Typography className="text-2xl font-bold">
+                    *********
+                  </Typography>
                 )}
                 <hr className="mt-[1em] h-[1px] rounded-md bg-howtext" />
               </div>
@@ -175,7 +182,7 @@ const Contribution: React.FC = () => {
             <section className="mt-6 md:mt-8">
               <div className="grid w-[80%] grid-cols-1 gap-4 md:grid-cols-2">
                 <Link
-                  to="/dashboard/contribution/contribution_curency_type"
+                  to={ROUTES.flexibleContributionType}
                   state={{ savingsType: "Flexible" }}
                 >
                   <motion.button
@@ -188,7 +195,7 @@ const Contribution: React.FC = () => {
                 </Link>
 
                 <Link
-                  to="/dashboard/contribution/lock/contribution_curency_type"
+                  to={ROUTES.lockContributionType}
                   state={{ savingsType: "Lock" }}
                 >
                   <motion.button
@@ -201,7 +208,7 @@ const Contribution: React.FC = () => {
                 </Link>
 
                 <Link
-                  to="/dashboard/contribution/strict_lock/contribution_curency_type"
+                  to={ROUTES.strictLockContributionType}
                   state={{ savingsType: "Strict" }}
                 >
                   <motion.button
@@ -220,7 +227,9 @@ const Contribution: React.FC = () => {
 
         <section className="mx-auto mt-8 w-full max-w-4xl px-4 md:mt-10 lg:mt-12">
           <header>
-            <h1 className="text-xl font-bold md:text-2xl">My Savings</h1>
+            <Typography variant="h1" className="text-xl font-bold md:text-2xl">
+              My Savings
+            </Typography>
           </header>
 
           {isContributionsLoading ? (
@@ -262,8 +271,12 @@ const Contribution: React.FC = () => {
                   className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-full border-2 border-gray-500 bg-white px-4 py-2 transition-all hover:bg-gray-50 md:px-6 md:py-3"
                 >
                   <div className="flex justify-between text-sm font-medium text-gray-500 md:text-base">
-                    <p>Savings Name</p>
-                    <p>Savings Balance</p>
+                    <Typography className="font-normal">
+                      Savings Name
+                    </Typography>
+                    <Typography className="font-normal">
+                      Savings Balance
+                    </Typography>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 md:gap-3">
@@ -276,9 +289,9 @@ const Contribution: React.FC = () => {
                           className="w-full"
                         />
                       </div>
-                      <p className="text-base font-semibold md:text-lg">
+                      <Typography className="text-base font-semibold md:text-lg">
                         {contribution?.savingsCategory}
-                      </p>
+                      </Typography>
                     </div>
                     <div>
                       <figure className="text-base font-semibold md:text-lg">
@@ -293,11 +306,14 @@ const Contribution: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-4 flex h-auto w-full flex-col gap-4 rounded-lg bg-text2 p-6 text-center md:mt-6 md:p-8"
+              className="mt-4 flex h-[12em] w-full flex-col items-center justify-center gap-4 rounded-lg bg-text2 p-6 text-center md:mt-6 md:p-8"
             >
-              <h2 className="text-xl font-bold text-how1 md:text-2xl">
+              <Typography
+                variant="h2"
+                className="text-xl font-bold text-how1 md:text-2xl"
+              >
                 No Savings Yet
-              </h2>
+              </Typography>
             </motion.div>
           )}
         </section>
