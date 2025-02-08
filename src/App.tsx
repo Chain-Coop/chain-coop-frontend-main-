@@ -23,6 +23,7 @@ import PartnerWithUs from "./components/pages/entry/PartnerWithUs";
 import TermsOfService from "./components/pages/footer/TermsOfService";
 import Team from "./components/pages/footer/Team";
 import AboutUs from "./components/pages/footer/AboutUs";
+import PrivacyPolicy from "./components/pages/footer/PrivacyPolicy";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
         <Route path="/terms" element={<TermsOfService />} />
         <Route path="/team" element={<Team />} />
         <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route
           path="/verification-successfull"
           element={<VerificationSuccessfull />}

@@ -78,12 +78,12 @@ export const becomeData = [
   {
     title: "Stay safe from inflation with USDT, USDC, LISK etc.",
     paragraph:
-      "Beat inflation by saving in stable coins and other cryptos. Automate your savings from Naira to crypo.",
+      "Beat inflation by saving in stable coins and other Cryptos. Automate your savings from Naira to Crypo.",
   },
   {
     title: "Save A % of your Naira to Crypto",
     paragraph:
-      "Choose what portion of your savings you want to be converted into crypto.",
+      "Choose what portion of your savings you want to be converted into Crypto.",
   },
   {
     title: "Save Together, Grow Together",
@@ -233,6 +233,10 @@ export const Legal = [
   {
     text: "Terms of service",
     to: "/terms",
+  },
+  {
+    text: "Privacy Policy",
+    to: "/privacy-policy",
   },
 ];
 
@@ -455,7 +459,201 @@ export const Terms = [
   },
 ];
 
-// src/data/teamData.js
+export const PrivacyData = [
+  {
+    title: "1. Introduction",
+    content: [
+      "Welcome to Chain Co-op. This Privacy Policy ('Policy') explains how we collect, use, share, and protect your personal data when you access and use our services. We understand the importance of privacy and are committed to safeguarding the personal information you entrust to us. This policy applies to all users of Chain Co-op's website and other digital platforms (collectively, the 'Services').",
+      "By using our Services, you agree to the collection and use of your information as described in this Policy. We may update this Policy from time to time to reflect changes in our practices or legal obligations. When we update the Policy, we will revise the date at the top and notify you accordingly, including through our website or via email, where appropriate.",
+    ],
+  },
+  {
+    title: "2. Consent",
+    content: [
+      "By accessing and using our Services, you acknowledge and accept the terms of this Privacy Policy. If you provide us with any personal data, you consent to our processing and use of that data in accordance with the terms of this Policy. You have the right to withdraw your consent at any time, although doing so may limit your ability to fully use some aspects of our Services.",
+    ],
+  },
+  {
+    title: "3. Information We Collect",
+    content:
+      "At Chain Co-op, we collect various types of personal data to ensure the smooth and secure operation of our platform. This data is divided into two main categories: information you provide directly and information we collect automatically.",
+    sections: [
+      {
+        title: "3.1 Information You Provide",
+        content:
+          "When you interact with our platform, such as by creating an account, making a transaction, or contacting customer support, we may collect the following information:",
+        list: [
+          "Account Details: Name, email address, phone number, residential address, date of birth, and any other information you provide when creating your Chain Co-op account.",
+          "Payment Information: Bank account details, cryptocurrency wallet addresses, payment history, and transaction records.",
+          "Profile Information: This may include personal preferences, interests, and other details you choose to share with us to improve your experience.",
+          "Communication Data: Information you provide when you contact us through email, support requests, or feedback forms, such as your queries, complaints, and requests for assistance.",
+        ],
+      },
+      {
+        title: "3.2 Information From Transactions",
+        content:
+          "As you use Chain Co-op's services, particularly in relation to crypto saving, trading, or borrowing, we collect transaction-related data, including:",
+        list: [
+          "Transaction Details: The amount, type of asset (BTC, ETH, stablecoins, etc.), and transaction history.",
+          "Transaction Metadata: Time, date, merchant or partner details, and any notes or memos attached to a transaction.",
+        ],
+      },
+      {
+        title: "3.3 Automatically Collected Information",
+        content: "We may collect data automatically when you use our platform:",
+        list: [
+          "Device and Usage Data: Information about the device you're using, including hardware model, operating system version, browser type, and the pages you visit. We also collect information about how you interact with our website or mobile apps, such as session time, navigation patterns, and search queries.",
+          "IP Address: We log your IP address to help identify your device, prevent fraud, and improve platform performance.",
+          "Cookies and Tracking Technologies: We use cookies and similar technologies (like pixels and web beacons) to collect information on how you use our platform. This data helps us personalize your experience, analyse traffic, and improve the platform's performance. For more information on how to manage cookies, refer to the 'Your Choices' section.",
+        ],
+      },
+      {
+        title: "3.4 Third-Party Information",
+        content:
+          "To verify your identity and enhance security, we may receive personal data from third-party service providers:",
+        list: [
+          "Verification and Fraud Prevention: We work with third-party services that help us verify your identity (e.g., identity verification services, credit bureaus) and prevent fraud.",
+          "Partner Data: We may receive data from our business partners (e.g., banks, crypto exchanges) to facilitate your transactions and ensure smooth processing of services.",
+        ],
+      },
+    ],
+  },
+  {
+    title: "4. How We Use Your Information",
+    sections: [
+      {
+        title: "4.1 Service Delivery and Improvement",
+        list: [
+          "Account Management: To create, maintain, and manage your Chain Co-op account.",
+          "Transaction Processing: To process and confirm your transactions, both financial and non-financial (such as crypto savings or loan requests).",
+          "Platform Improvement: To enhance our Services, such as optimizing website functionality, improving user experience, and adding new features.",
+        ],
+      },
+      {
+        title: "4.2 Communication",
+        list: [
+          "Account-related Messages: To send you important updates related to your account, such as confirmations, security alerts, and support communications.",
+          "Promotions and News: With your consent, to send you promotional messages about new services, features, offers, or events that may interest you.",
+          "Customer Support: To respond to your queries and provide customer support via email, chat, or other communication channels.",
+        ],
+      },
+      {
+        title: "4.3 Legal Compliance and Security",
+        list: [
+          "Fraud Prevention and Compliance: To comply with regulatory requirements, prevent fraud, and protect our platform and users.",
+          "Data Protection: To safeguard the personal data we collect and ensure it is used in compliance with data protection laws and regulations.",
+        ],
+      },
+    ],
+  },
+  {
+    title: "5. Information Sharing",
+    sections: [
+      {
+        title: "5.1 Service Providers",
+        content:
+          "We work with trusted third-party service providers to deliver our Services, such as payment processors, hosting services, and customer support tools. These providers only have access to your information as necessary to perform their services.",
+      },
+      {
+        title: "5.2 Legal and Regulatory Obligations",
+        content: "We may disclose your personal data in response to:",
+        list: [
+          "Legal requests, such as subpoenas or court orders.",
+          "Compliance with financial regulations or anti-money laundering laws.",
+          "Protecting the rights, property, or safety of Chain Co-op, its users, or the public.",
+        ],
+      },
+      {
+        title: "5.3 Business Transfers",
+        content:
+          "In the event of a merger, acquisition, or sale of assets, your personal data may be transferred to the acquiring party, but we will notify you before this happens.",
+      },
+      {
+        title: "5.4 Aggregated or Anonymized Data",
+        content:
+          "We may share aggregated or de-identified data with third parties for research, analysis, or marketing purposes. This data cannot reasonably be used to identify you.",
+      },
+    ],
+  },
+  {
+    title: "6. Security Measures",
+    content:
+      "At Chain Co-op, we prioritize the security of your personal information. We implement various technical, physical, and administrative safeguards, including:",
+    list: [
+      "Data Encryption: Sensitive data, such as payment information and transaction details, is encrypted during transmission and storage.",
+      "Access Control: We limit access to your personal data to authorized personnel who require it for legitimate business purposes.",
+      "Regular Audits: We regularly conduct internal audits to monitor our security systems and ensure compliance with industry standards.",
+    ],
+    footer:
+      "Despite these efforts, no security measure is entirely foolproof. While we take all reasonable steps to protect your data, we cannot guarantee the absolute security of your information.",
+  },
+  {
+    title: "7. Your Rights",
+    content:
+      "Under applicable data protection laws, you have several rights regarding your personal information:",
+    sections: [
+      {
+        title: "7.1 Access and Correction",
+        content:
+          "You have the right to access the personal data we hold about you and request corrections to any inaccurate or incomplete data.",
+      },
+      {
+        title: "7.2 Deletion",
+        content:
+          "You can request the deletion of your personal data, subject to our legal obligations and business requirements.",
+      },
+      {
+        title: "7.3 Withdrawal of Consent",
+        content:
+          "You may withdraw your consent for us to process your data at any time. However, this may affect your ability to use some of our Services.",
+      },
+      {
+        title: "7.4 Data Portability",
+        content:
+          "You have the right to receive your data in a structured, commonly used, and machine-readable format, and to transfer it to another service provider.",
+      },
+      {
+        title: "7.5 Complaints",
+        content:
+          "If you believe your data has been mishandled, you have the right to lodge a complaint with the relevant data protection authority authorities",
+      },
+    ],
+  },
+  {
+    title: "8. Data Retention",
+    content: [
+      "We retain your personal data for as long as necessaryto fulfill the proposed outlined in this privacy policy or as required by law. Once your data is no longer needed. we securely delete to annonymize it.",
+    ],
+  },
+  {
+    title: "9. International Data Transfers",
+    content: [
+      "Personal data may be transferred to and stored in locations outside your country of residence Including countries that may not have the Same level of data protection laws. In such cases, we ensure that appropriate safeguards are in place to protect your data, as required by applicable laws.",
+    ],
+  },
+  {
+    title: "10. Cookies and Tracking Technologies",
+    content: [
+      "Our services and improve your experience. You can manage your cookie preferences through your browser settings but Please note that blocking cookies may impact the functionality of our services.",
+    ],
+  },
+  {
+    title: "11. Changes to This Policy",
+    content: [
+      "We reserve the right to update or change this privacy policy at any time.Any changes will be posted on this page and updated dates will be reflected at the top of the document.We encourage you to review this policy periodically to stay informed about how we protect your data.The last one",
+    ],
+  },
+  {
+    title: "12. Contact Us",
+    content: [
+      "If you have any questions or concerns about this privacy policy or how we handle your personal data please contact us.",
+      "Email: info@chaincoopeartive.com",
+      "Address: 9 Ogulana street, Oregun Alausa",
+      "Phone number +234 809 322 7696",
+      "We are commited to ensuring your privacy is respected and protected.",
+    ],
+  },
+];
 
 export const teamMembers = [
   {
