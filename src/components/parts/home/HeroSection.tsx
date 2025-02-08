@@ -16,8 +16,8 @@ const container = (delay: any) => ({
 
 const HeroSection = () => {
   return (
-    <main className="relative flex w-full flex-col font-sans lg:flex-row">
-      <div className="flex items-center px-4 py-5 lg:w-1/2 lg:px-[4em] lg:py-[10em]">
+    <main className="relative flex w-full flex-col font-sans lg:min-h-[600px] lg:flex-row">
+      <div className="flex items-center px-4 py-5 lg:w-1/2 lg:px-[4em] lg:py-[8em]">
         <div className="max-w-xl">
           <div className="mb-4 lg:mb-6">
             <MotionTypography
@@ -68,7 +68,12 @@ const HeroSection = () => {
           </motion.div>
         </div>
       </div>
-      <div className="hidden w-full bg-heroBackground bg-cover bg-center bg-no-repeat lg:block lg:h-auto lg:w-1/2"></div>
+      <div className="hidden lg:block lg:h-full lg:w-1/2">
+        <div
+          className="h-full w-full bg-heroBackground bg-cover bg-center bg-no-repeat"
+          style={{ minHeight: "600px" }}
+        ></div>
+      </div>
     </main>
   );
 };
