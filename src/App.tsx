@@ -21,6 +21,7 @@ import WhyChainCoop from "./components/pages/entry/WhyChainCoop";
 import ProtectedRoutes from "./components/protected/ProtectedRoute";
 import PartnerWithUs from "./components/pages/entry/PartnerWithUs";
 import TermsOfService from "./components/pages/footer/TermsOfService";
+import Team from "./components/pages/footer/Team";
 
 function App() {
   return (
@@ -37,6 +38,8 @@ function App() {
         <Route path="/new-password" element={<NewPassword />} />
         <Route path="/account-otp" element={<UserLoginOtp />} />
         <Route path="/terms" element={<TermsOfService />} />
+        <Route path="/team" element={<Team />} />
+
         <Route
           path="/verification-successfull"
           element={<VerificationSuccessfull />}

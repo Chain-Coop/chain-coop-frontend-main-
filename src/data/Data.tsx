@@ -10,6 +10,7 @@ import wallet from "../Assets/svg/dashboard/wallet.svg";
 import home from "../Assets/svg/dashboard/home.svg";
 import contribution from "../Assets/svg/dashboard/contribution.svg";
 import profile from "../Assets/svg/dashboard/Profile.svg";
+import personA from "../Assets/png/footer/team/png/image1.png";
 
 export const navBarLinks = [
   { to: "/why-chain-co-op", text: "Why Chain Coop" },
@@ -203,6 +204,13 @@ export const CustomerFeeExplorerCardData = [
   },
   {
     paragraph: "Invest in the coop network business",
+  },
+];
+
+export const Company = [
+  {
+    text: "Team",
+    to: "/team",
   },
 ];
 
@@ -436,5 +444,58 @@ export const Terms = [
       "Additionally, we do not guarantee that accessing Chain Co-op from territories outside Nigeria complies with applicable laws.",
       "If you use Chain Co-op from outside Nigeria, you do so at your own risk and must ensure compliance with the laws of your location.",
     ],
+  },
+];
+
+// src/data/teamData.js
+
+export const teamMembers = [
+  {
+    id: 1,
+    name: "Olajuwon Ogunseye",
+    role: "Data Engineer/CCO",
+    image: personA,
+    description:
+      "Olajuwon Ogunseye is a Data Engineer with 6+ years fintech and blockchain experience. He is focusing on cooperative and decentralized finance.",
+    social: {
+      twitter: "#",
+      linkedin: "#",
+    },
+  },
+  {
+    id: 2,
+    name: "Rebecca Asseh",
+    role: "Content Marketer",
+    image: personA,
+    description:
+      "Rebecca Asseh is a Blockchain Content Marketer, crypto educator and board member of Black Women in Blockchain Council. She works on simplifying blockchain for end-users.",
+    social: {
+      twitter: "#",
+      linkedin: "#",
+    },
+  },
+  {
+    id: 3,
+    name: "AbdulSamad Gobir",
+    role: "Product Manager / CMO",
+    image: personA,
+    description:
+      "Founder of jobhunteters and co-founder of Automation Affairs Ltd. a versatile product and project manager. A former Presidient of the gemstones Toast masters Club with contributions of over 200 applictaions and product with companies like Appcake and Routepay.G",
+    social: {
+      twitter: "#",
+      linkedin: "#",
+    },
+  },
+  {
+    id: 4,
+    name: "Kalu Iwere Eyitemi",
+    role: "Content Marketer",
+    image: personA,
+    description:
+      "Eyitemi is a Product designer with over 3+years of experience.",
+    social: {
+      twitter: "#",
+      linkedin: "#",
+    },
   },
 ];

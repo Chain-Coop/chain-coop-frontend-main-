@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Contacts, Explore, Legal } from "../../data/Data";
+import { Company, Contacts, Explore, Legal } from "../../data/Data";
 import X from "../../Assets/png/home/twitterx.png";
 import linkedin from "../../Assets/png/home/linkedin.png";
 import { useDispatch } from "react-redux";
@@ -91,6 +91,22 @@ const Footer = () => {
                 guarantees returns through cutting-edge blockchain technology
                 and sustainable business investments.
               </Typography>
+            </section>
+
+            <section className="w-full space-y-4">
+              <Typography
+                variant="h2"
+                className="text-sm font-semibold text-text3"
+              >
+                Company
+              </Typography>
+              <div>
+                {Company.map((data, index) => (
+                  <p className="mb-2 font-light text-text3" key={index}>
+                    <Link to={data.to}>{data.text}</Link>
+                  </p>
+                ))}
+              </div>
             </section>
 
             <section className="w-full space-y-4">
