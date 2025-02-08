@@ -73,8 +73,8 @@ const NavBar = () => {
             })}
             <div className="block font-bold lg:hidden">
               <Link to={ROUTES.sign_in}>
-                <Button className="text- textPrimary top-[26px] flex h-[50px] w-[150px] justify-center gap-[16px]  rounded-md bg-primary p-[8px] text-center font-sans text-[20px] leading-6 lg:block">
-                  Login
+                <Button className="rounded-md bg-primary px-7 py-2 normal-case text-black lg:block">
+                  <span className="text-lg font-semibold">Login</span>
                 </Button>
               </Link>
             </div>
