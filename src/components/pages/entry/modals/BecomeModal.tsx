@@ -1,7 +1,9 @@
+//@ts-nocheck
 import {
   Dialog,
   DialogHeader,
   DialogBody,
+  DialogFooter,
   Typography,
   Button,
 } from "@material-tailwind/react";
@@ -20,7 +22,8 @@ const BecomeModal = ({ isOpen, onClose }: BecomeModalProps) => {
         unmount: { scale: 0.9, y: -100 },
       }}
       open={isOpen}
-      size="xs"
+      handler={onClose}
+      size="sm"
       className="max-h-[90vh] overflow-y-auto p-7"
     >
       <DialogHeader className="flex flex-col gap-2 px-2 text-center sm:px-4">
