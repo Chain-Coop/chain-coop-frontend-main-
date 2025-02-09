@@ -216,6 +216,7 @@ const WhyChainCoop = () => {
                 />
               </div>
             </motion.div>
+
             <motion.div
               variants={slideInRight}
               className="relative h-[370px] w-full md:h-[400px] lg:h-[450px] lg:w-[38%]"
@@ -249,6 +250,7 @@ const WhyChainCoop = () => {
               </div>
             </motion.div>
           </motion.section>
+
           <motion.section
             initial="hidden"
             whileInView="visible"
@@ -256,7 +258,7 @@ const WhyChainCoop = () => {
             variants={staggerContainer}
             className="relative mx-auto flex w-full flex-col items-center px-4 lg:w-[74%] lg:px-2 lg:py-[4em]"
           >
-            <div className="relative  z-10 mt-[1.5em] max-w-full px-2 text-center sm:px-4">
+            <div className="relative z-10 mt-[1.5em] max-w-full px-2 text-center sm:px-4">
               <MotionTypography
                 variant="h1"
                 variants={fadeInUp}
@@ -285,7 +287,7 @@ const WhyChainCoop = () => {
                 variants={fadeIn}
                 className="flex flex-col items-center justify-between md:flex-row md:gap-[3em] lg:gap-[7em]"
               >
-                <div className="flex flex-1 flex-col gap-4 p-4 sm:p-6 lg:p-8">
+                <div className="order-2 flex flex-1 flex-col gap-4 p-4 sm:p-6 md:order-1 lg:p-8">
                   <Typography
                     variant="h5"
                     className="text-lg text-text2 sm:text-xl"
@@ -302,7 +304,7 @@ const WhyChainCoop = () => {
                     unauthorized access.
                   </Typography>
                 </div>
-                <div className="mt-4 md:mt-0">
+                <div className="order-1 mt-4 md:order-2 md:mt-0">
                   <img
                     src={box1}
                     alt="Blockchain Security"
@@ -313,16 +315,9 @@ const WhyChainCoop = () => {
 
               <motion.div
                 variants={fadeIn}
-                className="flex flex-col-reverse items-center justify-between md:flex-row md:gap-[3em] lg:gap-[7em]"
+                className="flex flex-col items-center justify-between md:flex-row md:gap-[3em] lg:gap-[7em]"
               >
-                <div className="mt-4 md:mt-0">
-                  <img
-                    src={box2}
-                    alt="Multiple Currencies"
-                    className="w-full max-w-[300px] md:max-w-none"
-                  />
-                </div>
-                <div className="flex flex-1 flex-col gap-4 p-4 sm:p-6 lg:p-8">
+                <div className="order-2 flex flex-1 flex-col gap-4 p-4 sm:p-6 md:order-2 lg:p-8">
                   <Typography
                     variant="h5"
                     className="text-lg text-text2 sm:text-xl"
@@ -339,13 +334,20 @@ const WhyChainCoop = () => {
                     like never before.
                   </Typography>
                 </div>
+                <div className="order-1 mt-4 md:order-1 md:mt-0">
+                  <img
+                    src={box2}
+                    alt="Multiple Currencies"
+                    className="w-full max-w-[300px] md:max-w-none"
+                  />
+                </div>
               </motion.div>
 
               <motion.div
                 variants={fadeIn}
                 className="flex flex-col items-center justify-between md:flex-row md:gap-[3em] lg:gap-[7em]"
               >
-                <div className="flex flex-1 flex-col gap-4 p-4 sm:p-6 lg:p-8">
+                <div className="order-2 flex flex-1 flex-col gap-4 p-4 sm:p-6 md:order-1 lg:p-8">
                   <Typography
                     variant="h5"
                     className="text-lg text-text2 sm:text-xl"
@@ -361,7 +363,7 @@ const WhyChainCoop = () => {
                     your savings grow effortlessly-all on autopilot.
                   </Typography>
                 </div>
-                <div className="mt-4 md:mt-0">
+                <div className="order-1 mt-4 md:order-2 md:mt-0">
                   <img
                     src={box3}
                     alt="Auto Savings"
@@ -387,14 +389,14 @@ const WhyChainCoop = () => {
             whileInView="visible"
             viewport={{ once: false, amount: 0.3 }}
             variants={staggerContainer}
-            className="relative mx-auto  flex w-full flex-col items-center px-4 pt-8 sm:pt-12 lg:w-[74%] lg:px-2 lg:py-[4em]"
+            className="relative mx-auto flex w-full flex-col items-center px-4 pt-8 sm:pt-12 lg:w-[74%] lg:px-2 lg:py-[4em]"
           >
             <div className="mt-8 flex w-full flex-col gap-12 sm:mt-12 sm:gap-16 lg:mt-16 lg:gap-24">
               <motion.div
                 variants={fadeIn}
                 className="flex flex-col items-center justify-between md:flex-row md:gap-[3em] lg:gap-[7em]"
               >
-                <div className="flex flex-1 flex-col gap-4 p-4 sm:p-6 lg:p-8">
+                <div className="order-2 flex flex-1 flex-col gap-4 p-4 sm:p-6 md:order-1 lg:p-8">
                   <Typography
                     variant="h5"
                     className="text-lg text-text2 sm:text-xl"
@@ -411,7 +413,7 @@ const WhyChainCoop = () => {
                     unauthorized access.
                   </Typography>
                 </div>
-                <div className="mt-4 md:mt-0">
+                <div className="order-1 mt-4 md:order-2 md:mt-0">
                   <img
                     src={box4}
                     alt="Blockchain Security"
@@ -422,16 +424,9 @@ const WhyChainCoop = () => {
 
               <motion.div
                 variants={fadeIn}
-                className="flex flex-col-reverse items-center justify-between md:flex-row md:gap-[3em] lg:gap-[7em]"
+                className="flex flex-col items-center justify-between md:flex-row md:gap-[3em] lg:gap-[7em]"
               >
-                <div className="mt-4 md:mt-0">
-                  <img
-                    src={box5}
-                    alt="Multiple Currencies"
-                    className="w-full max-w-[300px] md:max-w-none"
-                  />
-                </div>
-                <div className="flex flex-1 flex-col gap-4 p-4 sm:p-6 lg:p-8">
+                <div className="order-2 flex flex-1 flex-col gap-4 p-4 sm:p-6 md:order-2 lg:p-8">
                   <Typography
                     variant="h5"
                     className="text-lg text-text2 sm:text-xl"
@@ -447,6 +442,13 @@ const WhyChainCoop = () => {
                     preferences giving you the freedom to diversify your savings
                     like never before.
                   </Typography>
+                </div>
+                <div className="order-1 mt-4 md:order-1 md:mt-0">
+                  <img
+                    src={box5}
+                    alt="Multiple Currencies"
+                    className="w-full max-w-[300px] md:max-w-none"
+                  />
                 </div>
               </motion.div>
             </div>

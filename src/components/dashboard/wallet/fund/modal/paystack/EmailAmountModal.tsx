@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { brandPrimary } from "../../../../../common/Button";
 import { useAppDispatch } from "../../../../../../shared/redux/reduxHooks";
 import { AppDispatch } from "../../../../../../shared/redux/store";
 import { toast } from "react-toastify";
 import { FundWallet } from "../../../../../../shared/redux/slices/transaction.slices";
 import ReactLoading from "react-loading";
+import { Button } from "@material-tailwind/react";
 
 interface EmailAmountModalProps {
   closeModal: () => void;
@@ -113,7 +113,8 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({ closeModal }) => {
               </p>
             )}
           </div>
-          <Primary
+          <Button
+            variant="text"
             type="submit"
             disabled={!amount || loading}
             className="mt-[1.5em] flex w-full justify-center bg-text2 py-2 text-white"
@@ -128,7 +129,7 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({ closeModal }) => {
             ) : (
               `Pay ₦${amount || "0.00"}`
             )}
-          </Primary>
+          </Button>
         </form>
       </div>
     </main>

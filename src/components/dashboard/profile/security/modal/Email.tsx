@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { brandPrimary } from "../../../../common/Button";
 import ReactLoading from "react-loading";
 import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 import { ResetPassword } from "../../../../../shared/redux/slices/landing.slices";
 import { AppDispatch } from "../../../../../shared/redux/store";
+import { Button } from "@material-tailwind/react";
 
 const EmailStep = ({ onClose, onEmailSent }: any) => {
   const [email, setEmail] = useState("");
@@ -62,7 +62,8 @@ const EmailStep = ({ onClose, onEmailSent }: any) => {
 
         {error && <p className="text-center text-red-500">{error}</p>}
 
-        <Primary
+        <Button
+          variant="text"
           onClick={handleOtpMail}
           disabled={isLoading}
           className="m-auto mt-4 flex w-[70%] justify-center rounded-full bg-text2 px-3 py-2 text-lg text-white"
@@ -81,7 +82,7 @@ const EmailStep = ({ onClose, onEmailSent }: any) => {
           ) : (
             "Reset"
           )}
-        </Primary>
+        </Button>
       </section>
     </main>
   );

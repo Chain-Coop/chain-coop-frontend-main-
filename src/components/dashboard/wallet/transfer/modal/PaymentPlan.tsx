@@ -1,5 +1,5 @@
+import { Button } from "@material-tailwind/react";
 import React, { useState } from "react";
-import { brandPrimary } from "../../../../common/Button";
 
 interface PaymentPlanProps {
   onContinue: (selectedPlan: string) => void;
@@ -47,12 +47,13 @@ const PaymentPlan: React.FC<PaymentPlanProps> = ({ onContinue }) => {
           </div>
         </div>
       </section>
-      <Primary
+      <Button
+        variant="text"
         className="mt-[3em] w-full bg-text2 py-3 text-white"
         onClick={handleContinueClick}
       >
         Continue
-      </Primary>
+      </Button>
     </main>
   );
 };

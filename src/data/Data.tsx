@@ -10,10 +10,13 @@ import wallet from "../Assets/svg/dashboard/wallet.svg";
 import home from "../Assets/svg/dashboard/home.svg";
 import contribution from "../Assets/svg/dashboard/contribution.svg";
 import profile from "../Assets/svg/dashboard/Profile.svg";
-import personA from "../Assets/png/footer/team/png/image1.png";
+import temi from "../Assets/png/footer/team/png/image1.png";
+import juwon from "../Assets/png/home/juwon.png";
+import samad from "../Assets/png/home/abdulSamad.png";
+import rebecca from "../Assets/png/home/rebecca.png";
 
 export const navBarLinks = [
-  { to: "/why-chain-co-op", text: "Why Chain Coop" },
+  { to: "/why-chain-co-op", text: "Why Chain Co-op" },
   { to: "/partner-with-us", text: "Partner with us" },
   { to: "/contact", text: "Contact" },
 ];
@@ -72,7 +75,7 @@ export const becomeData = [
   {
     title: "Save in Naira",
     paragraph:
-      "Build a culture of Saving and jon others in building communal wealth by saving in naira.",
+      "Build a culture of Saving and join others in building communal wealth by saving in naira.",
   },
 
   {
@@ -114,10 +117,10 @@ export const trustedPartners = [
 
 export const customerCardData = [
   {
-    paragraph: "Vote & get involved in the Coop Network",
+    paragraph: "Vote & get involved in the Co-op Network",
   },
   {
-    paragraph: "Invest in the Coop Network business",
+    paragraph: "Invest in the Co-op Network business",
   },
   {
     paragraph: "Mint NFT after 6 months of saving",
@@ -130,10 +133,10 @@ export const customerCardData = [
 
 export const investorCardData = [
   {
-    paragraph: "Vote & get involved in the Coop Network",
+    paragraph: "Vote & get involved in the Co-op Network",
   },
   {
-    paragraph: "Invest in the Coop Network business",
+    paragraph: "Invest in the Co-op Network business",
   },
   {
     paragraph: "Early access to first investment rounds",
@@ -152,10 +155,10 @@ export const investorCardData = [
 
 export const employeeCardData = [
   {
-    paragraph: "Vote & get involved in the Coop Network",
+    paragraph: "Vote & get involved in the Co-op Network",
   },
   {
-    paragraph: "Invest in the Coop Network business",
+    paragraph: "Invest in the Co-op Network business",
   },
   {
     paragraph: "Early access to first investment rounds",
@@ -182,16 +185,16 @@ export const MembershipFeePioneerCardData = [
     paragraph: "Installmentall payment is allowed till fee is completed",
   },
   {
-    paragraph: "Vote and engage with the coop network",
+    paragraph: "Vote and engage with the Co-op network",
   },
   {
-    paragraph: "Invest in the coop network business",
+    paragraph: "Invest in the Co-op network business",
   },
   {
     paragraph: "Early access to the first investment rounds",
   },
   {
-    paragraph: "Discounted the coop network product and services",
+    paragraph: "Discounted the Co-op network product and services",
   },
 ];
 
@@ -200,10 +203,10 @@ export const CustomerFeeExplorerCardData = [
     paragraph: "Installmentall payment is allowed till fee is completed",
   },
   {
-    paragraph: "Vote and engage with the coop network",
+    paragraph: "Vote and engage with the Co-op network",
   },
   {
-    paragraph: "Invest in the coop network business",
+    paragraph: "Invest in the Co-op network business",
   },
 ];
 
@@ -220,7 +223,7 @@ export const Company = [
 
 export const Explore = [
   {
-    text: "Why Chain Coop",
+    text: "Why Chain Co-op",
     to: "/why-chain-co-op",
   },
   {
@@ -281,7 +284,7 @@ export const Terms = [
   {
     title: "1. Introduction",
     content:
-      "The website is operated by the cooperative 'Chain Co-op', a legal entity registered with the Lagos State Ministry of Commerce, Industry, and Cooperatives, Alausa, lagos with its registered office at 9, Ogunlana close, Alausa, Lagos. Chain Co-op provides an automated savings platform available on its website at chaincoop.org.",
+      "The website is operated by the Co-operative 'Chain Co-op', a legal entity registered with the Lagos State Ministry of Commerce, Industry, and Co-operatives, Alausa, lagos with its registered office at 9, Ogunlana close, Alausa, Lagos. Chain Co-op provides an automated savings platform available on its website at chainCo-op.org.",
   },
   {
     title: "2. Definitions",
@@ -289,7 +292,7 @@ export const Terms = [
       {
         term: '"Privacy policy"',
         definition:
-          "means the regulations established on the page (https://chaincoop.org/privacy-policy) operated by Chain Co-op, as well as all documents referred to within them.",
+          "means the regulations established on the page (https://chainCo-op.org/privacy-policy) operated by Chain Co-op, as well as all documents referred to within them.",
       },
       {
         term: '"Applicable law"',
@@ -335,7 +338,7 @@ export const Terms = [
   {
     title: "3. Membership",
     content:
-      "Chain Co-op is a cooperative that allows users to save money online and convert it into stable cryptocurrencies like USDT. Becoming a member requires completing the necessary procedures, such as the successful completion of the Know Your Customer (KYC) procedure, along with any other methods outlined in the governing documents of Chain Co-op.",
+      "Chain Co-op is a Co-operative that allows users to save money online and convert it into stable cryptocurrencies like USDT. Becoming a member requires completing the necessary procedures, such as the successful completion of the Know Your Customer (KYC) procedure, along with any other methods outlined in the governing documents of Chain Co-op.",
   },
   {
     title: "4. Purposes",
@@ -344,7 +347,7 @@ export const Terms = [
       "In order to operate and make available the services and utilise the platform, Chain Co-op collects, uses and discloses certain personal information about you. We collect, use, disclose and protect that information as described in our privacy policy, which is hereby incorporated into these Terms of Use.",
       "Please read the privacy policy carefully before accessing the Platform or using the Services.",
       "References to 'you' or 'your' are references to any person accessing or using the Platform and/or Services by any means. Chain Co-op provides an online platform where users can save money and convert it into cryptocurrencies.",
-      "The cooperative is governed using blockchain technology, ensuring transparency, security, and efficient management of member funds.",
+      "The Co-operative is governed using blockchain technology, ensuring transparency, security, and efficient management of member funds.",
     ],
   },
   {
@@ -424,7 +427,7 @@ export const Terms = [
     content: [
       "You affirm and guarantee the following, and you agree to notify Chain Co-op promptly if any of these assurances no longer hold:",
       "To the best of your knowledge, after conducting thorough inquiries, no funds or assets under Chain Co-op management have been or will be derived from or involved in any illegal activities violating applicable laws.",
-      "Your contributions or payments to Chain Co-op will not cause the cooperative to breach applicable laws.",
+      "Your contributions or payments to Chain Co-op will not cause the Co-operative to breach applicable laws.",
     ],
   },
   {
@@ -647,7 +650,7 @@ export const PrivacyData = [
     title: "12. Contact Us",
     content: [
       "If you have any questions or concerns about this privacy policy or how we handle your personal data please contact us.",
-      "Email: info@chaincoopeartive.com",
+      "Email: info@chainCo-opeartive.com",
       "Address: 9 Ogulana street, Oregun Alausa",
       "Phone number +234 809 322 7696",
       "We are commited to ensuring your privacy is respected and protected.",
@@ -658,21 +661,22 @@ export const PrivacyData = [
 export const teamMembers = [
   {
     id: 1,
-    name: "Olajuwon Ogunseye",
+    name: "Olawajuwon Ogunseye",
     role: "Data Engineer/CCO",
-    image: personA,
+    image: juwon,
     description:
-      "Olajuwon Ogunseye is a Data Engineer with 6+ years fintech and blockchain experience. He is focusing on cooperative and decentralized finance.",
+      "Olawajuwon Ogunseye is a Data Engineer with 6+ years fintech and blockchain experience. He is focusing on Co-operative and decentralized finance.",
     social: {
-      twitter: "#",
-      linkedin: "#",
+      twitter: "https://x.com/juwon_ogunseye?t=ZAuheRFCskhkB6NeNITdUA&s=09",
+      linkedin:
+        "https://www.linkedin.com/in/oluwajuwon-micheal?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
     },
   },
   {
     id: 2,
     name: "Rebecca Asseh",
     role: "Content Marketer",
-    image: personA,
+    image: rebecca,
     description:
       "Rebecca Asseh is a Blockchain Content Marketer, crypto educator and board member of Black Women in Blockchain Council. She works on simplifying blockchain for end-users.",
     social: {
@@ -684,19 +688,20 @@ export const teamMembers = [
     id: 3,
     name: "AbdulSamad Gobir",
     role: "Product Manager / CMO",
-    image: personA,
+    image: samad,
     description:
       "Founder of jobhunteters and co-founder of Automation Affairs Ltd. a versatile product and project manager. A former Presidient of the gemstones Toast masters Club with contributions of over 200 applictaions and product with companies like Appcake and Routepay.G",
     social: {
       twitter: "#",
-      linkedin: "#",
+      linkedin:
+        "https://www.linkedin.com/in/abdulsamadgobir?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
     },
   },
   {
     id: 4,
     name: "Kalu Iwere Eyitemi",
     role: "Content Marketer",
-    image: personA,
+    image: temi,
     description:
       "Eyitemi is a Product designer with over 3+years of experience.",
     social: {

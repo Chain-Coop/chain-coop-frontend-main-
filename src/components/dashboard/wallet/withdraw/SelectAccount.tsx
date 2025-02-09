@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { DashboardHeader } from "../../../common/DashboardHeader";
-import { brandPrimary } from "../../../common/Button";
 import { IoIosArrowBack, IoIosSearch, IoIosArrowDown } from "react-icons/io";
 import { useAllBanks } from "../../../../shared/Hooks/useUserProfile";
 import { useDispatch } from "react-redux";
@@ -9,6 +8,7 @@ import { GetAccountName } from "../../../../shared/redux/slices/transaction.slic
 import { AppDispatch } from "../../../../shared/redux/store";
 import ReactLoading from "react-loading";
 import { Alert } from "@mui/material";
+import { Button } from "@material-tailwind/react";
 
 interface Bank {
   id: string;
@@ -158,7 +158,8 @@ const SelectAccount = () => {
           </Alert>
         )}
 
-        <Primary
+        <Button
+          variant="text"
           className="mt-8 flex w-full items-center justify-center bg-text2 py-3 text-white"
           onClick={verifyAccount}
         >
@@ -167,7 +168,7 @@ const SelectAccount = () => {
           ) : (
             "Verify Account"
           )}
-        </Primary>
+        </Button>
       </section>
     </main>
   );

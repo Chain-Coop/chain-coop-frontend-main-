@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import OtpPin from "../../../../../shared/utils/OtpInput";
-import { brandPrimary } from "../../../../common/Button";
+import { Button } from "@material-tailwind/react";
 
 const OtpInput = ({ otp, setOtp, onClose, onOtpEntered }: any) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -24,13 +24,14 @@ const OtpInput = ({ otp, setOtp, onClose, onOtpEntered }: any) => {
       </div>
 
       <div className="space-y-3">
-        <Primary
+        <Button
+          variant="text"
           onClick={handleContinue}
           className="m-auto w-[60%] rounded-full bg-text2 py-2 text-white"
           disabled={isLoading}
         >
           Continue
-        </Primary>
+        </Button>
       </div>
     </div>
   );

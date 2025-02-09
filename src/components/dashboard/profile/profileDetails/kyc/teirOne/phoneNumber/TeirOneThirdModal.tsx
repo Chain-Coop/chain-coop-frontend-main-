@@ -5,10 +5,10 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../../../shared/redux/store";
 import { kycPhoneOtp } from "../../../../../../../shared/redux/slices/kyc.slices";
 import { Alert } from "@mui/material";
-import { brandPrimary } from "../../../../../../common/Button";
 import ReactLoading from "react-loading";
 import { toast } from "react-toastify";
 import { VerifykycPhoneOtp } from "../../../../../../../shared/redux/slices/kyc.slices";
+import { Button } from "@material-tailwind/react";
 
 interface TierOneThirdModalProps {
   reference: string;
@@ -151,7 +151,8 @@ const TierOneThirdModal: React.FC<TierOneThirdModalProps> = ({
       </section>
 
       <div className="mt-6 flex justify-center  px-4">
-        <Primary
+        <Button
+          variant="text"
           className="w-full max-w-md bg-text2 py-3 text-white transition-all hover:bg-text2/90"
           onClick={verifyCode}
           disabled={loading || code.length !== 6}
@@ -168,7 +169,7 @@ const TierOneThirdModal: React.FC<TierOneThirdModalProps> = ({
           ) : (
             "Verify"
           )}
-        </Primary>
+        </Button>
       </div>
       <div className="mt-3">
         <p>

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../../../shared/redux/store";
 import OtpPin from "../../../../../../../shared/utils/OtpInput";
-import { brandPrimary } from "../../../../../../common/Button";
 import ReactLoading from "react-loading";
 import { Alert } from "@mui/material";
 import { toast } from "react-toastify";
@@ -10,6 +9,7 @@ import {
   kycWhatsAppOtp,
   VerifykycWhatsAppOtp,
 } from "../../../../../../../shared/redux/slices/kyc.slices";
+import { Button } from "@material-tailwind/react";
 
 interface WhatsAppVerificationModalProps {
   reference: string;
@@ -149,7 +149,8 @@ const WhatsAppVerificationModal: React.FC<WhatsAppVerificationModalProps> = ({
       </section>
 
       <div className="mt-6 flex justify-center px-4">
-        <Primary
+        <Button
+          variant="text"
           className="w-full max-w-md bg-text2 py-3 text-white transition-all hover:bg-text2/90"
           onClick={verifyCode}
           disabled={loading || code.length !== 6}
@@ -166,7 +167,7 @@ const WhatsAppVerificationModal: React.FC<WhatsAppVerificationModalProps> = ({
           ) : (
             "Verify"
           )}
-        </Primary>
+        </Button>
       </div>
       <div className="mt-3">
         <button onClick={onBack} className="text-sm font-semibold text-red-500">

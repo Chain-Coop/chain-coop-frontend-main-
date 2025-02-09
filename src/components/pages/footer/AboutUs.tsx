@@ -4,9 +4,9 @@ import NavBar from "../../common/NavBar";
 import Footer from "../../common/Footer";
 import { MotionTypography } from "../../common/motionTypography";
 import { Typography } from "@material-tailwind/react";
-import sandra from "../../../Assets/png/home/sandra.png";
-import mark from "../../../Assets/png/home/mark.png";
-import kelvin from "../../../Assets/png/home/kelvin.png";
+import juwon from "../../../Assets/png/footer/about/juwon.png";
+import rebecca from "../../../Assets/png/footer/about/rebecca.png";
+import samad from "../../../Assets/png/footer/about/samad.png";
 import imageRight from "../../../Assets/png/home/about-bg.png";
 import aya from "../../../Assets/png/home/abt-aya.png";
 import lisk from "../../../Assets/png/home/abt-lisk.png";
@@ -113,13 +113,13 @@ const AboutUs = () => {
 
             <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-2">
               <div className="flex justify-center">
-                <img src={sandra} alt="Team member" />
+                <img src={juwon} alt="Oluwajuwon" />
               </div>
               <div className="flex justify-center">
-                <img src={mark} alt="Team member" />
+                <img src={rebecca} alt="Rebecca" />
               </div>
               <div className="flex justify-center">
-                <img src={kelvin} alt="Team member" />
+                <img src={samad} alt="Team member" />
               </div>
             </div>
           </div>

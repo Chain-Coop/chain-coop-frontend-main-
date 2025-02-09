@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { DashboardHeader } from "../../../../common/DashboardHeader";
 import { useNavigate, useLocation } from "react-router";
-import { brandPrimary } from "../../../../common/Button";
 import { formatBalance } from "../../../../../shared/utils/format";
 import { useDispatch } from "react-redux";
 import { FundProject } from "../../../../../shared/redux/slices/transaction.slices";
@@ -11,6 +10,7 @@ import { Alert } from "@mui/material";
 import ReactLoading from "react-loading";
 import Modal from "../../../../common/Modal";
 import success from "../../../../../Assets/svg/auth/sucess.svg";
+import { Button } from "@material-tailwind/react";
 
 const ConfirmTransaction = () => {
   const navigate = useNavigate();
@@ -96,7 +96,8 @@ const ConfirmTransaction = () => {
           </Alert>
         )}
         <div className="mt-[2em] flex justify-center">
-          <Primary
+          <Button
+            variant="text"
             className="flex w-[70%] justify-center bg-text2 py-3 text-white"
             onClick={handleFund}
             disabled={loading}
@@ -111,7 +112,7 @@ const ConfirmTransaction = () => {
             ) : (
               `Fund ${formatBalance(amountInNaira)}`
             )}
-          </Primary>
+          </Button>
         </div>
       </section>
       <Modal
@@ -129,12 +130,13 @@ const ConfirmTransaction = () => {
             </h1>
           </header>
           <div className="mt-4 flex w-full justify-center">
-            <Primary
+            <Button
+              variant="text"
               className="w-[50%] bg-text2 py-2 text-white"
               onClick={handleCloseModal}
             >
               Done
-            </Primary>
+            </Button>
           </div>
         </div>
       </Modal>

@@ -8,9 +8,9 @@ import success from "../../../../Assets/svg/auth/sucess.svg";
 import { AppDispatch } from "../../../../shared/redux/store";
 import { WithdrawalFromContribution } from "../../../../shared/redux/slices/transaction.slices";
 import { DashboardHeader } from "../../../common/DashboardHeader";
-import { brandPrimary } from "../../../common/Button";
 import { formatBalance } from "../../../../shared/utils/format";
 import Modal from "../../../common/Modal";
+import { Button } from "@material-tailwind/react";
 
 const ConfirmAmount = () => {
   const navigate = useNavigate();
@@ -98,12 +98,13 @@ const ConfirmAmount = () => {
         <div className="mt-8 px-4">
           <Alert severity="error">{error}</Alert>
           <div className="mt-4 flex justify-center">
-            <Primary
+            <Button
+              variant="text"
               className="w-[70%] bg-text2 py-3 text-white"
               onClick={handleBackClick}
             >
               Go Back
-            </Primary>
+            </Button>
           </div>
         </div>
       </main>
@@ -148,7 +149,8 @@ const ConfirmAmount = () => {
           </Alert>
         )}
         <div className="mt-[2em] flex justify-center">
-          <Primary
+          <Button
+            variant="text"
             className="flex w-[70%] justify-center bg-text2 py-3 text-white"
             onClick={handleFund}
             disabled={loading || !amountInNaira || !contributionId}
@@ -163,7 +165,7 @@ const ConfirmAmount = () => {
             ) : (
               `Fund ${amountInNaira ? formatBalance(amountInNaira) : "---"}`
             )}
-          </Primary>
+          </Button>
         </div>
       </section>
 
@@ -184,12 +186,13 @@ const ConfirmAmount = () => {
             </h1>
           </header>
           <div className="mt-4 flex justify-center">
-            <Primary
+            <Button
+              variant="text"
               className="w-[80%] bg-text2 py-2 text-white sm:w-[60%] md:w-[50%]"
               onClick={handleCloseModal}
             >
               Done
-            </Primary>
+            </Button>
           </div>
         </div>
       </Modal>

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import usePasswordToggle from "../../../../../shared/utils/usePasswordToggle";
-import { brandPrimary } from "../../../../common/Button";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import { RESET_PASSWORD } from "../../../../../shared/redux/services/landing.services";
 import ReactLoading from "react-loading";
 import { Alert } from "@mui/material";
+import { Button } from "@material-tailwind/react";
 
 const NewPassword = ({ email, otp, onSuccess }: any) => {
   const [newPassword, setNewPassword] = useState("");
@@ -124,7 +124,8 @@ const NewPassword = ({ email, otp, onSuccess }: any) => {
             </Alert>
           )}
 
-          <Primary
+          <Button
+            variant="text"
             type="submit"
             disabled={loading}
             className="m-auto mt-8 flex w-[60%] justify-center rounded-full bg-text2 px-3 py-3 text-lg text-white"
@@ -140,7 +141,7 @@ const NewPassword = ({ email, otp, onSuccess }: any) => {
             ) : (
               "Reset"
             )}
-          </Primary>
+          </Button>
         </form>
       </section>
     </main>

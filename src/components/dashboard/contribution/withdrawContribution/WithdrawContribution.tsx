@@ -12,8 +12,8 @@ import useWalletBalance from "../../../../shared/Hooks/useBalance";
 import { GetContributionDetailsById } from "../../../../shared/redux/slices/transaction.slices";
 import { formatBalance } from "../../../../shared/utils/format";
 import { DashboardHeader } from "../../../common/DashboardHeader";
-import { brandPrimary } from "../../../common/Button";
 import Modal from "../../../common/Modal";
+import { Button } from "@material-tailwind/react";
 
 const WithdrawContribution = () => {
   const navigate = useNavigate();
@@ -170,12 +170,13 @@ const WithdrawContribution = () => {
         {renderHeader()}
         <div className="mt-6 px-3">
           <Alert severity="error">{error}</Alert>
-          <Primary
+          <Button
+            variant="text"
             onClick={handleBackClick}
             className="mt-4 w-full bg-text2 py-3 text-white"
           >
             Go Back
-          </Primary>
+          </Button>
         </div>
       </main>
     );
@@ -238,7 +239,8 @@ const WithdrawContribution = () => {
           </Alert>
         )}
 
-        <Primary
+        <Button
+          variant="text"
           onClick={confirmAmount}
           className={`mt-[2em] w-full bg-text2 py-3 text-white ${
             displayAmount ? "bg-text2" : "cursor-not-allowed"
@@ -246,7 +248,7 @@ const WithdrawContribution = () => {
           disabled={!displayAmount}
         >
           Continue
-        </Primary>
+        </Button>
       </section>
 
       <Modal

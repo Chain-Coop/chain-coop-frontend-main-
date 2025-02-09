@@ -1,5 +1,5 @@
+import { Button } from "@material-tailwind/react";
 import React, { useState } from "react";
-import { brandPrimary } from "../../../../common/Button";
 
 interface ContributionPlanProps {
   onConfirm: (selectedPlan: string) => void;
@@ -49,13 +49,14 @@ const ContributionPlan: React.FC<ContributionPlanProps> = ({ onConfirm }) => {
           ))}
         </div>
       </section>
-      <Primary
+      <Button
+        variant="text"
         className="mt-[3em] w-full bg-text2 py-3 text-white"
         onClick={handleConfirm}
         disabled={!selectedOption}
       >
         Confirm
-      </Primary>
+      </Button>
     </main>
   );
 };

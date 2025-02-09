@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { DashboardHeader } from "../../../common/DashboardHeader";
-import { brandPrimary } from "../../../common/Button";
 import { IoIosArrowBack } from "react-icons/io";
 import { FormControl, InputLabel, OutlinedInput } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { Button } from "reactstrap";
 
 const CustomOutlinedInput = styled(OutlinedInput)(({ theme }) => ({
   "& .MuiOutlinedInput-notchedOutline": {
@@ -98,12 +98,13 @@ const BankAccount = () => {
           </FormControl>
           {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
         </div>
-        <Primary
+        <Button
+          variant="Text"
           className="mt-8 w-full bg-text2 py-3 text-white"
           onClick={selectAccount}
         >
           Continue
-        </Primary>
+        </Button>
       </section>
     </main>
   );
