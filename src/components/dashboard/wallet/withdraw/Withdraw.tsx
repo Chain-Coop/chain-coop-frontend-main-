@@ -129,7 +129,7 @@ const Withdraw = () => {
           </section>
           <Button
             variant="text"
-            className="mt-[2em] w-full bg-text2 py-2 text-sm text-white sm:text-base"
+            className="mt-[2em] w-full bg-text2 py-2 text-sm normal-case text-white sm:text-base"
             onClick={handleContinue}
           >
             Continue

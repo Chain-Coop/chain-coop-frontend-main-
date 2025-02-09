@@ -127,7 +127,7 @@ const NewPassword = () => {
           <div className="mt-[1em] sm:px-[1em]">
             <Button
               type="submit"
-              className="relative mt-[2em] flex w-full items-center justify-center rounded-full bg-text2 p-4 text-center text-sm font-semibold text-text5"
+              className="relative mt-[2em] flex w-full items-center justify-center rounded-full bg-text2 p-4 text-center text-sm font-semibold normal-case text-text5"
               disabled={loading}
               loading={loading}
             >

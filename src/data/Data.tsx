@@ -397,7 +397,18 @@ export const Terms = [
     ],
   },
   {
-    title: "6. Savings Terms and Conditions",
+    title: "6. User Responsibilities",
+    content: [
+      "Chain Co-op of provides an online platform where users can save automatically and convert it to cryptocurrences. As our client We will use our best efforts and reasonable care to manage your savings.",
+      "In order to operate and make available the services and utilise the platform Chain Co-op collect uses and discloses certain personal information About you, we collect, use, disclose and protect that information as described in our privacy policy and which is hereby incorporated into these terms of use.",
+      "Chain Co-op reserves the right to modify these terms as necessary, in accordance with applicable laws and prevailing market conditions.",
+      "Please read the privacy policy carefully before accessing the platform or using the services.",
+      "Refrences to you or your are refrences to any person Accessing or using the platform and/all services by any means Chain Co-op Provide an online platform where users can save money and convert into cryptocurrencies",
+      "The cooperative is governed by using blockchain technology, ensuring transparency, security and efficient management of members funds",
+    ],
+  },
+  {
+    title: "7. Savings Terms and Conditions",
     content: [
       "By utilizing our Services and Platform, you acknowledge and accept the following terms:",
       "The duration and commission rates of each savings plan on our Platform are specified within the plan details.",
@@ -407,7 +418,7 @@ export const Terms = [
     ],
   },
   {
-    title: "7. Fee Payment",
+    title: "8. Fee Payment",
     content: [
       "By utilizing our Services, you authorize Chain Co-op to automatically deduct any applicable fees directly from your Chain Co-op account (referred to as 'Account Fees').",
       "Fee payments will typically be drawn first from liquid assets in your account, followed by the liquidation of cash equivalents, and, if necessary, by selling securities held in your account.",
@@ -415,7 +426,7 @@ export const Terms = [
     ],
   },
   {
-    title: "8. Other Fees",
+    title: "9. Other Fees",
     content: [
       "You acknowledge that using Chain Co-op's services may result in fees imposed by third-party financial institutions.",
       "These additional costs can include bank transfer fees, transfer taxes, and other similar expenses.",
@@ -423,7 +434,7 @@ export const Terms = [
     ],
   },
   {
-    title: "9. Anti-Money Laundering",
+    title: "10. Anti-Money Laundering",
     content: [
       "You affirm and guarantee the following, and you agree to notify Chain Co-op promptly if any of these assurances no longer hold:",
       "To the best of your knowledge, after conducting thorough inquiries, no funds or assets under Chain Co-op management have been or will be derived from or involved in any illegal activities violating applicable laws.",
@@ -431,33 +442,45 @@ export const Terms = [
     ],
   },
   {
-    title: "10. Intellectual Property",
+    title: "11. Intellectual Property",
     content: [
       "All materials, including text, images, logos, products, and services available on the Site and App, are owned by Chain Co-op or licensed.",
       "Any unauthorized use, reproduction, or distribution is prohibited.",
     ],
   },
   {
-    title: "11. Amendments to Terms and Conditions",
+    title: "12. Amendments to Terms and Conditions",
     content: [
       "Chain Co-op reserves the right to modify these Terms and Conditions at any time, without prior notice.",
       "Updated versions will be posted on the Site. The latest version will include the date of the last update, allowing users to check for any changes.",
     ],
   },
   {
-    title: "12. Privacy and Data Protection",
+    title: "13. Privacy and Data Protection",
     content: [
       "By using the Site, you agree to our Privacy Policy and Cookie Policy, which outline how your data is collected, stored, and used.",
       "These documents are part of the overall Terms and Conditions.",
     ],
   },
   {
-    title: "13. International Use",
+    title: "14. International Use",
     content: [
       "Chain Co-op is exclusively available within the borders of the Federal Republic of Nigeria.",
       "We do not claim that Chain Co-op is suitable or available outside of Nigeria.",
       "Additionally, we do not guarantee that accessing Chain Co-op from territories outside Nigeria complies with applicable laws.",
       "If you use Chain Co-op from outside Nigeria, you do so at your own risk and must ensure compliance with the laws of your location.",
+    ],
+  },
+  {
+    title: "15. Liability",
+    content: [
+      "Chain Co-op is Exclusively available within the borders of Federal Republic of Nigeria. We do not claim that Chain-Co-op is suitable or available outside of Nigeria. Additionally, we do not guarantee that accessing chain code from territory Nigeria complies with applicable laws. If you use change from outside Nigeria you do not you do so at your own risk and must ensure compliance with the laws of your location",
+    ],
+  },
+  {
+    title: "16. Termination of Membership",
+    content: [
+      "Chain Co-op reserves the right to suspend or terminate any user account sor failure to comply with these Terms and Conditions",
     ],
   },
 ];
@@ -705,7 +728,7 @@ export const teamMembers = [
     description:
       "Eyitemi is a Product designer with over 3+years of experience.",
     social: {
-      twitter: "#",
+      twitter: "https://x.com/IEyitemi?t=bY1T63NaxbAtd0nJbLRLIQ&s=08",
       linkedin: "#",
     },
   },
