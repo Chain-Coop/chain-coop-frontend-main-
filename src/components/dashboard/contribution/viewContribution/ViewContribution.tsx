@@ -18,15 +18,12 @@ import StepLabel from "@mui/material/StepLabel";
 import { format, parseISO } from "date-fns";
 import { useSelector } from "react-redux";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import Modal from "../../../common/Modal";
 import PaymentWithCard from "../unpaidContribution/PaymentWithCard";
 import PayWithPaystack from "../unpaidContribution/PayWithPaystack";
 import { useUnPaidContribution } from "../../../../shared/Hooks/useBalance";
 import { motion } from "framer-motion";
 import { Alert, Snackbar, Box } from "@mui/material";
 import { useUserCard } from "../../../../shared/Hooks/useUserProfile";
-import { ActivateCryptoWallet } from "../../../../shared/redux/slices/kyc.slices";
-import { toast } from "react-toastify";
 
 const DetailsSkeleton: React.FC = () => (
   <div className="animate-pulse">
@@ -175,19 +172,6 @@ const ViewContribution = () => {
   const { contributionDetails } = useSelector(
     (state: any) => state?.transaction,
   );
-  const activateWallet = async (e: React.MouseEvent) => {
-    e.preventDefault();
-
-    setLoading(true);
-    try {
-      const response = await dispatch(ActivateCryptoWallet()).unwrap();
-      toast.success(response.message);
-    } catch (error: any) {
-      toast.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const balanceInNaira = contributionDetails?.balance || 0;
   const formattedBalance = formatBalance(balanceInNaira);
@@ -587,39 +571,25 @@ const ViewContribution = () => {
           <ContributionTracker />
         </section>
       </section>
-      <Snackbar
-        open={!!error}
-        autoHideDuration={6000}
-        onClose={handleCloseError}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <Alert
-          onClose={handleCloseError}
-          severity="error"
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {error}
-        </Alert>
-      </Snackbar>
 
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        className="flex flex-col bg-[#ECE6F2] py-[2em]"
-      >
-        {hasCards ? (
+      {isModalOpen &&
+        (hasCards.length > 0 ? (
           <PaymentWithCard
             onClose={handleModalClose}
             contributionData={contributionId}
+            isOpen={isModalOpen}
+            handler={() => setIsModalOpen(!isModalOpen)}
           />
         ) : (
           <PayWithPaystack
             onSelect={handleDirectPayment}
             isProcessing={isProcessing}
+            isOpen={isModalOpen}
+            handler={() => setIsModalOpen(!isModalOpen)}
+            error={error ?? undefined}
+            handleCloseError={handleCloseError}
           />
-        )}
-      </Modal>
+        ))}
     </main>
   );
 };

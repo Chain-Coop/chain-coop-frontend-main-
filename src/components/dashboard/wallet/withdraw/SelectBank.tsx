@@ -5,7 +5,6 @@ import { IoIosArrowBack } from "react-icons/io";
 import withdraw from "../../../../Assets/svg/dashboard/wallet/withdraw.svg";
 import xlamation from "../../../../Assets/svg/dashboard/wallet/xclamation.svg";
 import { useAppSelector } from "../../../../shared/redux/reduxHooks";
-import { brandPrimary } from "../../../common/Button";
 import Modal from "../../../common/Modal";
 import ReactLoading from "react-loading";
 import { WithdrawalFromWallet } from "../../../../shared/redux/slices/transaction.slices";
@@ -15,6 +14,7 @@ import { Alert } from "@mui/material";
 import success from "../../../../Assets/svg/auth/sucess.svg";
 import OtpInput from "../../../../shared/utils/OtpInput";
 import { RxDotFilled } from "react-icons/rx";
+import { Button } from "@material-tailwind/react";
 interface BankAccount {
   accountNumber: string;
   bankCode: string;
@@ -161,12 +161,13 @@ const SelectBank = () => {
                         {account.accountNumber}
                       </p>
                     </div>
-                    <Primary
+                    <Button
+                      variant="text"
                       onClick={() => toggleModal(account)}
                       className="flex w-[70%] justify-center bg-text2 py-3 text-white"
                     >
                       Select Account
-                    </Primary>
+                    </Button>
                   </div>
                 ))}
               </div>
@@ -210,7 +211,8 @@ const SelectBank = () => {
               {error}
             </Alert>
           )}
-          <Primary
+          <Button
+            variant="text"
             onClick={handleSubmit}
             disabled={loading}
             className="mt-[2em] flex w-full justify-center rounded-full bg-text2 px-2 py-2 font-semibold text-white"
@@ -225,7 +227,7 @@ const SelectBank = () => {
             ) : (
               "Confirm Withdrawal"
             )}
-          </Primary>
+          </Button>
         </div>
       </Modal>
 

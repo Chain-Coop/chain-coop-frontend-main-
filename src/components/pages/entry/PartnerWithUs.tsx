@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import background from "../../../Assets/png/home/partner_background.png";
+import background from "../../../Assets/png/home/partner-wave.png";
 import NavBar from "../../common/NavBar";
 import { Button, Typography } from "@material-tailwind/react";
 import { MotionTypography } from "../../common/motionTypography";

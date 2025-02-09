@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { brandPrimary } from "../../../../common/Button";
+import { Button } from "@material-tailwind/react";
 
 const TransferModal = ({ onContinue }: any) => {
   return (
@@ -39,12 +39,13 @@ const TransferModal = ({ onContinue }: any) => {
             Note: Transfer exact money to the account details above
           </p>
         </div>
-        <Primary
+        <Button
+          variant="text"
           className="mt-[1em] w-full bg-text2 py-3 text-white"
           onClick={onContinue}
         >
           Click here after transfer
-        </Primary>
+        </Button>
       </article>
     </main>
   );

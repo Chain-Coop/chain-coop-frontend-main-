@@ -9,4 +9,5 @@ export const ROUTES = {
     "/dashboard/contribution/lock/contribution_curency_type",
   strictLockContributionType:
     "/dashboard/contribution/strict_lock/contribution_curency_type",
+  manage_cards: "/dashboard/profile/manage-cards",
 };

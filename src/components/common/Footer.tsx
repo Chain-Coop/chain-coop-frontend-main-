@@ -153,7 +153,7 @@ const Footer = () => {
                   Let's build a better future together!
                 </Typography>
                 <Typography className="font-light text-text3">
-                  info@chaincooperative.com
+                  info@chaincoop.org
                 </Typography>
                 <Typography className="font-light text-text3">
                   +234 809 322 7696

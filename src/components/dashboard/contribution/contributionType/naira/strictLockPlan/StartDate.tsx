@@ -39,8 +39,8 @@ const StartDate: React.FC = () => {
         currency,
         startDate,
         endDate,
-        savingsDuration
-      }
+        savingsDuration,
+      },
     });
   };
 

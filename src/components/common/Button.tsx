@@ -1,15 +1,3 @@
-export const Primary = ({ children, className, onClick, disabled }: any) => {
-  return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className={`text-center font-sans text-[15px] font-medium leading-6 outline-none focus:outline-none ${className} ${disabled ? "disabled" : ""}`}
-    >
-      {children}
-    </button>
-  );
-};
-
 export const ComingSoon = ({ children, className }: any) => {
   return (
     <button

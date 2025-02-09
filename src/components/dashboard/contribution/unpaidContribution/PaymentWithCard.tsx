@@ -10,6 +10,15 @@ import {
 import { Alert, Snackbar } from "@mui/material";
 import { useUserCard } from "../../../../shared/Hooks/useUserProfile";
 import { CardBrandLogo } from "../../../../shared/utils/Helpers";
+import {
+  Button,
+  Dialog,
+  DialogBody,
+  DialogFooter,
+  DialogHeader,
+  Typography,
+} from "@material-tailwind/react";
+import { ROUTES } from "../../../../shared/routes";
 
 interface Card {
   authorization_code: string;
@@ -42,7 +51,7 @@ const Chip = () => (
   </div>
 );
 
-const PaymentWithCard = ({ contributionData, onClose }: any) => {
+const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
   const { useWalletCards } = useUserCard();
   const contributionId = contributionData;
   const navigate = useNavigate();
@@ -112,7 +121,12 @@ const PaymentWithCard = ({ contributionData, onClose }: any) => {
     `${month.padStart(2, "0")}/${year.slice(-2)}`;
 
   return (
-    <main className="mx-auto w-full max-w-md px-4 font-sans sm:px-6">
+    <Dialog
+      size="sm"
+      open={isOpen}
+      handler={onClose}
+      className="bg-[#ECECF2] px-4"
+    >
       <Snackbar
         open={!!error}
         autoHideDuration={6000}
@@ -129,140 +143,159 @@ const PaymentWithCard = ({ contributionData, onClose }: any) => {
         </Alert>
       </Snackbar>
 
-      <div className="flex flex-col gap-4 py-4">
-        <header className="text-center">
-          <h1 className="text-lg font-bold text-gray-800 sm:text-xl">
+      <div className="flex flex-col">
+        <DialogHeader className="flex items-center justify-center">
+          <Typography
+            variant="h5"
+            className="text-base font-bold text-text2 md:text-lg"
+          >
             Fund Contribution
-          </h1>
-        </header>
+          </Typography>
+        </DialogHeader>
 
-        <section className="rounded-xl bg-white p-4">
-          <div className="flex flex-col gap-4">
-            <header className="text-center">
-              <h2 className="text-base font-bold sm:text-lg">
-                Select Payment Card
-              </h2>
-              <p className="text-xs text-gray-600 sm:text-sm">
-                Choose a card to process your payment
-              </p>
-            </header>
-
-            <div className="relative">
-              {cards.length > 0 ? (
-                <>
-                  <div className="relative mx-auto w-full overflow-hidden px-4 sm:w-[25em] sm:px-6">
-                    {currentPage > 0 && (
-                      <button
-                        onClick={handlePrev}
-                        className="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-1.5 shadow-lg sm:p-2"
-                      >
-                        <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
-                      </button>
-                    )}
-
-                    {cards[currentPage] && (
-                      <div
-                        onClick={() => handleCardSelect(cards[currentPage])}
-                        className={`group relative aspect-[1.6/1] w-full cursor-pointer rounded-xl bg-gradient-to-r px-3 py-2 shadow-lg transition-all hover:shadow-xl sm:px-4
-                          ${cardDesigns[cards[currentPage].brand.toLowerCase() as keyof typeof cardDesigns] || cardDesigns.default}
-                          ${selectedCard?.authorization_code === cards[currentPage].authorization_code ? "ring-2 ring-white" : ""}`}
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 opacity-0 transition-opacity group-hover:opacity-100" />
-
-                        <div className="mb-3 text-sm font-bold text-white/90 sm:mb-4 sm:text-base">
-                          {cards[currentPage].bank.toUpperCase()}
-                        </div>
-
-                        <Chip />
-
-                        <div className="mt-2 font-mono text-sm text-white/90 sm:mt-3 sm:text-base">
-                          {formatCardNumber(cards[currentPage].last4)}
-                        </div>
-
-                        <div className="mt-1 flex items-end justify-between">
-                          <div className="text-white/80">
-                            <div className="text-xs uppercase">Expires</div>
-                            <div className="font-mono text-xs sm:text-sm">
-                              {formatExpiryDate(
-                                cards[currentPage].exp_month,
-                                cards[currentPage].exp_year,
-                              )}
-                            </div>
-                          </div>
-                          <CardBrandLogo brand={cards[currentPage].brand} />
-                        </div>
-                      </div>
-                    )}
-
-                    {currentPage < cards.length - 1 && (
-                      <button
-                        onClick={handleNext}
-                        className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-1.5 shadow-lg sm:p-2"
-                      >
-                        <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
-                      </button>
-                    )}
-                  </div>
-
-                  <div className="mt-4 flex justify-center gap-1">
-                    {cards.map((_: any, idx: number) => (
-                      <div
-                        key={idx}
-                        className={`h-1.5 w-1.5 rounded-full transition-all ${
-                          currentPage === idx
-                            ? "w-3 bg-purple-600"
-                            : "bg-gray-300"
-                        }`}
-                      />
-                    ))}
-                  </div>
-                </>
-              ) : (
-                <div className="text-center text-sm text-gray-600">
-                  No saved cards found.
-                </div>
-              )}
-            </div>
-
-            <div className="flex w-full flex-col gap-3">
-              {selectedCard ? (
-                <button
-                  onClick={() => handlePayment("card")}
-                  disabled={isLoading}
-                  className="flex w-full items-center justify-center rounded-lg bg-purple-600 px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-purple-700 disabled:opacity-50"
+        <DialogBody>
+          <section className="rounded-3xl bg-white">
+            <div className="flex flex-col">
+              <DialogHeader className="flex flex-col text-center">
+                <Typography
+                  variant="h2"
+                  className="text-base font-bold text-black"
                 >
-                  {isLoading ? (
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                  ) : (
-                    "Pay Now"
-                  )}
-                </button>
-              ) : (
-                <div className="flex w-full flex-col items-center justify-between gap-2 sm:flex-row sm:gap-4">
-                  <Link
-                    to="/dashboard/profile/manage-cards"
-                    className="text-sm font-bold text-purple-600"
-                  >
-                    Manage Cards
-                  </Link>
+                  My Cards
+                </Typography>
+                <Typography variant="small">
+                  Securely manage all debit cards connected.
+                </Typography>
+              </DialogHeader>
+
+              <div className="relative">
+                {cards?.length > 0 ? (
+                  <>
+                    <div className="px- relative mx-auto w-full overflow-hidden sm:w-[25em] sm:px-6">
+                      {currentPage > 0 && (
+                        <button
+                          onClick={handlePrev}
+                          className="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-1.5 shadow-lg sm:p-2"
+                        >
+                          <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+                        </button>
+                      )}
+
+                      {cards[currentPage] && (
+                        <div
+                          onClick={() => handleCardSelect(cards[currentPage])}
+                          className={`group relative aspect-[1.8/1] w-full cursor-pointer rounded-xl bg-gradient-to-r px-2 py-2 shadow-lg transition-all hover:shadow-xl sm:px-4
+                            ${
+                              cardDesigns[
+                                cards[
+                                  currentPage
+                                ]?.brand?.toLowerCase() as keyof typeof cardDesigns
+                              ] || cardDesigns.default
+                            }
+                            ${
+                              selectedCard?.authorization_code ===
+                              cards[currentPage].authorization_code
+                                ? "ring-2 ring-white"
+                                : ""
+                            }`}
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 opacity-0 transition-opacity group-hover:opacity-100" />
+
+                          <div className="mb-3 text-sm font-bold text-white/90 sm:mb-4 sm:text-base">
+                            {cards[currentPage]?.bank?.toUpperCase()}
+                          </div>
+
+                          <Chip />
+
+                          <div className="font-mono mt-2 text-sm text-white/90 sm:mt-3 sm:text-base">
+                            {formatCardNumber(cards[currentPage].last4)}
+                          </div>
+
+                          <div className="mt-1 flex items-end justify-between">
+                            <div className="text-white/80">
+                              <div className="text-xs uppercase">Expires</div>
+                              <div className="font-mono text-xs sm:text-sm">
+                                {formatExpiryDate(
+                                  cards[currentPage].exp_month,
+                                  cards[currentPage].exp_year,
+                                )}
+                              </div>
+                            </div>
+                            <CardBrandLogo brand={cards[currentPage].brand} />
+                          </div>
+                        </div>
+                      )}
+
+                      {currentPage < cards.length - 1 && (
+                        <button
+                          onClick={handleNext}
+                          className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-1.5 shadow-lg sm:p-2"
+                        >
+                          <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="mt-4 flex justify-center gap-1">
+                      {cards.map((_: any, idx: number) => (
+                        <div
+                          key={idx}
+                          className={`h-1.5 w-1.5 rounded-full transition-all ${
+                            currentPage === idx
+                              ? "w-3 bg-purple-600"
+                              : "bg-gray-300"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-center text-sm text-gray-600">
+                    No saved cards found.
+                  </div>
+                )}
+              </div>
+
+              <DialogFooter className="flex w-full flex-col gap-3">
+                {selectedCard ? (
                   <button
-                    onClick={() => handlePayment("paystack")}
+                    onClick={() => handlePayment("card")}
                     disabled={isLoading}
-                    className="flex w-full items-center justify-center rounded-lg bg-purple-600 px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-purple-700 disabled:opacity-50 sm:w-auto"
+                    className="flex w-full items-center justify-center rounded-lg bg-purple-600 px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-purple-700 disabled:opacity-50"
                   >
                     {isLoading ? (
                       <Loader2 className="h-5 w-5 animate-spin" />
                     ) : (
-                      "Pay Direct"
+                      "Pay Now"
                     )}
                   </button>
-                </div>
-              )}
+                ) : (
+                  <div className="flex w-full flex-col items-center justify-between gap-2 sm:flex-row sm:gap-4">
+                    <Link
+                      to={ROUTES.manage_cards}
+                      className="text-sm font-bold text-text2"
+                    >
+                      Manage Cards
+                    </Link>
+                    <Button
+                      onClick={() => handlePayment("paystack")}
+                      disabled={isLoading}
+                      className="flex w-full items-center justify-center rounded-lg bg-text2 px-4 py-2.5 text-sm font-bold text-white transition-colors disabled:opacity-50 sm:w-auto"
+                    >
+                      {isLoading ? (
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                      ) : (
+                        "Pay Direct"
+                      )}
+                    </Button>
+                  </div>
+                )}
+              </DialogFooter>
             </div>
-          </div>
-        </section>
+          </section>
+        </DialogBody>
       </div>
-    </main>
+    </Dialog>
   );
 };
 

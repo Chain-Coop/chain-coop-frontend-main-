@@ -7,11 +7,11 @@ import {
 import { DashboardHeader } from "../../../../common/DashboardHeader";
 import { useNavigate } from "react-router";
 import arrow from "../../../../../Assets/svg/dashboard/wallet/transfer-arrow.svg";
-import { brandPrimary } from "../../../../common/Button";
 import { useAllProjects } from "../../../../../shared/Hooks/useUserProfile";
 import useWalletBalance from "../../../../../shared/Hooks/useBalance";
 import { Alert } from "@mui/material";
 import { formatBalance } from "../../../../../shared/utils/format";
+import { Button } from "@material-tailwind/react";
 
 const AddFund = () => {
   const navigate = useNavigate();
@@ -191,7 +191,8 @@ const AddFund = () => {
           </Alert>
         )}
 
-        <Primary
+        <Button
+          variant="text"
           onClick={confirmAmount}
           className={`mt-[2em] w-full bg-text2 py-3 text-white ${
             selectedProject && displayAmount ? "bg-text2" : "cursor-disabled"
@@ -199,7 +200,7 @@ const AddFund = () => {
           disabled={!selectedProject || !displayAmount}
         >
           Continue
-        </Primary>
+        </Button>
       </section>
     </main>
   );

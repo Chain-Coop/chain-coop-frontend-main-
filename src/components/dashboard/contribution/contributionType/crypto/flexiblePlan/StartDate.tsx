@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { Alert } from "@mui/material";
 import Modal from "../../../../../common/Modal";
-import { brandPrimary } from "../../../../../common/Button";
 import ReactLoading from "react-loading";
 import {
   CreateContributionPlan,
@@ -17,6 +16,7 @@ import { useUserCard } from "../../../../../../shared/Hooks/useUserProfile";
 import { AppDispatch } from "../../../../../../shared/redux/store";
 import { DashboardHeader } from "../../../../../common/DashboardHeader";
 import cryptoSavings from "../../../../../../Assets/png/dashboard/cryptSavings.png";
+import { Button } from "@material-tailwind/react";
 
 interface ContributionResponse {
   result: {
@@ -321,7 +321,8 @@ const StartDate: React.FC = () => {
           </Alert>
         )}
         <div className="mt-[3em]">
-          <Primary
+          <Button
+            variant="text"
             onClick={handleSubmit}
             disabled={loading || (!endDate && !customEndDate)}
             className="m-auto flex w-[80%] justify-center rounded-md bg-text2
@@ -342,7 +343,7 @@ const StartDate: React.FC = () => {
             ) : (
               "Submit"
             )}
-          </Primary>
+          </Button>
         </div>
         <button
           onClick={() => navigate(-1)}
@@ -352,7 +353,7 @@ const StartDate: React.FC = () => {
         </button>
       </div>
 
-      <Modal
+      {/* <Modal
         isOpen={isModalOpen}
         onClose={handleModalClose}
         className="flex flex-col bg-[#ECE6F2] py-[2em]"
@@ -368,7 +369,7 @@ const StartDate: React.FC = () => {
             isProcessing={isProcessingPayment}
           />
         )}
-      </Modal>
+      </Modal> */}
     </main>
   );
 };

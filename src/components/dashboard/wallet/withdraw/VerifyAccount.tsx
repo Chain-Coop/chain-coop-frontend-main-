@@ -2,7 +2,6 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
 import Modal from "../../../common/Modal";
-import { brandPrimary } from "../../../common/Button";
 import { DashboardHeader } from "../../../common/DashboardHeader";
 import { IoIosArrowBack } from "react-icons/io";
 import withdraw_icon from "../../../../Assets/svg/dashboard/wallet/withdraw.svg";
@@ -14,6 +13,7 @@ import { AppDispatch } from "../../../../shared/redux/store";
 import { useDispatch } from "react-redux";
 import ReactLoading from "react-loading";
 import OtpInput from "../../../../shared/utils/OtpInput";
+import { Button } from "@material-tailwind/react";
 
 const VerifyAccount = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -132,12 +132,13 @@ const VerifyAccount = () => {
           </p>
         </div>
       </section>
-      <Primary
+      <Button
+        variant="text"
         className="mt-[2em] w-full bg-text2 py-3 text-white"
         onClick={toggleModal}
       >
         Submit
-      </Primary>
+      </Button>
 
       <Modal
         isOpen={isModalOpen}
@@ -155,7 +156,8 @@ const VerifyAccount = () => {
               {error}
             </Alert>
           )}
-          <Primary
+          <Button
+            variant="text"
             onClick={handleSubmit}
             disabled={loading}
             className="mt-[2em] flex w-full justify-center rounded-full bg-text2 px-2 py-2 font-semibold text-white"
@@ -170,7 +172,7 @@ const VerifyAccount = () => {
             ) : (
               "Confirm Withdrawal"
             )}
-          </Primary>
+          </Button>
         </div>
       </Modal>
 

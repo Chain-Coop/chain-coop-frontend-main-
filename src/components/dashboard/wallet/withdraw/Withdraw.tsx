@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DashboardHeader } from "../../../common/DashboardHeader";
 import Modal from "../../../common/Modal";
-import { brandPrimary } from "../../../common/Button";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import withdraw from "../../../../Assets/svg/dashboard/wallet/withdraw.svg";
+import { Button } from "@material-tailwind/react";
 
 const Withdraw = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -127,12 +127,13 @@ const Withdraw = () => {
               )}
             </div>
           </section>
-          <Primary
+          <Button
+            variant="text"
             className="mt-[2em] w-full bg-text2 py-2 text-sm text-white sm:text-base"
             onClick={handleContinue}
           >
             Continue
-          </Primary>
+          </Button>
         </div>
       </Modal>
     </main>

@@ -8,10 +8,6 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
-import ReactLoading from "react-loading";
-
-import Modal from "../../../../../common/Modal";
-import { brandPrimary } from "../../../../../common/Button";
 import { DashboardHeader } from "../../../../../common/DashboardHeader";
 
 import { useAppDispatch } from "../../../../../../shared/redux/reduxHooks";
@@ -35,6 +31,7 @@ import {
   calculateAvailableEndDates,
   validateCustomEndDate,
 } from "../../../../../../shared/utils/format";
+import { Button } from "@material-tailwind/react";
 
 interface ContributionResponse {
   result: {
@@ -303,25 +300,14 @@ const StartDate: React.FC = () => {
         )}
 
         <div className="mt-[3em]">
-          <Primary
+          <Button
             onClick={handleSubmit}
             disabled={loading || (!endDate && !customEndDate)}
-            className="m-auto flex w-[80%] justify-center rounded-md bg-text2 px-8 py-[1em] font-semibold text-white transition-all duration-300 ease-in-out hover:scale-105 hover:bg-opacity-90 hover:shadow-lg active:scale-95 active:transform"
+            loading={loading}
+            className="m-auto flex w-[80%]  justify-center rounded-md bg-text2 px-8 py-[1em] text-sm font-semibold normal-case text-white transition-all duration-300 ease-in-out hover:scale-105 hover:bg-opacity-90 hover:shadow-lg active:scale-95 active:transform"
           >
-            {loading ? (
-              <div className="flex gap-1">
-                <ReactLoading
-                  color="#FFFFFF"
-                  height={25}
-                  width={25}
-                  type="spin"
-                />
-                <p>please wait...</p>
-              </div>
-            ) : (
-              "Submit"
-            )}
-          </Primary>
+            {loading ? "Please Wait..." : "Submit"}
+          </Button>
         </div>
 
         <button
@@ -332,23 +318,22 @@ const StartDate: React.FC = () => {
         </button>
       </div>
 
-      <Modal
-        isOpen={isModalOpen}
-        onClose={handleModalClose}
-        className="flex flex-col bg-[#ECE6F2] py-[2em]"
-      >
-        {hasCards ? (
+      {hasCards ? (
+        contributionData && (
           <PaymentWithCard
             contributionData={contributionData}
             onClose={handleModalClose}
+            isOpen={isModalOpen}
           />
-        ) : (
-          <PayWithPaystack
-            onSelect={handleDirectPayment}
-            isProcessing={isProcessingPayment}
-          />
-        )}
-      </Modal>
+        )
+      ) : (
+        <PayWithPaystack
+          onSelect={handleDirectPayment}
+          isProcessing={isProcessingPayment}
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+        />
+      )}
     </main>
   );
 };
