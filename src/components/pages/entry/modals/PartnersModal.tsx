@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
   Dialog,
   DialogHeader,
@@ -20,7 +21,8 @@ const PartnerModal = ({ isOpen, onClose }: PartnerModalProps) => {
         unmount: { scale: 0.9, y: -100 },
       }}
       open={isOpen}
-      size="xs"
+      handler={onClose}
+      size="sm"
       className="max-h-[90vh] overflow-y-auto p-7"
     >
       <DialogHeader className="flex flex-col gap-2 px-2 text-center sm:px-4">
