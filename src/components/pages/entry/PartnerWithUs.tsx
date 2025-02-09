@@ -11,7 +11,8 @@ import drive from "../../../Assets/svg/drive.svg";
 import bank from "../../../Assets/svg/bank.svg";
 import expand from "../../../Assets/svg/expand.svg";
 import PartnerModal from "./modals/PartnersModal";
-import BecomeModal from "./modals/BecomeModal";
+import { Link } from "react-router-dom";
+import { ROUTES } from "../../../shared/routes";
 
 const PartnerWithUs = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -127,12 +128,11 @@ const PartnerWithUs = () => {
                 promotes secure and innovative savings solutions. We offer a
                 partner model designed for mutual growth and impact.
               </Typography>
-              <Button
-                onClick={handleBecomeModalOpen}
-                className="mx-auto mt-6 max-w-fit rounded-md bg-text2 px-6 py-3 text-sm font-semibold text-text5 lg:mx-0 lg:mt-8"
-              >
-                Become a Member
-              </Button>
+              <Link to={ROUTES.sign_up}>
+                <Button className="mx-auto mt-6 max-w-fit rounded-md bg-text2 px-6 py-3 text-sm font-semibold text-text5 lg:mx-0 lg:mt-8">
+                  Become a Member
+                </Button>
+              </Link>
             </div>
             <img
               src={partner}
@@ -259,10 +259,6 @@ const PartnerWithUs = () => {
       <PartnerModal
         isOpen={isPartnerModalOpen}
         onClose={handlePartnerModalClose}
-      />
-      <BecomeModal
-        isOpen={isBecomeModalOpen}
-        onClose={handleBecomeModalClose}
       />
     </div>
   );
