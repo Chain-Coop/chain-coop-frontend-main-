@@ -5,6 +5,7 @@ import {
   DialogHeader,
   DialogBody,
   DialogFooter,
+  Typography,
 } from "@material-tailwind/react";
 import loan from "../../../../Assets/svg/dashboard/loan.svg";
 
@@ -21,9 +22,12 @@ export function LoanModal({ open, onClose }: LoanModalProps) {
         <img src={loan} alt="loan" className="h-6 w-6" />
       </DialogHeader>
       <DialogBody>
-        <p className="text-center text-sm font-medium">
+        <Typography
+          variant="small"
+          className="text-center font-medium text-black"
+        >
           Stay tuned! We'll notify you when you become eligible for one.
-        </p>
+        </Typography>
       </DialogBody>
     </Dialog>
   );
