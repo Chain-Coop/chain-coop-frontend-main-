@@ -306,18 +306,22 @@ export const useAllNotification = () => {
 
 export const useAllUserPools = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const { userPools, loading } = useSelector((state: any) => state?.kyc);
+  const { profileDetails } = useUserProfile();
 
-  const { userPools, loading, error } = useSelector((state: any) => state?.kyc);
-  const fetchWalletBalance = () => {
-    dispatch(GetAllUserPools());
-  };
+  const fetchUserPools = useCallback(() => {
+    if (profileDetails?.isWalletActivated) {
+      dispatch(GetAllUserPools());
+    }
+  }, [dispatch, profileDetails?.isWalletActivated]);
+
   useEffect(() => {
-    fetchWalletBalance();
-  }, []);
+    fetchUserPools();
+  }, [fetchUserPools]);
 
   return {
     loading,
-    error,
-    userPools,
+    userPools: profileDetails?.isWalletActivated ? userPools : null,
+    isWalletActivated: profileDetails?.isWalletActivated || false,
   };
 };

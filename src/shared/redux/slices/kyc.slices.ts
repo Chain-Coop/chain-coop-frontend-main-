@@ -75,6 +75,7 @@ export const GetTotalCryptoWalletBalance = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const data = await KycServices.GetTotalCryptoWalletBalance();
+      // console.log("ttt", data);
       return data;
     } catch (error: any) {
       const message = error.message;
@@ -153,7 +154,7 @@ export const GetAllUserTokens = createAsyncThunk(
 interface KycState {
   kycOtp: Record<string, any> | null;
   actvateCryptWallet: Record<string, any> | null;
-  cryptoBalance: string | null;
+  cryptoBalance: number;
   cryptoWalletDetails: Record<string, any> | null;
   kycPhoneNumOtp: Record<string, any> | null;
   verifySmsOtp: string | null;
@@ -164,6 +165,7 @@ interface KycState {
   userTokens: string | null;
   loading: boolean;
   error: string | null;
+  walletMessage: string | null;
 }
 
 const initialState: KycState = {
@@ -173,9 +175,10 @@ const initialState: KycState = {
   verifyWhatAppOtp: null,
   cryptoWalletDetails: null,
   kycPhoneNumOtp: null,
-  cryptoBalance: null,
+  cryptoBalance: 0,
   registerUserPool: null,
   updateRegisteredUserPool: null,
+  walletMessage: null,
   userPools: null,
   userTokens: null,
   loading: false,
@@ -263,19 +266,21 @@ export const kycSlice = createSlice({
         state.error =
           (action.payload as string) || "Failed to activate crypto wallet";
       })
-
       .addCase(GetTotalCryptoWalletBalance.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(GetTotalCryptoWalletBalance.fulfilled, (state, action) => {
         state.loading = false;
-        state.cryptoBalance = action.payload.data;
+        state.cryptoBalance = action.payload.data || 0;
+        state.walletMessage = action.payload.data.message || null;
         state.error = null;
       })
       .addCase(GetTotalCryptoWalletBalance.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+        state.cryptoBalance = 0;
+        state.walletMessage = null;
       })
 
       .addCase(GetCryptoWalletDetails.pending, (state) => {

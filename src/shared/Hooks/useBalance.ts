@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   GetContributionBalance,
@@ -16,6 +16,7 @@ import {
   GetTotalCryptoWalletBalance,
   GetCryptoWalletDetails,
 } from "../redux/slices/kyc.slices";
+import useUserProfile from "./useUserProfile";
 
 export const useWalletBalance = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -150,26 +151,31 @@ export const useUnPaidContribution = () => {
     balanceInNaira,
   };
 };
-
 export const useCryptoWallet = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [isWalletVisible, setIsWalletVisible] = useState(() => {
-    const storedVisibility = sessionStorage.getItem("walletBalanceVisible");
-    return storedVisibility !== null ? storedVisibility === "true" : true;
+    sessionStorage.removeItem("walletBalanceVisible");
+    return true;
   });
 
-  const { cryptoBalance, loading, error } = useSelector(
+  const { cryptoBalance, loading, error, walletMessage } = useSelector(
     (state: any) => state.kyc,
   );
-  const Balance = cryptoBalance || 0;
+  const Balance = walletMessage === "No Wallet found" ? 0 : cryptoBalance || 0;
 
-  const fetchWalletBalance = () => {
+  const fetchWalletBalance = useCallback(() => {
     dispatch(GetTotalCryptoWalletBalance());
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     fetchWalletBalance();
-  }, []);
+
+    const refreshInterval = setInterval(fetchWalletBalance, 30000);
+
+    return () => {
+      clearInterval(refreshInterval);
+    };
+  }, [fetchWalletBalance]);
 
   return {
     isWalletVisible,
@@ -177,6 +183,8 @@ export const useCryptoWallet = () => {
     loading,
     error,
     Balance,
+    walletMessage,
+    isWalletActivated: !walletMessage,
     fetchWalletBalance,
   };
 };
