@@ -163,7 +163,6 @@ const GetAllUserPools = async () => {
       headers: authHeader(),
       method: "get",
     });
-    console.log("res", response);
     const token = response?.data?.data?.tokens?.accessToken;
     if (token) {
       sessionStorage.setItem("userData", token);

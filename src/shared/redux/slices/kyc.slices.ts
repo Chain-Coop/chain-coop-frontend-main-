@@ -116,7 +116,6 @@ export const GetAllUserPools = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const data = await KycServices.GetAllUserPools();
-      console.log("data", data);
       return data;
     } catch (error: any) {
       const message = error.message;

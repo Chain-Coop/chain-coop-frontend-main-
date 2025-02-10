@@ -52,8 +52,7 @@ const CryptoSavings: React.FC = () => {
   const [savingsType, setSavingsType] = useState<"naira" | "crypto">("crypto");
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
-  const { userPools = [] } = useAllUserPools() || {};
-  console.log("user pools", userPools);
+  const { userPools = [], loading: poolsLoading } = useAllUserPools() || {};
   const [selectedPool, setSelectedPool] = useState<{
     poolId_bytes: string;
     tokenAddressToSaveWith: string;
@@ -237,7 +236,9 @@ const CryptoSavings: React.FC = () => {
             </h1>
           </header>
 
-          {userPools?.length > 0 ? (
+          {poolsLoading ? (
+            <ContributionListSkeleton />
+          ) : userPools?.length > 0 ? (
             <div className="mt-4 flex h-auto flex-col gap-3 rounded-lg bg-text2 p-3 text-center sm:mt-6 sm:gap-4 sm:p-4 lg:p-6">
               {userPools?.map((pools: any) => (
                 <motion.div
