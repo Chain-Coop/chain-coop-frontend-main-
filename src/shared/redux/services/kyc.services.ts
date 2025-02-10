@@ -1,7 +1,7 @@
 import axios from "axios";
 import authHeader from "./headers";
 
-const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
+const API_URL = (import.meta as any).env.VITE_REACT_APP_API_URL;
 
 const kycPhoneOtp = async () => {
   const url = `${API_URL}/kyc/send-otp`;
@@ -102,7 +102,6 @@ const ActivateCryptoWallet = async () => {
     }
   }
 };
-
 const GetTotalCryptoWalletBalance = async () => {
   const url = `${API_URL}/web3/balance/total`;
   try {
@@ -111,10 +110,11 @@ const GetTotalCryptoWalletBalance = async () => {
       headers: authHeader(),
       method: "get",
     });
-    const token = response?.data?.data?.tokens?.accessToken;
-    if (token) {
-      sessionStorage.setItem("userData", token);
+
+    if (response?.data?.message === "No Wallet found") {
+      return { data: { balance: 0, message: "No Wallet found" } };
     }
+
     return response.data;
   } catch (error) {
     throw error;
@@ -163,6 +163,7 @@ const GetAllUserPools = async () => {
       headers: authHeader(),
       method: "get",
     });
+    console.log("res", response);
     const token = response?.data?.data?.tokens?.accessToken;
     if (token) {
       sessionStorage.setItem("userData", token);

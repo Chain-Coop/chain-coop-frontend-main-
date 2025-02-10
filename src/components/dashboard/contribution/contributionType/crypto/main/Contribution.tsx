@@ -1,23 +1,17 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCryptoWallet } from "../../../../../../shared/Hooks/useBalance";
-import {
-  useAllUserPools,
-  useUserContributionHistory,
-} from "../../../../../../shared/Hooks/useUserProfile";
+import { useAllUserPools } from "../../../../../../shared/Hooks/useUserProfile";
 import ToggleButton from "../../../../../../shared/utils/ToggleButton";
 import { DashboardHeader } from "../../../../../common/DashboardHeader";
 import { motion } from "framer-motion";
-import {
-  IoIosArrowBack,
-  IoIosArrowForward,
-  IoIosArrowDown,
-} from "react-icons/io";
+import { IoIosArrowDown } from "react-icons/io";
 import Modal from "../../../../../common/Modal";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../../shared/redux/store";
 import { UpdateUserPool } from "../../../../../../shared/redux/slices/kyc.slices";
 import { toast } from "react-toastify";
+import { Typography } from "@material-tailwind/react";
 
 const ContributionListSkeleton: React.FC = () => (
   <div className="mt-[1em] flex h-auto w-full flex-col gap-[1em] rounded-lg bg-text2 px-2 py-[3em] text-center">
@@ -58,20 +52,13 @@ const CryptoSavings: React.FC = () => {
   const [savingsType, setSavingsType] = useState<"naira" | "crypto">("crypto");
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1);
   const { userPools = [] } = useAllUserPools() || {};
+  console.log("user pools", userPools);
   const [selectedPool, setSelectedPool] = useState<{
     poolId_bytes: string;
     tokenAddressToSaveWith: string;
   } | null>(null);
   const dispatch: AppDispatch = useDispatch();
-  const limit = 10;
-
-  const {
-    getContributions,
-    isLoading: isContributionsLoading,
-    error,
-  } = useUserContributionHistory(page, limit);
 
   const [isContributionVisible, setIsContributionVisible] = useState(() => {
     const storedVisibility = sessionStorage.getItem(
@@ -79,26 +66,12 @@ const CryptoSavings: React.FC = () => {
     );
     return storedVisibility !== null ? storedVisibility === "true" : true;
   });
-  const totalPages = getContributions?.totalPages || 1;
-  const currentPage = parseInt(getContributions?.currentPage || "1");
-
-  const handlePrevPage = () => {
-    if (currentPage > 1 && !isContributionsLoading) {
-      setPage(currentPage - 1);
-    }
-  };
 
   const formatDuration = (durationInSeconds: any) => {
     const daysRemaining = Math.ceil(
       parseInt(durationInSeconds) / (24 * 60 * 60),
     );
     return `Ends in ${daysRemaining} Days`;
-  };
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages && !isContributionsLoading) {
-      setPage(currentPage + 1);
-    }
   };
 
   // const navigateToContributionDetails = (contributionId: string) => {
@@ -192,7 +165,7 @@ const CryptoSavings: React.FC = () => {
               <div className="flex justify-end py-2">
                 <button
                   onClick={toggleModal}
-            className="flex w-auto transform items-center  gap-2 rounded-lg border-[3px] border-gray-200 bg-[#E3D9E6] px-6 py-2 text-lg font-semibold text-text2 transition-all duration-300 hover:scale-105
+                  className="flex w-auto transform items-center  gap-2 rounded-lg border-[3px] border-gray-200 bg-[#E3D9E6] px-6 py-2 text-lg font-semibold text-text2 transition-all duration-300 hover:scale-105
                   active:scale-95 md:py-3 lg:py-2"
                 >
                   Crypto Savings
@@ -264,33 +237,8 @@ const CryptoSavings: React.FC = () => {
             </h1>
           </header>
 
-          {isContributionsLoading ? (
-            <ContributionListSkeleton />
-          ) : userPools?.length > 0 ? (
+          {userPools?.length > 0 ? (
             <div className="mt-4 flex h-auto flex-col gap-3 rounded-lg bg-text2 p-3 text-center sm:mt-6 sm:gap-4 sm:p-4 lg:p-6">
-              <div className="flex items-center justify-between px-2 sm:px-4">
-                <span className="text-xs font-medium text-white sm:text-sm">
-                  Page {currentPage} of {totalPages}
-                </span>
-                <div className="flex gap-1 sm:gap-2">
-                  <button
-                    onClick={handlePrevPage}
-                    disabled={currentPage <= 1}
-                    className="rounded p-1 text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    <IoIosArrowBack className="h-4 w-4 sm:h-5 sm:w-5" />
-                  </button>
-                  <button
-                    onClick={handleNextPage}
-                    disabled={currentPage >= totalPages}
-                    className="rounded p-1 text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    <IoIosArrowForward className="h-4 w-4 sm:h-5 sm:w-5" />
-                  </button>
-                </div>
-              </div>
-              <hr className="border-gray-500" />
-
               {userPools?.map((pools: any) => (
                 <motion.div
                   key={pools.poolIndex}
@@ -356,18 +304,14 @@ const CryptoSavings: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-4 flex h-auto w-full flex-col gap-4 rounded-lg bg-text2 p-4 text-center sm:mt-6 sm:p-6"
+              className="mb-3 mt-4 flex h-[12em] w-full flex-col items-center justify-center gap-4 rounded-lg bg-text2 p-6 text-center md:mt-6 md:p-8"
             >
-              <h2 className="text-lg font-bold text-how1 sm:text-xl lg:text-2xl">
-                No Savings Yet
-              </h2>
-              <motion.p
-                whileHover={{ scale: 1.05 }}
-                onClick={fundContribution}
-                className="mt-4 cursor-pointer text-base font-semibold text-how1 sm:mt-6 sm:text-lg"
+              <Typography
+                variant="h2"
+                className="text-xl font-bold text-how1 md:text-2xl"
               >
-                Get Started
-              </motion.p>
+                No Savings Yet
+              </Typography>
             </motion.div>
           )}
         </section>
