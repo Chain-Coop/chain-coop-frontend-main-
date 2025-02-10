@@ -1,10 +1,8 @@
-//@ts-nocheck
 import {
   Button,
   Dialog,
   DialogHeader,
   DialogBody,
-  DialogFooter,
   Typography,
 } from "@material-tailwind/react";
 import loan from "../../../../Assets/svg/dashboard/loan.svg";

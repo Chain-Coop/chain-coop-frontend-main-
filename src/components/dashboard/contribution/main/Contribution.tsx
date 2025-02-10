@@ -14,6 +14,7 @@ import {
 import Modal from "../../../common/Modal";
 import { Button, Typography } from "@material-tailwind/react";
 import { ROUTES } from "../../../../shared/routes";
+import { SavingsPlan } from "./modals/SavingsPlan";
 
 type Contribution = {
   _id: string;
@@ -319,50 +320,12 @@ const Contribution: React.FC = () => {
         </section>
       </main>
 
-      <Modal
-        isOpen={isModalOpen}
-        onClose={toggleModal}
-        className="mx-auto w-full max-w-sm rounded-lg bg-white"
-      >
-        <div className="w-full px-4 py-6 sm:px-6">
-          <header>
-            <h1 className="text-center text-lg font-semibold text-gray-500 sm:text-xl">
-              Choose Savings Plan
-            </h1>
-          </header>
-          <div className="mt-6 flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <h3
-                className={`font-semibold ${savingsType === "naira" ? "text-[#000080]" : "text-gray-600"}`}
-              >
-                Naira Savings
-              </h3>
-              <input
-                type="radio"
-                className="h-4 w-4 cursor-pointer accent-[#000080]"
-                name="savingsType"
-                checked={savingsType === "naira"}
-                onChange={() => handleSavingsTypeChange("naira")}
-              />
-            </div>
-            <hr className="border-gray-200" />
-            <div className="flex items-center justify-between">
-              <h3
-                className={`font-semibold ${savingsType === "crypto" ? "text-[#000080]" : "text-gray-600"}`}
-              >
-                Crypto Savings
-              </h3>
-              <input
-                type="radio"
-                className="h-4 w-4 cursor-pointer accent-[#000080]"
-                name="savingsType"
-                checked={savingsType === "crypto"}
-                onChange={() => handleSavingsTypeChange("crypto")}
-              />
-            </div>
-          </div>
-        </div>
-      </Modal>
+      <SavingsPlan
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        savingsType={savingsType}
+        onSavingsTypeChange={handleSavingsTypeChange}
+      />
     </motion.main>
   );
 };
