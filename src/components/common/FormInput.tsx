@@ -9,6 +9,7 @@ interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
   rightElement?: React.ReactNode;
   helperText?: React.ReactNode;
   customInput?: React.ReactNode;
+  paddingY?: string; 
 }
 
 const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
@@ -25,6 +26,7 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
       customInput,
       type = "text",
       disabled,
+      paddingY = "4", 
       ...props
     },
     ref,
@@ -51,8 +53,8 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
               type={type}
               disabled={disabled}
               className={`
-                h-[4em] w-full rounded-full border-[1px] 
-                px-4 text-sm shadow-md 
+                w-full rounded-full border-[1px] 
+                px-4 py-${paddingY} text-sm shadow-md 
                 focus:border-text2 focus:outline-none focus:ring-text2
                 disabled:cursor-not-allowed disabled:opacity-50
                 ${error ? "border-red-500" : "border-gray-200"}

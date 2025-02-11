@@ -50,7 +50,7 @@ const HeroSection = () => {
           >
             <Link to={ROUTES.sign_up} className="flex-shrink-0">
               <Button
-                variant="small"
+                variant="text"
                 className="bg-text2 px-4 py-3 text-center transition-all hover:bg-opacity-90 sm:px-5 sm:py-4"
               >
                 <Typography className="text-sm font-semibold text-text5 sm:text-base">

@@ -75,23 +75,22 @@ export const becomeData = [
   {
     title: "Save in Naira",
     paragraph:
-      "Build a culture of Saving and join others in building communal wealth by saving in naira.",
-  },
-
-  {
-    title: "Stay safe from inflation with USDT, USDC, LISK etc.",
-    paragraph:
-      "Beat inflation by saving in stable coins and other Cryptos. Automate your savings from Naira to Crypo.",
+      "Build a culture of saving and join others in building communal wealth by saving in Naira.",
   },
   {
-    title: "Save A % of your Naira to Crypto",
+    title: "Stay Safe from Inflation with USDT, USDC, LISK, etc.",
     paragraph:
-      "Choose what portion of your savings you want to be converted into Crypto.",
+      "Beat inflation by saving in stablecoins and other cryptos. Automate your savings from Naira to Crypto.",
+  },
+  {
+    title: "Save a Percentage of Your Naira in Crypto",
+    paragraph:
+      "Choose what portion of your savings you want to be converted into crypto.",
   },
   {
     title: "Save Together, Grow Together",
     paragraph:
-      "Create savings cycles with friend and family you trust Our innovative.",
+      "Create savings cycles with friends and family you trust. Our innovative platform makes it seamless.",
   },
 ];
 
@@ -117,96 +116,94 @@ export const trustedPartners = [
 
 export const customerCardData = [
   {
-    paragraph: "Vote & get involved in the Co-op Network",
+    paragraph: "Vote and get involved in the Co-op Network.",
   },
   {
-    paragraph: "Invest in the Co-op Network business",
+    paragraph: "Invest in the Co-op Network business.",
   },
   {
-    paragraph: "Mint NFT after 6 months of saving",
+    paragraph: "Mint an NFT after six months of saving.",
   },
   {
-    paragraph:
-      "Access to individual, group, BREAD, BTC, and other saving cycles.",
+    paragraph: "Access individual, group, BREAD, BTC, and other saving cycles.",
   },
 ];
-
 export const investorCardData = [
   {
-    paragraph: "Vote & get involved in the Co-op Network",
+    paragraph: "Vote and get involved in the Co-op Network.",
   },
   {
-    paragraph: "Invest in the Co-op Network business",
+    paragraph: "Invest in the Co-op Network business.",
   },
   {
-    paragraph: "Early access to first investment rounds",
+    paragraph: "Early access to first investment rounds.",
   },
   {
-    paragraph: "Discounted products & services",
+    paragraph: "Discounted products and services.",
   },
   {
-    paragraph: " Mint NFT after 6 months of saving",
+    paragraph: "Mint an NFT after six months of saving.",
   },
   {
     paragraph:
-      "Access to savings individual savings Cycles, Group saving Dollar, BREAD, BTC and more.",
+      "Access individual savings cycles, group savings, Dollar, BREAD, BTC, and more.",
   },
 ];
 
 export const employeeCardData = [
   {
-    paragraph: "Vote & get involved in the Co-op Network",
+    paragraph: "Vote and get involved in the Co-op Network.",
   },
   {
-    paragraph: "Invest in the Co-op Network business",
+    paragraph: "Invest in the Co-op Network business.",
   },
   {
-    paragraph: "Early access to first investment rounds",
+    paragraph: "Early access to first investment rounds.",
   },
   {
-    paragraph: "Discounted products & services",
+    paragraph: "Discounted products and services.",
   },
   {
-    paragraph: " Mint NFT after 6 months of saving",
+    paragraph: "Mint an NFT after six months of saving.",
   },
   {
-    paragraph: "Eacr dividend on all Co-op business",
+    paragraph: "Earn dividends on all Co-op businesses.",
   },
   {
-    paragraph: "Access to all savings features and Receive Yeilds on savings",
+    paragraph: "Access all savings features and receive yields on savings.",
   },
   {
-    paragraph: "Access to microcredit with 0% interest rate",
-  },
-];
-
-export const MembershipFeePioneerCardData = [
-  {
-    paragraph: "Installmentall payment is allowed till fee is completed",
-  },
-  {
-    paragraph: "Vote and engage with the Co-op network",
-  },
-  {
-    paragraph: "Invest in the Co-op network business",
-  },
-  {
-    paragraph: "Early access to the first investment rounds",
-  },
-  {
-    paragraph: "Discounted the Co-op network product and services",
+    paragraph: "Access microcredit with a 0% interest rate.",
   },
 ];
 
-export const CustomerFeeExplorerCardData = [
+export const membershipFeePioneerCardData = [
   {
-    paragraph: "Installmentall payment is allowed till fee is completed",
+    paragraph: "Installment payment is allowed until the fee is completed.",
   },
   {
-    paragraph: "Vote and engage with the Co-op network",
+    paragraph: "Vote and engage with the Co-op Network.",
   },
   {
-    paragraph: "Invest in the Co-op network business",
+    paragraph: "Invest in the Co-op Network business.",
+  },
+  {
+    paragraph: "Early access to the first investment rounds.",
+  },
+  {
+    paragraph: "Discounted Co-op Network products and services.",
+  },
+];
+
+export const customerFeeExplorerCardData = [
+  {
+    paragraph: "Installment payment is allowed until the fee is completed.",
+  },
+  {
+    paragraph: "Vote and engage with the Co-op Network.",
+  },
+  {
+    paragraph: "Invest in the Co-op Network business.",
   },
 ];
 
@@ -242,16 +239,15 @@ export const Legal = [
     to: "/privacy-policy",
   },
 ];
-
 export const Contacts = [
   {
-    text: "Lets build a better future together!",
+    text: "Let's build a better future together!",
   },
   {
-    text: "Visit us at No. 9 Ogunlana Street, Ikosi",
+    text: "Visit us at No. 9 Ogunlana Street, Ikosi.",
   },
   {
-    text: "Ketu, Lagos, Nigeria",
+    text: "Ketu, Lagos, Nigeria.",
   },
   {
     text: "info@chainerative.com.ng",
@@ -279,40 +275,39 @@ export const SavingOn = [
 ];
 
 export const Plan = [{ text: "Monthly" }, { text: "Daily" }];
-
 export const Terms = [
   {
     title: "1. Introduction",
     content:
-      "The website is operated by the Co-operative 'Chain Co-op', a legal entity registered with the Lagos State Ministry of Commerce, Industry, and Co-operatives, Alausa, lagos with its registered office at 9, Ogunlana close, Alausa, Lagos. Chain Co-op provides an automated savings platform available on its website at chainCo-op.org.",
+      "The website is operated by the Co-operative 'Chain Co-op', a legal entity registered with the Lagos State Ministry of Commerce, Industry, and Co-operatives, Alausa, Lagos, with its registered office at 9, Ogunlana Close, Alausa, Lagos. Chain Co-op provides an automated savings platform available on its website at chainco-op.org.",
   },
   {
     title: "2. Definitions",
     content: [
       {
-        term: '"Privacy policy"',
+        term: '"Privacy Policy"',
         definition:
-          "means the regulations established on the page (https://chainCo-op.org/privacy-policy) operated by Chain Co-op, as well as all documents referred to within them.",
+          "means the regulations established on the page (https://chainco-op.org/privacy-policy) operated by Chain Co-op, as well as all documents referred to within them.",
       },
       {
-        term: '"Applicable law"',
+        term: '"Applicable Law"',
         definition:
-          "means any constitution, statute, law, rule, regulation, ordinance, judgment, order, decree of the Federal Republic of Nigeria, or any published directive, guideline, requirement or other governmental restriction that has the force of law, whether in effect as of the date hereof or as of any date thereafter in the Federal Republic of Nigeria.",
+          "means any constitution, statute, law, rule, regulation, ordinance, judgment, order, decree of the Federal Republic of Nigeria, or any published directive, guideline, requirement, or other governmental restriction that has the force of law, whether in effect as of the date hereof or as of any date thereafter in the Federal Republic of Nigeria.",
       },
       {
-        term: '"Client", "Customer", "you", "your"',
+        term: '"Client", "Customer", "You", "Your"',
         definition:
-          "means a party using and utilising our Services through our Platform.",
+          "means a party using and utilizing our Services through our Platform.",
       },
       {
-        term: '"Chain co-op", "We", "us", "our"',
+        term: '"Chain Co-op", "We", "Us", "Our"',
         definition:
           'means Chain Co-op and its successors, affiliates, and assignees. "Chain Co-op Account" means a Client or Customer\'s account with Chain Co-op for the Services we render.',
       },
       {
         term: '"Partner Program"',
         definition:
-          "refers to contractual relationships entered into between Chain Co-op and third-party service providers to enhance or build on Chain co-op's product offerings.",
+          "refers to contractual relationships entered into between Chain Co-op and third-party service providers to enhance or build on Chain Co-op's product offerings.",
       },
       {
         term: '"Platform"',
@@ -326,7 +321,7 @@ export const Terms = [
       },
       {
         term: '"Terms of Use"',
-        definition: "means these terms of use.",
+        definition: "means these Terms of Use.",
       },
       {
         term: '"Members"',
@@ -344,9 +339,9 @@ export const Terms = [
     title: "4. Purposes",
     content: [
       "Chain Co-op provides an online platform where users can save money automatically and convert it into cryptocurrencies. As our Client, we will use our best efforts and reasonable care to manage your savings.",
-      "In order to operate and make available the services and utilise the platform, Chain Co-op collects, uses and discloses certain personal information about you. We collect, use, disclose and protect that information as described in our privacy policy, which is hereby incorporated into these Terms of Use.",
-      "Please read the privacy policy carefully before accessing the Platform or using the Services.",
-      "References to 'you' or 'your' are references to any person accessing or using the Platform and/or Services by any means. Chain Co-op provides an online platform where users can save money and convert it into cryptocurrencies.",
+      "In order to operate and make available the Services and utilize the Platform, Chain Co-op collects, uses, and discloses certain personal information about you. We collect, use, disclose, and protect that information as described in our Privacy Policy, which is hereby incorporated into these Terms of Use.",
+      "Please read the Privacy Policy carefully before accessing the Platform or using the Services.",
+      "References to 'You' or 'Your' are references to any person accessing or using the Platform and/or Services by any means. Chain Co-op provides an online platform where users can save money and convert it into cryptocurrencies.",
       "The Co-operative is governed using blockchain technology, ensuring transparency, security, and efficient management of member funds.",
     ],
   },
@@ -356,23 +351,23 @@ export const Terms = [
       {
         title: "5.1 Eligibility",
         content:
-          "Access to the Chain Co-op platform and services is strictly limited to:",
+          "Access to the Chain Co-op Platform and Services is strictly limited to:",
         list: [
           "Individuals possessing a valid Bank Verification Number (BVN);",
           "Nigerian citizens or legal residents;",
           "Businesses or entities duly registered and incorporated in Nigeria.",
         ],
         footer:
-          "Use of the platform or services by any party not meeting these criteria is unauthorized and constitutes a violation of these Terms of Service.",
+          "Use of the Platform or Services by any party not meeting these criteria is unauthorized and constitutes a violation of these Terms of Service.",
       },
       {
         title: "5.2 Your Access",
         content: [
-          "To access certain features of our platform, you must register and create an account ('Member Account'). During registration, you will be required to set a password, which must be provided to access your account.",
-          "Chain Co-op maintains robust security measures compliant with legal standards to protect your personal information (refer to our privacy policy). You are responsible for safeguarding your password and other account details. You must not share your password with anyone, and you must notify Chain Co-op immediately if your password is compromised or if you suspect unauthorized use of your account.",
+          "To access certain features of our Platform, you must register and create an account ('Member Account'). During registration, you will be required to set a password, which must be provided to access your account.",
+          "Chain Co-op maintains robust security measures compliant with legal standards to protect your personal information (refer to our Privacy Policy). You are responsible for safeguarding your password and other account details. You must not share your password with anyone, and you must notify Chain Co-op immediately if your password is compromised or if you suspect unauthorized use of your account.",
           "As a Member, you are solely responsible for all activities conducted through your Chain Co-op account. Chain Co-op will act on instructions received under your account, which will be considered duly authorized by you.",
           "You must ensure that all information provided during account registration is accurate, complete, and kept up-to-date.",
-          "If you are interested in developing enhancements or extensions to the services, such activity must proceed through our API as part of the Partner Program, which requires meeting specific eligibility criteria and a formal partnership agreement.",
+          "If you are interested in developing enhancements or extensions to the Services, such activity must proceed through our API as part of the Partner Program, which requires meeting specific eligibility criteria and a formal partnership agreement.",
           "If your account is inactive for a prolonged period, applicable laws may classify the funds as unclaimed property. We may attempt to contact you or your legally designated Next of Kin (NOK) using the last address in our records. Your NOK will not have access to transaction details or funds. If contact attempts fail, we may be required to surrender any funds in your account to the state as unclaimed property, in accordance with local regulations.",
           "In the event of a member's death, the disposition of funds or interests within the member's account will comply with applicable laws.",
         ],
@@ -389,7 +384,7 @@ export const Terms = [
       {
         title: "5.4 Confidentiality",
         content: [
-          "Chain Co-op and its employees, consultants, or agents will maintain the confidentiality of all non-public information and documents obtained while providing services.",
+          "Chain Co-op and its employees, consultants, or agents will maintain the confidentiality of all non-public information and documents obtained while providing Services.",
           "Confidential information will not be disclosed to third parties except as required by law or as necessary for legal advice.",
           "This confidentiality obligation persists beyond the termination of these Terms.",
         ],
@@ -399,12 +394,12 @@ export const Terms = [
   {
     title: "6. User Responsibilities",
     content: [
-      "Chain Co-op of provides an online platform where users can save automatically and convert it to cryptocurrences. As our client We will use our best efforts and reasonable care to manage your savings.",
-      "In order to operate and make available the services and utilise the platform Chain Co-op collect uses and discloses certain personal information About you, we collect, use, disclose and protect that information as described in our privacy policy and which is hereby incorporated into these terms of use.",
-      "Chain Co-op reserves the right to modify these terms as necessary, in accordance with applicable laws and prevailing market conditions.",
-      "Please read the privacy policy carefully before accessing the platform or using the services.",
-      "Refrences to you or your are refrences to any person Accessing or using the platform and/all services by any means Chain Co-op Provide an online platform where users can save money and convert into cryptocurrencies",
-      "The cooperative is governed by using blockchain technology, ensuring transparency, security and efficient management of members funds",
+      "Chain Co-op provides an online platform where users can save automatically and convert it to cryptocurrencies. As our Client, we will use our best efforts and reasonable care to manage your savings.",
+      "In order to operate and make available the Services and utilize the Platform, Chain Co-op collects, uses, and discloses certain personal information about you. We collect, use, disclose, and protect that information as described in our Privacy Policy, which is hereby incorporated into these Terms of Use.",
+      "Chain Co-op reserves the right to modify these Terms as necessary, in accordance with applicable laws and prevailing market conditions.",
+      "Please read the Privacy Policy carefully before accessing the Platform or using the Services.",
+      "References to 'You' or 'Your' are references to any person accessing or using the Platform and/or Services by any means. Chain Co-op provides an online platform where users can save money and convert it into cryptocurrencies.",
+      "The Co-operative is governed by using blockchain technology, ensuring transparency, security, and efficient management of member funds.",
     ],
   },
   {
@@ -428,7 +423,7 @@ export const Terms = [
   {
     title: "9. Other Fees",
     content: [
-      "You acknowledge that using Chain Co-op's services may result in fees imposed by third-party financial institutions.",
+      "You acknowledge that using Chain Co-op's Services may result in fees imposed by third-party financial institutions.",
       "These additional costs can include bank transfer fees, transfer taxes, and other similar expenses.",
       "Please be aware that these fees are not covered by the fees you pay to Chain Co-op.",
     ],
@@ -474,17 +469,16 @@ export const Terms = [
   {
     title: "15. Liability",
     content: [
-      "Chain Co-op is Exclusively available within the borders of Federal Republic of Nigeria. We do not claim that Chain-Co-op is suitable or available outside of Nigeria. Additionally, we do not guarantee that accessing chain code from territory Nigeria complies with applicable laws. If you use change from outside Nigeria you do not you do so at your own risk and must ensure compliance with the laws of your location",
+      "Chain Co-op is exclusively available within the borders of the Federal Republic of Nigeria. We do not claim that Chain Co-op is suitable or available outside of Nigeria. Additionally, we do not guarantee that accessing Chain Co-op from territories outside Nigeria complies with applicable laws. If you use Chain Co-op from outside Nigeria, you do so at your own risk and must ensure compliance with the laws of your location.",
     ],
   },
   {
     title: "16. Termination of Membership",
     content: [
-      "Chain Co-op reserves the right to suspend or terminate any user account sor failure to comply with these Terms and Conditions",
+      "Chain Co-op reserves the right to suspend or terminate any user account for failure to comply with these Terms and Conditions.",
     ],
   },
 ];
-
 export const PrivacyData = [
   {
     title: "1. Introduction",
@@ -530,7 +524,7 @@ export const PrivacyData = [
         list: [
           "Device and Usage Data: Information about the device you're using, including hardware model, operating system version, browser type, and the pages you visit. We also collect information about how you interact with our website or mobile apps, such as session time, navigation patterns, and search queries.",
           "IP Address: We log your IP address to help identify your device, prevent fraud, and improve platform performance.",
-          "Cookies and Tracking Technologies: We use cookies and similar technologies (like pixels and web beacons) to collect information on how you use our platform. This data helps us personalize your experience, analyse traffic, and improve the platform's performance. For more information on how to manage cookies, refer to the 'Your Choices' section.",
+          "Cookies and Tracking Technologies: We use cookies and similar technologies (like pixels and web beacons) to collect information on how you use our platform. This data helps us personalize your experience, analyze traffic, and improve the platform's performance. For more information on how to manage cookies, refer to the 'Your Choices' section.",
         ],
       },
       {
@@ -641,46 +635,45 @@ export const PrivacyData = [
       {
         title: "7.5 Complaints",
         content:
-          "If you believe your data has been mishandled, you have the right to lodge a complaint with the relevant data protection authority authorities",
+          "If you believe your data has been mishandled, you have the right to lodge a complaint with the relevant data protection authority.",
       },
     ],
   },
   {
     title: "8. Data Retention",
     content: [
-      "We retain your personal data for as long as necessaryto fulfill the proposed outlined in this privacy policy or as required by law. Once your data is no longer needed. we securely delete to annonymize it.",
+      "We retain your personal data for as long as necessary to fulfill the purposes outlined in this Privacy Policy or as required by law. Once your data is no longer needed, we securely delete or anonymize it.",
     ],
   },
   {
     title: "9. International Data Transfers",
     content: [
-      "Personal data may be transferred to and stored in locations outside your country of residence Including countries that may not have the Same level of data protection laws. In such cases, we ensure that appropriate safeguards are in place to protect your data, as required by applicable laws.",
+      "Personal data may be transferred to and stored in locations outside your country of residence, including countries that may not have the same level of data protection laws. In such cases, we ensure that appropriate safeguards are in place to protect your data, as required by applicable laws.",
     ],
   },
   {
     title: "10. Cookies and Tracking Technologies",
     content: [
-      "Our services and improve your experience. You can manage your cookie preferences through your browser settings but Please note that blocking cookies may impact the functionality of our services.",
+      "We use cookies and similar technologies to enhance our services and improve your experience. You can manage your cookie preferences through your browser settings, but please note that blocking cookies may impact the functionality of our services.",
     ],
   },
   {
     title: "11. Changes to This Policy",
     content: [
-      "We reserve the right to update or change this privacy policy at any time.Any changes will be posted on this page and updated dates will be reflected at the top of the document.We encourage you to review this policy periodically to stay informed about how we protect your data.The last one",
+      "We reserve the right to update or change this Privacy Policy at any time. Any changes will be posted on this page, and the updated date will be reflected at the top of the document. We encourage you to review this policy periodically to stay informed about how we protect your data.",
     ],
   },
   {
     title: "12. Contact Us",
     content: [
-      "If you have any questions or concerns about this privacy policy or how we handle your personal data please contact us.",
-      "Email: info@chainCo-opeartive.com",
-      "Address: 9 Ogulana street, Oregun Alausa",
-      "Phone number +234 809 322 7696",
-      "We are commited to ensuring your privacy is respected and protected.",
+      "If you have any questions or concerns about this Privacy Policy or how we handle your personal data, please contact us.",
+      "Email: info@chainco-op.com",
+      "Address: 9 Ogunlana Street, Oregun, Alausa, Lagos",
+      "Phone Number: +234 809 322 7696",
+      "We are committed to ensuring your privacy is respected and protected.",
     ],
   },
 ];
-
 export const teamMembers = [
   {
     id: 1,
@@ -688,7 +681,7 @@ export const teamMembers = [
     role: "Data Engineer/CCO",
     image: juwon,
     description:
-      "Olawajuwon Ogunseye is a Data Engineer with 6+ years fintech and blockchain experience. He is focusing on Co-operative and decentralized finance.",
+      "Olawajuwon Ogunseye is a Data Engineer with 6+ years of fintech and blockchain experience. He focuses on co-operative and decentralized finance.",
     social: {
       twitter: "https://x.com/juwon_ogunseye?t=ZAuheRFCskhkB6NeNITdUA&s=09",
       linkedin:
@@ -701,7 +694,7 @@ export const teamMembers = [
     role: "Content Marketer",
     image: rebecca,
     description:
-      "Rebecca Asseh is a Blockchain Content Marketer, crypto educator and board member of Black Women in Blockchain Council. She works on simplifying blockchain for end-users.",
+      "Rebecca Asseh is a Blockchain Content Marketer, crypto educator, and board member of Black Women in Blockchain Council. She works on simplifying blockchain for end-users.",
     social: {
       twitter: "#",
       linkedin: "#",
@@ -713,7 +706,7 @@ export const teamMembers = [
     role: "Product Manager / CMO",
     image: samad,
     description:
-      "Founder of jobhunteters and co-founder of Automation Affairs Ltd. a versatile product and project manager. A former Presidient of the gemstones Toast masters Club with contributions of over 200 applictaions and product with companies like Appcake and Routepay.G",
+      "Founder of Jobhunters and co-founder of Automation Affairs Ltd., AbdulSamad is a versatile product and project manager. A former President of the Gemstones Toastmasters Club, he has contributed to over 200 applications and products with companies like Appcake and Routepay.",
     social: {
       twitter: "#",
       linkedin:
@@ -726,7 +719,7 @@ export const teamMembers = [
     role: "Content Marketer",
     image: temi,
     description:
-      "Eyitemi is a Product designer with over 3+years of experience.",
+      "Eyitemi is a Product Designer with over 3 years of experience.",
     social: {
       twitter: "https://x.com/IEyitemi?t=bY1T63NaxbAtd0nJbLRLIQ&s=08",
       linkedin: "#",

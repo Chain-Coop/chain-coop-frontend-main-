@@ -1,8 +1,29 @@
 import React, { useState } from "react";
 import OtpPin from "../../../../../shared/utils/OtpInput";
-import { Button } from "@material-tailwind/react";
+import {
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  Typography,
+} from "@material-tailwind/react";
 
-const OtpInput = ({ otp, setOtp, onClose, onOtpEntered }: any) => {
+interface OtpInputProps {
+  otp: string;
+  setOtp: (otp: string) => void;
+  onClose: () => void;
+  onOtpEntered: () => void;
+  isOpen: boolean;
+}
+
+const OtpInput: React.FC<OtpInputProps> = ({
+  otp,
+  setOtp,
+  onClose,
+  onOtpEntered,
+  isOpen,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -15,25 +36,45 @@ const OtpInput = ({ otp, setOtp, onClose, onOtpEntered }: any) => {
   };
 
   return (
-    <div className="py-[2em] text-center lg:w-[25em]">
-      <h2 className="mb-2 text-2xl font-semibold">Reset Password</h2>
-      <p className="mb-4 text-gray-600">Enter Your OTP code</p>
+    <Dialog
+      size="sm"
+      open={isOpen}
+      handler={onClose}
+      className="bg-[#E9E9E9] p-4"
+    >
+      <DialogHeader className="flex flex-col justify-center">
+        <Typography variant="h4" className="font-semibold">
+          Reset Password
+        </Typography>
+        <Typography color="gray" className="font-normal">
+          Enter Your OTP code
+        </Typography>
+      </DialogHeader>
 
-      <div className="mb-6 flex justify-center">
-        <OtpPin length={6} value={otp} className="mt-[1em]" onChange={setOtp} />
-      </div>
+      <DialogBody>
+        <div className="mb-6 flex justify-center">
+          <OtpPin length={6} value={otp} className="mt-4" onChange={setOtp} />
+        </div>
 
-      <div className="space-y-3">
+        {error && (
+          <Typography color="red" className="text-center text-sm">
+            {error}
+          </Typography>
+        )}
+      </DialogBody>
+
+      <DialogFooter className="flex justify-center">
         <Button
-          variant="text"
+          variant="filled"
           onClick={handleContinue}
-          className="m-auto w-[60%] rounded-full bg-text2 py-2 text-white"
           disabled={isLoading}
+          loading={isLoading}
+          className="w-[60%] rounded-full bg-text2 py-3 text-sm font-normal normal-case"
         >
-          Continue
+          {isLoading ? "Processing..." : "Continue"}
         </Button>
-      </div>
-    </div>
+      </DialogFooter>
+    </Dialog>
   );
 };
 

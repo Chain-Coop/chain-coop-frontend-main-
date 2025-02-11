@@ -116,7 +116,7 @@ const WhyChainCoop = () => {
                 variants={fadeInUp}
                 className="text-xl font-bold sm:mt-2 md:text-[2em] lg:text-3xl"
               >
-                Building communal wealth for Africans one{" "}
+                Building communal wealth for Africans, one
                 <br className="hidden sm:block" /> person at a time.
               </MotionTypography>
               <Typography
@@ -125,7 +125,7 @@ const WhyChainCoop = () => {
               >
                 Chain Co-op provides a secure platform for members to save,
                 hedge against inflation, and access loans, creating a
-                cooperative savings ecosystem focused on members security and
+                cooperative savings ecosystem focused on members' security and
                 stability.
               </Typography>
             </div>
@@ -153,7 +153,7 @@ const WhyChainCoop = () => {
                   variants={fadeInUp}
                   className="mb-4 text-xl font-semibold sm:text-2xl lg:text-3xl"
                 >
-                  Who we are at
+                  Who we are
                 </motion.h2>
                 <MotionTypography
                   variant="small"
@@ -161,10 +161,10 @@ const WhyChainCoop = () => {
                   className="text-sm font-normal lg:text-base"
                 >
                   Chain Co-op provides a secure platform for members to save,
-                  hedge against inflation and build wealth. we're breaking down
+                  hedge against inflation, and build wealth. We're breaking down
                   traditional wealth-building barriers and introducing a digital
                   saving culture in Naira and Crypto, putting financial
-                  empowerement within everyone's reach
+                  empowerment within everyone's reach.
                 </MotionTypography>
               </div>
             </motion.div>
@@ -240,12 +240,12 @@ const WhyChainCoop = () => {
                   variants={fadeInUp}
                   className="text-sm font-normal lg:text-base"
                 >
-                  Wealth Creation empowerement and inculsion; are the core of
-                  what we stand for. Our values guide what we do at chain Co-p.
-                  we are focued on building a secure and transparent savings
-                  platform that bridges traditional and digital finance
+                  Wealth creation, empowerment, and inclusion are at the core of
+                  what we stand for. Our values guide what we do at Chain Co-op.
+                  We are focused on building a secure and transparent savings
+                  platform that bridges traditional and digital finance,
                   empowering individuals and communities to achieve financial
-                  stabilit and growth.
+                  stability and growth.
                 </MotionTypography>
               </div>
             </motion.div>
@@ -264,21 +264,21 @@ const WhyChainCoop = () => {
                 variants={fadeInUp}
                 className="text-xl font-bold sm:mt-2 md:text-[1.5em]"
               >
-                Join Early and Multiply your Savings with exclusive{" "}
-                <br className="hidden sm:block" /> Multiple Currencies Cycles.
+                Join Early and Multiply Your Savings with Exclusive{" "}
+                <br className="hidden sm:block" /> Multiple Currency Cycles.
               </MotionTypography>
               <Typography
                 variants={fadeInUp}
                 className="mt-4 text-sm font-normal text-gray-500 sm:text-sm lg:text-base"
               >
-                Access 5x Your Funds by Participating in Chain Co-Op Powerful
-                Saving Cycles
+                Access 5x your funds by participating in Chain Co-Op’s powerful
+                saving cycles.
               </Typography>
               <Typography
                 variant="h5"
                 className="text-sm font-semibold sm:text-base"
               >
-                -Limited Spots Available!
+                Limited Spots Available!
               </Typography>
             </div>
 
@@ -299,9 +299,8 @@ const WhyChainCoop = () => {
                     className="text-sm font-normal sm:text-base"
                   >
                     Your savings are protected by cutting-edge blockchain
-                    technology, ensuring transparency, security and peace of
-                    mind. Say goodbye to worries about data breaches or
-                    unauthorized access.
+                    technology, ensuring transparency, security, and peace of
+                    mind. Say goodbye to data breaches and unauthorized access.
                   </Typography>
                 </div>
                 <div className="order-1 mt-4 md:order-2 md:mt-0">
@@ -328,10 +327,10 @@ const WhyChainCoop = () => {
                     variant="small"
                     className="text-sm font-normal sm:text-base"
                   >
-                    Choose how you want to save in dollars, naira,
-                    cryptocurrencies or even gold. Our platform adapts to your
-                    preferences giving you the freedom to diversify your savings
-                    like never before.
+                    Choose how you want to save—whether in dollars, naira,
+                    cryptocurrencies, or even gold. Our platform adapts to your
+                    preferences, giving you the freedom to diversify your
+                    savings like never before.
                   </Typography>
                 </div>
                 <div className="order-1 mt-4 md:order-1 md:mt-0">
@@ -352,15 +351,15 @@ const WhyChainCoop = () => {
                     variant="h5"
                     className="text-lg text-text2 sm:text-xl"
                   >
-                    Auto Savings for your Convenience
+                    Auto-Savings for Your Convenience
                   </Typography>
                   <Typography
                     variant="small"
                     className="text-sm font-normal sm:text-base"
                   >
-                    Take the hassle out of savings with our auto-savings
-                    feature. Set your goal, customize your schedule and watch
-                    your savings grow effortlessly-all on autopilot.
+                    Take the hassle out of saving with our auto-savings feature.
+                    Set your goal, customize your schedule, and watch your
+                    savings grow effortlessly—all on autopilot.
                   </Typography>
                 </div>
                 <div className="order-1 mt-4 md:order-2 md:mt-0">
@@ -408,7 +407,7 @@ const WhyChainCoop = () => {
                     className="text-sm font-normal sm:text-base"
                   >
                     Your savings are protected by cutting-edge blockchain
-                    technology, ensuring transparency, security and peace of
+                    technology, ensuring transparency, security, and peace of
                     mind. Say goodbye to worries about data breaches or
                     unauthorized access.
                   </Typography>
@@ -437,10 +436,10 @@ const WhyChainCoop = () => {
                     variant="small"
                     className="text-sm font-normal sm:text-base"
                   >
-                    Choose how you want to save in dollars, naira,
-                    cryptocurrencies or even gold. Our platform adapts to your
-                    preferences giving you the freedom to diversify your savings
-                    like never before.
+                    Choose how you want to save—in dollars, naira,
+                    cryptocurrencies, or even gold. Our platform adapts to your
+                    preferences, giving you the freedom to diversify your
+                    savings like never before.
                   </Typography>
                 </div>
                 <div className="order-1 mt-4 md:order-1 md:mt-0">
