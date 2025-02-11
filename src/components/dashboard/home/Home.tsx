@@ -174,14 +174,14 @@ const Home = () => {
         <div className="mt-8 flex w-full flex-col gap-[1.5em] lg:px-4">
           <Button
             onClick={addFund}
-            variant="small"
+            variant="text"
             className="text-md mx-auto w-full rounded-3xl bg-inherit py-4 text-center font-semibold text-text4 shadow-md transition-colors hover:bg-gray-50"
           >
             + Add Fund
           </Button>
           <Button
             onClick={handleLoanClick}
-            variant="small"
+            variant="text"
             className="text-md mx-auto w-full rounded-3xl bg-[#ECE6F2] py-4 text-center font-semibold text-text4 shadow-md transition-colors hover:bg-gray-50"
           >
             + Get a loan

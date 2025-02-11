@@ -20,6 +20,16 @@ import {
 } from "@material-tailwind/react";
 import { ROUTES } from "../../../../shared/routes";
 import { Card } from "../../../../shared/types/types";
+import {
+  cardDesigns,
+  Chip,
+  formatCardNumber,
+  formatExpiryDate,
+  handleCardSelect,
+  handleNext,
+  handlePrev,
+  handleCloseError,
+} from "./../../../../shared/utils/Helpers";
 
 interface PaymentWithCardProps {
   contributionData: {
@@ -29,27 +39,6 @@ interface PaymentWithCardProps {
   onClose: () => void;
   isOpen: boolean;
 }
-
-const cardDesigns = {
-  visa: "from-blue-600 to-blue-800",
-  mastercard: "from-red-600 to-orange-600",
-  verve: "from-green-600 to-emerald-800",
-  default: "from-purple-600 to-purple-800",
-};
-
-const Chip = () => (
-  <div className="relative h-8 w-11">
-    <div className="absolute h-full w-full rounded-md bg-gradient-to-br from-yellow-600 to-yellow-700">
-      <div className="absolute left-1 top-1 h-6 w-9 rounded-md border-2 border-yellow-800/30">
-        <div className="grid h-full w-full grid-cols-4 grid-rows-4 gap-[1px]">
-          {[...Array(16)].map((_, i) => (
-            <div key={i} className="bg-yellow-800/20" />
-          ))}
-        </div>
-      </div>
-    </div>
-  </div>
-);
 
 const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
   contributionData,
@@ -119,29 +108,6 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
     }
   };
 
-  const handleCardSelect = (card: Card) => {
-    setError(null);
-    setSelectedCard(card);
-  };
-
-  const handleNext = () =>
-    currentPage < cards.length - 1 && setCurrentPage((prev) => prev + 1);
-
-  const handlePrev = () =>
-    currentPage > 0 && setCurrentPage((prev) => prev - 1);
-
-  const handleCloseError = () => {
-    setError(null);
-  };
-
-  const formatCardNumber = (last4: string) => {
-    return `**** **** **** ${last4}`;
-  };
-
-  const formatExpiryDate = (month: string, year: string) => {
-    return `${month.padStart(2, "0")}/${year.slice(-2)}`;
-  };
-
   return (
     <Dialog
       size="sm"
@@ -152,11 +118,11 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
       <Snackbar
         open={!!error}
         autoHideDuration={6000}
-        onClose={handleCloseError}
+        onClose={() => handleCloseError(setError)}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert
-          onClose={handleCloseError}
+          onClose={() => handleCloseError(setError)}
           severity="error"
           variant="filled"
           sx={{ width: "100%" }}
@@ -196,7 +162,9 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
                     <div className="relative mx-auto w-full overflow-hidden sm:w-[25em] sm:px-6">
                       {currentPage > 0 && (
                         <button
-                          onClick={handlePrev}
+                          onClick={() =>
+                            handlePrev(currentPage, setCurrentPage)
+                          }
                           className="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-1.5 shadow-lg sm:p-2"
                         >
                           <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -205,7 +173,13 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
 
                       {cards[currentPage] && (
                         <div
-                          onClick={() => handleCardSelect(cards[currentPage])}
+                          onClick={() =>
+                            handleCardSelect(
+                              cards[currentPage],
+                              setSelectedCard,
+                              setError,
+                            )
+                          }
                           className={`group relative aspect-[1.8/1] w-full cursor-pointer rounded-xl bg-gradient-to-r px-2 py-2 shadow-lg transition-all hover:shadow-xl sm:px-4
                             ${
                               cardDesigns[
@@ -250,7 +224,9 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
 
                       {currentPage < cards.length - 1 && (
                         <button
-                          onClick={handleNext}
+                          onClick={() =>
+                            handleNext(currentPage, cards, setCurrentPage)
+                          }
                           className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-1.5 shadow-lg sm:p-2"
                         >
                           <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />

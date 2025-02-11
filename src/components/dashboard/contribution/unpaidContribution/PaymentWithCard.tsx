@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
 import { Loader2, ChevronLeft, ChevronRight } from "lucide-react";
@@ -9,7 +9,17 @@ import {
 } from "../../../../shared/redux/slices/transaction.slices";
 import { Alert, Snackbar } from "@mui/material";
 import { useUserCard } from "../../../../shared/Hooks/useUserProfile";
-import { CardBrandLogo } from "../../../../shared/utils/Helpers";
+import {
+  CardBrandLogo,
+  cardDesigns,
+  Chip,
+  formatCardNumber,
+  formatExpiryDate,
+  handleCardSelect,
+  handleCloseError,
+  handleNext,
+  handlePrev,
+} from "../../../../shared/utils/Helpers";
 import {
   Button,
   Dialog,
@@ -20,27 +30,6 @@ import {
 } from "@material-tailwind/react";
 import { ROUTES } from "../../../../shared/routes";
 import { Card } from "../../../../shared/types/types";
-
-const cardDesigns = {
-  visa: "from-blue-600 to-blue-800",
-  mastercard: "from-red-600 to-orange-600",
-  verve: "from-green-600 to-emerald-800",
-  default: "from-purple-600 to-purple-800",
-};
-
-const Chip = () => (
-  <div className="relative h-8 w-11">
-    <div className="absolute h-full w-full rounded-md bg-gradient-to-br from-yellow-600 to-yellow-700">
-      <div className="absolute left-1 top-1 h-6 w-9 rounded-md border-2 border-yellow-800/30">
-        <div className="grid h-full w-full grid-cols-4 grid-rows-4 gap-[1px]">
-          {[...Array(16)].map((_, i) => (
-            <div key={i} className="bg-yellow-800/20" />
-          ))}
-        </div>
-      </div>
-    </div>
-  </div>
-);
 
 const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
   const { useWalletCards } = useUserCard();
@@ -55,6 +44,14 @@ const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
   useEffect(() => {
     dispatch(GetWalletCard());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (isOpen) {
+      setSelectedCard(null);
+      setError(null);
+      setCurrentPage(0);
+    }
+  }, [isOpen]);
 
   const cards = useWalletCards?.cards ?? [];
 
@@ -96,21 +93,6 @@ const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
     }
   };
 
-  const handleCloseError = () => setError(null);
-
-  const handleCardSelect = (card: Card) => setSelectedCard(card);
-
-  const handleNext = () =>
-    currentPage < cards.length - 1 && setCurrentPage((prev) => prev + 1);
-
-  const handlePrev = () =>
-    currentPage > 0 && setCurrentPage((prev) => prev - 1);
-
-  const formatCardNumber = (last4: string) => `**** **** **** ${last4}`;
-
-  const formatExpiryDate = (month: string, year: string) =>
-    `${month.padStart(2, "0")}/${year.slice(-2)}`;
-
   return (
     <Dialog
       size="sm"
@@ -121,11 +103,11 @@ const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
       <Snackbar
         open={!!error}
         autoHideDuration={6000}
-        onClose={handleCloseError}
+        onClose={() => handleCloseError(setError)}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert
-          onClose={handleCloseError}
+          onClose={() => handleCloseError(setError)}
           severity="error"
           variant="filled"
           sx={{ width: "100%" }}
@@ -167,7 +149,9 @@ const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
                     <div className="relative mx-auto w-full overflow-hidden sm:w-[25em] sm:px-6">
                       {currentPage > 0 && (
                         <button
-                          onClick={handlePrev}
+                          onClick={() =>
+                            handlePrev(currentPage, setCurrentPage)
+                          }
                           className="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-1.5 shadow-lg sm:p-2"
                         >
                           <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -176,7 +160,13 @@ const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
 
                       {cards[currentPage] && (
                         <div
-                          onClick={() => handleCardSelect(cards[currentPage])}
+                          onClick={() =>
+                            handleCardSelect(
+                              cards[currentPage],
+                              setSelectedCard,
+                              setError,
+                            )
+                          }
                           className={`group relative aspect-[1.8/1] w-full cursor-pointer rounded-xl bg-gradient-to-r px-2 py-2 shadow-lg transition-all hover:shadow-xl sm:px-4
                         ${
                           cardDesigns[
@@ -221,7 +211,9 @@ const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
 
                       {currentPage < cards.length - 1 && (
                         <button
-                          onClick={handleNext}
+                          onClick={() =>
+                            handleNext(currentPage, cards, setCurrentPage)
+                          }
                           className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-1.5 shadow-lg sm:p-2"
                         >
                           <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
