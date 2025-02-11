@@ -19,16 +19,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { ROUTES } from "../../../../shared/routes";
-
-interface Card {
-  authorization_code: string;
-  last4: string;
-  exp_month: string;
-  exp_year: string;
-  card_type: string;
-  bank: string;
-  brand: string;
-}
+import { Card } from "../../../../shared/types/types";
 
 const cardDesigns = {
   visa: "from-blue-600 to-blue-800",
@@ -125,7 +116,7 @@ const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
       size="sm"
       open={isOpen}
       handler={onClose}
-      className="bg-[#ECECF2] px-4"
+      className="bg-[#ECECF2] px-4 sm:px-6"
     >
       <Snackbar
         open={!!error}
@@ -147,23 +138,25 @@ const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
         <DialogHeader className="flex items-center justify-center">
           <Typography
             variant="h5"
-            className="text-base font-bold text-text2 md:text-lg"
+            className="text-lg font-bold text-text2 sm:text-xl"
           >
             Fund Contribution
           </Typography>
         </DialogHeader>
 
         <DialogBody>
-          <section className="rounded-3xl bg-white">
+          <section className="rounded-3xl bg-white p-4 sm:p-6">
+            {" "}
             <div className="flex flex-col">
               <DialogHeader className="flex flex-col text-center">
                 <Typography
                   variant="h2"
-                  className="text-base font-bold text-black"
+                  className="text-lg font-bold text-black sm:text-xl"
                 >
                   My Cards
                 </Typography>
-                <Typography variant="small">
+                <Typography variant="small" className="text-sm sm:text-base">
+                  {" "}
                   Securely manage all debit cards connected.
                 </Typography>
               </DialogHeader>
@@ -171,7 +164,7 @@ const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
               <div className="relative">
                 {cards?.length > 0 ? (
                   <>
-                    <div className="px- relative mx-auto w-full overflow-hidden sm:w-[25em] sm:px-6">
+                    <div className="relative mx-auto w-full overflow-hidden sm:w-[25em] sm:px-6">
                       {currentPage > 0 && (
                         <button
                           onClick={handlePrev}
@@ -185,19 +178,19 @@ const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
                         <div
                           onClick={() => handleCardSelect(cards[currentPage])}
                           className={`group relative aspect-[1.8/1] w-full cursor-pointer rounded-xl bg-gradient-to-r px-2 py-2 shadow-lg transition-all hover:shadow-xl sm:px-4
-                            ${
-                              cardDesigns[
-                                cards[
-                                  currentPage
-                                ]?.brand?.toLowerCase() as keyof typeof cardDesigns
-                              ] || cardDesigns.default
-                            }
-                            ${
-                              selectedCard?.authorization_code ===
-                              cards[currentPage].authorization_code
-                                ? "ring-2 ring-white"
-                                : ""
-                            }`}
+                        ${
+                          cardDesigns[
+                            cards[
+                              currentPage
+                            ]?.brand?.toLowerCase() as keyof typeof cardDesigns
+                          ] || cardDesigns.default
+                        }
+                        ${
+                          selectedCard?.authorization_code ===
+                          cards[currentPage].authorization_code
+                            ? "ring-2 ring-white"
+                            : ""
+                        }`}
                         >
                           <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 opacity-0 transition-opacity group-hover:opacity-100" />
 
@@ -256,7 +249,7 @@ const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
                 )}
               </div>
 
-              <DialogFooter className="flex w-full flex-col gap-3">
+              <DialogFooter className="mt-6 flex w-full flex-col gap-3">
                 {selectedCard ? (
                   <button
                     onClick={() => handlePayment("card")}

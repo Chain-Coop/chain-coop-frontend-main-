@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
-import { Loader2, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { AppDispatch } from "../../../../shared/redux/store";
 import {
   GetWalletCard,
@@ -19,16 +19,7 @@ import {
   DialogFooter,
 } from "@material-tailwind/react";
 import { ROUTES } from "../../../../shared/routes";
-
-interface Card {
-  authorization_code: string;
-  last4: string;
-  exp_month: string;
-  exp_year: string;
-  card_type: string;
-  bank: string;
-  brand: string;
-}
+import { Card } from "../../../../shared/types/types";
 
 interface PaymentWithCardProps {
   contributionData: {
