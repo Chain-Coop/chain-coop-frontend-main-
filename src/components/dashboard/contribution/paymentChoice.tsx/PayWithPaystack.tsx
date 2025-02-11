@@ -4,16 +4,9 @@ import {
   Button,
   Dialog,
   Typography,
-  Spinner,
   DialogHeader,
 } from "@material-tailwind/react";
-
-interface PaymentOptionProps {
-  onSelect: (paymentType: "paystack") => void;
-  isProcessing: boolean;
-  isOpen: boolean;
-  onClose: () => void;
-}
+import { PaymentOptionProps } from "../../../../shared/types/types";
 
 const PayWithPaystack: React.FC<PaymentOptionProps> = ({
   onSelect,

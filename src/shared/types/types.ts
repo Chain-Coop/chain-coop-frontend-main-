@@ -69,3 +69,13 @@ export interface Card {
   bank: string;
   brand: string;
 }
+
+export interface PaymentOptionProps {
+  onSelect: (paymentType: "paystack") => void;
+  isProcessing: boolean;
+  isOpen: boolean;
+  onClose: () => void;
+  handler?: () => void;
+  error?: string;
+  handleCloseError?: () => void;
+}
