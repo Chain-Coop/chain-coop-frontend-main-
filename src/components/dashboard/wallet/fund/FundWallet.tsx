@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useUserProfile from "../../../../shared/Hooks/useUserProfile";
 import { DashboardHeader } from "../../../common/DashboardHeader";
 import Modal from "../../../common/Modal";
 import EmailAmountModal from "./modal/paystack/EmailAmountModal";
@@ -12,7 +11,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 const FundWallet: React.FC = () => {
   const [modalType, setModalType] = useState<ModalTypes | null>(null);
   const navigate = useNavigate();
-  const { profileDetails } = useUserProfile();
+  const [error, setError] = useState<string>("");
 
   const handleBackClick = () => {
     navigate(-1);
@@ -63,14 +62,11 @@ const FundWallet: React.FC = () => {
       >
         <PaymentSuccessfull />
       </Modal>
-
-      <Modal
+      <EmailAmountModal
         isOpen={modalType === ModalTypes.Paystack}
-        onClose={closeModal}
-        className="bg-white"
-      >
-        <EmailAmountModal closeModal={closeModal} />
-      </Modal>
+        closeModal={() => setModalType(null)}
+        error={error}
+      />
     </main>
   );
 };

@@ -45,7 +45,7 @@ const TierOneSecondModal: React.FC<TierOneSecondModalProps> = ({
   };
 
   return (
-    <Dialog open={open} handler={onClose} size="sm" className="bg-white">
+    <Dialog open={open} handler={onClose} size="sm" className="bg-white py-4">
       <DialogHeader className="justify-center">
         <Typography
           variant="h2"

@@ -1,15 +1,6 @@
 import React, { useState } from "react";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
-
-interface PINInputProps {
-  length?: number;
-  value: string;
-  onChange: (value: string) => void;
-  className?: string;
-  inputClassName?: string;
-  showVisibilityToggle?: boolean;
-  label?: string;
-}
+import { PINInputProps } from "../types/types";
 
 const PINInput: React.FC<PINInputProps> = ({
   length = 4,
@@ -19,6 +10,7 @@ const PINInput: React.FC<PINInputProps> = ({
   inputClassName = "",
   showVisibilityToggle = false,
   label,
+  gap = 4, // Default gap of 4
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [showPin, setShowPin] = useState(false);
@@ -103,7 +95,9 @@ const PINInput: React.FC<PINInputProps> = ({
         </label>
       )}
       <div className={`relative ${className}`}>
-        <div className="flex items-center justify-center gap-3">
+        <div className={`flex items-center justify-center gap-${gap}`}>
+          {" "}
+          {/* Modified gap here */}
           {Array(length)
             .fill(null)
             .map((_, index) => (

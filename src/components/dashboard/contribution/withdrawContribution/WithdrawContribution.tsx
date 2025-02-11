@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate, useLocation } from "react-router";
-import arrow from "../../../../Assets/svg/dashboard/wallet/transfer-arrow.svg";
 import log from "../../../../Assets/svg/dashboard/contribution/log.svg";
 import { Alert } from "@mui/material";
 import { useSelector } from "react-redux";
-import { format, parseISO, isAfter, isToday } from "date-fns";
+import { parseISO, isAfter, isToday } from "date-fns";
 import { AppDispatch } from "../../../../shared/redux/store";
 import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
 import useWalletBalance from "../../../../shared/Hooks/useBalance";
 import { GetContributionDetailsById } from "../../../../shared/redux/slices/transaction.slices";
 import { formatBalance } from "../../../../shared/utils/format";
 import { DashboardHeader } from "../../../common/DashboardHeader";
-import Modal from "../../../common/Modal";
-import { Button } from "@material-tailwind/react";
+import { Button, Typography } from "@material-tailwind/react";
+import { ArrowIcon } from "../../../../Assets/svg";
+import NoticeModal from "./modals/Notice";
 
 const WithdrawContribution = () => {
   const navigate = useNavigate();
@@ -189,18 +189,16 @@ const WithdrawContribution = () => {
       <section className="px-3">
         <div className="mt-6 flex items-center justify-between">
           <div className="flex flex-col gap-2">
-            <p className="font-medium">Contribution Balance</p>
+            <Typography className="font-medium">
+              Contribution Balance
+            </Typography>
             <span className="text-gray-400">
               {formatBalance(contributionDetails?.balance || 0)}
             </span>
           </div>
-          <img
-            src={arrow}
-            alt="transfer-arrow"
-            className="h-6 w-6 md:h-auto md:w-auto"
-          />
+          <ArrowIcon />
           <div className="flex flex-col gap-2">
-            <p className="font-medium">Chain Coop Wallet</p>
+            <Typography className="font-medium">Chain Coop Wallet</Typography>
             <span className="text-gray-400">{formattedBalance}</span>
           </div>
         </div>
@@ -208,7 +206,9 @@ const WithdrawContribution = () => {
         <div className="mt-4 flex flex-col gap-4">
           <hr className="w-full" />
           <div className="flex items-center justify-between">
-            <p className="font-semibold">Amount to Withdraw</p>
+            <Typography className="font-semibold">
+              Amount to Withdraw
+            </Typography>
             <span className="text-normal relative text-base">
               <input
                 type="tel"
@@ -228,7 +228,7 @@ const WithdrawContribution = () => {
         <div className="mt-2 flex justify-between font-medium">
           <div className="flex gap-3">
             <img src={log} alt="log" />
-            <p>Contribution</p>
+            <Typography className="font-normal">Contribution</Typography>
           </div>
           <p>Monthly</p>
         </div>
@@ -242,7 +242,7 @@ const WithdrawContribution = () => {
         <Button
           variant="text"
           onClick={confirmAmount}
-          className={`mt-[2em] w-full bg-text2 py-3 text-white ${
+          className={` mt-[2em] w-full bg-text2 py-3 text-sm normal-case text-white hover:bg-text2 ${
             displayAmount ? "bg-text2" : "cursor-not-allowed"
           }`}
           disabled={!displayAmount}
@@ -251,55 +251,12 @@ const WithdrawContribution = () => {
         </Button>
       </section>
 
-      <Modal
+      <NoticeModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        className="lg:px-18 rounded-2xl bg-white px-4 py-4 lg:py-6"
-      >
-        <div className="lg:max-w-lg">
-          <header className="mb-3 text-center">
-            <h2 className="text-xl font-bold">Withdrawal Notice</h2>
-          </header>
-          <header className="mb-3">
-            <h2 className="text-xl font-semibold text-gray-500">Update</h2>
-          </header>
-          <div className="mb-10 font-medium">
-            <p>
-              The next withdrawal date is in six months and that will be{" "}
-              {format(
-                parseISO(contributionDetails.withdrawalDate),
-                "dd/MM/yyyy",
-              )}{" "}
-              as selected by you.
-            </p>
-            <p>
-              However, it seems you want to Withdraw before the stipulated date
-              and service fee of N2,000.00 will be charged.
-            </p>
-          </div>
-          <div className="m-auto lg:w-[60%]">
-            <header className="text-center">
-              <h2 className="font-semibold text-text2 sm:text-lg lg:text-xl">
-                Would you like to continue?
-              </h2>
-            </header>
-            <div className="m-auto mt-3 flex justify-center gap-[3em] lg:w-[50%] lg:justify-between">
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="rounded-md border-2 border-black px-3 py-1"
-              >
-                No
-              </button>
-              <button
-                onClick={handleModalConfirm}
-                className="rounded-md border-2 border-black px-3 py-1"
-              >
-                Yes
-              </button>
-            </div>
-          </div>
-        </div>
-      </Modal>
+        onConfirm={handleModalConfirm}
+        withdrawalDate={contributionDetails.withdrawalDate}
+      />
     </main>
   );
 };

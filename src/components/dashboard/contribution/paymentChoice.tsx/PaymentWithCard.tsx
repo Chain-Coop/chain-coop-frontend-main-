@@ -185,24 +185,24 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
         </DialogHeader>
 
         <DialogBody>
-          <section className="rounded-3xl bg-white">
+          <section className="rounded-3xl bg-white p-4 sm:p-6">
             <div className="flex flex-col">
               <DialogHeader className="flex flex-col text-center">
                 <Typography
                   variant="h2"
-                  className="text-base font-bold text-black"
+                  className="text-base font-bold text-black sm:text-lg"
                 >
                   My Cards
                 </Typography>
-                <Typography variant="small">
+                <Typography variant="small" className="text-sm sm:text-base">
                   Securely manage all debit cards connected.
                 </Typography>
               </DialogHeader>
 
-              <div className="relative">
+              <div className="relative mt-4">
                 {cards?.length > 0 ? (
                   <>
-                    <div className="px- relative mx-auto w-full overflow-hidden sm:w-[25em] sm:px-6">
+                    <div className="relative mx-auto w-full overflow-hidden sm:w-[25em] sm:px-6">
                       {currentPage > 0 && (
                         <button
                           onClick={handlePrev}
@@ -287,7 +287,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
                 )}
               </div>
 
-              <DialogFooter className="flex w-full flex-col gap-3">
+              <DialogFooter className="mt-6 flex w-full flex-col gap-3">
                 {selectedCard ? (
                   <Button
                     onClick={() => handlePayment("card")}

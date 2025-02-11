@@ -3,14 +3,25 @@ import { useAppDispatch } from "../../../../../../shared/redux/reduxHooks";
 import { AppDispatch } from "../../../../../../shared/redux/store";
 import { toast } from "react-toastify";
 import { FundWallet } from "../../../../../../shared/redux/slices/transaction.slices";
-import ReactLoading from "react-loading";
-import { Button } from "@material-tailwind/react";
+import {
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  Button,
+} from "@material-tailwind/react";
+import FormInput from "../../../../../common/FormInput";
 
 interface EmailAmountModalProps {
+  isOpen: boolean;
   closeModal: () => void;
+  error?: string;
 }
 
-const EmailAmountModal: React.FC<EmailAmountModalProps> = ({ closeModal }) => {
+const EmailAmountModal: React.FC<EmailAmountModalProps> = ({
+  isOpen,
+  closeModal,
+  error,
+}) => {
   const [amount, setAmount] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const dispatch: AppDispatch = useAppDispatch();
@@ -41,11 +52,7 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({ closeModal }) => {
 
     setLoading(true);
 
-    const body = {
-      amount: numAmount,
-    };
-
-    dispatch(FundWallet(body))
+    dispatch(FundWallet({ amount: numAmount }))
       .unwrap()
       .then((response) => {
         setLoading(false);
@@ -58,9 +65,7 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({ closeModal }) => {
       })
       .catch((error: any) => {
         setLoading(false);
-        const errorMessage =
-          error?.message || "An error occurred, please try again";
-        toast.error(errorMessage);
+        toast.error(error?.message || "An error occurred, please try again");
       });
   };
 
@@ -82,57 +87,58 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({ closeModal }) => {
   };
 
   return (
-    <main className="mx-auto max-w-full font-sans lg:w-[25em]">
-      <div className="py-[3em]">
-        <h2 className="mb-4 flex justify-center text-xl font-semibold">
+    <Dialog
+      open={isOpen}
+      handler={closeModal}
+      dismiss={{ outsidePress: false }}
+      className="bg-white p-4"
+      size="sm"
+    >
+      <DialogHeader className="flex items-center justify-between">
+        <h2 className="flex-grow text-center text-xl font-semibold">
           Pay with Paystack
         </h2>
-        <form onSubmit={submitData}>
-          <div className="mb-4">
-            <label
-              htmlFor="amount"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Amount (NGN)
-            </label>
-            <div className="relative mt-1">
-              <span className="absolute left-3 top-2 text-gray-500">₦</span>
-              <input
-                type="text"
-                id="amount"
-                required
-                value={amount}
-                onChange={handleAmountChange}
-                placeholder="0.00"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-8 py-2 shadow-sm focus:border-text2 focus:outline-none focus:ring-text2 sm:text-sm"
-              />
-            </div>
+      </DialogHeader>
+
+      <DialogBody className="overflow-y-auto">
+        <form onSubmit={submitData} className="space-y-4">
+          <div>
+            <FormInput
+              label="Enter Amount"
+              type="number"
+              value={amount}
+              onChange={handleAmountChange}
+              error={error}
+              id="amount"
+              rightElement={
+                <span className="font-semibold text-black">NGN</span>
+              }
+              elementPosition="left"
+              labelClassName="text-black"
+              className="border-border bg-input w-full rounded-lg border-[1px] bg-inherit p-2 text-right text-sm font-normal text-black focus:bg-inherit focus:outline-none sm:p-3 sm:text-base"
+              wrapperClassName="mt-[1em]"
+            />
             {amount && (
               <p className="mt-1 text-sm text-gray-500">
                 You will be charged: ₦{formatAmount(amount)}
               </p>
             )}
           </div>
+
           <Button
-            variant="text"
+            size="lg"
+            variant="filled"
             type="submit"
             disabled={!amount || loading}
-            className="mt-[1.5em] flex w-full justify-center bg-text2 py-2 text-white"
+            fullWidth
+            className="mt-6 flex place-items-center  justify-center bg-text2 text-center text-sm normal-case"
+            loading={loading}
           >
-            {loading ? (
-              <ReactLoading
-                color="#FFFFFF"
-                width={25}
-                height={25}
-                type="spin"
-              />
-            ) : (
-              `Pay ₦${amount || "0.00"}`
-            )}
+            {loading ? "Processing..." : `Pay ₦${amount || "0.00"}`}
           </Button>
         </form>
-      </div>
-    </main>
+      </DialogBody>
+    </Dialog>
   );
 };
 

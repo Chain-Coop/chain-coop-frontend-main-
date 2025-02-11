@@ -5,6 +5,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { FormControl, InputLabel, OutlinedInput } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Button } from "reactstrap";
+import { Typography } from "@material-tailwind/react";
 
 const CustomOutlinedInput = styled(OutlinedInput)(({ theme }) => ({
   "& .MuiOutlinedInput-notchedOutline": {
@@ -73,10 +74,10 @@ const BankAccount = () => {
         </DashboardHeader>
       </header>
       <section className="mt-8 px-4">
-        <p className="font-medium">
+        <Typography className="text-sm font-normal">
           Please, only add a bank account that you own. Transactions to accounts
           that don't belong to you will be flagged
-        </p>
+        </Typography>
 
         <div className="mt-6">
           <FormControl className="w-full" variant="outlined">

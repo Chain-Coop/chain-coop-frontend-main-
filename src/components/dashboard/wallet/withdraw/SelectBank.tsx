@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { DashboardHeader } from "../../../common/DashboardHeader";
 import { IoIosArrowBack } from "react-icons/io";
-import withdraw from "../../../../Assets/svg/dashboard/wallet/withdraw.svg";
-import xlamation from "../../../../Assets/svg/dashboard/wallet/xclamation.svg";
 import { useAppSelector } from "../../../../shared/redux/reduxHooks";
 import Modal from "../../../common/Modal";
 import ReactLoading from "react-loading";
@@ -14,7 +12,9 @@ import { Alert } from "@mui/material";
 import success from "../../../../Assets/svg/auth/sucess.svg";
 import OtpInput from "../../../../shared/utils/OtpInput";
 import { RxDotFilled } from "react-icons/rx";
-import { Button } from "@material-tailwind/react";
+import { Button, Typography } from "@material-tailwind/react";
+import { WithdrawIcon, Xclamation } from "../../../../Assets/svg";
+import PinModal from "../../../common/PinModal";
 interface BankAccount {
   accountNumber: string;
   bankCode: string;
@@ -102,8 +102,10 @@ const SelectBank = () => {
     }
   };
 
-  const toggleModal = (account: any) => {
-    setSelectedAccount(account);
+  const toggleModal = (account?: any) => {
+    if (account) {
+      setSelectedAccount(account);
+    }
     setIsModalOpen(!isModalOpen);
     setPin("");
     setError("");
@@ -111,6 +113,7 @@ const SelectBank = () => {
 
   return (
     <main className="items-center font-sans">
+      {/* Header */}
       <header className="lg:mt-8">
         <DashboardHeader
           className="relative cursor-pointer items-center"
@@ -125,38 +128,40 @@ const SelectBank = () => {
           </div>
         </DashboardHeader>
       </header>
+
+      {/* Main Content */}
       <article>
         <div className="flex flex-col gap-8 px-4">
-          <div className="mt-8 flex w-full gap-4 rounded-lg bg-Dh px-6 py-4 font-medium">
-            <img src={xlamation} alt="" />
-            <p className="sm:text-sm">
+          {/* Warning Banner */}
+          <div className="mt-8 flex w-full gap-4 rounded-lg bg-Dh px-4 py-4 font-medium sm:px-6">
+            <Xclamation />
+            <Typography variant="small" className="font-medium">
               Withdrawals can only be made to bank accounts that match the name
               of your Chain Coop account
-            </p>
+            </Typography>
           </div>
 
+          {/* Existing Bank Accounts */}
           {hasBankAccount ? (
             <section>
-              <h1 className="text-lg font-bold">Existing Bank Accounts</h1>
+              <Typography variant="h1" className="text-lg font-bold">
+                Existing Bank Accounts
+              </Typography>
               <div className="mt-4 flex flex-col gap-4">
                 {accountData.bankAccounts.map((account: any, index: number) => (
                   <div
                     key={account._id}
-                    className="flex h-auto flex-col items-center gap-4 rounded-xl bg-[#ece6f2] px-2 py-6 text-center"
+                    className="flex h-auto flex-col items-center gap-4 rounded-xl bg-[#ece6f2] px-4 py-6 text-center sm:px-6"
                   >
                     <div>
-                      <img
-                        src={withdraw}
-                        alt="withdraw"
-                        className="h-11 w-11"
-                      />
+                      <WithdrawIcon />
                     </div>
                     <h1 className="font-bold">{account.accountName}</h1>
-                    <div className="flex items-center">
-                      <p className="font-medium text-gray-600">
+                    <div className="flex flex-col items-center gap-1 sm:flex-row sm:gap-2">
+                      <p className="truncate font-medium text-gray-600">
                         {account?.bankName}
                       </p>
-                      <RxDotFilled className="text-gray-500" />
+                      <RxDotFilled className="hidden text-gray-500 sm:block" />
                       <p className="font-medium text-gray-600">
                         {account.accountNumber}
                       </p>
@@ -164,7 +169,7 @@ const SelectBank = () => {
                     <Button
                       variant="text"
                       onClick={() => toggleModal(account)}
-                      className="flex w-[70%] justify-center bg-text2 py-3 text-white"
+                      className="flex w-[70%] justify-center bg-text2 py-3 text-white transition-colors duration-200 hover:bg-text2"
                     >
                       Select Account
                     </Button>
@@ -175,16 +180,17 @@ const SelectBank = () => {
           ) : (
             <div className="mt-8 text-center">
               <div className="flex justify-center">
-                <img src={withdraw} alt="withdraw" />
+                <WithdrawIcon />
               </div>
-              <p className="mt-4 text-howtext">
+              <Typography className="mt-4 font-normal text-howtext">
                 You haven't added any bank accounts
-              </p>
+              </Typography>
             </div>
           )}
 
-          <button
-            className="mb-[2em] mt-8 flex w-full justify-center gap-4 rounded-lg bg-Dh px-6 py-4 font-semibold text-text2"
+          {/* Add Bank Account Button */}
+          <Button
+            className="mb-[2em] mt-8 flex w-full justify-center gap-4 rounded-lg bg-Dh px-4 py-3 text-sm font-semibold normal-case text-text2 sm:px-6 sm:py-4"
             onClick={BankAccount}
           >
             <p>
@@ -192,45 +198,24 @@ const SelectBank = () => {
                 ? "Add another bank account"
                 : "Add a new bank account"}
             </p>
-          </button>
-        </div>
-      </article>
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => toggleModal(null)}
-        className="fle-col flex justify-center bg-white text-center lg:w-[25em]"
-      >
-        <div className="py-[1em] lg:py-[2em]">
-          <header>
-            <h1 className="text-2xl font-semibold">My Chain Co-op Pin</h1>
-            <p className="mt-1 text-howtext">Enter your transaction pin.</p>
-          </header>
-          <OtpInput value={pin} className="mt-[1em]" onChange={setPin} />
-          {error && (
-            <Alert severity="error" className="mb-4 mt-4">
-              {error}
-            </Alert>
-          )}
-          <Button
-            variant="text"
-            onClick={handleSubmit}
-            disabled={loading}
-            className="mt-[2em] flex w-full justify-center rounded-full bg-text2 px-2 py-2 font-semibold text-white"
-          >
-            {loading ? (
-              <ReactLoading
-                color="#FFFFFF"
-                height={25}
-                width={25}
-                type="spin"
-              />
-            ) : (
-              "Confirm Withdrawal"
-            )}
           </Button>
         </div>
-      </Modal>
+      </article>
 
+      {/* Pin Modal */}
+      <PinModal
+        isOpen={isModalOpen}
+        onClose={toggleModal}
+        onSubmit={handleSubmit}
+        header="My Chain Co-op Pin"
+        title="Enter your transaction pin."
+        loading={loading}
+        error={error}
+        pin={pin}
+        onPinChange={setPin}
+      />
+
+      {/* Success Modal */}
       <Modal
         isOpen={isSuccessModalOpen}
         onClose={() => {

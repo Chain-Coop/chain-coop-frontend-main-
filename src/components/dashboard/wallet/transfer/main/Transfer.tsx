@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import transfer from "../../../../../Assets/svg/dashboard/wallet/transfer.svg";
 import {
   IoIosArrowBack,
   IoIosArrowForward,
   IoIosArrowDown,
 } from "react-icons/io";
 import { DashboardHeader } from "../../../../common/DashboardHeader";
-import contribution from "../../../../../Assets/svg/dashboard/contribution.svg";
 import fund_icon from "../../../../../Assets/svg/dashboard/project.svg";
 import { Link } from "react-router-dom";
 import Modal from "../../../../common/Modal";
 import ContributionPlan from "../modal/ContributionPlan";
+import { TransferIcon } from "../../../../../Assets/svg";
 
 const Transfer: React.FC = () => {
   const navigate = useNavigate();
@@ -59,11 +58,7 @@ const Transfer: React.FC = () => {
             className="flex cursor-pointer items-center gap-3 sm:gap-2 lg:gap-3"
             onClick={toggleDropdown}
           >
-            <img
-              src={transfer}
-              alt="transfer"
-              className="sm:h-8 sm:w-8 lg:h-10 lg:w-10"
-            />
+            <TransferIcon />
             <div className="flex flex-col">
               <p className="whitespace-nowrap text-sm font-medium sm:text-base lg:text-lg">
                 Send to contribution or fund a project

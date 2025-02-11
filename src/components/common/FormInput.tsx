@@ -1,16 +1,5 @@
 import React, { InputHTMLAttributes } from "react";
-
-interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  error?: string;
-  wrapperClassName?: string;
-  labelClassName?: string;
-  inputWrapperClassName?: string;
-  rightElement?: React.ReactNode;
-  helperText?: React.ReactNode;
-  customInput?: React.ReactNode;
-  paddingY?: string; 
-}
+import { FormInputProps } from "../../shared/types/types";
 
 const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
   (
@@ -22,11 +11,12 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
       labelClassName = "",
       inputWrapperClassName = "",
       rightElement,
+      elementPosition = "right",
       helperText,
       customInput,
       type = "text",
       disabled,
-      paddingY = "4", 
+      paddingY = "4",
       ...props
     },
     ref,
@@ -48,6 +38,9 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
           <div
             className={`relative flex items-center ${inputWrapperClassName}`}
           >
+            {rightElement && elementPosition === "left" && (
+              <div className="absolute left-4 self-center">{rightElement}</div>
+            )}
             <input
               ref={ref}
               type={type}
@@ -58,12 +51,13 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
                 focus:border-text2 focus:outline-none focus:ring-text2
                 disabled:cursor-not-allowed disabled:opacity-50
                 ${error ? "border-red-500" : "border-gray-200"}
-                ${rightElement ? "pr-12" : "pr-4"}
+                ${rightElement && elementPosition === "right" ? "pr-12" : ""}
+                ${rightElement && elementPosition === "left" ? "pl-12" : ""}
                 ${className}
               `}
               {...props}
             />
-            {rightElement && (
+            {rightElement && elementPosition === "right" && (
               <div className="absolute right-4 self-center">{rightElement}</div>
             )}
           </div>

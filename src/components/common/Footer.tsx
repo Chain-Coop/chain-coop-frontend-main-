@@ -84,12 +84,13 @@ const Footer = () => {
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-5">
             <section className="w-full space-y-4">
               <Typography variant="h2" className="text-sm font-bold text-text3">
-                Nigeria's First Blockchain-Powered Cooperative
+                Chain Co-Op is a secure, registered cooperative dedicated to
+                empowering individuals with innovative savings solutions in
+                Naira and crypto.
               </Typography>
               <Typography variant="small" className="font-light text-text3">
-                Chain Co-op is a tech-driven, worker-owned cooperative that
-                guarantees returns through cutting-edge blockchain technology
-                and sustainable business investments.
+                Our platform combines cutting-edge technology with trusted
+                financial practices to help you build and protect your wealth.
               </Typography>
             </section>
 

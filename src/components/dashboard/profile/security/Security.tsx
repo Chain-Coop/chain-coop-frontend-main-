@@ -1,23 +1,24 @@
 import { useState, useCallback } from "react";
 import { IoIosArrowForward } from "react-icons/io";
-import Email from "./modal/Email";
-import OtpInput from "./modal/OtpInput";
-import NewPassword from "./modal/NewPassword";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../../shared/redux/store";
 import useUserProfile from "../../../../shared/Hooks/useUserProfile";
+import { resetPasswordState } from "../../../../shared/redux/slices/landing.slices";
 import GeneratePin from "./modal/GeneratePin";
 import OtpPin from "./modal/OtpPin";
 import ChangePin from "./modal/ChangePin";
-import { resetPasswordState } from "../../../../shared/redux/slices/landing.slices";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../../shared/redux/store";
-import Success from "./modal/Success";
+import Email from "./modal/Email";
+import OtpInput from "./modal/OtpInput";
+import NewPassword from "./modal/NewPassword";
+import Success from "../../../common/Success";
 
 const Security = () => {
   const dispatch: AppDispatch = useDispatch();
+  const { profileDetails } = useUserProfile();
+
   const [passwordResetStep, setPasswordResetStep] = useState(0);
   const [pinResetStep, setPinResetStep] = useState(0);
   const [email, setEmail] = useState("");
-  const { profileDetails } = useUserProfile();
   const [otp, setOtp] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentModalType, setCurrentModalType] = useState("");
@@ -125,20 +126,22 @@ const Security = () => {
           return null;
       }
     }
+
     if (currentModalType === "pin") {
       switch (pinResetStep) {
         case 1:
           return (
             <GeneratePin
               isOpen={isModalOpen}
-              onClose={handleModalClose} 
+              onClose={handleModalClose}
+              onOtpGenerated={() => setPinResetStep(2)}
             />
           );
         case 2:
           return (
             <OtpPin
-              isOpen
-              onNext={(enteredOtp: any) => {
+              isOpen={isModalOpen}
+              onNext={(enteredOtp: string) => {
                 setOtp(enteredOtp);
                 setPinResetStep(3);
               }}
@@ -149,11 +152,13 @@ const Security = () => {
           return (
             <ChangePin
               otp={otp}
-              isOpen={true}
+              isOpen={isModalOpen}
               onClose={handleModalClose}
               onSuccess={handlePinSuccess}
             />
           );
+        default:
+          return null;
       }
     }
   };
