@@ -1,13 +1,33 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ReactLoading from "react-loading";
 import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 import { ResetPassword } from "../../../../../shared/redux/slices/landing.slices";
 import { AppDispatch } from "../../../../../shared/redux/store";
-import { Button } from "@material-tailwind/react";
+import {
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  Typography,
+} from "@material-tailwind/react";
+import FormInput from "../../../../common/FormInput";
 
-const EmailStep = ({ onClose, onEmailSent }: any) => {
-  const [email, setEmail] = useState("");
+interface EmailStepProps {
+  email: string;
+  setEmail: (email: string) => void;
+  onEmailSent: () => void;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const EmailStep = ({
+  email,
+  setEmail,
+  onEmailSent,
+  isOpen,
+  onClose,
+}: EmailStepProps) => {
   const dispatch: AppDispatch = useDispatch();
   const { profileDetails } = useUserProfile();
   const { isLoading, error, success } = useSelector(
@@ -16,7 +36,7 @@ const EmailStep = ({ onClose, onEmailSent }: any) => {
 
   useEffect(() => {
     setEmail(profileDetails?.email);
-  }, [profileDetails?.email]);
+  }, [profileDetails?.email, setEmail]);
 
   useEffect(() => {
     if (success) {
@@ -31,60 +51,46 @@ const EmailStep = ({ onClose, onEmailSent }: any) => {
       console.error("Failed to send OTP:", error);
     }
   };
+
   return (
-    <main className="w-auto font-sans">
-      <section className="flex flex-col gap-[1em] py-[2em]">
-        <div className="text-center">
-          <header>
-            <h1 className="text-xl font-semibold">Reset Password</h1>
-          </header>
-        </div>
+    <Dialog size="sm" open={isOpen} handler={onClose} className="p-4 font-sans">
+      <DialogHeader className="justify-center">
+        <Typography variant="h4" className="font-semibold">
+          Reset Password
+        </Typography>
+      </DialogHeader>
 
-        <div className="mt-[1em]">
-          <label
-            htmlFor="email"
-            className="flex-start flex text-lg font-semibold text-text2"
-          >
-            Email Address
-          </label>
-          <div className="relative flex items-center">
-            <input
-              id="email"
-              name="email"
-              type="email"
-              value={email}
-              readOnly
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-[10px] w-full min-w-[300px] max-w-[400px] rounded-full border-[1px] bg-gray-200 px-[1.5em] py-2 shadow-lg focus:outline-none focus:ring-text2"
-            />
-          </div>
-        </div>
+      <DialogBody>
+        <FormInput
+          label="Email"
+          type="email"
+          value={email}
+          readOnly
+          className="border-none"
+          labelClassName="text-text2"
+          inputWrapperClassName="text-black font-normal"
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-        {error && <p className="text-center text-red-500">{error}</p>}
+        {error && (
+          <Typography color="red" className="text-center">
+            {error}
+          </Typography>
+        )}
+      </DialogBody>
 
+      <DialogFooter className="flex justify-center">
         <Button
-          variant="text"
+          variant="filled"
           onClick={handleOtpMail}
           disabled={isLoading}
-          className="m-auto mt-4 flex w-[70%] justify-center rounded-full bg-text2 px-3 py-2 text-lg text-white"
+          loading={isLoading}
+          className="flex w-[70%] items-center justify-center rounded-full bg-text2 p-3 text-sm font-normal normal-case"
         >
-          {isLoading ? (
-            <div className="flex gap-[1em]">
-              <ReactLoading
-                color="#FFFFFF"
-                width={25}
-                height={25}
-                type="spin"
-                className="inline-block"
-              />
-              <p>please wait...</p>
-            </div>
-          ) : (
-            "Reset"
-          )}
+          {isLoading ? "Please Wait..." : "Reset"}
         </Button>
-      </section>
-    </main>
+      </DialogFooter>
+    </Dialog>
   );
 };
 

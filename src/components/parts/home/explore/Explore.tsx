@@ -30,7 +30,7 @@ const Explore = () => {
             className="mx-auto max-w-xl px-3"
           >
             <Typography className="mb-6 text-sm font-normal md:text-base lg:text-lg">
-              Join hundreds of others using our smart lock savings options
+              Join hundreds of others using our smart lock savings options.
             </Typography>
 
             <Link to={ROUTES.sign_up} className="inline-block">
@@ -47,22 +47,22 @@ const Explore = () => {
               title: "Flexible Savings",
               image: flexible,
               description:
-                "Savings at your convenience and access fund whenever needed.",
+                "Savings at your convenience and access funds whenever needed.",
               tags: ["Accessible", "Convenient", "Liquidity"],
             },
             {
-              title: "Lock Saving",
+              title: "Lock Savings",
               image: lock,
               description:
-                "We are committed to helping you reach your savings target. if you break your goal, you pay 1% penalty fee for early withdrawal.",
+                "We are committed to helping you reach your savings target. If you break your goal, you pay a 1% penalty fee for early withdrawal.",
               tags: ["Set Target", "Commit", "Execute"],
             },
             {
               title: "Strict Lock",
               image: strict_lock,
               description:
-                "Build unshakable savings habits. Stay locked in, no withdrawals are allowed until you reach selected target or timeline.",
-              tags: ["Smartsave", "Easy Entry", "Simple withdrawal"],
+                "Build unshakable savings habits. Stay locked in; no withdrawals are allowed until you reach your selected target or timeline.",
+              tags: ["Smartsave", "Easy Entry", "Simple Withdrawal"],
             },
           ].map((item, index) => (
             <div key={index} className="card mx-auto w-full max-w-[374px]">

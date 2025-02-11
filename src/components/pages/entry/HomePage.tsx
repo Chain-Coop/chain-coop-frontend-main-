@@ -1,5 +1,5 @@
 import Footer from "../../common/Footer";
-import AppStore from "../../parts/home/AppStore";
+// import AppStore from "../../parts/home/AppStore";
 import Become from "../../parts/home/Become";
 import Explore from "../../parts/home/explore/Explore";
 import HeroSection from "../../parts/home/HeroSection";
@@ -21,7 +21,7 @@ const HomePage = () => {
         <Become />
         <Explore />
         <How />
-        <AppStore />
+        {/* <AppStore /> */}
         <Footer />
       </div>
     </>

@@ -1,50 +1,70 @@
 import React from "react";
 import kyc from "../../../../../../../Assets/png/kyc/teir-one.png";
+import { CircleArrow } from "../../../../../../../Assets/svg";
+import {
+  Typography,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+} from "@material-tailwind/react";
 
 interface TierOneFirstModalProps {
+  isOpen: boolean;
   onClose: () => void;
   onStepOneClick: () => void;
   isVerified: boolean;
 }
 
 const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
+  isOpen,
   onClose,
   onStepOneClick,
   isVerified,
 }) => {
   return (
-    <main className="w-full max-w-[28em] px-2 font-sans md:px-5">
-      <section className="flex flex-col gap-3 py-6 md:py-8">
-        <div className="flex justify-center">
+    <Dialog size="sm" open={isOpen} handler={onClose} className="bg-white">
+      <DialogHeader className="justify-center">
+        <div className="flex w-full justify-center">
           <img
             src={kyc}
             alt="kyc"
-            className="h-[8em] w-[8em] object-contain sm:h-[10em] sm:w-[10em] md:h-[12em] md:w-[12em]"
+            className="h-[6em] w-[6em] object-contain sm:h-[7em] sm:w-[7em] md:h-[8em] md:w-[8em]"
           />
         </div>
+      </DialogHeader>
 
-        <div className="mt-[1em] flex flex-col gap-1">
+      <DialogBody className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
           <header className="text-center sm:px-4">
-            <h2 className="text-base font-bold leading-tight sm:text-lg md:text-lg">
+            <Typography
+              variant="h4"
+              className="text-base font-bold leading-tight text-black sm:text-lg md:text-lg"
+            >
               Complete the Tier 0 for KYC Verification
-            </h2>
+            </Typography>
           </header>
           <article className="px-2 text-center sm:px-3">
-            <p className="text-sm font-medium text-gray-600">
+            <Typography variant="small" className="font-medium text-black">
               Please submit these documents to verify your profile
-            </p>
+            </Typography>
           </article>
         </div>
 
         <div className="flex flex-col gap-4">
           <div className="flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-sm">
             <div className="flex flex-col gap-1">
-              <h3 className="text-sm font-bold text-gray-900">
+              <Typography
+                variant="h6"
+                className="text-sm font-bold text-gray-900"
+              >
                 {isVerified ? "Current Limit" : "Manage Limit"}
-              </h3>
-              <p className="text-xs text-gray-500">
+              </Typography>
+              <Typography
+                variant="small"
+                className="text-xs font-normal text-gray-500"
+              >
                 Daily Transaction Limit: {isVerified ? "N20,000" : "N0.00"}
-              </p>
+              </Typography>
             </div>
             <div className="rounded bg-red-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-600">
               Upgrade
@@ -58,8 +78,18 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
             onClick={!isVerified ? onStepOneClick : undefined}
           >
             <div className="flex flex-col gap-1">
-              <h3 className="text-sm font-bold text-gray-900">Step 1</h3>
-              <p className="text-xs text-gray-500">Upload your Phone number</p>
+              <Typography
+                variant="h6"
+                className="text-sm font-bold text-gray-900"
+              >
+                Step 1
+              </Typography>
+              <Typography
+                variant="small"
+                className="text-xs font-normal text-gray-500"
+              >
+                Upload your Phone number
+              </Typography>
             </div>
             {isVerified ? (
               <div className="rounded bg-green-500 px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-green-600">
@@ -67,18 +97,7 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
               </div>
             ) : (
               <button className="rounded-full bg-gray-100 p-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-gray-400"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                <CircleArrow />
               </button>
             )}
           </div>
@@ -89,27 +108,26 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
             }`}
           >
             <div className="flex flex-col gap-1">
-              <h3 className="text-sm font-bold text-gray-900">Step 3</h3>
-              <p className="text-xs text-gray-500">Upload your BVN</p>
+              <Typography
+                variant="h6"
+                className="text-sm font-bold text-gray-900"
+              >
+                Step 3
+              </Typography>
+              <Typography
+                variant="small"
+                className="text-xs font-normal text-gray-500"
+              >
+                Upload your BVN
+              </Typography>
             </div>
             <button className="rounded-full bg-gray-100 p-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-gray-400"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
+              <CircleArrow />
             </button>
           </div>
         </div>
-      </section>
-    </main>
+      </DialogBody>
+    </Dialog>
   );
 };
 

@@ -49,12 +49,12 @@ const Become = () => {
             initial={{ opacity: 0 }}
             className="max-w-2xl text-sm font-normal sm:text-base md:text-lg"
           >
-            Your journey to wealth starts here
+            Your journey to wealth starts here.
           </MotionTypography>
 
           <Link to={ROUTES.sign_up}>
             <Button className="bg-text2 px-8 py-3 text-sm font-semibold text-text5 transition-all hover:opacity-90 sm:text-base">
-              Start Growing your wealth
+              Start Growing Your Wealth
             </Button>
           </Link>
         </header>

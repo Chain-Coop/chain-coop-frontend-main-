@@ -1,6 +1,5 @@
-import React, { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { IoIosArrowForward } from "react-icons/io";
-import Modal from "../../../common/Modal";
 import Email from "./modal/Email";
 import OtpInput from "./modal/OtpInput";
 import NewPassword from "./modal/NewPassword";
@@ -8,10 +7,11 @@ import useUserProfile from "../../../../shared/Hooks/useUserProfile";
 import GeneratePin from "./modal/GeneratePin";
 import OtpPin from "./modal/OtpPin";
 import ChangePin from "./modal/ChangePin";
-import success from "../../../../Assets/svg/auth/sucess.svg";
 import { resetPasswordState } from "../../../../shared/redux/slices/landing.slices";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../shared/redux/store";
+import Success from "./modal/Success";
+
 const Security = () => {
   const dispatch: AppDispatch = useDispatch();
   const [passwordResetStep, setPasswordResetStep] = useState(0);
@@ -93,48 +93,33 @@ const Security = () => {
       switch (passwordResetStep) {
         case 1:
           return (
-            <Modal
-              className="bg-[#E9E9E9] px-[3em]"
+            <Email
+              email={email}
+              setEmail={setEmail}
+              onEmailSent={handleEmailSent}
               isOpen={true}
               onClose={handleModalClose}
-            >
-              <Email
-                email={email}
-                setEmail={setEmail}
-                onClose={handleModalClose}
-                onEmailSent={handleEmailSent}
-              />
-            </Modal>
+            />
           );
         case 2:
           return (
-            <Modal
-              className="w-[25em] bg-[#E9E9E9]"
-              isOpen={true}
+            <OtpInput
+              otp={otp}
+              setOtp={setOtp}
+              isOpen={isModalOpen}
               onClose={handleModalClose}
-            >
-              <OtpInput
-                otp={otp}
-                setOtp={setOtp}
-                onClose={handleModalClose}
-                onOtpEntered={() => setPasswordResetStep(3)}
-              />
-            </Modal>
+              onOtpEntered={() => setPasswordResetStep(3)}
+            />
           );
         case 3:
           return (
-            <Modal
-              className="w-[25em] bg-[#E9E9E9]"
-              isOpen={true}
+            <NewPassword
+              email={profileDetails.email}
+              otp={otp}
+              isOpen={isModalOpen}
               onClose={handleModalClose}
-            >
-              <NewPassword
-                email={profileDetails.email}
-                otp={otp}
-                onClose={handleModalClose}
-                onSuccess={handlePasswordResetSuccess}
-              />
-            </Modal>
+              onSuccess={handlePasswordResetSuccess}
+            />
           );
         default:
           return null;
@@ -144,44 +129,30 @@ const Security = () => {
       switch (pinResetStep) {
         case 1:
           return (
-            <Modal
-              className="w-[25em] bg-[#E9E9E9]"
-              isOpen
-              onClose={handleModalClose}
-            >
-              <GeneratePin
-                onClose={() => {
-                  setPinResetStep(2);
-                  setOtp("");
-                }}
-              />
-            </Modal>
+            <GeneratePin
+              isOpen={isModalOpen}
+              onClose={handleModalClose} 
+            />
           );
         case 2:
           return (
-            <Modal className="bg-[#E9E9E9]" isOpen onClose={handleModalClose}>
-              <OtpPin
-                onNext={(enteredOtp: any) => {
-                  setOtp(enteredOtp);
-                  setPinResetStep(3);
-                }}
-                onClose={handleModalClose}
-              />
-            </Modal>
+            <OtpPin
+              isOpen
+              onNext={(enteredOtp: any) => {
+                setOtp(enteredOtp);
+                setPinResetStep(3);
+              }}
+              onClose={handleModalClose}
+            />
           );
         case 3:
           return (
-            <Modal
-              className="w-[25em] bg-[#E9E9E9]"
-              isOpen
+            <ChangePin
+              otp={otp}
+              isOpen={true}
               onClose={handleModalClose}
-            >
-              <ChangePin
-                onSuccess={handlePinSuccess}
-                otp={otp}
-                onClose={handleModalClose}
-              />
-            </Modal>
+              onSuccess={handlePinSuccess}
+            />
           );
       }
     }
@@ -212,40 +183,17 @@ const Security = () => {
 
       {renderModal()}
 
-      <Modal
+      <Success
         isOpen={isSuccessModalOpen}
         onClose={handleSuccessModalClose}
-        className="bg-white "
-      >
-        <div className="mt-[2.5em] flex w-[25em] flex-col items-center gap-[1.5em] py-[1em] lg:py-[2em]">
-          <header>
-            <h1 className="text-center text-2xl font-semibold">
-              Reset Password
-            </h1>
-          </header>
-          <img
-            src={success}
-            alt="Success Icon"
-            className="sm:w-[6em] lg:w-[8em]"
-          />
-          <p className="text-center font-medium">Password Reset Successfully</p>
-        </div>
-      </Modal>
+        title="Password Reset Successfully"
+      />
 
-      <Modal
+      <Success
         isOpen={isPinSuccessModalOpen}
         onClose={handlePinSuccessModalClose}
-        className="bg-white"
-      >
-        <div className="mt-[2.5em] flex w-[25em] flex-col items-center gap-[1.5em] py-[1em] lg:py-[2em]">
-          <img
-            src={success}
-            alt="Success Icon"
-            className="sm:w-[6em] lg:w-[8em]"
-          />
-          <p className="text-center font-semibold">PIN Successfully Changed</p>
-        </div>
-      </Modal>
+        title="Pin Successfully Changed"
+      />
     </main>
   );
 };

@@ -8,27 +8,27 @@ const How = () => {
       title: "Create Your Account",
       bgClass: "bg-how1",
       steps: [
-        "Sign up by email or phone number",
-        "Verify your identity",
-        "Connect payment method",
+        "Sign up by email or phone number.",
+        "Verify your identity.",
+        "Connect a payment method.",
       ],
     },
     {
-      title: "Choose your savings plan",
+      title: "Choose Your Savings Plan",
       bgClass: "bg-how2",
       steps: [
-        "Select Flexible, Lock, or Strict Lock savings",
-        "Set savings amount and duration",
-        "Connect payment method",
+        "Select Flexible, Lock, or Strict Lock savings.",
+        "Set savings amount and duration.",
+        "Connect a payment method.",
       ],
     },
     {
       title: "Automate & Grow",
       bgClass: "bg-how3",
       steps: [
-        "Set up recurring deposits",
-        "Track performance in real-time",
-        "Earn rewards and watch your wealth grow",
+        "Set up recurring deposits.",
+        "Track performance in real-time.",
+        "Earn rewards and watch your wealth grow.",
       ],
     },
   ];
@@ -65,7 +65,7 @@ const How = () => {
           transition={{ duration: 0.5 }}
           className="text-2xl font-bold lg:text-3xl"
         >
-          How it works
+          How It Works
         </MotionTypography>
         <Typography variant="small" className="font-medium">
           3 Simple Steps to Start Saving
@@ -112,11 +112,11 @@ const How = () => {
           variant="h5"
           className="text-base sm:text-lg md:text-xl lg:text-2xl"
         >
-          It's simply not savings--it's smarter, more secure, and more rewarding
-          savings
+          It's not just savings—it's smarter, more secure, and more rewarding
+          savings.
         </Typography>
         <Button className="mx-auto border border-text2" variant="outlined">
-          <span>Sign up for free</span>
+          <span>Sign Up for Free</span>
         </Button>
       </div>
     </main>

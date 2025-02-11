@@ -1,7 +1,22 @@
-import React, { useState } from "react";
+//@ts-nocheck
+import { useState } from "react";
 import OtpInput from "../../../../../shared/utils/OtpInput";
+import {
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  Typography,
+  Button,
+} from "@material-tailwind/react";
 
-const OtpPin = ({ onNext, onClose }: any) => {
+interface OtpPinProps {
+  isOpen: boolean;
+  onNext: (otp: string) => void;
+  onClose?: () => void;
+}
+
+const OtpPin = ({ isOpen, onNext, onClose }: OtpPinProps) => {
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
 
@@ -14,38 +29,39 @@ const OtpPin = ({ onNext, onClose }: any) => {
   };
 
   return (
-    <main className="font-sans lg:w-[25em]">
-      <section className="flex flex-col gap-[1em] py-[2em]">
-        <div className="flex flex-col gap-[1em] text-center">
-          <header>
-            <h1 className="text-2xl font-semibold">Verify OTP</h1>
-            <p className="text-center font-semibold text-text2">
-              Enter the six-digit OTP digit
-            </p>
-          </header>
-
-          <div className="mt-[1em] flex flex-col  items-center justify-center">
-            <div className="mb-6 flex justify-center">
-              <OtpInput
-                length={6}
-                value={otp}
-                className="mt-[1em]"
-                onChange={setOtp}
-              />
-            </div>
-
-            {error && <p className="mb-2 text-sm text-red-500">{error}</p>}
-          </div>
-
-          <button
-            onClick={handleSubmit}
-            className="relative m-auto flex w-[55%] justify-center rounded-full bg-text2 p-[11px] font-medium text-text5"
-          >
-            Next
-          </button>
-        </div>
-      </section>
-    </main>
+    <Dialog
+      open={isOpen}
+      handler={onClose}
+      animate={{ mount: { scale: 1, y: 0 }, unmount: { scale: 0.9, y: -100 } }}
+      size="sm"
+      className="overflow-y-auto p-7"
+    >
+      <DialogHeader className="flex flex-col gap-2 px-2 text-center sm:px-4">
+        <Typography variant="h1" className="text-2xl font-semibold">
+          Verify OTP
+        </Typography>
+        <Typography variant="small" className="font-semibold text-text2">
+          Enter the six-digit OTP
+        </Typography>
+      </DialogHeader>
+      <DialogBody className="flex flex-col items-center overflow-y-auto">
+        <OtpInput
+          length={6}
+          value={otp}
+          className="mt-[1em]"
+          onChange={setOtp}
+        />
+        {error && <p className="mb-2 text-sm text-red-500">{error}</p>}
+      </DialogBody>
+      <DialogFooter className="flex justify-center">
+        <Button
+          onClick={handleSubmit}
+          className="w-60 rounded-full bg-text2 text-white"
+        >
+          Next
+        </Button>
+      </DialogFooter>
+    </Dialog>
   );
 };
 

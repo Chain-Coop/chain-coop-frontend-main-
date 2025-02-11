@@ -83,14 +83,14 @@ const PartnerWithUs = () => {
                 variants={fadeInUp}
                 className="text-xl font-bold sm:text-2xl lg:text-3xl"
               >
-                Come build with us
+                Come Build with Us
               </MotionTypography>
               <Typography
                 variants={fadeInUp}
                 variant="small"
                 className="mt-4 px-4 font-normal text-gray-500 lg:px-0"
               >
-                At Chain Co-op everyone deserves the tools to achieve financial
+                At Chain Co-op, everyone deserves the tools to achieve financial
                 stability and growth. We're building a platform that bridges
                 traditional and digital finance, empowering individuals and
                 communities. We invite you to partner with us on this journey.
@@ -99,7 +99,7 @@ const PartnerWithUs = () => {
                 onClick={handlePartnerModalOpen}
                 className="relative mx-auto mt-6 flex items-center justify-center rounded-md bg-text2 px-6 py-3 text-center text-sm font-semibold text-text5 sm:mt-8"
               >
-                Partner with us
+                Partner with Us
               </Button>
             </div>
           </motion.section>
@@ -116,14 +116,14 @@ const PartnerWithUs = () => {
                 variant="h1"
                 className="text-2xl font-bold sm:text-3xl"
               >
-                Why join Chain Co-op?
+                Why Join Chain Co-op?
               </Typography>
               <Typography
                 variant="small"
                 className="max-w-xl text-sm font-normal text-gray-500 sm:text-base"
               >
                 At Chain Co-op, we are on a mission to revolutionize
-                wealth-building for individuals and business across Africa.
+                wealth-building for individuals and businesses across Africa.
                 Partner with us and be a part of a financial ecosystem that
                 promotes secure and innovative savings solutions. We offer a
                 partner model designed for mutual growth and impact.
@@ -136,11 +136,10 @@ const PartnerWithUs = () => {
             </div>
             <img
               src={partner}
-              alt="partnership image"
+              alt="Partnership image"
               className="h-48 w-auto sm:h-60 lg:h-72"
             />
           </motion.section>
-
           <motion.section className="relative mx-auto flex w-full flex-col items-center px-4 py-12 text-center lg:w-[80%] lg:px-2 lg:py-[8em]">
             <Typography
               variant="h3"
@@ -172,7 +171,7 @@ const PartnerWithUs = () => {
                       variant="small"
                       className="text-center font-normal text-gray-500 sm:text-left"
                     >
-                      Chain Co-Op is a registered cooperative under the Lagos
+                      Chain Co-op is a registered cooperative under the Lagos
                       Ministry for Commerce, Trade, and Cooperatives, ensuring
                       compliance and reliability.
                     </Typography>

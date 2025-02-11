@@ -9,6 +9,7 @@ import WhatsappOtpModal from "../kyc/teirOne/whatsapp/WhatsappOtpModal";
 import SuccessModal from "../kyc/teirOne/phoneNumber/SuccessModal";
 import WhatsappVerificationModal from "../kyc/teirOne/whatsapp/WhatsappVerificationModal";
 import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
+import { Typography } from "@material-tailwind/react";
 
 const Details = () => {
   const navigate = useNavigate();
@@ -37,9 +38,9 @@ const Details = () => {
       ),
       description: profileDetails?.isVerified ? (
         <div className="flex items-center justify-between gap-[1em]">
-          <p className="text-sm text-gray-500">
+          <Typography className=" text-gray-500">
             Daily Credit Limit: N20,000 Daily withdrawal Limit: N500
-          </p>
+          </Typography>
           <div className="flex items-center gap-2">
             <button className="rounded-full bg-[#FF0000] px-[1em] py-[2px] font-semibold text-white">
               Upgrade
@@ -126,41 +127,26 @@ const Details = () => {
         ))}
       </section>
 
-      <Modal
-        className="bg-white"
+      <TierOneFirstModal
         isOpen={showTierOneModal}
         onClose={handleModalClose}
-      >
-        <TierOneFirstModal
-          onClose={handleModalClose}
-          onStepOneClick={handleStepOneClick}
-          isVerified={profileDetails?.isVerified}
-        />
-      </Modal>
+        onStepOneClick={handleStepOneClick}
+        isVerified={profileDetails?.isVerified}
+      />
 
-      <Modal
-        className="bg-white"
-        isOpen={showSecondModal}
+      <TierOneSecondModal
+        open={showSecondModal}
         onClose={handleModalClose}
-      >
-        <TierOneSecondModal
-          onClose={handleModalClose}
-          onSuccess={handleStepTwoSuccess}
-        />
-      </Modal>
+        onSuccess={handleStepTwoSuccess}
+      />
 
-      <Modal
-        className="bg-white"
-        isOpen={showThirdModal}
+      <TierOneThirdModal
+        open={showThirdModal}
+        reference={otpReference}
         onClose={handleModalClose}
-      >
-        <TierOneThirdModal
-          reference={otpReference}
-          onClose={handleModalClose}
-          onSwitchToWhatsapp={handleSwitchToWhatsapp}
-          onVerificationSuccess={handleVerificationSuccess}
-        />
-      </Modal>
+        onSwitchToWhatsapp={handleSwitchToWhatsapp}
+        onVerificationSuccess={handleVerificationSuccess}
+      />
 
       <Modal
         className="bg-white"
