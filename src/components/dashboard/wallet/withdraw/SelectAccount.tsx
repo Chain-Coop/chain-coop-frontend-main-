@@ -6,7 +6,6 @@ import { useAllBanks } from "../../../../shared/Hooks/useUserProfile";
 import { useDispatch } from "react-redux";
 import { GetAccountName } from "../../../../shared/redux/slices/transaction.slices";
 import { AppDispatch } from "../../../../shared/redux/store";
-import ReactLoading from "react-loading";
 import { Alert } from "@mui/material";
 import { Button } from "@material-tailwind/react";
 
@@ -157,17 +156,14 @@ const SelectAccount = () => {
             {error}
           </Alert>
         )}
-
         <Button
           variant="text"
-          className="mt-8 flex w-full items-center justify-center bg-text2 py-3 text-white"
+          className="mt-8 flex w-full items-center justify-center bg-text2 py-4 text-sm normal-case text-white hover:bg-text2"
           onClick={verifyAccount}
+          disabled={!selectedBank}
+          loading={loading}
         >
-          {loading ? (
-            <ReactLoading color="#FFFFFF" width={25} height={25} type="spin" />
-          ) : (
-            "Verify Account"
-          )}
+          {loading ? "Verifying..." : "Verify Account"}
         </Button>
       </section>
     </main>

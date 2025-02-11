@@ -3,14 +3,12 @@ import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate, useLocation } from "react-router";
 import { useDispatch } from "react-redux";
 import { Alert } from "@mui/material";
-import ReactLoading from "react-loading";
-import success from "../../../../Assets/svg/auth/sucess.svg";
 import { AppDispatch } from "../../../../shared/redux/store";
 import { WithdrawalFromContribution } from "../../../../shared/redux/slices/transaction.slices";
 import { DashboardHeader } from "../../../common/DashboardHeader";
 import { formatBalance } from "../../../../shared/utils/format";
-import Modal from "../../../common/Modal";
-import { Button } from "@material-tailwind/react";
+import { Button, Typography } from "@material-tailwind/react";
+import Success from "../../../common/Success";
 
 const ConfirmAmount = () => {
   const navigate = useNavigate();
@@ -131,14 +129,16 @@ const ConfirmAmount = () => {
         </div>
         <div className="mt-9 flex flex-col gap-4">
           <div className="flex justify-between">
-            <h1 className="font-semibold">Amount to Chain Co-op Wallet</h1>
+            <Typography variant="small" className=" text-lg font-semibold">
+              Amount to Chain Co-op Wallet
+            </Typography>
             <span className="font-medium">
               {amountInNaira ? formatBalance(amountInNaira) : "---"}
             </span>
           </div>
           <hr className="w-full" />
           <div className="flex items-center justify-between">
-            <p className="font-semibold">Contribution Plan</p>
+            <Typography className="font-semibold">Contribution Plan</Typography>
             <span className="font-medium">Monthly</span>
           </div>
           <hr className="w-full" />
@@ -151,51 +151,23 @@ const ConfirmAmount = () => {
         <div className="mt-[2em] flex justify-center">
           <Button
             variant="text"
-            className="flex w-[70%] justify-center bg-text2 py-3 text-white"
+            className="flex w-[70%] justify-center bg-text2 py-3 text-sm normal-case text-white hover:bg-text2"
             onClick={handleFund}
             disabled={loading || !amountInNaira || !contributionId}
+            loading={loading}
           >
-            {loading ? (
-              <ReactLoading
-                type="spin"
-                color="#ffffff"
-                height={20}
-                width={20}
-              />
-            ) : (
-              `Fund ${amountInNaira ? formatBalance(amountInNaira) : "---"}`
-            )}
+            {loading
+              ? "Please Wait..."
+              : `Fund ${amountInNaira ? formatBalance(amountInNaira) : "---"}`}
           </Button>
         </div>
       </section>
 
-      <Modal
+      <Success
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        className="w-[90%] rounded-lg bg-white"
-      >
-        <div className="flex flex-col justify-center py-[1em] lg:w-[25em]">
-          <img
-            src={success}
-            alt="Success Icon"
-            className="mx-auto w-[4em] sm:w-[5em] md:w-[6em] lg:w-[8em]"
-          />
-          <header>
-            <h1 className="text-center text-lg font-semibold sm:text-xl">
-              Successfully Submitted
-            </h1>
-          </header>
-          <div className="mt-4 flex justify-center">
-            <Button
-              variant="text"
-              className="w-[80%] bg-text2 py-2 text-white sm:w-[60%] md:w-[50%]"
-              onClick={handleCloseModal}
-            >
-              Done
-            </Button>
-          </div>
-        </div>
-      </Modal>
+        title="Successfully Submitted"
+      />
     </main>
   );
 };

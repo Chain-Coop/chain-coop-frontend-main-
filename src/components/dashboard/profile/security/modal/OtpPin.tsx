@@ -50,6 +50,7 @@ const OtpPin = ({ isOpen, onNext, onClose }: OtpPinProps) => {
           value={otp}
           className="mt-[1em]"
           onChange={setOtp}
+          gap={6}
         />
         {error && <p className="mb-2 text-sm text-red-500">{error}</p>}
       </DialogBody>

@@ -1,19 +1,14 @@
-import React from "react";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
-import Modal from "../../../common/Modal";
-import { DashboardHeader } from "../../../common/DashboardHeader";
 import { IoIosArrowBack } from "react-icons/io";
-import withdraw_icon from "../../../../Assets/svg/dashboard/wallet/withdraw.svg";
-import success from "../../../../Assets/svg/auth/sucess.svg";
-import OTPInput from "react-otp-input";
 import { WithdrawalFromWallet } from "../../../../shared/redux/slices/transaction.slices";
-import { Alert } from "@mui/material";
 import { AppDispatch } from "../../../../shared/redux/store";
 import { useDispatch } from "react-redux";
-import ReactLoading from "react-loading";
-import OtpInput from "../../../../shared/utils/OtpInput";
-import { Button } from "@material-tailwind/react";
+import { Button, Typography } from "@material-tailwind/react";
+import { WithdrawIcon } from "../../../../Assets/svg";
+import { DashboardHeader } from "../../../common/DashboardHeader";
+import PinModal from "../../../common/PinModal";
+import Success from "../../../common/Success";
 
 const VerifyAccount = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,7 +61,7 @@ const VerifyAccount = () => {
     }, 3000);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (pin: string) => {
     if (pin.length !== 4) {
       setError("Please enter a 4-digit PIN.");
       return;
@@ -123,82 +118,44 @@ const VerifyAccount = () => {
           </div>
         </DashboardHeader>
       </header>
-      <section className="gap- mt-[2.5em] flex flex-col items-center justify-center text-center">
-        <img src={withdraw_icon} alt="withdraw_icon" />
+      <section className="gap- mt-[2.5em] flex flex-col items-center justify-center px-5 text-center">
+        <WithdrawIcon />
         <div className="mt-[2em]">
-          <h1 className="font-bold">{accountName}</h1>
-          <p className="flex gap-1 font-medium text-howtext">
+          <Typography variant="h5" className="font-bold">
+            {accountName}
+          </Typography>
+          <Typography className="flex gap-1 font-medium text-howtext">
             <span>{bankName}</span>.<span>{accountNumber}</span>
-          </p>
+          </Typography>
         </div>
+        <Button
+          variant="text"
+          onClick={toggleModal}
+          className="mt-8 flex w-full items-center justify-center bg-text2 py-4 text-sm normal-case text-white hover:bg-text2"
+        >
+          Submit
+        </Button>
       </section>
-      <Button
-        variant="text"
-        className="mt-[2em] w-full bg-text2 py-3 text-white"
-        onClick={toggleModal}
-      >
-        Submit
-      </Button>
 
-      <Modal
+      <PinModal
         isOpen={isModalOpen}
         onClose={toggleModal}
-        className="fle-col flex justify-center bg-white text-center lg:w-[25em]"
-      >
-        <div className="py-[1em] lg:py-[2em]">
-          <header>
-            <h1 className="text-2xl font-semibold">My Chain Co-op Pin</h1>
-            <p className="mt-1 text-howtext">Enter your transaction pin.</p>
-          </header>
-          <OtpInput value={pin} className="mt-[1em]" onChange={setPin} />
-          {error && (
-            <Alert severity="error" className="mb-4 mt-4">
-              {error}
-            </Alert>
-          )}
-          <Button
-            variant="text"
-            onClick={handleSubmit}
-            disabled={loading}
-            className="mt-[2em] flex w-full justify-center rounded-full bg-text2 px-2 py-2 font-semibold text-white"
-          >
-            {loading ? (
-              <ReactLoading
-                color="#FFFFFF"
-                height={25}
-                width={25}
-                type="spin"
-              />
-            ) : (
-              "Confirm Withdrawal"
-            )}
-          </Button>
-        </div>
-      </Modal>
+        onSubmit={handleSubmit}
+        header="My Chain Co-op Pin"
+        title="Enter your transaction pin."
+        loading={loading}
+        error={error}
+        pin={pin}
+        onPinChange={setPin}
+      />
 
-      <Modal
+      <Success
         isOpen={isSuccessModalOpen}
         onClose={() => {
           navigate("/wallet", { replace: true });
         }}
-        className="bg-white py-[3em] text-center"
-      >
-        <div className="mt-[2.5em] flex flex-col justify-center">
-          <img
-            src={success}
-            alt="Success Icon"
-            className="mx-auto sm:w-[6em] lg:w-[8em]"
-          />
-          <header className="mt-4">
-            <h1 className="text-center text-xl font-semibold">
-              Transaction Successful
-            </h1>
-            <p className="mt-2 text-howtext">
-              Your withdrawal has been processed. Redirecting to wallet...
-            </p>
-          </header>
-        </div>
-      </Modal>
+        title="Successfully Submitted"
+      />
     </main>
   );
 };

@@ -28,7 +28,7 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
           <img
             src={kyc}
             alt="kyc"
-            className="h-[6em] w-[6em] object-contain sm:h-[7em] sm:w-[7em] md:h-[8em] md:w-[8em]"
+            className="h-[5em] w-[5em] object-contain sm:h-[7em] sm:w-[7em] md:h-[8em] md:w-[8em]"
           />
         </div>
       </DialogHeader>

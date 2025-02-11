@@ -4,7 +4,7 @@ import {
   DialogHeader,
   Typography,
 } from "@material-tailwind/react";
-import success from "../../../../../Assets/svg/auth/sucess.svg";
+import success from "../../Assets/svg/auth/sucess.svg";
 
 interface SuccessModalProps {
   isOpen: boolean;

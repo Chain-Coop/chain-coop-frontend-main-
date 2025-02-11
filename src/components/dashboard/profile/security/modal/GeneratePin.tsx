@@ -16,9 +16,13 @@ import { MoveRight } from "lucide-react";
 interface GeneratePinModalProps {
   isOpen: boolean;
   onClose?: () => void;
+  onOtpGenerated: () => void;
 }
-
-const GeneratePin = ({ isOpen, onClose }: GeneratePinModalProps) => {
+const GeneratePin = ({
+  isOpen,
+  onClose,
+  onOtpGenerated,
+}: GeneratePinModalProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch: AppDispatch = useDispatch();
 
@@ -26,7 +30,7 @@ const GeneratePin = ({ isOpen, onClose }: GeneratePinModalProps) => {
     setIsLoading(true);
     try {
       await dispatch(GeneratePinOTP()).unwrap();
-      onClose && onClose();
+      onOtpGenerated();
     } catch (message) {
       console.error("Failed to generate OTP", message);
     } finally {

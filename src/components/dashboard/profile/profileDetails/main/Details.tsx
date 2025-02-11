@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import Modal from "../../../../common/Modal";
 import TierOneFirstModal from "../kyc/teirOne/phoneNumber/TierOneFirstModal";
 import TierOneSecondModal from "../kyc/teirOne/phoneNumber/TeirOneSecondModal";
 import TierOneThirdModal from "../kyc/teirOne/phoneNumber/TeirOneThirdModal";
 import WhatsappOtpModal from "../kyc/teirOne/whatsapp/WhatsappOtpModal";
-import SuccessModal from "../kyc/teirOne/phoneNumber/SuccessModal";
 import WhatsappVerificationModal from "../kyc/teirOne/whatsapp/WhatsappVerificationModal";
 import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 import { Typography } from "@material-tailwind/react";
+import Success from "../../../../common/Success";
 
 const Details = () => {
   const navigate = useNavigate();
@@ -38,7 +37,7 @@ const Details = () => {
       ),
       description: profileDetails?.isVerified ? (
         <div className="flex items-center justify-between gap-[1em]">
-          <Typography className=" text-gray-500">
+          <Typography variant="small" className="font-normal text-gray-500">
             Daily Credit Limit: N20,000 Daily withdrawal Limit: N500
           </Typography>
           <div className="flex items-center gap-2">
@@ -104,7 +103,9 @@ const Details = () => {
   return (
     <main className="mt-4 font-sans">
       <header>
-        <h2 className="font-semibold text-howtext">PROFILE</h2>
+        <Typography variant="h5" className="text-md font-bold text-howtext">
+          PROFILE
+        </Typography>
       </header>
       <section className="mt-[1.2em]">
         {sections?.map((section, index) => (
@@ -148,44 +149,32 @@ const Details = () => {
         onVerificationSuccess={handleVerificationSuccess}
       />
 
-      <Modal
-        className="bg-white"
-        isOpen={showWhatsAppModal}
+      <WhatsappOtpModal
+        open={showWhatsAppModal}
         onClose={handleModalClose}
-      >
-        <WhatsappOtpModal
-          onClose={handleModalClose}
-          onBack={() => {
-            setShowWhatsAppModal(false);
-            setShowThirdModal(true);
-          }}
-          onOtpSuccess={handleWhatsAppOtpSuccess}
-        />
-      </Modal>
+        onBack={() => {
+          setShowWhatsAppModal(false);
+          setShowThirdModal(true);
+        }}
+        onOtpSuccess={handleWhatsAppOtpSuccess}
+      />
 
-      <Modal
-        className="bg-white"
-        isOpen={showWhatsAppVerificationModal}
+      <WhatsappVerificationModal
+        open={showWhatsAppVerificationModal}
+        reference={whatsAppReference}
         onClose={handleModalClose}
-      >
-        <WhatsappVerificationModal
-          reference={whatsAppReference}
-          onClose={handleModalClose}
-          onBack={() => {
-            setShowWhatsAppVerificationModal(false);
-            setShowWhatsAppModal(true);
-          }}
-          onVerificationSuccess={handleVerificationSuccess}
-        />
-      </Modal>
+        onBack={() => {
+          setShowWhatsAppVerificationModal(false);
+          setShowWhatsAppModal(true);
+        }}
+        onVerificationSuccess={handleVerificationSuccess}
+      />
 
-      <Modal
-        className="bg-white"
+      <Success
         isOpen={showSuccessModal}
         onClose={handleModalClose}
-      >
-        <SuccessModal onClose={handleModalClose} />
-      </Modal>
+        title="Your phone number has now been verified you are now in Teir 0."
+      />
     </main>
   );
 };

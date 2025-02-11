@@ -13,14 +13,13 @@ import {
 } from "../../../../../shared/Hooks/useBalance";
 import ToggleButton from "../../../../../shared/utils/ToggleButton";
 import { Link } from "react-router-dom";
-import withdraw_icon from "../../../../../Assets/svg/dashboard/wallet/withdraw.svg";
-import transfer_icon from "../../../../../Assets/svg/dashboard/wallet/transfer.svg";
 import { motion } from "framer-motion";
 import lisk from "../../../../../Assets/svg/dashboard/token_lisk.svg";
 import eth from "../../../../../Assets/svg/dashboard/Group 99764.png";
 import usdc from "../../../../../Assets/svg/dashboard/usdc.svg";
 import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 import { Copy, Check } from "lucide-react";
+import { TransferIcon, WithdrawIcon } from "../../../../../Assets/svg";
 
 interface TokenInfo {
   tokenAddress: string;
@@ -167,7 +166,7 @@ const CryptoMain = () => {
                       type="text"
                       value={cryptoWalletDetails?.address || ""}
                       readOnly
-                      className="h-8 w-[280px] overflow-hidden text-ellipsis whitespace-nowrap rounded-lg border-2 border-gray-400 pl-3 pr-10 font-mono text-sm"
+                      className="font-mono h-8 w-[280px] overflow-hidden text-ellipsis whitespace-nowrap rounded-lg border-2 border-gray-400 pl-3 pr-10 text-sm"
                     />
                     <button
                       onClick={() =>
@@ -297,7 +296,7 @@ const CryptoMain = () => {
                 whileTap={{ scale: 0.98 }}
                 className="flex flex-col items-center bg-inherit text-center"
               >
-                <img src={withdraw_icon} alt="withdraw_icon" />
+                <WithdrawIcon />
                 <span className="block text-memt1 lg:text-lg">Withdraw</span>
               </motion.button>
             </Link>
@@ -308,7 +307,7 @@ const CryptoMain = () => {
                 whileTap={{ scale: 0.98 }}
                 className="flex flex-col items-center bg-inherit text-center"
               >
-                <img src={transfer_icon} alt="transfer_icon" />
+                <TransferIcon />
                 <span className="block text-memt1 lg:text-lg">Transfer</span>
               </motion.button>
             </Link>
