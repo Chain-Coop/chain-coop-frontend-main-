@@ -10,7 +10,7 @@ const PINInput: React.FC<PINInputProps> = ({
   inputClassName = "",
   showVisibilityToggle = false,
   label,
-  gap = 4, // Default gap of 4
+  gap = 4, 
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [showPin, setShowPin] = useState(false);
@@ -90,14 +90,14 @@ const PINInput: React.FC<PINInputProps> = ({
   return (
     <div className="flex flex-col gap-3">
       {label && (
-        <label className="mb-3 flex justify-center font-semibold text-text2">
+        <label className="mb-3 flex justify-center text-sm font-semibold text-text2 sm:text-base">
           {label}
         </label>
       )}
       <div className={`relative ${className}`}>
-        <div className={`flex items-center justify-center gap-${gap}`}>
-          {" "}
-          {/* Modified gap here */}
+        <div
+          className={`flex items-center justify-center gap-${gap} sm:gap-${gap + 2}`}
+        >
           {Array(length)
             .fill(null)
             .map((_, index) => (
@@ -111,13 +111,13 @@ const PINInput: React.FC<PINInputProps> = ({
                 onKeyDown={(e) => handleKeyDown(index, e)}
                 onPaste={handlePaste}
                 className={`
-                h-12 w-12 rounded-md 
-                border text-center text-lg shadow-sm
-                focus:border-text2 focus:outline-none focus:ring-1 focus:ring-text2
-                ${activeIndex === index ? "border-text2" : "border-gray-200"}
-                transition-all duration-200
-                ${inputClassName}
-              `}
+                  // Larger inputs for larger screens h-10
+                  w-10 rounded-md border text-center
+                  text-lg shadow-sm focus:border-text2 focus:outline-none focus:ring-1 focus:ring-text2 sm:h-12 sm:w-12
+                  ${activeIndex === index ? "border-text2" : "border-gray-200"}
+                  transition-all duration-200
+                  ${inputClassName}
+                `}
                 aria-label={`PIN digit ${index + 1} of ${length}`}
               />
             ))}
@@ -128,7 +128,11 @@ const PINInput: React.FC<PINInputProps> = ({
             onClick={() => setShowPin(!showPin)}
             className="absolute right-0 top-1/2 -translate-x-4 -translate-y-1/2"
           >
-            {showPin ? <MdOutlineVisibilityOff /> : <MdOutlineVisibility />}
+            {showPin ? (
+              <MdOutlineVisibilityOff className="h-5 w-5 sm:h-6 sm:w-6" /> 
+            ) : (
+              <MdOutlineVisibility className="h-5 w-5 sm:h-6 sm:w-6" /> 
+            )}
           </button>
         )}
       </div>

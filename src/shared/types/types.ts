@@ -59,3 +59,13 @@ export interface PINInputProps {
   label?: string;
   gap?: number;
 }
+
+export interface Card {
+  authorization_code: string;
+  last4: string;
+  exp_month: string;
+  exp_year: string;
+  card_type: string;
+  bank: string;
+  brand: string;
+}

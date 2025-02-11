@@ -35,10 +35,10 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
 
       <DialogBody className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <header className="text-center sm:px-4">
+          <header className="text-center">
             <Typography
               variant="h4"
-              className="text-base font-bold leading-tight text-black sm:text-lg md:text-lg"
+              className="text-base font-bold leading-tight text-black sm:text-sm md:text-lg"
             >
               Complete the Tier 0 for KYC Verification
             </Typography>
