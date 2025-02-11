@@ -81,9 +81,12 @@ const Footer = () => {
 
       <div className="w-full bg-text2 font-sans">
         <div className="mx-auto px-4 pt-[120px] lg:w-[93%] lg:pb-[10px] lg:pt-[190px]">
-          <div className="grid grid-cols-1 gap-5 lg:grid-cols-5">
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
             <section className="w-full space-y-4">
-              <Typography variant="h2" className="text-sm font-bold text-text3">
+              <Typography
+                variant="h2"
+                className="text-sm font-light text-text3"
+              >
                 Chain Co-Op is a secure, registered cooperative dedicated to
                 empowering individuals with innovative savings solutions in
                 Naira and crypto.

@@ -16,10 +16,10 @@ const container = (delay: any) => ({
 
 const HeroSection = () => {
   return (
-    <main className="relative flex w-full flex-col font-sans lg:min-h-[600px] lg:flex-row">
-      <div className="flex items-center px-4 py-5 lg:w-1/2 lg:px-[4em] lg:py-[8em]">
+    <main className="relative flex w-full flex-col font-sans lg:min-h-screen lg:flex-row">
+      <div className="flex items-center px-4 py-8 lg:w-1/2 lg:px-12 lg:py-24 xl:px-16">
         <div className="max-w-xl">
-          <div className="mb-4 lg:mb-6">
+          <div className="mb-6 lg:mb-8">
             <MotionTypography
               variant="h1"
               variants={container(0.5)}
@@ -27,9 +27,9 @@ const HeroSection = () => {
               animate="visible"
               className="text-xl font-bold lg:text-4xl"
             >
-              Save Smarter, Grow <br />
-              Faster
-              <span className="text-text2"> with Chain Co-op</span>
+              {" "}
+              Save Smarter, Grow <br /> Faster{" "}
+              <span className="text-text2"> with Chain Co-op</span>{" "}
             </MotionTypography>
           </div>
           <MotionTypography
@@ -37,7 +37,7 @@ const HeroSection = () => {
             initial="hidden"
             animate="visible"
             variant="small"
-            className="mb-6 font-medium text-gray-600 sm:text-base lg:mb-8"
+            className="mb-8 text-sm font-medium text-gray-600 sm:text-base lg:text-lg"
           >
             Your all-in-one platform for automated savings in <br /> Naira and
             crypto
@@ -46,19 +46,19 @@ const HeroSection = () => {
             variants={container(1)}
             initial="hidden"
             animate="visible"
-            className="flex flex-row gap-3 sm:gap-6"
+            className="flex flex-row gap-4 sm:gap-6 lg:gap-8"
           >
             <Link to={ROUTES.sign_up} className="flex-shrink-0">
               <Button
                 variant="text"
-                className="bg-text2 px-4 py-3 text-center transition-all hover:bg-opacity-90 sm:px-5 sm:py-4"
+                className="bg-text2 px-6 py-3 text-center normal-case transition-all duration-300 hover:bg-text2 hover:bg-opacity-90 hover:shadow-lg"
               >
                 <Typography className="text-sm font-semibold text-text5 sm:text-base">
                   Start Saving
                 </Typography>
               </Button>
             </Link>
-            <Button className="flex flex-shrink-0 items-center justify-center rounded-md bg-white px-4 py-3 text-sm font-semibold text-text2 shadow-xl transition-all hover:bg-gray-50 sm:px-5 sm:py-4 sm:text-base">
+            <Button className="flex flex-shrink-0 items-center justify-center rounded-md bg-white px-6 py-3 text-sm font-semibold normal-case text-text2 shadow-xl transition-all duration-300 hover:bg-gray-50 hover:shadow-2xl sm:text-base">
               <img
                 src={subicon}
                 className="mr-2 h-5 w-5 sm:h-6 sm:w-6"
@@ -72,7 +72,7 @@ const HeroSection = () => {
       <div className="hidden lg:block lg:h-full lg:w-1/2">
         <div
           className="h-full w-full bg-heroBackground bg-cover bg-center bg-no-repeat"
-          style={{ minHeight: "600px" }}
+          style={{ minHeight: "100vh" }}
         ></div>
       </div>
     </main>
