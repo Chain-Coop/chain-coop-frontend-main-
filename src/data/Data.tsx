@@ -725,12 +725,13 @@ export const teamMembers = [
       "Eyitemi is a skilled product designer with over 3 years of experience. She has also volunteered as a designer for JustProject. Holding a UX design degree from Coursera and Ingressive for Good, her expertise spans user research, visual design, interaction design, Figma, prototyping, and motion design. Eyitemi is a strong communicator and collaborator, dedicated to creating innovative and impactful products that improve people's lives.",
     social: {
       twitter: "https://x.com/IEyitemi?t=bY1T63NaxbAtd0nJbLRLIQ&s=08",
-      linkedin: "#",
+      linkedin:
+        "https://www.linkedin.com/in/eyitemi-onorume-849a50211?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
     },
   },
   {
     id: 5,
-    name: "Heather Li",
+    name: "Yixuan Heather (李依轩) Li",
     role: "Advisor and Consultant",
     image: heather,
     description:
