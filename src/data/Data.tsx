@@ -693,18 +693,6 @@ export const teamMembers = [
   },
   {
     id: 2,
-    name: "Rebecca Asseh",
-    role: "Content Marketer",
-    image: rebecca,
-    description:
-      "Rebecca Asseh is a Blockchain Content Marketer, crypto educator, and board member of Black Women in Blockchain Council. She works on simplifying blockchain for end-users.",
-    social: {
-      twitter: "https://x.com/RebeccaAsseh",
-      linkedin: "https://www.linkedin.com/in/rebeccaasseh/",
-    },
-  },
-  {
-    id: 3,
     name: "AbdulSamad Gobir",
     role: "Product Manager / CMO",
     image: samad,
@@ -714,19 +702,6 @@ export const teamMembers = [
       twitter: "https://x.com/abdulsamad_ag",
       linkedin:
         "https://www.linkedin.com/in/abdulsamadgobir?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
-    },
-  },
-  {
-    id: 4,
-    name: "Kalu Iwere Eyitemi",
-    role: "UI/UX Designer",
-    image: temi,
-    description:
-      "Eyitemi is a skilled product designer with over 3 years of experience. She has also volunteered as a designer for JustProject. Holding a UX design degree from Coursera and Ingressive for Good, her expertise spans user research, visual design, interaction design, Figma, prototyping, and motion design. Eyitemi is a strong communicator and collaborator, dedicated to creating innovative and impactful products that improve people's lives.",
-    social: {
-      twitter: "https://x.com/IEyitemi?t=bY1T63NaxbAtd0nJbLRLIQ&s=08",
-      linkedin:
-        "https://www.linkedin.com/in/eyitemi-onorume-849a50211?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
     },
   },
   {
@@ -740,6 +715,32 @@ export const teamMembers = [
       twitter: "https://x.com/HeatherleePSU?t=d7stL0XIBrRafaWLbUYe1Q&s=09",
       linkedin:
         "https://www.linkedin.com/in/thedotconnector?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    },
+  },
+  {
+    id: 3,
+    name: "Rebecca Asseh",
+    role: "Content Marketer",
+    image: rebecca,
+    description:
+      "Rebecca Asseh is a Blockchain Content Marketer, crypto educator, and board member of Black Women in Blockchain Council. She works on simplifying blockchain for end-users.",
+    social: {
+      twitter: "https://x.com/RebeccaAsseh",
+      linkedin: "https://www.linkedin.com/in/rebeccaasseh/",
+    },
+  },
+
+  {
+    id: 4,
+    name: "Kalu Iwere Eyitemi",
+    role: "UI/UX Designer",
+    image: temi,
+    description:
+      "Eyitemi is a skilled product designer with over 3 years of experience. She has also volunteered as a designer for JustProject. Holding a UX design degree from Coursera and Ingressive for Good, her expertise spans user research, visual design, interaction design, Figma, prototyping, and motion design. Eyitemi is a strong communicator and collaborator, dedicated to creating innovative and impactful products that improve people's lives.",
+    social: {
+      twitter: "https://x.com/IEyitemi?t=bY1T63NaxbAtd0nJbLRLIQ&s=08",
+      linkedin:
+        "https://www.linkedin.com/in/eyitemi-onorume-849a50211?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
     },
   },
 ];
