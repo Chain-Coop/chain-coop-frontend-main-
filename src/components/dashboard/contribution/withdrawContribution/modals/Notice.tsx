@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { format, parseISO } from "date-fns";
+import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 
 interface NoticeModalProps {
   isOpen: boolean;
@@ -22,6 +23,8 @@ const NoticeModal: React.FC<NoticeModalProps> = ({
   onConfirm,
   withdrawalDate,
 }) => {
+  const { profileDetails, fetchUserProfile } = useUserProfile();
+  console.log("prr", profileDetails);
   return (
     <Dialog
       open={isOpen}

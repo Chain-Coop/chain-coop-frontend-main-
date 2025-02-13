@@ -11,6 +11,8 @@ import imageRight from "../../../Assets/png/home/about-bg.png";
 import aya from "../../../Assets/png/home/abt-aya.png";
 import lisk from "../../../Assets/png/home/abt-lisk.png";
 import Marquee from "react-fast-marquee";
+import CardComponent from "../../common/ImageCard";
+import { Link } from "react-router-dom";
 
 const AboutUs = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -112,15 +114,15 @@ const AboutUs = () => {
             </div>
 
             <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-2">
-              <div className="flex justify-center">
-                <img src={juwon} alt="Oluwajuwon" />
-              </div>
-              <div className="flex justify-center">
-                <img src={rebecca} alt="Rebecca" />
-              </div>
-              <div className="flex justify-center">
-                <img src={samad} alt="Team member" />
-              </div>
+              <Link to="https://www.linkedin.com/in/oluwajuwon-micheal?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
+                <CardComponent image={juwon} title="Data Engineer/CCO" />
+              </Link>
+              <Link to="">
+                <CardComponent image={rebecca} title="Content Marketer" />
+              </Link>
+              <Link to="https://www.linkedin.com/in/abdulsamadgobir?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
+                <CardComponent image={samad} title="Product Manager / CMO" />
+              </Link>
             </div>
           </div>
         </motion.section>

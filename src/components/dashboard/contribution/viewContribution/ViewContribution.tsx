@@ -94,7 +94,6 @@ const ViewContribution = () => {
   const contributionId = location?.state?.contributionId;
   const { useWalletCards } = useUserCard();
   const [isLoading, setIsLoading] = useState(true);
-  const [loading, setLoading] = useState(false);
   const [isContributionVisible, setIsContributionVisible] = useState(() => {
     const storedVisibility = sessionStorage.getItem(
       "contributionBalanceVisible",
@@ -452,7 +451,7 @@ const ViewContribution = () => {
     <main className="pb-[1.5em] font-sans">
       <header className="sm:mt-[0] lg:mt-[2em]">
         <DashboardHeader className="flex items-center justify-center">
-          Fexible Savings ({""}
+          {contributionDetails?.history[0]?.savingsType} Savings ({""}
           {contributionDetails?.contributionPlan}
           {""})
         </DashboardHeader>

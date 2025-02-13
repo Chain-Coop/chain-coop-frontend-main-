@@ -7,6 +7,7 @@ import { Typography } from "@material-tailwind/react";
 import { MotionTypography } from "../../common/motionTypography";
 import { Linkedin, X } from "../../../Assets/svg";
 import { teamMembers } from "../../../data/Data";
+import { Link } from "react-router-dom";
 
 const Team = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -58,8 +59,16 @@ const Team = () => {
         {member.description}
       </Typography>
       <div className="flex justify-center gap-3">
-        <X />
-        <Linkedin />
+        <button>
+          <Link to={member.social.twitter}>
+            <X />
+          </Link>
+        </button>
+        <button>
+          <Link to={member.social.linkedin}>
+            <Linkedin />
+          </Link>
+        </button>
       </div>
     </div>
   );
