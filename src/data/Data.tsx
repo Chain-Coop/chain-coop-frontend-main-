@@ -10,7 +10,8 @@ import wallet from "../Assets/svg/dashboard/wallet.svg";
 import home from "../Assets/svg/dashboard/home.svg";
 import contribution from "../Assets/svg/dashboard/contribution.svg";
 import profile from "../Assets/svg/dashboard/Profile.svg";
-import temi from "../Assets/png/footer/team/png/image1.png";
+import temi from "../Assets/png/footer/team/png/temi.png";
+import heather from "../Assets/png/footer/team/png/Heather.png";
 import juwon from "../Assets/png/home/juwon.png";
 import samad from "../Assets/png/home/abdulSamad.png";
 import rebecca from "../Assets/png/home/rebecca.png";
@@ -275,11 +276,12 @@ export const SavingOn = [
 ];
 
 export const Plan = [{ text: "Monthly" }, { text: "Daily" }];
+
 export const Terms = [
   {
     title: "1. Introduction",
     content:
-      "The website is operated by the Co-operative 'Chain Co-op', a legal entity registered with the Lagos State Ministry of Commerce, Industry, and Co-operatives, Alausa, Lagos, with its registered office at 9, Ogunlana Close, Alausa, Lagos. Chain Co-op provides an automated savings platform available on its website at chainco-op.org.",
+      "The website is operated by the Co-operative 'Chain Co-op', a legal entity registered with the Lagos State Ministry of Commerce, Industry, and Co-operatives, Alausa, Lagos, with its registered office at 9, Ogunlana Close, Alausa, Lagos. Chain Co-op provides an automated savings platform available on its website at (https://www.chaincoop.org).",
   },
   {
     title: "2. Definitions",
@@ -287,7 +289,7 @@ export const Terms = [
       {
         term: '"Privacy Policy"',
         definition:
-          "means the regulations established on the page (https://chainco-op.org/privacy-policy) operated by Chain Co-op, as well as all documents referred to within them.",
+          "means the regulations established on the page (https://www.chaincoop.org/privacy-policy) operated by Chain Co-op, as well as all documents referred to within them.",
       },
       {
         term: '"Applicable Law"',
@@ -479,6 +481,7 @@ export const Terms = [
     ],
   },
 ];
+
 export const PrivacyData = [
   {
     title: "1. Introduction",
@@ -696,8 +699,8 @@ export const teamMembers = [
     description:
       "Rebecca Asseh is a Blockchain Content Marketer, crypto educator, and board member of Black Women in Blockchain Council. She works on simplifying blockchain for end-users.",
     social: {
-      twitter: "#",
-      linkedin: "#",
+      twitter: "https://x.com/RebeccaAsseh",
+      linkedin: "https://www.linkedin.com/in/rebeccaasseh/",
     },
   },
   {
@@ -708,7 +711,7 @@ export const teamMembers = [
     description:
       "Founder of Jobhunters and co-founder of Automation Affairs Ltd., AbdulSamad is a versatile product and project manager. A former President of the Gemstones Toastmasters Club, he has contributed to over 200 applications and products with companies like Appcake and Routepay.",
     social: {
-      twitter: "#",
+      twitter: "https://x.com/abdulsamad_ag",
       linkedin:
         "https://www.linkedin.com/in/abdulsamadgobir?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
     },
@@ -719,10 +722,23 @@ export const teamMembers = [
     role: "Content Marketer",
     image: temi,
     description:
-      "Eyitemi is a Product Designer with over 3 years of experience.",
+      "Eyitemi is a skilled product designer with over 3 years of experience. She has also volunteered as a designer for JustProject. Holding a UX design degree from Coursera and Ingressive for Good, her expertise spans user research, visual design, interaction design, Figma, prototyping, and motion design. Eyitemi is a strong communicator and collaborator, dedicated to creating innovative and impactful products that improve people's lives.",
     social: {
       twitter: "https://x.com/IEyitemi?t=bY1T63NaxbAtd0nJbLRLIQ&s=08",
       linkedin: "#",
+    },
+  },
+  {
+    id: 5,
+    name: "Heather Li",
+    role: "Advisor and consultant",
+    image: heather,
+    description:
+      "Heather Li is a seasoned entrepreneur and community builder with extensive experience in big data, AI, and public relations. She has held key roles as the General Manager of Big Data and AI Lab Nigeria and as a Venture Fellow at Dream VC. With a strong background in business strategy and community development, her expertise spans partnership building, business growth, and innovation. Heather is a passionate advocate for Africa's growth, dedicated to fostering connections and collaborations that drive impact and progress.",
+    social: {
+      twitter: "https://x.com/HeatherleePSU?t=d7stL0XIBrRafaWLbUYe1Q&s=09",
+      linkedin:
+        "https://www.linkedin.com/in/thedotconnector?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
     },
   },
 ];
