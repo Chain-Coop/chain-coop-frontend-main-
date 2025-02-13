@@ -289,7 +289,7 @@ export const Terms = [
       {
         term: '"Privacy Policy"',
         definition:
-          "means the regulations established on the  chaincoop.org/privacy-policy operated by Chain Co-op, as well as all documents referred to within them.",
+          "means the regulations established on chaincoop.org/privacy-policy operated by Chain Co-op, as well as all documents referred to within them.",
       },
       {
         term: '"Applicable Law"',
