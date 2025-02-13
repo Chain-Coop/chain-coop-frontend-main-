@@ -281,7 +281,7 @@ export const Terms = [
   {
     title: "1. Introduction",
     content:
-      "The website is operated by the Co-operative 'Chain Co-op', a legal entity registered with the Lagos State Ministry of Commerce, Industry, and Co-operatives, Alausa, Lagos, with its registered office at 9, Ogunlana Close, Alausa, Lagos. Chain Co-op provides an automated savings platform available on its website at (https://www.chaincoop.org).",
+      "The website is operated by the Co-operative 'Chain Co-op', a legal entity registered with the Lagos State Ministry of Commerce, Industry, and Co-operatives, Alausa, Lagos, with its registered office at 9, Ogunlana Close, Alausa, Lagos. Chain Co-op provides an automated savings platform available on its website at chaincoop.org.",
   },
   {
     title: "2. Definitions",
@@ -289,7 +289,7 @@ export const Terms = [
       {
         term: '"Privacy Policy"',
         definition:
-          "means the regulations established on the page (https://www.chaincoop.org/privacy-policy) operated by Chain Co-op, as well as all documents referred to within them.",
+          "means the regulations established on the page chaincoop.org/privacy-policy operated by Chain Co-op, as well as all documents referred to within them.",
       },
       {
         term: '"Applicable Law"',
@@ -719,7 +719,7 @@ export const teamMembers = [
   {
     id: 4,
     name: "Kalu Iwere Eyitemi",
-    role: "Content Marketer",
+    role: "UI/UX Designer",
     image: temi,
     description:
       "Eyitemi is a skilled product designer with over 3 years of experience. She has also volunteered as a designer for JustProject. Holding a UX design degree from Coursera and Ingressive for Good, her expertise spans user research, visual design, interaction design, Figma, prototyping, and motion design. Eyitemi is a strong communicator and collaborator, dedicated to creating innovative and impactful products that improve people's lives.",
@@ -731,7 +731,7 @@ export const teamMembers = [
   {
     id: 5,
     name: "Heather Li",
-    role: "Advisor and consultant",
+    role: "Advisor and Consultant",
     image: heather,
     description:
       "Heather Li is a seasoned entrepreneur and community builder with extensive experience in big data, AI, and public relations. She has held key roles as the General Manager of Big Data and AI Lab Nigeria and as a Venture Fellow at Dream VC. With a strong background in business strategy and community development, her expertise spans partnership building, business growth, and innovation. Heather is a passionate advocate for Africa's growth, dedicated to fostering connections and collaborations that drive impact and progress.",

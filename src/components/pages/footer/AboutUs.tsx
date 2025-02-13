@@ -117,7 +117,7 @@ const AboutUs = () => {
               <Link to="https://www.linkedin.com/in/oluwajuwon-micheal?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
                 <CardComponent image={juwon} title="Data Engineer/CCO" />
               </Link>
-              <Link to="">
+              <Link to="https://www.linkedin.com/in/thedotconnector?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
                 <CardComponent image={rebecca} title="Content Marketer" />
               </Link>
               <Link to="https://www.linkedin.com/in/abdulsamadgobir?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">

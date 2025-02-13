@@ -23,7 +23,7 @@ const NoticeModal: React.FC<NoticeModalProps> = ({
   onConfirm,
   withdrawalDate,
 }) => {
-  const { profileDetails, fetchUserProfile } = useUserProfile();
+  const { profileDetails } = useUserProfile();
   console.log("prr", profileDetails);
   return (
     <Dialog
