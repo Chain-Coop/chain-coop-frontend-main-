@@ -9,17 +9,37 @@ import { DashboardHeader } from "../../../common/DashboardHeader";
 import { formatBalance } from "../../../../shared/utils/format";
 import { Button, Typography } from "@material-tailwind/react";
 import Success from "../../../common/Success";
+import useUserProfile from "../../../../shared/Hooks/useUserProfile";
 
 const ConfirmAmount = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
+  const { profileDetails } = useUserProfile();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
   const [amountInNaira, setAmountInNaira] = useState<number | null>(null);
   const [contributionId, setContributionId] = useState<string | null>(null);
+  const [savingsType, setSavingsType] = useState<string>("FLEXIBLE");
+
+  const calculateFees = () => {
+    let fees = 50;
+
+    if (profileDetails?.membershipStatus === "inactive") {
+      fees += 1000;
+    }
+
+    if (savingsType === "LOCK") {
+      fees += 2000;
+    }
+
+    return fees;
+  };
+
+  const totalFees = calculateFees();
+  const finalAmount = amountInNaira ? amountInNaira - totalFees : 0;
 
   useEffect(() => {
     if (!location.state) {
@@ -27,9 +47,14 @@ const ConfirmAmount = () => {
       return;
     }
 
-    const { amountInNaira: amount, contributionId: id } = location.state as {
+    const {
+      amountInNaira: amount,
+      contributionId: id,
+      savingsType: type,
+    } = location.state as {
       amountInNaira?: number;
       contributionId?: string;
+      savingsType?: string;
     };
 
     if (!amount || !id) {
@@ -39,6 +64,7 @@ const ConfirmAmount = () => {
 
     setAmountInNaira(amount);
     setContributionId(id);
+    setSavingsType(type || "FLEXIBLE");
   }, [location.state]);
 
   const handleBackClick = () => {
@@ -61,10 +87,14 @@ const ConfirmAmount = () => {
 
     try {
       const body = {
-        amount: amountInNaira,
+        amount: finalAmount, 
         contributionId: contributionId,
         pay: "active",
+        fees: totalFees,
+        membershipStatus: profileDetails?.membershipStatus,
+        savingsType: savingsType,
       };
+
       const result = await dispatch(WithdrawalFromContribution(body)).unwrap();
       if (result?.landing?.statusCode === 200) {
         setLoading(false);
@@ -117,48 +147,82 @@ const ConfirmAmount = () => {
       >
         <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
         <div className="flex flex-grow items-center justify-center">
-          <div className="tracking-wide">Confirm Amount</div>
+          <div className="tracking-wide">Confirm Withdrawal</div>
         </div>
       </DashboardHeader>
 
-      <section className="px-2">
+      <section className="px-4">
         <div className="mt-[2.5em] flex justify-center">
           <h1 className="text-xl font-bold">
             {amountInNaira ? formatBalance(amountInNaira) : "---"}
           </h1>
         </div>
-        <div className="mt-9 flex flex-col gap-4">
+
+        <div className="mt-9 space-y-4 rounded-lg bg-gray-50 p-4">
           <div className="flex justify-between">
-            <Typography variant="small" className=" text-lg font-semibold">
-              Amount to Chain Co-op Wallet
+            <Typography className="text-base font-medium">
+              Withdrawal Amount
             </Typography>
             <span className="font-medium">
               {amountInNaira ? formatBalance(amountInNaira) : "---"}
             </span>
           </div>
-          <hr className="w-full" />
+
+          {profileDetails?.membershipStatus === "inactive" && (
+            <div className="flex justify-between text-amber-600">
+              <Typography className="text-base">Membership Fee</Typography>
+              <span>-₦1,000.00</span>
+            </div>
+          )}
+
+          {savingsType === "LOCK" && (
+            <div className="flex justify-between text-amber-600">
+              <Typography className="text-base">
+                Early Withdrawal Fee
+              </Typography>
+              <span>-₦2,000.00</span>
+            </div>
+          )}
+
+          <div className="flex justify-between">
+            <Typography className="text-base">Transaction Fee</Typography>
+            <span>-₦50.00</span>
+          </div>
+
+          <hr className="border-gray-300" />
+
+          <div className="flex justify-between font-semibold">
+            <Typography className="text-base">Final Amount</Typography>
+            <span className="text-text2">{formatBalance(finalAmount)}</span>
+          </div>
+        </div>
+
+        <div className="mt-6">
           <div className="flex items-center justify-between">
             <Typography className="font-semibold">Contribution Plan</Typography>
-            <span className="font-medium">Monthly</span>
+            <span className="font-medium">
+              {location.state?.contributionPlan || "Monthly"}
+            </span>
           </div>
-          <hr className="w-full" />
+          <hr className="mt-4 w-full" />
         </div>
+
         {error && (
           <Alert severity="error" className="mt-4">
             {error}
           </Alert>
         )}
-        <div className="mt-[2em] flex justify-center">
+
+        <div className="mt-8 flex justify-center">
           <Button
             variant="text"
-            className="flex w-[70%] justify-center bg-text2 py-3 text-sm normal-case text-white hover:bg-text2"
+            className="w-[70%] bg-text2 py-3 text-sm normal-case text-white hover:bg-text2 disabled:bg-gray-300"
             onClick={handleFund}
             disabled={loading || !amountInNaira || !contributionId}
-            loading={loading}
           >
             {loading
-              ? "Please Wait..."
-              : `Fund ${amountInNaira ? formatBalance(amountInNaira) : "---"}`}
+              ? "Processing..."
+              : `Withdraw ${formatBalance(finalAmount)}`}
           </Button>
         </div>
       </section>
@@ -166,7 +230,7 @@ const ConfirmAmount = () => {
       <Success
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        title="Successfully Submitted"
+        title="Withdrawal Successful"
       />
     </main>
   );

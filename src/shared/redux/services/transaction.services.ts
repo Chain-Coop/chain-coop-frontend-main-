@@ -123,6 +123,7 @@ const GetUsersContributionHistory = async (page: number, limit: number) => {
   const url = `${API_URL}/contribution/contribute?page=${page}&limit=${limit}`;
   try {
     const response = await axios.get(url, { headers: authHeader() });
+    console.log("res", response);
     return response.data;
   } catch (error: any) {
     handleApiError(error);

@@ -304,6 +304,7 @@ export const GetUsersContributionHistory = createAsyncThunk(
         limit,
       );
       return { transaction: data };
+      console.log("data", data);
     } catch (error: any) {
       return handleAsyncError(error, thunkAPI);
     }
@@ -697,6 +698,7 @@ export const transactionSlice = createSlice({
       .addCase(
         GetUsersContributionHistory.fulfilled,
         (state, action: PayloadAction<{ transaction: any }>) => {
+          console.log("action", action.payload);
           state.loading = false;
           state.getUsersContribution = action.payload.transaction;
         },

@@ -1,253 +1,218 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  GetContributionBalance,
-  GetUnPaidBalance,
-  GetUsersTransaction,
-  GetWalletBalance,
-} from "../redux/slices/transaction.slices";
 import { AppDispatch } from "../redux/store";
+import { useLocation } from "react-router";
 import { formatBalance } from "../utils/format";
 import { setMessage } from "../redux/slices/message.slices";
-import { useLocation } from "react-router";
-import {
-  GetAllUserPools,
-  GetAllUserTokens,
-  GetTotalCryptoWalletBalance,
-  GetCryptoWalletDetails,
-} from "../redux/slices/kyc.slices";
-import useUserProfile from "./useUserProfile";
+import * as transactionSlices from "../redux/slices/transaction.slices";
+import * as kycSlices from "../redux/slices/kyc.slices";
 
-export const useWalletBalance = () => {
-  const dispatch: AppDispatch = useDispatch();
-
-  const balance = useSelector(
-    (state: any) => state?.transaction?.getWalletBalance,
-  );
-  const [isWalletVisible, setIsWalletVisible] = useState(() => {
-    const storedVisibility = sessionStorage.getItem("walletBalanceVisible");
-    return storedVisibility !== null ? storedVisibility === "true" : true;
+const useVisibilityState = (storageKey: string, defaultValue = true) => {
+  const [isVisible, setIsVisible] = useState(() => {
+    const stored = sessionStorage.getItem(storageKey);
+    return stored !== null ? stored === "true" : defaultValue;
   });
 
-  useEffect(() => {
-    const userToken = sessionStorage.getItem("userData");
-    if (userToken) {
-      dispatch(GetWalletBalance())
-        .unwrap()
-        .catch((error: any) => {
-          console.log(error);
-        });
-    }
-  }, [dispatch]);
-
-  const balanceInNaira = balance?.balance || 0;
-  const cards = balance?.allCards || [];
-
-  const formattedBalance = formatBalance(balanceInNaira);
-
-  return {
-    isWalletVisible,
-    setIsWalletVisible,
-    formattedBalance,
-    balanceInNaira,
-    cards,
-  };
+  return { isVisible, setIsVisible };
 };
 
-export const useContributionBalance = () => {
-  const dispatch: AppDispatch = useDispatch();
-  const balance = useSelector(
-    (state: any) => state?.transaction?.getContributionBalance,
-  );
+const useBalanceFetcher = <T extends unknown>(
+  selector: (state: any) => any,
+  fetchAction: any,
+  options: {
+    balanceKey?: string;
+    requiresToken?: boolean;
+    refreshInterval?: number;
+    params?: any;
+  } = {},
+) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const {
+    balanceKey = "balance",
+    requiresToken = true,
+    refreshInterval,
+    params,
+  } = options;
+
+  const data = useSelector(selector);
   const loading = useSelector((state: any) => state?.transaction?.loading);
   const error = useSelector((state: any) => state?.transaction?.error);
-  const [isContributionVisible, setIsContributionVisible] = useState(() => {
-    const storedVisibility = sessionStorage.getItem(
-      "contributionBalanceVisible",
-    );
-    return storedVisibility !== null ? storedVisibility === "true" : true;
-  });
 
-  useEffect(() => {
+  const fetch = useCallback(() => {
     const userToken = sessionStorage.getItem("userData");
-    if (userToken) {
-      dispatch(GetContributionBalance())
+    if (!requiresToken || userToken) {
+      dispatch(fetchAction(params))
         .unwrap()
         .catch((err: any) => {
           dispatch(setMessage(err.message || "Failed to fetch balance"));
         });
-    } else {
-      dispatch(setMessage("User token not found"));
     }
-  }, [dispatch]);
+  }, [dispatch, params, requiresToken]);
 
-  const balanceInNaira = balance?.totalBalance || 0;
+  useEffect(() => {
+    fetch();
+    if (refreshInterval) {
+      const interval = setInterval(fetch, refreshInterval);
+      return () => clearInterval(interval);
+    }
+  }, [fetch, refreshInterval]);
+
+  const balanceInNaira = data?.[balanceKey] || 0;
   const formattedBalance = formatBalance(balanceInNaira);
 
   return {
-    isContributionVisible,
-    setIsContributionVisible,
+    data,
+    balanceInNaira,
+    formattedBalance,
+    loading,
+    error,
+    fetch,
+  };
+};
+
+export const useWalletBalance = () => {
+  const { isVisible, setIsVisible } = useVisibilityState(
+    "walletBalanceVisible",
+  );
+  const { data, balanceInNaira, formattedBalance } = useBalanceFetcher(
+    (state: any) => state?.transaction?.getWalletBalance,
+    transactionSlices.GetWalletBalance,
+  );
+
+  return {
+    isWalletVisible: isVisible,
+    setIsWalletVisible: setIsVisible,
+    formattedBalance,
+    balanceInNaira,
+    cards: data?.allCards || [],
+  };
+};
+
+export const useContributionBalance = () => {
+  const { isVisible, setIsVisible } = useVisibilityState(
+    "contributionBalanceVisible",
+  );
+  const { formattedBalance, loading, error } = useBalanceFetcher(
+    (state: any) => state?.transaction?.getContributionBalance,
+    transactionSlices.GetContributionBalance,
+    { balanceKey: "totalBalance" },
+  );
+
+  return {
+    isContributionVisible: isVisible,
+    setIsContributionVisible: setIsVisible,
     formattedBalance,
     isLoading: loading,
     error,
   };
 };
 
-export const useUserTransaction = () => {
-  const dispatch: AppDispatch = useDispatch();
-  const getTransaction = useSelector(
-    (state: any) => state?.transaction?.getUsersTransaction,
-  );
-
-  useEffect(() => {
-    const userToken = sessionStorage.getItem("userData");
-    if (userToken) {
-      dispatch(GetUsersTransaction())
-        .unwrap()
-        .then(() => {})
-        .catch((err: any) => {
-          const errorMessage = err.message;
-        });
-    }
-  }, [dispatch]);
-  return {
-    getTransaction,
-  };
-};
-
 export const useUnPaidContribution = () => {
-  const dispatch: AppDispatch = useDispatch();
   const location = useLocation();
-
   const contributionId = location?.state?.contributionId?.toString();
-
-  const balance = useSelector(
-    (state: any) => state?.transaction?.getUnPaidContributionBalance,
+  const { isVisible, setIsVisible } = useVisibilityState(
+    "walletBalanceVisible",
   );
 
-  const [isUnPaidVisible, setIsUnPaidVisible] = useState(() => {
-    const storedVisibility = sessionStorage.getItem("walletBalanceVisible");
-    return storedVisibility !== null ? storedVisibility === "true" : true;
-  });
-
-  useEffect(() => {
-    const userToken = sessionStorage.getItem("userData");
-    if (userToken && contributionId) {
-      dispatch(GetUnPaidBalance(contributionId))
-        .unwrap()
-        .catch((error: any) => {
-          console.log(error);
-        });
-    }
-  }, [dispatch, contributionId]);
-
-  const balanceInNaira = balance?.balance || 0;
-  const formattedBalance = formatBalance(balanceInNaira);
+  const { balanceInNaira, formattedBalance } = useBalanceFetcher(
+    (state: any) => state?.transaction?.getUnPaidContributionBalance,
+    transactionSlices.GetUnPaidBalance,
+    { params: contributionId },
+  );
 
   return {
-    isUnPaidVisible,
-    setIsUnPaidVisible,
+    isUnPaidVisible: isVisible,
+    setIsUnPaidVisible: setIsVisible,
     formattedBalance,
     balanceInNaira,
   };
 };
+
 export const useCryptoWallet = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const [isWalletVisible, setIsWalletVisible] = useState(() => {
-    sessionStorage.removeItem("walletBalanceVisible");
-    return true;
-  });
-
-  const { cryptoBalance, loading, error, walletMessage } = useSelector(
-    (state: any) => state.kyc,
+  const { isVisible, setIsVisible } = useVisibilityState(
+    "walletBalanceVisible",
+    true,
   );
-  const Balance = walletMessage === "No Wallet found" ? 0 : cryptoBalance || 0;
+  const {
+    data: cryptoState,
+    loading,
+    error,
+    fetch,
+  } = useBalanceFetcher(
+    (state: any) => state.kyc,
+    kycSlices.GetTotalCryptoWalletBalance,
+    { refreshInterval: 30000 },
+  );
 
-  const fetchWalletBalance = useCallback(() => {
-    dispatch(GetTotalCryptoWalletBalance());
-  }, [dispatch]);
-
-  useEffect(() => {
-    fetchWalletBalance();
-
-    const refreshInterval = setInterval(fetchWalletBalance, 30000);
-
-    return () => {
-      clearInterval(refreshInterval);
-    };
-  }, [fetchWalletBalance]);
+  const Balance =
+    cryptoState?.walletMessage === "No Wallet found"
+      ? 0
+      : cryptoState?.cryptoBalance || 0;
 
   return {
-    isWalletVisible,
-    setIsWalletVisible,
+    isWalletVisible: isVisible,
+    setIsWalletVisible: setIsVisible,
     loading,
     error,
     Balance,
-    walletMessage,
-    isWalletActivated: !walletMessage,
-    fetchWalletBalance,
+    walletMessage: cryptoState?.walletMessage,
+    isWalletActivated: !cryptoState?.walletMessage,
+    fetchWalletBalance: fetch,
   };
+};
+
+const useDataFetcher = (selector: (state: any) => any, fetchAction: any) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const data = useSelector(selector);
+  const { loading, error } = useSelector((state: any) => state.kyc);
+
+  const fetch = useCallback(() => {
+    dispatch(fetchAction());
+  }, [dispatch, fetchAction]);
+
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
+
+  return { data, loading, error, fetch };
 };
 
 export const useCryptoWalletDetails = () => {
-  const dispatch = useDispatch<AppDispatch>();
-
-  const { cryptoWalletDetails, loading, error } = useSelector(
-    (state: any) => state.kyc,
+  const { data, loading, error } = useDataFetcher(
+    (state: any) => state.kyc.cryptoWalletDetails,
+    kycSlices.GetCryptoWalletDetails,
   );
-  const fetchWalletBalance = () => {
-    dispatch(GetCryptoWalletDetails());
-  };
-
-  useEffect(() => {
-    fetchWalletBalance();
-  }, []);
-
-  return {
-    loading,
-    error,
-    cryptoWalletDetails,
-  };
+  return { cryptoWalletDetails: data, loading, error };
 };
 
 export const useAllUserPools = () => {
-  const dispatch = useDispatch<AppDispatch>();
-
-  const { userPools, loading, error } = useSelector((state: any) => state.kyc);
-
-  const fetchWalletBalance = () => {
-    dispatch(GetAllUserPools());
-  };
-
-  useEffect(() => {
-    fetchWalletBalance();
-  }, []);
-
-  return {
-    loading,
-    error,
-    userPools,
-  };
+  const { data, loading, error } = useDataFetcher(
+    (state: any) => state.kyc.userPools,
+    kycSlices.GetAllUserPools,
+  );
+  return { userPools: data, loading, error };
 };
 
 export const useAllUserTokens = () => {
-  const dispatch = useDispatch<AppDispatch>();
-
-  const { userTokens, loading, error } = useSelector((state: any) => state.kyc);
-
-  const fetchUserTokens = () => {
-    dispatch(GetAllUserTokens());
-  };
-
-  useEffect(() => {
-    fetchUserTokens();
-  }, []);
-
-  return {
-    loading,
-    error,
-    userTokens,
-  };
+  const { data, loading, error } = useDataFetcher(
+    (state: any) => state.kyc.userTokens,
+    kycSlices.GetAllUserTokens,
+  );
+  return { userTokens: data, loading, error };
 };
 
 export default useWalletBalance;
+
+export const useUserTransaction = () => {
+  const { data } = useBalanceFetcher(
+    (state: any) => state?.transaction?.getUsersTransaction,
+    transactionSlices.GetUsersTransaction,
+    {
+      requiresToken: true,
+    },
+  );
+
+  return {
+    getTransaction: data,
+  };
+};
