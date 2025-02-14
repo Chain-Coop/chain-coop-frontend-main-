@@ -11,7 +11,6 @@ import {
   IoIosArrowForward,
   IoIosArrowDown,
 } from "react-icons/io";
-import Modal from "../../../common/Modal";
 import { Button, Typography } from "@material-tailwind/react";
 import { ROUTES } from "../../../../shared/routes";
 import { SavingsPlan } from "./modals/SavingsPlan";
@@ -67,7 +66,7 @@ const Contribution: React.FC = () => {
     isLoading: isContributionsLoading,
     error,
   } = useUserContributionHistory(page, limit);
-
+  console.log("get", getContributions);
   const [isContributionVisible, setIsContributionVisible] = useState(() => {
     const storedVisibility = sessionStorage.getItem(
       "contributionBalanceVisible",

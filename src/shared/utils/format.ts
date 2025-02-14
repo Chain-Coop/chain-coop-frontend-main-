@@ -196,3 +196,14 @@ export const formatDayAndDate = (dateString: any) => {
   const [weekday, day] = formattedDate.split(" ");
   return `${day}, ${weekday}`;
 };
+
+export const isDateValid = (dateString?: string) => {
+  if (!dateString) return false;
+  try {
+    const date = new Date(dateString);
+    const currentDate = new Date();
+    return date > currentDate;
+  } catch {
+    return false;
+  }
+};

@@ -84,8 +84,17 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
       };
 
       if (paymentType === "card" && selectedCard) {
-        onClose();
-        navigate("/dashboard/contribution");
+        const paymentResponse: any = await dispatch(
+          PayContribution({
+            ...basePayload,
+            authorizationCode: selectedCard.authorization_code,
+          }),
+        ).unwrap();
+        console.log("pa", paymentResponse);
+        if (paymentResponse.msg === "success") {
+          onClose();
+          navigate("/dashboard/contribution");
+        }
       } else {
         const paymentResponse = await dispatch(
           PayContribution(basePayload),
@@ -100,9 +109,8 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
         }
       }
     } catch (error: any) {
-      setError(
-        error?.message || "An error occurred during payment. Please try again.",
-      );
+      console.log("err,e", error);
+      setError(error || "An error occurred during payment. Please try again.");
     } finally {
       setIsLoading(false);
     }

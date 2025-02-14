@@ -25,10 +25,12 @@ const WithdrawContribution = () => {
   const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [withdrawalAmount, setWithdrawalAmount] = useState<number>(0);
 
   const { contributionDetails } = useSelector(
     (state: any) => state?.transaction,
   );
+  console.log("connn", contributionDetails);
   const { formattedBalance } = useWalletBalance();
 
   useEffect(() => {
@@ -122,11 +124,13 @@ const WithdrawContribution = () => {
   };
 
   const navigateToConfirmation = (amountInNaira: number) => {
+    setWithdrawalAmount(amountInNaira);
     navigate("/dashboard/contribution/withdraw_contribution/confirm-amount", {
       state: {
         amountInNaira,
         contributionId: location.state.contributionId,
         contributionPlan: contributionDetails?.contributionPlan,
+        savingsType: contributionDetails?.savingsType,
       },
     });
   };
@@ -181,6 +185,11 @@ const WithdrawContribution = () => {
       </main>
     );
   }
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setWithdrawalAmount(0);
+  };
 
   return (
     <main className="font-sans">
@@ -250,12 +259,14 @@ const WithdrawContribution = () => {
           Continue
         </Button>
       </section>
-
       <NoticeModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleModalClose}
         onConfirm={handleModalConfirm}
-        withdrawalDate={contributionDetails.withdrawalDate}
+        withdrawalDate={contributionDetails?.withdrawalDate}
+        savingsType={contributionDetails?.history[0]?.savingsType || "Flexible"}
+        withdrawalAmount={Number(actualAmount)}
+        balance={contributionDetails?.balance || 0}
       />
     </main>
   );

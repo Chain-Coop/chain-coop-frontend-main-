@@ -71,21 +71,18 @@ const Wallet = () => {
           <section className="mx-auto mt-6 rounded-3xl px-4 shadow-md">
             <div className="flex items-center justify-between gap-4 px-3 py-8 font-semibold text-howtext sm:gap-8 lg:px-10">
               <Link to="/dashboard/wallet/withdraw">
-                <button onClick={withdraw}>
-                  <div className="flex justify-center">
-                    <WithdrawIcon />
-                  </div>
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="flex flex-col items-center bg-inherit text-center"
-                  >
-                    <span className="block text-sm text-memt1 sm:text-base lg:text-lg">
-                      Withdraw
-                    </span>
-                  </motion.button>
-                </button>
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="flex cursor-pointer flex-col items-center bg-inherit text-center"
+                >
+                  <WithdrawIcon />
+                  <span className="block text-sm text-memt1 sm:text-base lg:text-lg">
+                    Withdraw
+                  </span>
+                </motion.div>
               </Link>
+
               <Link to="/dashboard/wallet/fund">
                 <button className="flex flex-col items-center bg-inherit text-center">
                   <FundIcon />

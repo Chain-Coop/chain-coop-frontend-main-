@@ -1,4 +1,3 @@
-import React from "react";
 import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import "../../../../src/App.css";
@@ -9,9 +8,6 @@ import Contribution from "../contribution/main/Contribution";
 import ContributionDetails from "../contribution/viewContribution/ViewContribution";
 import CryptoContribution from "../contribution/contributionType/crypto/main/Contribution";
 import Wallet from "../wallet/Wallet";
-import Project from "../nestedproject/Project";
-import Proposal from "../proposal/Proposal";
-import SubmitProposal from "../proposal/SubmitProposal";
 import Profile from "../profile/main/Profile";
 import Right from "../rightbar/Right";
 import Withdraw from "../wallet/withdraw/Withdraw";
@@ -23,10 +19,8 @@ import FundWallet from "../wallet/fund/FundWallet";
 import TransferWallet from "../wallet/transfer/main/Transfer";
 import AddFund from "../wallet/transfer/fundProject/AddFund";
 import ProfileTransactions from "../profile/profileDetails/transactions/Transactions";
-import Shares from "../shares/main/Shares";
 import VerifyTransaction from "../wallet/fund/verifyTransaction/VerifyTransaction";
 import ConfirmTransaction from "../wallet/transfer/fundContribution/confirmTransaction";
-// import ProjectContentOverView from "../nestedproject/nested/ProjectContentOverView";
 import Purpose from "../contribution/contributionType/naira/flexiblePlan/Purpose";
 import CryptoPurpose from "../contribution/contributionType/crypto/flexiblePlan/ContributionCurrencyType";
 import StrictLockCryptoPurpose from "../contribution/contributionType/crypto/strictLockPlan/ContributionCurrencyType";
@@ -168,17 +162,6 @@ const Dashboard = () => {
             path="wallet/transfer/confirm-amount"
             element={<ConfirmTransaction />}
           />
-          {/* 
-          <Route path="project" element={<Project />} />
-          <Route
-            path="project/project_over-view"
-            element={<ProjectContentOverView />}
-          /> */}
-
-          <Route path="proposal/*" element={<Proposal />} />
-          <Route path="proposal/submit-proposal" element={<SubmitProposal />} />
-
-          <Route path="shares" element={<Shares />} />
 
           <Route path="profile" element={<Profile />} />
           <Route
