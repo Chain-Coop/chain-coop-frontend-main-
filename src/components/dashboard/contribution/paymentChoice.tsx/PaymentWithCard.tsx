@@ -8,7 +8,9 @@ import {
   PayContribution,
 } from "../../../../shared/redux/slices/transaction.slices";
 import { Alert, Snackbar } from "@mui/material";
-import { useUserCard } from "../../../../shared/Hooks/useUserProfile";
+import useUserProfile, {
+  useUserCard,
+} from "../../../../shared/Hooks/useUserProfile";
 import { CardBrandLogo } from "../../../../shared/utils/Helpers";
 import {
   Dialog,
@@ -53,6 +55,8 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const navigate = useNavigate();
+  const { profileDetails } = useUserProfile();
+  console.log("id", profileDetails);
 
   useEffect(() => {
     dispatch(GetWalletCard());
@@ -87,7 +91,8 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
         const paymentResponse: any = await dispatch(
           PayContribution({
             ...basePayload,
-            authorizationCode: selectedCard.authorization_code,
+            cardAuthCode: selectedCard.authorization_code,
+            userId: profileDetails._id,
           }),
         ).unwrap();
         console.log("pa", paymentResponse);

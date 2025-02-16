@@ -56,7 +56,8 @@ const StartDate: React.FC = () => {
   const location = useLocation();
   const dispatch: AppDispatch = useAppDispatch();
 
-  const { purpose, plan, amount, currency, savingsType } = location.state || {};
+  const { purpose, plan, amount, currency, savingsType, contributionType } =
+    location.state || {};
   const isDaily = plan?.toLowerCase() === "daily";
 
   const MIN_DAILY_DAYS = 7;
@@ -142,6 +143,7 @@ const StartDate: React.FC = () => {
       endDate: finalEndDate,
       currency: currency,
       savingsType: savingsType,
+      contributionType: contributionType,
     };
 
     try {

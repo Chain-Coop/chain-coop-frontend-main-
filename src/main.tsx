@@ -9,6 +9,7 @@ import { persistStore } from "redux-persist";
 import ToastContainerWrapper from "./toastcontainer/ToastContainerWrapper";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ThemeProvider } from "@material-tailwind/react";
+import { HelmetProvider } from "react-helmet-async";
 
 const queryClient = new QueryClient();
 
@@ -21,7 +22,9 @@ root.render(
     <PersistGate loading={null} persistor={persistor}>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
-          <App />
+          <HelmetProvider>
+            <App />
+          </HelmetProvider>
         </ThemeProvider>
         <ToastContainerWrapper />
       </QueryClientProvider>

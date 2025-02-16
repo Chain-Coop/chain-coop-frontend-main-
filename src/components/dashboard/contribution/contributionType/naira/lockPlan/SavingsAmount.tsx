@@ -11,7 +11,7 @@ const SavingsAmount = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [error, setError] = useState("");
-  const { purpose, plan, currency, savingsType } = location.state || {};
+  const { purpose, plan, currency, savingsType, contributionType } = location.state || {};
 
   const formatAmount = (value: string) => {
     const numbers = value.replace(/\D/g, "");
@@ -44,7 +44,8 @@ const SavingsAmount = () => {
           plan,
           amount: numericAmount,
           currency,
-          savingsType
+          savingsType,
+          contributionType
         },
       });
     }

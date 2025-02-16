@@ -17,10 +17,8 @@ import SelectAccount from "../wallet/withdraw/SelectAccount";
 import VerifyAccount from "../wallet/withdraw/VerifyAccount";
 import FundWallet from "../wallet/fund/FundWallet";
 import TransferWallet from "../wallet/transfer/main/Transfer";
-import AddFund from "../wallet/transfer/fundProject/AddFund";
 import ProfileTransactions from "../profile/profileDetails/transactions/Transactions";
 import VerifyTransaction from "../wallet/fund/verifyTransaction/VerifyTransaction";
-import ConfirmTransaction from "../wallet/transfer/fundContribution/confirmTransaction";
 import Purpose from "../contribution/contributionType/naira/flexiblePlan/Purpose";
 import CryptoPurpose from "../contribution/contributionType/crypto/flexiblePlan/ContributionCurrencyType";
 import StrictLockCryptoPurpose from "../contribution/contributionType/crypto/strictLockPlan/ContributionCurrencyType";
@@ -157,11 +155,6 @@ const Dashboard = () => {
           />
 
           <Route path="wallet/transfer" element={<TransferWallet />} />
-          <Route path="wallet/transfer/fund-project" element={<AddFund />} />
-          <Route
-            path="wallet/transfer/confirm-amount"
-            element={<ConfirmTransaction />}
-          />
 
           <Route path="profile" element={<Profile />} />
           <Route

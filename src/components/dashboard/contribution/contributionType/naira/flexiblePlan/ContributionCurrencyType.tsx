@@ -17,8 +17,8 @@ const ContributionCurrencyType = () => {
   const [cryptoType, setCryptoType] = useState("");
   const navigate = useNavigate();
   const [error, setError] = useState("");
-   const location = useLocation();
-    const { savingsType } = location.state || {};
+  const location = useLocation();
+  const { savingsType, contributionType } = location.state || {};
 
   const handleNext = () => {
     if (!cryptoType) {
@@ -28,7 +28,7 @@ const ContributionCurrencyType = () => {
 
     setError("");
     navigate("/dashboard/contribution/purpose", {
-      state: { currency: "NGN",  savingsType },
+      state: { currency: "NGN", savingsType, contributionType },
     });
   };
 

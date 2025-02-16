@@ -5,7 +5,7 @@ import Footer from "../../common/Footer";
 import { MotionTypography } from "../../common/motionTypography";
 import { Typography } from "@material-tailwind/react";
 import juwon from "../../../Assets/png/footer/about/juwon.png";
-import rebecca from "../../../Assets/png/footer/about/rebecca.png";
+import heather from "../../../Assets/png/footer/about/heather.png";
 import samad from "../../../Assets/png/footer/about/samad.png";
 import imageRight from "../../../Assets/png/home/about-bg.png";
 import aya from "../../../Assets/png/home/abt-aya.png";
@@ -118,7 +118,7 @@ const AboutUs = () => {
                 <CardComponent image={juwon} title="Data Engineer/CCO" />
               </Link>
               <Link to="https://www.linkedin.com/in/thedotconnector?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
-                <CardComponent image={rebecca} title="Content Marketer" />
+                <CardComponent image={heather} title="Advisor and Consultant" />
               </Link>
               <Link to="https://www.linkedin.com/in/abdulsamadgobir?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
                 <CardComponent image={samad} title="Product Manager / CMO" />

@@ -11,7 +11,8 @@ const SavingsAmount = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [error, setError] = useState("");
-  const { purpose, plan, currency, savingsType } = location.state || {};
+  const { purpose, plan, currency, savingsType, contributionType } =
+    location.state || {};
 
   const formatAmount = (value: string) => {
     const numbers = value.replace(/\D/g, "");
@@ -34,7 +35,7 @@ const SavingsAmount = () => {
 
     if (numericAmount < MIN_AMOUNT) {
       setError(
-        `Minimum contribution amount is ₦${MIN_AMOUNT.toLocaleString()}`
+        `Minimum contribution amount is ₦${MIN_AMOUNT.toLocaleString()}`,
       );
     } else {
       setError("");
@@ -44,7 +45,8 @@ const SavingsAmount = () => {
           plan,
           amount: numericAmount,
           currency,
-          savingsType
+          savingsType,
+          contributionType
         },
       });
     }
@@ -63,7 +65,10 @@ const SavingsAmount = () => {
           <p className="font-medium">Enter the amount suitable to you</p>
         </header>
         <div className="mt-[2em]">
-          <label htmlFor="amount" className="mb-3 font-semibold flex text-text2">
+          <label
+            htmlFor="amount"
+            className="mb-3 flex font-semibold text-text2"
+          >
             Enter the amount
           </label>
           <div className="relative">
@@ -75,7 +80,7 @@ const SavingsAmount = () => {
               onChange={handleAmountChange}
               placeholder="0"
               className={`input mb-5 h-[4em] w-full rounded-full border-[1px] pl-8 pr-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2 ${
-                error ? 'border-red-500 bg-red-50' : ''
+                error ? "border-red-500 bg-red-50" : ""
               }`}
             />
           </div>
@@ -84,7 +89,7 @@ const SavingsAmount = () => {
               {error}
             </Alert>
           )}
-        
+
           <div className="mt-[3em] flex justify-between">
             <button
               onClick={() => navigate(-1)}

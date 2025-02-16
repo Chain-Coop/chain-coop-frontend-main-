@@ -15,6 +15,7 @@ import heather from "../Assets/png/footer/team/png/Heather.png";
 import juwon from "../Assets/png/home/juwon.png";
 import samad from "../Assets/png/home/abdulSamad.png";
 import rebecca from "../Assets/png/home/rebecca.png";
+import seane from "../Assets/png/footer/team/png/tshegofatso.png";
 
 export const navBarLinks = [
   { to: "/why-chain-co-op", text: "Why Chain Co-op" },
@@ -729,9 +730,20 @@ export const teamMembers = [
       linkedin: "https://www.linkedin.com/in/rebeccaasseh/",
     },
   },
-
   {
     id: 4,
+    name: "Tshegofatso Seane",
+    role: "Backend Developer",
+    image: seane,
+    description:
+      "Software Engineer | Backend developer with 5+ years of experience in Python, Node.js, AWS & databases. Built scalable APIs, optimized backend systems & automated CI/CD pipelines",
+    social: {
+      twitter: "https://x.com/the_tshegoseane",
+      linkedin: "https://www.linkedin.com/in/tshegofatsoseane/",
+    },
+  },
+  {
+    id: 5,
     name: "Kalu Iwere Eyitemi",
     role: "UI/UX Designer",
     image: temi,

@@ -59,7 +59,8 @@ const StartDate: React.FC = () => {
   const location = useLocation();
   const dispatch: AppDispatch = useAppDispatch();
 
-  const { purpose, plan, amount, currency, savingsType } = location.state || {};
+  const { purpose, plan, amount, currency, savingsType, contributionType } =
+    location.state || {};
   const isDaily = plan?.toLowerCase() === "daily";
 
   const hasCards = (useWalletCards?.cards ?? []).length > 0;
@@ -138,6 +139,7 @@ const StartDate: React.FC = () => {
       endDate: finalEndDate,
       currency: currency,
       savingsType: savingsType,
+      contributionType: contributionType,
     };
 
     try {
