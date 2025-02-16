@@ -170,7 +170,7 @@ const Contribution: React.FC = () => {
               <div className="flex justify-between">
                 <Button
                   variant="text"
-                  className="flex items-center bg-text2 px-8 py-3 text-center normal-case transition-all duration-300 hover:bg-text2 hover:bg-opacity-90 hover:shadow-lg"
+                  className="flex w-fit items-center bg-text2 px-4 py-3 text-center normal-case transition-all duration-300 hover:bg-text2 hover:bg-opacity-90 hover:shadow-lg"
                 >
                   <CheckMark />
                   <Typography className="text-sm font-semibold text-text5 sm:text-base">
@@ -185,7 +185,7 @@ const Contribution: React.FC = () => {
                   <Button
                     disabled
                     variant="text"
-                    className="border border-gray-500 bg-white py-3 text-center normal-case transition-all duration-300 hover:shadow-lg"
+                    className="w-fit border border-gray-500 bg-white px-4 py-3 text-center normal-case transition-all duration-300 hover:shadow-lg"
                   >
                     <Typography className="text-sm font-semibold text-gray-500 sm:text-base">
                       One-Time Savings

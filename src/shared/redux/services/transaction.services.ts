@@ -130,7 +130,7 @@ const GetUsersContributionHistory = async (page: number, limit: number) => {
 };
 
 const PayContribution = async (body: any) => {
-  const url = `${API_URL}/contribution/pay`;
+  const url = `${API_URL}/contribution/pay-contribution`;
   try {
     const response = await axios.post(url, body, {
       headers: authHeader(),

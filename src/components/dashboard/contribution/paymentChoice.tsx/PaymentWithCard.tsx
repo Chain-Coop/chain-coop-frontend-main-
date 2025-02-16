@@ -56,7 +56,6 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
   const [currentPage, setCurrentPage] = useState(0);
   const navigate = useNavigate();
   const { profileDetails } = useUserProfile();
-  console.log("id", profileDetails);
 
   useEffect(() => {
     dispatch(GetWalletCard());
@@ -96,7 +95,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
           }),
         ).unwrap();
         console.log("pa", paymentResponse);
-        if (paymentResponse.msg === "success") {
+        if (paymentResponse.landing.statusCode === 200) {
           onClose();
           navigate("/dashboard/contribution");
         }
