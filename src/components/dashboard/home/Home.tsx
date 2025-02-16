@@ -10,8 +10,11 @@ import useWalletBalance from "../../../shared/Hooks/useBalance";
 import ToggleButton from "../../../shared/utils/ToggleButton";
 import { Link } from "react-router-dom";
 import { Button, Typography } from "@material-tailwind/react";
-import { LoanModal } from "./modals/LoanModal";
+import { Helmet } from "react-helmet-async";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import { ROUTES } from "../../../shared/routes";
+import { LoanModal } from "./modals/LoanModal";
+import { ProjectsSkeleton } from "../../common/Loading";
 
 interface Project {
   _id: string;
@@ -20,17 +23,6 @@ interface Project {
   documentUrl: string;
   createdAt: string;
 }
-
-const ProjectsSkeleton = () => (
-  <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-    <div className="animate-pulse">
-      <div className="h-48 rounded-xl bg-gray-200"></div>
-    </div>
-    <div className="animate-pulse">
-      <div className="h-48 rounded-xl bg-gray-200"></div>
-    </div>
-  </div>
-);
 
 const Home = () => {
   const [isLoanModalOpen, setIsLoanModalOpen] = useState(false);
@@ -51,19 +43,6 @@ const Home = () => {
 
   const closeLoanModal = () => {
     setIsLoanModalOpen(false);
-  };
-
-  const modalStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: { xs: "90%", sm: "450px" },
-    bgcolor: "background.paper",
-    borderRadius: "16px",
-    boxShadow: 24,
-    p: 4,
-    outline: "none",
   };
 
   const latestProjects = React.useMemo(() => {
@@ -87,7 +66,7 @@ const Home = () => {
 
     return (
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {latestProjects.map((project: Project) => (
+        {latestProjects?.map((project: Project) => (
           <article key={project?._id}>
             <div
               className="flex h-48 flex-col gap-8 rounded-xl bg-cover bg-center bg-no-repeat p-3 transition-transform hover:scale-[1.02]"
@@ -96,10 +75,15 @@ const Home = () => {
                 backgroundColor: "rgba(255, 255, 255, 0.1)",
                 backgroundBlendMode: "overlay",
               }}
+              role="img"
+              aria-label={`Project: ${project?.title}`}
             >
-              <h1 className="text-lg font-medium uppercase text-text3">
+              <Typography
+                variant="small"
+                className="font-medium uppercase text-text3"
+              >
                 {project?.title}
-              </h1>
+              </Typography>
               <div className="mt-auto">
                 <ComingSoon className="bg-coming2">
                   {project?.status}
@@ -114,6 +98,13 @@ const Home = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Home - Chain Co-op</title>
+        <meta
+          name="description"
+          content="Welcome to your dashboard. Manage your projects, wallet, and notifications."
+        />
+      </Helmet>
       <main className="mb-8 w-full max-w-7xl px-5 font-sans lg:px-8">
         <header className="flex items-center justify-between py-4 sm:mt-4 lg:mt-10">
           <div className="font-medium">
@@ -125,7 +116,7 @@ const Home = () => {
           <Link to={ROUTES.notification}>
             <button
               className="relative inline-flex items-center"
-              aria-label="View notifications"
+              aria-label={`View notifications (${totalCount} unread)`}
             >
               <IoIosNotifications
                 className="cursor-pointer"
@@ -176,6 +167,7 @@ const Home = () => {
             onClick={addFund}
             variant="text"
             className="text-md mx-auto w-full rounded-3xl bg-inherit py-4 text-center font-semibold text-text4 shadow-md transition-colors hover:bg-gray-50"
+            aria-label="Add Fund"
           >
             + Add Fund
           </Button>
@@ -183,6 +175,7 @@ const Home = () => {
             onClick={handleLoanClick}
             variant="text"
             className="text-md mx-auto w-full rounded-3xl bg-[#ECE6F2] py-4 text-center font-semibold text-text4 shadow-md transition-colors hover:bg-gray-50"
+            aria-label="Get a loan"
           >
             + Get a loan
           </Button>
@@ -191,7 +184,9 @@ const Home = () => {
         <section className="mt-8 w-full px-4 sm:px-0">
           {renderProjects()}
         </section>
-        <LoanModal open={isLoanModalOpen} onClose={closeLoanModal} />
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <LoanModal open={isLoanModalOpen} onClose={closeLoanModal} />
+        </React.Suspense>
       </main>
     </>
   );

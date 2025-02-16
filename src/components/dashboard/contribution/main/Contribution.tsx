@@ -11,9 +11,24 @@ import {
   IoIosArrowForward,
   IoIosArrowDown,
 } from "react-icons/io";
-import { Button, Typography } from "@material-tailwind/react";
+import { Badge, Button, Typography } from "@material-tailwind/react";
 import { ROUTES } from "../../../../shared/routes";
 import { SavingsPlan } from "./modals/SavingsPlan";
+import { ContributionListSkeleton } from "../../../common/Loading";
+
+const CheckMark = () => (
+  <svg
+    className="mr-2 h-5 w-5 text-white"
+    viewBox="0 0 20 20"
+    fill="currentColor"
+  >
+    <path
+      fillRule="evenodd"
+      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+      clipRule="evenodd"
+    />
+  </svg>
+);
 
 type Contribution = {
   _id: string;
@@ -25,32 +40,6 @@ type Contribution = {
   nextContributionDate?: string;
   amount?: number;
 };
-
-const ContributionListSkeleton: React.FC = () => (
-  <div className="mt-[1em] flex h-auto w-full flex-col gap-[1em] rounded-lg bg-text2 px-2 py-[3em] text-center">
-    {Array.from({ length: 3 }).map((_, index) => (
-      <motion.div
-        key={index}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: index * 0.1 }}
-        className="flex w-[90%] animate-pulse flex-col gap-2 rounded-full bg-white px-[1.5em] py-2"
-      >
-        <div className="flex justify-between">
-          <div className="h-4 w-1/4 rounded bg-gray-200"></div>
-          <div className="h-4 w-1/4 rounded bg-gray-200"></div>
-        </div>
-        <div className="flex justify-between">
-          <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-full bg-gray-200"></div>
-            <div className="h-6 w-24 rounded bg-gray-200"></div>
-          </div>
-          <div className="h-6 w-32 rounded bg-gray-200"></div>
-        </div>
-      </motion.div>
-    ))}
-  </div>
-);
 
 const Contribution: React.FC = () => {
   const navigate = useNavigate();
@@ -66,7 +55,6 @@ const Contribution: React.FC = () => {
     isLoading: isContributionsLoading,
     error,
   } = useUserContributionHistory(page, limit);
-  console.log("get", getContributions);
   const [isContributionVisible, setIsContributionVisible] = useState(() => {
     const storedVisibility = sessionStorage.getItem(
       "contributionBalanceVisible",
@@ -178,12 +166,42 @@ const Contribution: React.FC = () => {
                 <hr className="mt-[1em] h-[1px] rounded-md bg-howtext" />
               </div>
             </motion.div>
-
-            <section className="mt-6 md:mt-8">
+            <section className="py-8">
+              <div className="flex justify-between">
+                <Button
+                  variant="text"
+                  className="flex w-fit items-center bg-text2 px-4 py-3 text-center normal-case transition-all duration-300 hover:bg-text2 hover:bg-opacity-90 hover:shadow-lg"
+                >
+                  <CheckMark />
+                  <Typography className="text-sm font-semibold text-text5 sm:text-base">
+                    Auto Savings
+                  </Typography>
+                </Button>
+                <Badge
+                  content="Coming Soon"
+                  className="rounded-md"
+                  placement="top-start"
+                >
+                  <Button
+                    disabled
+                    variant="text"
+                    className="w-fit border border-gray-500 bg-white px-4 py-3 text-center normal-case transition-all duration-300 hover:shadow-lg"
+                  >
+                    <Typography className="text-sm font-semibold text-gray-500 sm:text-base">
+                      One-Time Savings
+                    </Typography>
+                  </Button>
+                </Badge>
+              </div>
+            </section>
+            <section>
+              <Typography className="flex-start flex py-4 font-medium">
+                Choose your savings type
+              </Typography>
               <div className="grid w-[80%] grid-cols-1 gap-4 md:grid-cols-2">
                 <Link
                   to={ROUTES.flexibleContributionType}
-                  state={{ savingsType: "Flexible" }}
+                  state={{ savingsType: "Flexible", contributionType: "auto" }}
                 >
                   <motion.button
                     whileHover={{ scale: 1.02 }}
@@ -196,7 +214,7 @@ const Contribution: React.FC = () => {
 
                 <Link
                   to={ROUTES.lockContributionType}
-                  state={{ savingsType: "Lock" }}
+                  state={{ savingsType: "Lock", contributionType: "auto" }}
                 >
                   <motion.button
                     whileHover={{ scale: 1.02 }}
@@ -209,7 +227,7 @@ const Contribution: React.FC = () => {
 
                 <Link
                   to={ROUTES.strictLockContributionType}
-                  state={{ savingsType: "Strict" }}
+                  state={{ savingsType: "Strict", contributionType: "auto" }}
                 >
                   <motion.button
                     whileHover={{ scale: 1.02 }}
