@@ -8,6 +8,6 @@ const ForwardedTypography = forwardRef<HTMLElement, TypographyProps>(
 
 ForwardedTypography.displayName = "ForwardedTypography";
 
-export const MotionTypography = motion(ForwardedTypography);
+export const MotionTypography = motion.create(ForwardedTypography);
 
 export type MotionTypographyProps = TypographyProps & MotionProps;

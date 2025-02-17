@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import background from "../../../Assets/png/story/background.png";
 import NavBar from "../../common/NavBar";
 import Footer from "../../common/Footer";
 import { Typography } from "@material-tailwind/react";
-import { MotionTypography } from "../../common/motionTypography";
 import { Linkedin, X } from "../../../Assets/svg";
 import { teamMembers } from "../../../data/Data";
 import { Link } from "react-router-dom";
@@ -90,21 +88,11 @@ const Team = () => {
             minHeight: "100vh",
           }}
         >
-          <motion.section
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: false, amount: 0.3 }}
-            variants={staggerContainer}
-            className="relative mx-auto flex w-full max-w-5xl flex-col items-center py-4 text-center sm:py-8 md:py-12 lg:py-[4em]"
-          >
+          <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center py-4 text-center sm:py-8 md:py-12 lg:py-[4em]">
             <div className="relative z-10 max-w-2xl px-4 text-center">
-              <MotionTypography
-                variant="h1"
-                variants={fadeInUp}
-                className="text-lg font-bold sm:mt-2 sm:text-xl md:text-2xl lg:text-3xl"
-              >
+              <div className="text-lg font-bold sm:mt-2 sm:text-xl md:text-2xl lg:text-3xl">
                 Meet our Leaders
-              </MotionTypography>
+              </div>
               <Typography
                 variants={fadeInUp}
                 className="mx-auto mt-2 text-xs font-normal text-gray-500 sm:mt-4 sm:text-sm md:text-base"
@@ -114,21 +102,15 @@ const Team = () => {
                 the cooperative space
               </Typography>
             </div>
-          </motion.section>
+          </div>
 
-          <motion.section
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: false, amount: 0.3 }}
-            variants={staggerContainer}
-            className="relative mx-auto max-w-5xl px-4"
-          >
+          <div className="relative mx-auto max-w-5xl px-4">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 md:gap-8 lg:gap-12">
               {teamMembers.map((member) => (
                 <TeamMemberCard key={member.id} member={member} />
               ))}
             </div>
-          </motion.section>
+          </div>
         </div>
       </main>
       <div className="z-10 mt-[-4em]">
