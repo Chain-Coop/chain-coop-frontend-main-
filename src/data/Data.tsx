@@ -728,7 +728,7 @@ export const teamMembers = [
     description:
       "Strategic Legal Professional with over 7 years of experience specializing in Corporate Law, project management, and venture support for startups in the finance and technology sectors. Adept at providing legal advisory, ensuring compliance with international regulations, and optimizing operations for fintech and decentralized ventures. Skilled in drafting legal documentation, managing KYC-AML processes, conducting due diligence, and fostering cross-functional collaboration to drive business growth. Business-minded with a passion for blockchain, DeFi, artificial intelligence, and emerging technologies.",
     social: {
-      twitter: "https://x.com/RebeccaAsseh",
+      // twitter: "https://x.com/RebeccaAsseh",
       linkedin: "https://www.linkedin.com/in/awoyinfa/",
     },
   },
