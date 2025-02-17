@@ -15,6 +15,7 @@ import heather from "../Assets/png/footer/team/png/Heather.png";
 import juwon from "../Assets/png/home/juwon.png";
 import samad from "../Assets/png/home/abdulSamad.png";
 import rebecca from "../Assets/png/home/rebecca.png";
+import awoyinfa from "../Assets/png/footer/team/png/awoyinfa.png";
 import seane from "../Assets/png/footer/team/png/tshegofatso.png";
 
 export const navBarLinks = [
@@ -678,11 +679,12 @@ export const PrivacyData = [
     ],
   },
 ];
+
 export const teamMembers = [
   {
     id: 1,
-    name: "Olawajuwon Ogunseye",
-    role: "Data Engineer/CCO",
+    name: "Oluwajuwon Ogunseye",
+    role: "CCO/Data Engineer",
     image: juwon,
     description:
       "Olawajuwon Ogunseye is a Data Engineer with 6+ years of fintech and blockchain experience. He focuses on co-operative and decentralized finance.",
@@ -695,7 +697,7 @@ export const teamMembers = [
   {
     id: 2,
     name: "AbdulSamad Gobir",
-    role: "Product Manager / CMO",
+    role: "CMO/Product Manager",
     image: samad,
     description:
       "Founder of Jobhunters and co-founder of Automation Affairs Ltd., AbdulSamad is a versatile product and project manager. A former President of the Gemstones Toastmasters Club, he has contributed to over 200 applications and products with companies like Appcake and Routepay.",
@@ -706,7 +708,7 @@ export const teamMembers = [
     },
   },
   {
-    id: 5,
+    id: 3,
     name: "Yixuan Heather (李依轩) Li",
     role: "Advisor and Consultant",
     image: heather,
@@ -719,7 +721,19 @@ export const teamMembers = [
     },
   },
   {
-    id: 3,
+    id: 4,
+    name: "Oluwasegun Awoyinfa",
+    role: "Lawyer",
+    image: awoyinfa,
+    description:
+      "Strategic Legal Professional with over 7 years of experience specializing in Corporate Law, project management, and venture support for startups in the finance and technology sectors. Adept at providing legal advisory, ensuring compliance with international regulations, and optimizing operations for fintech and decentralized ventures. Skilled in drafting legal documentation, managing KYC-AML processes, conducting due diligence, and fostering cross-functional collaboration to drive business growth. Business-minded with a passion for blockchain, DeFi, artificial intelligence, and emerging technologies.",
+    social: {
+      twitter: "https://x.com/RebeccaAsseh",
+      linkedin: "https://www.linkedin.com/in/awoyinfa/",
+    },
+  },
+  {
+    id: 5,
     name: "Rebecca Asseh",
     role: "Content Marketer",
     image: rebecca,
@@ -731,7 +745,7 @@ export const teamMembers = [
     },
   },
   {
-    id: 4,
+    id: 6,
     name: "Tshegofatso Seane",
     role: "Backend Developer",
     image: seane,
@@ -743,7 +757,7 @@ export const teamMembers = [
     },
   },
   {
-    id: 5,
+    id: 7,
     name: "Kalu Iwere Eyitemi",
     role: "UI/UX Designer",
     image: temi,
