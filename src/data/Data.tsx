@@ -687,7 +687,7 @@ export const teamMembers = [
     role: "CCO/Data Engineer",
     image: juwon,
     description:
-      "Olawajuwon Ogunseye is a Data Engineer with 6+ years of fintech and blockchain experience. He focuses on co-operative and decentralized finance.",
+      "Oluwajuwon Ogunseye is a Data Engineer with 6+ years of fintech and blockchain experience. He focuses on co-operative and decentralized finance.",
     social: {
       twitter: "https://x.com/juwon_ogunseye?t=ZAuheRFCskhkB6NeNITdUA&s=09",
       linkedin:

@@ -133,17 +133,16 @@ const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
               <DialogHeader className="flex flex-col text-center">
                 <Typography
                   variant="h2"
-                  className="text-lg font-bold text-black sm:text-xl"
+                  className="text-base font-bold text-black sm:text-lg"
                 >
                   My Cards
                 </Typography>
                 <Typography variant="small" className="text-sm sm:text-base">
-                  {" "}
                   Securely manage all debit cards connected.
                 </Typography>
               </DialogHeader>
 
-              <div className="relative">
+              <div className="relative mt-4">
                 {cards?.length > 0 ? (
                   <>
                     <div className="relative mx-auto w-full overflow-hidden sm:w-[25em] sm:px-6">
@@ -168,19 +167,19 @@ const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
                             )
                           }
                           className={`group relative aspect-[1.8/1] w-full cursor-pointer rounded-xl bg-gradient-to-r px-2 py-2 shadow-lg transition-all hover:shadow-xl sm:px-4
-                        ${
-                          cardDesigns[
-                            cards[
-                              currentPage
-                            ]?.brand?.toLowerCase() as keyof typeof cardDesigns
-                          ] || cardDesigns.default
-                        }
-                        ${
-                          selectedCard?.authorization_code ===
-                          cards[currentPage].authorization_code
-                            ? "ring-2 ring-white"
-                            : ""
-                        }`}
+                                    ${
+                                      cardDesigns[
+                                        cards[
+                                          currentPage
+                                        ]?.brand?.toLowerCase() as keyof typeof cardDesigns
+                                      ] || cardDesigns.default
+                                    }
+                                    ${
+                                      selectedCard?.authorization_code ===
+                                      cards[currentPage].authorization_code
+                                        ? "ring-2 ring-white"
+                                        : ""
+                                    }`}
                         >
                           <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 opacity-0 transition-opacity group-hover:opacity-100" />
 
@@ -243,17 +242,14 @@ const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
 
               <DialogFooter className="mt-6 flex w-full flex-col gap-3">
                 {selectedCard ? (
-                  <button
+                  <Button
                     onClick={() => handlePayment("card")}
                     disabled={isLoading}
-                    className="flex w-full items-center justify-center rounded-lg bg-purple-600 px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-purple-700 disabled:opacity-50"
+                    loading={isLoading}
+                    className="flex w-full items-center justify-center rounded-lg bg-text2 px-4 py-2.5 text-sm font-bold normal-case text-white transition-colors disabled:opacity-50"
                   >
-                    {isLoading ? (
-                      <Loader2 className="h-5 w-5 animate-spin" />
-                    ) : (
-                      "Pay Now"
-                    )}
-                  </button>
+                    {isLoading ? "Loading..." : "Pay Now"}
+                  </Button>
                 ) : (
                   <div className="flex w-full flex-col items-center justify-between gap-2 sm:flex-row sm:gap-4">
                     <Link
@@ -265,13 +261,9 @@ const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
                     <Button
                       onClick={() => handlePayment("paystack")}
                       disabled={isLoading}
-                      className="flex w-full items-center justify-center rounded-lg bg-text2 px-4 py-2.5 text-sm font-bold text-white transition-colors disabled:opacity-50 sm:w-auto"
+                      className="flex w-full items-center justify-center rounded-lg bg-text2 px-4 py-2.5 text-sm font-bold normal-case text-white transition-colors disabled:opacity-50 sm:w-auto"
                     >
-                      {isLoading ? (
-                        <Loader2 className="h-5 w-5 animate-spin" />
-                      ) : (
-                        "Pay Direct"
-                      )}
+                      {isLoading ? "Loading..." : "Pay Direct"}
                     </Button>
                   </div>
                 )}

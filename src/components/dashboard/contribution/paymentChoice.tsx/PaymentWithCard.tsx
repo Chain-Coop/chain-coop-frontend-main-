@@ -6,6 +6,7 @@ import { AppDispatch } from "../../../../shared/redux/store";
 import {
   GetWalletCard,
   PayContribution,
+  PayContributionPaystack,
 } from "../../../../shared/redux/slices/transaction.slices";
 import { Alert, Snackbar } from "@mui/material";
 import useUserProfile, {
@@ -83,38 +84,50 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
     try {
       const basePayload = {
         contributionId,
-        paymentType,
+        userId: profileDetails._id,
       };
 
       if (paymentType === "card" && selectedCard) {
         const paymentResponse: any = await dispatch(
           PayContribution({
             ...basePayload,
+            paymentType: "card",
             cardAuthCode: selectedCard.authorization_code,
-            userId: profileDetails._id,
           }),
         ).unwrap();
-        console.log("pa", paymentResponse);
+
         if (paymentResponse.landing.statusCode === 200) {
           onClose();
           navigate("/dashboard/contribution");
         }
       } else {
         const paymentResponse = await dispatch(
-          PayContribution(basePayload),
+          PayContributionPaystack({
+            ...basePayload,
+            paymentType: "paystack",
+          }),
         ).unwrap();
 
-        if (paymentResponse?.landing?.payment?.info?.data) {
+        if (paymentResponse?.landing?.payment?.info?.data?.authorization_url) {
           onClose();
           window.location.href =
             paymentResponse.landing.payment.info.data.authorization_url;
         } else {
-          throw new Error("Invalid payment response");
+          throw new Error("Missing payment authorization URL");
         }
       }
     } catch (error: any) {
-      console.log("err,e", error);
-      setError(error || "An error occurred during payment. Please try again.");
+      let errorMessage = "An error occurred during payment. Please try again.";
+
+      if (error?.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error?.message) {
+        errorMessage = error.message;
+      } else if (typeof error === "string") {
+        errorMessage = error;
+      }
+
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
