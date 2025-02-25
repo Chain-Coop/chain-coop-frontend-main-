@@ -271,6 +271,21 @@ export const PayContribution = createAsyncThunk(
   },
 );
 
+export const PayContributionPaystack = createAsyncThunk(
+  "transaction/payContributionPaystck",
+  async (body: any, thunkAPI) => {
+    try {
+      const data = await TransactionServices.PayContributionPaystack(body);
+      return { landing: data };
+    } catch (error: any) {
+      console.log("error", error);
+      const message = error.msg;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
 export const PayUnPaidContribution = createAsyncThunk(
   "transaction/payUnPaidContribution",
   async (body: any, thunkAPI) => {
@@ -328,6 +343,7 @@ interface TransactionState {
   getPinOtp: any | null;
   removeCard: null;
   fundContribution: any | null;
+  fundContributionPaystack: any | null;
   fundUnPaidContribution: any | null;
   requestWithdrawalWallet: any | null;
   requestWithdrawalContribution: any | null;
@@ -354,6 +370,7 @@ const initialState: TransactionState = {
   createPin: null,
   getPinOtp: null,
   fundContribution: null,
+  fundContributionPaystack: null,
   fundUnPaidContribution: null,
   requestWithdrawalWallet: null,
   requestWithdrawalContribution: null,
@@ -597,13 +614,25 @@ export const transactionSlice = createSlice({
       .addCase(PayContribution.pending, (state) => {
         state.loading = true;
         state.error = null;
-      });
-    builder.addCase(PayContribution.fulfilled, (state, action) => {
-      state.fundContribution = action.payload.landing;
-    });
-    builder
+      })
+      .addCase(PayContribution.fulfilled, (state, action) => {
+        state.fundContribution = action.payload.landing;
+      })
+
       .addCase(PayContribution.rejected, (state) => {
         state.fundContribution = null;
+      })
+
+      .addCase(PayContributionPaystack.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      });
+    builder.addCase(PayContributionPaystack.fulfilled, (state, action) => {
+      state.fundContributionPaystack = action.payload.landing;
+    });
+    builder
+      .addCase(PayContributionPaystack.rejected, (state) => {
+        state.fundContributionPaystack = null;
       })
 
       .addCase(PayUnPaidContribution.pending, (state) => {

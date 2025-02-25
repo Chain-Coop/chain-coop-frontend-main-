@@ -12,12 +12,15 @@ import { DashboardHeader } from "../../../../../common/DashboardHeader";
 
 import { useAppDispatch } from "../../../../../../shared/redux/reduxHooks";
 import { AppDispatch } from "../../../../../../shared/redux/store";
-import { useUserCard } from "../../../../../../shared/Hooks/useUserProfile";
+import {
+  useUserCard,
+  useUserProfile,
+} from "../../../../../../shared/Hooks/useUserProfile";
 
 import {
   CreateContributionPlan,
   GetWalletCard,
-  PayContribution,
+  PayContributionPaystack,
 } from "../../../../../../shared/redux/slices/transaction.slices";
 
 import PaymentWithCard from "../../../paymentChoice.tsx/PaymentWithCard";
@@ -42,6 +45,7 @@ interface ContributionResponse {
 
 const StartDate: React.FC = () => {
   const { useWalletCards } = useUserCard();
+  const { profileDetails } = useUserProfile();
   const today = formatDate(new Date());
   const [endDate, setEndDate] = useState("");
   const [availableEndDates, setAvailableEndDates] = useState<string[]>([]);
@@ -158,28 +162,41 @@ const StartDate: React.FC = () => {
   };
 
   const handleDirectPayment = async (paymentType: "paystack") => {
+    if (!contributionData?.contributionId) {
+      setError("Invalid contribution data");
+      return;
+    }
+
     setIsProcessingPayment(true);
+    setError("");
 
     try {
       const paymentResponse = await dispatch(
-        PayContribution({
-          contributionId: contributionData?.contributionId,
-          paymentType,
+        PayContributionPaystack({
+          contributionId: contributionData.contributionId,
+          userId: profileDetails?._id,
+          paymentType: "paystack",
         }),
       ).unwrap();
 
-      if (paymentResponse?.landing?.payment?.info?.data) {
+      if (paymentResponse?.landing?.payment?.info?.data?.authorization_url) {
         handleModalClose();
         window.location.href =
           paymentResponse.landing.payment.info.data.authorization_url;
       } else {
-        setError("Unable to process payment. Please try again.");
+        throw new Error("Missing payment authorization URL");
       }
     } catch (error: any) {
-      const errorMessage =
-        typeof error === "string"
-          ? error
-          : error?.error || "Payment verification failed. Please try again.";
+      let errorMessage = "An error occurred during payment. Please try again.";
+
+      if (error?.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error?.message) {
+        errorMessage = error.message;
+      } else if (typeof error === "string") {
+        errorMessage = error;
+      }
+
       setError(errorMessage);
     } finally {
       setIsProcessingPayment(false);

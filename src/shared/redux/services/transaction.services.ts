@@ -119,8 +119,12 @@ const GetContributionBalance = async () => {
   }
 };
 
-const GetUsersContributionHistory = async (page: number, limit: number) => {
-  const url = `${API_URL}/contribution/contribute?page=${page}&limit=${limit}`;
+const GetUsersContributionHistory = async (
+  page: number,
+  limit: number,
+  sort: string = "desc",
+) => {
+  const url = `${API_URL}/contribution/contribute?page=${page}&limit=${limit}&sort=${sort}`;
   try {
     const response = await axios.get(url, { headers: authHeader() });
     return response.data;
@@ -137,11 +141,19 @@ const PayContribution = async (body: any) => {
     });
     return response?.data;
   } catch (error: any) {
-    if (error.response && error.response.data) {
-      throw error.response.data;
-    } else {
-      throw new Error("Network Error: Please check your internet connection.");
-    }
+    handleApiError(error);
+  }
+};
+
+const PayContributionPaystack = async (body: any) => {
+  const url = `${API_URL}/contribution/pay`;
+  try {
+    const response = await axios.post(url, body, {
+      headers: authHeader(),
+    });
+    return response?.data;
+  } catch (error: any) {
+    handleApiError(error);
   }
 };
 
@@ -326,6 +338,7 @@ const TransactionServices = {
   GetUnPaidBalance,
   GeneratePinOTP,
   GetWalletCard,
+  PayContributionPaystack,
 };
 
 export default TransactionServices;
