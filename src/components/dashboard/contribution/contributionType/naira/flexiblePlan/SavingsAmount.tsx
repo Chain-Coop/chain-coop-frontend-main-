@@ -57,7 +57,7 @@ const SavingsAmount = () => {
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
         Flexible Savings
       </DashboardHeader>
-      <div className="m-auto w-[90%]">
+      <div>
         <header className="mt-[1.5em] flex flex-col justify-center text-center lg:mt-[3em]">
           <h1 className="text-center text-2xl font-bold">
             {plan} Contribution

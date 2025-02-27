@@ -17,19 +17,18 @@ const container = (delay: any) => ({
 const HeroSection = () => {
   return (
     <main className="relative flex w-full flex-col font-sans lg:min-h-screen lg:flex-row">
-      <div className="flex items-center px-4 py-8 lg:w-1/2 lg:px-12 lg:py-24 xl:px-16">
-        <div className="max-w-xl">
+      <div className="flex items-center  py-8 lg:w-1/2 lg:py-24">
+        <div className="container mx-auto max-w-[90%]">
           <div className="mb-6 lg:mb-8">
             <MotionTypography
               variant="h1"
               variants={container(0.5)}
               initial="hidden"
               animate="visible"
-              className="text-xl font-bold lg:text-4xl"
+              className="text-2xl font-bold tracking-tight lg:text-4xl"
             >
-              {" "}
               Save Smarter, Grow <br /> Faster{" "}
-              <span className="text-text2"> with Chain Co-op</span>{" "}
+              <span className="text-text2">with Chain Co-op</span>
             </MotionTypography>
           </div>
           <MotionTypography
@@ -37,7 +36,7 @@ const HeroSection = () => {
             initial="hidden"
             animate="visible"
             variant="small"
-            className="mb-8 text-sm font-medium text-gray-600 sm:text-base lg:text-lg"
+            className="mb-8 font-normal tracking-tight text-gray-600 lg:text-lg"
           >
             Your all-in-one platform for automated savings in <br /> Naira and
             crypto
@@ -69,10 +68,11 @@ const HeroSection = () => {
           </motion.div>
         </div>
       </div>
+
       <div className="hidden lg:block lg:h-full lg:w-1/2">
         <div
           className="h-full w-full bg-heroBackground bg-cover bg-center bg-no-repeat"
-          style={{ minHeight: "100vh" }}
+          style={{ minHeight: "94vh" }}
         ></div>
       </div>
     </main>

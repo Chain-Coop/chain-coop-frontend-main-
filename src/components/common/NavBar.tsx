@@ -18,7 +18,7 @@ const NavBar = () => {
 
   return (
     <nav className="relative  left-0 top-0 flex h-[75px] w-full items-center border-b border-text5 bg-white font-sans">
-      <div className="mx-auto flex w-[87%] items-center justify-between">
+      <div className="container mx-auto flex max-w-[95%] items-center justify-between">
         <Link to="/">
           <img src={logo} className="w-[9em]" alt="Chain Co-op Logo" />
         </Link>
@@ -30,7 +30,9 @@ const NavBar = () => {
                 isActive={location.pathname === link.to}
                 to={link.to}
               >
-                <Typography className="font-normal">{link.text}</Typography>
+                <Typography className="font-normal tracking-tight">
+                  {link.text}
+                </Typography>
               </NavLink>
             ))}
           </div>

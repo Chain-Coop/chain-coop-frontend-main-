@@ -143,7 +143,7 @@ const PartnerWithUs = () => {
           <motion.section className="relative mx-auto flex w-full flex-col items-center px-4 py-12 text-center lg:w-[80%] lg:px-2 lg:py-[8em]">
             <Typography
               variant="h3"
-              className="mb-8 text-xl font-bold sm:text-2xl lg:mb-12"
+              className="mb-8 text-xl font-bold tracking-tight sm:text-2xl lg:mb-12"
             >
               Interested in Chain Co-op? Discover the benefits of
               <br className="hidden sm:block" />
@@ -163,7 +163,7 @@ const PartnerWithUs = () => {
                   <div className="flex flex-col gap-2">
                     <Typography
                       variant="h4"
-                      className="text-center text-lg font-bold text-text2 sm:text-left"
+                      className="text-center text-lg font-bold tracking-tight text-text2 sm:text-left"
                     >
                       Trusted & Regulated Platform
                     </Typography>

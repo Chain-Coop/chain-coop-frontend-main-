@@ -158,8 +158,8 @@ const ViewContribution = () => {
         </DashboardHeader>
       </header>
 
-      <section className="px-3">
-        <header className="mx-auto flex w-full max-w-md items-center justify-between p-4">
+      <section>
+        <header className="flex w-full items-center justify-between p-4">
           <div className="flex-shrink-0">
             <IoIosArrowBack
               onClick={handleBackClick}

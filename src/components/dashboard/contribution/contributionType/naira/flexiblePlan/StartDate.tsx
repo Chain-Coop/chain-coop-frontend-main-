@@ -215,7 +215,7 @@ const StartDate: React.FC = () => {
         Contribution Plan
       </DashboardHeader>
 
-      <div className="m-auto w-[90%]">
+      <div>
         <header className="mt-[1.5em] flex flex-col justify-center text-center lg:mt-[3em]">
           <h1 className="text-center text-2xl font-bold">
             {plan} Contribution
