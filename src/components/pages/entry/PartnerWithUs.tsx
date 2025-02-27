@@ -61,7 +61,7 @@ const PartnerWithUs = () => {
         }`}
       >
         <div
-          className="relative mb-[-28px] w-full"
+          className="relative -mb-[-30px] w-full"
           style={{
             backgroundImage: `url(${background})`,
             backgroundSize: "cover",
@@ -97,7 +97,7 @@ const PartnerWithUs = () => {
               </Typography>
               <Button
                 onClick={handlePartnerModalOpen}
-                className="relative mx-auto mt-6 flex items-center justify-center rounded-md bg-text2 px-6 py-3 text-center text-sm font-semibold text-text5 sm:mt-8"
+                className="relative mx-auto mt-6 flex items-center justify-center rounded-md bg-text2 px-6 py-3 text-center text-sm font-semibold normal-case text-text5 sm:mt-8"
               >
                 Partner with Us
               </Button>
@@ -129,7 +129,7 @@ const PartnerWithUs = () => {
                 partner model designed for mutual growth and impact.
               </Typography>
               <Link to={ROUTES.sign_up}>
-                <Button className="mx-auto mt-6 max-w-fit rounded-md bg-text2 px-6 py-3 text-sm font-semibold text-text5 lg:mx-0 lg:mt-8">
+                <Button className="mx-auto mt-6 max-w-fit rounded-md bg-text2 px-6 py-3 text-sm font-semibold normal-case text-text5 lg:mx-0 lg:mt-8">
                   Become a Member
                 </Button>
               </Link>
@@ -252,7 +252,7 @@ const PartnerWithUs = () => {
           </motion.section>
         </div>
       </main>
-      <div className="z-10 mt-[em]">
+      <div className="z-10 -mt-[6em]">
         <Footer />
       </div>
       <PartnerModal

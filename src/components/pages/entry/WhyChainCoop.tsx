@@ -103,13 +103,7 @@ const WhyChainCoop = () => {
             minHeight: "100vh",
           }}
         >
-          <motion.section
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: false, amount: 0.3 }}
-            variants={staggerContainer}
-            className="relative mx-auto flex w-full flex-col items-center py-8 text-center md:py-12 lg:w-[95%] lg:px-2 lg:py-[4em]"
-          >
+          <section className="relative mx-auto flex w-full flex-col items-center py-8 text-center md:py-12 lg:w-[95%] lg:px-2 lg:py-[4em]">
             <div className="relative z-10 max-w-full px-1 text-center md:px-1 lg:px-2">
               <MotionTypography
                 variant="h1"
@@ -129,17 +123,10 @@ const WhyChainCoop = () => {
                 stability.
               </Typography>
             </div>
-          </motion.section>
+          </section>
 
-          <motion.section
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: false, amount: 0.3 }}
-            variants={staggerContainer}
-            className="relative z-10 flex flex-col gap-6 overflow-hidden pt-8 text-white sm:gap-8 lg:-mt-1 lg:mr-0 lg:flex-row lg:gap-0"
-          >
-            <motion.div
-              variants={slideInLeft}
+          <section className="relative z-10 flex flex-col gap-6 overflow-hidden pt-8 text-white sm:gap-8 lg:-mt-1 lg:mr-0 lg:flex-row lg:gap-0">
+            <div
               className="relative mr-auto h-[370px] w-full md:h-[400px] lg:h-[450px] lg:w-[38%]"
               style={{
                 backgroundImage: `url(${imageRight})`,
@@ -167,12 +154,9 @@ const WhyChainCoop = () => {
                   empowerment within everyone's reach.
                 </MotionTypography>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              variants={fadeIn}
-              className="hidden lg:flex lg:w-1/3 lg:justify-between lg:py-[3em]"
-            >
+            <div className="hidden lg:flex lg:w-1/3 lg:justify-between lg:py-[3em]">
               <div className="mt-[1.5em] flex flex-col justify-between">
                 <motion.img
                   variants={fadeInUp}
@@ -215,10 +199,9 @@ const WhyChainCoop = () => {
                   className="h-[8em] w-[8em] object-cover"
                 />
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              variants={slideInRight}
+            <div
               className="relative h-[370px] w-full md:h-[400px] lg:h-[450px] lg:w-[38%]"
               style={{
                 backgroundImage: `url(${imageLeft})`,
@@ -248,16 +231,10 @@ const WhyChainCoop = () => {
                   stability and growth.
                 </MotionTypography>
               </div>
-            </motion.div>
-          </motion.section>
+            </div>
+          </section>
 
-          <motion.section
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: false, amount: 0.3 }}
-            variants={staggerContainer}
-            className="relative mx-auto flex w-full flex-col items-center px-4 lg:w-[74%] lg:px-2 lg:py-[4em]"
-          >
+          <section className="relative mx-auto flex w-full flex-col items-center px-4 lg:w-[74%] lg:px-2 lg:py-[4em]">
             <div className="relative z-10 mt-[1.5em] max-w-full px-2 text-center sm:px-4">
               <MotionTypography
                 variant="h1"
@@ -283,10 +260,7 @@ const WhyChainCoop = () => {
             </div>
 
             <div className="mt-8 flex w-full flex-col gap-12 sm:mt-12 sm:gap-16 lg:mt-16 lg:gap-24">
-              <motion.div
-                variants={fadeIn}
-                className="flex flex-col items-center justify-between md:flex-row md:gap-[3em] lg:gap-[7em]"
-              >
+              <div className="flex flex-col items-center justify-between md:flex-row md:gap-[3em] lg:gap-[7em]">
                 <div className="order-2 flex flex-1 flex-col gap-4 p-4 sm:p-6 md:order-1 lg:p-8">
                   <Typography
                     variant="h5"
@@ -310,12 +284,9 @@ const WhyChainCoop = () => {
                     className="w-full max-w-[300px] md:max-w-none"
                   />
                 </div>
-              </motion.div>
+              </div>
 
-              <motion.div
-                variants={fadeIn}
-                className="flex flex-col items-center justify-between md:flex-row md:gap-[3em] lg:gap-[7em]"
-              >
+              <div className="flex flex-col items-center justify-between md:flex-row md:gap-[3em] lg:gap-[7em]">
                 <div className="order-2 flex flex-1 flex-col gap-4 p-4 sm:p-6 md:order-2 lg:p-8">
                   <Typography
                     variant="h5"
@@ -340,12 +311,9 @@ const WhyChainCoop = () => {
                     className="w-full max-w-[300px] md:max-w-none"
                   />
                 </div>
-              </motion.div>
+              </div>
 
-              <motion.div
-                variants={fadeIn}
-                className="flex flex-col items-center justify-between md:flex-row md:gap-[3em] lg:gap-[7em]"
-              >
+              <div className="flex flex-col items-center justify-between md:flex-row md:gap-[3em] lg:gap-[7em]">
                 <div className="order-2 flex flex-1 flex-col gap-4 p-4 sm:p-6 md:order-1 lg:p-8">
                   <Typography
                     variant="h5"
@@ -369,9 +337,9 @@ const WhyChainCoop = () => {
                     className="w-full max-w-[300px] md:max-w-none"
                   />
                 </div>
-              </motion.div>
+              </div>
             </div>
-          </motion.section>
+          </section>
         </div>
 
         <div
@@ -382,18 +350,9 @@ const WhyChainCoop = () => {
             backgroundRepeat: "no-repeat",
           }}
         >
-          <motion.section
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: false, amount: 0.3 }}
-            variants={staggerContainer}
-            className="relative mx-auto flex w-full flex-col items-center px-4 pt-8 sm:pt-12 lg:w-[74%] lg:px-2 lg:py-[4em]"
-          >
+          <section className="relative mx-auto flex w-full flex-col items-center px-4 pt-8 sm:pt-12 lg:w-[74%] lg:px-2 lg:py-[4em]">
             <div className="mt-8 flex w-full flex-col gap-12 sm:mt-12 sm:gap-16 lg:mt-16 lg:gap-24">
-              <motion.div
-                variants={fadeIn}
-                className="flex flex-col items-center justify-between md:flex-row md:gap-[3em] lg:gap-[7em]"
-              >
+              <section className="flex flex-col items-center justify-between md:flex-row md:gap-[3em] lg:gap-[7em]">
                 <div className="order-2 flex flex-1 flex-col gap-4 p-4 sm:p-6 md:order-1 lg:p-8">
                   <Typography
                     variant="h5"
@@ -418,12 +377,9 @@ const WhyChainCoop = () => {
                     className="w-full max-w-[300px] md:max-w-none"
                   />
                 </div>
-              </motion.div>
+              </section>
 
-              <motion.div
-                variants={fadeIn}
-                className="flex flex-col items-center justify-between md:flex-row md:gap-[3em] lg:gap-[7em]"
-              >
+              <section className="flex flex-col items-center justify-between md:flex-row md:gap-[3em] lg:gap-[7em]">
                 <div className="order-2 flex flex-1 flex-col gap-4 p-4 sm:p-6 md:order-2 lg:p-8">
                   <Typography
                     variant="h5"
@@ -448,12 +404,12 @@ const WhyChainCoop = () => {
                     className="w-full max-w-[300px] md:max-w-none"
                   />
                 </div>
-              </motion.div>
+              </section>
             </div>
-          </motion.section>
+          </section>
         </div>
       </main>
-      <div className="z-10 mt-[-4em]">
+      <div className="z-10 mt-[-5em]">
         <Footer />
       </div>
     </div>
