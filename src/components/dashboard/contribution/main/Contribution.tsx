@@ -118,13 +118,13 @@ const Contribution: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md"
+              className="rounded-3xl border-[2px] border-gray-200 bg-white p-6 shadow-md"
             >
-              <div className="flex justify-end py-3">
+              <div className="mb-4 flex justify-end">
                 <Button
                   onClick={toggleModal}
-                  className="text-md flex w-auto transform  items-center gap-2 rounded-lg border-[3px] border-gray-200 bg-[#E3D9E6] px-6 py-2 font-semibold normal-case text-text2 transition-all duration-300 hover:scale-105
-                  active:scale-95 md:py-3 lg:py-2"
+                  className="text-md flex transform  items-center gap-2 rounded-lg border-[3px] border-gray-200 bg-[#E3D9E6] py-2 font-semibold normal-case text-text2 transition-all duration-300 hover:scale-105
+                  active:scale-95"
                 >
                   Naira Savings
                   <IoIosArrowDown />
@@ -133,7 +133,7 @@ const Contribution: React.FC = () => {
               <div className="flex items-center justify-center gap-4 font-sans">
                 <Typography
                   variant="small"
-                  className="text-sm font-medium md:text-base"
+                  className="text-sm font-medium tracking-tight md:text-base"
                 >
                   Total Contribution Balance
                 </Typography>
@@ -164,6 +164,7 @@ const Contribution: React.FC = () => {
                 <hr className="mt-[1em] h-[1px] rounded-md bg-howtext" />
               </div>
             </motion.div>
+
             <section className="py-8">
               <div className="flex justify-between">
                 <Button
@@ -204,7 +205,7 @@ const Contribution: React.FC = () => {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 md:py-3 md:text-lg"
+                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 lg:py-2 lg:text-lg"
                   >
                     Flexible Savings
                   </motion.button>
@@ -217,7 +218,7 @@ const Contribution: React.FC = () => {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 md:py-3 md:text-lg"
+                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:text-lg lg:px-4 lg:py-2"
                   >
                     Lock Savings
                   </motion.button>
@@ -230,7 +231,7 @@ const Contribution: React.FC = () => {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 md:py-3 md:text-lg"
+                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:text-lg lg:px-4 lg:py-2"
                   >
                     Strict Lock Savings
                   </motion.button>
@@ -241,9 +242,12 @@ const Contribution: React.FC = () => {
           </article>
         </section>
 
-        <section className="mt-8 w-full  md:mt-10 lg:mt-12">
+        <section className="mt-8 w-full  md:mt-10 lg:mt-10">
           <header>
-            <Typography variant="h1" className="text-xl font-bold md:text-2xl">
+            <Typography
+              variant="h1"
+              className="text-xl font-bold tracking-tight md:text-2xl"
+            >
               My Savings
             </Typography>
           </header>
@@ -284,7 +288,7 @@ const Contribution: React.FC = () => {
                   onClick={() =>
                     navigateToContributionDetails(contribution._id)
                   }
-                  className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-full border-2 border-gray-500 bg-white px-4 py-2 transition-all hover:bg-gray-50 md:px-6 md:py-3"
+                  className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-full border-2 border-gray-500 bg-white px-4 transition-all hover:bg-gray-50 lg:px-6 "
                 >
                   <div className="flex justify-between text-sm font-medium text-gray-500 md:text-base">
                     <Typography className="font-normal">

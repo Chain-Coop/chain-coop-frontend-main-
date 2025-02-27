@@ -5,6 +5,7 @@ import { sidebarLinks } from "../../../data/Data";
 import member from "../../../Assets/jpg/membership/customer.jpg";
 import investor from "../../../Assets/jpg/membership/investor.jpg";
 import useUserProfile from "../../../shared/Hooks/useUserProfile";
+import { Typography } from "@material-tailwind/react";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -86,10 +87,13 @@ const Sidebar = () => {
           </section>
 
           <section className="mt-4 flex">
-            <p className="text-sm text-howtext">
+            <Typography
+              variant="small"
+              className="leading-snug tracking-tight text-howtext"
+            >
               This card grants you access to the Chain Coop Chain Network
               ecosystem. Once activated, it becomes non-transferable.
-            </p>
+            </Typography>
           </section>
         </nav>
       </div>

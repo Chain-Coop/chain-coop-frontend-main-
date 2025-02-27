@@ -99,7 +99,7 @@ const SelectAccount = () => {
         </DashboardHeader>
       </header>
 
-      <section className="mt-8 px-4">
+      <section className="mt-8">
         <div className="relative mt-6 w-full">
           <label className="mb-1 block text-sm font-semibold text-gray-700">
             Select a bank

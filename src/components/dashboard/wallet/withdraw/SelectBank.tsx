@@ -126,7 +126,7 @@ const SelectBank = () => {
       </header>
 
       <article>
-        <div className="flex flex-col gap-8 px-4">
+        <div className="flex flex-col gap-8">
           <div className="mt-8 flex w-full gap-4 rounded-lg bg-Dh px-4 py-4 font-medium sm:px-6">
             <Xclamation />
             <Typography variant="small" className="font-medium">
@@ -194,7 +194,6 @@ const SelectBank = () => {
         </div>
       </article>
 
-      {/* Pin Modal */}
       <PinModal
         isOpen={isModalOpen}
         onClose={toggleModal}
