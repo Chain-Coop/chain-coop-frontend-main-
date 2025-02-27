@@ -45,7 +45,7 @@ const Right = () => {
           <h1 className="p-[1em] text-lg font-medium uppercase text-text3">
             {project?.title}
           </h1>
-          <Button className="font-base mt-[1.5em] flex cursor-not-allowed justify-center rounded-xl bg-coming2  px-[15px] py-[6px] font-sans font-semibold normal-case">
+          <Button className="font-base mt-[1.5em] flex cursor-not-allowed justify-center rounded-xl bg-coming2 px-[15px]  py-[6px] font-sans font-semibold normal-case text-black">
             {project?.status}
           </Button>
         </article>

@@ -4,18 +4,18 @@ import { useAllNotification } from "../../../../shared/Hooks/useUserProfile";
 import { GoDotFill } from "react-icons/go";
 import { IoCheckmarkDoneSharp } from "react-icons/io5";
 import ViewNotificationDetailsRead from "../ViewNotificationDetails/ViewNotificationDetailsRead";
-import Modal from "../../../common/Modal";
 import { updateNotificationStatus } from "../../../../shared/redux/slices/notification.slices";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../shared/redux/store";
-import { NotificationSkeleton } from "../main/Notification";
+import { NotificationSkeleton } from "../../../common/Loading";
+import { Typography } from "@material-tailwind/react";
 
 const AllNotification = () => {
   const { updates, fetchNotification, currentPage, loading, totalPages } =
     useAllNotification();
   const dispatch: AppDispatch = useDispatch();
   const [isInitialLoad, setIsInitialLoad] = useState(true);
-  const [isNewsModalOpen, setNewsModalOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedNotification, setSelectedNotification] = useState(null);
   const [expandedMonth, setExpandedMonth] = useState<string | null>(null);
 
@@ -46,14 +46,18 @@ const AllNotification = () => {
     return Object?.entries(grouped);
   };
 
-  const handleOpenModal = async (notification: any) => {
+  const handleOpenDialog = async (notification: any) => {
     setSelectedNotification(notification);
-    setNewsModalOpen(true);
+    setIsDialogOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setNewsModalOpen(false);
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
     setSelectedNotification(null);
+  };
+
+  const handleDialogToggle = () => {
+    setIsDialogOpen(!isDialogOpen);
   };
 
   const handleUpdateStatus = async (notification: any) => {
@@ -65,7 +69,7 @@ const AllNotification = () => {
     try {
       await dispatch(updateNotificationStatus(notification._id));
       await fetchNotification(currentPage, itemsPerPage);
-      handleCloseModal();
+      handleCloseDialog();
     } catch (error) {
       console.error("Failed to update notification status:", error);
     }
@@ -106,7 +110,7 @@ const AllNotification = () => {
 
   if (!updates || updates?.length === 0) {
     return (
-      <section className="mx-auto mt-8 max-w-4xl p-4 md:mt-12 md:p-6 lg:mt-16 lg:p-8">
+      <section className="mt-8 md:mt-12 md:p-6 lg:mt-16 ">
         <div className="flex flex-col items-center gap-4 px-0 text-center md:gap-6 lg:gap-8">
           <div className="flex justify-center">
             <img
@@ -160,8 +164,8 @@ const AllNotification = () => {
               {displayNotifications.map((notification: any) => (
                 <section
                   key={notification?._id}
-                  onClick={() => handleOpenModal(notification)}
-                  className="flex cursor-pointer flex-col gap-[1em] rounded-lg bg-gray-100 px-[1em] py-[1em]"
+                  onClick={() => handleOpenDialog(notification)}
+                  className="flex h-auto cursor-pointer flex-col gap-[1em] rounded-lg bg-gray-100 px-[1em] py-2"
                 >
                   <div className="flex items-start gap-4">
                     <div className="flex-shrink-0">
@@ -207,15 +211,16 @@ const AllNotification = () => {
                         </p>
                       )}
                     </p>
-                    <p
-                      className={`italic ${
+                    <Typography
+                      variant="small"
+                      className={`font-normal italic ${
                         notification?.isRead
                           ? "text-green-600"
                           : "text-gray-400"
                       }`}
                     >
                       {formatDate(notification?.createdAt)}
-                    </p>
+                    </Typography>
                   </div>
                 </section>
               ))}
@@ -225,17 +230,12 @@ const AllNotification = () => {
       })}
 
       {selectedNotification && (
-        <Modal
-          isOpen={isNewsModalOpen}
-          onClose={handleCloseModal}
-          data-aos="zoom-in"
-          className="bg-white"
-        >
-          <ViewNotificationDetailsRead
-            notificationDetails={selectedNotification}
-            handleUpdateStatus={handleUpdateStatus}
-          />
-        </Modal>
+        <ViewNotificationDetailsRead
+          notificationDetails={selectedNotification}
+          handleUpdateStatus={handleUpdateStatus}
+          open={isDialogOpen}
+          handleOpen={handleDialogToggle}
+        />
       )}
     </main>
   );

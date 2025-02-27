@@ -123,7 +123,7 @@ const Contribution: React.FC = () => {
               <div className="flex justify-end py-3">
                 <Button
                   onClick={toggleModal}
-                  className="text-md flex w-auto transform  items-center gap-2 rounded-lg border-[3px] border-gray-200 bg-[#E3D9E6] px-6 py-2 font-semibold text-text2 transition-all duration-300 hover:scale-105
+                  className="text-md flex w-auto transform  items-center gap-2 rounded-lg border-[3px] border-gray-200 bg-[#E3D9E6] px-6 py-2 font-semibold normal-case text-text2 transition-all duration-300 hover:scale-105
                   active:scale-95 md:py-3 lg:py-2"
                 >
                   Naira Savings

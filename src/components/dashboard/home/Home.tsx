@@ -84,7 +84,9 @@ const Home = () => {
                 {project?.title}
               </Typography>
               <div className="mt-auto">
-                <Button className="bg-coming2">{project?.status}</Button>
+                <Button className="bg-coming2 text-black">
+                  {project?.status}
+                </Button>
               </div>
             </div>
           </article>
