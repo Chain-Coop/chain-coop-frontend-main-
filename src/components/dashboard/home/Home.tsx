@@ -79,7 +79,7 @@ const Home = () => {
             >
               <Typography
                 variant="small"
-                className="text-xl font-medium uppercase text-text3"
+                className="text-md font-medium uppercase text-text3"
               >
                 {project?.title}
               </Typography>
@@ -134,7 +134,7 @@ const Home = () => {
         </header>
 
         <section className="text-center text-text4">
-          <div className="mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-16 shadow-md">
+          <div className="mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-10 shadow-md">
             <div className="flex justify-center gap-4 font-sans">
               <p className="font-medium">Total Balance</p>
               <div>

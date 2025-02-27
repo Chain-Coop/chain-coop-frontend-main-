@@ -73,7 +73,7 @@ const BankAccount = () => {
           </div>
         </DashboardHeader>
       </header>
-      <section className="mt-8 px-4">
+      <section className="mt-8">
         <Typography className="text-sm font-normal">
           Please, only add a bank account that you own. Transactions to accounts
           that don't belong to you will be flagged

@@ -118,7 +118,7 @@ const VerifyAccount = () => {
           </div>
         </DashboardHeader>
       </header>
-      <section className="gap- mt-[2.5em] flex flex-col items-center justify-center px-5 text-center">
+      <section className="gap- mt-[2.5em] flex flex-col items-center justify-center text-center">
         <WithdrawIcon />
         <div className="mt-[2em]">
           <Typography variant="h5" className="font-bold">

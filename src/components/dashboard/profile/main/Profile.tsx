@@ -6,6 +6,7 @@ import Details from "../profileDetails/main/Details";
 import Security from "../security/Security";
 import { useAllNotification } from "../../../../shared/Hooks/useUserProfile";
 import { Button, Typography } from "@material-tailwind/react";
+import { DashboardHeader } from "../../../common/DashboardHeader";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const Profile = () => {
   return (
     <main className="font-sans">
       <section>
-        <header className="flex h-[2.5em] w-full items-center justify-between bg-text2 px-[1.5em] font-sans text-xl font-semibold text-text5 lg:mt-[2em]">
+        <DashboardHeader className="flex h-[2.5em] w-full items-center justify-between bg-text2 px-[1.5em] font-sans text-xl font-semibold text-text5 lg:mt-[2em]">
           <Link to="/dashboard/notification">
             <button
               className="relative inline-flex items-center"
@@ -44,7 +45,7 @@ const Profile = () => {
               Logout
             </Button>
           </div>
-        </header>
+        </DashboardHeader>
       </section>
       <section className="mt-[2em] flex flex-col gap-[1em]">
         <Avatar />

@@ -63,7 +63,7 @@ const Withdraw = () => {
         </div>
       </DashboardHeader>
       <section className="m-auto mt-[2em] h-full w-full">
-        <div className="flex items-center justify-between px-4 sm:px-4 lg:px-6">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <WithdrawIcon />
             <p className="text-lg font-medium">Withdraw to Bank Account</p>
