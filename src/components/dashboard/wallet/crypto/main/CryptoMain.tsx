@@ -20,6 +20,7 @@ import usdc from "../../../../../Assets/svg/dashboard/usdc.svg";
 import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 import { Copy, Check } from "lucide-react";
 import { TransferIcon, WithdrawIcon } from "../../../../../Assets/svg";
+import { Button, Typography } from "@material-tailwind/react";
 
 interface TokenInfo {
   tokenAddress: string;
@@ -42,7 +43,6 @@ const CryptoMain = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const dispatch: AppDispatch = useAppDispatch();
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>(
     {},
   );
@@ -109,13 +109,11 @@ const CryptoMain = () => {
   return (
     <main className="font-sans">
       <div className="mt-0 lg:mt-8">
-        <header>
-          <DashboardHeader className="flex items-center justify-center text-2xl tracking-wide md:text-3xl lg:text-xl">
-            Chain Coop Wallet
-          </DashboardHeader>
-        </header>
+        <DashboardHeader className="flex items-center justify-center text-2xl tracking-wide md:text-3xl lg:text-xl">
+          Chain Coop Wallet
+        </DashboardHeader>
       </div>
-      <div className="mx-auto px-4 py-[2em] lg:px-7">
+      <div>
         <section className="text-center text-text4">
           <div className="flex flex-col gap-3 py-[1.5em] sm:flex-row sm:justify-between sm:gap-4">
             {profileDetails?.isWalletActivated === true && (
@@ -124,16 +122,22 @@ const CryptoMain = () => {
                 <img src={walletActivated} alt="walletActivated" />
               </div>
             )}
-            <button
-              onClick={switchToNaira}
-              className="flex w-full transform items-center justify-center gap-2 rounded-lg bg-[#29004D] px-6 py-2 font-semibold text-white transition-all duration-300 hover:scale-105 active:scale-95 sm:w-auto lg:py-2"
-            >
-              Switch to Naira Wallet
-            </button>
+            <div className="ml-auto flex">
+              {" "}
+              <Button
+                onClick={switchToNaira}
+                variant="outlined"
+                className="transform rounded-lg border border-text2 normal-case text-text2 transition-all duration-300 hover:scale-105 active:scale-95"
+              >
+                <Typography className="text-sm font-medium">
+                  Switch to Naira Wallet
+                </Typography>
+              </Button>
+            </div>
           </div>
 
           {profileDetails?.isWalletActivated === true ? (
-            <div className="mt-8 rounded-3xl border-2 border-gray-300 py-[2em] shadow-lg">
+            <div className="rounded-3xl border-2 border-gray-300 py-[2em] shadow-lg">
               <div className="flex flex-col items-center justify-center gap-4">
                 <div className="flex items-center gap-4 font-sans">
                   <p className="font-medium">Total Crypto Wallet Balance</p>
@@ -190,38 +194,15 @@ const CryptoMain = () => {
               </div>
             </div>
           ) : (
-            <div className="mx-auto mt-8 rounded-3xl border-2 border-gray-300 py-[3.5em] shadow-lg">
+            <div className="rounded-3xl border-2 border-gray-300 py-[3.5em] shadow-lg">
               <div className="flex justify-center gap-4 font-sans">
-                <button
+                <Button
                   onClick={activateWallet}
-                  className="flex w-auto transform items-center gap-2 rounded-lg bg-text2 px-9 font-semibold text-white transition-all duration-300 hover:scale-105 active:scale-95 lg:py-3"
+                  loading={loading}
+                  className="flex w-auto transform items-center gap-2 rounded-lg bg-text2 px-9 text-sm font-semibold normal-case text-white transition-all duration-300 hover:scale-105 active:scale-95 lg:py-3"
                 >
-                  {loading ? (
-                    <div className="flex items-center justify-center">
-                      <svg
-                        className="mr-3 h-5 w-5 animate-spin"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
-                      </svg>
-                      Activating...
-                    </div>
-                  ) : (
-                    "Activate Wallet"
-                  )}
-                </button>
+                  {loading ? "Activating..." : "Activate Wallet"}
+                </Button>
               </div>
               <p className="mt-3 text-sm font-medium text-gray-400">
                 Activate your crypto-wallet to access your account.

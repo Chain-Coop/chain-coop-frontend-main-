@@ -6,15 +6,12 @@ import History from "./TransactionHistory/History";
 import { DashboardHeader } from "../../common/DashboardHeader";
 import { motion } from "framer-motion";
 import { FundIcon, WithdrawIcon } from "../../../Assets/svg";
+import { Button, Typography } from "@material-tailwind/react";
 
 const Wallet = () => {
   const { isWalletVisible, setIsWalletVisible, formattedBalance } =
     useWalletBalance();
   const navigate = useNavigate();
-
-  const withdraw = () => {
-    navigate("/dashboard/wallet/withdraw");
-  };
 
   const switchToCrypto = () => {
     navigate("/dashboard/wallet/crypto_wallet");
@@ -30,16 +27,19 @@ const Wallet = () => {
         </header>
         <div>
           <section className="text-center text-text4">
-            <div className="flex justify-end px-5 py-[1.5em]">
-              <button
+            <div className="flex justify-end py-[1.5em]">
+              <Button
                 onClick={switchToCrypto}
-                className="flex w-auto transform items-center gap-2 rounded-lg bg-[#29004D] px-4 py-2 font-semibold text-white transition-all duration-300 hover:scale-105 active:scale-95 sm:px-6 sm:py-3 lg:py-2"
+                variant="outlined"
+                className="flex transform items-center rounded-lg border border-text2 normal-case text-text2 transition-all duration-300 hover:scale-105 active:scale-95"
               >
-                Switch to Crypto Wallet
-              </button>
+                <Typography className="text-sm font-medium">
+                  Switch to Crypto Wallet
+                </Typography>
+              </Button>
             </div>
 
-            <div className="mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md sm:p-16">
+            <div className="rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md sm:p-16">
               <div className="flex justify-center gap-4 font-sans">
                 <p className="font-medium">Naira Wallet Balance</p>
                 <div>

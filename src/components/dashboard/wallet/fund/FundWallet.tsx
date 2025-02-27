@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DashboardHeader } from "../../../common/DashboardHeader";
-import Modal from "../../../common/Modal";
 import EmailAmountModal from "./modal/paystack/EmailAmountModal";
 import { ModalTypes } from "../../../../data/Data";
 import PaymentSuccessfull from "./modal/PaymentSuccessfull";
@@ -55,16 +54,15 @@ const FundWallet: React.FC = () => {
         </article>
       </section>
 
-      <Modal
+      {/* Payment Success Modal */}
+      <PaymentSuccessfull
         isOpen={modalType === ModalTypes.Final}
         onClose={closeModal}
-        className="bg-white"
-      >
-        <PaymentSuccessfull />
-      </Modal>
+      />
+
       <EmailAmountModal
         isOpen={modalType === ModalTypes.Paystack}
-        closeModal={() => setModalType(null)}
+        closeModal={closeModal}
         error={error}
       />
     </main>
