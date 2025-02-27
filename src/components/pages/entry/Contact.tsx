@@ -89,6 +89,7 @@ const Contact = () => {
                   placeholder="Enter your name"
                   disabled={loading}
                   className="rounded-md"
+                  required
                 />
                 <FormInput
                   label="Email"
@@ -98,6 +99,7 @@ const Contact = () => {
                   autoComplete="new-email"
                   disabled={loading}
                   className="rounded-md"
+                  required
                 />
 
                 <FormInput
@@ -107,6 +109,7 @@ const Contact = () => {
                   placeholder="Enter your phone number"
                   disabled={loading}
                   className="rounded-md"
+                  required
                 />
 
                 <label htmlFor="message" className="block text-lg font-medium">
@@ -140,7 +143,7 @@ const Contact = () => {
                   type="submit"
                   loading={loading}
                   disabled={loading}
-                  className="w-[12rem] bg-text2 px-8 py-3 text-sm normal-case text-text5 lg:px-[3em]"
+                  className="flex w-[12rem] justify-center bg-text2 px-8 py-3 text-center text-sm normal-case text-text5 lg:px-[3em]"
                 >
                   <Typography className="font-normal">
                     {!loading ? "Send" : ""}

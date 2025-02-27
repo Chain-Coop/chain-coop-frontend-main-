@@ -84,7 +84,11 @@ const Home = () => {
                 {project?.title}
               </Typography>
               <div className="mt-auto">
-                <Button className="bg-coming2">{project?.status}</Button>
+                <Button className="bg-coming2 normal-case">
+                  <Typography className="text-sm font-medium text-black">
+                    {project?.status}
+                  </Typography>
+                </Button>
               </div>
             </div>
           </article>

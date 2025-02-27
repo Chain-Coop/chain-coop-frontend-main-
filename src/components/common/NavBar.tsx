@@ -64,7 +64,9 @@ const NavBar = () => {
                 <Link
                   key={index}
                   className={`mb-4 cursor-pointer font-sans text-xl ${
-                    isActive ? "font-bold text-text2" : "font-medium text-text4"
+                    isActive
+                      ? "text-lg font-bold text-text2"
+                      : "font-medium text-text4"
                   }`}
                   to={item.to}
                   onClick={toggleModal}
@@ -99,8 +101,10 @@ const NavLink = ({ to, children, isActive }: any) => {
   return (
     <Link
       to={to}
-      className={`mr-8 cursor-pointer py-6 font-sans lg:ml-8 lg:mr-0 ${
-        isActive ? "border-b-[3px] border-b-text2 font-bold text-text2" : ""
+      className={`mr-8 cursor-pointer py-6 ${
+        isActive
+          ? "border-b-[3px] border-b-text2 text-lg font-bold text-text2"
+          : ""
       }`}
     >
       {children}

@@ -6,7 +6,6 @@ import ToggleButton from "../../../../../../shared/utils/ToggleButton";
 import { DashboardHeader } from "../../../../../common/DashboardHeader";
 import { motion } from "framer-motion";
 import { IoIosArrowDown } from "react-icons/io";
-import Modal from "../../../../../common/Modal";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../../shared/redux/store";
 import { UpdateUserPool } from "../../../../../../shared/redux/slices/kyc.slices";
@@ -293,7 +292,7 @@ const CryptoSavings: React.FC = () => {
         savingsType={savingsType}
         onSavingsTypeChange={handleSavingsTypeChange}
       />
-
+      {/* 
       <Modal
         isOpen={updatePayment}
         onClose={toggleUpdatePaymentModal}
@@ -362,7 +361,7 @@ const CryptoSavings: React.FC = () => {
             </div>
           </form>
         </div>
-      </Modal>
+      </Modal> */}
     </motion.main>
   );
 };

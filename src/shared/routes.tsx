@@ -10,4 +10,5 @@ export const ROUTES = {
   strictLockContributionType:
     "/dashboard/contribution/strict_lock/contribution_curency_type",
   manage_cards: "/dashboard/profile/manage-cards",
+  crypto_Wallet: "/dashboard/wallet/crypto_wallet",
 };

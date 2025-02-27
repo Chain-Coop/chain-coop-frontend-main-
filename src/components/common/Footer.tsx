@@ -71,7 +71,7 @@ const Footer = () => {
               type="submit"
               disabled={loading}
               loading={loading}
-              className="flex min-w-[120px] items-center justify-center rounded-md bg-text2 px-10 py-3 text-sm normal-case text-text5 lg:text-sm"
+              className="flex min-w-[120px] items-center justify-center rounded-md bg-text2 px-10 py-2 text-sm normal-case text-text5 lg:py-3 lg:text-sm"
             >
               <Typography className="font-medium">Join</Typography>
             </Button>

@@ -16,7 +16,6 @@ import BankAccount from "../wallet/withdraw/BankAccount";
 import SelectAccount from "../wallet/withdraw/SelectAccount";
 import VerifyAccount from "../wallet/withdraw/VerifyAccount";
 import FundWallet from "../wallet/fund/FundWallet";
-import TransferWallet from "../wallet/transfer/main/Transfer";
 import ProfileTransactions from "../profile/profileDetails/transactions/Transactions";
 import VerifyTransaction from "../wallet/fund/verifyTransaction/VerifyTransaction";
 import Purpose from "../contribution/contributionType/naira/flexiblePlan/Purpose";
@@ -153,8 +152,6 @@ const Dashboard = () => {
             path="wallet/fund_wallet/verify_transaction"
             element={<VerifyTransaction />}
           />
-
-          <Route path="wallet/transfer" element={<TransferWallet />} />
 
           <Route path="profile" element={<Profile />} />
           <Route

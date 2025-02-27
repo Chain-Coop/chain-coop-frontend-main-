@@ -1,8 +1,8 @@
-import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { format, parseISO } from "date-fns";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { Box, Step, StepLabel, Stepper } from "@mui/material";
+import { TrackerSkeleton } from "../../../common/Loading";
 
 interface ContributionTrackerProps {
   isLoading: boolean;
@@ -10,28 +10,6 @@ interface ContributionTrackerProps {
   setCurrentPage: (page: number) => void;
   hasMore: boolean;
 }
-
-const TrackerSkeleton: React.FC = () => (
-  <div className="mt-8 animate-pulse">
-    <div className="mb-4">
-      <div className="h-6 w-48 rounded bg-gray-200"></div>
-      <div className="mt-2 h-4 w-72 rounded bg-gray-200"></div>
-    </div>
-    <div className="space-y-8">
-      {[1, 2, 3].map((index) => (
-        <div key={index} className="flex items-start gap-4">
-          <div className="h-6 w-6 rounded-full bg-gray-200"></div>
-          <div className="flex-1">
-            <div className="h-5 w-36 rounded bg-gray-200"></div>
-            <div className="mt-2 h-4 w-48 rounded bg-gray-200"></div>
-            <div className="mt-2 h-4 w-32 rounded bg-gray-200"></div>
-          </div>
-          <div className="h-8 w-24 rounded-full bg-gray-200"></div>
-        </div>
-      ))}
-    </div>
-  </div>
-);
 
 const isDateValid = (dateString?: string) => {
   if (!dateString) return false;

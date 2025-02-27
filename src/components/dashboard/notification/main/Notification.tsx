@@ -1,4 +1,3 @@
-import React from "react";
 import { useState } from "react";
 import { DashboardHeader } from "../../../common/DashboardHeader";
 import { IoIosArrowBack } from "react-icons/io";
@@ -6,21 +5,6 @@ import { useNavigate } from "react-router";
 import UnReadNotification from "../unReadNotification/UnReadNotification";
 import AllNotification from "../allNotification/AllNotification";
 import ReadNotification from "../readNotification/ReadNotification";
-
-export const NotificationSkeleton = () => (
-  <div className="animate-pulse space-y-4">
-    <div className="flex flex-col gap-[1em] rounded-lg bg-gray-100 px-[1em] py-[1em]">
-      <div className="flex items-center gap-4">
-        <div className="h-8 w-8 rounded-full bg-gray-300"></div>
-        <div className="h-4 w-3/4 rounded bg-gray-300"></div>
-      </div>
-      <div className="flex justify-between">
-        <div className="h-3 w-16 rounded bg-gray-300"></div>
-        <div className="h-3 w-24 rounded bg-gray-300"></div>
-      </div>
-    </div>
-  </div>
-);
 
 const Notification = () => {
   const [activeLink, setActiveLink] = useState("allNotification");
@@ -56,7 +40,7 @@ const Notification = () => {
       </DashboardHeader>
 
       <section className="font-outfit">
-        <div className="mt-1 h-auto w-full rounded-lg bg-white px-4 py-3 pb-20 md:px-6">
+        <div className="mt-1 h-auto w-full rounded-lg bg-white py-3 pb-20">
           <div>
             <nav className="overflow-x-auto">
               <div className="flex gap-2 whitespace-nowrap border-b border-gray-100 py-4 text-sm md:gap-4 md:text-base">

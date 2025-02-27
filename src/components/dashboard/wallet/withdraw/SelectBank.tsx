@@ -1,20 +1,17 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { DashboardHeader } from "../../../common/DashboardHeader";
 import { IoIosArrowBack } from "react-icons/io";
 import { useAppSelector } from "../../../../shared/redux/reduxHooks";
-import Modal from "../../../common/Modal";
-import ReactLoading from "react-loading";
 import { WithdrawalFromWallet } from "../../../../shared/redux/slices/transaction.slices";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../shared/redux/store";
-import { Alert } from "@mui/material";
-import success from "../../../../Assets/svg/auth/sucess.svg";
-import OtpInput from "../../../../shared/utils/OtpInput";
 import { RxDotFilled } from "react-icons/rx";
 import { Button, Typography } from "@material-tailwind/react";
 import { WithdrawIcon, Xclamation } from "../../../../Assets/svg";
 import PinModal from "../../../common/PinModal";
+import SuccessModal from "./modals/SuccessModal";
+
 interface BankAccount {
   accountNumber: string;
   bankCode: string;
@@ -113,7 +110,6 @@ const SelectBank = () => {
 
   return (
     <main className="items-center font-sans">
-      {/* Header */}
       <header className="lg:mt-8">
         <DashboardHeader
           className="relative cursor-pointer items-center"
@@ -129,10 +125,8 @@ const SelectBank = () => {
         </DashboardHeader>
       </header>
 
-      {/* Main Content */}
       <article>
         <div className="flex flex-col gap-8 px-4">
-          {/* Warning Banner */}
           <div className="mt-8 flex w-full gap-4 rounded-lg bg-Dh px-4 py-4 font-medium sm:px-6">
             <Xclamation />
             <Typography variant="small" className="font-medium">
@@ -141,7 +135,6 @@ const SelectBank = () => {
             </Typography>
           </div>
 
-          {/* Existing Bank Accounts */}
           {hasBankAccount ? (
             <section>
               <Typography variant="h1" className="text-lg font-bold">
@@ -188,7 +181,6 @@ const SelectBank = () => {
             </div>
           )}
 
-          {/* Add Bank Account Button */}
           <Button
             className="mb-[2em] mt-8 flex w-full justify-center gap-4 rounded-lg bg-Dh px-4 py-3 text-sm font-semibold normal-case text-text2 sm:px-6 sm:py-4"
             onClick={BankAccount}
@@ -215,30 +207,10 @@ const SelectBank = () => {
         onPinChange={setPin}
       />
 
-      {/* Success Modal */}
-      <Modal
+      <SuccessModal
         isOpen={isSuccessModalOpen}
-        onClose={() => {
-          navigate("/wallet", { replace: true });
-        }}
-        className="bg-white py-[3em] text-center lg:w-[25em]"
-      >
-        <div className="mt-[2.5em] flex flex-col justify-center">
-          <img
-            src={success}
-            alt="Success Icon"
-            className="mx-auto sm:w-[6em] lg:w-[8em]"
-          />
-          <header className="mt-4">
-            <h1 className="text-center text-xl font-semibold">
-              Transaction Successful
-            </h1>
-            <p className="mt-2 text-howtext">
-              Your withdrawal has been processed. Redirecting to wallet...
-            </p>
-          </header>
-        </div>
-      </Modal>
+        onClose={() => setIsSuccessModalOpen(false)}
+      />
     </main>
   );
 };
