@@ -1,8 +1,8 @@
 import React from "react";
 import newspaper from "../../../Assets/svg/dashboard/newspaper.svg";
-import { ComingSoon } from "../../common/Button";
 import { useAllProjects } from "../../../shared/Hooks/useUserProfile";
 import { useNavigate } from "react-router";
+import { Button } from "@material-tailwind/react";
 
 interface Project {
   _id: string;
@@ -14,13 +14,6 @@ interface Project {
 
 const Right = () => {
   const { useProjects, loading } = useAllProjects();
-  const navigate = useNavigate();
-
-  // const handleProjectClick = (projectId: any) => {
-  //   navigate(`/dashboard/project/project_over-view`, {
-  //     state: { projectId },
-  //   });
-  // };
 
   const latestProjects = React.useMemo(() => {
     if (!useProjects) return [];
@@ -48,25 +41,20 @@ const Right = () => {
             backgroundColor: "rgba(255, 255, 255, 0.1)",
             backgroundBlendMode: "overlay",
           }}
-          // onClick={() => handleProjectClick(project._id)}
         >
           <h1 className="p-[1em] text-lg font-medium uppercase text-text3">
             {project?.title}
           </h1>
-          <ComingSoon className="mt-[1.5em] bg-coming2">
+          <Button className="font-base mt-[1.5em] flex cursor-not-allowed justify-center rounded-xl bg-coming2  px-[15px] py-[6px] font-sans font-semibold normal-case">
             {project?.status}
-          </ComingSoon>
+          </Button>
         </article>
       </div>
     ));
-  }, [
-    loading,
-    latestProjects,
-    // handleProjectClick
-  ]);
+  }, [loading, latestProjects]);
 
   return (
-    <aside className="flex min-h-screen w-[30em] flex-col border-l border-bl bg-inherit px-[3em] py-[3em] font-sans text-memt1 shadow-md">
+    <aside className="flex min-h-screen w-[30em] flex-col border-l border-bl bg-inherit px-[3em] py-[3em] font-sans text-memt1">
       <section className="h-full">
         <article className="rounded-xl bg-Dh p-[1em] shadow-md">
           <header className="text-xl font-semibold">

@@ -106,21 +106,19 @@ const Contribution: React.FC = () => {
     <motion.main
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="mb-2 min-h-screen w-full font-sans"
+      className="mb-2 min-h-screen w-full"
     >
-      <header>
-        <DashboardHeader className="flex w-full items-center justify-center text-2xl md:text-3xl lg:mt-[2em] lg:text-xl">
-          Contribution Plan
-        </DashboardHeader>
-      </header>
+      <DashboardHeader className="flex items-center justify-center text-2xl md:text-3xl lg:mt-[2em] lg:text-xl">
+        Contribution Plan
+      </DashboardHeader>
 
-      <main className="lg:px-4">
-        <section className="w-full px-4 md:mt-8 lg:mt-10">
+      <main>
+        <section className="w-full md:mt-8 lg:mt-10">
           <article className="text-center text-gray-700">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md md:mx-8 lg:mx-auto lg:max-w-2xl"
+              className="mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md"
             >
               <div className="flex justify-end py-3">
                 <Button
@@ -243,7 +241,7 @@ const Contribution: React.FC = () => {
           </article>
         </section>
 
-        <section className="mx-auto mt-8 w-full max-w-4xl px-4 md:mt-10 lg:mt-12">
+        <section className="mt-8 w-full  md:mt-10 lg:mt-12">
           <header>
             <Typography variant="h1" className="text-xl font-bold md:text-2xl">
               My Savings

@@ -4,7 +4,6 @@ import useUserProfile, {
   useAllNotification,
   useAllProjects,
 } from "../../../shared/Hooks/useUserProfile";
-import { ComingSoon } from "../../common/Button";
 import { IoIosNotifications } from "react-icons/io";
 import useWalletBalance from "../../../shared/Hooks/useBalance";
 import ToggleButton from "../../../shared/utils/ToggleButton";
@@ -80,14 +79,12 @@ const Home = () => {
             >
               <Typography
                 variant="small"
-                className="font-medium uppercase text-text3"
+                className="text-xl font-medium uppercase text-text3"
               >
                 {project?.title}
               </Typography>
               <div className="mt-auto">
-                <ComingSoon className="bg-coming2">
-                  {project?.status}
-                </ComingSoon>
+                <Button className="bg-coming2">{project?.status}</Button>
               </div>
             </div>
           </article>
@@ -105,7 +102,7 @@ const Home = () => {
           content="Welcome to your dashboard. Manage your projects, wallet, and notifications."
         />
       </Helmet>
-      <main className="mb-8 w-full max-w-7xl px-5 font-sans lg:px-8">
+      <main className="mb-8">
         <header className="flex items-center justify-between py-4 sm:mt-4 lg:mt-10">
           <div className="font-medium">
             <Typography className="font-normal">Welcome Back!</Typography>
@@ -133,7 +130,7 @@ const Home = () => {
         </header>
 
         <section className="text-center text-text4">
-          <div className="mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-16 shadow-md md:mx-8 lg:mx-auto lg:max-w-2xl">
+          <div className="mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-16 shadow-md">
             <div className="flex justify-center gap-4 font-sans">
               <p className="font-medium">Total Balance</p>
               <div>
@@ -162,7 +159,7 @@ const Home = () => {
           </div>
         </section>
 
-        <div className="mt-8 flex w-full flex-col gap-[1.5em] lg:px-4">
+        <div className="mt-8 flex w-full flex-col gap-[1.5em]">
           <Button
             onClick={addFund}
             variant="text"
@@ -181,9 +178,7 @@ const Home = () => {
           </Button>
         </div>
 
-        <section className="mt-8 w-full px-4 sm:px-0">
-          {renderProjects()}
-        </section>
+        <section className="mt-8 w-full">{renderProjects()}</section>
         <React.Suspense fallback={<div>Loading...</div>}>
           <LoanModal open={isLoanModalOpen} onClose={closeLoanModal} />
         </React.Suspense>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Company, Contacts, Explore, Legal } from "../../data/Data";
+import { Company, Explore, Legal } from "../../data/Data";
 import X from "../../Assets/png/home/twitterx.png";
 import linkedin from "../../Assets/png/home/linkedin.png";
 import { useDispatch } from "react-redux";
@@ -40,24 +40,24 @@ const Footer = () => {
 
   return (
     <footer className="w-full overflow-hidden">
-      <header className="relative z-10 mx-auto mb-[-50px] flex w-full items-center justify-center rounded-2xl bg-[#CCA3BC] p-3 font-sans sm:mb-[-60px] sm:mt-[2em] sm:py-5 lg:mb-[-115px] lg:w-[90%] lg:p-8">
+      <header className="relative z-10 mx-auto mb-[-50px] mt-[3em] flex w-full items-center justify-center rounded-2xl bg-[#CCA3BC] p-3 font-sans sm:mb-[-60px] sm:py-5 lg:mb-[-115px] lg:w-[90%] lg:p-8">
         <div className="w-full px-2 text-center sm:px-4">
           <Typography
             variant="h1"
-            className="mb-1 text-sm font-semibold sm:text-lg md:text-xl lg:text-2xl"
+            className="mb-1 text-xl font-semibold md:text-xl lg:text-2xl"
           >
             Stay Ahead with Chain Co-op
           </Typography>
           <Typography
             variant="h1"
-            className="m-auto mb-3 w-full text-xs font-semibold sm:px-4 sm:text-base md:text-lg lg:w-[73%] lg:text-2xl"
+            className="m-auto mb-3 w-full text-sm font-semibold tracking-tight sm:px-4 md:text-lg lg:w-[73%] lg:text-2xl"
           >
             Subscribe to the latest tech in tech-driven cooperative innovations
             and Savings opportunities.
           </Typography>
           <form
             onSubmit={joinNews}
-            className="mx-auto flex w-full flex-col items-center justify-center gap-3 lg:max-w-[60%] lg:flex-row"
+            className="mx-auto mt-2 flex w-full flex-col items-center justify-center gap-3 lg:mt-8 lg:max-w-[60%] lg:flex-row"
           >
             <input
               type="email"
@@ -71,9 +71,9 @@ const Footer = () => {
               type="submit"
               disabled={loading}
               loading={loading}
-              className="flex min-w-[120px] items-center justify-center rounded-md bg-text2 px-10 py-2 text-sm text-text5 lg:text-sm"
+              className="flex min-w-[120px] items-center justify-center rounded-md bg-text2 px-10 py-3 text-sm normal-case text-text5 lg:text-sm"
             >
-              Join
+              <Typography className="font-medium">Join</Typography>
             </Button>
           </form>
         </div>

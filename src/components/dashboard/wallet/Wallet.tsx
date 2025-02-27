@@ -28,7 +28,7 @@ const Wallet = () => {
             Chain Coop Wallet
           </DashboardHeader>
         </header>
-        <div className="lg:px-7">
+        <div>
           <section className="text-center text-text4">
             <div className="flex justify-end px-5 py-[1.5em]">
               <button
@@ -39,7 +39,7 @@ const Wallet = () => {
               </button>
             </div>
 
-            <div className="mx-4 mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md sm:p-16 md:mx-8 lg:mx-auto lg:max-w-2xl">
+            <div className="mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md sm:p-16">
               <div className="flex justify-center gap-4 font-sans">
                 <p className="font-medium">Naira Wallet Balance</p>
                 <div>

@@ -89,12 +89,12 @@ const WhyChainCoop = () => {
     <div className="overflow-x-hidden">
       <NavBar />
       <main
-        className={`relative mb-[2em] font-sans transition-opacity duration-300 ${
+        className={`relative font-sans transition-opacity duration-300 lg:mb-[2em] ${
           isLoaded ? "opacity-100" : "opacity-0"
         }`}
       >
         <div
-          className="relative z-10 mb-[-28px] w-full"
+          className="relative z-10 w-full lg:mb-[-28px]"
           style={{
             backgroundImage: `url(${background})`,
             backgroundSize: "cover",
@@ -290,13 +290,13 @@ const WhyChainCoop = () => {
                 <div className="order-2 flex flex-1 flex-col gap-4 p-4 sm:p-6 md:order-1 lg:p-8">
                   <Typography
                     variant="h5"
-                    className="text-lg text-text2 sm:text-xl"
+                    className="text-center text-xl text-text2 lg:text-start lg:text-lg"
                   >
                     Blockchain-Powered Security
                   </Typography>
                   <Typography
                     variant="small"
-                    className="text-sm font-normal sm:text-base"
+                    className="text-center text-sm font-normal lg:text-start"
                   >
                     Your savings are protected by cutting-edge blockchain
                     technology, ensuring transparency, security, and peace of
@@ -319,13 +319,13 @@ const WhyChainCoop = () => {
                 <div className="order-2 flex flex-1 flex-col gap-4 p-4 sm:p-6 md:order-2 lg:p-8">
                   <Typography
                     variant="h5"
-                    className="text-lg text-text2 sm:text-xl"
+                    className="text-center text-xl text-text2 lg:text-start lg:text-lg"
                   >
                     Save in Multiple Currencies
                   </Typography>
                   <Typography
                     variant="small"
-                    className="text-sm font-normal sm:text-base"
+                    className="text-center text-sm font-normal lg:text-start"
                   >
                     Choose how you want to save—whether in dollars, naira,
                     cryptocurrencies, or even gold. Our platform adapts to your
@@ -349,13 +349,13 @@ const WhyChainCoop = () => {
                 <div className="order-2 flex flex-1 flex-col gap-4 p-4 sm:p-6 md:order-1 lg:p-8">
                   <Typography
                     variant="h5"
-                    className="text-lg text-text2 sm:text-xl"
+                    className="text-center text-xl text-text2 lg:text-start lg:text-lg"
                   >
                     Auto-Savings for Your Convenience
                   </Typography>
                   <Typography
                     variant="small"
-                    className="text-sm font-normal sm:text-base"
+                    className="text-center text-sm font-normal lg:text-start"
                   >
                     Take the hassle out of saving with our auto-savings feature.
                     Set your goal, customize your schedule, and watch your
@@ -375,12 +375,11 @@ const WhyChainCoop = () => {
         </div>
 
         <div
-          className="relative ml-auto w-full pb-[4em] sm:pb-[6em] lg:pb-[8em]"
+          className="lg:min-[100vh] relative ml-auto w-full pb-[4em] lg:pb-[8em]"
           style={{
             backgroundImage: `url(${background})`,
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
-            minHeight: "100vh",
           }}
         >
           <motion.section
@@ -398,13 +397,13 @@ const WhyChainCoop = () => {
                 <div className="order-2 flex flex-1 flex-col gap-4 p-4 sm:p-6 md:order-1 lg:p-8">
                   <Typography
                     variant="h5"
-                    className="text-lg text-text2 sm:text-xl"
+                    className="text-center text-xl text-text2 lg:text-start lg:text-lg"
                   >
                     Blockchain-Powered Security
                   </Typography>
                   <Typography
                     variant="small"
-                    className="text-sm font-normal sm:text-base"
+                    className="text-center text-sm font-normal lg:text-start"
                   >
                     Your savings are protected by cutting-edge blockchain
                     technology, ensuring transparency, security, and peace of
@@ -428,13 +427,13 @@ const WhyChainCoop = () => {
                 <div className="order-2 flex flex-1 flex-col gap-4 p-4 sm:p-6 md:order-2 lg:p-8">
                   <Typography
                     variant="h5"
-                    className="text-lg text-text2 sm:text-xl"
+                    className="text-center text-xl text-text2 lg:text-start lg:text-lg"
                   >
                     Save in Multiple Currencies
                   </Typography>
                   <Typography
                     variant="small"
-                    className="text-sm font-normal sm:text-base"
+                    className="text-center text-sm font-normal lg:text-start"
                   >
                     Choose how you want to save—in dollars, naira,
                     cryptocurrencies, or even gold. Our platform adapts to your

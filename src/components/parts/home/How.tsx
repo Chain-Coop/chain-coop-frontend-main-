@@ -63,11 +63,11 @@ const How = () => {
           whileInView={{ opacity: 1, y: 0 }}
           initial={{ opacity: 0, y: -100 }}
           transition={{ duration: 0.5 }}
-          className="text-2xl font-bold lg:text-3xl"
+          className="text-3xl font-bold tracking-tight md:text-3xl lg:text-4xl"
         >
           How It Works
         </MotionTypography>
-        <Typography variant="small" className="font-medium">
+        <Typography className="font-medium tracking-tight">
           3 Simple Steps to Start Saving
         </Typography>
       </header>

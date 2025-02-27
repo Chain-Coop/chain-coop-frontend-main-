@@ -16,7 +16,8 @@ import { toast } from "react-toastify";
 import ReactLoading from "react-loading";
 import "../../../general.css";
 import { AppDispatch } from "../../../shared/redux/store";
-import { Button } from "@material-tailwind/react";
+import { Button, Typography } from "@material-tailwind/react";
+import FormInput from "../../common/FormInput";
 
 const Contact = () => {
   const [loading, setLoading] = useState(false);
@@ -68,101 +69,82 @@ const Contact = () => {
             <h1 className="text-2xl font-semibold md:text-3xl lg:text-[2.5em]">
               CONTACT US
             </h1>
-            <p className="mt-2 text-sm">
+            <Typography
+              variant="small"
+              className="mt-2 font-normal tracking-tight"
+            >
               Meet our Chain Coop, our business-oriented community designed into
               a cooperative with open membership, through Chain Wallet Simple,
-              Safe and transparent way
-            </p>
+              Safe and transparent way.
+            </Typography>
           </header>
 
           <div className="mt-8 flex flex-col md:mt-12 lg:ml-auto lg:mt-[5em] lg:w-[90%] lg:flex-row">
-            <div className="w-full px-4 sm:px-6 md:px-8 lg:w-[75%] lg:p-3">
+            <div className="w-full px-4 sm:px-6 md:px-8 lg:w-[70%] lg:p-3">
               <form onSubmit={sendMessage} className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-lg font-medium">
-                    Name
-                  </label>
-                  <input
-                    onChange={(e) => setName(e.target.value)}
-                    type="text"
-                    className="mt-2 w-full rounded-md border p-4 shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-                    placeholder="enter your name"
-                  />
-                </div>
+                <FormInput
+                  label="Name"
+                  type="text"
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Enter your name"
+                  disabled={loading}
+                  className="rounded-md"
+                />
+                <FormInput
+                  label="Email"
+                  type="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  autoComplete="new-email"
+                  disabled={loading}
+                  className="rounded-md"
+                />
 
-                <div>
-                  <label htmlFor="email" className="block text-lg font-medium">
-                    Email Address
-                  </label>
-                  <input
-                    type="text"
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="mt-2 w-full rounded-md border p-4 shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-                    placeholder="enter your e-mail"
-                  />
-                </div>
+                <FormInput
+                  label="Phone Number"
+                  type="number"
+                  onChange={(e) => setPhone_Number(e.target.value)}
+                  placeholder="Enter your phone number"
+                  disabled={loading}
+                  className="rounded-md"
+                />
 
-                <div>
-                  <label
-                    htmlFor="phoneNumber"
-                    className="block text-lg font-medium"
-                  >
-                    Phone Number
-                  </label>
-                  <input
-                    onChange={(e) => setPhone_Number(e.target.value)}
-                    type="text"
-                    className="mt-2 w-full rounded-md border p-4 shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-                    placeholder="enter your phone number"
+                <label htmlFor="message" className="block text-lg font-medium">
+                  Message
+                </label>
+                <div className="custom-ckeditor mt-2 w-full rounded-md border shadow-md focus:border-text2 focus:outline-none focus:ring-text2">
+                  <CKEditor
+                    editor={ClassicEditor}
+                    onChange={(event, editor) => {
+                      const data = editor.getData();
+                      setMessage(data);
+                    }}
+                    config={{
+                      toolbar: [
+                        "Bold",
+                        "Italic",
+                        "|",
+                        "NumberedList",
+                        "BulletedList",
+                        "|",
+                        "Outdent",
+                        "Indent",
+                      ],
+                      placeholder: "Write something...",
+                      removePlugins: ["CKEditorLogo"],
+                    }}
                   />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="message"
-                    className="block text-lg font-medium"
-                  >
-                    Message
-                  </label>
-                  <div className="custom-ckeditor mt-2 w-full rounded-md border shadow-md focus:border-text2 focus:outline-none focus:ring-text2">
-                    <CKEditor
-                      editor={ClassicEditor}
-                      onChange={(event, editor) => {
-                        const data = editor.getData();
-                        setMessage(data);
-                      }}
-                      config={{
-                        toolbar: [
-                          "Bold",
-                          "Italic",
-                          "|",
-                          "NumberedList",
-                          "BulletedList",
-                          "|",
-                          "Outdent",
-                          "Indent",
-                        ],
-                        placeholder: "Write something...",
-                        removePlugins: ["CKEditorLogo"],
-                      }}
-                    />
-                  </div>
                 </div>
 
                 <Button
                   type="submit"
-                  className="w-full bg-text2 px-6 py-3 text-text5 md:w-auto lg:px-[2.5em]"
+                  loading={loading}
+                  disabled={loading}
+                  className="w-[12rem] bg-text2 px-8 py-3 text-sm normal-case text-text5 lg:px-[3em]"
                 >
-                  {loading ? (
-                    <ReactLoading
-                      color="#FFFFFF"
-                      width={25}
-                      height={25}
-                      type="spin"
-                    />
-                  ) : (
-                    "Send"
-                  )}
+                  <Typography className="font-normal">
+                    {!loading ? "Send" : ""}
+                  </Typography>
                 </Button>
               </form>
             </div>
@@ -181,7 +163,9 @@ const Contact = () => {
                     </div>
                     <div className="flex items-center gap-2 rounded-md bg-fbg p-2">
                       <MdMedicalInformation size={20} fill="white" />
-                      <p className="text-sm">info@Chainerative.com.ng</p>
+                      <Typography variant="small">
+                        info@Chainerative.com.ng
+                      </Typography>
                     </div>
                   </div>
 
@@ -189,9 +173,9 @@ const Contact = () => {
                     <h1 className="mb-1 text-lg font-semibold">Find Us</h1>
                     <div className="flex items-start gap-2">
                       <CiLocationOn size={20} fill="white" className="mt-1" />
-                      <p className="text-sm">
+                      <Typography variant="small">
                         No 9. Ogulano Street, Ikosi Ketu, Lagos. Nigeria
-                      </p>
+                      </Typography>
                     </div>
                   </div>
 

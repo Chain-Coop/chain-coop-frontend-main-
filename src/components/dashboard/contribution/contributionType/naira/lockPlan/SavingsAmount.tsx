@@ -11,7 +11,8 @@ const SavingsAmount = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [error, setError] = useState("");
-  const { purpose, plan, currency, savingsType, contributionType } = location.state || {};
+  const { purpose, plan, currency, savingsType, contributionType } =
+    location.state || {};
 
   const formatAmount = (value: string) => {
     const numbers = value.replace(/\D/g, "");
@@ -45,7 +46,7 @@ const SavingsAmount = () => {
           amount: numericAmount,
           currency,
           savingsType,
-          contributionType
+          contributionType,
         },
       });
     }
@@ -56,7 +57,7 @@ const SavingsAmount = () => {
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
         Lock Savings
       </DashboardHeader>
-      <div className="m-auto w-[90%]">
+      <div>
         <header className="mt-[1.5em] flex flex-col justify-center text-center lg:mt-[3em]">
           <h1 className="text-center text-2xl font-bold">
             {plan} Contribution
@@ -64,7 +65,10 @@ const SavingsAmount = () => {
           <p>Enter the amount you want to save</p>
         </header>
         <div className="mt-[2em]">
-          <label htmlFor="amount" className="mb-3 font-semibold flex text-text2">
+          <label
+            htmlFor="amount"
+            className="mb-3 flex font-semibold text-text2"
+          >
             Enter the amount
           </label>
           <div className="relative">
@@ -76,7 +80,7 @@ const SavingsAmount = () => {
               onChange={handleAmountChange}
               placeholder="0"
               className={`input mb-5 h-[4em] w-full rounded-full border-[1px] pl-8 pr-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2 ${
-                error ? 'border-red-500 bg-red-50' : ''
+                error ? "border-red-500 bg-red-50" : ""
               }`}
             />
           </div>
@@ -85,7 +89,7 @@ const SavingsAmount = () => {
               {error}
             </Alert>
           )}
-        
+
           <div className="mt-[3em] flex justify-between">
             <button
               onClick={() => navigate(-1)}

@@ -13,32 +13,7 @@ import { UpdateUserPool } from "../../../../../../shared/redux/slices/kyc.slices
 import { toast } from "react-toastify";
 import { Typography } from "@material-tailwind/react";
 import { SavingsPlan } from "./modals/SavingsPlan";
-
-const ContributionListSkeleton: React.FC = () => (
-  <div className="mt-[1em] flex h-auto w-full flex-col gap-[1em] rounded-lg bg-text2 px-2 py-[3em] text-center">
-    {Array.from({ length: 3 }).map((_, index) => (
-      <motion.div
-        key={index}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: index * 0.1 }}
-        className="flex w-[90%] animate-pulse flex-col gap-2 rounded-3xl bg-white px-[1.5em] py-2"
-      >
-        <div className="flex justify-between">
-          <div className="h-4 w-1/4 rounded bg-gray-200"></div>
-          <div className="h-4 w-1/4 rounded bg-gray-200"></div>
-        </div>
-        <div className="flex justify-between">
-          <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-full bg-gray-200"></div>
-            <div className="h-6 w-24 rounded bg-gray-200"></div>
-          </div>
-          <div className="h-6 w-32 rounded bg-gray-200"></div>
-        </div>
-      </motion.div>
-    ))}
-  </div>
-);
+import { ContributionListSkeleton } from "../../../../../common/Loading";
 
 const CryptoSavings: React.FC = () => {
   const navigate = useNavigate();
@@ -73,13 +48,6 @@ const CryptoSavings: React.FC = () => {
     );
     return `Ends in ${daysRemaining} Days`;
   };
-
-  // const navigateToContributionDetails = (contributionId: string) => {
-  //   if (!contributionId) return;
-  //   navigate(`/dashboard/contribution/contribution_details`, {
-  //     state: { contributionId },
-  //   });
-  // };
 
   const handleSavingsTypeChange = (type: "naira" | "crypto") => {
     setSavingsType(type);
@@ -154,13 +122,13 @@ const CryptoSavings: React.FC = () => {
         </DashboardHeader>
       </header>
 
-      <main className="px-3 sm:px-4 lg:px-6">
-        <section className="mx-auto w-full max-w-4xl">
+      <main>
+        <section>
           <article className="text-center text-gray-700">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md md:mx-8 lg:mx-auto lg:max-w-2xl"
+              className="mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md"
             >
               <div className="flex justify-end py-2">
                 <button
@@ -189,7 +157,7 @@ const CryptoSavings: React.FC = () => {
                 />
               </div>
 
-              <div className="mx-auto mt-4 w-full max-w-[240px] rounded-md sm:mt-6">
+              <div className="mt-4 w-full rounded-md sm:mt-6">
                 {cryptoBalanceLoading ? (
                   <div className="h-6 animate-pulse rounded bg-gray-200 sm:h-8"></div>
                 ) : isContributionVisible ? (
@@ -203,7 +171,7 @@ const CryptoSavings: React.FC = () => {
               </div>
             </motion.div>
 
-            <section className="mt-6 md:mt-8">
+            <section className="mt-6 lg:mt-8">
               <div className="grid w-[80%] grid-cols-1 gap-4 md:grid-cols-2">
                 <Link to="/dashboard/contribution/flexible/crypto_purpose">
                   <motion.button
@@ -230,7 +198,7 @@ const CryptoSavings: React.FC = () => {
           </article>
         </section>
 
-        <section className="mx-auto mt-6 w-full max-w-4xl sm:mt-8 lg:mt-10">
+        <section className="mt-6 w-full sm:mt-8 lg:mt-10">
           <header>
             <h1 className="text-lg font-bold sm:text-xl lg:text-2xl">
               My Savings
@@ -240,7 +208,7 @@ const CryptoSavings: React.FC = () => {
           {poolsLoading ? (
             <ContributionListSkeleton />
           ) : userPools?.length > 0 ? (
-            <div className="mt-4 flex h-auto flex-col gap-3 rounded-lg bg-text2 p-3 text-center sm:mt-6 sm:gap-4 sm:p-4 lg:p-6">
+            <div className="p3 mt-4 flex h-auto flex-col gap-3 rounded-lg bg-text2 text-center sm:mt-6 sm:gap-4">
               {userPools?.map((pools: any) => (
                 <motion.div
                   key={pools.poolIndex}

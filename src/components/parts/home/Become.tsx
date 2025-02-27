@@ -30,15 +30,15 @@ const Become = () => {
   };
 
   return (
-    <main className="min-h-screen w-full px-4 py-8 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
-        <header className="mb-8 flex flex-col items-center gap-6 text-center text-text4 md:mb-12">
+    <main className="mt-10 lg:mt-16">
+      <div>
+        <header className="flex flex-col items-center text-center text-text4">
           <MotionTypography
             variant="h1"
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: -100 }}
             transition={{ duration: 0.5 }}
-            className="text-xl font-bold sm:text-2xl md:text-3xl lg:text-4xl"
+            className="text-2xl font-bold md:text-3xl lg:text-4xl"
           >
             Build your digital wealth through{" "}
             <span className="text-text2">savings</span>
@@ -47,49 +47,52 @@ const Become = () => {
           <MotionTypography
             whileInView={{ opacity: 1, x: 0 }}
             initial={{ opacity: 0 }}
-            className="max-w-2xl text-sm font-normal sm:text-base md:text-lg"
+            className="mt-3 max-w-2xl font-normal lg:text-lg"
           >
             Your journey to wealth starts here.
           </MotionTypography>
 
           <Link to={ROUTES.sign_up}>
-            <Button className="bg-text2 px-8 py-3 text-sm font-semibold text-text5 transition-all hover:opacity-90 sm:text-base">
+            <Button className="mt-3 bg-text2 px-8 py-3 text-sm font-semibold normal-case text-text5 transition-all hover:opacity-90 sm:text-base">
               Start Growing Your Wealth
             </Button>
           </Link>
         </header>
-
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 gap-4 sm:gap-6 md:gap-8 lg:grid-cols-2"
-        >
-          {becomeData.map((item, index) => (
+        <section className="container mx-auto px-4 lg:max-w-[75%] lg:px-0">
+          <div>
             <motion.div
-              key={index}
-              variants={itemVariant}
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              className="h-full"
+              variants={container}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:gap-6"
             >
-              <Card className="flex h-full flex-col p-4 sm:p-6 md:p-8">
-                <div className="flex-grow">
-                  <Typography
-                    variant="h2"
-                    className="mb-3 text-base font-bold sm:text-lg md:text-xl lg:mb-4"
-                  >
-                    {item.title}
-                  </Typography>
-                  <Typography className="text-sm font-normal sm:text-base">
-                    {item.paragraph}
-                  </Typography>
-                </div>
-              </Card>
+              {becomeData.map((item, index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariant}
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  className="h-full"
+                >
+                  <Card className="flex flex-col p-8">
+                    <div className="flex-grow">
+                      <Typography
+                        variant="h2"
+                        className="mb-4 text-xl font-bold tracking-tight lg:text-xl"
+                      >
+                        {item.title}
+                      </Typography>
+                      <Typography className="text-sm font-normal">
+                        {item.paragraph}
+                      </Typography>
+                    </div>
+                  </Card>
+                </motion.div>
+              ))}
             </motion.div>
-          ))}
-        </motion.div>
+          </div>
+        </section>
       </div>
     </main>
   );

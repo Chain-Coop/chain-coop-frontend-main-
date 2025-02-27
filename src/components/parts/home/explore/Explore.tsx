@@ -10,15 +10,15 @@ import { ROUTES } from "../../../../shared/routes";
 
 const Explore = () => {
   return (
-    <main className="flex min-h-screen w-full flex-col items-center justify-start px-3 font-sans md:px-6 lg:px-8">
-      <section className="w-full max-w-7xl">
-        <header className="mx-auto max-w-3xl py-6 text-center text-text4 md:py-8 lg:py-12">
+    <main className="container mx-auto mt-5 max-w-[95%] px-3 font-sans md:mt-0  lg:mt-0 lg:px-8">
+      <section className="w-full">
+        <header className="mx-auto w-full py-6 text-center text-text4 md:py-8 lg:max-w-3xl lg:py-12">
           <MotionTypography
             variant="h1"
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: -100 }}
             transition={{ duration: 0.5 }}
-            className="mb-4 text-2xl font-bold md:text-3xl lg:text-4xl"
+            className="text-2xl font-bold md:text-3xl lg:text-4xl"
           >
             Savings Made Simple
           </MotionTypography>
@@ -27,14 +27,14 @@ const Explore = () => {
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: -100 }}
             transition={{ duration: 0.5 }}
-            className="mx-auto max-w-xl px-3"
+            className="mx-auto mt-3 max-w-xl px-3"
           >
             <Typography className="mb-6 text-sm font-normal md:text-base lg:text-lg">
               Join hundreds of others using our smart lock savings options.
             </Typography>
 
             <Link to={ROUTES.sign_up} className="inline-block">
-              <Button className="bg-text2 px-8 py-3 text-sm font-semibold text-text5 transition-all hover:opacity-90 md:text-base">
+              <Button className="bg-text2 px-8 py-3 text-sm font-semibold normal-case text-text5 transition-all hover:opacity-90 md:text-base">
                 Start Saving
               </Button>
             </Link>
@@ -65,7 +65,7 @@ const Explore = () => {
               tags: ["Smartsave", "Easy Entry", "Simple Withdrawal"],
             },
           ].map((item, index) => (
-            <div key={index} className="card mx-auto w-full max-w-[374px]">
+            <div key={index} className="card mx-auto w-full lg:max-w-[374px]">
               <div className="poster">
                 <img src={item.image} alt={item.title} />
               </div>

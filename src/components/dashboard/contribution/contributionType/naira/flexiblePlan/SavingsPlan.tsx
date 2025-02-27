@@ -18,7 +18,13 @@ const SavingsPlan = () => {
     if (contributionPlan) {
       setError("");
       navigate("/dashboard/contribution/amount", {
-        state: { purpose, plan: contributionPlan, currency, savingsType,contributionType  },
+        state: {
+          purpose,
+          plan: contributionPlan,
+          currency,
+          savingsType,
+          contributionType,
+        },
       });
     } else {
       setError("Please select a contribution plan");
@@ -30,7 +36,7 @@ const SavingsPlan = () => {
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
         Flexible Savings
       </DashboardHeader>
-      <div className="m-auto w-[90%] max-w-[1200px]">
+      <div>
         <header className="mt-[1.5em] flex flex-col justify-center gap-2 text-center lg:mt-[3em]">
           <h1 className="text-center text-xl font-bold sm:text-2xl">
             Savings Duration

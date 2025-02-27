@@ -55,7 +55,7 @@ const Dashboard = () => {
       <aside className="custom-scroll-bar hidden h-screen overflow-y-auto lg:block lg:w-[22%]">
         <Sidebar />
       </aside>
-      <section className="custom-scroll-bar h-screen flex-1 overflow-y-auto sm:w-full lg:w-[55%]">
+      <section className="custom-scroll-bar container h-screen flex-1 overflow-y-auto px-4 lg:px-7">
         <nav className="sm:block lg:hidden">
           <DashboardNav />
         </nav>
