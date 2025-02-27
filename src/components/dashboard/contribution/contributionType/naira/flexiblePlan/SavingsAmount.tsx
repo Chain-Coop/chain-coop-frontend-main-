@@ -46,7 +46,7 @@ const SavingsAmount = () => {
           amount: numericAmount,
           currency,
           savingsType,
-          contributionType
+          contributionType,
         },
       });
     }
@@ -64,7 +64,7 @@ const SavingsAmount = () => {
           </h1>
           <p className="font-medium">Enter the amount suitable to you</p>
         </header>
-        <div className="mt-[2em]">
+        <div className="mt-6 lg:mt-[2em]">
           <label
             htmlFor="amount"
             className="mb-3 flex font-semibold text-text2"

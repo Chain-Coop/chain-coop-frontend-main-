@@ -117,7 +117,7 @@ const CryptoMain = () => {
         <section className="text-center text-text4">
           <div className="flex flex-col gap-3 py-[1.5em] sm:flex-row sm:justify-between sm:gap-4">
             {profileDetails?.isWalletActivated === true && (
-              <div className="flex w-full transform items-center justify-center gap-2 rounded-lg border-2 border-text2 bg-[#ECE6F2] px-3 py-2 font-medium text-text2 transition-all duration-300 hover:scale-105 active:scale-95 sm:w-auto sm:justify-start lg:py-2">
+              <div className="flex transform items-center justify-center gap-2 rounded-lg border-2 border-text2 bg-[#ECE6F2] px-3 py-2 font-medium text-text2 transition-all duration-300 hover:scale-105 active:scale-95 sm:w-auto sm:justify-start lg:py-2">
                 Wallet Activated
                 <img src={walletActivated} alt="walletActivated" />
               </div>
@@ -269,7 +269,7 @@ const CryptoMain = () => {
           </div>
         </section>
 
-        <section className="mt-6 rounded-3xl border-[2px] border-gray-300 px-4 shadow-md lg:w-[25em]">
+        <section className="my-8 rounded-3xl border-[2px] border-gray-300 px-4  shadow-md lg:w-[25em]">
           <div className="flex items-center justify-between px-4 py-8 font-semibold text-howtext lg:px-10">
             <Link to="">
               <motion.button

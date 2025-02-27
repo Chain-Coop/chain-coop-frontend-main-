@@ -115,11 +115,9 @@ const CryptoSavings: React.FC = () => {
       animate={{ opacity: 1 }}
       className="min-h-screen w-full font-sans"
     >
-      <header>
-        <DashboardHeader className="flex w-full items-center justify-center text-xl sm:text-2xl lg:mt-6 lg:text-2xl">
-          Contribution Plan
-        </DashboardHeader>
-      </header>
+      <DashboardHeader className="flex items-center justify-center text-2xl md:text-3xl lg:mt-[2em] lg:text-xl">
+        Contribution Plan
+      </DashboardHeader>
 
       <main>
         <section>
@@ -160,13 +158,11 @@ const CryptoSavings: React.FC = () => {
                 {cryptoBalanceLoading ? (
                   <div className="h-6 animate-pulse rounded bg-gray-200 sm:h-8"></div>
                 ) : isContributionVisible ? (
-                  <p className="text-lg font-bold sm:text-xl lg:text-2xl">
-                    ${Balance}
-                  </p>
+                  <p className="text-xl font-bold lg:text-2xl">${Balance}</p>
                 ) : (
                   <p className="text-lg font-bold sm:text-xl">*********</p>
                 )}
-                <hr className="mt-3 h-[1px] rounded-md bg-howtext sm:mt-4" />
+                <hr className="mt-[1em] h-[1px] rounded-md bg-howtext" />
               </div>
             </motion.div>
 

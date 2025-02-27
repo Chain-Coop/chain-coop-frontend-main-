@@ -216,7 +216,7 @@ const StartDate: React.FC = () => {
       </DashboardHeader>
 
       <div>
-        <header className="mt-[1.5em] flex flex-col justify-center text-center lg:mt-[3em]">
+        <header className="mt-[1em] flex flex-col justify-center text-center lg:mt-[3em]">
           <h1 className="text-center text-2xl font-bold">
             {plan} Contribution
           </h1>
@@ -226,7 +226,7 @@ const StartDate: React.FC = () => {
           </p>
         </header>
 
-        <div className="mt-[2em]">
+        <div className="mt-6 lg:mt-[2em]">
           <label className="mb-3 flex font-semibold">Start Date (Today)</label>
           <p className="input mb-5 flex h-[4em] w-full items-center rounded-lg border-[1px] bg-gray-100 px-4 text-sm shadow-md">
             {formattedStartDate}
@@ -318,7 +318,7 @@ const StartDate: React.FC = () => {
           </Alert>
         )}
 
-        <div className="mt-[3em]">
+        <div className="mt-4 lg:mt-[3em]">
           <Button
             onClick={handleSubmit}
             disabled={loading || (!endDate && !customEndDate)}

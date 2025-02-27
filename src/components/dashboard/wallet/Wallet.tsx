@@ -68,7 +68,7 @@ const Wallet = () => {
             </div>
           </section>
 
-          <section className="mx-auto mt-6 rounded-3xl px-4 shadow-md">
+          <section className="my-8 rounded-3xl border-[1px] border-gray-300 px-4 shadow-md">
             <div className="flex items-center justify-between gap-4 px-3 py-8 font-semibold text-howtext sm:gap-8 lg:px-10">
               <Link to="/dashboard/wallet/withdraw">
                 <motion.div
@@ -94,9 +94,7 @@ const Wallet = () => {
             </div>
           </section>
 
-          <section className="py-[1.5em]">
-            <History />
-          </section>
+          <History />
         </div>
       </div>
     </main>

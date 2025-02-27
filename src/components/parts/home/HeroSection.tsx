@@ -19,18 +19,16 @@ const HeroSection = () => {
     <main className="relative flex w-full flex-col font-sans lg:min-h-screen lg:flex-row">
       <div className="flex items-center  py-8 lg:w-1/2 lg:py-24">
         <div className="container mx-auto max-w-[90%]">
-          <div className="mb-6 lg:mb-8">
-            <MotionTypography
-              variant="h1"
-              variants={container(0.5)}
-              initial="hidden"
-              animate="visible"
-              className="text-2xl font-bold tracking-tight lg:text-4xl"
-            >
-              Save Smarter, Grow <br /> Faster{" "}
-              <span className="text-text2">with Chain Co-op</span>
-            </MotionTypography>
-          </div>
+          <MotionTypography
+            variant="h1"
+            variants={container(0.5)}
+            initial="hidden"
+            animate="visible"
+            className="mb-2 text-2xl font-bold tracking-tight lg:mb-8 lg:text-4xl"
+          >
+            Save Smarter, Grow <br /> Faster{" "}
+            <span className="text-text2">with Chain Co-op</span>
+          </MotionTypography>
           <MotionTypography
             variants={container(1)}
             initial="hidden"

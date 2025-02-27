@@ -64,7 +64,7 @@ const SavingsAmount = () => {
           </h1>
           <p>Enter the amount you want to save</p>
         </header>
-        <div className="mt-[2em]">
+        <div className="mt-4 lg:mt-[2em]">
           <label
             htmlFor="amount"
             className="mb-3 flex font-semibold text-text2"

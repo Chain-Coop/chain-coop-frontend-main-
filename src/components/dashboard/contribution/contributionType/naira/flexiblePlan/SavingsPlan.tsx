@@ -38,7 +38,7 @@ const SavingsPlan = () => {
       </DashboardHeader>
       <div>
         <header className="mt-[1.5em] flex flex-col justify-center gap-2 text-center lg:mt-[3em]">
-          <h1 className="text-center text-xl font-bold sm:text-2xl">
+          <h1 className="text-center text-xl font-bold lg:text-xl">
             Savings Duration
           </h1>
           <p className="text-sm sm:text-base">

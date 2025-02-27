@@ -42,7 +42,7 @@ const ContributionCurrencyType = () => {
           <h1 className="text-2xl font-bold md:text-2xl lg:text-2xl">
             Lock Savings
           </h1>
-          <p className="mt-[1em] font-medium">
+          <p className="mt-2 font-medium lg:mt-[1em]">
             You can save and withdraw anytime you want
           </p>
         </header>

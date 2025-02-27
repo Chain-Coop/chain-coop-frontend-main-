@@ -75,7 +75,7 @@ const Become = () => {
                   transition={{ type: "spring", stiffness: 300 }}
                   className="h-full"
                 >
-                  <Card className="flex flex-col p-16">
+                  <Card className="flex flex-col p-6 lg:p-16">
                     <div className="flex-grow">
                       <Typography
                         variant="h2"
