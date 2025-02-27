@@ -113,7 +113,7 @@ const Contribution: React.FC = () => {
       </DashboardHeader>
 
       <main>
-        <section className="w-full md:mt-8 lg:mt-10">
+        <section className="mt-6 w-full md:mt-8 lg:mt-10">
           <article className="text-center text-gray-700">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
@@ -153,7 +153,7 @@ const Contribution: React.FC = () => {
                 {isBalanceLoading ? (
                   <div className="h-8 animate-pulse rounded bg-gray-200"></div>
                 ) : isContributionVisible ? (
-                  <Typography className="font-bold sm:text-xl lg:text-xl">
+                  <Typography className="text-xl font-bold lg:text-xl">
                     {formattedBalance}
                   </Typography>
                 ) : (

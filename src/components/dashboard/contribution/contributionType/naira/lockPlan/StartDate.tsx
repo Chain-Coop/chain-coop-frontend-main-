@@ -211,7 +211,7 @@ const StartDate: React.FC = () => {
             contribution amount
           </p>
         </header>
-        <div className="mt-[2em]">
+        <div className="mt-4 lg:mt-[2em]">
           <label className="mb-3 flex font-semibold">Start Date (Today)</label>
           <p className="input mb-5 flex h-[4em] w-full items-center rounded-lg border-[1px] bg-gray-100 px-4 text-sm shadow-md">
             {formattedStartDate}
@@ -300,7 +300,7 @@ const StartDate: React.FC = () => {
             {error}
           </Alert>
         )}
-        <div className="mt-[3em]">
+        <div className="mt-4 lg:mt-[3em]">
           <Button
             onClick={handleSubmit}
             disabled={loading || (!endDate && !customEndDate)}

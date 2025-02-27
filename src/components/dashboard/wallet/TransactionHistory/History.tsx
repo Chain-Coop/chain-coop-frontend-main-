@@ -41,9 +41,9 @@ const History = () => {
 
   return (
     <main className="font-sans">
-      <div className="mt-[3em] flex flex-col gap-[1.5em]">
+      <div className="flex flex-col gap-[1.5em] py-6">
         <div className="flex items-center justify-between px-2">
-          <h1 className="text-lg font-semibold text-memt1 md:text-xl">
+          <h1 className="text-xl font-semibold text-memt1 lg:text-xl">
             Recent Transactions
           </h1>
           {getTransaction && getTransaction.length > 3 && (

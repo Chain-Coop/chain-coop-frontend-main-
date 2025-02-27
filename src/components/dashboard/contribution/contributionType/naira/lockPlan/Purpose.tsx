@@ -50,7 +50,7 @@ const Purpose = () => {
         <header className="mt-[1.5em] flex flex-col gap-2 lg:mt-[3em]">
           <h1 className="text-2xl font-bold">Lock Savings</h1>
         </header>
-        <header className="mt-[1.5em]">
+        <header className="mt-2 lg:mt-[1.5em]">
           <h1 className="text-xl font-semibold">What are you saving on ?</h1>
         </header>
 
