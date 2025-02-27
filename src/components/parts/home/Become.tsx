@@ -75,7 +75,7 @@ const Become = () => {
                   transition={{ type: "spring", stiffness: 300 }}
                   className="h-full"
                 >
-                  <Card className="flex flex-col p-8">
+                  <Card className="flex flex-col p-16">
                     <div className="flex-grow">
                       <Typography
                         variant="h2"
@@ -83,7 +83,7 @@ const Become = () => {
                       >
                         {item.title}
                       </Typography>
-                      <Typography className="text-sm font-normal">
+                      <Typography className="text-sm font-normal leading-normal">
                         {item.paragraph}
                       </Typography>
                     </div>

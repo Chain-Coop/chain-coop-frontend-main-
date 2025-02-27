@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
 import { MotionTypography } from "../../common/motionTypography";
 import { Button, Typography } from "@material-tailwind/react";
+import { FaArrowRight } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+import { ROUTES } from "../../../shared/routes";
 
 const How = () => {
   const stepsData = [
@@ -56,7 +59,7 @@ const How = () => {
   };
 
   return (
-    <main className="m-auto mt-[3em] w-[90%] font-sans sm:px-[1em] lg:mt-[8em]">
+    <main className="m-auto mb-8 mt-[3em] w-[90%] font-sans sm:px-[1em] lg:mt-[8em]">
       <header className="flex flex-col justify-center gap-3 text-center">
         <MotionTypography
           variant="h1"
@@ -115,9 +118,15 @@ const How = () => {
           It's not just savings—it's smarter, more secure, and more rewarding
           savings.
         </Typography>
-        <Button className="mx-auto border border-text2" variant="outlined">
-          <span>Sign Up for Free</span>
-        </Button>
+        <Link to={ROUTES.sign_in}>
+          <Button
+            className="mx-auto flex items-center gap-3 border-[2px] border-text2 text-text2"
+            variant="outlined"
+          >
+            <Typography className="font-semibold">Sign Up for Free</Typography>
+            <FaArrowRight size={20} />
+          </Button>
+        </Link>
       </div>
     </main>
   );
