@@ -169,13 +169,14 @@ const Contribution: React.FC = () => {
               <div className="flex justify-between">
                 <Button
                   variant="text"
-                  className="flex w-fit items-center bg-text2 px-4 py-3 text-center normal-case transition-all duration-300 hover:bg-text2 hover:bg-opacity-90 hover:shadow-lg"
+                  className="flex w-fit items-center bg-text2 px-2 py-3 text-center normal-case transition-all duration-300 hover:bg-text2 hover:bg-opacity-90 hover:shadow-lg sm:px-3 md:px-3.5 lg:px-4 xl:px-5"
                 >
                   <CheckMark />
-                  <Typography className="text-sm font-semibold text-text5 sm:text-base">
+                  <Typography className="text-sm font-semibold text-text5">
                     Auto Savings
                   </Typography>
                 </Button>
+
                 <Badge
                   content="Coming Soon"
                   className="rounded-md"
@@ -184,9 +185,9 @@ const Contribution: React.FC = () => {
                   <Button
                     disabled
                     variant="text"
-                    className="w-fit border border-gray-500 bg-white px-4 py-3 text-center normal-case transition-all duration-300 hover:shadow-lg"
+                    className="w-fit border border-gray-500 bg-white px-2 py-3 text-center normal-case transition-all duration-300 hover:shadow-lg sm:px-3 md:px-3.5 lg:px-4 xl:px-5"
                   >
-                    <Typography className="text-sm font-semibold text-gray-500 sm:text-base">
+                    <Typography className="text-sm font-semibold text-gray-500">
                       One-Time Savings
                     </Typography>
                   </Button>
@@ -197,7 +198,7 @@ const Contribution: React.FC = () => {
               <Typography className="flex-start flex py-4 font-medium">
                 Choose your savings type
               </Typography>
-              <div className="grid w-[80%] grid-cols-1 gap-4 md:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
                 <Link
                   to={ROUTES.flexibleContributionType}
                   state={{ savingsType: "Flexible", contributionType: "auto" }}
@@ -205,7 +206,7 @@ const Contribution: React.FC = () => {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 lg:py-2 lg:text-lg"
+                    className="w-full rounded-full border-[2px] border-gray-300 bg-inherit py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 lg:text-lg"
                   >
                     Flexible Savings
                   </motion.button>
@@ -218,7 +219,7 @@ const Contribution: React.FC = () => {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:text-lg lg:px-4 lg:py-2"
+                    className="w-full rounded-full border-[2px] border-gray-300 bg-inherit py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 lg:text-lg"
                   >
                     Lock Savings
                   </motion.button>
@@ -231,7 +232,7 @@ const Contribution: React.FC = () => {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:text-lg lg:px-4 lg:py-2"
+                    className="w-full rounded-full border-[2px] border-gray-300 bg-inherit py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 lg:text-lg"
                   >
                     Strict Lock Savings
                   </motion.button>
@@ -242,7 +243,7 @@ const Contribution: React.FC = () => {
           </article>
         </section>
 
-        <section className="mt-8 w-full  md:mt-10 lg:mt-10">
+        <section className="mt-6 w-full  md:mt-10 lg:mt-8">
           <header>
             <Typography
               variant="h1"
