@@ -64,7 +64,7 @@ const History = () => {
               return (
                 <div
                   key={index}
-                  className="flex flex-col gap-[10px] rounded-lg px-3 py-[1em] shadow-md md:px-[1.5em]"
+                  className="flex flex-col gap-[10px] rounded-lg border border-gray-300 px-3 py-[1em] shadow-md md:px-[1.5em]"
                 >
                   <div className="flex flex-col gap-1 md:flex-row md:justify-between md:gap-0">
                     <div className="flex items-center justify-between md:justify-start md:gap-4">
