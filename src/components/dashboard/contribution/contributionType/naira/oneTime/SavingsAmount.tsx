@@ -11,9 +11,9 @@ const SavingsAmount = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [error, setError] = useState("");
-  const { purpose, currency, savingsType, contributionPlan, contributionType } =
+  const { purpose, currency, savingsType, contributionType } =
     location.state || {};
-
+  console.log("purpose", purpose);
   const formatAmount = (value: string) => {
     const numbers = value.replace(/\D/g, "");
     const formatted = Number(numbers).toLocaleString();
@@ -39,13 +39,12 @@ const SavingsAmount = () => {
       );
     } else {
       setError("");
-      navigate("/dashboard/contribution/strict_lock/date", {
+      navigate("/dashboard/contribution/one_time/date", {
         state: {
-          amount: numericAmount,
           purpose,
+          amount: numericAmount,
           currency,
           savingsType,
-          contributionPlan,
           contributionType,
         },
       });
@@ -55,21 +54,21 @@ const SavingsAmount = () => {
   return (
     <main className="pb-[1.5em] font-sans">
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
-        Contribution Plan
+        One-Time Savings
       </DashboardHeader>
       <div>
         <header className="mt-[1.5em] flex flex-col justify-center text-center lg:mt-[3em]">
           <h1 className="text-center text-2xl font-bold">
-            Strict Lock Contribution
+            One-Time Contribution
           </h1>
-          <p>Enter the amount you want to lock</p>
+          <p className="font-medium">Enter the amount suitable to you</p>
         </header>
-        <div className="mt-[2em]">
+        <div className="mt-6 lg:mt-[2em]">
           <label
             htmlFor="amount"
             className="mb-3 flex font-semibold text-text2"
           >
-            Enter the save amount
+            Enter the amount
           </label>
           <div className="relative">
             <input
@@ -112,4 +111,5 @@ const SavingsAmount = () => {
     </main>
   );
 };
+
 export default SavingsAmount;

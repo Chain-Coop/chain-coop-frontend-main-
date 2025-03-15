@@ -11,24 +11,11 @@ import {
   IoIosArrowForward,
   IoIosArrowDown,
 } from "react-icons/io";
-import { Badge, Button, Typography } from "@material-tailwind/react";
+import { Button, Typography } from "@material-tailwind/react";
 import { ROUTES } from "../../../../shared/routes";
 import { SavingsPlan } from "./modals/SavingsPlan";
 import { ContributionListSkeleton } from "../../../common/Loading";
-
-const CheckMark = () => (
-  <svg
-    className="mr-2 h-5 w-5 text-white"
-    viewBox="0 0 20 20"
-    fill="currentColor"
-  >
-    <path
-      fillRule="evenodd"
-      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-      clipRule="evenodd"
-    />
-  </svg>
-);
+import { Check } from "lucide-react";
 
 type Contribution = {
   _id: string;
@@ -48,6 +35,9 @@ const Contribution: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [savingsType, setSavingsType] = useState<"naira" | "crypto">("naira");
   const [page, setPage] = useState(1);
+  const [contributionType, setContributionType] = useState<
+    "auto" | "one-time" | null
+  >(null);
   const limit = 10;
 
   const {
@@ -100,6 +90,15 @@ const Contribution: React.FC = () => {
   const formatCurrency = (amount: number) => {
     if (!amount && amount !== 0) return "₦ 0";
     return `₦ ${amount.toLocaleString()}`;
+  };
+
+  const handleContributionTypeChange = (type: "auto" | "one-time") => {
+    setContributionType(type);
+    if (type === "one-time") {
+      navigate(ROUTES.oneTimeContributionType, {
+        state: { contributionType: "one-time" },
+      });
+    }
   };
 
   return (
@@ -169,77 +168,97 @@ const Contribution: React.FC = () => {
               <div className="flex justify-between">
                 <Button
                   variant="text"
-                  className="flex w-fit items-center bg-text2 px-2 py-3 text-center normal-case transition-all duration-300 hover:bg-text2 hover:bg-opacity-90 hover:shadow-lg sm:px-3 md:px-3.5 lg:px-4 xl:px-5"
+                  onClick={() => handleContributionTypeChange("auto")}
+                  className={`flex w-fit items-center px-2 py-3 text-center normal-case transition-all duration-300 ${
+                    contributionType === "auto"
+                      ? "bg-text2 text-white hover:bg-text2"
+                      : "border border-gray-500 bg-inherit text-black hover:shadow-lg"
+                  }`}
                 >
-                  <CheckMark />
-                  <Typography className="text-sm font-semibold text-text5">
+                  {contributionType === "auto" && (
+                    <Check className="text-white" />
+                  )}{" "}
+                  <Typography
+                    className={`text-sm font-semibold ${
+                      contributionType === "auto" ? "text-white" : "text-black"
+                    }`}
+                  >
                     Auto Savings
                   </Typography>
                 </Button>
 
-                <Badge
-                  content="Coming Soon"
-                  className="rounded-md"
-                  placement="top-start"
+                <Button
+                  variant="text"
+                  onClick={() => handleContributionTypeChange("one-time")}
+                  className={`flex w-fit items-center px-2 py-3 text-center normal-case transition-all duration-300 hover:shadow-lg sm:px-3 md:px-3.5 lg:px-4 xl:px-5 ${
+                    contributionType === "one-time"
+                      ? "bg-text2 text-white"
+                      : "border border-gray-500 bg-inherit text-black"
+                  }`}
                 >
-                  <Button
-                    disabled
-                    variant="text"
-                    className="w-fit border border-gray-500 bg-white px-2 py-3 text-center normal-case transition-all duration-300 hover:shadow-lg sm:px-3 md:px-3.5 lg:px-4 xl:px-5"
+                  <Typography
+                    className={`text-sm font-semibold ${
+                      contributionType === "one-time"
+                        ? "text-white"
+                        : "text-black"
+                    }`}
                   >
-                    <Typography className="text-sm font-semibold text-gray-500">
-                      One-Time Savings
-                    </Typography>
-                  </Button>
-                </Badge>
+                    One-Time Savings
+                  </Typography>
+                </Button>
               </div>
             </section>
-            <section>
-              <Typography className="flex-start flex py-4 font-medium">
-                Choose your savings type
-              </Typography>
-              <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-                <Link
-                  to={ROUTES.flexibleContributionType}
-                  state={{ savingsType: "Flexible", contributionType: "auto" }}
-                >
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-full border-[2px] border-gray-300 bg-inherit py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 lg:text-lg"
+            {contributionType === "auto" && (
+              <section>
+                <Typography className="flex-start flex py-4 font-medium">
+                  Choose your savings type
+                </Typography>
+                <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+                  <Link
+                    to={ROUTES.flexibleContributionType}
+                    state={{
+                      savingsType: "Flexible",
+                      contributionType: "auto",
+                    }}
                   >
-                    Flexible Savings
-                  </motion.button>
-                </Link>
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full rounded-full border-[2px] border-gray-300 bg-inherit py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 lg:text-lg"
+                    >
+                      Flexible Savings
+                    </motion.button>
+                  </Link>
 
-                <Link
-                  to={ROUTES.lockContributionType}
-                  state={{ savingsType: "Lock", contributionType: "auto" }}
-                >
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-full border-[2px] border-gray-300 bg-inherit py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 lg:text-lg"
+                  <Link
+                    to={ROUTES.lockContributionType}
+                    state={{ savingsType: "Lock", contributionType: "auto" }}
                   >
-                    Lock Savings
-                  </motion.button>
-                </Link>
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full rounded-full border-[2px] border-gray-300 bg-inherit py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 lg:text-lg"
+                    >
+                      Lock Savings
+                    </motion.button>
+                  </Link>
 
-                <Link
-                  to={ROUTES.strictLockContributionType}
-                  state={{ savingsType: "Strict", contributionType: "auto" }}
-                >
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-full border-[2px] border-gray-300 bg-inherit py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 lg:text-lg"
+                  <Link
+                    to={ROUTES.strictLockContributionType}
+                    state={{ savingsType: "Strict", contributionType: "auto" }}
                   >
-                    Strict Lock Savings
-                  </motion.button>
-                </Link>
-              </div>
-              <hr className="mx-auto mt-8 w-full max-w-2xl" />
-            </section>
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full rounded-full border-[2px] border-gray-300 bg-inherit py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 lg:text-lg"
+                    >
+                      Strict Lock Savings
+                    </motion.button>
+                  </Link>
+                </div>
+                <hr className="mx-auto mt-8 w-full max-w-2xl" />
+              </section>
+            )}
           </article>
         </section>
 

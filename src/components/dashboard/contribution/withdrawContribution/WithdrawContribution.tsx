@@ -207,7 +207,7 @@ const WithdrawContribution = () => {
           </div>
           <ArrowIcon />
           <div className="flex flex-col gap-2">
-            <Typography className="font-medium">Chain Coop Wallet</Typography>
+            <Typography className="font-medium">Wallet Balance</Typography>
             <span className="text-gray-400">{formattedBalance}</span>
           </div>
         </div>

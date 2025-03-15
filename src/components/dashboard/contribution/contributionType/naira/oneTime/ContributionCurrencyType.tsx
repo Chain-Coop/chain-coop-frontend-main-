@@ -18,8 +18,8 @@ const ContributionCurrencyType = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const location = useLocation();
-  const { savingsType } = location.state || {};
-
+  const { savingsType, contributionType } = location.state || {};
+  console.log("cc", contributionType);
   const handleNext = () => {
     if (!cryptoType) {
       setError("Please select a contribution plan");
@@ -27,24 +27,23 @@ const ContributionCurrencyType = () => {
     }
 
     setError("");
-    navigate("/dashboard/contribution/strict_lock/purpose", {
-      state: { currency: "NGN", savingsType },
+    navigate("/dashboard/contribution/one_time/purpose", {
+      state: { currency: "NGN", savingsType, contributionType },
     });
   };
 
   return (
     <main className="pb-[1.5em] font-sans">
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
-        Strict Lock Savings
+        One-Time Savings
       </DashboardHeader>
       <div>
         <header className="mt-[1.5em] lg:mt-[3em]">
           <h1 className="text-2xl font-bold md:text-2xl lg:text-2xl">
-            Strict Lock Savings
+            One-Time Savings
           </h1>
-          <p className="mt-[1em] font-medium">
-            You can save and withdrawal will be locked untill savings durations
-            is completed.
+          <p className="mt-2 font-medium lg:mt-[1em]">
+            You can save and withdraw anytime you want
           </p>
         </header>
 

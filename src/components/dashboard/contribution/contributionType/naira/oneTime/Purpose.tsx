@@ -11,7 +11,7 @@ const Purpose = () => {
   const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const { currency, savingsType } = location.state || {};
+  const { currency, savingsType, contributionType } = location.state || {};
   const [error, setError] = useState("");
 
   const handleNext = () => {
@@ -23,9 +23,13 @@ const Purpose = () => {
       setError("");
       const finalCategory =
         savingsCategory === "Others" ? otherCategory : savingsCategory;
-      navigate("/dashboard/contribution/strict_lock/plan", {
-        state: { purpose: finalCategory, currency, savingsType },
-
+      navigate("/dashboard/contribution/one_time/amount", {
+        state: {
+          purpose: finalCategory,
+          currency,
+          savingsType,
+          contributionType,
+        },
       });
     }
   };
@@ -40,11 +44,12 @@ const Purpose = () => {
   return (
     <main className="pb-[1.5em] font-sans">
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
-        Strict Lock Savings
+        One-Time Savings
       </DashboardHeader>
       <div>
         <header className="mt-[1.5em] flex flex-col gap-2 lg:mt-[3em]">
-          <h1 className="text-2xl font-bold"> Strict Lock Savings</h1>
+          <h1 className="text-2xl font-bold">One-Time Savings</h1>
+          <p>You can save and withdraw anytime you want.</p>
         </header>
 
         {SavingOn?.map((purpose, index) => (

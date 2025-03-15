@@ -3,7 +3,6 @@ import { DashboardHeader } from "../../../../common/DashboardHeader";
 import { useNavigate } from "react-router";
 import { useAppDispatch } from "../../../../../shared/redux/reduxHooks";
 import { AppDispatch } from "../../../../../shared/redux/store";
-import { ActivateCryptoWallet } from "../../../../../shared/redux/slices/kyc.slices";
 import { toast } from "react-toastify";
 import walletActivated from "../../../../../Assets/svg/dashboard/walletActivated.svg";
 import {
@@ -21,6 +20,7 @@ import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 import { Copy, Check } from "lucide-react";
 import { TransferIcon, WithdrawIcon } from "../../../../../Assets/svg";
 import { Button, Typography } from "@material-tailwind/react";
+import { ActivateCryptoWallet } from "../../../../../shared/redux/slices/web3.slices";
 
 interface TokenInfo {
   tokenAddress: string;

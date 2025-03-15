@@ -1,7 +1,7 @@
 import authHeader from "./headers";
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
+const API_URL = (import.meta as any).env.VITE_REACT_APP_API_URL;
 
 const getAllNotification = async (page: number, limit: number) => {
   const url = `${API_URL}/notification?page=${page}&limit=${limit}`;
