@@ -58,6 +58,7 @@ const StartDate: React.FC = () => {
 
   const { purpose, plan, amount, currency, savingsType, contributionType } =
     location.state || {};
+  console.log("lo", location.state);
   const isDaily = plan?.toLowerCase() === "daily";
 
   const MIN_DAILY_DAYS = 7;

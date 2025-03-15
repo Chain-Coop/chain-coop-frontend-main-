@@ -33,7 +33,7 @@ const ContributionCurrencyType = () => {
     setFormData((prev) => ({
       ...prev,
       currency: category,
-      cryptoType: "", // Reset crypto type when changing currency
+      cryptoType: "",
     }));
   };
 

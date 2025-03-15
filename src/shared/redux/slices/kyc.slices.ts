@@ -43,20 +43,6 @@ export const kycWhatsAppOtp = createAsyncThunk(
   },
 );
 
-export const ActivateCryptoWallet = createAsyncThunk(
-  "kyc/activateCryptoWallet",
-  async (_, thunkAPI) => {
-    try {
-      const data = await KycServices.ActivateCryptoWallet();
-      return data;
-    } catch (error: any) {
-      const message = error.message || "An error occurred";
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue(message);
-    }
-  },
-);
-
 export const VerifykycWhatsAppOtp = createAsyncThunk(
   "kyc/verifykycWhatsAppOtp",
   async (codeData: { code: string; reference: string }, thunkAPI) => {
@@ -70,38 +56,11 @@ export const VerifykycWhatsAppOtp = createAsyncThunk(
   },
 );
 
-export const GetTotalCryptoWalletBalance = createAsyncThunk(
-  "kyc/getCryptoWalletBalance",
-  async (_, thunkAPI) => {
-    try {
-      const data = await KycServices.GetTotalCryptoWalletBalance();
-      // console.log("ttt", data);
-      return data;
-    } catch (error: any) {
-      const message = error.message;
-      return thunkAPI.rejectWithValue(message);
-    }
-  },
-);
-
-export const GetCryptoWalletDetails = createAsyncThunk(
-  "kyc/getCryptoWalletDetails",
-  async (_, thunkAPI) => {
-    try {
-      const data = await KycServices.GetCryptoWalletDetails();
-      return data;
-    } catch (error: any) {
-      const message = error.message;
-      return thunkAPI.rejectWithValue(message);
-    }
-  },
-);
-
-export const CreatePool = createAsyncThunk(
-  "kyc/createPool",
+export const UpdateBvn = createAsyncThunk(
+  "kyc/updteBvn",
   async (body: any, thunkAPI) => {
     try {
-      const data = await KycServices.CreatePool(body);
+      const data = await KycServices.UpdateBvn(body);
       return data;
     } catch (error: any) {
       const message = error.msg;
@@ -111,41 +70,15 @@ export const CreatePool = createAsyncThunk(
   },
 );
 
-export const GetAllUserPools = createAsyncThunk(
-  "kyc/getAllUserPools",
-  async (_, thunkAPI) => {
-    try {
-      const data = await KycServices.GetAllUserPools();
-      return data;
-    } catch (error: any) {
-      const message = error.message;
-      return thunkAPI.rejectWithValue(message);
-    }
-  },
-);
-
-export const UpdateUserPool = createAsyncThunk(
-  "kyc/updatePool",
+export const VerifyBvnDetails = createAsyncThunk(
+  "kyc/verifyBvnDetails",
   async (body: any, thunkAPI) => {
     try {
-      const data = await KycServices.UpdateUserPool(body);
+      const data = await KycServices.VerifyBvnDetails(body);
       return data;
     } catch (error: any) {
       const message = error.msg;
       thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue(message);
-    }
-  },
-);
-
-export const GetAllUserTokens = createAsyncThunk(
-  "kyc/getAllUserTokens",
-  async (_, thunkAPI) => {
-    try {
-      const data = await KycServices.GetAllUserTokens();
-      return data;
-    } catch (error: any) {
-      const message = error.message;
       return thunkAPI.rejectWithValue(message);
     }
   },
@@ -153,34 +86,22 @@ export const GetAllUserTokens = createAsyncThunk(
 
 interface KycState {
   kycOtp: Record<string, any> | null;
-  actvateCryptWallet: Record<string, any> | null;
-  cryptoBalance: number;
-  cryptoWalletDetails: Record<string, any> | null;
   kycPhoneNumOtp: Record<string, any> | null;
   verifySmsOtp: string | null;
   verifyWhatAppOtp: string | null;
-  registerUserPool: null;
-  updateRegisteredUserPool: null;
-  userPools: Record<string, any> | null;
-  userTokens: string | null;
   loading: boolean;
   error: string | null;
-  walletMessage: string | null;
+  uploadBvn: string | null;
+  verifyUserBvn: string | null;
 }
 
 const initialState: KycState = {
   kycOtp: null,
-  actvateCryptWallet: null,
   verifySmsOtp: null,
   verifyWhatAppOtp: null,
-  cryptoWalletDetails: null,
   kycPhoneNumOtp: null,
-  cryptoBalance: 0,
-  registerUserPool: null,
-  updateRegisteredUserPool: null,
-  walletMessage: null,
-  userPools: null,
-  userTokens: null,
+  verifyUserBvn: null,
+  uploadBvn: null,
   loading: false,
   error: null,
 };
@@ -250,110 +171,31 @@ export const kycSlice = createSlice({
         state.verifyWhatAppOtp = null;
         state.error = (action.payload as string) || "Failed to verify OTP";
       })
-
-      .addCase(ActivateCryptoWallet.pending, (state) => {
+      .addCase(UpdateBvn.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(ActivateCryptoWallet.fulfilled, (state, action) => {
+      .addCase(UpdateBvn.fulfilled, (state, action) => {
         state.loading = false;
-        state.actvateCryptWallet = action.payload.landing;
-        state.error = null;
-      })
-      .addCase(ActivateCryptoWallet.rejected, (state, action) => {
-        state.loading = false;
-        state.actvateCryptWallet = null;
-        state.error =
-          (action.payload as string) || "Failed to activate crypto wallet";
-      })
-      .addCase(GetTotalCryptoWalletBalance.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(GetTotalCryptoWalletBalance.fulfilled, (state, action) => {
-        state.loading = false;
-        state.cryptoBalance = action.payload.data || 0;
-        state.walletMessage = action.payload.data.message || null;
-        state.error = null;
-      })
-      .addCase(GetTotalCryptoWalletBalance.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-        state.cryptoBalance = 0;
-        state.walletMessage = null;
+        state.uploadBvn = action.payload;
       })
 
-      .addCase(GetCryptoWalletDetails.pending, (state) => {
+      .addCase(UpdateBvn.rejected, (state) => {
+        state.loading = false;
+        state.uploadBvn = null;
+      })
+      .addCase(VerifyBvnDetails.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(GetCryptoWalletDetails.fulfilled, (state, action) => {
+      .addCase(VerifyBvnDetails.fulfilled, (state, action) => {
         state.loading = false;
-        state.cryptoWalletDetails = action.payload.data;
-        state.error = null;
-      })
-      .addCase(GetCryptoWalletDetails.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
+        state.verifyUserBvn = action.payload;
       })
 
-      .addCase(CreatePool.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(CreatePool.fulfilled, (state, action) => {
+      .addCase(VerifyBvnDetails.rejected, (state) => {
         state.loading = false;
-        state.registerUserPool = action.payload.data;
-        state.error = null;
-      })
-      .addCase(CreatePool.rejected, (state, action) => {
-        state.loading = false;
-        state.registerUserPool = null;
-        state.error =
-          (action.payload as string) || "Failed to  register user Pool";
-      })
-
-      .addCase(GetAllUserPools.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(GetAllUserPools.fulfilled, (state, action) => {
-        state.loading = false;
-        state.userPools = action.payload.data;
-        state.error = null;
-      })
-      .addCase(GetAllUserPools.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
-
-      .addCase(UpdateUserPool.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(UpdateUserPool.fulfilled, (state, action) => {
-        state.loading = false;
-        state.updateRegisteredUserPool = action.payload.data;
-        state.error = null;
-      })
-      .addCase(UpdateUserPool.rejected, (state, action) => {
-        state.loading = false;
-        state.updateRegisteredUserPool = null;
-        state.error = (action.payload as string) || "Failed to update Pool";
-      })
-
-      .addCase(GetAllUserTokens.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(GetAllUserTokens.fulfilled, (state, action) => {
-        state.loading = false;
-        state.userTokens = action.payload.data;
-        state.error = null;
-      })
-      .addCase(GetAllUserTokens.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
+        state.verifyUserBvn = null;
       });
   },
 });

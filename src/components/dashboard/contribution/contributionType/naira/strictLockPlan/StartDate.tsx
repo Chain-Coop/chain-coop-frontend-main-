@@ -14,7 +14,8 @@ const StartDate: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { purpose, amount, currency } = location.state || {};
+  const { purpose, amount, currency, contributionType, contributionPlan } =
+    location.state || {};
 
   function formatDate(date: Date): string {
     return date.toISOString().split("T")[0];
@@ -34,12 +35,14 @@ const StartDate: React.FC = () => {
 
     navigate("/dashboard/contribution/strict_lock/preview", {
       state: {
-        purpose,
+        savingsCategory: purpose,
         amount,
         currency,
         startDate,
         endDate,
-        savingsDuration,
+        contributionType,
+        contributionPlan,
+        savingsType: "strict",
       },
     });
   };
@@ -49,7 +52,7 @@ const StartDate: React.FC = () => {
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
         Strict Lock Plan
       </DashboardHeader>
-      <div className="m-auto w-[90%]">
+      <div>
         <header className="mt-[1.5em] flex flex-col justify-center text-center lg:mt-[3em]">
           <h1 className="text-center text-xl font-bold">Savings Duration</h1>
           <p className="mt-[1em] text-center text-sm font-medium">

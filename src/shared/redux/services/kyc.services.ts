@@ -87,122 +87,26 @@ export const VerifykycWhatsAppOtp = async (codeData: {
   }
 };
 
-const ActivateCryptoWallet = async () => {
-  const url = `${API_URL}/web3/account/activate`;
-  try {
-    const response = await axios.post(url, null, {
-      headers: authHeader(),
-    });
-    return response.data;
-  } catch (error: any) {
-    if (error.response) {
-      throw error.response.data;
-    } else {
-      throw new Error("Network Error: Please check your internet connection.");
-    }
-  }
-};
-const GetTotalCryptoWalletBalance = async () => {
-  const url = `${API_URL}/web3/balance/total`;
-  try {
-    const response = await axios({
-      url,
-      headers: authHeader(),
-      method: "get",
-    });
-
-    if (response?.data?.message === "No Wallet found") {
-      return { data: { balance: 0, message: "No Wallet found" } };
-    }
-
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-const GetCryptoWalletDetails = async () => {
-  const url = `${API_URL}/web3/account/details`;
-  try {
-    const response = await axios({
-      url,
-      headers: authHeader(),
-      method: "get",
-    });
-    const token = response?.data?.data?.tokens?.accessToken;
-    if (token) {
-      sessionStorage.setItem("userData", token);
-    }
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-const CreatePool = async (body: any) => {
-  const url = `${API_URL}/web3/saving/openPool`;
+const UpdateBvn = async (body: any) => {
+  const url = `${API_URL}/kyc/set-bvn`;
   try {
     const response = await axios.post(url, body, {
       headers: authHeader(),
     });
-    return response.data;
+    return response?.data;
   } catch (error: any) {
-    if (error.response) {
-      throw error.response.data;
-    } else {
-      throw new Error("Network Error: Please check your internet connection.");
-    }
-  }
-};
-
-const GetAllUserPools = async () => {
-  const url = `${API_URL}/web3/saving/userPools`;
-  try {
-    const response = await axios({
-      url,
-      headers: authHeader(),
-      method: "get",
-    });
-    const token = response?.data?.data?.tokens?.accessToken;
-    if (token) {
-      sessionStorage.setItem("userData", token);
-    }
-    return response.data;
-  } catch (error) {
     throw error;
   }
 };
 
-const UpdateUserPool = async (body: any) => {
-  const url = `${API_URL}/web3/saving/updatePool`;
+const VerifyBvnDetails = async (body: any) => {
+  const url = `${API_URL}/kyc/verify-bvn`;
   try {
     const response = await axios.post(url, body, {
       headers: authHeader(),
     });
-    return response.data;
+    return response?.data;
   } catch (error: any) {
-    if (error.response) {
-      throw error.response.data;
-    } else {
-      throw new Error("Network Error: Please check your internet connection.");
-    }
-  }
-};
-
-const GetAllUserTokens = async () => {
-  const url = `${API_URL}/web3/balance/tokens`;
-  try {
-    const response = await axios({
-      url,
-      headers: authHeader(),
-      method: "get",
-    });
-    const token = response?.data?.data?.tokens?.accessToken;
-    if (token) {
-      sessionStorage.setItem("userData", token);
-    }
-    return response.data;
-  } catch (error) {
     throw error;
   }
 };
@@ -212,13 +116,8 @@ const KycServices = {
   VerifykycWhatsAppOtp,
   kycPhoneOtp,
   VerifykycPhoneOtp,
-  ActivateCryptoWallet,
-  GetTotalCryptoWalletBalance,
-  GetCryptoWalletDetails,
-  CreatePool,
-  GetAllUserPools,
-  UpdateUserPool,
-  GetAllUserTokens,
+  UpdateBvn,
+  VerifyBvnDetails,
 };
 
 export default KycServices;

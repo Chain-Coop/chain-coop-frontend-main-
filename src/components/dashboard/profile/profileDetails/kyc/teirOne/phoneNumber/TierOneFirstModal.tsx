@@ -12,6 +12,7 @@ interface TierOneFirstModalProps {
   isOpen: boolean;
   onClose: () => void;
   onStepOneClick: () => void;
+  onBvnStepClick: () => void;
   isVerified: boolean;
 }
 
@@ -19,6 +20,7 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
   isOpen,
   onClose,
   onStepOneClick,
+  onBvnStepClick,
   isVerified,
 }) => {
   return (
@@ -106,6 +108,7 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
             className={`flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-sm ${
               !isVerified ? "cursor-not-allowed opacity-50" : "cursor-pointer"
             }`}
+            onClick={isVerified ? onBvnStepClick : undefined}
           >
             <div className="flex flex-col gap-1">
               <Typography

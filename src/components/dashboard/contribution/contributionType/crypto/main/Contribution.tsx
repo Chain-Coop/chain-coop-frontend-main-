@@ -8,11 +8,11 @@ import { motion } from "framer-motion";
 import { IoIosArrowDown } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../../shared/redux/store";
-import { UpdateUserPool } from "../../../../../../shared/redux/slices/kyc.slices";
 import { toast } from "react-toastify";
 import { Typography } from "@material-tailwind/react";
 import { SavingsPlan } from "./modals/SavingsPlan";
 import { ContributionListSkeleton } from "../../../../../common/Loading";
+import { UpdateUserPool } from "../../../../../../shared/redux/slices/web3.slices";
 
 const CryptoSavings: React.FC = () => {
   const navigate = useNavigate();

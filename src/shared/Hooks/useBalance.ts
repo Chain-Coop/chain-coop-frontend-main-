@@ -5,7 +5,7 @@ import { useLocation } from "react-router";
 import { formatBalance } from "../utils/format";
 import { setMessage } from "../redux/slices/message.slices";
 import * as transactionSlices from "../redux/slices/transaction.slices";
-import * as kycSlices from "../redux/slices/kyc.slices";
+import * as Web3Slices from "../redux/slices/web3.slices";
 
 const useVisibilityState = (storageKey: string, defaultValue = true) => {
   const [isVisible, setIsVisible] = useState(() => {
@@ -140,7 +140,7 @@ export const useCryptoWallet = () => {
     fetch,
   } = useBalanceFetcher(
     (state: any) => state.kyc,
-    kycSlices.GetTotalCryptoWalletBalance,
+    Web3Slices.GetTotalCryptoWalletBalance,
     { refreshInterval: 30000 },
   );
 
@@ -180,7 +180,7 @@ const useDataFetcher = (selector: (state: any) => any, fetchAction: any) => {
 export const useCryptoWalletDetails = () => {
   const { data, loading, error } = useDataFetcher(
     (state: any) => state.kyc.cryptoWalletDetails,
-    kycSlices.GetCryptoWalletDetails,
+    Web3Slices.GetCryptoWalletDetails,
   );
   return { cryptoWalletDetails: data, loading, error };
 };
@@ -188,7 +188,7 @@ export const useCryptoWalletDetails = () => {
 export const useAllUserPools = () => {
   const { data, loading, error } = useDataFetcher(
     (state: any) => state.kyc.userPools,
-    kycSlices.GetAllUserPools,
+    Web3Slices.GetAllUserPools,
   );
   return { userPools: data, loading, error };
 };
@@ -196,7 +196,7 @@ export const useAllUserPools = () => {
 export const useAllUserTokens = () => {
   const { data, loading, error } = useDataFetcher(
     (state: any) => state.kyc.userTokens,
-    kycSlices.GetAllUserTokens,
+    Web3Slices.GetAllUserTokens,
   );
   return { userTokens: data, loading, error };
 };

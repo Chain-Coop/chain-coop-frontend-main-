@@ -40,6 +40,7 @@ import Notification from "../notification/main/Notification";
 import ContributionCurrencyType from "../contribution/contributionType/naira/flexiblePlan/ContributionCurrencyType";
 import LockContributionCurrencyType from "../contribution/contributionType/naira/lockPlan/ContributionCurrencyType";
 import StrictLockContributionCurrencyType from "../contribution/contributionType/naira/strictLockPlan/ContributionCurrencyType";
+import StrictLockPlan from "../contribution/contributionType/naira/strictLockPlan/SavingsPlan";
 
 import CryptoMain from "../wallet/crypto/main/CryptoMain";
 import Preview from "../contribution/contributionType/naira/strictLockPlan/Preview";
@@ -125,6 +126,10 @@ const Dashboard = () => {
           <Route
             path="contribution/strict_lock/purpose"
             element={<StrictLockPurpose />}
+          />
+          <Route
+            path="contribution/strict_lock/plan"
+            element={<StrictLockPlan />}
           />
           <Route
             path="contribution/strict_lock/amount"

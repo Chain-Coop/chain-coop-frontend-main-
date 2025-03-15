@@ -1,19 +1,14 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { DashboardHeader } from "../../../common/DashboardHeader";
-import { IoIosArrowBack, IoIosSearch, IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowBack } from "react-icons/io";
 import { useAllBanks } from "../../../../shared/Hooks/useUserProfile";
 import { useDispatch } from "react-redux";
 import { GetAccountName } from "../../../../shared/redux/slices/transaction.slices";
 import { AppDispatch } from "../../../../shared/redux/store";
 import { Alert } from "@mui/material";
 import { Button } from "@material-tailwind/react";
-
-interface Bank {
-  id: string;
-  name: string;
-  code: string;
-}
+import BankDropdown, { Bank } from "../../../common/BankDropdown";
 
 const SelectAccount = () => {
   const navigate = useNavigate();
@@ -21,16 +16,10 @@ const SelectAccount = () => {
   const dispatch: AppDispatch = useDispatch();
   const { useBanks } = useAllBanks();
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
   const [selectedBank, setSelectedBank] = useState<Bank | null>(null);
   const { amount, accountNumber } = location.state || {};
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  const filteredBanks: Bank[] = useBanks?.banks?.filter((bank: Bank) =>
-    bank?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase()),
-  );
 
   const handleBackClick = () => {
     navigate(-1);
@@ -38,7 +27,7 @@ const SelectAccount = () => {
 
   const handleBankSelect = (bank: Bank) => {
     setSelectedBank(bank);
-    setIsOpen(false);
+    setError("");
   };
 
   const verifyAccount = async () => {
@@ -100,62 +89,21 @@ const SelectAccount = () => {
       </header>
 
       <section className="mt-8">
-        <div className="relative mt-6 w-full">
-          <label className="mb-1 block text-sm font-semibold text-gray-700">
-            Select a bank
-          </label>
-          <div
-            className="flex cursor-pointer items-center justify-between rounded-lg border border-gray-300 bg-white p-3"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            <span
-              className={`${selectedBank ? "text-gray-900" : "text-gray-500"}`}
-            >
-              {selectedBank ? selectedBank.name : "Choose a bank"}
-            </span>
-            <IoIosArrowDown className="text-gray-400" />
-          </div>
+        <BankDropdown
+          banks={useBanks?.banks || []}
+          onBankSelect={handleBankSelect}
+          selectedBank={selectedBank}
+          className="mt-6"
+          required
+          error={error && !selectedBank ? error : ""}
+        />
 
-          {isOpen && (
-            <div className="absolute z-10 mt-1 max-h-60 w-full overflow-hidden rounded-lg border border-gray-300 bg-white shadow-lg">
-              <div className="sticky top-0 border-b bg-white p-2">
-                <div className="flex items-center rounded-md bg-gray-100 p-2">
-                  <IoIosSearch className="mr-2 text-gray-500" />
-                  <input
-                    type="text"
-                    placeholder="Search banks..."
-                    className="w-full flex-1 bg-transparent outline-none"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="max-h-55 overflow-y-auto">
-                {filteredBanks?.length > 0 ? (
-                  filteredBanks?.map((bank: Bank) => (
-                    <div
-                      key={bank.id}
-                      className="cursor-pointer p-3 transition-colors hover:bg-gray-100"
-                      onClick={() => handleBankSelect(bank)}
-                    >
-                      {bank.name}
-                    </div>
-                  ))
-                ) : (
-                  <div className="p-3 text-center text-gray-500">
-                    No results found
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {error && (
+        {error && selectedBank && (
           <Alert severity="error" className="mt-4">
             {error}
           </Alert>
         )}
+
         <Button
           variant="text"
           className="mt-8 flex w-full items-center justify-center bg-text2 py-4 text-sm normal-case text-white hover:bg-text2"

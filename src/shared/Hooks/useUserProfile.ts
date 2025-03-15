@@ -10,7 +10,7 @@ import {
   GetWalletCard,
 } from "../redux/slices/transaction.slices";
 import { getAllNotification } from "../redux/slices/notification.slices";
-import { GetAllUserPools } from "../redux/slices/kyc.slices";
+import { GetAllUserPools } from "../redux/slices/web3.slices";
 
 enum UploadFields {
   ProfilePicture = "profilePicture",

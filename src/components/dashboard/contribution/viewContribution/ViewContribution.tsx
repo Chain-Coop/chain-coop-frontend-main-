@@ -175,7 +175,7 @@ const ViewContribution = () => {
           <div className="w-8 flex-shrink-0"></div>{" "}
         </header>
 
-        <section className="sm:px-[1em] lg:mx-auto lg:w-[33em] lg:px-[0]">
+        <section className="">
           <article className="text-center text-text4">
             <div className="flex justify-between">
               <h1 className="text-lg font-bold text-gray-500">

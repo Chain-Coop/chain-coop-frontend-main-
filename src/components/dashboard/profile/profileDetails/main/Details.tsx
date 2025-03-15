@@ -9,6 +9,7 @@ import WhatsappVerificationModal from "../kyc/teirOne/whatsapp/WhatsappVerificat
 import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 import { Typography } from "@material-tailwind/react";
 import Success from "../../../../common/Success";
+import UpdateBvnModal from "../kyc/teirTwo/bvn/UpdateBvnModal";
 
 const Details = () => {
   const navigate = useNavigate();
@@ -23,6 +24,8 @@ const Details = () => {
     useState(false);
   const [whatsAppReference, setWhatsAppReference] = useState<string>("");
 
+  const [showBvnFirstModal, setShowBvnFirstModal] = useState(false);
+
   const sections = [
     {
       title: profileDetails?.isVerified ? (
@@ -31,7 +34,7 @@ const Details = () => {
         <div className="flex w-full items-center justify-between">
           <span>ID Verification</span>
           <button className="rounded-full bg-red-600 px-4 py-1 text-sm font-medium text-white shadow-md">
-            0/2 verified
+            {profileDetails?.isVerified ? "1/2 verified" : "0/2 verified"}
           </button>
         </div>
       ),
@@ -62,6 +65,7 @@ const Details = () => {
     setShowWhatsAppModal(false);
     setShowWhatsAppVerificationModal(false);
     setShowSuccessModal(false);
+    setShowBvnFirstModal(false);
   };
 
   const handleVerificationSuccess = () => {
@@ -84,6 +88,11 @@ const Details = () => {
   const handleSwitchToWhatsapp = () => {
     setShowThirdModal(false);
     setShowWhatsAppModal(true);
+  };
+
+  const handleBvnStepClick = () => {
+    setShowTierOneModal(false);
+    setShowBvnFirstModal(true);
   };
 
   const handleSectionClick = (section: any) => {
@@ -132,15 +141,14 @@ const Details = () => {
         isOpen={showTierOneModal}
         onClose={handleModalClose}
         onStepOneClick={handleStepOneClick}
+        onBvnStepClick={handleBvnStepClick}
         isVerified={profileDetails?.isVerified}
       />
-
       <TierOneSecondModal
         open={showSecondModal}
         onClose={handleModalClose}
         onSuccess={handleStepTwoSuccess}
       />
-
       <TierOneThirdModal
         open={showThirdModal}
         reference={otpReference}
@@ -148,7 +156,6 @@ const Details = () => {
         onSwitchToWhatsapp={handleSwitchToWhatsapp}
         onVerificationSuccess={handleVerificationSuccess}
       />
-
       <WhatsappOtpModal
         open={showWhatsAppModal}
         onClose={handleModalClose}
@@ -158,7 +165,6 @@ const Details = () => {
         }}
         onOtpSuccess={handleWhatsAppOtpSuccess}
       />
-
       <WhatsappVerificationModal
         open={showWhatsAppVerificationModal}
         reference={whatsAppReference}
@@ -169,7 +175,7 @@ const Details = () => {
         }}
         onVerificationSuccess={handleVerificationSuccess}
       />
-
+      <UpdateBvnModal isOpen={showBvnFirstModal} onClose={handleModalClose} />
       <Success
         isOpen={showSuccessModal}
         onClose={handleModalClose}

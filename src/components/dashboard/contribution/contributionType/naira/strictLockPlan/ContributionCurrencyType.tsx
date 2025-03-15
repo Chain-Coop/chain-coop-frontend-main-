@@ -17,9 +17,8 @@ const ContributionCurrencyType = () => {
   const [cryptoType, setCryptoType] = useState("");
   const navigate = useNavigate();
   const [error, setError] = useState("");
-      const location = useLocation();
-        const { savingsType } = location.state || {};
-  
+  const location = useLocation();
+  const { savingsType } = location.state || {};
 
   const handleNext = () => {
     if (!cryptoType) {
@@ -38,7 +37,7 @@ const ContributionCurrencyType = () => {
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
         Strict Lock Savings
       </DashboardHeader>
-      <div className="m-auto w-[90%]">
+      <div>
         <header className="mt-[1.5em] lg:mt-[3em]">
           <h1 className="text-2xl font-bold md:text-2xl lg:text-2xl">
             Strict Lock Savings
