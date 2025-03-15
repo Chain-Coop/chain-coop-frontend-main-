@@ -28,7 +28,6 @@ const Preview = () => {
     currency,
     startDate,
     endDate,
-    savingsDuration,
     contributionPlan,
   } = location.state || {};
   const navigate = useNavigate();
@@ -86,10 +85,6 @@ const Preview = () => {
 
   const previewData = [
     { label: "Lock Amount", value: `${amount.toLocaleString()} ${currency}` },
-    {
-      label: "Savings Duration",
-      value: `${savingsDuration} months (180 days)`,
-    },
     { label: "Start Date", value: formattedStartDate },
     { label: "End Date", value: formattedEndDate },
     { label: "Contribution Plan", value: contributionPlan || "Not specified" },
@@ -111,7 +106,6 @@ const Preview = () => {
       contributionPlan,
       savingsType: "Strict",
     };
-    console.log("body", body);
 
     try {
       const response = await dispatch(CreateContributionPlan(body)).unwrap();

@@ -1,39 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowDropleft } from "react-icons/io";
-import {
-  Alert,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-} from "@mui/material";
+import { Alert } from "@mui/material";
 import { DashboardHeader } from "../../../../../common/DashboardHeader";
-
 import { useAppDispatch } from "../../../../../../shared/redux/reduxHooks";
 import { AppDispatch } from "../../../../../../shared/redux/store";
 import {
   useUserCard,
   useUserProfile,
 } from "../../../../../../shared/Hooks/useUserProfile";
-
 import {
   CreateContributionPlan,
   GetWalletCard,
   PayContributionPaystack,
 } from "../../../../../../shared/redux/slices/transaction.slices";
-
 import PaymentWithCard from "../../../paymentChoice.tsx/PaymentWithCard";
 import PayWithPaystack from "../../../paymentChoice.tsx/PayWithPaystack";
-
-import {
-  formatDate,
-  addDays,
-  addMonths,
-  getDateDifference,
-  calculateAvailableEndDates,
-  validateCustomEndDate,
-} from "../../../../../../shared/utils/format";
+import { formatDate, addDays } from "../../../../../../shared/utils/format";
 import { Button } from "@material-tailwind/react";
 
 interface ContributionResponse {
@@ -48,8 +31,6 @@ const StartDate: React.FC = () => {
   const { profileDetails } = useUserProfile();
   const today = formatDate(new Date());
   const [endDate, setEndDate] = useState("");
-  const [availableEndDates, setAvailableEndDates] = useState<string[]>([]);
-  const [customEndDate, setCustomEndDate] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -57,56 +38,19 @@ const StartDate: React.FC = () => {
     ContributionResponse["result"] | null
   >(null);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
-  const [useCustomDate, setUseCustomDate] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch: AppDispatch = useAppDispatch();
 
-  const { purpose, plan, amount, currency, savingsType, contributionType } =
+  const { purpose, amount, currency, savingsType, contributionType } =
     location.state || {};
-  const isDaily = plan?.toLowerCase() === "daily";
 
   const hasCards = (useWalletCards?.cards ?? []).length > 0;
 
   useEffect(() => {
     dispatch(GetWalletCard());
   }, [dispatch]);
-
-  useEffect(() => {
-    const dates = calculateAvailableEndDates(
-      today,
-      isDaily ? "daily" : "monthly",
-    );
-    setAvailableEndDates(dates);
-    setEndDate("");
-    setCustomEndDate("");
-    setUseCustomDate(false);
-  }, [today, isDaily]);
-
-  const handleEndDateChange = (event: any) => {
-    const value = event.target.value;
-    if (value === "custom" && isDaily) {
-      setUseCustomDate(true);
-      setEndDate("");
-    } else {
-      setUseCustomDate(false);
-      setEndDate(value);
-      setCustomEndDate("");
-    }
-    setError("");
-  };
-
-  const handleCustomEndDateChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const value = event.target.value;
-    setCustomEndDate(value);
-    const validation = validateCustomEndDate(today, value, {
-      type: isDaily ? "daily" : "monthly",
-    });
-    setError(validation.isValid ? "" : validation.error || "");
-  };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
@@ -117,18 +61,17 @@ const StartDate: React.FC = () => {
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
 
-    const finalEndDate = useCustomDate ? customEndDate : endDate;
-
-    if (!finalEndDate) {
-      setError("Please select or enter an end date.");
+    if (!endDate) {
+      setError("Please select an end date.");
       return;
     }
 
-    const validation = validateCustomEndDate(today, finalEndDate, {
-      type: isDaily ? "daily" : "monthly",
-    });
-    if (!validation.isValid) {
-      setError(validation.error || "Invalid end date");
+    const startDate = new Date(today);
+    const selectedEndDate = new Date(endDate);
+
+    const minEndDate = addDays(startDate, 7);
+    if (selectedEndDate < minEndDate) {
+      setError("End date must be at least 7 days after the start date.");
       return;
     }
 
@@ -137,10 +80,9 @@ const StartDate: React.FC = () => {
 
     const body = {
       savingsCategory: purpose,
-      contributionPlan: plan,
       amount,
       startDate: today,
-      endDate: finalEndDate,
+      endDate,
       currency: currency,
       savingsType: savingsType,
       contributionType: contributionType,
@@ -218,11 +160,11 @@ const StartDate: React.FC = () => {
       <div>
         <header className="mt-[1em] flex flex-col justify-center text-center lg:mt-[3em]">
           <h1 className="text-center text-2xl font-bold">
-            {plan} Contribution
+            One-Time Contribution
           </h1>
           <p className="mt-[1em] text-center font-medium">
-            You are about to save NGN{amount} {plan.toLowerCase()} into your
-            contribution amount
+            You are about to save NGN{amount} one-time into your contribution
+            amount
           </p>
         </header>
 
@@ -234,82 +176,16 @@ const StartDate: React.FC = () => {
         </div>
 
         <div className="mt-[2em]">
-          <FormControl fullWidth>
-            <InputLabel id="end-date-label" style={{ color: "#440080" }}>
-              Choose End Date
-            </InputLabel>
-            <Select
-              labelId="end-date-label"
-              id="end-date-select"
-              value={useCustomDate ? "custom" : endDate}
-              label="Choose End Date"
-              onChange={handleEndDateChange}
-              className="mb-5"
-              sx={{
-                height: "3.4em",
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderRadius: "0.5rem",
-                },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#440080",
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#440080",
-                },
-              }}
-            >
-              <MenuItem value="">
-                <em>Select end date</em>
-              </MenuItem>
-              {availableEndDates.map((date) => (
-                <MenuItem key={date} value={date}>
-                  {new Date(date)?.toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}{" "}
-                  (
-                  {getDateDifference(
-                    today,
-                    date,
-                    isDaily ? "daily" : "monthly",
-                  )}
-                  )
-                </MenuItem>
-              ))}
-              {isDaily && (
-                <MenuItem value="custom">
-                  <em>Set custom end date</em>
-                </MenuItem>
-              )}
-            </Select>
-          </FormControl>
-
-          {useCustomDate && isDaily && (
-            <div className="mt-4">
-              <label className="mb-2 block text-sm font-medium">
-                Custom End Date
-              </label>
-              <input
-                type="date"
-                value={customEndDate}
-                onChange={handleCustomEndDateChange}
-                min={formatDate(addDays(new Date(today), 7))}
-                max={formatDate(addMonths(new Date(today), 24))}
-                className="input mb-2 h-[4em] w-full rounded-lg border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-              />
-              {customEndDate && (
-                <p className="text-sm text-gray-600">
-                  Duration:{" "}
-                  {getDateDifference(
-                    today,
-                    customEndDate,
-                    isDaily ? "daily" : "monthly",
-                  )}
-                </p>
-              )}
-            </div>
-          )}
+          <label className="mb-2 block text-sm font-medium">
+            Select End Date
+          </label>
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            min={formatDate(addDays(new Date(today), 7))} // Minimum 7 days after start date
+            className="input mb-2 h-[4em] w-full rounded-lg border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
+          />
         </div>
 
         {error && (
@@ -321,9 +197,9 @@ const StartDate: React.FC = () => {
         <div className="mt-4 lg:mt-[3em]">
           <Button
             onClick={handleSubmit}
-            disabled={loading || (!endDate && !customEndDate)}
+            disabled={loading || !endDate}
             loading={loading}
-            className="m-auto flex w-[80%]  justify-center rounded-md bg-text2 px-8 py-[1em] text-sm font-semibold normal-case text-white transition-all duration-300 ease-in-out hover:scale-105 hover:bg-opacity-90 hover:shadow-lg active:scale-95 active:transform"
+            className="m-auto flex w-[80%] justify-center rounded-md bg-text2 px-8 py-[1em] text-sm font-semibold normal-case text-white transition-all duration-300 ease-in-out hover:scale-105 hover:bg-opacity-90 hover:shadow-lg active:scale-95 active:transform"
           >
             {loading ? "Please Wait..." : "Submit"}
           </Button>

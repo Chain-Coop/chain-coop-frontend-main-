@@ -41,6 +41,11 @@ import ContributionCurrencyType from "../contribution/contributionType/naira/fle
 import LockContributionCurrencyType from "../contribution/contributionType/naira/lockPlan/ContributionCurrencyType";
 import StrictLockContributionCurrencyType from "../contribution/contributionType/naira/strictLockPlan/ContributionCurrencyType";
 import StrictLockPlan from "../contribution/contributionType/naira/strictLockPlan/SavingsPlan";
+import OneTimeCurrencyType from "../contribution/contributionType/naira/oneTime/ContributionCurrencyType";
+import OneTimePurpose from "../contribution/contributionType/naira/oneTime/Purpose";
+import OneTimeAmount from "../contribution/contributionType/naira/oneTime/SavingsAmount";
+import OneTimeStartDate from "../contribution/contributionType/naira/oneTime/StartDate";
+
 
 import CryptoMain from "../wallet/crypto/main/CryptoMain";
 import Preview from "../contribution/contributionType/naira/strictLockPlan/Preview";
@@ -144,6 +149,22 @@ const Dashboard = () => {
             element={<Preview />}
           />
 
+          <Route
+            path="contribution/one_time/contribution_curency_type"
+            element={<OneTimeCurrencyType />}
+          />
+          <Route
+            path="contribution/one_time/purpose"
+            element={<OneTimePurpose />}
+          />
+          <Route
+            path="contribution/one_time/amount"
+            element={<OneTimeAmount />}
+          />
+          <Route
+            path="contribution/one_time/date"
+            element={<OneTimeStartDate />}
+          />
           <Route path="wallet/*" element={<Wallet />} />
           <Route path="wallet/crypto_wallet" element={<CryptoMain />} />
           <Route path="wallet/withdraw" element={<Withdraw />} />

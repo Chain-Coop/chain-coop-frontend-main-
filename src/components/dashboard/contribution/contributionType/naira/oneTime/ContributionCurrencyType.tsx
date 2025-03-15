@@ -19,7 +19,7 @@ const ContributionCurrencyType = () => {
   const [error, setError] = useState("");
   const location = useLocation();
   const { savingsType, contributionType } = location.state || {};
-  console.log("contr", contributionType);
+  console.log("cc", contributionType);
   const handleNext = () => {
     if (!cryptoType) {
       setError("Please select a contribution plan");
@@ -27,7 +27,7 @@ const ContributionCurrencyType = () => {
     }
 
     setError("");
-    navigate("/dashboard/contribution/purpose", {
+    navigate("/dashboard/contribution/one_time/purpose", {
       state: { currency: "NGN", savingsType, contributionType },
     });
   };
@@ -35,12 +35,12 @@ const ContributionCurrencyType = () => {
   return (
     <main className="pb-[1.5em] font-sans">
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
-        Flexible Savings
+        One-Time Savings
       </DashboardHeader>
       <div>
         <header className="mt-[1.5em] lg:mt-[3em]">
           <h1 className="text-2xl font-bold md:text-2xl lg:text-2xl">
-            Flexible Savings
+            One-Time Savings
           </h1>
           <p className="mt-2 font-medium lg:mt-[1em]">
             You can save and withdraw anytime you want

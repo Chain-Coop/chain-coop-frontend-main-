@@ -3,12 +3,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { Alert } from "@mui/material";
 import { DashboardHeader } from "../../../../../common/DashboardHeader";
+import FormInput from "../../../../../common/FormInput";
 
 const StartDate: React.FC = () => {
   const today = formatDate(new Date());
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState("");
-  const [savingsDuration, setSavingsDuration] = useState("");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -28,8 +28,8 @@ const StartDate: React.FC = () => {
   });
 
   const handleNextClick = () => {
-    if (!savingsDuration || !endDate) {
-      setError("Please select both savings duration and end date");
+    if (!endDate) {
+      setError("Please select an end date");
       return;
     }
 
@@ -70,40 +70,14 @@ const StartDate: React.FC = () => {
             {formattedStartDate}
           </p>
         </div>
-        <div className="flex flex-col gap-3">
-          <label
-            htmlFor="savingsDuration"
-            className="flex text-lg font-semibold text-memt1"
-          >
-            Savings Duration
-          </label>
-          <input
-            type="number"
-            id="savingsDuration"
-            value={savingsDuration}
-            onChange={(e) => setSavingsDuration(e.target.value)}
-            min="1"
-            required
-            className="input mb-5 h-[4em] w-full rounded-lg border-[2px] border-gray-300 px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-            placeholder="Enter duration in months"
-          />
-        </div>
-        <div className="flex flex-col gap-3">
-          <label
-            htmlFor="endDate"
-            className="flex text-lg font-semibold text-memt1"
-          >
-            End Date
-          </label>
-          <input
-            type="date"
-            id="endDate"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            required
-            className="input mb-5 h-[4em] w-full rounded-lg border-[2px] border-gray-300 px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-          />
-        </div>
+        <FormInput
+          label="End Date"
+          type="date"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+          className="input mb-5 flex h-[4em] w-full items-center rounded-lg border-[1px] bg-gray-100 px-4 text-sm shadow-md"
+        />
+
         {error && (
           <Alert severity="error" className="mb-4 mt-4">
             {error}
