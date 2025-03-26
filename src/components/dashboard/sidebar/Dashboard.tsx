@@ -3,52 +3,50 @@ import { Route, Routes } from "react-router-dom";
 import "../../../../src/App.css";
 import DashboardNav from "../../common/DashboardNav";
 import Sidebar from "./Sidebar";
-import Home from "../home/Home";
-import Contribution from "../contribution/main/Contribution";
-import ContributionDetails from "../contribution/viewContribution/ViewContribution";
-import CryptoContribution from "../contribution/contributionType/crypto/main/Contribution";
-import Wallet from "../wallet/Wallet";
-import Profile from "../profile/main/Profile";
+import ContributionDetails from "../../../pages/contribution/ViewContribution";
+import CryptoContribution from "../../../pages/contribution/crypto/Contribution";
 import Right from "../rightbar/Right";
-import Withdraw from "../wallet/withdraw/Withdraw";
-import SelectBank from "../wallet/withdraw/SelectBank";
-import BankAccount from "../wallet/withdraw/BankAccount";
-import SelectAccount from "../wallet/withdraw/SelectAccount";
-import VerifyAccount from "../wallet/withdraw/VerifyAccount";
-import FundWallet from "../wallet/fund/FundWallet";
-import ProfileTransactions from "../profile/profileDetails/transactions/Transactions";
-import VerifyTransaction from "../wallet/fund/verifyTransaction/VerifyTransaction";
-import Purpose from "../contribution/contributionType/naira/flexiblePlan/Purpose";
-import CryptoPurpose from "../contribution/contributionType/crypto/flexiblePlan/ContributionCurrencyType";
-import StrictLockCryptoPurpose from "../contribution/contributionType/crypto/strictLockPlan/ContributionCurrencyType";
-import LockPurpose from "../contribution/contributionType/naira/lockPlan/Purpose";
-import SavingsPlan from "../contribution/contributionType/naira/flexiblePlan/SavingsPlan";
-import LockPlan from "../contribution/contributionType/naira/lockPlan/SavingsPlan";
-import StrictLockPurpose from "../contribution/contributionType/naira/strictLockPlan/Purpose";
-import StartDate from "../contribution/contributionType/naira/flexiblePlan/StartDate";
-import FlexibleCryptoStartDate from "../contribution/contributionType/crypto/flexiblePlan/StartDate";
-import StrictLockCryptoStartDate from "../contribution/contributionType/crypto/strictLockPlan/StartDate";
-import LockStartDate from "../contribution/contributionType/naira/lockPlan/StartDate";
-import StrictLockStartDate from "../contribution/contributionType/naira/strictLockPlan/StartDate";
-import SavingsAmount from "../contribution/contributionType/naira/flexiblePlan/SavingsAmount";
-import LockSavingsAmount from "../contribution/contributionType/naira/lockPlan/SavingsAmount";
-import StrictLockSavingsAmount from "../contribution/contributionType/naira/strictLockPlan/SavingsAmount";
-import WithdrawContribution from "../contribution/withdrawContribution/WithdrawContribution";
-import ConfirmWithdrawal from "../contribution/withdrawContribution/ConfirmAmount";
-import ManageAccountCards from "../profile/profileDetails/accountsAndCard/ManageCards";
-import Notification from "../notification/main/Notification";
-import ContributionCurrencyType from "../contribution/contributionType/naira/flexiblePlan/ContributionCurrencyType";
-import LockContributionCurrencyType from "../contribution/contributionType/naira/lockPlan/ContributionCurrencyType";
-import StrictLockContributionCurrencyType from "../contribution/contributionType/naira/strictLockPlan/ContributionCurrencyType";
-import StrictLockPlan from "../contribution/contributionType/naira/strictLockPlan/SavingsPlan";
-import OneTimeCurrencyType from "../contribution/contributionType/naira/oneTime/ContributionCurrencyType";
-import OneTimePurpose from "../contribution/contributionType/naira/oneTime/Purpose";
-import OneTimeAmount from "../contribution/contributionType/naira/oneTime/SavingsAmount";
-import OneTimeStartDate from "../contribution/contributionType/naira/oneTime/StartDate";
+import Purpose from "../../../pages/contribution/naira/flexiblePlan/Purpose";
+import CryptoPurpose from "../../../pages/contribution/crypto/flexiblePlan/ContributionCurrencyType";
+import StrictLockCryptoPurpose from "../../../pages/contribution/crypto/strictLockPlan/ContributionCurrencyType";
+import LockPurpose from "../../../pages/contribution/naira/lockPlan/Purpose";
+import SavingsPlan from "../../../pages/contribution/naira/flexiblePlan/SavingsPlan";
+import LockPlan from "../../../pages/contribution/naira/lockPlan/SavingsPlan";
+import StrictLockPurpose from "../../../pages/contribution/naira/strictLockPlan/Purpose";
+import StartDate from "../../../pages/contribution/naira/flexiblePlan/StartDate";
+import FlexibleCryptoStartDate from "../../../pages/contribution/crypto/flexiblePlan/StartDate";
+import StrictLockCryptoStartDate from "../../../pages/contribution/crypto/strictLockPlan/StartDate";
+import LockStartDate from "../../../pages/contribution/naira/lockPlan/StartDate";
+import StrictLockStartDate from "../../../pages/contribution/naira/strictLockPlan/StartDate";
+import SavingsAmount from "../../../pages/contribution/naira/flexiblePlan/SavingsAmount";
+import LockSavingsAmount from "../../../pages/contribution/naira/lockPlan/SavingsAmount";
+import StrictLockSavingsAmount from "../../../pages/contribution/naira/strictLockPlan/SavingsAmount";
+import WithdrawContribution from "../../../pages/contribution/withdrawContribution/WithdrawContribution";
+import ConfirmWithdrawal from "../../../pages/contribution/withdrawContribution/ConfirmAmount";
+import ContributionCurrencyType from "../../../pages/contribution/naira/flexiblePlan/ContributionCurrencyType";
+import LockContributionCurrencyType from "../../../pages/contribution/naira/lockPlan/ContributionCurrencyType";
+import StrictLockContributionCurrencyType from "../../../pages/contribution/naira/strictLockPlan/ContributionCurrencyType";
+import StrictLockPlan from "../../../pages/contribution/naira/strictLockPlan/SavingsPlan";
+import OneTimeCurrencyType from "../../../pages/contribution/naira/oneTimePlan/ContributionCurrencyType";
+import OneTimePurpose from "../../../pages/contribution/naira/oneTimePlan/Purpose";
+import OneTimeAmount from "../../../pages/contribution/naira/oneTimePlan/SavingsAmount";
+import OneTimeStartDate from "../../../pages/contribution/naira/oneTimePlan/StartDate";
 
-
-import CryptoMain from "../wallet/crypto/main/CryptoMain";
-import Preview from "../contribution/contributionType/naira/strictLockPlan/Preview";
+import Preview from "../../../pages/contribution/naira/strictLockPlan/Preview";
+import Contribution from "../../../pages/contribution/Contribution";
+import Notification from "../../../pages/notification/Notification";
+import CryptoMain from "../../../pages/wallet/crypto/CryptoMain";
+import FundWallet from "../../../pages/wallet/fund/FundWallet";
+import VerifyTransaction from "../../../pages/wallet/fund/VerifyTransaction";
+import VerifyAccount from "../../../pages/wallet/withdraw/VerifyAccount";
+import SelectAccount from "../../../pages/wallet/withdraw/SelectAccount";
+import BankAccount from "../../../pages/wallet/withdraw/BankAccount";
+import SelectBank from "../../../pages/wallet/withdraw/SelectBank";
+import Withdraw from "../../../pages/wallet/withdraw/Withdraw";
+import Profile from "../../../pages/profile/profile";
+import Wallet from "../../../pages/wallet/Wallet";
+import Home from "../../../pages/home/Home";
+import ManageCards from "../../../pages/profile/ManageCards";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -180,11 +178,8 @@ const Dashboard = () => {
           />
 
           <Route path="profile" element={<Profile />} />
-          <Route
-            path="profile/transactions"
-            element={<ProfileTransactions />}
-          />
-          <Route path="profile/manage-cards" element={<ManageAccountCards />} />
+
+          <Route path="profile/manage-cards" element={<ManageCards />} />
           <Route path="notification" element={<Notification />} />
         </Routes>
       </section>
