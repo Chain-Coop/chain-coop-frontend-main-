@@ -18,6 +18,7 @@ const ActivateCryptoWallet = async () => {
     }
   }
 };
+
 const GetTotalCryptoWalletBalance = async () => {
   const url = `${API_URL}/web3/balance/total`;
   try {
