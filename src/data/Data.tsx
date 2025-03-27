@@ -9,6 +9,7 @@ import person3 from "../Assets/png/home/Co-op-PX3.png";
 import wallet from "../Assets/svg/dashboard/wallet.svg";
 import home from "../Assets/svg/dashboard/home.svg";
 import contribution from "../Assets/svg/dashboard/contribution.svg";
+import ajo from "../Assets/svg/dashboard/ajo.svg"
 import profile from "../Assets/svg/dashboard/Profile.svg";
 import temi from "../Assets/png/footer/team/png/temi.png";
 import heather from "../Assets/png/footer/team/png/Heather.png";
@@ -36,6 +37,12 @@ export const sidebarLinks = [
     text: "Contribution",
     to: "/dashboard/contribution",
     pathsToCheck: ["/dashboard/contribution"],
+  },
+  {
+    img: ajo,
+    text: "Ajo",
+    to: "/dashboard/ajo",
+    pathsToCheck: ["/dashboard/ajo"],
   },
   {
     img: wallet,

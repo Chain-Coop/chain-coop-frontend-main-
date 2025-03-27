@@ -1,7 +1,7 @@
 export const DashboardHeader = ({ children, className, onClick }: any) => {
   return (
     <header
-      className={`${className} -mx-4 flex h-[2.5em] bg-text2 font-sans text-xl font-semibold tracking-tight text-white  lg:-mx-8`}
+      className={`${className} -mx-4 flex h-[70px] w-[100%] bg-text2 font-sans text-xl font-semibold tracking-tight text-white  lg:-mx-8`}
       onClick={onClick}
     >
       {children}
