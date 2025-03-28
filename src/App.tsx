@@ -5,25 +5,25 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import HomePage from "./components/pages/entry/HomePage";
-import ForgetPassword from "./components/pages/auth/ForgetPassword";
-import CreateAccount from "./components/pages/auth/CreateAccount";
-import UserLoginOtp from "./components/pages/auth/UserLoginOtp";
-import VerificationSuccessfull from "./components/pages/auth/VerificationSuccessfull";
-import PaaswordRessetSuccessfull from "./components/pages/auth/PaaswordRessetSuccessfull";
-import Contact from "./components/pages/entry/Contact";
-import ResetPassword from "./components/pages/auth/ResetPassword";
-import NewPassword from "./components/pages/auth/NewPassword";
-import UserLogin from "./components/pages/auth/UserLogin";
-import Dashboard from "./components/dashboard/sidebar/Dashboard";
-import NotFound from "./components/pages/NotFound";
-import WhyChainCoop from "./components/pages/entry/WhyChainCoop";
+import WhyChainCoop from "./pages/entry/WhyChainCoop";
+import HomePage from "./pages/entry/HomePage";
+import Contact from "./pages/entry/Contact";
+import PartnerWithUs from "./pages/entry/PartnerWithUs";
+import UserLogin from "./pages/auth/UserLogin";
+import CreateAccount from "./pages/auth/CreateAccount";
+import ForgetPassword from "./pages/auth/ForgetPassword";
+import ResetPassword from "./pages/auth/ResetPassword";
+import NewPassword from "./pages/auth/NewPassword";
+import UserLoginOtp from "./pages/auth/UserLoginOtp";
+import TermsOfService from "./pages/footer/TermsOfService";
+import Team from "./pages/footer/Team";
+import AboutUs from "./pages/footer/AboutUs";
+import PrivacyPolicy from "./pages/footer/PrivacyPolicy";
+import VerificationSuccessfull from "./pages/auth/VerificationSuccessfull";
+import PaaswordRessetSuccessfull from "./pages/auth/PaaswordRessetSuccessfull";
 import ProtectedRoutes from "./components/protected/ProtectedRoute";
-import PartnerWithUs from "./components/pages/entry/PartnerWithUs";
-import TermsOfService from "./components/pages/footer/TermsOfService";
-import Team from "./components/pages/footer/Team";
-import AboutUs from "./components/pages/footer/AboutUs";
-import PrivacyPolicy from "./components/pages/footer/PrivacyPolicy";
+import Dashboard from "./components/dashboard/sidebar/Dashboard";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -52,7 +52,7 @@ function App() {
           element={<PaaswordRessetSuccessfull />}
         />
 
-        <Route >
+        <Route element={<ProtectedRoutes />}>
           <Route path="/dashboard/*" element={<Dashboard />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Route>
