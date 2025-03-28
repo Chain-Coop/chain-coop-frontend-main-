@@ -32,8 +32,6 @@ import OneTimePurpose from "../../../pages/contribution/naira/oneTimePlan/Purpos
 import OneTimeAmount from "../../../pages/contribution/naira/oneTimePlan/SavingsAmount";
 import OneTimeStartDate from "../../../pages/contribution/naira/oneTimePlan/StartDate";
 
-
-
 //import CryptoMain from "../wallet/crypto/main/CryptoMain";
 //import Preview from "../contribution/contributionType/naira/strictLockPlan/Preview";
 import AjoPage from "../ajo/main/ajo";
@@ -55,7 +53,6 @@ import Wallet from "../../../pages/wallet/Wallet";
 import Home from "../../../pages/home/Home";
 import ManageCards from "../../../pages/profile/ManageCards";
 
-
 const Dashboard = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -67,7 +64,7 @@ const Dashboard = () => {
         <Sidebar />
       </aside>
       <section className="custom-scroll-bar container h-screen flex-1 overflow-y-auto">
-        <nav className="sm:block px-4 lg:hidden">
+        <nav className="px-4 sm:block lg:hidden">
           <DashboardNav />
         </nav>
         <Routes>
@@ -172,10 +169,8 @@ const Dashboard = () => {
             element={<OneTimeStartDate />}
           />
 
-          
           <Route path="ajo" element={<AjoPage />} />
           <Route path="ajo/:name" element={<SavingsDetail />} />
-
 
           <Route path="wallet/*" element={<Wallet />} />
           <Route path="wallet/crypto_wallet" element={<CryptoMain />} />
