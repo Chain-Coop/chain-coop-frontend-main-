@@ -34,8 +34,8 @@ import OneTimeStartDate from "../../../pages/contribution/naira/oneTimePlan/Star
 
 
 
-import CryptoMain from "../wallet/crypto/main/CryptoMain";
-import Preview from "../contribution/contributionType/naira/strictLockPlan/Preview";
+//import CryptoMain from "../wallet/crypto/main/CryptoMain";
+//import Preview from "../contribution/contributionType/naira/strictLockPlan/Preview";
 import AjoPage from "../ajo/main/ajo";
 import SavingsDetail from "../ajo/savings_detail/page";
 
@@ -66,8 +66,8 @@ const Dashboard = () => {
       <aside className="custom-scroll-bar hidden h-screen overflow-y-auto lg:block lg:w-[22%]">
         <Sidebar />
       </aside>
-      <section className="custom-scroll-bar container h-screen flex-1 overflow-y-auto px-4 lg:px-6">
-        <nav className="sm:block lg:hidden">
+      <section className="custom-scroll-bar container h-screen flex-1 overflow-y-auto">
+        <nav className="sm:block px-4 lg:hidden">
           <DashboardNav />
         </nav>
         <Routes>

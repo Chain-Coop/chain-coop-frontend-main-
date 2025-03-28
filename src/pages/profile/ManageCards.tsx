@@ -114,7 +114,7 @@ const ManageCards = () => {
         </DashboardHeader>
       </header>
 
-      <section className="mt-8 px-3">
+      <section className="mt-8 px-4 lg:px-6">
         <header>
           <h1 className="mb-2 text-2xl font-semibold text-gray-800">
             My Saved Cards
