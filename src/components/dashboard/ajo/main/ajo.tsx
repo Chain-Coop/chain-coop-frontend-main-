@@ -14,13 +14,10 @@ import GroupHistoryTemplate from "../components/group_history_template";
 const AjoPage = () => {
     const { isWalletVisible, setIsWalletVisible, formattedBalance } = useWalletBalance();
 
-    // state to select active group saving option
     const [groupOption, setGroupOption] = useState(0)
 
-    // state to control the group history selected
     const [groupHistory, setGroupHistory] = useState('ongoing')
 
-    // fetched data from server
     const otherGroupSavings = [
         {
             icon: otherIcon,
