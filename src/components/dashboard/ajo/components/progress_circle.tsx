@@ -11,8 +11,8 @@ const ProgressCircle: React.FC<ProgressCircleProps> = ({ progress }) => {
   const offset = circumference - (progress / 100) * circumference;
 
   return (
-    <div className="relative w-[70px] h-[70px]">
-      <svg className="w-full h-full" viewBox="0 0 100 100">
+    <div className="relative h-[41px] w-[41px] lg:h-[52px] lg:w-[52px]">
+      <svg className="h-full w-full" viewBox="0 0 100 100">
         {/* Background Circle */}
         <circle
           className="text-[#E3D9EC]"
@@ -40,8 +40,12 @@ const ProgressCircle: React.FC<ProgressCircleProps> = ({ progress }) => {
       </svg>
       {/* Progress Text */}
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-[10px] font-bold text-[#440080]">{progress}%</span>
-        <span className="text-[8px] text-gray-500">Completed</span>
+        <span className="text-[10px] font-bold text-[#440080]">
+          {progress}%
+        </span>
+        <span className="text-[6px] text-gray-500 lg:text-[8px]">
+          Completed
+        </span>
       </div>
     </div>
   );

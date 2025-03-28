@@ -47,7 +47,7 @@ const Profile = () => {
           </div>
         </DashboardHeader>
       </section>
-      <section className="mt-[2em] flex flex-col gap-[1em]">
+      <section className="mt-[2em] flex flex-col gap-[1em] px-4 lg:px-6">
         <Avatar />
         <Details />
         <Security />
