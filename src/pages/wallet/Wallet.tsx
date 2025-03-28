@@ -24,7 +24,7 @@ const Wallet = () => {
             Chain Coop Wallet
           </DashboardHeader>
         </header>
-        <div>
+        <div className="px-4 lg:px-6">
           <section className="text-center text-text4">
             <div className="flex justify-end py-[1.5em]">
               <Button

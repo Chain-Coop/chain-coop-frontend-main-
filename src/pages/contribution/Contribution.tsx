@@ -107,11 +107,11 @@ const Contribution: React.FC = () => {
       animate={{ opacity: 1 }}
       className="mb-2 min-h-screen w-full"
     >
-      <DashboardHeader className="flex items-center justify-center text-2xl md:text-3xl lg:mt-[2em] lg:text-xl">
+      <DashboardHeader className="flex items-center justify-center text-2xl  md:text-3xl lg:mt-[2em] lg:text-xl">
         Contribution Plan
       </DashboardHeader>
 
-      <main>
+      <main className="px-4 lg:px-6">
         <section className="mt-6 w-full md:mt-8 lg:mt-10">
           <article className="text-center text-gray-700">
             <motion.div
