@@ -1,0 +1,63 @@
+import React from "react";
+import { Link } from "react-router-dom";
+import ProgressCircle from "./progress_circle";
+
+export interface GroupCardProps {
+    name: string;
+    image: string;
+    icon: string;
+    members: number;
+    amount: string;
+    goal: string;
+    totalSaved: string;
+    progress: number;
+}
+
+const GroupCard: React.FC<GroupCardProps> = ({ amount, goal, icon, image, members, name, progress, totalSaved }) => {
+  return (
+    <div className="flex w-[95%] sm:h-[234px] sm:w-[440px] flex-shrink-0 rounded-xl shadow-[#3D007347] shadow-md">
+      {/* Image Section */}
+      <div className="w-[158px] h-full relative rounded-l-xl flex-shrink-0">
+        <img src={image} alt={name} className="w-full h-full rounded-l-xl" />
+        <img src={icon} alt={name} className="w-[30px] h-[30px] absolute top-2 right-2" />
+      </div>
+
+      {/* Content Section */}
+      <div className="flex flex-col justify-between gap-1 py-2 pr-2 pl-4 w-[96%]">
+        <div className="flex justify-between items-start">
+          {/* Group Details */}
+          <div className="flex flex-col gap-2">
+            <h4 className="font-semibold text-[#1E1E1EE5] text-[22px] lg:text-[24px]">{name}</h4>
+            <div className="flex gap-2 items-center">
+              <p className="text-[#6E6C6C] font-semibold text-[16px] lg:text-[18px]">{members} members</p>
+              <p className="text-[#6E6C6C] font-normal text-[16px] lg:text-[18px]">{amount}</p>
+            </div>
+            <p className="text-[#6E6C6C] font-normal text-[16px] lg:text-[18px]">
+              <strong className="text-black font-semibold">Goal:</strong> {goal}
+            </p>
+            <p className="text-[#6E6C6C] font-medium text-[16px] lg:text-[18px]">
+              Total saved: {totalSaved}
+            </p>
+          </div>
+
+          {/* Progress Circle Component */}
+          <ProgressCircle progress={progress} />
+        </div>
+
+        {/* Buttons */}
+        <div className="w-full flex justify-between">
+          <button className="bg-[#440080] text-[16px] lg:text-[18px] font-medium w-[45%] h-[35px] rounded-md flex items-center justify-center text-white hover:bg-[#3D0073]">
+            Join
+          </button>
+          <Link 
+            to={`/dashboard/ajo/${name}`}
+            className="ring-1 ring-[#440080] text-[16px] lg:text-[18px] bg-white text-[#440080] rounded-md w-[45%] h-[35px] flex items-center justify-center">
+            Details
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default GroupCard;

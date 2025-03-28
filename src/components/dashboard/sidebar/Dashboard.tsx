@@ -50,6 +50,7 @@ import OneTimeStartDate from "../contribution/contributionType/naira/oneTime/Sta
 import CryptoMain from "../wallet/crypto/main/CryptoMain";
 import Preview from "../contribution/contributionType/naira/strictLockPlan/Preview";
 import AjoPage from "../ajo/main/ajo";
+import SavingsDetail from "../ajo/savings_detail/page";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -169,6 +170,7 @@ const Dashboard = () => {
 
           
           <Route path="ajo" element={<AjoPage />} />
+          <Route path="ajo/:name" element={<SavingsDetail />} />
 
 
           <Route path="wallet/*" element={<Wallet />} />

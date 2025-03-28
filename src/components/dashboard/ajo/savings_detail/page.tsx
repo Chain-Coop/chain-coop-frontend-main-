@@ -1,0 +1,146 @@
+import { useParams } from "react-router"
+import { Link } from "react-router-dom"
+import { MdOutlineArrowBackIos } from "react-icons/md";
+import { GrFormNext } from "react-icons/gr";
+import ProgressCircle from "../components/progress_circle";
+import { BsPatchCheck } from "react-icons/bs";
+
+
+import sampleImage from "../../../../Assets/png/dashboard/ajo/sample_savings_image.png"
+import icon from "../../../../Assets/svg/dashboard/ajo/details_icon.svg"
+import currency_icon from "../../../../Assets/svg/dashboard/ajo/currency_icon.svg"
+
+
+const SavingsDetail = () => {
+    const { name } = useParams()
+
+    const firstSavingsData = [
+        {
+            key: "Daily Deposit",
+            value: "$10",
+            addition: "(optional)"
+        },
+        {
+            key: "Start Date",
+            value: "(27/03/2025)",
+            addition: ""
+        },
+        {
+            key: "End Date",
+            value: "Ends in 30 days",
+            addition: "(27/04/2025)"
+        },
+        {
+            key: "Daily Duration",
+            value: "Everyday",
+            addition: ""
+        }
+    ]
+
+    const lastSavingsData = [
+        {
+            key: "Savings Frequency",
+            value: "Daily",
+        },
+        {
+            key: "Currency/Token",
+            value: "USD",
+            image: currency_icon
+        }
+    ]
+
+
+    return (
+        <main  className="flex flex-col font-sans mb-[20px]">
+            <div className="flex h-[55px] w-full items-center justify-center relative px-4 lg:px-8 bg-text2 font-sans text-xl font-semibold text-text5 lg:mt-[2em]">
+                <Link to={'/dashboard/ajo'} className="absolute left-8">
+                    <MdOutlineArrowBackIos className="w-[20px] h-[30px]" />
+                </Link>
+                <h1 className="font-[600] text-[22px] lg:text-[24px]">
+                    {name}
+                </h1>
+            </div>
+
+            <section className="flex justify-between gap-2 p-4 bg-[#ECE6F240] mt-[10px]">
+                <img src={sampleImage} alt={name} className="w-[160px] rounded-lg flex-shrink-0" />
+                <div className="flex w-[100%] flex-col gap-2 text-[#1E1E1EB2]">
+                    <div className="w-[100%] flex justify-between items-start">
+                        <div className="flex flex-col items-start gap-1">
+                            <h2 className="font-[600] text-[22px] lg:text-[24px] text-[#1E1E1E] tracking-tight">
+                                {name}
+                            </h2>
+                            <Link to={`/leadership-board/{name}`} className="flex gap-2 items-center">
+                                <img src={icon} alt="leadership board" className="w-[20px] h-[20px]" />
+                                <p className="text-[14px] font-[600] text-[#565454]">
+                                    View leadership board
+                                </p>
+                                <GrFormNext className="text-[#440080] text-[20px]" />
+                            </Link>
+                        </div>
+                        <ProgressCircle progress={5} />
+                    </div>
+                    <p className="font-[400] text-[16px] leading-tight tracking-wide">
+                    alialiquam vel elementum facilisis amet netus elementum. Quam mauris diam pretium etiam pellentesque accumsan. Enim nisl sit interdum id vivamus nibh lacus s feug.
+                    </p>
+                </div>
+            </section>
+
+            <section className="flex w-[100%] flex-col items-center justify-center bg-[#FFF7FC] p-4">
+                <p className="font-[400] text-[14px] leading-tight tracking-wide">
+                    Total saved
+                </p>
+                <h2  className="font-[600] text-[34px] lg:text-[36px] text-[#1E1E1E] tracking-tight">
+                    $29,000.67
+                </h2>
+                <button  className="bg-[#440080] text-[16px] lg:text-[18px] font-medium w-[100%] lg:w-[190px] px-6 h-[45px] rounded-md flex items-center justify-center text-white hover:bg-[#3D0073] mt-[30px] self-start">
+                    Join
+                </button>
+            </section>
+
+            <ul className="flex flex-col w-[100%] mt-[20px]">
+                {
+                    firstSavingsData.map((data) => (
+                        <li className="flex w-[96%] justify-between items-center pt-10 pb-4 border-b border-b-[#DDD8D887]" key={data.addition}>
+                            <p className="text-[16px] lg:text-[18px] font-[500] text-[#939090] tracking-tight">
+                                {data.key}
+                            </p>
+                            <p className="text-[16px] lg:text-[18px] font-[500] text-[#939090] tracking-tight">
+                                <span className="text-black">{data.value}</span> {data.addition}
+                            </p>
+                        </li>
+                    ))
+                }
+                
+                {
+                    lastSavingsData.map((data) => (
+                        <li className="flex w-[96%] justify-between items-center pt-10 pb-4 border-b border-b-[#DDD8D887]">
+                            <p className="text-[16px] lg:text-[18px] font-[500] text-[#939090]">
+                                {data.key}
+                            </p>
+                            <div className="border-2 border-[#440080] rounded-lg bg-[#ECE6F2] p-2 flex items-center w-[150px] gap-1 justify-between">
+                                {
+                                    data.image && <img src={data.image} alt={data.key} className="w-[24px] h-[24px]" />
+                                }
+                                <p className="text-[14px] lg:text-[16px] font-[500] text-[#302B2B] pr-6">
+                                    {data.value}
+                                </p>
+                                <BsPatchCheck className="text-[#440080] text-[24px]" />
+                            </div>
+                        </li>
+                    ))
+                }
+
+                <li className="flex w-[96%] justify-between items-center pt-10 pb-4 border-b border-b-[#DDD8D887]">
+                    <p className="text-[16px] lg:text-[18px] font-[500] text-[#939090]">
+                        Withdrawal Day
+                    </p>
+                    <p className="text-[16px] lg:text-[18px] font-[500] text-black">
+                        28/04/2025
+                    </p>
+                </li>
+            </ul>
+        </main>
+    )
+}
+
+export default SavingsDetail

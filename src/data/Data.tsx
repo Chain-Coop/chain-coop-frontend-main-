@@ -18,6 +18,9 @@ import samad from "../Assets/png/home/abdulSamad.png";
 import rebecca from "../Assets/png/home/rebecca.png";
 import awoyinfa from "../Assets/png/footer/team/png/awoyinfa.png";
 import seane from "../Assets/png/footer/team/png/tshegofatso.png";
+import open_group from "../Assets/svg/dashboard/ajo/open_group.svg"
+import closed_group from "../Assets/svg/dashboard/ajo/closed_group.svg"
+
 
 export const navBarLinks = [
   { to: "/why-chain-co-op", text: "Why Chain Co-op" },
@@ -103,6 +106,21 @@ export const becomeData = [
       "Create savings cycles with friends and family you trust. Our innovative platform makes it seamless.",
   },
 ];
+
+export const groupSavingsOptions = [
+  {
+    icon: open_group,
+    header: "Create Open Group",
+    text: "This clearly implies that anyone can join",
+    backgroundColor: "#ECE6F2"
+  },
+  {
+    icon: closed_group,
+    header: "Create Closed Group",
+    text: "This group entry requires an invitation privately",
+    backgroundColor: "#F5F0F0D4"
+  }
+]
 
 export const meetImage = [
   {
