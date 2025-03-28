@@ -52,7 +52,7 @@ function App() {
           element={<PaaswordRessetSuccessfull />}
         />
 
-        <Route element={<ProtectedRoutes />}>
+        <Route >
           <Route path="/dashboard/*" element={<Dashboard />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Route>

@@ -9,6 +9,7 @@ import person3 from "../Assets/png/home/Co-op-PX3.png";
 import wallet from "../Assets/svg/dashboard/wallet.svg";
 import home from "../Assets/svg/dashboard/home.svg";
 import contribution from "../Assets/svg/dashboard/contribution.svg";
+import ajo from "../Assets/svg/dashboard/ajo.svg"
 import profile from "../Assets/svg/dashboard/Profile.svg";
 import temi from "../Assets/png/footer/team/png/temi.png";
 import heather from "../Assets/png/footer/team/png/Heather.png";
@@ -17,6 +18,9 @@ import samad from "../Assets/png/home/abdulSamad.png";
 import rebecca from "../Assets/png/home/rebecca.png";
 import awoyinfa from "../Assets/png/footer/team/png/awoyinfa.png";
 import seane from "../Assets/png/footer/team/png/tshegofatso.png";
+import open_group from "../Assets/svg/dashboard/ajo/open_group.svg"
+import closed_group from "../Assets/svg/dashboard/ajo/closed_group.svg"
+
 
 export const navBarLinks = [
   { to: "/why-chain-co-op", text: "Why Chain Co-op" },
@@ -36,6 +40,12 @@ export const sidebarLinks = [
     text: "Contribution",
     to: "/dashboard/contribution",
     pathsToCheck: ["/dashboard/contribution"],
+  },
+  {
+    img: ajo,
+    text: "Ajo",
+    to: "/dashboard/ajo",
+    pathsToCheck: ["/dashboard/ajo"],
   },
   {
     img: wallet,
@@ -96,6 +106,21 @@ export const becomeData = [
       "Create savings cycles with friends and family you trust. Our innovative platform makes it seamless.",
   },
 ];
+
+export const groupSavingsOptions = [
+  {
+    icon: open_group,
+    header: "Create Open Group",
+    text: "This clearly implies that anyone can join",
+    backgroundColor: "#ECE6F2"
+  },
+  {
+    icon: closed_group,
+    header: "Create Closed Group",
+    text: "This group entry requires an invitation privately",
+    backgroundColor: "#F5F0F0D4"
+  }
+]
 
 export const meetImage = [
   {

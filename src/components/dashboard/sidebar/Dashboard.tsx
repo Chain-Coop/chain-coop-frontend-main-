@@ -32,6 +32,13 @@ import OneTimePurpose from "../../../pages/contribution/naira/oneTimePlan/Purpos
 import OneTimeAmount from "../../../pages/contribution/naira/oneTimePlan/SavingsAmount";
 import OneTimeStartDate from "../../../pages/contribution/naira/oneTimePlan/StartDate";
 
+
+
+import CryptoMain from "../wallet/crypto/main/CryptoMain";
+import Preview from "../contribution/contributionType/naira/strictLockPlan/Preview";
+import AjoPage from "../ajo/main/ajo";
+import SavingsDetail from "../ajo/savings_detail/page";
+
 import Preview from "../../../pages/contribution/naira/strictLockPlan/Preview";
 import Contribution from "../../../pages/contribution/Contribution";
 import Notification from "../../../pages/notification/Notification";
@@ -47,6 +54,7 @@ import Profile from "../../../pages/profile/profile";
 import Wallet from "../../../pages/wallet/Wallet";
 import Home from "../../../pages/home/Home";
 import ManageCards from "../../../pages/profile/ManageCards";
+
 
 const Dashboard = () => {
   useEffect(() => {
@@ -163,6 +171,12 @@ const Dashboard = () => {
             path="contribution/one_time/date"
             element={<OneTimeStartDate />}
           />
+
+          
+          <Route path="ajo" element={<AjoPage />} />
+          <Route path="ajo/:name" element={<SavingsDetail />} />
+
+
           <Route path="wallet/*" element={<Wallet />} />
           <Route path="wallet/crypto_wallet" element={<CryptoMain />} />
           <Route path="wallet/withdraw" element={<Withdraw />} />

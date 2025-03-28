@@ -54,7 +54,7 @@ const Sidebar = () => {
               <Link
                 key={index}
                 to={link.to}
-                className={`text flex items-center px-4 py-3 font-sans text-lg hover:bg-Dh ${
+                className={`text flex items-center text-[#1E1E1E] px-4 py-5 font-sans text-[16px] hover:bg-Dh ${
                   isActive
                     ? "active !important border-l-2 border-text2 bg-Dh font-semibold"
                     : ""
@@ -63,7 +63,7 @@ const Sidebar = () => {
                 <img
                   src={link.img}
                   alt={`${link.text} icon`}
-                  className="mr-3 h-6 w-6"
+                  className="mr-3 h-5 w-5"
                 />
                 {link.text}
               </Link>
