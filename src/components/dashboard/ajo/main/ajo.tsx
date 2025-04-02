@@ -4,6 +4,8 @@ import useWalletBalance from "../../../../shared/Hooks/useBalance";
 import { HiOutlinePlus } from "react-icons/hi";
 import { groupSavingsOptions } from "../../../../data/Data";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+
 
 import createImage from "../../../../Assets/png/dashboard/ajo/create_new_group.png"
 import otherIcon from '../../../../Assets/svg/dashboard/ajo/other_group_saving_icon.svg'
@@ -148,11 +150,11 @@ const AjoPage = () => {
                 <div className="flex w-[100%] justify-between flex-wrap gap-y-4">
                     {
                         groupSavingsOptions.map((group, index) => (
-                            <button 
+                            <Link 
                                 className={`flex flex-col gap-2 items-center w-[100%] md:w-[240px] p-2 rounded-lg hover:ring-2 hover:ring-[#440080] ${groupOption === index && 'ring-2 ring-[#440080]'}`}
                                 style={{ backgroundColor: group.backgroundColor }}
                                 key={group.header}
-                                onClick={() => setGroupOption(index)}>
+                                to={group.link}>
                                 <img src={group.icon} alt={group.header} className="w-[40px] h-[40px]" />
                                 <h3 className="text-[18px] lg:text-[20px] font-[600] text-[#1E1E1E]">
                                     {group.header}
@@ -160,7 +162,7 @@ const AjoPage = () => {
                                 <p className="text-[13px] lg:text-[15px] text-[#565454] font-[400] w-[100%] text-center">
                                     {group.text}
                                 </p>
-                            </button>
+                            </Link>
                         ))
                     }
                 </div>

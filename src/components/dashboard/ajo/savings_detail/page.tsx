@@ -82,6 +82,7 @@ const SavingsDetail = () => {
                 </h1>
             </div>
 
+           {/* SAVINGS INTRO AND HEADER */}
             <section className="flex justify-between gap-2 p-4 bg-[#ECE6F240] mt-[10px]">
                 <img src={sampleImage} alt={name} className="w-[160px] rounded-lg flex-shrink-0" />
                 <div className="flex w-[100%] flex-col gap-2 text-[#1E1E1EB2]">
@@ -118,6 +119,7 @@ const SavingsDetail = () => {
                 </button>
             </section>
 
+            {/* SAVINGS DETAILS */}
             <ul className="flex flex-col w-[100%] mt-[20px]">
                 {
                     firstSavingsData.map((data) => (
@@ -134,7 +136,7 @@ const SavingsDetail = () => {
                 
                 {
                     lastSavingsData.map((data) => (
-                        <li className="flex w-[96%] justify-between items-center pt-10 pb-4 border-b border-b-[#DDD8D887]">
+                        <li className="flex w-[96%] justify-between items-center pt-10 pb-4 border-b border-b-[#DDD8D887]" key={data.key}>
                             <p className="text-[16px] lg:text-[18px] font-[500] text-[#939090]">
                                 {data.key}
                             </p>
@@ -161,6 +163,7 @@ const SavingsDetail = () => {
                 </li>
             </ul>
 
+           {/* MEMBERS LIST */}
             <section className="flex flex-col gap-3 mt-[50px]">
                 <div className="flex justify-between items-center pb-2 border-b-2 border-b-[#DDD8D880]">
                     <h3 className="font-[600] text-[18px] text-[#1E1E1E] tracking-tight">
@@ -170,7 +173,7 @@ const SavingsDetail = () => {
                         See all
                     </Link>
                 </div>
-                <ul className="flex flex-col gap-4">
+                <ul className="flex flex-col gap-4 mt-[10px]">
                     {
                         membersData.map((data, index) => (
                             <li key={`${data.name}-${index}`} className="flex w-[100%] flex-col gap-2 bg-[#F6EFF7] border border-[#93909080] rounded-lg py-2 px-4">
