@@ -60,10 +60,10 @@ const Dashboard = () => {
 
   return (
     <main className="flex min-h-screen w-full flex-col lg:flex-row lg:justify-between">
-      <aside className="custom-scroll-bar hidden h-screen overflow-y-auto lg:block lg:w-[22%]">
+      <aside className="custom-scroll-bar hidden h-screen overflow-y-auto md:w-[22%] lg:block">
         <Sidebar />
       </aside>
-      <section className="custom-scroll-bar container h-screen flex-1 overflow-y-auto">
+      <section className="custom-scroll-bar h-screen w-full flex-1 overflow-y-auto md:px-4">
         <nav className="px-4 sm:block lg:hidden">
           <DashboardNav />
         </nav>
