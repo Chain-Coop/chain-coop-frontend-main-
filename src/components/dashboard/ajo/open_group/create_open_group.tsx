@@ -8,21 +8,41 @@ import rightArrow from "../../../../Assets/svg/dashboard/ajo/right_arrow.svg"
 import FirstOpenGroupForm from "../components/first_open_group_form"
 import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg"
 import { useState } from "react"
-import { formToJSON } from "axios";
 import SecondOpenGroupForm from "../components/second_open_group_form";
 import ThirdOpenGroupForm from "../components/third_open_group_form";
-
+import { firstOpenGroupType, secondOpenGroupType, thirdOpenGroupType } from "../../../../shared/types/types";
 
 const CreateOpenGroup = () => {
+    const [firstFormData, setFirstFormData] = useState<firstOpenGroupType>({
+        savings_title: "",
+        savings_description: "",
+        savings_currency: ""
+    })
+
+    const [secondFormData, setSecondFormData] = useState<secondOpenGroupType>({
+        total_saving_amount: "",
+        savings_frequency: "",
+        start_date: "Start date",
+        end_date: "End date"
+    })
+
+    const [thirdFormData, setThirdFormData] = useState<thirdOpenGroupType>({
+        daily_deposit: 30,
+        savings_image: null,
+        agree: false
+    })
+
     // list of the various forms
     const formSteps = [
-        <FirstOpenGroupForm />,
-        <SecondOpenGroupForm />,
-        <ThirdOpenGroupForm />
+        <FirstOpenGroupForm data={firstFormData} setData={setFirstFormData} key={0} />,
+        <SecondOpenGroupForm data={secondFormData} setData={setSecondFormData} key={1} />,
+        <ThirdOpenGroupForm data={thirdFormData} setData={setThirdFormData} key={2} />
     ]
 
     // this state controls which form is rendered
     const [formStepsIndex, setFormStepsIndex] = useState<number>(0)
+
+
     return (
         <main  className="flex flex-col font-sans mb-[20px] gap-10">
             <div className="flex h-[55px] w-full items-center justify-center relative px-4 lg:px-8 bg-text2 font-sans text-xl font-semibold text-text5 lg:mt-[2em]">

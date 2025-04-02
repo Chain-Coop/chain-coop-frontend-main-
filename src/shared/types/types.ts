@@ -79,3 +79,22 @@ export interface PaymentOptionProps {
   error?: string;
   handleCloseError?: () => void;
 }
+
+export interface firstOpenGroupType {
+  savings_title: string,
+  savings_description: string,
+  savings_currency: string
+}
+
+export interface secondOpenGroupType {
+  total_saving_amount: string,
+  savings_frequency: string,
+  start_date: string,
+  end_date: string
+}
+
+export interface thirdOpenGroupType {
+  daily_deposit: number,
+  savings_image: Blob | null,
+  agree: boolean
+}
