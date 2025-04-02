@@ -97,8 +97,8 @@ const AjoPage = () => {
 
   return (
     <main className="mb-[20px] flex flex-col gap-8 font-sans">
-      <DashboardHeader className="flex h-[2.5em] w-full items-center justify-center bg-text2 px-[1.5em] font-sans text-xl font-semibold text-text5 lg:mt-[2em]">
-        <h1>Group Savings</h1>
+      <DashboardHeader className="flex items-center justify-center text-2xl  md:text-3xl lg:mt-[2em] lg:text-xl">
+        Group Savings
       </DashboardHeader>
 
       <section className="flex items-center justify-center">

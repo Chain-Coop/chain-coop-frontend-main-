@@ -33,7 +33,7 @@ export default withMT({
         blog: "#EEE7F3",
       },
       fontFamily: {
-        sans: ["Open Sans", "sans-serif", "Asap"],
+        asap: ["Asap", "sans-serif"],
       },
       backgroundImage: {
         background: "url('/src/Assets/png/story/background.png')",
