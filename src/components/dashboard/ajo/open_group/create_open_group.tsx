@@ -10,13 +10,15 @@ import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg"
 import { useState } from "react"
 import { formToJSON } from "axios";
 import SecondOpenGroupForm from "../components/second_open_group_form";
+import ThirdOpenGroupForm from "../components/third_open_group_form";
 
 
 const CreateOpenGroup = () => {
     // list of the various forms
     const formSteps = [
         <FirstOpenGroupForm />,
-        <SecondOpenGroupForm />
+        <SecondOpenGroupForm />,
+        <ThirdOpenGroupForm />
     ]
 
     // this state controls which form is rendered
