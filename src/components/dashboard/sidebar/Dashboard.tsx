@@ -34,8 +34,6 @@ import OneTimeStartDate from "../../../pages/contribution/naira/oneTimePlan/Star
 
 
 
-import CryptoMain from "../wallet/crypto/main/CryptoMain";
-import Preview from "../contribution/contributionType/naira/strictLockPlan/Preview";
 import AjoPage from "../ajo/main/ajo";
 import SavingsDetail from "../ajo/savings_detail/page";
 
