@@ -9,12 +9,14 @@ import FirstOpenGroupForm from "../components/first_open_group_form"
 import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg"
 import { useState } from "react"
 import { formToJSON } from "axios";
+import SecondOpenGroupForm from "../components/second_open_group_form";
 
 
 const CreateOpenGroup = () => {
     // list of the various forms
     const formSteps = [
-        <FirstOpenGroupForm />
+        <FirstOpenGroupForm />,
+        <SecondOpenGroupForm />
     ]
 
     // this state controls which form is rendered
@@ -42,15 +44,15 @@ const CreateOpenGroup = () => {
                 formSteps[formStepsIndex]
             }
 
-            <div className="w-[100%] flex justify-between items-center mt-[10px] relative">
+            <div className={ `w-[100%] flex ${formStepsIndex > 0 ? 'justify-between' : 'justify-end'} items-center mt-[20px]`}>
                 {
                     formStepsIndex > 0 && (
-                        <button onClick={() => {setFormStepsIndex( formStepsIndex + 1 )}} className=" absolute left-0 -bottom-4">
+                        <button onClick={() => {setFormStepsIndex( formStepsIndex - 1 )}} className="">
                             <img src={prevFormIcon} alt="Previous form" className="w-[40px]" />
                         </button>
                     )
                 }
-                <button className="bg-[#440080] rounded-lg text-white text-[20px] font-[500] tracking-tighter w-[121px] h-[47px] absolute right-0 -bottom-4"  onClick={() => {setFormStepsIndex( formStepsIndex - 1 )}}>
+                <button className="bg-[#440080] rounded-lg text-white text-[20px] font-[500] tracking-tighter w-[121px] h-[47px]"  onClick={() => {setFormStepsIndex( formStepsIndex + 1 )}}>
                     Next
                 </button>
             </div>
