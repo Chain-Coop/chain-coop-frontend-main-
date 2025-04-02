@@ -15,7 +15,7 @@ const Profile = () => {
   return (
     <main className="font-sans">
       <section>
-        <DashboardHeader className="flex h-[2.5em] w-full items-center justify-between bg-text2 px-[1.5em] font-sans text-xl font-semibold text-text5 lg:mt-[2em]">
+        <DashboardHeader className="flex items-center justify-between px-10 text-2xl  md:text-3xl lg:mt-[2em] lg:text-xl">
           <Link to="/dashboard/notification">
             <button
               className="relative inline-flex items-center"
