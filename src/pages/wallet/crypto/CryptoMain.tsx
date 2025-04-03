@@ -9,7 +9,11 @@ import eth from "../../../Assets/svg/dashboard/Group 99764.png";
 import usdc from "../../../Assets/svg/dashboard/usdc.svg";
 import { Copy, Check } from "lucide-react";
 import { Button, Typography } from "@material-tailwind/react";
-import { useAllUserTokens, useCryptoWallet, useCryptoWalletDetails } from "../../../shared/Hooks/useBalance";
+import {
+  useAllUserTokens,
+  useCryptoWallet,
+  useCryptoWalletDetails,
+} from "../../../shared/Hooks/useBalance";
 import useUserProfile from "../../../shared/Hooks/useUserProfile";
 import { useAppDispatch } from "../../../shared/redux/reduxHooks";
 import { AppDispatch } from "../../../shared/redux/store";
@@ -109,7 +113,7 @@ const CryptoMain = () => {
           Chain Coop Wallet
         </DashboardHeader>
       </div>
-      <div>
+      <div className="px-4 lg:px-6">
         <section className="text-center text-text4">
           <div className="flex flex-col gap-3 py-[1.5em] sm:flex-row sm:justify-between sm:gap-4">
             {profileDetails?.isWalletActivated === true && (
@@ -265,29 +269,31 @@ const CryptoMain = () => {
           </div>
         </section>
 
-        <section className="my-8 rounded-3xl border-[2px] border-gray-300 px-4  shadow-md lg:w-[25em]">
-          <div className="flex items-center justify-between px-4 py-8 font-semibold text-howtext lg:px-10">
-            <Link to="">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex flex-col items-center bg-inherit text-center"
-              >
-                <WithdrawIcon />
-                <span className="block text-memt1 lg:text-lg">Withdraw</span>
-              </motion.button>
-            </Link>
+        <section className="flex items-center justify-center w-full">
+          <div className="my-8 rounded-3xl border-[2px] border-gray-300 px-4 w-full shadow-md lg:w-[25em]">
+            <div className="flex items-center justify-between px-4 py-8 font-semibold text-howtext lg:px-10">
+              <Link to="">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="flex flex-col items-center bg-inherit text-center"
+                >
+                  <WithdrawIcon />
+                  <span className="block text-memt1 lg:text-lg">Withdraw</span>
+                </motion.button>
+              </Link>
 
-            <Link to="">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex flex-col items-center bg-inherit text-center"
-              >
-                <TransferIcon />
-                <span className="block text-memt1 lg:text-lg">Transfer</span>
-              </motion.button>
-            </Link>
+              <Link to="">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="flex flex-col items-center bg-inherit text-center"
+                >
+                  <TransferIcon />
+                  <span className="block text-memt1 lg:text-lg">Transfer</span>
+                </motion.button>
+              </Link>
+            </div>
           </div>
         </section>
       </div>
