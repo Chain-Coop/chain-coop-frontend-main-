@@ -8,7 +8,7 @@ import usdt from "../../../../Assets/svg/dashboard/usdc.svg";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 
-const ContributionCurrencyType = () => {
+const LockPlanContribution = () => {
   const [hoveredPlan, setHoveredPlan] = useState<number | null>(null);
   const [formData, setFormData] = useState({
     title: "",
@@ -61,7 +61,7 @@ const ContributionCurrencyType = () => {
     }
 
     setError("");
-    navigate("/dashboard/contribution/flexible_crypto/date", {
+    navigate("/dashboard/contribution/lock/date", {
       state: formData,
     });
   };
@@ -69,15 +69,16 @@ const ContributionCurrencyType = () => {
   return (
     <main className="pb-[1.5em] font-sans">
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
-        Flexible Savings
+        Lock Savings
       </DashboardHeader>
       <div className="m-auto w-[90%]">
         <header className="mt-[1.5em] lg:mt-[3em]">
           <h1 className="text-xl font-semibold md:text-2xl lg:text-2xl">
-            Flexible Savings
+            Lock Savings
           </h1>
           <p className="mt-[1em] font-medium">
-            You can save and withdraw anytime you want.
+            You can save and withdrawal will be locked until saving duration is
+            complete but you withdraw before the time frame
           </p>
         </header>
 
@@ -230,4 +231,4 @@ const ContributionCurrencyType = () => {
   );
 };
 
-export default ContributionCurrencyType;
+export default LockPlanContribution;

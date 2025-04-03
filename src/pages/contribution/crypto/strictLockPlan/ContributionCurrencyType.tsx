@@ -61,7 +61,7 @@ const ContributionCurrencyType = () => {
     }
 
     setError("");
-    navigate("/dashboard/contribution/strict_lock_crypto/date", {
+    navigate("/dashboard/contribution/strict_lock/date", {
       state: formData,
     });
   };
@@ -178,7 +178,7 @@ const ContributionCurrencyType = () => {
                 </header>
               </div>
               <hr />
-              <div className="mt-[1em] flex gap-[2em] px-[1em]">
+              <div className="mt-[1em] flex flex-col items-center justify-center gap-[2em] px-[1em] md:flex-row md:items-start">
                 {[
                   { type: "LISK", icon: lisk },
                   { type: "USDC", icon: usdc },
