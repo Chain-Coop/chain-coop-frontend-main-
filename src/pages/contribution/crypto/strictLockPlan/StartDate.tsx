@@ -4,6 +4,7 @@ import { Button } from "@material-tailwind/react";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Alert } from "@mui/material";
 
 const StartDate = () => {
   const location = useLocation();
@@ -13,6 +14,7 @@ const StartDate = () => {
   const today = new Date().toISOString().split("T")[0];
   const [endDate, setEndDate] = useState<string>("");
   const [savingsDuration, setSavingsDuration] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedEndDate = e.target.value;
@@ -29,16 +31,17 @@ const StartDate = () => {
       const days = totalDays % 30;
       setSavingsDuration(`${months} months (${days} days)`);
     } else {
-      setSavingsDuration("")
+      setSavingsDuration("");
     }
   };
 
   const handleNext = () => {
     if (!endDate) {
-      alert("Please select an end date.");
+      setError("Please select an end date.");
       return;
     }
 
+    setError("");
     navigate("/dashboard/contribution/strict_lock/source_funds", {
       state: { ...formData, startDate: today, endDate, savingsDuration },
     });
@@ -111,16 +114,23 @@ const StartDate = () => {
           </div>
         </div>
 
+        {/* Error Message */}
+        {error && (
+          <Alert severity="error" className="mb-4 mt-4">
+            {error}
+          </Alert>
+        )}
+
         <div className="mt-[3em] flex items-center justify-between">
           <button
-            onClick={() => navigate(-1)} // Go back to the previous step
+            onClick={() => navigate(-1)}
             className="flex items-center transition-transform duration-300 hover:scale-110"
           >
             <IoIosArrowDropleft size={25} />
           </button>
           <Button
             variant="text"
-            onClick={handleNext} // Navigate to the next step
+            onClick={handleNext}
             className="flex justify-center rounded-md bg-text2
               px-8 py-[1em] font-semibold
               text-white transition-all duration-300

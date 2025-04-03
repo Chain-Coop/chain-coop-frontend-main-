@@ -167,32 +167,41 @@ const CryptoSavings: React.FC = () => {
             </motion.div>
 
             <section className="mt-6 lg:mt-8">
-              <div className="flex flex-col gap-5 lg:gap-8 lg:flex-row lg:flex-wrap w-full">
-                <Link className="lg:w-[217px]" to="/dashboard/contribution/flexible/crypto_purpose">
+              <div className="flex w-full flex-col gap-5 lg:flex-row lg:gap-3">
+                <Link
+                  className="flex-1"
+                  to="/dashboard/contribution/flexible/crypto_purpose"
+                >
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 md:py-3 md:text-lg"
+                    className="w-full rounded-full border-[2px] border-gray-300 bg-inherit py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 lg:text-lg"
                   >
                     Flexible Savings
                   </motion.button>
                 </Link>
 
-                <Link className="lg:w-[217px]" to="/dashboard/contribution/lock/crypto_purpose">
+                <Link
+                  className="flex-1"
+                  to="/dashboard/contribution/lock/crypto_purpose"
+                >
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 md:py-3 md:text-lg"
+                    className="w-full rounded-full border-[2px] border-gray-300 bg-inherit py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 lg:text-lg"
                   >
                     Lock Savings
                   </motion.button>
                 </Link>
 
-                <Link className="lg:w-[217px]" to="/dashboard/contribution/strict_lock/crypto_purpose">
+                <Link
+                  className="flex-1"
+                  to="/dashboard/contribution/strict_lock/crypto_purpose"
+                >
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 md:py-3 md:text-lg"
+                    className="w-full rounded-full border-[2px] border-gray-300 bg-inherit py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 lg:text-lg"
                   >
                     Strict Lock Savings
                   </motion.button>
