@@ -168,7 +168,7 @@ const ContributionCurrencyType = () => {
 
         {formData.currency === "Cryptocurrency" && (
           <section className="mt-[3em]">
-            <div className="w-full max-w-[30em] rounded-xl bg-inherit py-[2em] shadow-lg">
+            <div className="w-full max-w-[30em] rounded-xl bg-inherit py-[2em] shadow-lg md:max-w-full">
               <div className="px-[1em]">
                 <header>
                   <h4 className="mb-2 text-lg font-semibold text-memt1">
@@ -177,7 +177,7 @@ const ContributionCurrencyType = () => {
                 </header>
               </div>
               <hr />
-              <div className="mt-[1em] flex flex-col items-center justify-center gap-[2em] px-[1em] md:flex-row md:items-start">
+              <div className="mt-[1em] flex flex-col items-center justify-center gap-[2em] px-[1em] md:flex-row md:items-start md:justify-start">
                 {[
                   { type: "LISK", icon: lisk },
                   { type: "USDC", icon: usdc },
