@@ -25,10 +25,10 @@ const GroupCard: React.FC<GroupCardProps> = ({
 }) => {
   return (
     <section className="flex items-center justify-center">
-      <div className="flex w-[95%] flex-shrink-0 flex-col rounded-xl shadow-md shadow-[#3D007347] sm:h-[234px] sm:w-[440px] lg:flex-row">
+      <div className="flex w-[95%] flex-shrink-0 flex-col rounded-xl shadow-md shadow-[#3D007347] sm:h-[234px] sm:w-[440px] md:flex-row md:gap-2">
         {/* Image Section */}
         <div>
-          <div className="relative h-[153px] w-full flex-shrink-0 rounded-l-xl lg:h-full lg:w-[158px]">
+          <div className="relative h-[153px] w-full flex-shrink-0 rounded-l-xl md:h-full md:w-[158px]">
             <img
               src={image}
               alt={name}
