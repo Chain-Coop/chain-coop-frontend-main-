@@ -7,17 +7,19 @@ import createImage from "../../../../Assets/png/dashboard/ajo/open_group_image.p
 import rightArrow from "../../../../Assets/svg/dashboard/ajo/right_arrow.svg"
 import FirstOpenGroupForm from "../components/first_open_group_form"
 import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import SecondOpenGroupForm from "../components/second_open_group_form";
 import ThirdOpenGroupForm from "../components/third_open_group_form";
 import { firstOpenGroupType, secondOpenGroupType, thirdOpenGroupType } from "../../../../shared/types/types";
+import { validateFirstForm, validateSecondForm, validateThirdForm } from "../components/form_validation";
+
 
 const CreateOpenGroup = () => {
     const [firstFormData, setFirstFormData] = useState<firstOpenGroupType>({
         savings_title: "",
         savings_description: "",
         savings_currency: ""
-    })
+    })  
 
     const [secondFormData, setSecondFormData] = useState<secondOpenGroupType>({
         total_saving_amount: "",
@@ -32,6 +34,9 @@ const CreateOpenGroup = () => {
         agree: false
     })
 
+    // state to toggle whether the next button is disabled or not
+    const [isNextDisabled, setIsNextDisabled] = useState<boolean>(true)
+
     // list of the various forms
     const formSteps = [
         <FirstOpenGroupForm data={firstFormData} setData={setFirstFormData} key={0} />,
@@ -40,7 +45,23 @@ const CreateOpenGroup = () => {
     ]
 
     // this state controls which form is rendered
-    const [formStepsIndex, setFormStepsIndex] = useState<number>(0)
+    const [formStepsIndex, setFormStepsIndex] = useState<number>(2)
+
+    useEffect(() => {
+        // perform different validation checks based on the current form step
+        if (formStepsIndex === 0) {
+            setIsNextDisabled(validateFirstForm(firstFormData))
+        } else if (formStepsIndex === 1) {
+            setIsNextDisabled(validateSecondForm(secondFormData))
+        } else if (formStepsIndex === 2) {
+            setIsNextDisabled(validateThirdForm(thirdFormData))
+        }
+    }, [firstFormData, secondFormData, thirdFormData]);
+
+    const nextForm = () => {
+        setFormStepsIndex((prev) => prev + 1)
+        setIsNextDisabled(true)
+    }
 
 
     return (
@@ -74,7 +95,7 @@ const CreateOpenGroup = () => {
                         </button>
                     )
                 }
-                <button className="bg-[#440080] rounded-lg text-white text-[20px] font-[500] tracking-tighter w-[121px] h-[47px]"  onClick={() => {setFormStepsIndex( formStepsIndex + 1 )}}>
+                <button className={`bg-[#440080] rounded-lg text-white text-[20px] font-[500] tracking-tighter w-[121px] h-[47px] ${isNextDisabled ? 'opacity-70 cursor-not-allowed' : ''}`}  onClick={nextForm} disabled={isNextDisabled}>
                     Next
                 </button>
             </div>

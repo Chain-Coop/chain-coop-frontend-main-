@@ -70,7 +70,7 @@ const ThirdOpenGroupForm = ({ data, setData }: Props) => {
                     }
                 </div>
                 <div
-                    className="w-[400px] p-4 flex items-center justify-center border-2 border-dashed border-black rounded-lg h-[160px] flex-col gap-2 relative cursor-pointer"
+                    className="w-[100%] lg:w-[400px] p-4 flex items-center justify-center border-2 border-dashed border-black rounded-lg h-[160px] flex-col gap-2 relative cursor-pointer"
                     tabIndex={0}>
                     <div className="w-[50px] h-[50px] rounded-full bg-[#ECE6F2] flex items-center justify-center z-10">
                         <LuUpload className="text-[#440080] text-[20px]" />
@@ -95,7 +95,7 @@ const ThirdOpenGroupForm = ({ data, setData }: Props) => {
             </div>
 
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center self-start lg:self-center gap-2">
                 <button  onClick={handleButtonSelection}>
                     {
                         data.agree ? (

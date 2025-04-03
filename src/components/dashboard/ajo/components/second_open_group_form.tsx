@@ -20,7 +20,7 @@ const SecondOpenGroupForm = ({ data, setData }: Props) => {
     }
 
     const openEndDate = () => {
-        startDateRef.current?.showPicker()
+        endDateRef.current?.showPicker()
     }
 
     const handleChange= (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
