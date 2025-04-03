@@ -5,25 +5,25 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import WhyChainCoop from "./pages/entry/WhyChainCoop";
 import HomePage from "./pages/entry/HomePage";
-import Contact from "./pages/entry/Contact";
-import PartnerWithUs from "./pages/entry/PartnerWithUs";
-import UserLogin from "./pages/auth/UserLogin";
-import CreateAccount from "./pages/auth/CreateAccount";
 import ForgetPassword from "./pages/auth/ForgetPassword";
+import CreateAccount from "./pages/auth/CreateAccount";
+import UserLoginOtp from "./pages/auth/UserLoginOtp";
+import VerificationSuccessfull from "./pages/auth/VerificationSuccessfull";
+import PaaswordRessetSuccessfull from "./pages/auth/PaaswordRessetSuccessfull";
+import Contact from "./pages/entry/Contact";
 import ResetPassword from "./pages/auth/ResetPassword";
 import NewPassword from "./pages/auth/NewPassword";
-import UserLoginOtp from "./pages/auth/UserLoginOtp";
+import UserLogin from "./pages/auth/UserLogin";
+import Dashboard from "./components/dashboard/sidebar/Dashboard";
+import NotFound from "./pages/NotFound";
+import WhyChainCoop from "./pages/entry/WhyChainCoop";
+import ProtectedRoutes from "./components/protected/ProtectedRoute";
+import PartnerWithUs from "./pages/entry/PartnerWithUs";
 import TermsOfService from "./pages/footer/TermsOfService";
 import Team from "./pages/footer/Team";
 import AboutUs from "./pages/footer/AboutUs";
 import PrivacyPolicy from "./pages/footer/PrivacyPolicy";
-import VerificationSuccessfull from "./pages/auth/VerificationSuccessfull";
-import PaaswordRessetSuccessfull from "./pages/auth/PaaswordRessetSuccessfull";
-import ProtectedRoutes from "./components/protected/ProtectedRoute";
-import Dashboard from "./components/dashboard/sidebar/Dashboard";
-import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -52,7 +52,6 @@ function App() {
           element={<PaaswordRessetSuccessfull />}
         />
 
-        <Route>
           <Route path="/dashboard/*" element={<Dashboard />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Route>

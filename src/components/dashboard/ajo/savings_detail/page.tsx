@@ -49,6 +49,27 @@ const SavingsDetail = () => {
         }
     ]
 
+    const membersData = [
+        {
+            name: "John Doe",
+            amount: "$20",
+            userType: "member",
+            status: "Joined"
+        },
+        {
+            name: "Jane Doe",
+            amount: "$30",
+            userType: "member",
+            status: "Funded"
+        },
+        {
+            name: "Mark Doe",
+            amount: "$0",
+            userType: "member",
+            status: "Joined"
+        }
+    ]
+
 
     return (
         <main  className="flex flex-col font-sans mb-[20px] ">
@@ -61,7 +82,10 @@ const SavingsDetail = () => {
                 </h1>
             </div>
 
-            <section className="flex justify-between gap-2 p-4 bg-[#ECE6F240] mt-[10px] px-4 lg:px-6">
+
+           {/* SAVINGS INTRO AND HEADER */}
+            <section className="flex justify-between gap-2 p-4 bg-[#ECE6F240] mt-[10px]">
+
                 <img src={sampleImage} alt={name} className="w-[160px] rounded-lg flex-shrink-0" />
                 <div className="flex w-[100%] flex-col gap-2 text-[#1E1E1EB2]">
                     <div className="w-[100%] flex justify-between items-start">
@@ -97,7 +121,9 @@ const SavingsDetail = () => {
                 </button>
             </section>
 
-            <ul className="flex flex-col w-[100%] mt-[20px] px-4 lg:px-6">
+
+            <ul className="flex flex-col w-[100%] mt-[20px]">
+
                 {
                     firstSavingsData.map((data) => (
                         <li className="flex w-[96%] justify-between items-center pt-10 pb-4 border-b border-b-[#DDD8D887]" key={data.addition}>
@@ -113,7 +139,7 @@ const SavingsDetail = () => {
                 
                 {
                     lastSavingsData.map((data) => (
-                        <li className="flex w-[96%] justify-between items-center pt-10 pb-4 border-b border-b-[#DDD8D887]">
+                        <li className="flex w-[96%] justify-between items-center pt-10 pb-4 border-b border-b-[#DDD8D887]" key={data.key}>
                             <p className="text-[16px] lg:text-[18px] font-[500] text-[#939090]">
                                 {data.key}
                             </p>
@@ -139,6 +165,55 @@ const SavingsDetail = () => {
                     </p>
                 </li>
             </ul>
+
+           {/* MEMBERS LIST */}
+            <section className="flex flex-col gap-3 mt-[50px]">
+                <div className="flex justify-between items-center pb-2 border-b-2 border-b-[#DDD8D880]">
+                    <h3 className="font-[600] text-[18px] text-[#1E1E1E] tracking-tight">
+                        Members (3)
+                    </h3>
+                    <Link to={`/ajo/${name}/members`} className="text-[#440080] text-[16px] font-[600] tracking-tight">
+                        See all
+                    </Link>
+                </div>
+                <ul className="flex flex-col gap-4 mt-[10px]">
+                    {
+                        membersData.map((data, index) => (
+                            <li key={`${data.name}-${index}`} className="flex w-[100%] flex-col gap-2 bg-[#F6EFF7] border border-[#93909080] rounded-lg py-2 px-4">
+                                <div className="w-[100%] flex justify-between items-center">
+                                    <h4 className="text-[#1E1E1E] tracking-tighter text-[18px] font-[500]">
+                                        {data.name} <span className="capitalize">({data.userType})</span>
+                                    </h4>
+                                    {
+                                        data.status === "Joined" ? (
+                                            <p className={`font-[500] txt-[13px] bg-[#E6B8D4] border border-[#CCA3BC] rounded-md min-w-[120px] py-1 text-center`}>
+                                            {data.status}
+                                        </p>
+                                        ) : (
+                                            <p className={`font-[500] txt-[13px] bg-[#E3D9EC] border border-[#44008080] text-[#440080] rounded-md min-w-[120px] py-1 text-center`}>
+                                                {data.status}: {data.amount}
+                                            </p>
+                                        )
+                                    }
+                                </div>
+                                <div className="flex w-[100%] justify-between items-center">
+                                    <div className="flex flex-col items-start ">
+                                        <p className="font-[400] text-[14px] text-[#959494] tracking-tighter">
+                                            Total balance
+                                        </p>
+                                        <p className="text-[14px] font-[600] text-[#440080]">
+                                            {data.amount}
+                                        </p>
+                                    </div>
+                                    <p className="text-[14px] font-[400] text-[#1E1E1E99] tracking-tighter">
+                                        4 minutes ago
+                                    </p>
+                                </div>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </section>
         </main>
     )
 }

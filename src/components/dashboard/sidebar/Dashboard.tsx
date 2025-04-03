@@ -40,8 +40,10 @@ import OneTimePurpose from "../../../pages/contribution/naira/oneTimePlan/Purpos
 import OneTimeAmount from "../../../pages/contribution/naira/oneTimePlan/SavingsAmount";
 import OneTimeStartDate from "../../../pages/contribution/naira/oneTimePlan/StartDate";
 
+
 //import CryptoMain from "../wallet/crypto/main/CryptoMain";
 //import Preview from "../contribution/contributionType/naira/strictLockPlan/Preview";
+
 import AjoPage from "../ajo/main/ajo";
 import SavingsDetail from "../ajo/savings_detail/page";
 
@@ -60,6 +62,7 @@ import Profile from "../../../pages/profile/profile";
 import Wallet from "../../../pages/wallet/Wallet";
 import Home from "../../../pages/home/Home";
 import ManageCards from "../../../pages/profile/ManageCards";
+import CreateOpenGroup from "../ajo/open_group/create_open_group";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -215,6 +218,8 @@ const Dashboard = () => {
 
           <Route path="ajo" element={<AjoPage />} />
           <Route path="ajo/:name" element={<SavingsDetail />} />
+          <Route path="ajo/create_open_group" element={<CreateOpenGroup />} />
+          
 
           <Route path="wallet/*" element={<Wallet />} />
           <Route path="wallet/crypto_wallet" element={<CryptoMain />} />

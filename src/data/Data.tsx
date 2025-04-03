@@ -117,13 +117,15 @@ export const groupSavingsOptions = [
     icon: open_group,
     header: "Create Open Group",
     text: "This clearly implies that anyone can join",
-    backgroundColor: "#ECE6F2"
+    backgroundColor: "#ECE6F2",
+    link: "/dashboard/ajo/create_open_group",
   },
   {
     icon: closed_group,
     header: "Create Closed Group",
     text: "This group entry requires an invitation privately",
-    backgroundColor: "#F5F0F0D4"
+    backgroundColor: "#F5F0F0D4",
+    link: "/dashboard/ajo/create_closed_group",
   }
 ]
 
