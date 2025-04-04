@@ -52,7 +52,7 @@ const Withdraw = () => {
   };
 
   return (
-    <main className="font-sans">
+    <main>
       <DashboardHeader
         className="relative cursor-pointer items-center lg:mt-[2em]"
         onClick={handleBackClick}

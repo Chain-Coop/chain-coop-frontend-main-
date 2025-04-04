@@ -6,7 +6,6 @@ import { groupSavingsOptions } from "../../../../data/Data";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-
 import createImage from "../../../../Assets/png/dashboard/ajo/create_new_group.png";
 import otherIcon from "../../../../Assets/svg/dashboard/ajo/other_group_saving_icon.svg";
 import otherImage from "../../../../Assets/png/dashboard/ajo/other_group_saving_image.png";
@@ -134,7 +133,7 @@ const AjoPage = () => {
       </section>
 
       {/* START GROUP SAVING */}
-      <section className="flex w-[100%] flex-col gap-4 px-10 lg:px-6">
+      <section className="flex w-[100%] flex-col gap-4">
         <div className="flex w-[100%] items-center gap-4">
           <div className="flex h-[24px] w-[24px] items-center justify-center rounded-full bg-[#ECE6F2]">
             <HiOutlinePlus className="h-[16px] w-[16px] text-[#3D0073]" />
@@ -146,13 +145,13 @@ const AjoPage = () => {
         <p className="tracking-medium text-[14px] font-[400] text-[#302B2BC7] xl:text-[16px]">
           Select any of the saving option to begin your contribution with others
         </p>
-        <div className="flex w-[100%] flex-wrap justify-between gap-y-8 lg:gap-y-4 lg:px-0">
+        <div className="flex w-[100%] flex-wrap justify-between gap-y-4">
           {groupSavingsOptions.map((group, index) => (
-            <button
-              className={`flex w-[100%] flex-col items-center gap-2 rounded-lg p-2 pb-3.5 hover:ring-2 hover:ring-[#440080] md:w-[240px] ${groupOption === index && "ring-2 ring-[#440080]"}`}
+            <Link
+              className={`flex w-[100%] flex-col items-center gap-2 rounded-lg p-2 hover:ring-2 hover:ring-[#440080] md:w-[240px] ${groupOption === index && "ring-2 ring-[#440080]"}`}
               style={{ backgroundColor: group.backgroundColor }}
               key={group.header}
-              onClick={() => setGroupOption(index)}
+              to={group.link}
             >
               <img
                 src={group.icon}
@@ -165,45 +164,10 @@ const AjoPage = () => {
               <p className="w-[100%] text-center text-[13px] font-[400] text-[#565454] lg:text-[15px]">
                 {group.text}
               </p>
-            </button>
+            </Link>
           ))}
         </div>
       </section>
-
-
-            {/* START GROUP SAVING */}
-            <section className="flex w-[100%] flex-col gap-4">
-                <div className="w-[100%] flex items-center gap-4">
-                    <div className="bg-[#ECE6F2] w-[24px] h-[24px] flex items-center justify-center rounded-full">
-                        <HiOutlinePlus className="text-[#3D0073] w-[16px] h-[16px]" />
-                    </div>
-                    <h2 className="font-[600] text-[16px] lg:text-[18px] xl:text-[20px] tracking-tight">
-                        Start Group Saving
-                    </h2>
-                </div>
-                <p className="text-[#302B2BC7] text-[14px] xl:text-[16px] font-[400] tracking-medium">
-                    Select any of the saving option to begin your contribution with others
-                </p>
-                <div className="flex w-[100%] justify-between flex-wrap gap-y-4">
-                    {
-                        groupSavingsOptions.map((group, index) => (
-                            <Link 
-                                className={`flex flex-col gap-2 items-center w-[100%] md:w-[240px] p-2 rounded-lg hover:ring-2 hover:ring-[#440080] ${groupOption === index && 'ring-2 ring-[#440080]'}`}
-                                style={{ backgroundColor: group.backgroundColor }}
-                                key={group.header}
-                                to={group.link}>
-                                <img src={group.icon} alt={group.header} className="w-[40px] h-[40px]" />
-                                <h3 className="text-[18px] lg:text-[20px] font-[600] text-[#1E1E1E]">
-                                    {group.header}
-                                </h3>
-                                <p className="text-[13px] lg:text-[15px] text-[#565454] font-[400] w-[100%] text-center">
-                                    {group.text}
-                                </p>
-                            </Link>
-                        ))
-                    }
-                </div>
-            </section>
 
       {/* OTHER SAVING DATA */}
       <section className="flex flex-col gap-3 px-10 lg:px-6">
@@ -226,7 +190,6 @@ const AjoPage = () => {
           ))}
         </section>
       </section>
-
 
       {/* GROUP HISTORY */}
       <section className="flex w-[100%] flex-col gap-3 px-10  lg:px-6">

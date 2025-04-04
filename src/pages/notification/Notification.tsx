@@ -23,7 +23,7 @@ const Notification = () => {
   };
 
   return (
-    <main className="min-h-screen w-full font-sans">
+    <main className="min-h-screen w-full">
       <DashboardHeader
         className="relative mt-2 cursor-pointer items-center px-4 md:mt-4 md:px-6 lg:mt-8"
         onClick={handleBackClick}

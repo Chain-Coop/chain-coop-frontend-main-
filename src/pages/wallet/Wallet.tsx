@@ -17,7 +17,7 @@ const Wallet = () => {
   };
 
   return (
-    <main className="font-sans">
+    <main>
       <div className="mt-0 lg:mt-8">
         <header>
           <DashboardHeader className="flex items-center justify-center text-2xl tracking-wide md:text-3xl lg:text-xl">
@@ -39,7 +39,7 @@ const Wallet = () => {
             </div>
 
             <div className="rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md sm:p-16">
-              <div className="flex justify-center gap-4 font-sans">
+              <div className="flex justify-center gap-4">
                 <p className="font-medium">Naira Wallet Balance</p>
                 <div>
                   <ToggleButton

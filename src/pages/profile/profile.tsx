@@ -13,7 +13,7 @@ const Profile = () => {
   const { totalCount } = useAllNotification();
 
   return (
-    <main className="font-sans">
+    <main>
       <section>
         <DashboardHeader className="flex items-center justify-between px-10 text-2xl  md:text-3xl lg:mt-[2em] lg:text-xl">
           <Link to="/dashboard/notification">

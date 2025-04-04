@@ -1,10 +1,5 @@
 import "./App.css";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/entry/HomePage";
 import ForgetPassword from "./pages/auth/ForgetPassword";
 import CreateAccount from "./pages/auth/CreateAccount";
@@ -52,13 +47,9 @@ function App() {
           element={<PaaswordRessetSuccessfull />}
         />
 
+        <Route element={<ProtectedRoutes />}>
           <Route path="/dashboard/*" element={<Dashboard />} />
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Route>
-        
-        {/* <Route element={<ProtectedRoutes />}>
-          <Route path="/dashboard/*" element={<Dashboard />} />
-        </Route> */}
 
         <Route path="*" element={<NotFound />} />
       </Routes>

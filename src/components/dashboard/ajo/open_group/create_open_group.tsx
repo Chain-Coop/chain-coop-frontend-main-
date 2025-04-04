@@ -1,106 +1,142 @@
-import { MdOutlineArrowBackIos } from "react-icons/md"
-import { Link } from "react-router-dom"
+import { MdOutlineArrowBackIos } from "react-icons/md";
+import { Link } from "react-router-dom";
 import { FaAngleLeft } from "react-icons/fa6";
 
-
-import createImage from "../../../../Assets/png/dashboard/ajo/open_group_image.png"
-import rightArrow from "../../../../Assets/svg/dashboard/ajo/right_arrow.svg"
-import FirstOpenGroupForm from "../components/first_open_group_form"
-import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg"
-import { useEffect, useState } from "react"
+import createImage from "../../../../Assets/png/dashboard/ajo/open_group_image.png";
+import rightArrow from "../../../../Assets/svg/dashboard/ajo/right_arrow.svg";
+import FirstOpenGroupForm from "../components/first_open_group_form";
+import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg";
+import { useEffect, useState } from "react";
 import SecondOpenGroupForm from "../components/second_open_group_form";
 import ThirdOpenGroupForm from "../components/third_open_group_form";
-import { firstOpenGroupType, secondOpenGroupType, thirdOpenGroupType } from "../../../../shared/types/types";
-import { validateFirstForm, validateSecondForm, validateThirdForm } from "../components/form_validation";
-
+import {
+  firstOpenGroupType,
+  secondOpenGroupType,
+  thirdOpenGroupType,
+} from "../../../../shared/types/types";
+import {
+  validateFirstForm,
+  validateSecondForm,
+  validateThirdForm,
+} from "../components/form_validation";
 
 const CreateOpenGroup = () => {
-    const [firstFormData, setFirstFormData] = useState<firstOpenGroupType>({
-        savings_title: "",
-        savings_description: "",
-        savings_currency: ""
-    })  
+  const [firstFormData, setFirstFormData] = useState<firstOpenGroupType>({
+    savings_title: "",
+    savings_description: "",
+    savings_currency: "",
+  });
 
-    const [secondFormData, setSecondFormData] = useState<secondOpenGroupType>({
-        total_saving_amount: "",
-        savings_frequency: "",
-        start_date: "Start date",
-        end_date: "End date"
-    })
+  const [secondFormData, setSecondFormData] = useState<secondOpenGroupType>({
+    total_saving_amount: "",
+    savings_frequency: "",
+    start_date: "Start date",
+    end_date: "End date",
+  });
 
-    const [thirdFormData, setThirdFormData] = useState<thirdOpenGroupType>({
-        daily_deposit: 30,
-        savings_image: null,
-        agree: false
-    })
+  const [thirdFormData, setThirdFormData] = useState<thirdOpenGroupType>({
+    daily_deposit: 30,
+    savings_image: null,
+    agree: false,
+  });
 
-    // state to toggle whether the next button is disabled or not
-    const [isNextDisabled, setIsNextDisabled] = useState<boolean>(true)
+  // state to toggle whether the next button is disabled or not
+  const [isNextDisabled, setIsNextDisabled] = useState<boolean>(true);
 
-    // list of the various forms
-    const formSteps = [
-        <FirstOpenGroupForm data={firstFormData} setData={setFirstFormData} key={0} />,
-        <SecondOpenGroupForm data={secondFormData} setData={setSecondFormData} key={1} />,
-        <ThirdOpenGroupForm data={thirdFormData} setData={setThirdFormData} key={2} />
-    ]
+  // list of the various forms
+  const formSteps = [
+    <FirstOpenGroupForm
+      data={firstFormData}
+      setData={setFirstFormData}
+      key={0}
+    />,
+    <SecondOpenGroupForm
+      data={secondFormData}
+      setData={setSecondFormData}
+      key={1}
+    />,
+    <ThirdOpenGroupForm
+      data={thirdFormData}
+      setData={setThirdFormData}
+      key={2}
+    />,
+  ];
 
-    // this state controls which form is rendered
-    const [formStepsIndex, setFormStepsIndex] = useState<number>(2)
+  // this state controls which form is rendered
+  const [formStepsIndex, setFormStepsIndex] = useState<number>(2);
 
-    useEffect(() => {
-        // perform different validation checks based on the current form step
-        if (formStepsIndex === 0) {
-            setIsNextDisabled(validateFirstForm(firstFormData))
-        } else if (formStepsIndex === 1) {
-            setIsNextDisabled(validateSecondForm(secondFormData))
-        } else if (formStepsIndex === 2) {
-            setIsNextDisabled(validateThirdForm(thirdFormData))
-        }
-    }, [firstFormData, secondFormData, thirdFormData]);
-
-    const nextForm = () => {
-        setFormStepsIndex((prev) => prev + 1)
-        setIsNextDisabled(true)
+  useEffect(() => {
+    // perform different validation checks based on the current form step
+    if (formStepsIndex === 0) {
+      setIsNextDisabled(validateFirstForm(firstFormData));
+    } else if (formStepsIndex === 1) {
+      setIsNextDisabled(validateSecondForm(secondFormData));
+    } else if (formStepsIndex === 2) {
+      setIsNextDisabled(validateThirdForm(thirdFormData));
     }
+  }, [firstFormData, secondFormData, thirdFormData]);
 
+  const nextForm = () => {
+    setFormStepsIndex((prev) => prev + 1);
+    setIsNextDisabled(true);
+  };
 
-    return (
-        <main  className="flex flex-col font-sans mb-[20px] gap-10">
-            <div className="flex h-[55px] w-full items-center justify-center relative px-4 lg:px-8 bg-text2 font-sans text-xl font-semibold text-text5 lg:mt-[2em]">
-                <Link to={'/dashboard/ajo'} className="absolute left-8">
-                    <MdOutlineArrowBackIos className="w-[20px] h-[30px]" />
-                </Link>
-                <h1 className="font-[600] text-[22px] lg:text-[24px]">
-                    Create Open Group
-                </h1>
-            </div>
+  return (
+    <main className="mb-[20px] flex flex-col gap-10 font-sans">
+      <div className="relative flex h-[55px] w-full items-center justify-center bg-text2 px-4 font-sans text-xl font-semibold text-text5 lg:mt-[2em] lg:px-8">
+        <Link to={"/dashboard/ajo"} className="absolute left-8">
+          <MdOutlineArrowBackIos className="h-[30px] w-[20px]" />
+        </Link>
+        <h1 className="text-[22px] font-[600] lg:text-[24px]">
+          Create Open Group
+        </h1>
+      </div>
 
-            {/* OPEN SAVINGS INTRO IMAGE */}
-            <section className="w-[100%] flex mt-12 items-center justify-center">
-                <img src={rightArrow} alt="create new savings group" className="w-[100px] h-[80px] self-end translate-x-10" />
-                <img src={createImage} alt="create new savings group" className="w-[300px] h-[215px]" />
-                <img src={rightArrow} alt="create new savings group" className="w-[100px] h-[80px] self-start -translate-x-10" />
-            </section>
+      {/* OPEN SAVINGS INTRO IMAGE */}
+      <section className="mt-12 flex w-[100%] items-center justify-center">
+        <img
+          src={rightArrow}
+          alt="create new savings group"
+          className="h-[80px] w-[100px] translate-x-10 self-end"
+        />
+        <img
+          src={createImage}
+          alt="create new savings group"
+          className="h-[215px] w-[300px]"
+        />
+        <img
+          src={rightArrow}
+          alt="create new savings group"
+          className="h-[80px] w-[100px] -translate-x-10 self-start"
+        />
+      </section>
 
-            {/* ACTIVE FORM */}
-            {
-                formSteps[formStepsIndex]
-            }
+      {/* ACTIVE FORM */}
+      {formSteps[formStepsIndex]}
 
-            <div className={ `w-[100%] flex ${formStepsIndex > 0 ? 'justify-between' : 'justify-end'} items-center mt-[20px]`}>
-                {
-                    formStepsIndex > 0 && (
-                        <button onClick={() => {setFormStepsIndex( formStepsIndex - 1 )}} className="">
-                            <img src={prevFormIcon} alt="Previous form" className="w-[40px]" />
-                        </button>
-                    )
-                }
-                <button className={`bg-[#440080] rounded-lg text-white text-[20px] font-[500] tracking-tighter w-[121px] h-[47px] ${isNextDisabled ? 'opacity-70 cursor-not-allowed' : ''}`}  onClick={nextForm} disabled={isNextDisabled}>
-                    Next
-                </button>
-            </div>
-        </main>
-    )
-}
+      <div
+        className={`flex w-[100%] ${formStepsIndex > 0 ? "justify-between" : "justify-end"} mt-[20px] items-center`}
+      >
+        {formStepsIndex > 0 && (
+          <button
+            onClick={() => {
+              setFormStepsIndex(formStepsIndex - 1);
+            }}
+            className=""
+          >
+            <img src={prevFormIcon} alt="Previous form" className="w-[40px]" />
+          </button>
+        )}
+        <button
+          className={`h-[47px] w-[121px] rounded-lg bg-[#440080] text-[20px] font-[500] tracking-tighter text-white ${isNextDisabled ? "cursor-not-allowed opacity-70" : ""}`}
+          onClick={nextForm}
+          disabled={isNextDisabled}
+        >
+          Next
+        </button>
+      </div>
+    </main>
+  );
+};
 
-export default CreateOpenGroup
+export default CreateOpenGroup;
