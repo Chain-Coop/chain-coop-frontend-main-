@@ -8,14 +8,22 @@ import CryptoContribution from "../../../pages/contribution/crypto/Contribution"
 import Right from "../rightbar/Right";
 import Purpose from "../../../pages/contribution/naira/flexiblePlan/Purpose";
 import CryptoPurpose from "../../../pages/contribution/crypto/flexiblePlan/ContributionCurrencyType";
+import LockCryptoPurpose from "../../../pages/contribution/crypto/lockPlan/ContributionCurrencyType";
+import LockCryptoStartDate from "../../../pages/contribution/crypto/lockPlan/StartDate";
+import LockCryptoPreviewSavings from "../../../pages/contribution/crypto/lockPlan/PreviewSavings";
 import StrictLockCryptoPurpose from "../../../pages/contribution/crypto/strictLockPlan/ContributionCurrencyType";
+import LockCryptoSourceFunds from "../../../pages/contribution/crypto/lockPlan/SourceFunds";
 import LockPurpose from "../../../pages/contribution/naira/lockPlan/Purpose";
 import SavingsPlan from "../../../pages/contribution/naira/flexiblePlan/SavingsPlan";
 import LockPlan from "../../../pages/contribution/naira/lockPlan/SavingsPlan";
 import StrictLockPurpose from "../../../pages/contribution/naira/strictLockPlan/Purpose";
 import StartDate from "../../../pages/contribution/naira/flexiblePlan/StartDate";
 import FlexibleCryptoStartDate from "../../../pages/contribution/crypto/flexiblePlan/StartDate";
+import FlexibleCryptoSourceFunds from "../../../pages/contribution/crypto/flexiblePlan/SourceFunds";
+import FlexibleCryptoPreviewSavings from "../../../pages/contribution/crypto/flexiblePlan/PreviewSavings";
 import StrictLockCryptoStartDate from "../../../pages/contribution/crypto/strictLockPlan/StartDate";
+import StrictLockCryptoSourceFunds from "../../../pages/contribution/crypto/strictLockPlan/SourceFunds";
+import StrictLockCryptoPreviewSavings from "../../../pages/contribution/crypto/strictLockPlan/PreviewSavings";
 import LockStartDate from "../../../pages/contribution/naira/lockPlan/StartDate";
 import StrictLockStartDate from "../../../pages/contribution/naira/strictLockPlan/StartDate";
 import SavingsAmount from "../../../pages/contribution/naira/flexiblePlan/SavingsAmount";
@@ -33,6 +41,8 @@ import OneTimeAmount from "../../../pages/contribution/naira/oneTimePlan/Savings
 import OneTimeStartDate from "../../../pages/contribution/naira/oneTimePlan/StartDate";
 
 
+//import CryptoMain from "../wallet/crypto/main/CryptoMain";
+//import Preview from "../contribution/contributionType/naira/strictLockPlan/Preview";
 
 import AjoPage from "../ajo/main/ajo";
 import SavingsDetail from "../ajo/savings_detail/page";
@@ -54,7 +64,6 @@ import Home from "../../../pages/home/Home";
 import ManageCards from "../../../pages/profile/ManageCards";
 import CreateOpenGroup from "../ajo/open_group/create_open_group";
 
-
 const Dashboard = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -62,11 +71,11 @@ const Dashboard = () => {
 
   return (
     <main className="flex min-h-screen w-full flex-col lg:flex-row lg:justify-between">
-      <aside className="custom-scroll-bar hidden h-screen overflow-y-auto lg:block lg:w-[22%]">
+      <aside className="custom-scroll-bar hidden h-screen overflow-y-auto md:w-[22%] lg:block">
         <Sidebar />
       </aside>
-      <section className="custom-scroll-bar container h-screen flex-1 overflow-y-auto px-4 lg:px-6">
-        <nav className="sm:block lg:hidden">
+      <section className="custom-scroll-bar h-screen w-full flex-1 overflow-y-auto md:px-4">
+        <nav className="px-4 sm:block lg:hidden">
           <DashboardNav />
         </nav>
         <Routes>
@@ -86,6 +95,22 @@ const Dashboard = () => {
             element={<CryptoPurpose />}
           />
           <Route
+            path="contribution/lock/crypto_purpose"
+            element={<LockCryptoPurpose />}
+          />
+          <Route
+            path="contribution/lock/date"
+            element={<LockCryptoStartDate />}
+          />
+          <Route
+            path="contribution/lock/source_funds"
+            element={<LockCryptoSourceFunds />}
+          />
+          <Route
+            path="contribution/lock/preview_savings"
+            element={<LockCryptoPreviewSavings />}
+          />
+          <Route
             path="contribution/strict_lock/crypto_purpose"
             element={<StrictLockCryptoPurpose />}
           />
@@ -94,8 +119,28 @@ const Dashboard = () => {
             element={<FlexibleCryptoStartDate />}
           />
           <Route
-            path="contribution/strict_lock_crypto/date"
+            path="contribution/flexible/source_funds"
+            element={<FlexibleCryptoSourceFunds />}
+          />
+
+          <Route
+            path="contribution/flexible/preview_savings"
+            element={<FlexibleCryptoPreviewSavings />}
+          />
+
+          <Route
+            path="contribution/strict_lock/date"
             element={<StrictLockCryptoStartDate />}
+          />
+
+          <Route
+            path="contribution/strict_lock/source_funds"
+            element={<StrictLockCryptoSourceFunds />}
+          />
+
+          <Route
+            path="/dashboard/contribution/strict_lock/preview"
+            element={<StrictLockCryptoPreviewSavings />}
           />
 
           <Route path="contribution/purpose" element={<Purpose />} />
@@ -150,8 +195,8 @@ const Dashboard = () => {
             element={<StrictLockStartDate />}
           />
           <Route
-            path="contribution/strict_lock/preview"
-            element={<Preview />}
+            path="contribution/strict_lock/preview_savings"
+            element={<StrictLockCryptoPreviewSavings />}
           />
 
           <Route
@@ -171,12 +216,10 @@ const Dashboard = () => {
             element={<OneTimeStartDate />}
           />
 
-          
           <Route path="ajo" element={<AjoPage />} />
           <Route path="ajo/:name" element={<SavingsDetail />} />
           <Route path="ajo/create_open_group" element={<CreateOpenGroup />} />
           
-
 
           <Route path="wallet/*" element={<Wallet />} />
           <Route path="wallet/crypto_wallet" element={<CryptoMain />} />

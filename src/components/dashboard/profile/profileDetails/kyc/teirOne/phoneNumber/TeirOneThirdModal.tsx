@@ -107,7 +107,7 @@ const TierOneThirdDialog: React.FC<TierOneThirdDialogProps> = ({
       <DialogBody className="flex flex-col gap-6">
         <Typography className="text-center text-gray-600">
           A 6 digit sms code has been sent to this number
-          <span className="font-semibold">{profileDetails.phoneNumber}</span>,
+          <span className="font-semibold">{profileDetails?.phoneNumber}</span>,
           Kindly enter the code
         </Typography>
 

@@ -17,6 +17,7 @@ body,
   box-sizing: border-box;
   min-height: 100vh;
   margin: 0 auto;
+  font-family: "Asap", sans-serif;
 }
 
 * {
@@ -27,6 +28,7 @@ body,
 
 body {
   overflow-x: hidden;
+  font-family: "Asap", sans-serif;
 }
 
 ::-webkit-scrollbar {

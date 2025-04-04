@@ -115,7 +115,7 @@ const CryptoSavings: React.FC = () => {
       animate={{ opacity: 1 }}
       className="min-h-screen w-full font-sans"
     >
-      <DashboardHeader className="flex items-center justify-center text-2xl md:text-3xl lg:mt-[2em] lg:text-xl">
+      <DashboardHeader className="flex items-center justify-center text-2xl md:text-3xl lg:text-xl">
         Contribution Plan
       </DashboardHeader>
 
@@ -167,7 +167,7 @@ const CryptoSavings: React.FC = () => {
             </motion.div>
 
             <section className="mt-6 lg:mt-8">
-              <div className="grid w-[80%] grid-cols-1 gap-4 md:grid-cols-2">
+              <div className="flex w-[80%] flex-col gap-4">
                 <Link to="/dashboard/contribution/flexible/crypto_purpose">
                   <motion.button
                     whileHover={{ scale: 1.02 }}
@@ -175,6 +175,16 @@ const CryptoSavings: React.FC = () => {
                     className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 md:py-3 md:text-lg"
                   >
                     Flexible Savings
+                  </motion.button>
+                </Link>
+
+                <Link to="/dashboard/contribution/lock/crypto_purpose">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 md:py-3 md:text-lg"
+                  >
+                    Lock Savings
                   </motion.button>
                 </Link>
 
@@ -188,6 +198,7 @@ const CryptoSavings: React.FC = () => {
                   </motion.button>
                 </Link>
               </div>
+
               <hr className="mx-auto mt-8 w-full max-w-2xl" />
             </section>
           </article>
@@ -288,6 +299,7 @@ const CryptoSavings: React.FC = () => {
         savingsType={savingsType}
         onSavingsTypeChange={handleSavingsTypeChange}
       />
+
       {/* 
       <Modal
         isOpen={updatePayment}

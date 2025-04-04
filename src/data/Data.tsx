@@ -73,6 +73,11 @@ export const dashboardNav = [
     to: "/dashboard/contribution",
   },
   {
+    img: ajo,
+    text: "Ajo",
+    to: "/dashboard/ajo",
+  },
+  {
     img: wallet,
     text: "Wallet",
     to: "/dashboard/wallet",
@@ -797,3 +802,5 @@ export const teamMembers = [
     },
   },
 ];
+
+

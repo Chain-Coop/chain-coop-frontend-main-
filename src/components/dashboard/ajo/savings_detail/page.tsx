@@ -73,7 +73,7 @@ const SavingsDetail = () => {
 
 
     return (
-        <main  className="flex flex-col font-sans mb-[20px]">
+        <main  className="flex flex-col font-sans mb-[20px] ">
             <div className="flex h-[55px] w-full items-center justify-center relative px-4 lg:px-8 bg-text2 font-sans text-xl font-semibold text-text5 lg:mt-[2em]">
                 <Link to={'/dashboard/ajo'} className="absolute left-8">
                     <MdOutlineArrowBackIos className="w-[20px] h-[30px]" />
@@ -83,9 +83,10 @@ const SavingsDetail = () => {
                 </h1>
             </div>
 
+
            {/* SAVINGS INTRO AND HEADER */}
             <section className="flex justify-between gap-2 p-4 bg-[#ECE6F240] mt-[10px]">
-                <img src={sampleImage} alt={name} className="hidden sm:block sm:w-[160px] rounded-lg sm:flex-shrink-0" />
+                <img src={sampleImage} alt={name} className="w-[160px] rounded-lg flex-shrink-0" />
                 <div className="flex w-[100%] flex-col gap-2 text-[#1E1E1EB2]">
                     <div className="w-[100%] flex justify-between items-center sm:items-start">
                         <img src={sampleImage} alt={name} className="w-[70px] h-[50px] rounded-lg sm:flex-shrink-0" />
@@ -110,7 +111,7 @@ const SavingsDetail = () => {
             </section>
 
             <section className="flex w-[100%] flex-col items-center justify-center bg-[#FFF7FC] p-4">
-                <Typography className="font-[400] text-[14px] leading-tight tracking-wide">
+                <p className="font-[400] text-[14px] leading-tight tracking-wide">
                     Total saved
                 </Typography>
                 <h2  className="font-[600] text-[34px] lg:text-[36px] text-[#1E1E1E] tracking-tight">
@@ -121,8 +122,9 @@ const SavingsDetail = () => {
                 </Button>
             </section>
 
-            {/* SAVINGS DETAILS */}
+
             <ul className="flex flex-col w-[100%] mt-[20px]">
+
                 {
                     firstSavingsData.map((data) => (
                         <li className="flex w-[96%] justify-between items-center pt-10 pb-4 border-b border-b-[#DDD8D887]" key={data.addition}>

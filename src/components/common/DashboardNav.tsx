@@ -46,7 +46,7 @@ const DashboardNav = () => {
   };
 
   return (
-    <div>
+    <div className="w-full">
       <div className="flex items-center justify-between py-2 font-sans">
         <img src={logo} alt="Chain Co-op Logo" />
         <HiOutlineBars3
