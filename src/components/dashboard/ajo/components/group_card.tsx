@@ -1,91 +1,64 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ProgressCircle from "./progress_circle";
+import { Typography } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 
 export interface GroupCardProps {
-  name: string;
-  image: string;
-  icon: string;
-  members: number;
-  amount: string;
-  goal: string;
-  totalSaved: string;
-  progress: number;
+    name: string;
+    image: string;
+    icon: string;
+    members: number;
+    amount: string;
+    goal: string;
+    totalSaved: string;
+    progress: number;
 }
 
-const GroupCard: React.FC<GroupCardProps> = ({
-  amount,
-  goal,
-  icon,
-  image,
-  members,
-  name,
-  progress,
-  totalSaved,
-}) => {
+const GroupCard: React.FC<GroupCardProps> = ({ amount, goal, icon, image, members, name, progress, totalSaved }) => {
   return (
-    <section className="flex items-center justify-center">
-      <div className="flex w-[95%] flex-shrink-0 flex-col rounded-xl shadow-md shadow-[#3D007347] sm:h-[234px] sm:w-[440px] md:flex-row md:gap-2">
-        {/* Image Section */}
-        <div>
-          <div className="relative h-[153px] w-full flex-shrink-0 rounded-l-xl md:h-full md:w-[158px]">
-            <img
-              src={image}
-              alt={name}
-              className="h-full w-full rounded-t-xl lg:rounded-l-xl"
-            />
-            <img
-              src={icon}
-              alt={name}
-              className="absolute left-2 top-2 h-[30px] w-[30px] lg:right-2"
-            />
+    <div className="flex w-[100%] sm:flex-row flex-col h-fit sm:h-[234px] flex-shrink-0 rounded-xl shadow-[#3D007347] shadow-md">
+      {/* Image Section */}
+      <div className="w-[100%] sm:w-[158px] h-[150px] sm:h-full relative rounded-l-xl flex-shrink-0">
+        <img src={image} alt={name} className="w-full h-full rounded-t-xl sm:rounded-l-xl object-cover sm:object-none" />
+        <img src={icon} alt={name} className="w-[30px] h-[30px] absolute top-2 right-2" />
+      </div>
+
+      {/* Content Section */}
+      <div className="flex flex-col justify-between gap-1 py-2 pr-2 pl-4 w-[96%]">
+        <div className="flex justify-between items-start">
+          {/* Group Details */}
+          <div className="flex flex-col gap-2">
+            <h4 className="font-semibold text-[#1E1E1EE5] text-[22px] lg:text-[24px]">{name}</h4>
+            <div className="flex gap-2 items-center">
+              <Typography className="text-[#6E6C6C] font-semibold text-[16px] lg:text-[18px]">{members} members</Typography>
+              <Typography className="text-[#6E6C6C] font-normal text-[16px] lg:text-[18px]">{amount}</Typography>
+            </div>
+            <Typography className="text-[#6E6C6C] font-normal text-[16px] lg:text-[18px]">
+              <strong className="text-black font-semibold">Goal:</strong> {goal}
+            </Typography>
+            <Typography className="text-[#6E6C6C] font-medium text-[16px] lg:text-[18px]">
+              Total saved: {totalSaved}
+            </Typography>
           </div>
+
+          {/* Progress Circle Component */}
+          <ProgressCircle progress={progress} />
         </div>
 
-        {/* Content Section */}
-        <div className="flex w-[100%] flex-col justify-between gap-1 px-2 py-2 lg:w-[96%] lg:pl-4 lg:pr-2">
-          <div className="flex items-start justify-between gap-5 lg:gap-0">
-            {/* Group Details */}
-            <div className="flex flex-col gap-2">
-              <h4 className="text-[22px] font-semibold text-[#1E1E1EE5] lg:text-[24px]">
-                {name}
-              </h4>
-              <div className="flex items-center gap-2">
-                <p className="text-[16px] font-semibold text-[#6E6C6C] lg:text-[18px]">
-                  {members} members
-                </p>
-                <p className="text-[16px] font-normal text-[#6E6C6C] lg:text-[18px]">
-                  {amount}
-                </p>
-              </div>
-              <p className="text-[16px] font-normal text-[#6E6C6C] lg:text-[18px]">
-                <strong className="font-semibold text-black">Goal:</strong>{" "}
-                {goal}
-              </p>
-              <p className="text-[16px] font-medium text-[#6E6C6C] lg:text-[18px]">
-                Total saved: {totalSaved}
-              </p>
-            </div>
-
-            {/* Progress Circle Component */}
-            <ProgressCircle progress={progress} />
-          </div>
-
-          {/* Buttons */}
-          <div className="flex w-full justify-between py-5 lg:py-0">
-            <button className="flex h-[35px] w-[45%] items-center justify-center rounded-md bg-[#440080] text-[16px] font-medium text-white hover:bg-[#3D0073] lg:text-[18px]">
-              Join
-            </button>
-            <Link
-              to={`/dashboard/ajo/${name}`}
-              className="flex h-[35px] w-[45%] items-center justify-center rounded-md bg-white text-[16px] text-[#440080] ring-1 ring-[#440080] lg:text-[18px]"
-            >
-              Details
-            </Link>
-          </div>
+        {/* Buttons */}
+        <div className="w-full flex justify-between">
+          <Button className="bg-[#440080] text-[16px] lg:text-[18px] font-medium w-[45%] h-[35px] rounded-md flex items-center justify-center text-white hover:bg-[#3D0073]">
+            Join
+          </Button>
+          <Link 
+            to={`/dashboard/ajo/${name}`}
+            className="ring-1 ring-[#440080] text-[16px] lg:text-[18px] bg-white text-[#440080] rounded-md w-[45%] h-[35px] flex items-center justify-center">
+            Details
+          </Link>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

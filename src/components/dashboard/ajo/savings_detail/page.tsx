@@ -4,7 +4,8 @@ import { MdOutlineArrowBackIos } from "react-icons/md";
 import { GrFormNext } from "react-icons/gr";
 import ProgressCircle from "../components/progress_circle";
 import { BsPatchCheck } from "react-icons/bs";
-
+import { Typography } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 
 import sampleImage from "../../../../Assets/png/dashboard/ajo/sample_savings_image.png"
 import icon from "../../../../Assets/svg/dashboard/ajo/details_icon.svg"
@@ -85,40 +86,40 @@ const SavingsDetail = () => {
 
            {/* SAVINGS INTRO AND HEADER */}
             <section className="flex justify-between gap-2 p-4 bg-[#ECE6F240] mt-[10px]">
-
                 <img src={sampleImage} alt={name} className="w-[160px] rounded-lg flex-shrink-0" />
                 <div className="flex w-[100%] flex-col gap-2 text-[#1E1E1EB2]">
-                    <div className="w-[100%] flex justify-between items-start">
+                    <div className="w-[100%] flex justify-between items-center sm:items-start">
+                        <img src={sampleImage} alt={name} className="w-[70px] h-[50px] rounded-lg sm:flex-shrink-0" />
                         <div className="flex flex-col items-start gap-1">
                             <h2 className="font-[600] text-[22px] lg:text-[24px] text-[#1E1E1E] tracking-tight">
                                 {name}
                             </h2>
-                            <Link to={`/leadership-board/{name}`} className="flex gap-2 items-center">
-                                <img src={icon} alt="leadership board" className="w-[20px] h-[20px]" />
-                                <p className="text-[14px] font-[600] text-[#565454]">
+                            <Link to={`/leadership-board/{name}`} className="flex sm:gap-2 items-center">
+                                <img src={icon} alt="leadership board" className="hidden sm:block w-[20px] h-[20px]" />
+                                <Typography className="text-[14px] font-[600] text-[#565454]">
                                     View leadership board
-                                </p>
+                                </Typography>
                                 <GrFormNext className="text-[#440080] text-[20px]" />
                             </Link>
                         </div>
                         <ProgressCircle progress={5} />
                     </div>
-                    <p className="font-[400] text-[16px] leading-tight tracking-wide">
+                    <Typography className="font-[400] text-[16px] leading-tight tracking-wide">
                     alialiquam vel elementum facilisis amet netus elementum. Quam mauris diam pretium etiam pellentesque accumsan. Enim nisl sit interdum id vivamus nibh lacus s feug.
-                    </p>
+                    </Typography>
                 </div>
             </section>
 
-            <section className="flex w-[100%] flex-col items-center justify-center bg-[#FFF7FC] p-4 px-4 lg:px-6">
-                <p className="font-[400] text-[14px] leading-tight tracking-wide">
+            <section className="flex w-[100%] flex-col items-center justify-center bg-[#FFF7FC] p-4">
+                <Typography className="font-[400] text-[14px] leading-tight tracking-wide">
                     Total saved
-                </p>
+                </Typography>
                 <h2  className="font-[600] text-[34px] lg:text-[36px] text-[#1E1E1E] tracking-tight">
                     $29,000.67
                 </h2>
-                <button  className="bg-[#440080] text-[16px] lg:text-[18px] font-medium w-[100%] lg:w-[190px] px-6 h-[45px] rounded-md flex items-center justify-center text-white hover:bg-[#3D0073] mt-[30px] self-start">
+                <Button  className="bg-[#440080] text-[16px] lg:text-[18px] font-medium w-[100%] lg:w-[190px] px-6 h-[45px] rounded-md flex items-center justify-center text-white hover:bg-[#3D0073] mt-[30px] self-start">
                     Join
-                </button>
+                </Button>
             </section>
 
 
@@ -127,12 +128,12 @@ const SavingsDetail = () => {
                 {
                     firstSavingsData.map((data) => (
                         <li className="flex w-[96%] justify-between items-center pt-10 pb-4 border-b border-b-[#DDD8D887]" key={data.addition}>
-                            <p className="text-[16px] lg:text-[18px] font-[500] text-[#939090] tracking-tight">
+                            <Typography className="text-[16px] lg:text-[18px] font-[500] text-[#939090] tracking-tight">
                                 {data.key}
-                            </p>
-                            <p className="text-[16px] lg:text-[18px] font-[500] text-[#939090] tracking-tight">
+                            </Typography>
+                            <Typography className="text-[16px] lg:text-[18px] font-[500] text-[#939090] tracking-tight">
                                 <span className="text-black">{data.value}</span> {data.addition}
-                            </p>
+                            </Typography>
                         </li>
                     ))
                 }
@@ -140,16 +141,16 @@ const SavingsDetail = () => {
                 {
                     lastSavingsData.map((data) => (
                         <li className="flex w-[96%] justify-between items-center pt-10 pb-4 border-b border-b-[#DDD8D887]" key={data.key}>
-                            <p className="text-[16px] lg:text-[18px] font-[500] text-[#939090]">
+                            <Typography className="text-[16px] lg:text-[18px] font-[500] text-[#939090]">
                                 {data.key}
-                            </p>
+                            </Typography>
                             <div className="border-2 border-[#440080] rounded-lg bg-[#ECE6F2] p-2 flex items-center w-[150px] gap-1 justify-between">
                                 {
                                     data.image && <img src={data.image} alt={data.key} className="w-[24px] h-[24px]" />
                                 }
-                                <p className="text-[14px] lg:text-[16px] font-[500] text-[#302B2B] pr-6">
+                                <Typography className="text-[14px] lg:text-[16px] font-[500] text-[#302B2B] pr-6">
                                     {data.value}
-                                </p>
+                                </Typography>
                                 <BsPatchCheck className="text-[#440080] text-[24px]" />
                             </div>
                         </li>
@@ -157,12 +158,12 @@ const SavingsDetail = () => {
                 }
 
                 <li className="flex w-[96%] justify-between items-center pt-10 pb-4 border-b border-b-[#DDD8D887]">
-                    <p className="text-[16px] lg:text-[18px] font-[500] text-[#939090]">
+                    <Typography className="text-[16px] lg:text-[18px] font-[500] text-[#939090]">
                         Withdrawal Day
-                    </p>
-                    <p className="text-[16px] lg:text-[18px] font-[500] text-black">
+                    </Typography>
+                    <Typography className="text-[16px] lg:text-[18px] font-[500] text-black">
                         28/04/2025
-                    </p>
+                    </Typography>
                 </li>
             </ul>
 
@@ -186,28 +187,28 @@ const SavingsDetail = () => {
                                     </h4>
                                     {
                                         data.status === "Joined" ? (
-                                            <p className={`font-[500] txt-[13px] bg-[#E6B8D4] border border-[#CCA3BC] rounded-md min-w-[120px] py-1 text-center`}>
+                                            <Typography className={`font-[500] txt-[13px] bg-[#E6B8D4] border border-[#CCA3BC] rounded-md min-w-[120px] py-1 text-center`}>
                                             {data.status}
-                                        </p>
+                                        </Typography>
                                         ) : (
-                                            <p className={`font-[500] txt-[13px] bg-[#E3D9EC] border border-[#44008080] text-[#440080] rounded-md min-w-[120px] py-1 text-center`}>
+                                            <Typography className={`font-[500] txt-[13px] bg-[#E3D9EC] border border-[#44008080] text-[#440080] rounded-md min-w-[120px] py-1 text-center`}>
                                                 {data.status}: {data.amount}
-                                            </p>
+                                            </Typography>
                                         )
                                     }
                                 </div>
                                 <div className="flex w-[100%] justify-between items-center">
                                     <div className="flex flex-col items-start ">
-                                        <p className="font-[400] text-[14px] text-[#959494] tracking-tighter">
+                                        <Typography className="font-[400] text-[14px] text-[#959494] tracking-tighter">
                                             Total balance
-                                        </p>
-                                        <p className="text-[14px] font-[600] text-[#440080]">
+                                        </Typography>
+                                        <Typography className="text-[14px] font-[600] text-[#440080]">
                                             {data.amount}
-                                        </p>
+                                        </Typography>
                                     </div>
-                                    <p className="text-[14px] font-[400] text-[#1E1E1E99] tracking-tighter">
+                                    <Typography className="text-[14px] font-[400] text-[#1E1E1E99] tracking-tighter">
                                         4 minutes ago
-                                    </p>
+                                    </Typography>
                                 </div>
                             </li>
                         ))
