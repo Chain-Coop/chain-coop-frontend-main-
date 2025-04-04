@@ -1,7 +1,7 @@
 import { MdOutlineArrowBackIos } from "react-icons/md"
 import { Link } from "react-router-dom"
 import { FaAngleLeft } from "react-icons/fa6";
-
+import { Button } from "@material-tailwind/react";
 
 import createImage from "../../../../Assets/png/dashboard/ajo/open_group_image.png"
 import rightArrow from "../../../../Assets/svg/dashboard/ajo/right_arrow.svg"
@@ -12,13 +12,16 @@ import SecondOpenGroupForm from "../components/second_open_group_form";
 import ThirdOpenGroupForm from "../components/third_open_group_form";
 import { firstOpenGroupType, secondOpenGroupType, thirdOpenGroupType } from "../../../../shared/types/types";
 import { validateFirstForm, validateSecondForm, validateThirdForm } from "../components/form_validation";
+import ReviewOpenGroupForm from "../components/review_open_group_form";
+import SuccessModal from "../components/success_modal";
 
 
 const CreateOpenGroup = () => {
     const [firstFormData, setFirstFormData] = useState<firstOpenGroupType>({
         savings_title: "",
         savings_description: "",
-        savings_currency: ""
+        savings_currency: "",
+        currency_image: ""
     })  
 
     const [secondFormData, setSecondFormData] = useState<secondOpenGroupType>({
@@ -37,17 +40,21 @@ const CreateOpenGroup = () => {
     // state to toggle whether the next button is disabled or not
     const [isNextDisabled, setIsNextDisabled] = useState<boolean>(true)
 
+    // state to open modal
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(true)
+
     // list of the various forms
     const formSteps = [
         <FirstOpenGroupForm data={firstFormData} setData={setFirstFormData} key={0} />,
         <SecondOpenGroupForm data={secondFormData} setData={setSecondFormData} key={1} />,
-        <ThirdOpenGroupForm data={thirdFormData} setData={setThirdFormData} key={2} />
+        <ThirdOpenGroupForm data={thirdFormData} currency={firstFormData.savings_currency} setData={setThirdFormData} key={2} />,
+        <ReviewOpenGroupForm firstForm={firstFormData} secondForm={secondFormData} thirdForm={thirdFormData} key={3} />
     ]
 
     // this state controls which form is rendered
-    const [formStepsIndex, setFormStepsIndex] = useState<number>(2)
+    const [formStepsIndex, setFormStepsIndex] = useState<number>(0)
 
-    useEffect(() => {
+    const validateInputs = () => {
         // perform different validation checks based on the current form step
         if (formStepsIndex === 0) {
             setIsNextDisabled(validateFirstForm(firstFormData))
@@ -56,11 +63,19 @@ const CreateOpenGroup = () => {
         } else if (formStepsIndex === 2) {
             setIsNextDisabled(validateThirdForm(thirdFormData))
         }
+    }
+
+    useEffect(() => {
+        validateInputs()
     }, [firstFormData, secondFormData, thirdFormData]);
 
     const nextForm = () => {
         setFormStepsIndex((prev) => prev + 1)
-        setIsNextDisabled(true)
+        validateInputs() // validate inputs
+    }
+
+    const openModal = () => {
+        setIsModalOpen(true)
     }
 
 
@@ -90,15 +105,30 @@ const CreateOpenGroup = () => {
             <div className={ `w-[100%] flex ${formStepsIndex > 0 ? 'justify-between' : 'justify-end'} items-center mt-[20px]`}>
                 {
                     formStepsIndex > 0 && (
-                        <button onClick={() => {setFormStepsIndex( formStepsIndex - 1 )}} className="">
+                        <Button onClick={() => {setFormStepsIndex( formStepsIndex - 1 )}} className="bg-transparent shadow-none">
                             <img src={prevFormIcon} alt="Previous form" className="w-[40px]" />
-                        </button>
+                        </Button>
                     )
                 }
-                <button className={`bg-[#440080] rounded-lg text-white text-[20px] font-[500] tracking-tighter w-[121px] h-[47px] ${isNextDisabled ? 'opacity-70 cursor-not-allowed' : ''}`}  onClick={nextForm} disabled={isNextDisabled}>
-                    Next
-                </button>
+                {
+                    formStepsIndex > 2 ? (
+                        <Button 
+                            className={`bg-[#440080] rounded-lg text-white text-[18px] font-[500] tracking-tighter w-fit capitalize h-[47px] `}
+                            onClick={openModal}>
+                        Create group
+                    </Button>
+                    ) : (
+                        <Button className={`bg-[#440080] rounded-lg text-white text-[20px] font-[500] tracking-tighter w-[121px] h-[47px] capitalize ${isNextDisabled ? 'opacity-70 cursor-not-allowed' : ''}`}  onClick={nextForm} disabled={isNextDisabled}>
+                            Next
+                        </Button>
+                    )
+                }
             </div>
+            {
+                isModalOpen && (
+                    <SuccessModal />
+                )
+            }
         </main>
     )
 }

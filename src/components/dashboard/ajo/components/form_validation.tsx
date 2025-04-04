@@ -1,12 +1,12 @@
 import { firstOpenGroupType, secondOpenGroupType, thirdOpenGroupType } from "../../../../shared/types/types";
 
 const validateFirstForm = (data: firstOpenGroupType): boolean => {
-    return !(data.savings_title.trim() && data.savings_description.trim() && data.savings_currency.trim());
+    return !(data.savings_title.trim() && data.savings_currency.trim());
 };
 
 const validateSecondForm = (data: secondOpenGroupType): boolean => {
     return !(
-        data.total_saving_amount.trim() &&
+        (data.total_saving_amount !== "0") &&
         data.savings_frequency.trim() &&
         (data.start_date !== "Start date" && !isNaN(new Date(data.start_date).getTime())) &&
         (data.end_date !== "End date" && !isNaN(new Date(data.end_date).getTime())) &&
@@ -15,7 +15,7 @@ const validateSecondForm = (data: secondOpenGroupType): boolean => {
 };
 
 const validateThirdForm = (data: thirdOpenGroupType): boolean => {
-    return !(data.daily_deposit > 0 && data.savings_image && data.agree);
+    return !(data.daily_deposit > 0  && (data.agree === true));
 };
 
 // const validateFormData = (firstFormData: firstOpenGroupType, secondFormData: secondOpenGroupType, thirdFormData: thirdOpenGroupType) => {
