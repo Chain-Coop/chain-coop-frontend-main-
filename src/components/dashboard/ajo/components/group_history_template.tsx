@@ -1,5 +1,7 @@
 import { GroupCardProps } from './group_card'
 import GroupCard from './group_card'
+import { Typography } from "@material-tailwind/react";
+
 
 interface GroupHistoryTemplateTypes {
     title: string
@@ -14,9 +16,9 @@ const GroupHistoryTemplate = (props: GroupHistoryTemplateTypes) => {
             <h5 className='text-[#1E1E1E] font-[500] text-[20px] lg:text-[22px]'>
                 {props.title}
             </h5>
-            <p className='font-[400] text-[16px] lg:text-[18px] text-[#6E6C6C] mb-3'>
+            <Typography className='font-[400] text-[16px] lg:text-[18px] text-[#6E6C6C] mb-3'>
                 {props.description}
-            </p>
+            </Typography>
             <h5 className='text-[#1E1E1E] font-[500] text-[16px] lg:text-[18px] mb-3'>
                 {props.length}
             </h5>

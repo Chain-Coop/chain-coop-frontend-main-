@@ -1,9 +1,10 @@
 import { useRef } from "react";
 import { CgCalendarDates } from "react-icons/cg";
-
+import { Typography, Button } from "@material-tailwind/react";
 
 import { secondOpenGroupType } from "../../../../shared/types/types";
 import activeIcon from "../../../../Assets/svg/dashboard/ajo/selectedIcon.svg"
+import formatAmountWithCommas from "../../../../shared/utils/format_amount_with_commas";
 
 interface Props {
     data: secondOpenGroupType, 
@@ -23,6 +24,16 @@ const SecondOpenGroupForm = ({ data, setData }: Props) => {
         endDateRef.current?.showPicker()
     }
 
+    const handleAmount = (event: React.ChangeEvent<HTMLInputElement>) => {
+        let rawValue = event.target.value.replace(/,/g, ""); 
+        if (!/^\d*$/.test(rawValue)) return; 
+    
+        setData((prev) => ({
+            ...prev,
+            total_saving_amount: rawValue,
+        }));
+    };
+
     const handleChange= (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setData({ ...data, [event.target.name]: event.target.value })
     }
@@ -36,83 +47,83 @@ const SecondOpenGroupForm = ({ data, setData }: Props) => {
     return (
         <form className="flex flex-col gap-6 w-[100%] items-center">
             <label htmlFor="total_saving_amount" className="flex flex-col gap-2 w-[100%] lg:w-[80%]">
-                <p className=" font-[600] text-[18px] text-black tracking-tighter">
+                <Typography className=" font-[600] text-[18px] text-black tracking-tighter">
                     Total Saving Amount
-                </p>
-                <input autoFocus type="number" onChange={handleChange} value={data.total_saving_amount} name="total_saving_amount" id="total_saving_amount" className="text-[16px] border-2 border-[#95949480] rounded-lg py-2 px-4 outline-none focus:shadow-xl shadow-lg font-[400] text-[#1E1E1E99]" />
+                </Typography>
+                <input autoFocus type="text" onChange={handleAmount} value={formatAmountWithCommas(data.total_saving_amount)} name="total_saving_amount" id="total_saving_amount" className="text-[16px] border-2 border-[#95949480] rounded-lg py-2 px-4 outline-none focus:shadow-xl shadow-lg font-[400] text-[#1E1E1E99]" />
             </label>
 
             <div  className="flex flex-col gap-2 w-[100%] lg:w-[80%]">
-                <p className=" font-[600] text-[18px] text-black tracking-tighter">
+                <Typography className=" font-[600] text-[18px] text-black tracking-tighter">
                     Select Savings Frequency
-                </p>                       
+                </Typography>                       
                 <div className="w-[100%] flex flex-wrap justify-between gap-1 gap-y-3">
-                    <button 
+                    <Button 
                         onClick={(event) => {handleButtonSelection(event, "Daily")}}
-                        className={`border-2 rounded-lg bg-[#ECE6F2] p-2 flex hover:border-[#440080] items-center w-[150px] justify-between text-[16px] font-[600] tracking-tighter text-[#302B2B] ${data.savings_frequency === "Daily" ? 'border-[#440080]' : ''}`}>
-                        <p>
+                        className={`border-2 rounded-lg bg-[#ECE6F2] p-2 flex hover:border-[#440080] items-center w-[48%] sm:w-[150px] justify-between ${data.savings_frequency === "Daily" ? 'border-[#440080]' : ''}`}>
+                        <Typography className="text-[16px] font-[600] tracking-tighter text-[#302B2B] capitalize">
                             Daily
-                        </p>
+                        </Typography>
                         {
                             data.savings_frequency === "Daily" && <img src={activeIcon} alt="Daily savings" className="w-[20px]" />
                         }
-                    </button>
-                    <button 
+                    </Button>
+                    <Button 
                         onClick={(event) => {handleButtonSelection(event, "Weekly")}}
-                        className={`border-2 rounded-lg bg-[#ECE6F2] p-2 flex hover:border-[#440080] items-center w-[150px] justify-between text-[16px] font-[600] tracking-tighter text-[#302B2B] ${data.savings_frequency === "Weekly" ? 'border-[#440080]' : ''}`}>
-                        <p>
+                        className={`border-2 rounded-lg bg-[#ECE6F2] p-2 flex hover:border-[#440080] items-center w-[48%] sm:w-[150px] justify-between text-[16px] font-[600] tracking-tighter text-[#302B2B] capitalize ${data.savings_frequency === "Weekly" ? 'border-[#440080]' : ''}`}>
+                        <Typography className="text-[16px] font-[600] tracking-tighter text-[#302B2B] capitalize ">
                             Weekly
-                        </p>
+                        </Typography>
                         {
                             data.savings_frequency === "Weekly" && <img src={activeIcon} alt="Weekly savings" className="w-[20px]" />
                         }
-                    </button>
-                    <button 
+                    </Button>
+                    <Button 
                         onClick={(event) => {handleButtonSelection(event, "Monthly")}}
-                        className={`border-2 rounded-lg bg-[#ECE6F2] p-2 flex hover:border-[#440080] items-center w-[150px] justify-between text-[16px] font-[600] tracking-tighter text-[#302B2B] ${data.savings_frequency === "Monthly" ? 'border-[#440080]' : ''}`}>
-                        <p>
+                        className={`border-2 rounded-lg bg-[#ECE6F2] p-2 flex hover:border-[#440080] items-center w-[48%] sm:w-[150px] justify-between text-[16px] font-[600] tracking-tighter text-[#302B2B] capitalize ${data.savings_frequency === "Monthly" ? 'border-[#440080]' : ''}`}>
+                        <Typography className="text-[16px] font-[600] tracking-tighter text-[#302B2B] capitalize ">
                             Monthly
-                        </p>
+                        </Typography>
                         {
                             data.savings_frequency === "Monthly" && <img src={activeIcon} alt="Monthly savings" className="w-[20px]" />
                         }
-                    </button>
-                    <button 
+                    </Button>
+                    <Button 
                         onClick={(event) => {handleButtonSelection(event, "Quarterly")}}
-                        className={`border-2 rounded-lg bg-[#ECE6F2] p-2 flex hover:border-[#440080] items-center w-[150px] justify-between text-[16px] font-[600] tracking-tighter text-[#302B2B] ${data.savings_frequency === "Quarterly" ? 'border-[#440080]' : ''}`}>
-                        <p>
+                        className={`border-2 rounded-lg bg-[#ECE6F2] p-2 flex hover:border-[#440080] items-center w-[48%] sm:w-[150px] justify-between text-[16px] font-[600] tracking-tighter text-[#302B2B] capitalize ${data.savings_frequency === "Quarterly" ? 'border-[#440080]' : ''}`}>
+                        <Typography className="text-[16px] font-[600] tracking-tighter text-[#302B2B] capitalize ">
                             Quarterly
-                        </p>
+                        </Typography>
                         {
                             data.savings_frequency === "Quarterly" && <img src={activeIcon} alt="Quarterly savings" className="w-[20px]" />
                         }
-                    </button>
+                    </Button>
                 </div>
             </div>
 
             <div  className="flex flex-col gap-2 w-[100%] lg:w-[80%]">
-                <p className=" font-[600] text-[18px] text-black tracking-tighter">
+                <Typography className=" font-[600] text-[18px] text-black tracking-tighter">
                     Daily Duration
-                </p>
+                </Typography>
                 <div className="flex flex-col gap-4">
                     <div className="flex w-[100%] items-center justify-between border-2 border-[#95949480] rounded-lg p-2 outline-none focus:shadow-xl shadow-lg font-[400] relative" onClick={openStartDate}>
-                        <p className="text-[#1E1E1E99] opacity-60 text-[18px] font-[400]">
+                        <Typography className="text-[#1E1E1E99] opacity-60 text-[18px] font-[400]">
                             {data.start_date}
-                        </p>
+                        </Typography>
                         <CgCalendarDates className="text-[#440080] w-[16px] h-[16px]" /> 
                         <input type="date" name="start_date" onChange={handleChange} value={data.start_date} max={data.end_date} ref={startDateRef} id="start_date" className="opacity-0 absolute" />
                     </div>
                     <div className="flex w-[100%] items-center justify-between relative border-2 border-[#95949480] rounded-lg p-2 outline-none focus:shadow-xl shadow-lg font-[400]" onClick={openEndDate}>
-                        <p className="text-[#1E1E1E99] opacity-60 text-[18px] font-[400]">
+                        <Typography className="text-[#1E1E1E99] opacity-60 text-[18px] font-[400]">
                             {data.end_date}
-                        </p>
+                        </Typography>
                         <CgCalendarDates className="text-[#440080] w-[16px] h-[16px]" /> 
                         <input type="date" ref={endDateRef} onChange={handleChange} value={data.end_date} min={data.start_date} name="end_date" id="end_date" className="opacity-0 absolute" />
                     </div>
                 </div>
-                <p className="text-[15px] text-[#1E1E1E99] font-[400] mt-[10px]">
+                <Typography className="text-[15px] text-[#1E1E1E99] font-[400] mt-[10px]">
                     Set until this savings group last
-                </p>
+                </Typography>
             </div>
         </form>
     )

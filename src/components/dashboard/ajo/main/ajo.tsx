@@ -5,6 +5,8 @@ import { HiOutlinePlus } from "react-icons/hi";
 import { groupSavingsOptions } from "../../../../data/Data";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Typography } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 
 
 import createImage from "../../../../Assets/png/dashboard/ajo/create_new_group.png"
@@ -97,18 +99,16 @@ const AjoPage = () => {
 
 
     return (
-        <main className="flex flex-col font-sans  gap-8 mb-[20px]">
-            <div className="flex justify-center items-center w-[100%]">
-                <DashboardHeader className="flex h-[2.5em] w-full items-center justify-center bg-text2 px-[1.5em] font-sans text-xl font-semibold text-text5 lg:mt-[2em]">
-                    <h1>
-                        Group Savings
-                    </h1>
-                </DashboardHeader>
-            </div>
+        <main className="flex flex-col font-sans  gap-8 mb-[40px]">
+            <DashboardHeader className="flex h-[2.5em] w-full items-center justify-center bg-text2 px-[1.5em] font-sans text-xl font-semibold text-text5 lg:mt-[2em]">
+                <h1>
+                    Group Savings
+                </h1>
+            </DashboardHeader>
 
             <section className="rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md sm:p-16 w-[100%]">
                 <div className="flex justify-center gap-4 font-sans">
-                <p className="font-medium">Total group fund</p>
+                <Typography className="font-medium">Total group fund</Typography>
                 <div>
                     <ToggleButton
                     isVisible={isWalletVisible}
@@ -124,11 +124,11 @@ const AjoPage = () => {
                 </div>
                 <div className="mx-auto mt-6 w-60 rounded-md flex flex-col">
                 {isWalletVisible ? (
-                    <p className="text-xl font-bold lg:text-xl self-center">
+                    <Typography className="text-xl font-bold lg:text-xl self-center">
                     {formattedBalance}
-                    </p>
+                    </Typography>
                 ) : (
-                    <p className="text-2xl font-bold self-center">*********</p>
+                    <Typography className="text-2xl font-bold self-center">*********</Typography>
                 )}
                 <hr className="mt-4 h-px rounded-md bg-howtext" />
                 </div>
@@ -144,10 +144,10 @@ const AjoPage = () => {
                         Start Group Saving
                     </h2>
                 </div>
-                <p className="text-[#302B2BC7] text-[14px] xl:text-[16px] font-[400] tracking-medium">
+                <Typography className="text-[#302B2BC7] text-[14px] xl:text-[16px] font-[400] tracking-medium">
                     Select any of the saving option to begin your contribution with others
-                </p>
-                <div className="flex w-[100%] justify-between flex-wrap gap-y-4">
+                </Typography>
+                <div className="flex w-[100%] justify-between 2xl:justify-center 2xl:gap-6 flex-wrap gap-y-4">
                     {
                         groupSavingsOptions.map((group, index) => (
                             <Link 
@@ -159,9 +159,9 @@ const AjoPage = () => {
                                 <h3 className="text-[18px] lg:text-[20px] font-[600] text-[#1E1E1E]">
                                     {group.header}
                                 </h3>
-                                <p className="text-[13px] lg:text-[15px] text-[#565454] font-[400] w-[100%] text-center">
+                                <Typography className="text-[13px] lg:text-[15px] text-[#565454] font-[400] w-[100%] text-center">
                                     {group.text}
-                                </p>
+                                </Typography>
                             </Link>
                         ))
                     }
@@ -188,12 +188,12 @@ const AjoPage = () => {
                     Group History
                 </h4>
                 <div className="flex w-[100%] justify-between border-b-[1.5px] border-b-[#DDD8D8B2]">
-                    <button className={`font-[500] text-[#1E1E1E] text-[16px] lg:text-[18px] font-sans pb-5 ${groupHistory === 'ongoing' ? 'opacity-100 border-b-[2.5px] border-b-[#440080]' : 'opacity-50'}`} onClick={() => setGroupHistory('ongoing')}>
+                    <Button className={`font-[500] text-[#1E1E1E] text-[16px] lg:text-[18px] font-sans pb-5 ${groupHistory === 'ongoing' ? 'opacity-100 border-b-[2.5px] border-b-[#440080]' : 'opacity-50'}`} onClick={() => setGroupHistory('ongoing')}>
                         Ongoing
-                    </button>
-                    <button className={`font-[500] text-[#1E1E1E] text-[16px] lg:text-[18px] font-sans pb-5 ${groupHistory === 'completed' ? 'opacity-100 border-b-[2.5px] border-b-[#440080]' : 'opacity-50'}`} onClick={() => setGroupHistory('completed')}>
+                    </Button>
+                    <Button className={`font-[500] text-[#1E1E1E] text-[16px] lg:text-[18px] font-sans pb-5 ${groupHistory === 'completed' ? 'opacity-100 border-b-[2.5px] border-b-[#440080]' : 'opacity-50'}`} onClick={() => setGroupHistory('completed')}>
                         Completed
-                    </button>
+                    </Button>
                 </div>
                 <section className="w-[100%] bg-[#C5B0D833] pt-3 px-4 rounded-xl">
                     {
@@ -214,12 +214,12 @@ const AjoPage = () => {
             {/* CREATE NEW SAVINGS GROUP */}
             <section className="w-[100%] flex flex-col mt-12 items-center justify-center gap-4">
                 <img src={createImage} alt="create new savings group" className="w-[150px] h-[100px]" />
-                <p className="text-[#6E6C6C] text-[16px] lg:text-[18px] font-[400] text-center">
+                <Typography className="text-[#6E6C6C] text-[16px] lg:text-[18px] font-[400] text-center">
                     Everyday is a good day to save some money
-                </p>
-                <button  className="bg-[#440080] text-[16px] lg:text-[18px] font-medium w-fit px-6 h-[45px] rounded-md flex items-center justify-center text-white hover:bg-[#3D0073]">
+                </Typography>
+                <Link to={"/dashboard/ajo/create_open_group"}  className="bg-[#440080] text-[16px] lg:text-[18px] font-medium w-fit px-6 h-[45px] rounded-md flex items-center justify-center text-white hover:bg-[#3D0073]">
                     Create a new group
-                </button>
+                </Link>
             </section>
         </main>
     )

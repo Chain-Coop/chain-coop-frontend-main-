@@ -83,7 +83,8 @@ export interface PaymentOptionProps {
 export interface firstOpenGroupType {
   savings_title: string,
   savings_description: string,
-  savings_currency: string
+  savings_currency: string,
+  currency_image: string,
 }
 
 export interface secondOpenGroupType {
@@ -97,4 +98,10 @@ export interface thirdOpenGroupType {
   daily_deposit: number,
   savings_image: Blob | null,
   agree: boolean
+}
+
+export interface openGroupFormType {
+  firstForm: firstOpenGroupType,
+  secondForm: secondOpenGroupType,
+  thirdForm: thirdOpenGroupType
 }
