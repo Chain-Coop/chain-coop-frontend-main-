@@ -41,7 +41,7 @@ const CreateOpenGroup = () => {
     const [isNextDisabled, setIsNextDisabled] = useState<boolean>(true)
 
     // state to open modal
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(true)
 
     // list of the various forms
     const formSteps = [
