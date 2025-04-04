@@ -4,25 +4,42 @@ import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import { useLocation, useNavigate } from "react-router-dom";
 import cryptoSavings from "../../../../Assets/png/dashboard/cryptSavings.png";
 import { useState } from "react";
-import PaymentWithCard from "../../../../components/dashboard/contribution/paymentChoice/PaymentWithCard";
+import Pin from "../../../../components/dashboard/contribution/modals/Pin";
+import ConnectWallet from "../../../../components/dashboard/contribution/modals/ConnectWallet";
 
 const PreviewSavings = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const formData = location.state || {};
 
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showPinModal, setShowPinModal] = useState(false);
+  const [showConnectWalletModal, setShowConnectWalletModal] = useState(false);
+  const [pin, setPin] = useState("");
 
   const conversionRate = 1549.43;
 
   const handlePay = () => {
-    setShowPaymentModal(true);
+    if (formData.fundSource === "Internal Crypto Wallet") {
+      setShowPinModal(true);
+    } else if (formData.fundSource === "External Crypto Wallet") {
+      setShowConnectWalletModal(true);
+    } else {
+      console.log("Invalid payment method selected.");
+    }
+  };
+
+  const handlePinSubmit = () => {
+    console.log("Entered PIN:", pin);
+    setShowPinModal(false);
+  };
+
+  const handleConnectWallet = () => {
+    console.log("Wallet connected successfully!");
+    setShowConnectWalletModal(false);
   };
 
   const nairaEquivalent =
     formData.tokenAmount && parseFloat(formData.tokenAmount) * conversionRate;
-  const tokenEquivalent =
-    formData.amount && parseFloat(formData.amount) / conversionRate;
 
   return (
     <main className="pb-[1.5em] font-sans">
@@ -85,51 +102,25 @@ const PreviewSavings = () => {
               <p className="text-lg font-bold">{formData.cryptoType}</p>
             </div>
 
-            {formData.selectedOption === "naira" ? (
-              <>
-                {/* Naira Amount */}
-                <div className="h-[83px] w-full rounded-lg bg-[#ECE6F242] p-4 md:w-[210px] md:p-2">
-                  <h2 className="text-sm font-semibold text-gray-500">
-                    Deposit Amount (NGN)
-                  </h2>
-                  <p className="text-lg font-bold">
-                    {formData.amount || "N/A"}
-                  </p>
-                </div>
+            {/* Token Amount */}
+            <div className="h-[83px] w-full rounded-lg bg-[#ECE6F242] p-4 md:w-[210px] md:p-2">
+              <h2 className="text-sm font-semibold text-gray-500">
+                Deposit Token
+              </h2>
+              <p className="text-lg font-bold">
+                {formData.tokenAmount || "N/A"}
+              </p>
+            </div>
 
-                {/* Token Equivalent */}
-                <div className="h-[83px] w-full rounded-lg bg-[#ECE6F242] p-4 md:w-[210px] md:p-2">
-                  <h2 className="text-sm font-semibold text-gray-500">
-                    Token Value
-                  </h2>
-                  <p className="text-lg font-bold">
-                    {tokenEquivalent?.toFixed(2)} Lisk
-                  </p>
-                </div>
-              </>
-            ) : (
-              <>
-                {/* Token Amount */}
-                <div className="h-[83px] w-full rounded-lg bg-[#ECE6F242] p-4 md:w-[210px] md:p-2">
-                  <h2 className="text-sm font-semibold text-gray-500">
-                    Deposit Token
-                  </h2>
-                  <p className="text-lg font-bold">
-                    {formData.tokenAmount}
-                  </p>
-                </div>
-
-                {/* Naira Equivalent */}
-                <div className="h-[83px] w-full rounded-lg bg-[#ECE6F242] p-4 md:w-[210px] md:p-2">
-                  <h2 className="text-sm font-semibold text-gray-500">
-                    Deposit Amount (NGN)
-                  </h2>
-                  <p className="text-lg font-bold">
-                    {nairaEquivalent?.toFixed(2)} NGN
-                  </p>
-                </div>
-              </>
-            )}
+            {/* Naira Equivalent */}
+            <div className="h-[83px] w-full rounded-lg bg-[#ECE6F242] p-4 md:w-[210px] md:p-2">
+              <h2 className="text-sm font-semibold text-gray-500">
+                Deposit Amount (NGN)
+              </h2>
+              <p className="text-lg font-bold">
+                {nairaEquivalent?.toFixed(2) || "N/A"} NGN
+              </p>
+            </div>
 
             {/* Start Date */}
             <div className="h-[83px] w-full rounded-lg bg-[#ECE6F242] p-4 md:w-[210px] md:p-2">
@@ -139,13 +130,15 @@ const PreviewSavings = () => {
               <p className="text-lg font-bold">{formData.startDate || "N/A"}</p>
             </div>
 
-            {/* End Date and Fund Source */}
+            {/* End Date */}
             <div className="h-[83px] w-full rounded-lg bg-[#ECE6F242] p-4 md:w-[210px] md:p-2">
               <h2 className="text-sm font-semibold text-gray-500">End Date</h2>
               <p className="text-lg font-bold">
                 {formData.endDate || "20/07/2025"}
               </p>
             </div>
+
+            {/* Fund Source */}
             <div className="h-[83px] w-full rounded-lg bg-[#ECE6F242] p-4 md:w-[210px] md:p-2">
               <h2 className="text-sm font-semibold text-gray-500">
                 Fund Source
@@ -176,15 +169,22 @@ const PreviewSavings = () => {
         </div>
       </div>
 
-      {/* PaymentWithCard Modal */}
-      {showPaymentModal && (
-        <PaymentWithCard
-          contributionData={{
-            contributionId: formData.contributionId || "",
-            withdrawalDate: formData.endDate || undefined,
-          }}
-          onClose={() => setShowPaymentModal(false)}
-          isOpen={showPaymentModal}
+      {/* PIN Modal */}
+      {showPinModal && (
+        <Pin
+          pin={pin}
+          setPin={setPin}
+          onSubmit={handlePinSubmit}
+          onClose={() => setShowPinModal(false)}
+        />
+      )}
+
+      {/* Connect Wallet Modal */}
+      {showConnectWalletModal && (
+        <ConnectWallet
+          isOpen={showConnectWalletModal}
+          onClose={() => setShowConnectWalletModal(false)}
+          onConnect={handleConnectWallet}
         />
       )}
     </main>

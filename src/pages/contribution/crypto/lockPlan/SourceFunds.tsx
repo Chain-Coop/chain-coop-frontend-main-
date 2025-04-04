@@ -12,29 +12,29 @@ const SourceFunds = () => {
 
   const [selectedSource, setSelectedSource] =
     useState<string>("internal-wallet");
-  const [deductionOption, setDeductionOption] = useState<string>("");
-  const [amount, setAmount] = useState<string>("");
   const [tokenAmount, setTokenAmount] = useState<string>("");
-  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [error, setError] = useState<string>("");
 
   const handleNext = () => {
-    if (!termsAccepted) {
-      alert("Please accept the terms and conditions to proceed.");
+    if (!tokenAmount) {
+      setError("Please enter a valid token amount.");
       return;
     }
 
+    setError("");
+
+    const updatedFormData = {
+      ...formData,
+      selectedSource,
+      tokenAmount,
+      fundSource:
+        selectedSource === "external-wallet"
+          ? "External Crypto Wallet"
+          : "Internal Crypto Wallet",
+    };
+
     navigate("/dashboard/contribution/lock/preview_savings", {
-      state: {
-        ...formData,
-        selectedSource,
-        amount,
-        tokenAmount,
-        deductionOption,
-        fundSource:
-          selectedSource === "debit-card"
-            ? "Debit Card"
-            : "Internal Crypto Wallet",
-      },
+      state: updatedFormData,
     });
   };
 
@@ -76,7 +76,7 @@ const SourceFunds = () => {
             className="input mb-2 h-[4em] w-full rounded-lg border-[2px] border-gray-300 bg-white px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
           >
             <option value="internal-wallet">Internal Crypto Wallet</option>
-            <option value="debit-card">Debit Card</option>
+            <option value="external-wallet">External Crypto Wallet</option>
           </select>
           {selectedSource === "internal-wallet" && (
             <p className="text-sm text-red-500">
@@ -86,6 +86,7 @@ const SourceFunds = () => {
           )}
         </div>
 
+        {/* Internal Crypto Wallet */}
         {selectedSource === "internal-wallet" && (
           <div className="mt-[2.5em]">
             <label
@@ -105,119 +106,30 @@ const SourceFunds = () => {
           </div>
         )}
 
-        {selectedSource === "debit-card" && (
+        {/* External Crypto Wallet */}
+        {selectedSource === "external-wallet" && (
           <div className="mt-[2.5em]">
-            <h2 className="mb-3 text-lg font-semibold text-memt1">
-              How do you prefer to deduct your lock fund?
-            </h2>
-            <div className="flex flex-col gap-4 rounded-lg border-[2px] border-solid border-gray-300 px-4 py-4">
-              <p>Choose Option</p>
-              {/* Option 1 */}
-              <div>
-                <input
-                  type="radio"
-                  id="deduct-naira"
-                  name="deduction-option"
-                  className="mr-3"
-                  value="naira"
-                  checked={deductionOption === "naira"}
-                  onChange={() => {
-                    setDeductionOption("naira");
-                    setTokenAmount("");
-                  }}
-                />
-                <label htmlFor="deduct-naira" className="font-medium">
-                  Deduct Naira worth of Lisk monthly
-                </label>
-                <p className="mt-2 text-sm text-gray-500">
-                  Naira worth of current token rate value will be deducted but
-                  the naira amount is not fixed.
-                </p>
-              </div>
-
-              {/* Option 2 */}
-              <div>
-                <input
-                  type="radio"
-                  id="deduct-tokens"
-                  name="deduction-option"
-                  className="mr-3"
-                  value="tokens"
-                  checked={deductionOption === "tokens"}
-                  onChange={() => {
-                    setDeductionOption("tokens");
-                    setAmount("");
-                  }}
-                />
-                <label htmlFor="deduct-tokens" className="font-medium">
-                  Deduct only in tokens monthly
-                </label>
-                <p className="mt-2 text-sm text-gray-500">
-                  Naira worth of current token rate value will be deducted but
-                  the naira amount is not fixed.
-                </p>
-              </div>
-            </div>
-
-            {/* Conditional Inputs for Debit Card */}
-            {deductionOption === "naira" && (
-              <div className="mt-[2.5em]">
-                <label
-                  htmlFor="amount"
-                  className="mb-3 flex text-lg font-semibold text-memt1"
-                >
-                  Enter Amount (NGN)
-                </label>
-                <input
-                  type="number"
-                  id="amount"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  placeholder="e.g., 200,000"
-                  className="input mb-2 h-[4em] w-full rounded-lg border-[2px] border-gray-300 px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-                />
-                <p className="text-sm text-gray-500">
-                  1 Lisk equivalent rate = 1549.43 NGN
-                </p>
-              </div>
-            )}
-
-            {deductionOption === "tokens" && (
-              <div className="mt-[2.5em]">
-                <label
-                  htmlFor="tokenAmount"
-                  className="mb-3 flex text-lg font-semibold text-memt1"
-                >
-                  Enter Token Amount
-                </label>
-                <input
-                  type="text"
-                  id="tokenAmount"
-                  value={tokenAmount}
-                  onChange={(e) => setTokenAmount(e.target.value)}
-                  placeholder="e.g., Lk 10"
-                  className="input mb-2 h-[4em] w-full rounded-lg border-[2px] border-gray-300 px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-                />
-              </div>
-            )}
+            <label
+              htmlFor="externalTokenAmount"
+              className="mb-3 flex text-lg font-semibold text-memt1"
+            >
+              Deposit Amount (Token)
+            </label>
+            <input
+              type="text"
+              id="externalTokenAmount"
+              value={tokenAmount}
+              onChange={(e) => setTokenAmount(e.target.value)}
+              placeholder="e.g., Lk 10"
+              className="input mb-2 h-[4em] w-full rounded-lg border-[2px] border-gray-300 px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
+            />
           </div>
         )}
 
-        {/* Terms and Conditions */}
-        <div className="mt-[2.5em]">
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              className="h-5 w-5"
-              checked={termsAccepted}
-              onChange={(e) => setTermsAccepted(e.target.checked)}
-            />
-            <span className="text-sm text-gray-500">
-              I accept that this strict lock <strong>CANNOT</strong> be broken
-              until the end date duration is complete once created.
-            </span>
-          </label>
-        </div>
+        {/* Error Message */}
+        {error && (
+          <p className="mt-2 text-sm font-semibold text-red-500">{error}</p>
+        )}
 
         {/* Navigation Buttons */}
         <div className="mt-[3em] flex items-center justify-between">
@@ -230,9 +142,8 @@ const SourceFunds = () => {
           <Button
             variant="text"
             onClick={handleNext}
-            disabled={!termsAccepted || (!tokenAmount && !amount)}
             className={`flex justify-center rounded-md ${
-              !termsAccepted || (!tokenAmount && !amount)
+              !tokenAmount
                 ? "cursor-not-allowed bg-gray-400"
                 : "bg-text2 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg active:scale-95"
             } px-8 py-[1em] font-semibold text-white transition-all duration-300 ease-in-out`}
