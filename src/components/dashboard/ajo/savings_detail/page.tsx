@@ -111,7 +111,7 @@ const SavingsDetail = () => {
             </section>
 
             <section className="flex w-[100%] flex-col items-center justify-center bg-[#FFF7FC] p-4">
-                <p className="font-[400] text-[14px] leading-tight tracking-wide">
+                <Typography className="font-[400] text-[14px] leading-tight tracking-wide">
                     Total saved
                 </Typography>
                 <h2  className="font-[600] text-[34px] lg:text-[36px] text-[#1E1E1E] tracking-tight">
