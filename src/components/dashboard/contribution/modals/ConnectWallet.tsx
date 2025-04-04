@@ -12,6 +12,7 @@ import KrakenWallet from "../../../../Assets/svg/dashboard/contribution/kraken.s
 
 interface ConnectWalletModalProps {
   isOpen: boolean;
+  onConnect?: () => void;
   onClose: () => void;
 }
 
