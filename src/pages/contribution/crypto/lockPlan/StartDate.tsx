@@ -48,7 +48,7 @@ const StartDate: React.FC = () => {
     };
 
     try {
-      navigate("/dashboard/contribution/flexible/source_funds", {
+      navigate("/dashboard/contribution/lock/source_funds", {
         state: formData,
       });
     } catch (error: any) {
