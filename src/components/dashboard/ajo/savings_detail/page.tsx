@@ -1,4 +1,4 @@
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import { Link } from "react-router-dom"
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import { GrFormNext } from "react-icons/gr";
@@ -10,6 +10,8 @@ import { Button } from "@material-tailwind/react";
 import sampleImage from "../../../../Assets/png/dashboard/ajo/sample_savings_image.png"
 import icon from "../../../../Assets/svg/dashboard/ajo/details_icon.svg"
 import currency_icon from "../../../../Assets/svg/dashboard/ajo/currency_icon.svg"
+import { IoIosArrowBack } from "react-icons/io";
+import { DashboardHeader } from "../../../common/DashboardHeader";
 
 
 const SavingsDetail = () => {
@@ -71,17 +73,25 @@ const SavingsDetail = () => {
         }
     ]
 
+    const navigate = useNavigate()
+
+    // function to navigate back
+    const handleBackClick = () => {
+        navigate(-1)
+    }
+
 
     return (
         <main  className="flex flex-col font-sans mb-[20px] ">
-            <div className="flex h-[55px] w-full items-center justify-center relative px-4 lg:px-8 bg-text2 font-sans text-xl font-semibold text-text5 lg:mt-[2em]">
-                <Link to={'/dashboard/ajo'} className="absolute left-8">
-                    <MdOutlineArrowBackIos className="w-[20px] h-[30px]" />
-                </Link>
-                <h1 className="font-[600] text-[22px] lg:text-[24px]">
-                    {name}
-                </h1>
+            <DashboardHeader
+                    className="relative cursor-pointer items-center lg:mt-[2em]"
+                    onClick={handleBackClick}
+                    >
+            <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
+            <div className="flex flex-grow items-center justify-center">
+                <div className="tracking-wide">{name}</div>
             </div>
+            </DashboardHeader>
 
 
            {/* SAVINGS INTRO AND HEADER */}
@@ -94,12 +104,12 @@ const SavingsDetail = () => {
                             <h2 className="font-[600] text-[22px] lg:text-[24px] text-[#1E1E1E] tracking-tight">
                                 {name}
                             </h2>
-                            <Link to={`/leadership-board/{name}`} className="flex sm:gap-2 items-center">
-                                <img src={icon} alt="leadership board" className="hidden sm:block w-[20px] h-[20px]" />
-                                <Typography className="text-[14px] font-[600] text-[#565454]">
+                            <Link to={`/leadership-board/{name}`} className="flex sm:gap-1 items-center">
+                                <img src={icon} alt="leadership board" className="hidden sm:block w-[14px] h-[14px]" />
+                                <Typography className="text-[12px] font-[600] text-[#565454]">
                                     View leadership board
                                 </Typography>
-                                <GrFormNext className="text-[#440080] text-[20px]" />
+                                <GrFormNext className="text-[#440080] text-[16px]" />
                             </Link>
                         </div>
                         <ProgressCircle progress={5} />

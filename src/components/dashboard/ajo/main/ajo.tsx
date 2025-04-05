@@ -101,13 +101,9 @@ const AjoPage = () => {
 
     return (
         <main className="flex flex-col font-sans  gap-8 mb-[20px]">
-            <div className="flex justify-center items-center w-[100%]">
-                <DashboardHeader className="flex h-[2.5em] w-full items-center justify-center bg-text2 px-[1.5em] font-sans text-xl font-semibold text-text5 lg:mt-[2em]">
-                    <h1>
-                        Group Savings
-                    </h1>
-                </DashboardHeader>
-            </div>
+            <DashboardHeader className="flex items-center justify-center text-2xl  md:text-3xl lg:mt-[2em] lg:text-xl">
+              Group Savings
+            </DashboardHeader>
 
             <section className="rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md sm:p-16 w-[100%]">
                 <div className="flex justify-center gap-4 font-sans">
@@ -235,9 +231,9 @@ const AjoPage = () => {
                 <p className="text-[#6E6C6C] text-[16px] lg:text-[18px] font-[400] text-center">
                     Everyday is a good day to save some money
                 </p>
-                <button  className="bg-[#440080] text-[16px] lg:text-[18px] font-medium w-fit px-6 h-[45px] rounded-md flex items-center justify-center text-white hover:bg-[#3D0073]">
+                <Link to={"/dashboard/ajo/create_open_group"}  className="bg-[#440080] text-[16px] lg:text-[18px] font-medium w-fit px-6 h-[45px] rounded-md flex items-center justify-center text-white hover:bg-[#3D0073]">
                     Create a new group
-                </button>
+                </Link>
             </section>
         </main>
     )
