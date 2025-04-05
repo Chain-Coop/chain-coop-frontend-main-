@@ -100,40 +100,42 @@ const CreateOpenGroup = () => {
             </div>
             </DashboardHeader>
 
-            {/* OPEN SAVINGS INTRO IMAGE */}
-            <section className="w-[100%] flex mt-12 items-center justify-center">
-                <img src={rightArrow} alt="create new savings group" className="w-[100px] h-[80px] self-end translate-x-10" />
-                <img src={createImage} alt="create new savings group" className="w-[300px] h-[215px]" />
-                <img src={rightArrow} alt="create new savings group" className="w-[100px] h-[80px] self-start -translate-x-10" />
+            <section  className="flex flex-col font-sans mb-[20px] gap-10 px-4 lg:px-6">
+                {/* OPEN SAVINGS INTRO IMAGE */}
+                <section className="w-[100%] flex mt-12 items-center justify-center">
+                    <img src={rightArrow} alt="create new savings group" className="w-[100px] h-[80px] self-end translate-x-10" />
+                    <img src={createImage} alt="create new savings group" className="w-[300px] h-[215px]" />
+                    <img src={rightArrow} alt="create new savings group" className="w-[100px] h-[80px] self-start -translate-x-10" />
+                </section>
+
+                {/* ACTIVE FORM */}
+                {
+                    formSteps[formStepsIndex]
+                }
+
+                <div className={ `w-[100%] flex ${formStepsIndex > 0 ? 'justify-between' : 'justify-end'} items-center mt-[20px]`}>
+                    {
+                        formStepsIndex > 0 && (
+                            <Button onClick={() => {setFormStepsIndex( formStepsIndex - 1 )}} className="bg-transparent shadow-none">
+                                <img src={prevFormIcon} alt="Previous form" className="w-[40px]" />
+                            </Button>
+                        )
+                    }
+                    {
+                        formStepsIndex > 2 ? (
+                            <Button 
+                                className={`bg-[#440080] rounded-lg text-white text-[18px] font-[500] tracking-tighter w-fit capitalize h-[47px] `}
+                                onClick={openModal}>
+                            Create group
+                        </Button>
+                        ) : (
+                            <Button className={`bg-[#440080] rounded-lg text-white text-[20px] font-[500] tracking-tighter w-[121px] h-[47px] capitalize ${isNextDisabled ? 'opacity-70 cursor-not-allowed' : ''}`}  onClick={nextForm} disabled={isNextDisabled}>
+                                Next
+                            </Button>
+                        )
+                    }
+                </div>
             </section>
-
-            {/* ACTIVE FORM */}
-            {
-                formSteps[formStepsIndex]
-            }
-
-            <div className={ `w-[100%] flex ${formStepsIndex > 0 ? 'justify-between' : 'justify-end'} items-center mt-[20px]`}>
-                {
-                    formStepsIndex > 0 && (
-                        <Button onClick={() => {setFormStepsIndex( formStepsIndex - 1 )}} className="bg-transparent shadow-none">
-                            <img src={prevFormIcon} alt="Previous form" className="w-[40px]" />
-                        </Button>
-                    )
-                }
-                {
-                    formStepsIndex > 2 ? (
-                        <Button 
-                            className={`bg-[#440080] rounded-lg text-white text-[18px] font-[500] tracking-tighter w-fit capitalize h-[47px] `}
-                            onClick={openModal}>
-                        Create group
-                    </Button>
-                    ) : (
-                        <Button className={`bg-[#440080] rounded-lg text-white text-[20px] font-[500] tracking-tighter w-[121px] h-[47px] capitalize ${isNextDisabled ? 'opacity-70 cursor-not-allowed' : ''}`}  onClick={nextForm} disabled={isNextDisabled}>
-                            Next
-                        </Button>
-                    )
-                }
-            </div>
             {
                 isModalOpen && (
                     <SuccessModal />

@@ -94,12 +94,13 @@ const SavingsDetail = () => {
             </DashboardHeader>
 
 
-           {/* SAVINGS INTRO AND HEADER */}
-            <section className="flex justify-between gap-2 p-4 bg-[#ECE6F240] mt-[10px]">
-                <img src={sampleImage} alt={name} className="w-[160px] rounded-lg flex-shrink-0" />
+          <section className="flex flex-col font-sans mb-[20px] px-4 lg:px-6">
+             {/* SAVINGS INTRO AND HEADER */}
+             <section className="flex justify-between gap-2 py-4 bg-[#ECE6F240] mt-[10px]">
+                <img src={sampleImage} alt={name} className="w-[160px] rounded-lg flex-shrink-0 hidden sm:block" />
                 <div className="flex w-[100%] flex-col gap-2 text-[#1E1E1EB2]">
                     <div className="w-[100%] flex justify-between items-center sm:items-start">
-                        <img src={sampleImage} alt={name} className="w-[70px] h-[50px] rounded-lg sm:flex-shrink-0" />
+                        <img src={sampleImage} alt={name} className="w-[70px] sm:hidden h-[50px] rounded-lg sm:flex-shrink-0" />
                         <div className="flex flex-col items-start gap-1">
                             <h2 className="font-[600] text-[22px] lg:text-[24px] text-[#1E1E1E] tracking-tight">
                                 {name}
@@ -225,6 +226,7 @@ const SavingsDetail = () => {
                     }
                 </ul>
             </section>
+          </section>
         </main>
     )
 }
