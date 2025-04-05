@@ -43,7 +43,7 @@ const ProgressCircle: React.FC<ProgressCircleProps> = ({ progress }) => {
         <span className="text-[10px] font-bold text-[#440080]">
           {progress}%
         </span>
-        <span className="text-[6px] text-gray-500 lg:text-[8px]">
+        <span className="text-[4px] text-gray-500 lg:text-[8px]">
           Completed
         </span>
       </div>

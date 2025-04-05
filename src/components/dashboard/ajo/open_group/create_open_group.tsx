@@ -1,5 +1,5 @@
 import { MdOutlineArrowBackIos } from "react-icons/md"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { FaAngleLeft } from "react-icons/fa6";
 import { Button } from "@material-tailwind/react";
 
@@ -14,6 +14,8 @@ import { firstOpenGroupType, secondOpenGroupType, thirdOpenGroupType } from "../
 import { validateFirstForm, validateSecondForm, validateThirdForm } from "../components/form_validation";
 import ReviewOpenGroupForm from "../components/review_open_group_form";
 import SuccessModal from "../components/success_modal";
+import { IoIosArrowBack } from "react-icons/io";
+import { DashboardHeader } from "../../../common/DashboardHeader";
 
 
 const CreateOpenGroup = () => {
@@ -41,7 +43,9 @@ const CreateOpenGroup = () => {
     const [isNextDisabled, setIsNextDisabled] = useState<boolean>(true)
 
     // state to open modal
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(true)
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+
+    const navigate = useNavigate()
 
     // list of the various forms
     const formSteps = [
@@ -78,17 +82,23 @@ const CreateOpenGroup = () => {
         setIsModalOpen(true)
     }
 
+    // function to navigate back to ajo page
+    const handleBackClick = () => {
+        navigate(-1)
+    }
+
 
     return (
         <main  className="flex flex-col font-sans mb-[20px] gap-10">
-            <div className="flex h-[55px] w-full items-center justify-center relative px-4 lg:px-8 bg-text2 font-sans text-xl font-semibold text-text5 lg:mt-[2em]">
-                <Link to={'/dashboard/ajo'} className="absolute left-8">
-                    <MdOutlineArrowBackIos className="w-[20px] h-[30px]" />
-                </Link>
-                <h1 className="font-[600] text-[22px] lg:text-[24px]">
-                    Create Open Group
-                </h1>
+            <DashboardHeader
+                    className="relative cursor-pointer items-center lg:mt-[2em]"
+                    onClick={handleBackClick}
+                  >
+            <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
+            <div className="flex flex-grow items-center justify-center">
+                <div className="tracking-wide">Create Open Group</div>
             </div>
+            </DashboardHeader>
 
             {/* OPEN SAVINGS INTRO IMAGE */}
             <section className="w-[100%] flex mt-12 items-center justify-center">
