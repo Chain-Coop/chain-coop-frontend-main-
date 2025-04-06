@@ -113,7 +113,7 @@ const CryptoSavings: React.FC = () => {
     <motion.main
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="min-h-screen w-full font-sans"
+      className="min-h-screen w-full "
     >
       <DashboardHeader className="flex items-center justify-center text-2xl md:text-3xl lg:text-xl">
         Contribution Plan

@@ -31,7 +31,7 @@
 //   };
 
 //   return (
-//     <Dialog className="py-6 font-sans sm:px-6 md:py-8">
+//     <Dialog className="py-6  sm:px-6 md:py-8">
 //       <div className="relative rounded-lg bg-white p-4 shadow-lg sm:p-6">
 //         <header className="mb-4">
 //           <h1 className="text-lg font-bold text-gray-900 sm:text-xl">
@@ -113,7 +113,7 @@ const ViewNotificationDetailsRead = ({
   };
 
   return (
-    <Dialog open={open} handler={handleOpen} className="font-sans">
+    <Dialog open={open} handler={handleOpen} className="">
       <DialogHeader className="text-lg font-bold tracking-tight text-gray-900 sm:text-xl">
         {notificationDetails.title}
       </DialogHeader>

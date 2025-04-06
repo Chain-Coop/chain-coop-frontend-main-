@@ -1,5 +1,5 @@
-import { MdOutlineArrowBackIos } from "react-icons/md"
-import { Link, useNavigate } from "react-router-dom"
+import { MdOutlineArrowBackIos } from "react-icons/md";
+import { Link, useNavigate } from "react-router-dom";
 import { FaAngleLeft } from "react-icons/fa6";
 import { Button } from "@material-tailwind/react";
 
@@ -25,7 +25,6 @@ import SuccessModal from "../components/success_modal";
 import { IoIosArrowBack } from "react-icons/io";
 import { DashboardHeader } from "../../../common/DashboardHeader";
 
-
 const CreateOpenGroup = () => {
   const [firstFormData, setFirstFormData] = useState<firstOpenGroupType>({
     savings_title: "",
@@ -50,10 +49,10 @@ const CreateOpenGroup = () => {
   // state to toggle whether the next button is disabled or not
   const [isNextDisabled, setIsNextDisabled] = useState<boolean>(true);
 
-    // state to open modal
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  // state to open modal
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-    const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // list of the various forms
   const formSteps = [
@@ -104,71 +103,88 @@ const CreateOpenGroup = () => {
     validateInputs(); // validate inputs
   };
 
-    const openModal = () => {
-        setIsModalOpen(true)
-    }
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
 
-    // function to navigate back to ajo page
-    const handleBackClick = () => {
-        navigate(-1)
-    }
+  // function to navigate back to ajo page
+  const handleBackClick = () => {
+    navigate(-1);
+  };
 
+  return (
+    <main className="mb-[20px] flex  flex-col gap-10">
+      <DashboardHeader
+        className="relative cursor-pointer items-center lg:mt-[2em]"
+        onClick={handleBackClick}
+      >
+        <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
+        <div className="flex flex-grow items-center justify-center">
+          <div className="tracking-wide">Create Open Group</div>
+        </div>
+      </DashboardHeader>
 
-    return (
-        <main  className="flex flex-col font-sans mb-[20px] gap-10">
-            <DashboardHeader
-                    className="relative cursor-pointer items-center lg:mt-[2em]"
-                    onClick={handleBackClick}
-                  >
-            <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
-            <div className="flex flex-grow items-center justify-center">
-                <div className="tracking-wide">Create Open Group</div>
-            </div>
-            </DashboardHeader>
+      <section className="mb-[20px] flex  flex-col gap-10 px-4 lg:px-6">
+        {/* OPEN SAVINGS INTRO IMAGE */}
+        <section className="mt-12 flex w-[100%] items-center justify-center">
+          <img
+            src={rightArrow}
+            alt="create new savings group"
+            className="h-[80px] w-[100px] translate-x-10 self-end"
+          />
+          <img
+            src={createImage}
+            alt="create new savings group"
+            className="h-[215px] w-[300px]"
+          />
+          <img
+            src={rightArrow}
+            alt="create new savings group"
+            className="h-[80px] w-[100px] -translate-x-10 self-start"
+          />
+        </section>
 
-            <section  className="flex flex-col font-sans mb-[20px] gap-10 px-4 lg:px-6">
-                {/* OPEN SAVINGS INTRO IMAGE */}
-                <section className="w-[100%] flex mt-12 items-center justify-center">
-                    <img src={rightArrow} alt="create new savings group" className="w-[100px] h-[80px] self-end translate-x-10" />
-                    <img src={createImage} alt="create new savings group" className="w-[300px] h-[215px]" />
-                    <img src={rightArrow} alt="create new savings group" className="w-[100px] h-[80px] self-start -translate-x-10" />
-                </section>
+        {/* ACTIVE FORM */}
+        {formSteps[formStepsIndex]}
 
-            {/* ACTIVE FORM */}
-            {
-                formSteps[formStepsIndex]
-            }
-
-                <div className={ `w-[100%] flex ${formStepsIndex > 0 ? 'justify-between' : 'justify-end'} items-center mt-[20px]`}>
-                    {
-                        formStepsIndex > 0 && (
-                            <Button onClick={() => {setFormStepsIndex( formStepsIndex - 1 )}} className="bg-transparent shadow-none">
-                                <img src={prevFormIcon} alt="Previous form" className="w-[40px]" />
-                            </Button>
-                        )
-                    }
-                    {
-                        formStepsIndex > 2 ? (
-                            <Button 
-                                className={`bg-[#440080] rounded-lg text-white text-[18px] font-[500] tracking-tighter w-fit capitalize h-[47px] `}
-                                onClick={openModal}>
-                            Create group
-                        </Button>
-                        ) : (
-                            <Button className={`bg-[#440080] rounded-lg text-white text-[20px] font-[500] tracking-tighter w-[121px] h-[47px] capitalize ${isNextDisabled ? 'opacity-70 cursor-not-allowed' : ''}`}  onClick={nextForm} disabled={isNextDisabled}>
-                                Next
-                            </Button>
-                        )
-                    }
-                </div>
-            </section>
-            {
-                isModalOpen && (
-                    <SuccessModal />
-                )
-            }
-        </main>
-    )
-}
+        <div
+          className={`flex w-[100%] ${formStepsIndex > 0 ? "justify-between" : "justify-end"} mt-[20px] items-center`}
+        >
+          {formStepsIndex > 0 && (
+            <Button
+              onClick={() => {
+                setFormStepsIndex(formStepsIndex - 1);
+              }}
+              className="bg-transparent shadow-none"
+            >
+              <img
+                src={prevFormIcon}
+                alt="Previous form"
+                className="w-[40px]"
+              />
+            </Button>
+          )}
+          {formStepsIndex > 2 ? (
+            <Button
+              className={`h-[47px] w-fit rounded-lg bg-[#440080] text-[18px] font-[500] capitalize tracking-tighter text-white `}
+              onClick={openModal}
+            >
+              Create group
+            </Button>
+          ) : (
+            <Button
+              className={`h-[47px] w-[121px] rounded-lg bg-[#440080] text-[20px] font-[500] capitalize tracking-tighter text-white ${isNextDisabled ? "cursor-not-allowed opacity-70" : ""}`}
+              onClick={nextForm}
+              disabled={isNextDisabled}
+            >
+              Next
+            </Button>
+          )}
+        </div>
+      </section>
+      {isModalOpen && <SuccessModal />}
+    </main>
+  );
+};
 
 export default CreateOpenGroup;

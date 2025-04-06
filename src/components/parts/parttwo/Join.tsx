@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const Join = () => {
   return (
-    <main className="mt-[1em] font-sans lg:mt-[6em]">
+    <main className="mt-[1em]  lg:mt-[6em]">
       <section>
         <div className=" text-center text-text4">
           <header>

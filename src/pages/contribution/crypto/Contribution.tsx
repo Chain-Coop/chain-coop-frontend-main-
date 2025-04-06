@@ -41,7 +41,9 @@ const CryptoSavings: React.FC = () => {
     return storedVisibility !== null ? storedVisibility === "true" : true;
   });
 
-  const [contributionType, setContributionType] = useState<"auto" | "one-time" | null>(null); // State for contribution type
+  const [contributionType, setContributionType] = useState<
+    "auto" | "one-time" | null
+  >(null); // State for contribution type
 
   const formatDuration = (durationInSeconds: any) => {
     const daysRemaining = Math.ceil(
@@ -122,7 +124,7 @@ const CryptoSavings: React.FC = () => {
     <motion.main
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="min-h-screen w-full font-sans"
+      className="min-h-screen w-full "
     >
       <DashboardHeader className="flex items-center justify-center text-2xl md:text-3xl lg:mt-[2em] lg:text-xl">
         Contribution Plan
@@ -202,7 +204,7 @@ const CryptoSavings: React.FC = () => {
                   variant="text"
                   onClick={() => handleContributionTypeChange("one-time")}
                   disabled={true}
-                  className={`flex relative w-fit items-center px-2 py-3 text-center normal-case transition-all duration-300 hover:shadow-lg sm:px-3 md:px-3.5 lg:px-4 xl:px-5 ${
+                  className={`relative flex w-fit items-center px-2 py-3 text-center normal-case transition-all duration-300 hover:shadow-lg sm:px-3 md:px-3.5 lg:px-4 xl:px-5 ${
                     contributionType === "one-time"
                       ? "bg-text2 text-white"
                       : "border border-gray-500 bg-inherit text-black"
@@ -210,14 +212,17 @@ const CryptoSavings: React.FC = () => {
                 >
                   <Typography
                     className={`text-sm font-semibold ${
-                      contributionType === "one-time" ? "text-white" : "text-black"
+                      contributionType === "one-time"
+                        ? "text-white"
+                        : "text-black"
                     }`}
                   >
                     One-Time Savings
                   </Typography>
-                  <span className="absolute -top-2.5 -left-10 bg-red-900 text-white text-center rounded-lg flex items-center justify-center py-1 px-3">Coming soon</span>
+                  <span className="absolute -left-10 -top-2.5 flex items-center justify-center rounded-lg bg-red-900 px-3 py-1 text-center text-white">
+                    Coming soon
+                  </span>
                 </Button>
-                
               </div>
             </section>
 
@@ -231,7 +236,10 @@ const CryptoSavings: React.FC = () => {
                   {/* Flexible Savings */}
                   <Link
                     to="/dashboard/contribution/flexible/crypto_purpose"
-                    state={{ savingsType: "Flexible", contributionType: "auto" }}
+                    state={{
+                      savingsType: "Flexible",
+                      contributionType: "auto",
+                    }}
                   >
                     <motion.button
                       whileHover={{ scale: 1.02 }}
@@ -377,8 +385,8 @@ const CryptoSavings: React.FC = () => {
 
 export default CryptoSavings;
 
-
-      {/* 
+{
+  /* 
       <Modal
         isOpen={updatePayment}
         onClose={toggleUpdatePaymentModal}
@@ -447,4 +455,5 @@ export default CryptoSavings;
             </div>
           </form>
         </div>
-      </Modal> */}
+      </Modal> */
+}

@@ -47,7 +47,7 @@ const DashboardNav = () => {
 
   return (
     <div className="w-full">
-      <div className="flex items-center justify-between py-2 font-sans">
+      <div className="flex items-center justify-between py-2 ">
         <img src={logo} alt="Chain Co-op Logo" />
         <HiOutlineBars3
           className="cursor-pointer lg:hidden"
@@ -96,7 +96,7 @@ const DashboardNav = () => {
           <div>
             <div className="mt-[1em] px-4">
               <button
-                className={`rounded-full ${bgColor} px-[2em] py-1 font-sans text-text3 shadow-md`}
+                className={`rounded-full ${bgColor} px-[2em] py-1  text-text3 shadow-md`}
               >
                 {text}
               </button>
@@ -109,7 +109,7 @@ const DashboardNav = () => {
               />
             </div>
             <div className="mt-4 flex px-3">
-              <p className="font-sans text-sm text-howtext">
+              <p className=" text-sm text-howtext">
                 This card grants you access to the Chain Coop Chain Network
                 ecosystem. Once activated, it becomes non-transferable.
               </p>
@@ -119,7 +119,7 @@ const DashboardNav = () => {
           <div className="mb-[2em] mt-[1em] px-4">
             <button
               onClick={() => handleLogout(navigate)}
-              className="rounded-full bg-red-600 px-[3em] py-1 font-sans text-text3 shadow-md"
+              className="rounded-full bg-red-600 px-[3em] py-1  text-text3 shadow-md"
             >
               Logout
             </button>

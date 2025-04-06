@@ -7,6 +7,7 @@ import Avatar from "../../components/dashboard/profile/avatar/Avatar";
 import Details from "../../components/dashboard/profile/profileDetails/main/Details";
 import Security from "../../components/dashboard/profile/security/Security";
 import { DashboardHeader } from "../../components/common/DashboardHeader";
+import IdVerification from "../../components/dashboard/profile/idVerification/idVerification";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ const Profile = () => {
       </section>
       <section className="mt-[2em] flex flex-col gap-[1em] px-4 lg:px-6">
         <Avatar />
+        <IdVerification />
         <Details />
         <Security />
       </section>

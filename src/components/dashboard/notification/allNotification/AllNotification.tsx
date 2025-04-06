@@ -136,7 +136,7 @@ const AllNotification = () => {
   const groupedNotifications = groupByMonth(updates);
 
   return (
-    <main className="h-auto space-y-4 font-sans">
+    <main className="h-auto space-y-4 ">
       {groupedNotifications.map(([monthYear, monthNotifications]: any) => {
         const isExpanded = expandedMonth === monthYear;
         const displayNotifications = isExpanded

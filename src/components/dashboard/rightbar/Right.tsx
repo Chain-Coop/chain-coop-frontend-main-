@@ -45,7 +45,7 @@ const Right = () => {
           <h1 className="p-[1em] text-lg font-medium uppercase text-text3">
             {project?.title}
           </h1>
-          <Button className="font-base mt-[1.5em] flex cursor-not-allowed justify-center rounded-xl bg-coming2 px-[15px]  py-[6px] font-sans font-semibold normal-case text-black">
+          <Button className="font-base mt-[1.5em] flex cursor-not-allowed justify-center rounded-xl bg-coming2 px-[15px]  py-[6px] font-semibold normal-case text-black">
             {project?.status}
           </Button>
         </article>
@@ -54,7 +54,7 @@ const Right = () => {
   }, [loading, latestProjects]);
 
   return (
-    <aside className="flex min-h-screen w-[30em] flex-col border-l border-bl bg-inherit px-[3em] py-[3em] font-sans text-memt1">
+    <aside className="flex min-h-screen w-[30em] flex-col border-l border-bl bg-inherit px-[3em] py-[3em] text-memt1">
       <section className="h-full">
         <article className="rounded-xl bg-Dh p-[1em] shadow-md">
           <header className="text-xl font-semibold">

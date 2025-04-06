@@ -91,7 +91,7 @@ const ReadNotification = () => {
   }
 
   return (
-    <main className="h-auto space-y-4 font-sans">
+    <main className="h-auto space-y-4 ">
       {readNotifications.map((notification: any, index: number) => (
         <section
           key={notification?._id}

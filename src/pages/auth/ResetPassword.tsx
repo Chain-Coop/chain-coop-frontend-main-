@@ -55,7 +55,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <main className="flex h-screen items-center justify-center bg-log font-sans">
+    <main className="flex h-screen items-center justify-center bg-log ">
       <section className="text-center md:w-[55%]">
         <div className="px-[2em]">
           <h1 className="mb-4 text-3xl font-bold text-text2">Reset Password</h1>
