@@ -98,7 +98,7 @@ const ManageCards = () => {
   };
 
   return (
-    <main className="pb-6 font-sans">
+    <main className="pb-6">
       <header className="lg:mt-8">
         <DashboardHeader
           className="relative cursor-pointer items-center"

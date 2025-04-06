@@ -23,7 +23,7 @@ const FundWallet: React.FC = () => {
   const closeModal = () => setModalType(null);
 
   return (
-    <main className="font-sans">
+    <main>
       <DashboardHeader
         className="relative cursor-pointer items-center lg:mt-[2em]"
         onClick={handleBackClick}

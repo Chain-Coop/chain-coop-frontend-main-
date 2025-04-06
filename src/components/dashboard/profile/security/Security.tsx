@@ -164,9 +164,9 @@ const Security = () => {
   };
 
   return (
-    <main className="mt-4 font-sans">
+    <main className="mt-4">
       <header>
-        <h2 className="font-semibold text-howtext">Security</h2>
+        <h2 className="font-semibold uppercase text-[#B3B3B3]">Security</h2>
       </header>
 
       <section className="mt-[1.2em]">
@@ -179,7 +179,7 @@ const Security = () => {
             >
               <span className="font-semibold">{section.title}</span>
               <div className="flex items-center">
-                <IoIosArrowForward size={15} className="text-text2" />
+                <IoIosArrowForward size={20} className="text-black" />
               </div>
             </div>
           </div>

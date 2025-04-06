@@ -89,7 +89,7 @@ const WhyChainCoop = () => {
     <div className="overflow-x-hidden">
       <NavBar />
       <main
-        className={`relative font-sans transition-opacity duration-300 lg:mb-[2em] ${
+        className={`relative transition-opacity duration-300 lg:mb-[2em] ${
           isLoaded ? "opacity-100" : "opacity-0"
         }`}
       >

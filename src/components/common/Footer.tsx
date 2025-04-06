@@ -40,7 +40,7 @@ const Footer = () => {
 
   return (
     <footer className="w-full overflow-hidden">
-      <header className="relative z-10 mx-auto mb-[-50px] mt-[3em] flex w-full items-center justify-center rounded-2xl bg-[#CCA3BC] p-3 font-sans sm:mb-[-60px] sm:py-5 lg:mb-[-115px] lg:w-[90%] lg:p-8">
+      <header className="relative z-10 mx-auto mb-[-50px] mt-[3em] flex w-full items-center justify-center rounded-2xl bg-[#CCA3BC] p-3  sm:mb-[-60px] sm:py-5 lg:mb-[-115px] lg:w-[90%] lg:p-8">
         <div className="w-full px-2 text-center sm:px-4">
           <Typography
             variant="h1"
@@ -79,7 +79,7 @@ const Footer = () => {
         </div>
       </header>
 
-      <div className="w-full bg-text2 font-sans">
+      <div className="w-full bg-text2 ">
         <div className="mx-auto px-4 pt-[120px] lg:w-[93%] lg:pb-[10px] lg:pt-[190px]">
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
             <section className="w-full space-y-4">

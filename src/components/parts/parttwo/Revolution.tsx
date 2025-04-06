@@ -89,7 +89,7 @@ const Revolution = () => {
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}
       variants={containerVariants}
-      className="mx-auto mt-[2em] flex items-center justify-center px-[1px] font-sans lg:mt-[5em] lg:px-0"
+      className="mx-auto mt-[2em] flex items-center justify-center px-[1px]  lg:mt-[5em] lg:px-0"
     >
       <section className="w-full max-w-7xl">
         <motion.header
@@ -108,7 +108,7 @@ const Revolution = () => {
           >
             <motion.p
               variants={textVariants}
-              className="m-auto w-full text-center font-sans lg:w-[65%]"
+              className="m-auto w-full text-center  lg:w-[65%]"
             >
               Your digital membership card, secured by blockchain, provides you
               with seemless registration, transparent ownership, and guanteed

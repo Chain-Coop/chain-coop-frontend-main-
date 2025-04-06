@@ -7,13 +7,14 @@ import Avatar from "../../components/dashboard/profile/avatar/Avatar";
 import Details from "../../components/dashboard/profile/profileDetails/main/Details";
 import Security from "../../components/dashboard/profile/security/Security";
 import { DashboardHeader } from "../../components/common/DashboardHeader";
+import IdVerification from "../../components/dashboard/profile/idVerification/idVerification";
 
 const Profile = () => {
   const navigate = useNavigate();
   const { totalCount } = useAllNotification();
 
   return (
-    <main className="font-sans">
+    <main>
       <section>
         <DashboardHeader className="flex items-center justify-between px-10 text-2xl  md:text-3xl lg:mt-[2em] lg:text-xl">
           <Link to="/dashboard/notification">
@@ -49,6 +50,7 @@ const Profile = () => {
       </section>
       <section className="mt-[2em] flex flex-col gap-[1em] px-4 lg:px-6">
         <Avatar />
+        <IdVerification />
         <Details />
         <Security />
       </section>

@@ -48,7 +48,7 @@ const PreviewSavings = () => {
     formData.amount && parseFloat(formData.amount) / conversionRate;
 
   return (
-    <main className="pb-[1.5em] font-sans">
+    <main className="pb-[1.5em] ">
       {/* Header */}
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
         Preview Savings

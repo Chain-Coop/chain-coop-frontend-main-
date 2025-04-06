@@ -134,7 +134,7 @@ const ViewContribution = () => {
 
   if (isLoading) {
     return (
-      <main className="pb-[1.5em] font-sans">
+      <main className="pb-[1.5em] ">
         <header className="sm:mt-[0] lg:mt-[2em]">
           <DashboardHeader className="flex items-center justify-center">
             Loading Contribution Details...
@@ -150,7 +150,7 @@ const ViewContribution = () => {
   }
 
   return (
-    <main className="pb-[1.5em] font-sans">
+    <main className="pb-[1.5em] ">
       <header className="sm:mt-[0] lg:mt-[2em]">
         <DashboardHeader className="flex items-center justify-center">
           {contributionDetails?.history[0]?.savingsType} Savings ({""}
@@ -187,7 +187,7 @@ const ViewContribution = () => {
             </div>
 
             <div className="rounded-3xl py-[2em] shadow-md">
-              <div className="flex justify-center gap-4 font-sans">
+              <div className="flex justify-center gap-4 ">
                 <p className="font-medium">Contribution Balance</p>
                 <div>
                   <ToggleButton

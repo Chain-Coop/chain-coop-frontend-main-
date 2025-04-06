@@ -135,7 +135,7 @@ const Home = () => {
 
         <section className="text-center text-text4">
           <div className="mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-10 shadow-md">
-            <div className="flex justify-center gap-4 font-sans">
+            <div className="flex justify-center gap-4">
               <p className="font-medium">Total Balance</p>
               <div>
                 <ToggleButton

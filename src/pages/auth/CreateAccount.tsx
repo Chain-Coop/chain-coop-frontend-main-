@@ -185,7 +185,7 @@ const CreateAccount = () => {
   };
 
   return (
-    <main className="h-vh flex items-center justify-center bg-log pt-[1em] font-sans">
+    <main className="h-vh flex items-center justify-center bg-log pt-[1em] ">
       <section className="px-[1em] text-center lg:w-[48%]">
         <div>
           <img
@@ -253,7 +253,7 @@ const CreateAccount = () => {
           <div>
             <label
               htmlFor="phoneNumber-input"
-              className="text- textPrimary mb-2 flex font-sans font-semibold
+              className="text- textPrimary mb-2 flex  font-semibold
 "
             >
               Phone Number
@@ -377,11 +377,11 @@ const CreateAccount = () => {
 
         <div className="flex justify-center py-5">
           <p
-            className="text- textPrimary font-sans font-semibold
+            className="text- textPrimary  font-semibold
 "
           >
             Have an account?
-            <span className="ml-2 font-sans font-medium text-text2">
+            <span className="ml-2  font-medium text-text2">
               <Link to={ROUTES.sign_in}>Sign in</Link>
             </span>
           </p>

@@ -47,7 +47,7 @@ const GeneratePin = ({
       open={isOpen}
       handler={onClose}
       size="sm"
-      className="overflow-y-auto py-3 font-sans"
+      className="overflow-y-auto py-3 "
     >
       <DialogHeader className="flex flex-col gap-2 px-2 text-center sm:px-4">
         <Typography variant="h1" className="text-2xl font-semibold">

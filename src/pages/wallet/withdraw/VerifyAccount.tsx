@@ -103,7 +103,7 @@ const VerifyAccount = () => {
   }, [location.state, navigate]);
 
   return (
-    <main className="font-sans">
+    <main>
       <header className="lg:mt-[2em]">
         <DashboardHeader
           className="relative cursor-pointer items-center"

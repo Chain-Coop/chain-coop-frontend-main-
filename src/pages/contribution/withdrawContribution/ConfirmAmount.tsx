@@ -110,7 +110,7 @@ const ConfirmAmount = () => {
 
   if (error && (!amountInNaira || !contributionId)) {
     return (
-      <main className="font-sans">
+      <main>
         <DashboardHeader
           className="relative cursor-pointer items-center lg:mt-[2em]"
           onClick={handleBackClick}
@@ -140,7 +140,7 @@ const ConfirmAmount = () => {
   }
 
   return (
-    <main className="font-sans">
+    <main>
       <DashboardHeader
         className="relative cursor-pointer items-center lg:mt-[2em]"
         onClick={handleBackClick}

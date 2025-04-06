@@ -10,7 +10,7 @@ const PaaswordRessetSuccessfull = () => {
   };
 
   return (
-    <main className="flex h-screen items-center justify-center bg-log font-sans">
+    <main className="flex h-screen items-center justify-center bg-log ">
       <section className="text-center lg:w-[25%]">
         <div>
           <img

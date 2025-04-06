@@ -26,7 +26,7 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
         {label && (
           <label
             htmlFor={props.id}
-            className={`text-textPrimary mb-2 flex text-base font-semibold ${labelClassName}`}
+            className={`text-textPrimary mb-2 flex font-asap text-base font-semibold ${labelClassName}`}
           >
             {label}
           </label>

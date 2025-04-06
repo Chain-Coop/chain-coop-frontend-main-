@@ -10,7 +10,8 @@ const SourceFunds = () => {
   const navigate = useNavigate();
   const formData = location.state || {};
 
-  const [selectedSource, setSelectedSource] = useState<string>("internal-wallet");
+  const [selectedSource, setSelectedSource] =
+    useState<string>("internal-wallet");
   const [tokenAmount, setTokenAmount] = useState<string>("");
   const [termsAccepted, setTermsAccepted] = useState(false);
 
@@ -34,7 +35,7 @@ const SourceFunds = () => {
   };
 
   return (
-    <main className="pb-[1.5em] font-sans">
+    <main className="pb-[1.5em] ">
       {/* Header */}
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
         Strict Lock Savings

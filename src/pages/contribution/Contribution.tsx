@@ -129,7 +129,7 @@ const Contribution: React.FC = () => {
                   <IoIosArrowDown />
                 </Button>
               </div>
-              <div className="flex items-center justify-center gap-4 font-sans">
+              <div className="flex items-center justify-center gap-4 ">
                 <Typography
                   variant="small"
                   className="text-sm font-medium tracking-tight md:text-base"

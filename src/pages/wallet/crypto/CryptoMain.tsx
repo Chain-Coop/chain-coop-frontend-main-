@@ -107,7 +107,7 @@ const CryptoMain = () => {
   };
 
   return (
-    <main className="font-sans">
+    <main>
       <div className="mt-0 lg:mt-8">
         <DashboardHeader className="flex items-center justify-center text-2xl tracking-wide md:text-3xl lg:text-xl">
           Chain Coop Wallet
@@ -139,7 +139,7 @@ const CryptoMain = () => {
           {profileDetails?.isWalletActivated === true ? (
             <div className="rounded-3xl border-2 border-gray-300 py-[2em] shadow-lg">
               <div className="flex flex-col items-center justify-center gap-4">
-                <div className="flex items-center gap-4 font-sans">
+                <div className="flex items-center gap-4">
                   <p className="font-medium">Total Crypto Wallet Balance</p>
                   <div>
                     <ToggleButton
@@ -195,7 +195,7 @@ const CryptoMain = () => {
             </div>
           ) : (
             <div className="rounded-3xl border-2 border-gray-300 py-[3.5em] shadow-lg">
-              <div className="flex justify-center gap-4 font-sans">
+              <div className="flex justify-center gap-4">
                 <Button
                   onClick={activateWallet}
                   loading={loading}
