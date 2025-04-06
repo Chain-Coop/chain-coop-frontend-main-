@@ -111,7 +111,7 @@ const Contribution: React.FC = () => {
         Contribution Plan
       </DashboardHeader>
 
-      <main className="px-4 lg:px-6">
+      <main>
         <section className="mt-6 w-full md:mt-8 lg:mt-10">
           <article className="text-center text-gray-700">
             <motion.div

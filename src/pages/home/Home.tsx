@@ -106,7 +106,7 @@ const Home = () => {
           content="Welcome to your dashboard. Manage your projects, wallet, and notifications."
         />
       </Helmet>
-      <main className="mb-8 px-4 lg:px-6">
+      <main>
         <header className="flex items-center justify-between py-4 sm:mt-4 lg:mt-10">
           <div className="font-medium">
             <Typography className="font-normal">Welcome Back!</Typography>

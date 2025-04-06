@@ -130,7 +130,7 @@ const CryptoSavings: React.FC = () => {
         Contribution Plan
       </DashboardHeader>
 
-      <main className="px-4 lg:px-6">
+      <main>
         <section>
           <article className="text-center text-gray-700">
             <motion.div
