@@ -186,7 +186,7 @@ const ViewContribution = () => {
               </h1>
             </div>
 
-            <div className="rounded-3xl py-[2em] shadow-md">
+            <div className="rounded-3xl border-[2px] border-gray-200 bg-white p-6 shadow-md">
               <div className="flex justify-center gap-4 ">
                 <p className="font-medium">Contribution Balance</p>
                 <div>
