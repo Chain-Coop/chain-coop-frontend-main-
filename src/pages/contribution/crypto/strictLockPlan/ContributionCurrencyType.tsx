@@ -113,7 +113,7 @@ const ContributionCurrencyType = () => {
                 id="description"
                 value={formData.description}
                 onChange={handleInputChange}
-                className="mt-1 block min-h-32 w-full rounded-md border-[2px] border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                className="mt-1 block min-h-32 w-full rounded-md border-[2px] p-4 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               ></textarea>
             </div>
           </div>

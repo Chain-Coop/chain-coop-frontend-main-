@@ -22,7 +22,7 @@ const GroupHistoryTemplate = (props: GroupHistoryTemplateTypes) => {
             <h5 className='text-[#1E1E1E] font-[500] text-[16px] lg:text-[18px] mb-3'>
                 {props.length}
             </h5>
-            <div className='flex flex-col gap-4 pb-8 '>
+            <div className='flex flex-col gap-4 pb-8'>
                 {
                     props.historyList.map((group: GroupCardProps, index: number) => (
                         <GroupCard key={index} amount={group.amount} goal={group.goal} icon={group.icon} image={group.image} members={group.members} name={group.name} progress={group.progress} totalSaved={group.totalSaved} />

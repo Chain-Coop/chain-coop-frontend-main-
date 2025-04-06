@@ -17,15 +17,15 @@ export interface GroupCardProps {
 
 const GroupCard: React.FC<GroupCardProps> = ({ amount, goal, icon, image, members, name, progress, totalSaved }) => {
   return (
-    <div className="flex w-[100%] sm:flex-row flex-col h-fit sm:h-[234px] flex-shrink-0 rounded-xl shadow-[#3D007347] shadow-md">
+    <div className="flex w-[100%] sm:flex-row lg:flex-col xl:flex-row flex-col h-fit sm:h-[234px] lg:h-fit xl:h-[234px] flex-shrink-0 rounded-xl shadow-[#3D007347] shadow-md">
       {/* Image Section */}
-      <div className="w-[100%] sm:w-[158px] h-[150px] sm:h-full relative rounded-l-xl flex-shrink-0">
-        <img src={image} alt={name} className="w-full h-full rounded-t-xl sm:rounded-l-xl object-cover sm:object-none" />
+      <div className="w-[100%] sm:w-[158px] h-[150px] lg:w-[100%] xl:w-[158px] sm:h-full lg:h-fit xl:h-[150px] relative rounded-l-xl flex-shrink-0">
+        <img src={image} alt={name} className="w-full h-full lg:w-[100%] lg:h-[150px] lg:object-cover xl:object-none rounded-t-xl rounded-none sm:rounded-l-xl sm:rounded-none lg:rounded-t-xl lg:rounded-none xl:rounded-l-xl xl:rounded-none object-cover sm:object-none" />
         <img src={icon} alt={name} className="w-[30px] h-[30px] absolute top-2 right-2" />
       </div>
 
       {/* Content Section */}
-      <div className="flex flex-col justify-between gap-1 py-2 pr-2 pl-4 w-[96%]">
+      <div className="flex flex-col justify-between gap-1 py-2 pr-2 pl-4 w-[96%] lg:py-4 xl:py-2">
         <div className="flex justify-between items-start">
           {/* Group Details */}
           <div className="flex flex-col gap-2">

@@ -105,9 +105,7 @@ const PreviewSavings = () => {
             {/* Token */}
             <div className="h-[83px] w-full rounded-lg bg-[#ECE6F242] p-4 md:w-[210px] md:p-2">
               <h2 className="text-sm font-semibold text-gray-500">Token</h2>
-              <p className="text-lg font-bold">
-                {formData.cryptoType || "Lisk"}
-              </p>
+              <p className="text-lg font-bold">{formData.cryptoType}</p>
             </div>
 
             {formData.deductionOption === "naira" ? (
@@ -117,9 +115,7 @@ const PreviewSavings = () => {
                   <h2 className="text-sm font-semibold text-gray-500">
                     Deposit Amount (NGN)
                   </h2>
-                  <p className="text-lg font-bold">
-                    {formData.amount || "N/A"}
-                  </p>
+                  <p className="text-lg font-bold">{formData.amount}</p>
                 </div>
 
                 {/* Token Equivalent */}
@@ -128,7 +124,7 @@ const PreviewSavings = () => {
                     Token Value
                   </h2>
                   <p className="text-lg font-bold">
-                    {tokenEquivalent?.toFixed(2) || "N/A"} Lisk
+                    {tokenEquivalent?.toFixed(2)} Lisk
                   </p>
                 </div>
               </>
