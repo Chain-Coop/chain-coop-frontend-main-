@@ -1,3 +1,5 @@
+import { differenceInDays, differenceInMonths, parseISO } from "date-fns";
+
 export interface FormatOptions {
   showCents?: boolean;
   useGrouping?: boolean;
@@ -205,5 +207,36 @@ export const isDateValid = (dateString?: string) => {
     return date > currentDate;
   } catch {
     return false;
+  }
+};
+
+/**
+ * Calculates the savings duration between two dates
+ * @param startDate - ISO date string for the starting date
+ * @param endDate - ISO date string for the ending date
+ * @returns A formatted string representing the duration
+ */
+export const calculateSavingsDuration = (
+  startDate?: string,
+  endDate?: string,
+): string => {
+  if (!startDate || !endDate) return "Duration not available";
+
+  try {
+    const start = parseISO(startDate);
+    const end = parseISO(endDate);
+
+    const days = differenceInDays(end, start);
+
+    const months = differenceInMonths(end, start);
+
+    if (months >= 1) {
+      return `${months} month${months > 1 ? "s" : ""} (${days} Days)`;
+    } else {
+      return `${days} Days`;
+    }
+  } catch (error) {
+    console.error("Error calculating duration:", error);
+    return "Invalid dates";
   }
 };

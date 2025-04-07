@@ -16,6 +16,7 @@ import { SavingsPlan } from "../../components/dashboard/contribution/modals/Savi
 import ToggleButton from "../../shared/utils/ToggleButton";
 import { DashboardHeader } from "../../components/common/DashboardHeader";
 import { ContributionListSkeleton } from "../../components/common/Loading";
+import { Flexibile, Lock, StrictLocak } from "../../Assets/svg";
 
 type Contribution = {
   _id: string;
@@ -38,6 +39,9 @@ const Contribution: React.FC = () => {
   const [contributionType, setContributionType] = useState<
     "auto" | "one-time" | null
   >(null);
+  const [hoveredSavingsType, setHoveredSavingsType] = useState<string | null>(
+    null,
+  );
   const limit = 10;
 
   const {
@@ -208,54 +212,99 @@ const Contribution: React.FC = () => {
                 </Button>
               </div>
             </section>
+
             {contributionType === "auto" && (
-              <section>
-                <Typography className="flex-start flex py-4 font-medium">
-                  Choose your savings type
+              <section className="mb-8">
+                <Typography className="mb-4 text-left font-medium">
+                  Choose savings type
                 </Typography>
-                <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+
+                <div className="flex flex-col gap-4">
                   <Link
                     to={ROUTES.flexibleContributionType}
                     state={{
                       savingsType: "Flexible",
                       contributionType: "auto",
                     }}
+                    className="w-full"
                   >
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
+                    <motion.div
+                      whileHover={{ scale: 1.01 }}
                       whileTap={{ scale: 0.98 }}
-                      className="w-full rounded-full border-[2px] border-gray-300 bg-inherit py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 lg:text-lg"
+                      className="flex items-center justify-between rounded-lg border border-gray-400 bg-white p-4 shadow-md transition-all"
+                      onMouseEnter={() => setHoveredSavingsType("Flexible")}
+                      onMouseLeave={() => setHoveredSavingsType(null)}
                     >
-                      Flexible Savings
-                    </motion.button>
+                      <Flexibile />
+                      <Typography className="text-lg font-medium text-gray-800">
+                        Flexible Savings
+                      </Typography>
+                      <div
+                        className={`rounded border border-text2 px-8 py-2 text-sm font-medium
+                        transition-all duration-300 ease-in-out
+                        ${hoveredSavingsType === "Flexible" ? "scale-105 transform bg-text2 text-white shadow-md" : ""}
+                      `}
+                      >
+                        Select
+                      </div>
+                    </motion.div>
                   </Link>
 
                   <Link
                     to={ROUTES.lockContributionType}
                     state={{ savingsType: "Lock", contributionType: "auto" }}
+                    className="w-full"
                   >
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
+                    <motion.div
+                      whileHover={{ scale: 1.01 }}
                       whileTap={{ scale: 0.98 }}
-                      className="w-full rounded-full border-[2px] border-gray-300 bg-inherit py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 lg:text-lg"
+                      className="flex items-center justify-between rounded-lg border border-gray-400 bg-white p-4 shadow-md transition-all"
+                      onMouseEnter={() => setHoveredSavingsType("Lock")}
+                      onMouseLeave={() => setHoveredSavingsType(null)}
                     >
-                      Lock Savings
-                    </motion.button>
+                      <Lock />
+                      <Typography className="text-lg font-medium text-gray-800">
+                        Lock Savings
+                      </Typography>
+                      <div
+                        className={`rounded border border-text2 px-8 py-2 text-sm font-medium
+                        transition-all duration-300 ease-in-out
+                        ${hoveredSavingsType === "Lock" ? "scale-105 transform bg-text2 text-white shadow-md" : ""}
+                      `}
+                      >
+                        Select
+                      </div>
+                    </motion.div>
                   </Link>
 
                   <Link
                     to={ROUTES.strictLockContributionType}
                     state={{ savingsType: "Strict", contributionType: "auto" }}
+                    className="w-full"
                   >
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
+                    <motion.div
+                      whileHover={{ scale: 1.01 }}
                       whileTap={{ scale: 0.98 }}
-                      className="w-full rounded-full border-[2px] border-gray-300 bg-inherit py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 lg:text-lg"
+                      className="flex items-center justify-between rounded-lg border border-gray-400 bg-white p-4 shadow-md transition-all"
+                      onMouseEnter={() => setHoveredSavingsType("Strict")}
+                      onMouseLeave={() => setHoveredSavingsType(null)}
                     >
-                      Strict Lock Savings
-                    </motion.button>
+                      <StrictLocak />
+                      <Typography className="text-lg font-medium text-gray-800">
+                        Strict Lock Savings
+                      </Typography>
+                      <div
+                        className={`rounded border  border-text2 px-8 py-2 text-sm font-medium
+        transition-all duration-300 ease-in-out
+        ${hoveredSavingsType === "Strict" ? "scale-105 transform bg-text2 text-white shadow-md" : ""}
+      `}
+                      >
+                        Select
+                      </div>
+                    </motion.div>
                   </Link>
                 </div>
+
                 <hr className="mx-auto mt-8 w-full max-w-2xl" />
               </section>
             )}

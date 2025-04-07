@@ -39,7 +39,7 @@ const Notification = () => {
         </div>
       </DashboardHeader>
 
-      <section className="font-outfit px-4 lg:px-6">
+      <section className="font-outfit">
         <div className="mt-1 h-auto w-full rounded-lg bg-white py-3 pb-20">
           <div>
             <nav className="overflow-x-auto">
