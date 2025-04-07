@@ -4,6 +4,9 @@ export default withMT({
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      screens: {
+        'xxl': '1320px',
+      },
       colors: {
         primary: " #E6B8D4",
         fbg: "#c183cc",

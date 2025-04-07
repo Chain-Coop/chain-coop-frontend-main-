@@ -7,6 +7,8 @@ interface GroupHistoryTemplateTypes {
     title: string
     description: string
     length: string
+    buttonText: string;
+    onClick: () => void;
     historyList: GroupCardProps[]
 }
 
@@ -16,16 +18,16 @@ const GroupHistoryTemplate = (props: GroupHistoryTemplateTypes) => {
             <h5 className='text-[#1E1E1E] font-[500] text-[20px] lg:text-[22px]'>
                 {props.title}
             </h5>
-            <Typography className='font-[400] text-[16px] lg:text-[18px] text-[#6E6C6C] mb-3'>
+            <Typography className='font-[400] text-[16px] text-[#6E6C6C] mb-3'>
                 {props.description}
             </Typography>
-            <h5 className='text-[#1E1E1E] font-[500] text-[16px] lg:text-[18px] mb-3'>
+            <h5 className='text-[#1E1E1E] font-[500] text-[16px] mb-3'>
                 {props.length}
             </h5>
-            <div className='flex flex-col gap-4 pb-8'>
+            <div className='flex flex-wrap justify-between gap-4 pb-8'>
                 {
                     props.historyList.map((group: GroupCardProps, index: number) => (
-                        <GroupCard key={index} amount={group.amount} goal={group.goal} icon={group.icon} image={group.image} members={group.members} name={group.name} progress={group.progress} totalSaved={group.totalSaved} />
+                        <GroupCard key={index} amount={group.amount} goal={group.goal} icon={group.icon} image={group.image} members={group.members} name={group.name} progress={group.progress} totalSaved={group.totalSaved} buttonText={props.buttonText} onClick={props.onClick} />
                     ))
                 }
             </div>

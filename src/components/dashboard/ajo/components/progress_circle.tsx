@@ -5,13 +5,13 @@ interface ProgressCircleProps {
 }
 
 const ProgressCircle: React.FC<ProgressCircleProps> = ({ progress }) => {
-  const radius = 40;
+  const radius = 42;
   const strokeWidth = 6;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (progress / 100) * circumference;
 
   return (
-    <div className="relative h-[41px] w-[41px] lg:h-[52px] lg:w-[52px]">
+    <div className="relative h-[50px] w-[50px] lg:h-[60px] lg:w-[72px]">
       <svg className="h-full w-full" viewBox="0 0 100 100">
         {/* Background Circle */}
         <circle
@@ -35,15 +35,15 @@ const ProgressCircle: React.FC<ProgressCircleProps> = ({ progress }) => {
           strokeDasharray={circumference}
           strokeDashoffset={offset}
           strokeLinecap="round"
-          transform="rotate(-90 50 50)" // Start from top
+          transform="rotate(-90 50 50)"
         />
       </svg>
       {/* Progress Text */}
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-[10px] font-bold text-[#440080]">
+        <span className="text-[12px] font-bold text-[#440080]">
           {progress}%
         </span>
-        <span className="text-[4px] text-gray-500 lg:text-[8px]">
+        <span className="text-[6px] font-[600] text-gray-500 lg:text-[7px]">
           Completed
         </span>
       </div>
