@@ -19,7 +19,7 @@ export interface GroupCardProps {
 
 const GroupCard: React.FC<GroupCardProps> = ({ amount, goal, icon, image, members, name, progress, totalSaved, buttonText, onClick }) => {
   return (
-    <div className="flex w-fit xl:gap-4 sm:flex-row lg:flex-col xl:flex-row flex-col h-fit sm:h-[234px] lg:h-fit xl:h-fit flex-shrink-0 rounded-3xl border-[2px] border-gray-200 bg-white shadow-md">
+    <div className="flex w-[100%] sm:w-fit xl:gap-4 sm:flex-row lg:flex-col xl:flex-row flex-col h-fit sm:h-[234px] lg:h-fit xl:h-fit flex-shrink-0 rounded-3xl border-[2px] border-gray-200 bg-white shadow-md">
       {/* Image Section */}
       <div className="w-[100%] sm:w-[158px] h-[150px] lg:w-[100%] xl:w-[158px] sm:h-full lg:h-fit xl:h-full relative rounded-l-xl flex-shrink-0">
         <img src={image} alt={name} className="w-full h-full lg:w-[100%] lg:h-[150px] xl:h-full lg:object-cover rounded-t-xl rounded-none sm:rounded-l-xl sm:rounded-none lg:rounded-t-xl lg:rounded-none xl:rounded-l-xl xl:rounded-none object-cover sm:object-none" />
