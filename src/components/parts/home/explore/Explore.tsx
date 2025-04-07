@@ -10,7 +10,7 @@ import { ROUTES } from "../../../../shared/routes";
 
 const Explore = () => {
   return (
-    <main className="container mx-auto mt-5 max-w-[95%] px-3 font-sans md:mt-0  lg:mt-0 lg:px-8">
+    <main className="container mx-auto mt-5 max-w-[95%] px-3  md:mt-0  lg:mt-0 lg:px-8">
       <section className="w-full">
         <header className="mx-auto w-full py-6 text-center text-text4 md:py-8 lg:max-w-3xl lg:py-12">
           <MotionTypography

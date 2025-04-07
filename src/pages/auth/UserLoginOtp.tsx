@@ -75,7 +75,7 @@ const UserLoginOtp = () => {
   };
 
   return (
-    <main className="flex h-screen items-center justify-center bg-log font-sans">
+    <main className="flex h-screen items-center justify-center bg-log ">
       <section className="text-center md:w-[55%]">
         <div className="px-[2em]">
           <p className="font-medium text-howtext md:text-lg lg:text-base">

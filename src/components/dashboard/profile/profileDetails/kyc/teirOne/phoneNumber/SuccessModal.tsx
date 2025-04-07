@@ -3,7 +3,7 @@ import success from "../../../../../../../Assets/png/dashboard/success.png";
 
 const SuccessModal = ({ onClose }: any) => {
   return (
-    <main className="w-full max-w-[30em] px-3 py-6 font-sans md:px-8 md:py-8">
+    <main className="w-full max-w-[30em] px-3 py-6  md:px-8 md:py-8">
       <section className="flex flex-col items-center gap-6 text-center">
         <div>
           <img src={success} alt="success" className="h-[7em] w-[7em]" />

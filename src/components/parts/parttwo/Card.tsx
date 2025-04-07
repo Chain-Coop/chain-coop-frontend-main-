@@ -52,7 +52,7 @@ const Card = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}
-      className="mx-auto mt-[1.5em] px-[1em] font-sans lg:mt-[3em]"
+      className="mx-auto mt-[1.5em] px-[1em]  lg:mt-[3em]"
     >
       <section>
         <motion.div variants={textVariants} className="text-center text-text4">

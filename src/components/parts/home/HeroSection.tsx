@@ -16,7 +16,7 @@ const container = (delay: any) => ({
 
 const HeroSection = () => {
   return (
-    <main className="relative flex w-full flex-col font-sans lg:min-h-screen lg:flex-row">
+    <main className="relative flex w-full flex-col  lg:min-h-screen lg:flex-row">
       <div className="flex items-center  py-8 lg:w-1/2 lg:py-24">
         <div className="container mx-auto max-w-[90%]">
           <MotionTypography

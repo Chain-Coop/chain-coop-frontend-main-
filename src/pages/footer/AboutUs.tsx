@@ -51,7 +51,7 @@ const AboutUs = () => {
     <div className="overflow-x-hidden">
       <NavBar />
       <main
-        className={`relative mb-[2em] font-sans transition-opacity duration-300 ${
+        className={`relative mb-[2em] transition-opacity duration-300 ${
           isLoaded ? "opacity-100" : "opacity-0"
         }`}
       >

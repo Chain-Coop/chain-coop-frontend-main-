@@ -37,7 +37,7 @@ const Sidebar = () => {
   const { text, bgColor } = getButtonProps();
 
   return (
-    <aside className="flex h-screen flex-col border-r border-bl bg-rec1 font-sans text-memt1 shadow-md">
+    <aside className="flex h-screen flex-col border-r border-bl bg-rec1 text-memt1 shadow-md">
       <div className="flex-shrink-0 px-[1em] py-[2em]" onClick={home}>
         <img src={logo} alt="ChainCoop-logo" className="cursor-pointer" />
       </div>
@@ -54,7 +54,7 @@ const Sidebar = () => {
               <Link
                 key={index}
                 to={link.to}
-                className={`text flex items-center text-[#1E1E1E] px-4 py-5 font-sans text-[16px] hover:bg-Dh ${
+                className={`text flex items-center px-4 py-5  text-[16px] text-[#1E1E1E] hover:bg-Dh ${
                   isActive
                     ? "active !important border-l-2 border-text2 bg-Dh font-semibold"
                     : ""

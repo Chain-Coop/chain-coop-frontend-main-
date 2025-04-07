@@ -110,10 +110,13 @@ const Details = () => {
   };
 
   return (
-    <main className="mt-4 font-sans">
+    <main className="mt-4">
       <header>
-        <Typography variant="h5" className="text-md font-bold text-howtext">
-          PROFILE
+        <Typography
+          variant="h5"
+          className="text-md font-bold uppercase text-[#B3B3B3]"
+        >
+          profile
         </Typography>
       </header>
       <section className="mt-[1.2em]">
@@ -130,7 +133,7 @@ const Details = () => {
                 {section.description}
               </div>
               <div className="ml-2 flex items-center">
-                <IoIosArrowForward size={15} className="text-text2" />
+                <IoIosArrowForward size={20} className="text-black" />
               </div>
             </div>
           </div>

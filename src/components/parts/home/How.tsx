@@ -59,7 +59,7 @@ const How = () => {
   };
 
   return (
-    <main className="m-auto mb-8 mt-[3em] w-[90%] font-sans sm:px-[1em] lg:mt-[8em]">
+    <main className="m-auto mb-8 mt-[3em] w-[90%]  sm:px-[1em] lg:mt-[8em]">
       <header className="flex flex-col justify-center gap-3 text-center">
         <MotionTypography
           variant="h1"

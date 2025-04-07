@@ -48,7 +48,7 @@ const StartDate: React.FC = () => {
     };
 
     try {
-      navigate("/dashboard/contribution/flexible/source_funds", {
+      navigate("/dashboard/contribution/lock/source_funds", {
         state: formData,
       });
     } catch (error: any) {
@@ -59,7 +59,7 @@ const StartDate: React.FC = () => {
   };
 
   return (
-    <main className="pb-[1.5em] font-sans">
+    <main className="pb-[1.5em] ">
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
         Lock Savings
       </DashboardHeader>

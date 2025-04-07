@@ -15,7 +15,11 @@ import {
   GetWalletCard,
   PayUnPaidContribution,
 } from "../../shared/redux/slices/transaction.slices";
-import { formatBalance, isDateValid } from "../../shared/utils/format";
+import {
+  calculateSavingsDuration,
+  formatBalance,
+  isDateValid,
+} from "../../shared/utils/format";
 import { DashboardHeader } from "../../components/common/DashboardHeader";
 import {
   DetailsSkeleton,
@@ -27,6 +31,7 @@ import { ContributionTracker } from "../../components/dashboard/contribution/con
 import { useAppDispatch } from "../../shared/redux/reduxHooks";
 import PaymentWithCard from "../../components/dashboard/contribution/unpaidContribution/PaymentWithCard";
 import PayWithPaystack from "../../components/dashboard/contribution/unpaidContribution/PayWithPaystack";
+import { Typography } from "@material-tailwind/react";
 
 const ViewContribution = () => {
   const location = useLocation();
@@ -134,7 +139,7 @@ const ViewContribution = () => {
 
   if (isLoading) {
     return (
-      <main className="pb-[1.5em] font-sans">
+      <main className="pb-[1.5em] ">
         <header className="sm:mt-[0] lg:mt-[2em]">
           <DashboardHeader className="flex items-center justify-center">
             Loading Contribution Details...
@@ -150,7 +155,7 @@ const ViewContribution = () => {
   }
 
   return (
-    <main className="pb-[1.5em] font-sans">
+    <main className="pb-[1.5em] ">
       <header className="sm:mt-[0] lg:mt-[2em]">
         <DashboardHeader className="flex items-center justify-center">
           {contributionDetails?.history[0]?.savingsType} Savings ({""}
@@ -171,6 +176,11 @@ const ViewContribution = () => {
           <div className="flex-1 text-center">
             <h1 className="truncate text-xl font-bold">
               {contributionDetails?.savingsCategory}
+              <span className="ml-2 font-medium text-gray-500">
+                {contributionDetails?.currency === "NGN"
+                  ? "(Naira)"
+                  : contributionDetails?.currency || "Savings"}
+              </span>{" "}
             </h1>
           </div>
           <div className="w-8 flex-shrink-0"></div>{" "}
@@ -178,16 +188,8 @@ const ViewContribution = () => {
 
         <section className="">
           <article className="text-center text-text4">
-            <div className="flex justify-between">
-              <h1 className="text-lg font-bold text-gray-500">
-                {contributionDetails?.currency
-                  ? `${contributionDetails.currency} Savings`
-                  : "Savings"}
-              </h1>
-            </div>
-
-            <div className="rounded-3xl py-[2em] shadow-md">
-              <div className="flex justify-center gap-4 font-sans">
+            <div className="rounded-3xl border-[2px] border-gray-200 bg-white p-12 shadow-md">
+              <div className="flex justify-center gap-4 ">
                 <p className="font-medium">Contribution Balance</p>
                 <div>
                   <ToggleButton
@@ -204,7 +206,7 @@ const ViewContribution = () => {
               </div>
               <div className="mx-auto mt-[1.5em] w-[15em] rounded-md">
                 {isContributionVisible ? (
-                  <p className="font-bold sm:text-xl lg:text-xl">
+                  <p className="text-xl font-bold md:text-xl">
                     {formattedBalance}
                   </p>
                 ) : (
@@ -216,9 +218,22 @@ const ViewContribution = () => {
 
             <section>
               <div className="mt-6 flex flex-col gap-4 rounded-2xl bg-text2 p-4 lg:flex-row lg:items-center lg:justify-between">
-                <div className="flex w-full flex-col items-center rounded-full border-2 border-gray-500 bg-white px-[1.5em] py-3 lg:w-[35%]">
-                  <p className="font-semibold text-gray-600">Unpaid Balance</p>
-                  <p className="font-medium text-gray-400">{realBalance}</p>
+                <div className="flex w-full flex-col items-center justify-center rounded-full border-2 border-gray-500 bg-white px-[1.5em] py-3 lg:w-[35%]">
+                  <p className="w-full text-center font-semibold text-gray-600">
+                    {contributionDetails?.history[0]?.savingsType === "Strict"
+                      ? "Fund Lock"
+                      : "Unpaid Balance"}
+                  </p>
+
+                  <p
+                    className={`w-full text-center font-medium text-gray-400 ${
+                      contributionDetails?.history[0]?.savingsType === "Strict"
+                        ? "invisible"
+                        : ""
+                    }`}
+                  >
+                    {realBalance}
+                  </p>
                 </div>
 
                 <div className="flex w-full flex-col items-center rounded-full border-2 border-gray-500 bg-white px-[1.5em] py-3  lg:w-[35%]">
@@ -269,6 +284,48 @@ const ViewContribution = () => {
             </span>
             <hr className="mt-[2em] w-full" />
           </article>
+
+          <section className="my-8 grid grid-cols-2 gap-4">
+            <div className="w-full rounded-xl bg-Dh p-5">
+              <Typography className="text-lg font-semibold text-gray-600">
+                Deposit Amount (NGN)
+              </Typography>
+              <Typography className="mt-2 text-lg font-semibold">
+                N10,000
+              </Typography>
+            </div>
+
+            <div className="w-full rounded-xl bg-Dh p-5">
+              <Typography className="text-lg font-semibold text-gray-600">
+                Savings Duration
+              </Typography>
+              <Typography className="mt-2 text-lg font-semibold">
+                {calculateSavingsDuration(
+                  contributionDetails?.startDate,
+                  contributionDetails?.withdrawalDate,
+                )}
+              </Typography>
+            </div>
+
+            <div className="w-full rounded-xl bg-Dh p-5">
+              <Typography className="text-lg font-semibold text-gray-600">
+                Start Date
+              </Typography>
+              <Typography className="mt-2 text-lg font-semibold">
+                {formatContributionDate(contributionDetails?.startDate)}
+              </Typography>
+            </div>
+
+            <div className="w-full rounded-xl bg-Dh p-5">
+              <Typography className="text-lg font-semibold text-gray-600">
+                End Date
+              </Typography>
+              <Typography className="mt-2 text-lg font-semibold">
+                {formatContributionDate(contributionDetails?.withdrawalDate)}
+              </Typography>
+            </div>
+          </section>
+
           <ContributionTracker
             isLoading={isLoading}
             currentPage={currentPage}

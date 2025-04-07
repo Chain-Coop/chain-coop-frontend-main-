@@ -52,7 +52,7 @@ const Withdraw = () => {
   };
 
   return (
-    <main className="font-sans">
+    <main>
       <DashboardHeader
         className="relative cursor-pointer items-center lg:mt-[2em]"
         onClick={handleBackClick}
@@ -62,7 +62,7 @@ const Withdraw = () => {
           <div className="tracking-wide">Withdraw</div>
         </div>
       </DashboardHeader>
-      <section className="m-auto mt-[2em] h-full w-full px-4 lg:px-6">
+      <section className="m-auto mt-[2em] h-full w-full">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <WithdrawIcon />

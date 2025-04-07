@@ -40,7 +40,6 @@ import OneTimePurpose from "../../../pages/contribution/naira/oneTimePlan/Purpos
 import OneTimeAmount from "../../../pages/contribution/naira/oneTimePlan/SavingsAmount";
 import OneTimeStartDate from "../../../pages/contribution/naira/oneTimePlan/StartDate";
 
-
 //import CryptoMain from "../wallet/crypto/main/CryptoMain";
 //import Preview from "../contribution/contributionType/naira/strictLockPlan/Preview";
 
@@ -75,7 +74,7 @@ const Dashboard = () => {
       <aside className="custom-scroll-bar hidden h-screen overflow-y-auto md:w-[22%] lg:block">
         <Sidebar />
       </aside>
-      <section className="custom-scroll-bar h-screen w-full flex-1 overflow-y-auto md:px-4">
+      <section className="custom-scroll-bar h-screen w-full flex-1 overflow-y-auto px-4 md:px-14">
         <nav className="px-4 sm:block lg:hidden">
           <DashboardNav />
         </nav>
@@ -222,7 +221,6 @@ const Dashboard = () => {
           <Route path="ajo/create_open_group" element={<CreateOpenGroup />} />
           <Route path="ajo/history" element={<GroupHistoryPage />} />
           
-
           <Route path="wallet/*" element={<Wallet />} />
           <Route path="wallet/crypto_wallet" element={<CryptoMain />} />
           <Route path="wallet/withdraw" element={<Withdraw />} />

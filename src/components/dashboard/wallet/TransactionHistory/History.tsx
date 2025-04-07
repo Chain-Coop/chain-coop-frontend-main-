@@ -40,7 +40,7 @@ const History = () => {
   };
 
   return (
-    <main className="font-sans">
+    <main className="">
       <div className="flex flex-col gap-[1.5em] py-6">
         <div className="flex items-center justify-between px-2">
           <h1 className="text-xl font-semibold text-memt1 lg:text-xl">

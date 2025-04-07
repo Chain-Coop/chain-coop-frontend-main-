@@ -1,10 +1,5 @@
 import "./App.css";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/entry/HomePage";
 import ForgetPassword from "./pages/auth/ForgetPassword";
 import CreateAccount from "./pages/auth/CreateAccount";
@@ -43,10 +38,14 @@ function App() {
         <Route path="/team" element={<Team />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/verification-successfull" element={<VerificationSuccessfull />} />
-        <Route path="/reset-successfull" element={<PaaswordRessetSuccessfull />} />
-
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        <Route
+          path="/verification-successfull"
+          element={<VerificationSuccessfull />}
+        />
+        <Route
+          path="/reset-successfull"
+          element={<PaaswordRessetSuccessfull />}
+        />
         
         <Route element={<ProtectedRoutes />}>
           <Route path="/dashboard/*" element={<Dashboard />} />

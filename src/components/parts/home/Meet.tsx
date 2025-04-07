@@ -26,7 +26,7 @@
 //   };
 
 //   return (
-//     <main className="mx-auto grid items-center justify-center font-sans sm:-mt-[1em] sm:px-[1em] lg:mt-[7em] lg:w-[90%] lg:px-[0]">
+//     <main className="mx-auto grid items-center justify-center  sm:-mt-[1em] sm:px-[1em] lg:mt-[7em] lg:w-[90%] lg:px-[0]">
 //       <div>
 //         <header className="text-center text-text4">
 //           <motion.h1
@@ -40,7 +40,7 @@
 //               initial={{ opacity: 0, x: -20 }}
 //               whileInView={{ opacity: 1, x: 0 }}
 //               transition={{ duration: 0.5, delay: 0.2 }}
-//               className="ml-1 font-sans text-text2 sm:text-2xl lg:text-3xl"
+//               className="ml-1  text-text2 sm:text-2xl lg:text-3xl"
 //             >
 //               Co-op Community
 //             </motion.span>
@@ -81,7 +81,7 @@ import { Link } from "react-router-dom";
 
 const Meet = () => {
   return (
-    <main className="flex h-full items-center justify-center font-sans sm:mt-[1em] lg:mt-[5em]">
+    <main className="flex h-full items-center justify-center  sm:mt-[1em] lg:mt-[5em]">
       <section className="lg:w-[89%] lg:px-[0]">
         <header className="py-8 text-center text-text4">
           <motion.h1
@@ -98,10 +98,10 @@ const Meet = () => {
             transition={{ duration: 0.5 }}
             className="m-auto lg:w-[53%]"
           >
-            <p className="font-sans lg:mt-[1.5em]">
+            <p className=" lg:mt-[1.5em]">
               Access low risk options that prioritize keeping your money safe.
             </p>
-            <p className="font-sans">
+            <p className="">
               Invest in your tomorrow: Explore innovative, self-sustaining
               businesses backed by the power of blockchain and cooperative
               ownership.
