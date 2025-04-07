@@ -25,7 +25,7 @@ const GroupHistoryTemplate = (props: GroupHistoryTemplateTypes) => {
             <div className='flex flex-col gap-4 pb-8'>
                 {
                     props.historyList.map((group: GroupCardProps, index: number) => (
-                        <GroupCard key={index} amount={group.amount} goal={group.goal} icon={group.icon} image={group.image} members={group.members} name={group.name} progress={group.progress} totalSaved={group.totalSaved} />
+                        <GroupCard key={index} amount={group.amount} goal={group.goal} icon={group.icon} image={group.image} members={group.members} name={group.name} progress={group.progress} totalSaved={group.totalSaved} buttonText="Withdraw" onClick={() => {}} />
                     ))
                 }
             </div>

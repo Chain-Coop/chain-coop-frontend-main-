@@ -147,11 +147,11 @@ const AjoPage = () => {
               <Typography className="text-[#302B2BC7] text-[14px] xl:text-[16px] font-[400] tracking-medium">
                   Select any of the saving option to begin your contribution with others
               </Typography>
-              <div className="flex w-[100%] justify-between 2xl:justify-center 2xl:gap-6 flex-wrap  gap-y-4">
+              <div className="flex w-[100%] justify-between 2xl:justify-center 2xl:gap-6 flex-wrap gap-y-4 xl:flex-nowrap">
                   {
                       groupSavingsOptions.map((group, index) => (
                           <Link 
-                              className={`flex flex-col gap-2 items-center w-[100%] h-[150px] md:h-fit md:w-[49%] lg:w-[100%] xl:w-[240px] p-2 rounded-lg hover:ring-2 hover:ring-[#440080] ${groupOption === index && 'ring-2 ring-[#440080]'}`}
+                              className={`flex flex-col gap-2 items-center w-[100%] h-[150px] md:h-fit md:w-[49%] lg:w-[100%]  xl:w-[49%] xxl:w-[240px] p-2 rounded-lg hover:ring-2 hover:ring-[#440080] ${groupOption === index && 'ring-2 ring-[#440080]'}`}
                               style={{ backgroundColor: group.backgroundColor }}
                               key={group.header}
                               to={group.link}>
@@ -185,6 +185,8 @@ const AjoPage = () => {
                   name={group.name}
                   progress={group.progress}
                   totalSaved={group.totalSaved}
+                  buttonText="Join"
+                  onClick={() => {}}
                 />
               ))}
             </section>
