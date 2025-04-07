@@ -72,7 +72,7 @@ const SelectAccount = () => {
   };
 
   return (
-    <main className="font-sans">
+    <main>
       <header className="lg:mt-8">
         <DashboardHeader
           className="relative cursor-pointer items-center"

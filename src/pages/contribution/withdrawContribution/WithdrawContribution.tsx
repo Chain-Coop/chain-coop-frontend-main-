@@ -157,7 +157,7 @@ const WithdrawContribution = () => {
 
   if (isLoading) {
     return (
-      <main className="font-sans">
+      <main>
         {renderHeader()}
         <div className="flex h-[50vh] items-center justify-center">
           <div className="animate-pulse text-gray-500">
@@ -170,7 +170,7 @@ const WithdrawContribution = () => {
 
   if (error && !contributionDetails) {
     return (
-      <main className="font-sans">
+      <main>
         {renderHeader()}
         <div className="mt-6 px-3">
           <Alert severity="error">{error}</Alert>
@@ -192,7 +192,7 @@ const WithdrawContribution = () => {
   };
 
   return (
-    <main className="font-sans">
+    <main>
       {renderHeader()}
 
       <section className="px-3">

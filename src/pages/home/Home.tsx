@@ -106,7 +106,7 @@ const Home = () => {
           content="Welcome to your dashboard. Manage your projects, wallet, and notifications."
         />
       </Helmet>
-      <main className="mb-8 px-4 lg:px-6">
+      <main>
         <header className="flex items-center justify-between py-4 sm:mt-4 lg:mt-10">
           <div className="font-medium">
             <Typography className="font-normal">Welcome Back!</Typography>
@@ -135,7 +135,7 @@ const Home = () => {
 
         <section className="text-center text-text4">
           <div className="mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-10 shadow-md">
-            <div className="flex justify-center gap-4 font-sans">
+            <div className="flex justify-center gap-4">
               <p className="font-medium">Total Balance</p>
               <div>
                 <ToggleButton

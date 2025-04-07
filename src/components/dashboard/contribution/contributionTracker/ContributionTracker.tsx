@@ -168,7 +168,7 @@ export const ContributionTracker: React.FC<ContributionTrackerProps> = ({
   }
 
   return (
-    <section className="mt-4 font-sans sm:mt-6">
+    <section className="mt-4  sm:mt-6">
       <div className="mb-4 space-y-1 sm:space-y-2">
         <p className="text-lg font-bold">Transaction History</p>
         <p className="text-xs sm:text-base">

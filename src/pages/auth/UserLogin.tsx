@@ -56,7 +56,7 @@ const UserLogin = () => {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-log py-8 font-sans">
+    <main className="flex min-h-screen items-center justify-center bg-log py-8">
       <section className="w-full px-[12px] text-center lg:w-[45%]">
         <header className="m-auto text-center">
           <img

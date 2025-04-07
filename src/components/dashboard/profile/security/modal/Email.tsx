@@ -53,7 +53,7 @@ const EmailStep = ({
   };
 
   return (
-    <Dialog size="sm" open={isOpen} handler={onClose} className="p-4 font-sans">
+    <Dialog size="sm" open={isOpen} handler={onClose} className="p-4 ">
       <DialogHeader className="justify-center">
         <Typography variant="h4" className="font-semibold">
           Reset Password

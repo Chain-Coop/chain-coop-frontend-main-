@@ -122,7 +122,7 @@ const UnReadNotification = () => {
   }
 
   return (
-    <main className="h-auto space-y-4 font-sans">
+    <main className="h-auto space-y-4 ">
       {unreadNotifications.map((notification: any, index: number) => (
         <section
           key={notification?._id}

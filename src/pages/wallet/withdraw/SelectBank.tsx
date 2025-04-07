@@ -109,7 +109,7 @@ const SelectBank = () => {
   };
 
   return (
-    <main className="items-center font-sans">
+    <main className="items-center">
       <header className="lg:mt-8">
         <DashboardHeader
           className="relative cursor-pointer items-center"

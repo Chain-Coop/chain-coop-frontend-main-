@@ -29,7 +29,7 @@ const Avatar = () => {
   };
 
   return (
-    <main className="font-sans">
+    <main>
       <div className="flex flex-row items-center justify-between gap-4 lg:flex-row">
         <div className="flex items-center gap-4 sm:gap-6">
           <div>

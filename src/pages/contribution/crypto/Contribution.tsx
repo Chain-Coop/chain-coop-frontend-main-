@@ -8,7 +8,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../shared/redux/store";
 import { toast } from "react-toastify";
-import { Typography } from "@material-tailwind/react";
+import { Typography, Button } from "@material-tailwind/react";
 import { UpdateUserPool } from "../../../shared/redux/slices/web3.slices";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import { ContributionListSkeleton } from "../../../components/common/Loading";
@@ -41,6 +41,10 @@ const CryptoSavings: React.FC = () => {
     return storedVisibility !== null ? storedVisibility === "true" : true;
   });
 
+  const [contributionType, setContributionType] = useState<
+    "auto" | "one-time" | null
+  >(null); // State for contribution type
+
   const formatDuration = (durationInSeconds: any) => {
     const daysRemaining = Math.ceil(
       parseInt(durationInSeconds) / (24 * 60 * 60),
@@ -54,6 +58,13 @@ const CryptoSavings: React.FC = () => {
       navigate("/dashboard/contribution");
     }
     setIsModalOpen(false);
+  };
+
+  const handleContributionTypeChange = (type: "auto" | "one-time") => {
+    setContributionType(type);
+    if (type === "one-time") {
+      navigate("/dashboard/contribution/crypto/one_time_savings");
+    }
   };
 
   const toggleModal = () => {
@@ -113,13 +124,13 @@ const CryptoSavings: React.FC = () => {
     <motion.main
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="min-h-screen w-full font-sans"
+      className="min-h-screen w-full "
     >
       <DashboardHeader className="flex items-center justify-center text-2xl md:text-3xl lg:mt-[2em] lg:text-xl">
         Contribution Plan
       </DashboardHeader>
 
-      <main className="px-4 lg:px-6">
+      <main>
         <section>
           <article className="text-center text-gray-700">
             <motion.div
@@ -166,40 +177,110 @@ const CryptoSavings: React.FC = () => {
               </div>
             </motion.div>
 
-            <section className="mt-6 lg:mt-8">
-              <div className="flex flex-col gap-5 lg:gap-8 lg:flex-row lg:flex-wrap w-full">
-                <Link className="lg:w-[217px]" to="/dashboard/contribution/flexible/crypto_purpose">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 md:py-3 md:text-lg"
+            {/* Contribution Type Selection */}
+            <section className="py-8">
+              <div className="flex justify-between">
+                {/* Auto Savings Button */}
+                <Button
+                  variant="text"
+                  onClick={() => handleContributionTypeChange("auto")}
+                  className={`flex w-fit items-center px-2 py-3 text-center normal-case transition-all duration-300 ${
+                    contributionType === "auto"
+                      ? "bg-text2 text-white hover:bg-text2"
+                      : "border border-gray-500 bg-inherit text-black hover:shadow-lg"
+                  }`}
+                >
+                  <Typography
+                    className={`text-sm font-semibold ${
+                      contributionType === "auto" ? "text-white" : "text-black"
+                    }`}
                   >
-                    Flexible Savings
-                  </motion.button>
-                </Link>
+                    Auto Savings
+                  </Typography>
+                </Button>
 
-                <Link className="lg:w-[217px]" to="/dashboard/contribution/lock/crypto_purpose">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 md:py-3 md:text-lg"
+                {/* One-Time Savings Button */}
+                <Button
+                  variant="text"
+                  onClick={() => handleContributionTypeChange("one-time")}
+                  disabled={true}
+                  className={`relative flex w-fit items-center px-2 py-3 text-center normal-case transition-all duration-300 hover:shadow-lg sm:px-3 md:px-3.5 lg:px-4 xl:px-5 ${
+                    contributionType === "one-time"
+                      ? "bg-text2 text-white"
+                      : "border border-gray-500 bg-inherit text-black"
+                  }`}
+                >
+                  <Typography
+                    className={`text-sm font-semibold ${
+                      contributionType === "one-time"
+                        ? "text-white"
+                        : "text-black"
+                    }`}
                   >
-                    Lock Savings
-                  </motion.button>
-                </Link>
-
-                <Link className="lg:w-[217px]" to="/dashboard/contribution/strict_lock/crypto_purpose">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 md:py-3 md:text-lg"
-                  >
-                    Strict Lock Savings
-                  </motion.button>
-                </Link>
+                    One-Time Savings
+                  </Typography>
+                  <span className="absolute -left-10 -top-2.5 flex items-center justify-center rounded-lg bg-red-900 px-3 py-1 text-center text-white">
+                    Coming soon
+                  </span>
+                </Button>
               </div>
-              <hr className="mx-auto mt-8 w-full max-w-2xl" />
             </section>
+
+            {/* Auto Savings Options */}
+            {contributionType === "auto" && (
+              <section>
+                <Typography className="flex-start flex py-4 font-medium">
+                  Choose your savings type
+                </Typography>
+                <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+                  {/* Flexible Savings */}
+                  <Link
+                    to="/dashboard/contribution/flexible/crypto_purpose"
+                    state={{
+                      savingsType: "Flexible",
+                      contributionType: "auto",
+                    }}
+                  >
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full rounded-full border-[2px] border-gray-300 bg-inherit py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 lg:text-lg"
+                    >
+                      Flexible Savings
+                    </motion.button>
+                  </Link>
+
+                  {/* Lock Savings */}
+                  <Link
+                    to="/dashboard/contribution/lock/crypto_purpose"
+                    state={{ savingsType: "Lock", contributionType: "auto" }}
+                  >
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full rounded-full border-[2px] border-gray-300 bg-inherit py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 lg:text-lg"
+                    >
+                      Lock Savings
+                    </motion.button>
+                  </Link>
+
+                  {/* Strict Lock Savings */}
+                  <Link
+                    to="/dashboard/contribution/strict_lock/crypto_purpose"
+                    state={{ savingsType: "Strict", contributionType: "auto" }}
+                  >
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full rounded-full border-[2px] border-gray-300 bg-inherit py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 lg:text-lg"
+                    >
+                      Strict Lock Savings
+                    </motion.button>
+                  </Link>
+                </div>
+                <hr className="mx-auto mt-8 w-full max-w-2xl" />
+              </section>
+            )}
           </article>
         </section>
 
@@ -298,7 +379,14 @@ const CryptoSavings: React.FC = () => {
         savingsType={savingsType}
         onSavingsTypeChange={handleSavingsTypeChange}
       />
-      {/* 
+    </motion.main>
+  );
+};
+
+export default CryptoSavings;
+
+{
+  /* 
       <Modal
         isOpen={updatePayment}
         onClose={toggleUpdatePaymentModal}
@@ -367,9 +455,5 @@ const CryptoSavings: React.FC = () => {
             </div>
           </form>
         </div>
-      </Modal> */}
-    </motion.main>
-  );
-};
-
-export default CryptoSavings;
+      </Modal> */
+}

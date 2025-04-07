@@ -23,7 +23,7 @@ const Notification = () => {
   };
 
   return (
-    <main className="min-h-screen w-full font-sans">
+    <main className="min-h-screen w-full">
       <DashboardHeader
         className="relative mt-2 cursor-pointer items-center px-4 md:mt-4 md:px-6 lg:mt-8"
         onClick={handleBackClick}
@@ -39,7 +39,7 @@ const Notification = () => {
         </div>
       </DashboardHeader>
 
-      <section className="font-outfit px-4 lg:px-6">
+      <section className="font-outfit">
         <div className="mt-1 h-auto w-full rounded-lg bg-white py-3 pb-20">
           <div>
             <nav className="overflow-x-auto">

@@ -66,10 +66,10 @@ const NewPassword = () => {
   };
 
   return (
-    <main className="flex h-screen items-center justify-center bg-log px-[1em] font-sans">
+    <main className="flex h-screen items-center justify-center bg-log px-[1em] ">
       <section className="w-full text-center lg:w-[45%]">
         <header className="px-[2em]">
-          <h1 className="mb-4 font-sans text-3xl font-bold text-text2">
+          <h1 className="mb-4  text-3xl font-bold text-text2">
             Reset Password
           </h1>
         </header>
