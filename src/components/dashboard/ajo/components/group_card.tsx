@@ -19,7 +19,7 @@ export interface GroupCardProps {
 
 const GroupCard: React.FC<GroupCardProps> = ({ amount, goal, icon, image, members, name, progress, totalSaved, buttonText, onClick }) => {
   return (
-    <div className="flex w-[100%] sm:flex-row lg:flex-col xl:flex-row flex-col h-fit sm:h-[234px] lg:h-fit xl:h-fit flex-shrink-0 rounded-3xl border-[2px] border-gray-200 bg-white shadow-md">
+    <div className="flex w-fit xl:gap-4 sm:flex-row lg:flex-col xl:flex-row flex-col h-fit sm:h-[234px] lg:h-fit xl:h-fit flex-shrink-0 rounded-3xl border-[2px] border-gray-200 bg-white shadow-md">
       {/* Image Section */}
       <div className="w-[100%] sm:w-[158px] h-[150px] lg:w-[100%] xl:w-[158px] sm:h-full lg:h-fit xl:h-full relative rounded-l-xl flex-shrink-0">
         <img src={image} alt={name} className="w-full h-full lg:w-[100%] lg:h-[150px] xl:h-full lg:object-cover rounded-t-xl rounded-none sm:rounded-l-xl sm:rounded-none lg:rounded-t-xl lg:rounded-none xl:rounded-l-xl xl:rounded-none object-cover sm:object-none" />
@@ -50,7 +50,7 @@ const GroupCard: React.FC<GroupCardProps> = ({ amount, goal, icon, image, member
         </div>
 
         {/* Buttons */}
-        <div className="w-full flex justify-between pb-3 gap-2">
+        <div className="w-full flex justify-between pb-3 gap-2 mt-3 xl:mt-0">
           <Button className="bg-[#440080] text-[16px] lg:text-[18px] font-medium w-fit px-4 h-[35px] rounded-md flex items-center justify-center text-white hover:bg-[#3D0073] capitalize" onClick={onClick}>
             {buttonText}
           </Button>

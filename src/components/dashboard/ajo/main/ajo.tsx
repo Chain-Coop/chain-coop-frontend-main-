@@ -6,10 +6,8 @@ import { groupSavingsOptions } from "../../../../data/Data";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Typography } from "@material-tailwind/react";
-import { Button } from "@material-tailwind/react";
 
 
-import createImage from "../../../../Assets/png/dashboard/ajo/create_new_group.png";
 import otherIcon from "../../../../Assets/svg/dashboard/ajo/other_group_saving_icon.svg";
 import otherImage from "../../../../Assets/png/dashboard/ajo/other_group_saving_image.png";
 import GroupCard from "../components/group_card";
@@ -105,8 +103,8 @@ const AjoPage = () => {
           Group Savings
         </DashboardHeader>
 
-        <section  className="flex flex-col font-sans  gap-8 mb-[20px] px-4 lg:px-6">
-          <section className="rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md sm:p-16 w-[100%]">
+        <section  className="flex flex-col font-sans  gap-8 mb-[20px]">
+          <section className="rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md sm:p-16 w-[95%] self-center lg:w-[100%]">
               <div className="flex justify-center gap-4 font-sans">
               <p className="font-medium">Total group fund</p>
               <div>
@@ -135,7 +133,7 @@ const AjoPage = () => {
           </section>
 
           {/* START GROUP SAVING */}
-          <section className="flex w-[100%] flex-col gap-4">
+          <section className="flex w-[100%] flex-col gap-4 px-4 lg:px-6">
               <div className="w-[100%] flex items-center gap-4">
                   <div className="bg-[#ECE6F2] w-[24px] h-[24px] flex items-center justify-center rounded-full">
                       <HiOutlinePlus className="text-[#3D0073] w-[16px] h-[16px]" />
@@ -169,7 +167,7 @@ const AjoPage = () => {
           </section>
 
           {/* OTHER SAVING DATA */}
-          <section className="flex flex-col gap-3">
+          <section className="flex flex-col gap-3 px-4 lg:px-6">
             <h3 className="w-[100%] border-b-[1.5px] border-b-[#DDD8D8B2] pb-3 text-[20px] font-[600] lg:text-[22px]">
               Other Saving Groups
             </h3>
@@ -194,49 +192,29 @@ const AjoPage = () => {
 
 
           {/* GROUP HISTORY */}
-          <section className="w-[100%] flex flex-col gap-3">
-              <h4 className="text-[20px] lg:text-[22px] font-[600] w-[100%]">
+          <section className="w-[100%] flex flex-col gap-5">
+              <h4 className="text-[20px] lg:text-[22px] font-[600] w-[100%] px-4 lg:px-6">
                   Group History
               </h4>
-              <div className="flex w-[100%] justify-between border-b-[1.5px] border-b-[#DDD8D8B2]">
-                  <button className={`font-[500] text-[#1E1E1E] text-[16px] lg:text-[18px] font-sans pb-5 ${groupHistory === 'ongoing' ? 'opacity-100 border-b-[2.5px] border-b-[#440080]' : 'opacity-50'}`} onClick={() => setGroupHistory('ongoing')}>
-                      Ongoing
-                  </button>
-                  <button className={`font-[500] text-[#1E1E1E] text-[16px] lg:text-[18px] font-sans pb-5 ${groupHistory === 'completed' ? 'opacity-100 border-b-[2.5px] border-b-[#440080]' : 'opacity-50'}`} onClick={() => setGroupHistory('completed')}>
-                      Completed
-                  </button>
+              <div className="px-4 lg:px-6">
+                <div className="flex w-[100%] justify-between border-b-[1.5px] border-b-[#DDD8D8B2]">
+                    <button className={`font-[500] text-[#1E1E1E] text-[16px] lg:text-[18px] font-sans pb-5 ${groupHistory === 'ongoing' ? 'opacity-100 font-[600] border-b-[2.5px] border-b-[#440080]' : 'opacity-50'}`} onClick={() => setGroupHistory('ongoing')}>
+                        Ongoing
+                    </button>
+                    <button className={`font-[500] text-[#1E1E1E] text-[16px] lg:text-[18px] font-sans pb-5 ${groupHistory === 'completed' ? 'opacity-100 font-[600] border-b-[2.5px] border-b-[#440080]' : 'opacity-50'}`} onClick={() => setGroupHistory('completed')}>
+                        Completed
+                    </button>
+                </div>
               </div>
-              <section className="w-[100%] bg-[#C5B0D833] pt-3 px-4 rounded-xl">
+              <section className="w-[100%] bg-[#C5B0D833] pt-3 px-4 lg:px-6 rounded-xl">
                   {
                       groupHistory === 'ongoing' 
                           ? 
-                      <GroupHistoryTemplate description="This are the list of active groups you created" historyList={otherGroupSavings.filter(item => item.progress < 100)} length={`My groups (${otherGroupSavings.filter(item => item.progress < 100).length})`} title="Active groups" key={1} /> 
+                      <GroupHistoryTemplate description="This are the list of active groups you created" historyList={otherGroupSavings.filter(item => item.progress < 100)} length={`My groups (${otherGroupSavings.filter(item => item.progress < 100).length})`} title="Active groups" key={1} buttonText="Withdraw" onClick={() => {}} /> 
                           : 
-                      <GroupHistoryTemplate description="This are the list of past groups you created or joined." historyList={otherGroupSavings.filter(item => item.progress === 100)} length={`My previous groups (${otherGroupSavings.filter(item => item.progress === 100).length})`} title="Previous Groups" key={2} />
+                      <GroupHistoryTemplate description="This are the list of past groups you created or joined." historyList={otherGroupSavings.filter(item => item.progress === 100)} length={`My previous groups (${otherGroupSavings.filter(item => item.progress === 100).length})`} title="Previous Groups" key={2} buttonText="Withdraw" onClick={() => {}} />
                   }
               </section>
-          </section>
-
-          {/* JOINT SAVINGS GROUP */}
-          <section className="mt-12 flex w-[100%] flex-col">
-            <GroupHistoryTemplate
-              description="This are the list of active groups you joined."
-              historyList={otherGroupSavings}
-              length={`Savings groups (${otherGroupSavings.length})`}
-              title="Joint Saving Groups"
-              key={2}
-            />
-          </section>
-
-          {/* CREATE NEW SAVINGS GROUP */}
-          <section className="w-[100%] flex flex-col mt-12 items-center justify-center gap-4">
-              <img src={createImage} alt="create new savings group" className="w-[150px] h-[100px]" />
-              <p className="text-[#6E6C6C] text-[16px] lg:text-[18px] font-[400] text-center">
-                  Everyday is a good day to save some money
-              </p>
-              <Link to={"/dashboard/ajo/create_open_group"}  className="bg-[#440080] text-[16px] lg:text-[18px] font-medium w-fit px-6 h-[45px] rounded-md flex items-center justify-center text-white hover:bg-[#3D0073]">
-                  Create a new group
-              </Link>
           </section>
         </section>
       </main>

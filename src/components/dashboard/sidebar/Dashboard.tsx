@@ -63,6 +63,7 @@ import Wallet from "../../../pages/wallet/Wallet";
 import Home from "../../../pages/home/Home";
 import ManageCards from "../../../pages/profile/ManageCards";
 import CreateOpenGroup from "../ajo/open_group/create_open_group";
+import GroupHistoryPage from "../ajo/group_history/page";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -219,6 +220,7 @@ const Dashboard = () => {
           <Route path="ajo" element={<AjoPage />} />
           <Route path="ajo/:name" element={<SavingsDetail />} />
           <Route path="ajo/create_open_group" element={<CreateOpenGroup />} />
+          <Route path="ajo/history" element={<GroupHistoryPage />} />
           
 
           <Route path="wallet/*" element={<Wallet />} />
