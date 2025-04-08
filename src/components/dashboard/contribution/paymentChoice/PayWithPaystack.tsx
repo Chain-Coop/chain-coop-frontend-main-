@@ -1,11 +1,12 @@
 import React from "react";
-import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowForward, IoMdClose } from "react-icons/io";
 import withdraw from "../../../../Assets/svg/dashboard/contribution/card.svg";
 import {
   Button,
   Dialog,
   Typography,
   DialogHeader,
+  IconButton,
 } from "@material-tailwind/react";
 import { PaymentOptionProps } from "../../../../shared/types/types";
 
@@ -27,13 +28,21 @@ const PayWithPaystack: React.FC<PaymentOptionProps> = ({
       className="bg-[#ECECF2] p-6"
     >
       <div className="flex flex-col gap-6 p-4">
-        <DialogHeader className="text-center">
-          <Typography
-            variant="h5"
-            className="text-base font-bold text-text2 md:text-lg"
+        <DialogHeader className="flex items-center justify-between">
+          <IconButton
+            variant="text"
+            color="gray"
+            onClick={onClose}
+            className="p-2"
+            placeholder=""
+            onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
           >
+            <IoMdClose size={24} className="text-text2" />
+          </IconButton>
+          <h2 className="flex-grow text-center text-xl font-semibold text-text2">
             Fund Contribution
-          </Typography>
+          </h2>
         </DialogHeader>
 
         <section className="rounded-2xl bg-white p-4">
