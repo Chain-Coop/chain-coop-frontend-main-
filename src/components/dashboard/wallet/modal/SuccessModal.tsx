@@ -1,6 +1,13 @@
 import React from "react";
-import { Dialog, DialogBody, Typography } from "@material-tailwind/react";
+import {
+  Dialog,
+  DialogBody,
+  DialogHeader,
+  IconButton,
+  Typography,
+} from "@material-tailwind/react";
 import success from "../../../../Assets/svg/auth/sucess.svg";
+import { IoMdClose } from "react-icons/io";
 
 interface SuccessModalProps {
   isOpen: boolean;
@@ -10,6 +17,22 @@ interface SuccessModalProps {
 const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
   return (
     <Dialog open={isOpen} handler={onClose} size="sm" className="bg-white">
+      <DialogHeader className="flex items-center justify-between">
+        <IconButton
+          variant="text"
+          color="gray"
+          onClick={onClose}
+          className="p-2"
+          placeholder=""
+          onPointerEnterCapture={() => {}}
+          onPointerLeaveCapture={() => {}}
+        >
+          <IoMdClose size={24} className="text-text2" />
+        </IconButton>
+        <h2 className="flex-grow text-center text-xl font-semibold text-text2">
+          Fund Contribution
+        </h2>
+      </DialogHeader>
       <DialogBody className="py-[3em] text-center">
         <div className="mt-[2.5em] flex flex-col justify-center">
           <img

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
-import { IoIosArrowDropleft } from "react-icons/io";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import { SavingOn } from "../../../../data/Data";
+import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg";
 
 const Purpose = () => {
   const [savingsCategory, setSavingsCategory] = useState("");
@@ -129,7 +129,7 @@ const Purpose = () => {
             onClick={() => navigate(-1)}
             className="flex items-center transition-transform duration-300 hover:scale-110"
           >
-            <IoIosArrowDropleft size={25} />
+            <img src={prevFormIcon} alt="Previous form" className="w-[40px]" />
           </button>
           <button
             className="rounded-md bg-text2 px-8 py-2 font-semibold text-white
