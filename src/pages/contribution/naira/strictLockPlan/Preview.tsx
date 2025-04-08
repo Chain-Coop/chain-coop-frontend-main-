@@ -9,6 +9,8 @@ import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import { Button } from "@material-tailwind/react";
 import PaymentWithCard from "../../../../components/dashboard/contribution/paymentChoice/PaymentWithCard";
 import PayWithPaystack from "../../../../components/dashboard/contribution/paymentChoice/PayWithPaystack";
+import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg";
+
 
 interface ContributionResponse {
   result: {

@@ -1,6 +1,4 @@
-import { MdOutlineArrowBackIos } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
-import { FaAngleLeft } from "react-icons/fa6";
 import { Button } from "@material-tailwind/react";
 
 import createImage from "../../../../Assets/png/dashboard/ajo/open_group_image.png";

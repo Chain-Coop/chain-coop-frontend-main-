@@ -45,7 +45,7 @@ export const kycWhatsAppOtp = createAsyncThunk(
 
 export const VerifykycWhatsAppOtp = createAsyncThunk(
   "kyc/verifykycWhatsAppOtp",
-  async (codeData: { code: string; reference: string }, thunkAPI) => {
+  async (codeData: { code: string; reference?: string }, thunkAPI) => {
     try {
       const data = await KycServices.VerifykycWhatsAppOtp(codeData);
       return { landing: data };

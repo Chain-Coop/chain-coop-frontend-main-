@@ -2,11 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { Alert } from "@mui/material";
-import useUserProfile, { useUserCard } from "../../../../shared/Hooks/useUserProfile";
+import useUserProfile, {
+  useUserCard,
+} from "../../../../shared/Hooks/useUserProfile";
 import { addDays, formatDate } from "../../../../shared/utils/format";
 import { AppDispatch } from "../../../../shared/redux/store";
 import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
-import { CreateContributionPlan, GetWalletCard, PayContributionPaystack } from "../../../../shared/redux/slices/transaction.slices";
+import {
+  CreateContributionPlan,
+  GetWalletCard,
+  PayContributionPaystack,
+} from "../../../../shared/redux/slices/transaction.slices";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import { Button } from "@material-tailwind/react";
 import PaymentWithCard from "../../../../components/dashboard/contribution/paymentChoice/PaymentWithCard";
@@ -34,6 +40,7 @@ const StartDate: React.FC = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  console.log("location", location);
   const dispatch: AppDispatch = useAppDispatch();
 
   const { purpose, amount, currency, savingsType, contributionType } =
@@ -77,8 +84,9 @@ const StartDate: React.FC = () => {
       startDate: today,
       endDate,
       currency: currency,
-      savingsType: savingsType,
+      // savingsType: savingsType,
       contributionType: contributionType,
+      savingsType: "Strict",
     };
 
     try {

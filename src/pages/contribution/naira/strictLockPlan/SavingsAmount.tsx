@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { Alert } from "@mui/material";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
+import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg";
 
 const MIN_AMOUNT = 2000;
 
@@ -39,7 +40,7 @@ const SavingsAmount = () => {
       );
     } else {
       setError("");
-      navigate("/dashboard/contribution/strict_lock/date", {
+      navigate("/dashboard/contribution/naira/strict_lock/date", {
         state: {
           amount: numericAmount,
           purpose,
@@ -95,7 +96,11 @@ const SavingsAmount = () => {
               onClick={() => navigate(-1)}
               className="flex items-center transition-transform duration-300 hover:scale-110"
             >
-              <IoIosArrowDropleft size={25} />
+              <img
+                src={prevFormIcon}
+                alt="Previous form"
+                className="w-[40px]"
+              />
             </button>
             <button
               className="rounded-md bg-text2 px-8 py-2 font-semibold text-white
@@ -112,4 +117,5 @@ const SavingsAmount = () => {
     </main>
   );
 };
+
 export default SavingsAmount;

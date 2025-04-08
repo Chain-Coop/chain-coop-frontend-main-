@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { IoIosArrowDropleft } from "react-icons/io";
 import { Alert } from "@mui/material";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import FormInput from "../../../../components/common/FormInput";
+import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg";
 
 const StartDate: React.FC = () => {
   const today = formatDate(new Date());
@@ -33,7 +33,7 @@ const StartDate: React.FC = () => {
       return;
     }
 
-    navigate("/dashboard/contribution/strict_lock/preview", {
+    navigate("/dashboard/contribution/naira/strict_lock/preview", {
       state: {
         savingsCategory: purpose,
         amount,
@@ -88,7 +88,7 @@ const StartDate: React.FC = () => {
             onClick={() => navigate(-1)}
             className="flex items-center transition-transform duration-300 hover:scale-110"
           >
-            <IoIosArrowDropleft size={25} />
+            <img src={prevFormIcon} alt="Previous form" className="w-[40px]" />
           </button>
           <button
             onClick={handleNextClick}
