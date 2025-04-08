@@ -30,6 +30,7 @@ import SavingsAmount from "../../../pages/contribution/naira/flexiblePlan/Saving
 import LockSavingsAmount from "../../../pages/contribution/naira/lockPlan/SavingsAmount";
 import StrictLockSavingsAmount from "../../../pages/contribution/naira/strictLockPlan/SavingsAmount";
 import WithdrawContribution from "../../../pages/contribution/withdrawContribution/WithdrawContribution";
+import WithdrawCryptoWallet from "../../../pages/wallet/crypto/withdraw";
 import ConfirmWithdrawal from "../../../pages/contribution/withdrawContribution/ConfirmAmount";
 import ContributionCurrencyType from "../../../pages/contribution/naira/flexiblePlan/ContributionCurrencyType";
 import LockContributionCurrencyType from "../../../pages/contribution/naira/lockPlan/ContributionCurrencyType";
@@ -41,12 +42,11 @@ import OneTimeAmount from "../../../pages/contribution/naira/oneTimePlan/Savings
 import OneTimeStartDate from "../../../pages/contribution/naira/oneTimePlan/StartDate";
 
 //import CryptoMain from "../wallet/crypto/main/CryptoMain";
-//import Preview from "../contribution/contributionType/naira/strictLockPlan/Preview";
 
 import AjoPage from "../ajo/main/ajo";
 import SavingsDetail from "../ajo/savings_detail/page";
 
-import Preview from "../../../pages/contribution/naira/strictLockPlan/Preview";
+import PreviewStrictLock from "../../../pages/contribution/naira/strictLockPlan/Preview";
 import Contribution from "../../../pages/contribution/Contribution";
 import Notification from "../../../pages/notification/Notification";
 import CryptoMain from "../../../pages/wallet/crypto/CryptoMain";
@@ -143,6 +143,11 @@ const Dashboard = () => {
             element={<StrictLockCryptoPreviewSavings />}
           />
 
+          <Route
+            path="/contribution/naira/strict_lock/preview"
+            element={<PreviewStrictLock />}
+          />
+
           <Route path="contribution/purpose" element={<Purpose />} />
           <Route path="contribution/plan" element={<SavingsPlan />} />
           <Route path="contribution/date" element={<StartDate />} />
@@ -191,7 +196,7 @@ const Dashboard = () => {
             element={<StrictLockSavingsAmount />}
           />
           <Route
-            path="contribution/strict_lock/date"
+            path="contribution/naira/strict_lock/date"
             element={<StrictLockStartDate />}
           />
           <Route
@@ -220,7 +225,7 @@ const Dashboard = () => {
           <Route path="ajo/:name" element={<SavingsDetail />} />
           <Route path="ajo/create_open_group" element={<CreateOpenGroup />} />
           <Route path="ajo/history" element={<GroupHistoryPage />} />
-          
+
           <Route path="wallet/*" element={<Wallet />} />
           <Route path="wallet/crypto_wallet" element={<CryptoMain />} />
           <Route path="wallet/withdraw" element={<Withdraw />} />
@@ -228,6 +233,8 @@ const Dashboard = () => {
           <Route path="wallet/bank-account" element={<BankAccount />} />
           <Route path="wallet/select-account" element={<SelectAccount />} />
           <Route path="wallet/verify-account" element={<VerifyAccount />} />
+
+          <Route path="wallet/crypto/withdraw" element={<WithdrawCryptoWallet />} />
 
           <Route path="wallet/fund" element={<FundWallet />} />
           <Route

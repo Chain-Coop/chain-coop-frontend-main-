@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate, useLocation } from "react-router";
 import { useDispatch } from "react-redux";
@@ -10,6 +10,7 @@ import { WithdrawalFromContribution } from "../../../shared/redux/slices/transac
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import { formatBalance } from "../../../shared/utils/format";
 import Success from "../../../components/common/Success";
+import { parseISO, isAfter, isToday } from "date-fns";
 
 const ConfirmAmount = () => {
   const navigate = useNavigate();
@@ -23,15 +24,31 @@ const ConfirmAmount = () => {
   const [amountInNaira, setAmountInNaira] = useState<number | null>(null);
   const [contributionId, setContributionId] = useState<string | null>(null);
   const [savingsType, setSavingsType] = useState<string>("FLEXIBLE");
+  const [withdrawalDate, setWithdrawalDate] = useState<string | null>(null);
+
+  const isBeforeWithdrawalDate = () => {
+    if (!withdrawalDate) return false;
+    try {
+      const parsedWithdrawalDate = parseISO(withdrawalDate);
+      const today = new Date();
+      return (
+        isAfter(parsedWithdrawalDate, today) && !isToday(parsedWithdrawalDate)
+      );
+    } catch (e) {
+      return false;
+    }
+  };
 
   const calculateFees = () => {
-    let fees = 50;
+    let fees = 50; 
 
     if (profileDetails?.membershipStatus === "inactive") {
       fees += 1000;
     }
 
-    if (savingsType === "LOCK") {
+    const isLockSavings = savingsType === "Lock";
+
+    if (isLockSavings && isBeforeWithdrawalDate()) {
       fees += 2000;
     }
 
@@ -39,7 +56,7 @@ const ConfirmAmount = () => {
   };
 
   const totalFees = calculateFees();
-  const finalAmount = amountInNaira ? amountInNaira - totalFees : 0;
+  const totalDeduction = amountInNaira ? amountInNaira + totalFees : 0;
 
   useEffect(() => {
     if (!location.state) {
@@ -51,10 +68,12 @@ const ConfirmAmount = () => {
       amountInNaira: amount,
       contributionId: id,
       savingsType: type,
+      withdrawalDate: wDate,
     } = location.state as {
       amountInNaira?: number;
       contributionId?: string;
       savingsType?: string;
+      withdrawalDate?: string;
     };
 
     if (!amount || !id) {
@@ -65,6 +84,7 @@ const ConfirmAmount = () => {
     setAmountInNaira(amount);
     setContributionId(id);
     setSavingsType(type || "FLEXIBLE");
+    setWithdrawalDate(wDate || null);
   }, [location.state]);
 
   const handleBackClick = () => {
@@ -87,12 +107,8 @@ const ConfirmAmount = () => {
 
     try {
       const body = {
-        amount: finalAmount,
+        amount: totalDeduction,
         contributionId: contributionId,
-        pay: "active",
-        fees: totalFees,
-        membershipStatus: profileDetails?.membershipStatus,
-        savingsType: savingsType,
       };
 
       const result = await dispatch(WithdrawalFromContribution(body)).unwrap();
@@ -139,6 +155,10 @@ const ConfirmAmount = () => {
     );
   }
 
+  const isLockSavings = savingsType === "Lock";
+
+  const showEarlyWithdrawalFee = isLockSavings && isBeforeWithdrawalDate();
+
   return (
     <main>
       <DashboardHeader
@@ -161,39 +181,46 @@ const ConfirmAmount = () => {
         <div className="mt-9 space-y-4 rounded-lg bg-gray-50 p-4">
           <div className="flex justify-between">
             <Typography className="text-base font-medium">
-              Withdrawal Amount
+              Amount to Receive
             </Typography>
             <span className="font-medium">
               {amountInNaira ? formatBalance(amountInNaira) : "---"}
             </span>
           </div>
 
-          {profileDetails?.membershipStatus === "inactive" && (
-            <div className="flex justify-between text-amber-600">
-              <Typography className="text-base">Membership Fee</Typography>
-              <span>-₦1,000.00</span>
-            </div>
-          )}
+          <div className="space-y-2">
+            <Typography className="text-base font-medium text-gray-700">
+              Fees Breakdown:
+            </Typography>
 
-          {savingsType === "LOCK" && (
-            <div className="flex justify-between text-amber-600">
-              <Typography className="text-base">
-                Early Withdrawal Fee
-              </Typography>
-              <span>-₦2,000.00</span>
-            </div>
-          )}
+            {profileDetails?.membershipStatus === "inactive" && (
+              <div className="flex justify-between">
+                <Typography className="text-base text-amber-600">
+                  Membership Fee
+                </Typography>
+                <span className="text-amber-600">₦1,000.00</span>
+              </div>
+            )}
+            {showEarlyWithdrawalFee && (
+              <div className="flex justify-between">
+                <Typography className="text-base text-amber-600">
+                  Early Withdrawal Fee
+                </Typography>
+                <span className="text-amber-600">₦2,000.00</span>
+              </div>
+            )}
 
-          <div className="flex justify-between">
-            <Typography className="text-base">Transaction Fee</Typography>
-            <span>-₦50.00</span>
+            <div className="flex justify-between">
+              <Typography className="text-base">Transaction Fee</Typography>
+              <span>₦50.00</span>
+            </div>
           </div>
 
           <hr className="border-gray-300" />
 
           <div className="flex justify-between font-semibold">
-            <Typography className="text-base">Final Amount</Typography>
-            <span className="text-text2">{formatBalance(finalAmount)}</span>
+            <Typography className="text-base">Total Deduction</Typography>
+            <span className="text-text2">{formatBalance(totalDeduction)}</span>
           </div>
         </div>
 
@@ -222,7 +249,7 @@ const ConfirmAmount = () => {
           >
             {loading
               ? "Processing..."
-              : `Withdraw ${formatBalance(finalAmount)}`}
+              : `Confirm Withdrawal (${formatBalance(totalDeduction)})`}
           </Button>
         </div>
       </section>

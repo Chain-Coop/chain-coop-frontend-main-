@@ -62,17 +62,16 @@ const Withdraw = () => {
           <div className="tracking-wide">Withdraw</div>
         </div>
       </DashboardHeader>
-      <section className="m-auto mt-[2em] h-full w-full">
+      <section
+        onClick={toggleModal}
+        className="m-auto mt-[2em] h-full w-full cursor-pointer"
+      >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <WithdrawIcon />
             <p className="text-lg font-medium">Withdraw to Bank Account</p>
           </div>
-          <IoIosArrowForward
-            size={25}
-            className="cursor-pointer"
-            onClick={toggleModal}
-          />
+          <IoIosArrowForward size={25} className="cursor-pointer" />
         </div>
       </section>
 

@@ -130,7 +130,8 @@ const WithdrawContribution = () => {
         amountInNaira,
         contributionId: location.state.contributionId,
         contributionPlan: contributionDetails?.contributionPlan,
-        savingsType: contributionDetails?.savingsType,
+        savingsType: contributionDetails?.history[0]?.savingsType,
+        withdrawalDate: contributionDetails?.withdrawalDate,
       },
     });
   };

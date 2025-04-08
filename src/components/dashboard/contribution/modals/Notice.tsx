@@ -178,13 +178,6 @@ const NoticeModal: React.FC<NoticeModalProps> = ({
             )}
           </div>
         </div>
-
-        {savingsType === "Lock" && isEarlyWithdrawal && (
-          <p className="text-amber-600">
-            <strong>Warning:</strong> You are attempting to withdraw before your
-            scheduled date. Early withdrawal fees of ₦2,000 will apply.
-          </p>
-        )}
       </div>
     );
   };
