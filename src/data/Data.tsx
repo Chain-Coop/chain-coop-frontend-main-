@@ -129,6 +129,27 @@ export const groupSavingsOptions = [
   }
 ]
 
+export const membersData = [
+    {
+      name: "John Doe",
+      amount: "$20",
+      userType: "member",
+      status: "Joined",
+    },
+    {
+      name: "Jane Doe",
+      amount: "$30",
+      userType: "member",
+      status: "Funded",
+    },
+    {
+      name: "Mark Doe",
+      amount: "$0",
+      userType: "member",
+      status: "Joined",
+    },
+  ];
+
 export const meetImage = [
   {
     src: person1,
