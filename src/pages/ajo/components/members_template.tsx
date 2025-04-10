@@ -15,9 +15,9 @@ const Members_Template = ({ amount, index, name, status, userType }: Props) => {
             className="flex w-[100%] flex-col gap-2 rounded-lg border border-[#93909080] bg-[#F6EFF7] px-4 py-2"
             >
             <div className="flex w-[100%] items-center justify-between">
-                <h4 className="text-[18px] font-[500] tracking-tighter text-[#1E1E1E]">
+                <h4 className="text-[16px] font-[400] tracking-tighter text-[#1E1E1E]">
                 {name}{" "}
-                <span className="capitalize">({userType})</span>
+                <span className={`capitalize font-[600] ${userType === "Admin" ? 'text-[#440080]' : 'text-black'}`}>({userType})</span>
                 </h4>
                 {status === "Joined" ? (
                 <Typography

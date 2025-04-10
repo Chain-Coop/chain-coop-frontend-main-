@@ -130,17 +130,17 @@ const CreateOpenGroup = () => {
           <img
             src={rightArrow}
             alt="create new savings group"
-            className="h-[80px] w-[100px] translate-x-10 self-end"
+            className="h-[80px]  hidden sm:block w-[100px] translate-x-10 self-end"
           />
           <img
             src={createImage}
             alt="create new savings group"
-            className="h-[215px] w-[300px]"
+            className="h-[215px] w-[100%] sm:w-[300px]"
           />
           <img
             src={rightArrow}
             alt="create new savings group"
-            className="h-[80px] w-[100px] -translate-x-10 self-start"
+            className="h-[80px]  hidden sm:block w-[100px] -translate-x-10 self-start"
           />
         </section>
 
