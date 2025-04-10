@@ -1,13 +1,13 @@
 import { Props } from "react-select"
-import { DashboardHeader } from "../../../common/DashboardHeader"
+import { DashboardHeader } from "../../../components/common/DashboardHeader"
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import GroupHistoryTemplate from "../components/group_history_template";
 
 
-import createImage from "../../../../Assets/png/dashboard/ajo/create_new_group.png";
-import otherIcon from "../../../../Assets/svg/dashboard/ajo/other_group_saving_icon.svg";
-import otherImage from "../../../../Assets/png/dashboard/ajo/other_group_saving_image.png";
+import createImage from "../../../Assets/png/dashboard/ajo/create_new_group.png";
+import otherIcon from "../../../Assets/svg/dashboard/ajo/other_group_saving_icon.svg";
+import otherImage from "../../../Assets/png/dashboard/ajo/other_group_saving_image.png";
 
 
 const GroupHistoryPage = (props: Props) => {

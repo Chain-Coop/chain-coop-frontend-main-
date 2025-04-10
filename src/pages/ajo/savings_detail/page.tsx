@@ -7,11 +7,11 @@ import { BsPatchCheck } from "react-icons/bs";
 import { Typography } from "@material-tailwind/react";
 import { Button } from "@material-tailwind/react";
 
-import sampleImage from "../../../../Assets/png/dashboard/ajo/sample_savings_image.png";
-import icon from "../../../../Assets/svg/dashboard/ajo/details_icon.svg";
-import currency_icon from "../../../../Assets/svg/dashboard/ajo/currency_icon.svg";
+import sampleImage from "../../../Assets/png/dashboard/ajo/sample_savings_image.png";
+import icon from "../../../Assets/svg/dashboard/ajo/details_icon.svg";
+import currency_icon from "../../../Assets/svg/dashboard/ajo/currency_icon.svg";
 import { IoIosArrowBack } from "react-icons/io";
-import { DashboardHeader } from "../../../common/DashboardHeader";
+import { DashboardHeader } from "../../../components/common/DashboardHeader";
 
 const SavingsDetail = () => {
   const { name } = useParams();

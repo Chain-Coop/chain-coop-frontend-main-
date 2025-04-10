@@ -4,7 +4,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import { Typography, Button } from "@material-tailwind/react";
 
 import { MdCheckBoxOutlineBlank, MdCheckBox } from "react-icons/md";
-import { thirdOpenGroupType } from "../../../../shared/types/types";
+import { thirdOpenGroupType } from "../../../shared/types/types";
 
 
 interface Props {

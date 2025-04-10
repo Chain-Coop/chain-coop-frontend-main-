@@ -43,8 +43,8 @@ import OneTimeStartDate from "../../../pages/contribution/naira/oneTimePlan/Star
 //import CryptoMain from "../wallet/crypto/main/CryptoMain";
 //import Preview from "../contribution/contributionType/naira/strictLockPlan/Preview";
 
-import AjoPage from "../ajo/main/ajo";
-import SavingsDetail from "../ajo/savings_detail/page";
+import AjoPage from "../../../pages/ajo/main/ajo";
+import SavingsDetail from "../../../pages/ajo/savings_detail/page";
 
 import Preview from "../../../pages/contribution/naira/strictLockPlan/Preview";
 import Contribution from "../../../pages/contribution/Contribution";
@@ -61,8 +61,8 @@ import Profile from "../../../pages/profile/profile";
 import Wallet from "../../../pages/wallet/Wallet";
 import Home from "../../../pages/home/Home";
 import ManageCards from "../../../pages/profile/ManageCards";
-import CreateOpenGroup from "../ajo/open_group/create_open_group";
-import GroupHistoryPage from "../ajo/group_history/page";
+import CreateOpenGroup from "../../../pages/ajo/open_group/create_open_group";
+import GroupHistoryPage from "../../../pages/ajo/group_history/page";
 
 const Dashboard = () => {
   useEffect(() => {

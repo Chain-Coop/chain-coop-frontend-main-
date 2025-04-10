@@ -3,10 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaAngleLeft } from "react-icons/fa6";
 import { Button } from "@material-tailwind/react";
 
-import createImage from "../../../../Assets/png/dashboard/ajo/open_group_image.png";
-import rightArrow from "../../../../Assets/svg/dashboard/ajo/right_arrow.svg";
+import createImage from "../../../Assets/png/dashboard/ajo/open_group_image.png";
+import rightArrow from "../../../Assets/svg/dashboard/ajo/right_arrow.svg";
 import FirstOpenGroupForm from "../components/first_open_group_form";
-import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg";
+import prevFormIcon from "../../../Assets/svg/dashboard/ajo/prev_form.svg";
 import { useEffect, useState } from "react";
 import SecondOpenGroupForm from "../components/second_open_group_form";
 import ThirdOpenGroupForm from "../components/third_open_group_form";
@@ -14,7 +14,7 @@ import {
   firstOpenGroupType,
   secondOpenGroupType,
   thirdOpenGroupType,
-} from "../../../../shared/types/types";
+} from "../../../shared/types/types";
 import {
   validateFirstForm,
   validateSecondForm,
@@ -23,7 +23,7 @@ import {
 import ReviewOpenGroupForm from "../components/review_open_group_form";
 import SuccessModal from "../components/success_modal";
 import { IoIosArrowBack } from "react-icons/io";
-import { DashboardHeader } from "../../../common/DashboardHeader";
+import { DashboardHeader } from "../../../components/common/DashboardHeader";
 
 const CreateOpenGroup = () => {
   const [firstFormData, setFirstFormData] = useState<firstOpenGroupType>({

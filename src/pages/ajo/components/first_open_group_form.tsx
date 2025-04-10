@@ -1,13 +1,13 @@
-import { firstOpenGroupType } from "../../../../shared/types/types"
+import { firstOpenGroupType } from "../../../shared/types/types"
 import React from "react"
 import { Typography } from "@material-tailwind/react"
 import { Button } from "@material-tailwind/react";
 
-import liskIcon from "../../../../Assets/svg/dashboard/ajo/lisk_icon.svg"
-import usdcIcon from "../../../../Assets/svg/dashboard/ajo/usdc_icon.svg"
-import usdtIcon from "../../../../Assets/svg/dashboard/ajo/usdt_icon.svg"
-import nairaIcon from "../../../../Assets/svg/dashboard/ajo/naira_icon.svg"
-import activeIcon from "../../../../Assets/svg/dashboard/ajo/selectedIcon.svg"
+import liskIcon from "../../../Assets/svg/dashboard/ajo/lisk_icon.svg"
+import usdcIcon from "../../../Assets/svg/dashboard/ajo/usdc_icon.svg"
+import usdtIcon from "../../../Assets/svg/dashboard/ajo/usdt_icon.svg"
+import nairaIcon from "../../../Assets/svg/dashboard/ajo/naira_icon.svg"
+import activeIcon from "../../../Assets/svg/dashboard/ajo/selectedIcon.svg"
 
 interface Props {
     data: firstOpenGroupType, 

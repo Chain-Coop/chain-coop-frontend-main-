@@ -2,9 +2,9 @@ import { useRef } from "react";
 import { CgCalendarDates } from "react-icons/cg";
 import { Typography, Button } from "@material-tailwind/react";
 
-import { secondOpenGroupType } from "../../../../shared/types/types";
-import activeIcon from "../../../../Assets/svg/dashboard/ajo/selectedIcon.svg"
-import formatAmountWithCommas from "../../../../shared/utils/format_amount_with_commas";
+import { secondOpenGroupType } from "../../../shared/types/types";
+import activeIcon from "../../../Assets/svg/dashboard/ajo/selectedIcon.svg"
+import formatAmountWithCommas from "../../../shared/utils/format_amount_with_commas";
 
 interface Props {
     data: secondOpenGroupType, 

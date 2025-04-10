@@ -1,7 +1,7 @@
 import { BsPatchCheck } from "react-icons/bs"
-import { openGroupFormType } from "../../../../shared/types/types"
-import getDateDifferenceInDays from "../../../../shared/utils/get_date_diff"
-import formatAmountWithCommas from "../../../../shared/utils/format_amount_with_commas"
+import { openGroupFormType } from "../../../shared/types/types"
+import getDateDifferenceInDays from "../../../shared/utils/get_date_diff"
+import formatAmountWithCommas from "../../../shared/utils/format_amount_with_commas"
 import { Typography } from "@material-tailwind/react";
 
 
