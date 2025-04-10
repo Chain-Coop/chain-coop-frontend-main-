@@ -80,7 +80,7 @@ const SavingsDetail = () => {
   };
 
   return (
-    <main className="mb-[20px] flex  flex-col ">
+    <main className="mb-[20px] flex  font-asap  flex-col ">
       <DashboardHeader
         className="relative cursor-pointer items-center lg:mt-[2em]"
         onClick={handleBackClick}
@@ -119,7 +119,7 @@ const SavingsDetail = () => {
                     alt="leadership board"
                     className="hidden h-[14px] w-[14px] sm:block"
                   />
-                  <Typography className="text-[12px] font-[600] text-[#565454]">
+                  <Typography className="font-asap text-[12px] font-[600] text-[#565454]">
                     View leadership board
                   </Typography>
                   <GrFormNext className="text-[16px] text-[#440080]" />
@@ -127,7 +127,7 @@ const SavingsDetail = () => {
               </div>
               <ProgressCircle progress={5} />
             </div>
-            <Typography className="text-[16px] font-[400] leading-tight tracking-wide">
+            <Typography className="font-asap text-[16px] font-[400] leading-tight tracking-wide">
               alialiquam vel elementum facilisis amet netus elementum. Quam
               mauris diam pretium etiam pellentesque accumsan. Enim nisl sit
               interdum id vivamus nibh lacus s feug.
@@ -136,7 +136,7 @@ const SavingsDetail = () => {
         </section>
 
         <section className="flex w-[100%] flex-col items-center justify-center bg-[#FFF7FC] p-4">
-          <Typography className="text-[14px] font-[400] leading-tight tracking-wide">
+          <Typography className="font-asap text-[14px] font-[400] leading-tight tracking-wide">
             Total saved
           </Typography>
           <h2 className="text-[34px] font-[600] tracking-tight text-[#1E1E1E] lg:text-[36px]">
@@ -153,10 +153,10 @@ const SavingsDetail = () => {
               className="flex w-[96%] items-center justify-between border-b border-b-[#DDD8D887] pb-4 pt-10"
               key={data.addition}
             >
-              <Typography className="text-[16px] font-[500] tracking-tight text-[#939090] lg:text-[18px]">
+              <Typography className="font-asap text-[16px] font-[500] tracking-tight text-[#939090] lg:text-[18px]">
                 {data.key}
               </Typography>
-              <Typography className="text-[16px] font-[500] tracking-tight text-[#939090] lg:text-[18px]">
+              <Typography className="font-asap text-[16px] font-[500] tracking-tight text-[#939090] lg:text-[18px]">
                 <span className="text-black">{data.value}</span> {data.addition}
               </Typography>
             </li>
@@ -167,7 +167,7 @@ const SavingsDetail = () => {
               className="flex w-[96%] items-center justify-between border-b border-b-[#DDD8D887] pb-4 pt-10"
               key={data.key}
             >
-              <Typography className="text-[16px] font-[500] text-[#939090] lg:text-[18px]">
+              <Typography className="font-asap text-[16px] font-[500] text-[#939090] lg:text-[18px]">
                 {data.key}
               </Typography>
               <div className="flex w-[150px] items-center justify-between gap-1 rounded-lg border-2 border-[#440080] bg-[#ECE6F2] p-2">
@@ -178,7 +178,7 @@ const SavingsDetail = () => {
                     className="h-[24px] w-[24px]"
                   />
                 )}
-                <Typography className="pr-6 text-[14px] font-[500] text-[#302B2B] lg:text-[16px]">
+                <Typography className="font-asap pr-6 text-[14px] font-[500] text-[#302B2B] lg:text-[16px]">
                   {data.value}
                 </Typography>
                 <BsPatchCheck className="text-[24px] text-[#440080]" />
@@ -187,10 +187,10 @@ const SavingsDetail = () => {
           ))}
 
           <li className="flex w-[96%] items-center justify-between border-b border-b-[#DDD8D887] pb-4 pt-10">
-            <Typography className="text-[16px] font-[500] text-[#939090] lg:text-[18px]">
+            <Typography className="font-asap text-[16px] font-[500] text-[#939090] lg:text-[18px]">
               Withdrawal Day
             </Typography>
-            <Typography className="text-[16px] font-[500] text-black lg:text-[18px]">
+            <Typography className="font-asap text-[16px] font-[500] text-black lg:text-[18px]">
               28/04/2025
             </Typography>
           </li>
@@ -236,14 +236,14 @@ const SavingsDetail = () => {
                 </div>
                 <div className="flex w-[100%] items-center justify-between">
                   <div className="flex flex-col items-start ">
-                    <Typography className="text-[14px] font-[400] tracking-tighter text-[#959494]">
+                    <Typography className="font-asap text-[14px] font-[400] tracking-tighter text-[#959494]">
                       Total balance
                     </Typography>
-                    <Typography className="text-[14px] font-[600] text-[#440080]">
+                    <Typography className="font-asap text-[14px] font-[600] text-[#440080]">
                       {data.amount}
                     </Typography>
                   </div>
-                  <Typography className="text-[14px] font-[400] tracking-tighter text-[#1E1E1E99]">
+                  <Typography className="font-asap text-[14px] font-[400] tracking-tighter text-[#1E1E1E99]">
                     4 minutes ago
                   </Typography>
                 </div>

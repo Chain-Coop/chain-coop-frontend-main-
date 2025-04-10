@@ -98,14 +98,14 @@ const AjoPage = () => {
   ];
 
     return (
-      <main className="flex flex-col font-sans  gap-8 mb-[40px]">
+      <main className="flex flex-col font-asap  gap-8 mb-[40px]">
         <DashboardHeader className="flex items-center justify-center text-2xl  md:text-3xl lg:mt-[2em] lg:text-xl">
           Group Savings
         </DashboardHeader>
 
-        <section  className="flex flex-col font-sans  gap-8 mb-[20px]">
+        <section  className="flex flex-col  font-asap   gap-8 mb-[20px]">
           <section className="rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md sm:p-16 w-[95%] self-center lg:w-[100%]">
-              <div className="flex justify-center gap-4 font-sans">
+              <div className="flex justify-center gap-4  font-asap ">
               <p className="font-medium">Total group fund</p>
               <div>
                   <ToggleButton
@@ -142,7 +142,7 @@ const AjoPage = () => {
                       Start Group Saving
                   </h2>
               </div>
-              <Typography className="text-[#302B2BC7] text-[14px] xl:text-[16px] font-[400] tracking-medium">
+              <Typography className="font-asap text-[#302B2BC7] text-[14px] xl:text-[16px] font-[400] tracking-medium">
                   Select any of the saving option to begin your contribution with others
               </Typography>
               <div className="flex w-[100%] justify-between 2xl:justify-center 2xl:gap-6 flex-wrap gap-y-4 xl:flex-nowrap">
@@ -157,7 +157,7 @@ const AjoPage = () => {
                               <h3 className="md:text-[16px] lg:text-[20px] font-[600] text-[#1E1E1E]">
                                   {group.header}
                               </h3>
-                              <Typography className="text-[13px] md:text-[14px] lg:text-[15px] text-[#565454] font-[400] w-[100%] text-center">
+                              <Typography className="font-asap text-[13px] md:text-[14px] lg:text-[15px] text-[#565454] font-[400] w-[100%] text-center">
                                   {group.text}
                               </Typography>
                           </Link>
@@ -198,10 +198,10 @@ const AjoPage = () => {
               </h4>
               <div className="px-4 lg:px-6">
                 <div className="flex w-[100%] justify-between border-b-[1.5px] border-b-[#DDD8D8B2]">
-                    <button className={`font-[500] text-[#1E1E1E] text-[16px] lg:text-[18px] font-sans pb-5 ${groupHistory === 'ongoing' ? 'opacity-100 font-[600] border-b-[2.5px] border-b-[#440080]' : 'opacity-50'}`} onClick={() => setGroupHistory('ongoing')}>
+                    <button className={`font-[500] text-[#1E1E1E] text-[16px] lg:text-[18px]  font-asap  pb-5 ${groupHistory === 'ongoing' ? 'opacity-100 font-[600] border-b-[2.5px] border-b-[#440080]' : 'opacity-50'}`} onClick={() => setGroupHistory('ongoing')}>
                         Ongoing
                     </button>
-                    <button className={`font-[500] text-[#1E1E1E] text-[16px] lg:text-[18px] font-sans pb-5 ${groupHistory === 'completed' ? 'opacity-100 font-[600] border-b-[2.5px] border-b-[#440080]' : 'opacity-50'}`} onClick={() => setGroupHistory('completed')}>
+                    <button className={`font-[500] text-[#1E1E1E] text-[16px] lg:text-[18px]  font-asap  pb-5 ${groupHistory === 'completed' ? 'opacity-100 font-[600] border-b-[2.5px] border-b-[#440080]' : 'opacity-50'}`} onClick={() => setGroupHistory('completed')}>
                         Completed
                     </button>
                 </div>

@@ -113,7 +113,7 @@ const CreateOpenGroup = () => {
   };
 
   return (
-    <main className="mb-[20px] flex  flex-col gap-10">
+    <main className="mb-[20px] flex  font-asap  flex-col gap-10">
       <DashboardHeader
         className="relative cursor-pointer items-center lg:mt-[2em]"
         onClick={handleBackClick}

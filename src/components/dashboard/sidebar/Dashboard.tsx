@@ -63,6 +63,7 @@ import Home from "../../../pages/home/Home";
 import ManageCards from "../../../pages/profile/ManageCards";
 import CreateOpenGroup from "../../../pages/ajo/open_group/create_open_group";
 import GroupHistoryPage from "../../../pages/ajo/group_history/page";
+import InviteMembersPage from "../../../pages/ajo/invite_members/page";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -217,10 +218,13 @@ const Dashboard = () => {
           />
 
           <Route path="ajo" element={<AjoPage />} />
-          <Route path="ajo/:name" element={<SavingsDetail />} />
-          <Route path="ajo/create_open_group" element={<CreateOpenGroup />} />
+          <Route path="ajo/create/open-group" element={<CreateOpenGroup />} />
+          {/* <Route path="ajo/create/closed-group" element={<CreateClosedGroup />} /> */}
           <Route path="ajo/history" element={<GroupHistoryPage />} />
+          <Route path="ajo/open-group/members" element={<InviteMembersPage />} />
+          <Route path="ajo/:name" element={<SavingsDetail />} />
           
+
           <Route path="wallet/*" element={<Wallet />} />
           <Route path="wallet/crypto_wallet" element={<CryptoMain />} />
           <Route path="wallet/withdraw" element={<Withdraw />} />

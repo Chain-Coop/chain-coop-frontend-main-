@@ -90,7 +90,7 @@ const GroupHistoryPage = (props: Props) => {
 
 
     return (
-        <main className="flex flex-col font-sans gap-8 mb-[40px]">
+        <main className="flex flex-col font-asap gap-8 mb-[40px]">
             <DashboardHeader className="flex items-center justify-center text-2xl  md:text-3xl lg:mt-[2em] lg:text-xl">
                 Group History
             </DashboardHeader>
@@ -99,10 +99,10 @@ const GroupHistoryPage = (props: Props) => {
                 <section className="w-[100%] flex flex-col gap-3">
                     <div className=" px-4 lg:px-6">
                         <div className="flex w-[100%] justify-between border-b-[1.5px] border-b-[#DDD8D8B2]">
-                            <button className={`font-[500] text-[#1E1E1E] text-[16px] lg:text-[18px] font-sans pb-5 ${groupHistory === 'ongoing' ? 'opacity-100 font-[600] border-b-[2.5px] border-b-[#440080]' : 'opacity-50'}`} onClick={() => setGroupHistory('ongoing')}>
+                            <button className={`font-[500] text-[#1E1E1E] text-[16px] lg:text-[18px]  font-asap  pb-5 ${groupHistory === 'ongoing' ? 'opacity-100 font-[600] border-b-[2.5px] border-b-[#440080]' : 'opacity-50'}`} onClick={() => setGroupHistory('ongoing')}>
                                 Ongoing
                             </button>
-                            <button className={`font-[500] text-[#1E1E1E] text-[16px] lg:text-[18px] font-sans pb-5 ${groupHistory === 'completed' ? 'opacity-100 font-[600] border-b-[2.5px] border-b-[#440080]' : 'opacity-50'}`} onClick={() => setGroupHistory('completed')}>
+                            <button className={`font-[500] text-[#1E1E1E] text-[16px] lg:text-[18px]  font-asap  pb-5 ${groupHistory === 'completed' ? 'opacity-100 font-[600] border-b-[2.5px] border-b-[#440080]' : 'opacity-50'}`} onClick={() => setGroupHistory('completed')}>
                                 Completed
                             </button>
                         </div>
@@ -137,7 +137,7 @@ const GroupHistoryPage = (props: Props) => {
                     <p className="text-[#6E6C6C] text-[16px] lg:text-[18px] font-[400] text-center">
                         Everyday is a good day to save some money
                     </p>
-                    <Link to={"/dashboard/ajo/create_open_group"}  className="bg-[#440080] text-[16px] lg:text-[18px] font-medium w-fit px-6 h-[45px] rounded-md flex items-center justify-center text-white hover:bg-[#3D0073]">
+                    <Link to={"/dashboard/ajo/open-group"}  className="bg-[#440080] text-[16px] lg:text-[18px] font-medium w-fit px-6 h-[45px] rounded-md flex items-center justify-center text-white hover:bg-[#3D0073]">
                         Create a new group
                     </Link>
                 </section>

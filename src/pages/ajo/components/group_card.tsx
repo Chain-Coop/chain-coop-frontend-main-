@@ -33,14 +33,14 @@ const GroupCard: React.FC<GroupCardProps> = ({ amount, goal, icon, image, member
           <div className="flex flex-col gap-2">
             <h4 className="font-semibold text-[#1E1E1EE5] text-[22px] lg:text-[24px]">{name}</h4>
             <div className="flex gap-2 items-center">
-              <Typography className="text-[#6E6C6C] font-semibold text-[14px]">{members} members</Typography>
+              <Typography className="font-asap text-[#6E6C6C] font-semibold text-[14px]">{members} members</Typography>
               <div className="w-[10px] h-[10px] bg-[#C5B0D8] rounded-full" />
-              <Typography className="text-[#6E6C6C] font-normal text-[14px]">{amount}</Typography>
+              <Typography className="font-asap text-[#6E6C6C] font-normal text-[14px]">{amount}</Typography>
             </div>
-            <Typography className="text-[#6E6C6C] font-normal text-[16px]">
+            <Typography className="font-asap text-[#6E6C6C] font-normal text-[16px]">
               <strong className="text-black font-semibold">Goal:</strong> {goal}
             </Typography>
-            <Typography className="text-[#6E6C6C] font-medium text-[16px]">
+            <Typography className="font-asap text-[#6E6C6C] font-medium text-[16px]">
               Total saved: {totalSaved}
             </Typography>
           </div>

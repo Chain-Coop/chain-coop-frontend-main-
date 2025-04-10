@@ -46,9 +46,9 @@ function App() {
           path="/reset-successfull"
           element={<PaaswordRessetSuccessfull />}
         />
-        
+        <Route path="/dashboard/*" element={<Dashboard />} />
         <Route element={<ProtectedRoutes />}>
-          <Route path="/dashboard/*" element={<Dashboard />} />
+          
         </Route>
 
         <Route path="*" element={<NotFound />} />

@@ -18,7 +18,7 @@ const GroupHistoryTemplate = (props: GroupHistoryTemplateTypes) => {
             <h5 className='text-[#1E1E1E] font-[500] text-[20px] lg:text-[22px]'>
                 {props.title}
             </h5>
-            <Typography className='font-[400] text-[16px] text-[#6E6C6C] mb-3'>
+            <Typography className='font-asap font-[400] text-[16px] text-[#6E6C6C] mb-3'>
                 {props.description}
             </Typography>
             <h5 className='text-[#1E1E1E] font-[500] text-[16px] mb-3'>
