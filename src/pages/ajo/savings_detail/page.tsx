@@ -12,6 +12,8 @@ import icon from "../../../Assets/svg/dashboard/ajo/details_icon.svg";
 import currency_icon from "../../../Assets/svg/dashboard/ajo/currency_icon.svg";
 import { IoIosArrowBack } from "react-icons/io";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
+import { membersData } from "../../../data/Data";
+import Members_Template from "../components/members_template";
 
 const SavingsDetail = () => {
   const { name } = useParams();
@@ -51,26 +53,7 @@ const SavingsDetail = () => {
     },
   ];
 
-  const membersData = [
-    {
-      name: "John Doe",
-      amount: "$20",
-      userType: "member",
-      status: "Joined",
-    },
-    {
-      name: "Jane Doe",
-      amount: "$30",
-      userType: "member",
-      status: "Funded",
-    },
-    {
-      name: "Mark Doe",
-      amount: "$0",
-      userType: "member",
-      status: "Joined",
-    },
-  ];
+  
 
   const navigate = useNavigate();
 
@@ -200,7 +183,7 @@ const SavingsDetail = () => {
         <section className="mt-[50px] flex flex-col gap-3">
           <div className="flex items-center justify-between border-b-2 border-b-[#DDD8D880] pb-2">
             <h3 className="text-[18px] font-[600] tracking-tight text-[#1E1E1E]">
-              Members (3)
+              Members ({membersData.length})
             </h3>
             <Link
               to={`/ajo/${name}/members`}
@@ -211,43 +194,7 @@ const SavingsDetail = () => {
           </div>
           <ul className="mt-[10px] flex flex-col gap-4">
             {membersData.map((data, index) => (
-              <li
-                key={`${data.name}-${index}`}
-                className="flex w-[100%] flex-col gap-2 rounded-lg border border-[#93909080] bg-[#F6EFF7] px-4 py-2"
-              >
-                <div className="flex w-[100%] items-center justify-between">
-                  <h4 className="text-[18px] font-[500] tracking-tighter text-[#1E1E1E]">
-                    {data.name}{" "}
-                    <span className="capitalize">({data.userType})</span>
-                  </h4>
-                  {data.status === "Joined" ? (
-                    <Typography
-                      className={`txt-[13px] min-w-[120px] rounded-md border border-[#CCA3BC] bg-[#E6B8D4] py-1 text-center font-[500]`}
-                    >
-                      {data.status}
-                    </Typography>
-                  ) : (
-                    <Typography
-                      className={`txt-[13px] min-w-[120px] rounded-md border border-[#44008080] bg-[#E3D9EC] py-1 text-center font-[500] text-[#440080]`}
-                    >
-                      {data.status}: {data.amount}
-                    </Typography>
-                  )}
-                </div>
-                <div className="flex w-[100%] items-center justify-between">
-                  <div className="flex flex-col items-start ">
-                    <Typography className="font-asap text-[14px] font-[400] tracking-tighter text-[#959494]">
-                      Total balance
-                    </Typography>
-                    <Typography className="font-asap text-[14px] font-[600] text-[#440080]">
-                      {data.amount}
-                    </Typography>
-                  </div>
-                  <Typography className="font-asap text-[14px] font-[400] tracking-tighter text-[#1E1E1E99]">
-                    4 minutes ago
-                  </Typography>
-                </div>
-              </li>
+              <Members_Template amount={data.amount} index={index} name={data.name} status={data.status}  userType={data.userType} key={`${index}-${data.name}`} />
             ))}
           </ul>
         </section>
