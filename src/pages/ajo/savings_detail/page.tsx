@@ -217,7 +217,7 @@ const SavingsDetail = () => {
         </ul>
 
         {/* TRANSACTION BOX */}
-        <section className="w-[100%] flex justify-between rounded-md bg-[#ECE6F25E] border border-[#DDD8D84D] px-3 items-center py-6 mt-6">
+        <Link to={`/dashboard/ajo/transactions/${name}`} className="w-[100%] flex justify-between rounded-md bg-[#ECE6F25E] border border-[#DDD8D84D] px-3 items-center py-6 mt-6">
           <div className="flex flex-col gap-4  w-[80%]">
             <h3 className="text-[18px] font-[500] tracking-tight text-[#1E1E1E]">
               Transaction history
@@ -229,7 +229,7 @@ const SavingsDetail = () => {
           <button>
             <FaChevronRight className="text-[#1E1E1E] text-[16px]" />
           </button>
-        </section>
+        </Link>
 
         {/* MEMBERS LIST */}
         <section className="mt-8 flex flex-col gap-3">

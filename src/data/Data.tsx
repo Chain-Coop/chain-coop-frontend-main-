@@ -150,7 +150,80 @@ export const membersData = [
       userType: "member",
       status: "Joined",
     },
-  ];
+];
+
+export const transactionData = [
+  {
+    name: "Agro Tech Savings",
+    user: "Jane Smith",
+    deposit: "$25",
+    total: "$2500",
+    date: "2023-10-05T09:15:00",
+  },
+  {
+    name: "Agro Tech Savings",
+    user: "Samuel Johnson",
+    deposit: "$40",
+    total: "$400",
+    date: "2023-10-10T14:45:00",
+  },
+  {
+    name: "Agro Tech Savings",
+    user: "Mary Lee",
+    deposit: "$15",
+    total: "$150",
+    date: "2023-10-12T11:30:00",
+  },
+  {
+    name: "Agro Tech Savings",
+    user: "David Kim",
+    deposit: "$30",
+    total: "$300",
+    date: "2023-10-15T16:10:00",
+  },
+  {
+    name: "Agro Tech Savings",
+    user: "Patricia Brown",
+    deposit: "$20",
+    total: "$200",
+    date: "2023-10-18T08:05:00",
+  },
+  {
+    name: "Agro Tech Savings",
+    user: "Chris Evans",
+    deposit: "$35",
+    total: "$350",
+    date: "2023-10-20T18:50:00",
+  },
+  {
+    name: "Agro Tech Savings",
+    user: "Angela White",
+    deposit: "$50",
+    total: "$500",
+    date: "2023-10-22T15:30:00",
+  },
+  {
+    name: "Agro Tech Savings",
+    user: "Michael Clark",
+    deposit: "$45",
+    total: "$450",
+    date: "2023-10-25T10:20:00",
+  },
+  {
+    name: "Agro Tech Savings",
+    user: "Emily Davis",
+    deposit: "$60",
+    total: "$600",
+    date: "2023-10-27T19:00:00",
+  },
+  {
+    name: "Agro Tech Savings",
+    user: "Daniel Lee",
+    deposit: "$55",
+    total: "$550",
+    date: "2023-10-30T13:00:00",
+  }
+];
 
 export const meetImage = [
   {

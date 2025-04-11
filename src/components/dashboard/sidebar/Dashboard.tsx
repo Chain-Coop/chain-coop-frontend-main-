@@ -64,6 +64,7 @@ import ManageCards from "../../../pages/profile/ManageCards";
 import CreateOpenGroup from "../../../pages/ajo/open_group/create_open_group";
 import GroupHistoryPage from "../../../pages/ajo/group_history/page";
 import InviteMembersPage from "../../../pages/ajo/invite_members/page";
+import TransactionHistoryPage from "../../../pages/ajo/transaction_history/page";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -222,6 +223,7 @@ const Dashboard = () => {
           {/* <Route path="ajo/create/closed-group" element={<CreateClosedGroup />} /> */}
           <Route path="ajo/history" element={<GroupHistoryPage />} />
           <Route path="ajo/open-group/members" element={<InviteMembersPage />} />
+          <Route path="ajo/transactions/:name" element={<TransactionHistoryPage />} />
           <Route path="ajo/:name" element={<SavingsDetail />} />
           
 
