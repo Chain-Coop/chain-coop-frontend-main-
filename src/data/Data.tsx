@@ -135,12 +135,14 @@ export const membersData = [
       amount: "$20",
       userType: "member",
       status: "Joined",
+      funded: '$20',
+      time: "4 minutes ago"
     },
     {
       name: "Jane Doe",
       amount: "$30",
       userType: "member",
-      status: "Funded",
+      status: "Joined",
     },
     {
       name: "Mark Doe",
