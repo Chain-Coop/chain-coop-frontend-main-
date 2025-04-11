@@ -133,7 +133,7 @@ const AjoPage = () => {
           </section>
 
           {/* START GROUP SAVING */}
-          <section className="flex w-[100%] flex-col gap-4 px-4 lg:px-6">
+          <section className="flex w-[100%] flex-col gap-4">
               <div className="w-[100%] flex items-center gap-4">
                   <div className="bg-[#ECE6F2] w-[24px] h-[24px] flex items-center justify-center rounded-full">
                       <HiOutlinePlus className="text-[#3D0073] w-[16px] h-[16px]" />
@@ -167,7 +167,7 @@ const AjoPage = () => {
           </section>
 
           {/* OTHER SAVING DATA */}
-          <section className="flex flex-col gap-3 px-4 lg:px-6">
+          <section className="flex flex-col gap-3 ">
             <h3 className="w-[100%] border-b-[1.5px] border-b-[#DDD8D8B2] pb-3 text-[20px] font-[600] lg:text-[22px]">
               Other Saving Groups
             </h3>
@@ -192,8 +192,8 @@ const AjoPage = () => {
 
 
           {/* GROUP HISTORY */}
-          <section className="w-[100%] flex flex-col gap-5">
-              <h4 className="text-[20px] lg:text-[22px] font-[600] w-[100%] px-4 lg:px-6">
+          <section className="w-[100%] flex flex-col gap-5 overflow-x-auto">
+              <h4 className="text-[20px] lg:text-[22px] font-[600] w-[100%] ">
                   Group History
               </h4>
               <div className="px-4 lg:px-6">
@@ -206,7 +206,7 @@ const AjoPage = () => {
                     </button>
                 </div>
               </div>
-              <section className="w-[100%] bg-[#C5B0D833] pt-3 px-4 lg:px-6 rounded-xl">
+              <section className="w-[100%] bg-[#C5B0D833] pt-3 px-2 rounded-xl flex-shrink-0">
                   {
                       groupHistory === 'ongoing' 
                           ? 
