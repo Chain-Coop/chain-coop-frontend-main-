@@ -168,10 +168,10 @@ const SavingsDetail = () => {
         </section>
 
         <ul className="mt-[20px] flex w-[100%] flex-col">
-          {firstSavingsData.map((data) => (
+          {firstSavingsData.map((data, index) => (
             <li
               className="flex w-[96%] items-center justify-between border-b border-b-[#DDD8D887] pb-4 pt-10"
-              key={data.addition}
+              key={index}
             >
               <Typography className="font-asap text-[16px] font-[500] tracking-tight text-[#939090] lg:text-[18px]">
                 {data.key}
