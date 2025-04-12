@@ -46,21 +46,21 @@ const SecondOpenGroupForm = ({ data, setData }: Props) => {
 
     return (
         <form className="flex flex-col gap-6 w-[100%] items-center">
-            <label htmlFor="total_saving_amount" className="flex flex-col gap-2 w-[100%] lg:w-[80%]">
+            <label htmlFor="total_saving_amount" className="flex flex-col gap-2 w-[100%] 2xl:w-[80%]">
                 <Typography className=" font-asap font-[600] text-[18px] text-black tracking-tighter">
                     Total Saving Amount
                 </Typography>
                 <input autoFocus type="text" onChange={handleAmount} value={formatAmountWithCommas(data.total_saving_amount)} name="total_saving_amount" id="total_saving_amount" className="text-[16px] border-2 border-[#95949480] rounded-lg py-2 px-4 outline-none focus:shadow-xl shadow-lg font-[400] text-[#1E1E1E]" />
             </label>
 
-            <div  className="flex flex-col gap-2 w-[100%] lg:w-[80%]">
+            <div  className="flex flex-col gap-2 w-[100%] 2xl:w-[80%]">
                 <Typography className=" font-asap font-[600] text-[18px] text-black tracking-tighter">
                     Select Savings Frequency
                 </Typography>                       
                 <div className="w-[100%] flex flex-wrap justify-between gap-1 gap-y-3">
                     <Button 
                         onClick={(event) => {handleButtonSelection(event, "Daily")}}
-                        className={`border-2 rounded-lg bg-[#ECE6F2] p-2 flex hover:border-[#440080] items-center w-[48%] sm:w-[150px] justify-between ${data.savings_frequency === "Daily" ? 'border-[#440080]' : ''}`}>
+                        className={`border-2 rounded-lg bg-[#ECE6F2] p-2 flex hover:border-[#440080] items-center w-[48%] sm:w-[150px] justify-between font-asap ${data.savings_frequency === "Daily" ? 'border-[#440080]' : ''}`}>
                         <Typography className=" font-asaptext-[16px] font-[600] tracking-tighter text-[#302B2B] capitalize">
                             Daily
                         </Typography>
@@ -70,7 +70,7 @@ const SecondOpenGroupForm = ({ data, setData }: Props) => {
                     </Button>
                     <Button 
                         onClick={(event) => {handleButtonSelection(event, "Weekly")}}
-                        className={`border-2 rounded-lg bg-[#ECE6F2] p-2 flex hover:border-[#440080] items-center w-[48%] sm:w-[150px] justify-between text-[16px] font-[600] tracking-tighter text-[#302B2B] capitalize ${data.savings_frequency === "Weekly" ? 'border-[#440080]' : ''}`}>
+                        className={`border-2 rounded-lg bg-[#ECE6F2] p-2 flex hover:border-[#440080] items-center w-[48%] sm:w-[150px] justify-between font-asap text-[16px] font-[600] tracking-tighter text-[#302B2B] capitalize ${data.savings_frequency === "Weekly" ? 'border-[#440080]' : ''}`}>
                         <Typography className=" font-asaptext-[16px] font-[600] tracking-tighter text-[#302B2B] capitalize ">
                             Weekly
                         </Typography>
@@ -80,7 +80,7 @@ const SecondOpenGroupForm = ({ data, setData }: Props) => {
                     </Button>
                     <Button 
                         onClick={(event) => {handleButtonSelection(event, "Monthly")}}
-                        className={`border-2 rounded-lg bg-[#ECE6F2] p-2 flex hover:border-[#440080] items-center w-[48%] sm:w-[150px] justify-between text-[16px] font-[600] tracking-tighter text-[#302B2B] capitalize ${data.savings_frequency === "Monthly" ? 'border-[#440080]' : ''}`}>
+                        className={`border-2 rounded-lg bg-[#ECE6F2] p-2 flex hover:border-[#440080] items-center w-[48%] sm:w-[150px] justify-between font-asap text-[16px] font-[600] tracking-tighter text-[#302B2B] capitalize ${data.savings_frequency === "Monthly" ? 'border-[#440080]' : ''}`}>
                         <Typography className=" font-asaptext-[16px] font-[600] tracking-tighter text-[#302B2B] capitalize ">
                             Monthly
                         </Typography>
@@ -90,7 +90,7 @@ const SecondOpenGroupForm = ({ data, setData }: Props) => {
                     </Button>
                     <Button 
                         onClick={(event) => {handleButtonSelection(event, "Quarterly")}}
-                        className={`border-2 rounded-lg bg-[#ECE6F2] p-2 flex hover:border-[#440080] items-center w-[48%] sm:w-[150px] justify-between text-[16px] font-[600] tracking-tighter text-[#302B2B] capitalize ${data.savings_frequency === "Quarterly" ? 'border-[#440080]' : ''}`}>
+                        className={`border-2 rounded-lg bg-[#ECE6F2] p-2 flex hover:border-[#440080] items-center w-[48%] sm:w-[150px] justify-between font-asap text-[16px] font-[600] tracking-tighter text-[#302B2B] capitalize ${data.savings_frequency === "Quarterly" ? 'border-[#440080]' : ''}`}>
                         <Typography className=" font-asaptext-[16px] font-[600] tracking-tighter text-[#302B2B] capitalize ">
                             Quarterly
                         </Typography>
@@ -101,7 +101,7 @@ const SecondOpenGroupForm = ({ data, setData }: Props) => {
                 </div>
             </div>
 
-            <div  className="flex flex-col gap-2 w-[100%] lg:w-[80%]">
+            <div  className="flex flex-col gap-2 w-[100%] 2xl:w-[80%]">
                 <Typography className=" font-asap font-[600] text-[18px] text-black tracking-tighter">
                     Daily Duration
                 </Typography>

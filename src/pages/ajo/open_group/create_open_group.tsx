@@ -81,7 +81,7 @@ const CreateOpenGroup = () => {
   ];
 
   // this state controls which form is rendered
-  const [formStepsIndex, setFormStepsIndex] = useState<number>(2);
+  const [formStepsIndex, setFormStepsIndex] = useState<number>(0);
 
   const validateInputs = () => {
     // perform different validation checks based on the current form step
@@ -124,7 +124,7 @@ const CreateOpenGroup = () => {
         </div>
       </DashboardHeader>
 
-      <section className="mb-[20px] flex  flex-col gap-10 px-4 lg:px-6">
+      <section className="mb-[20px] flex  flex-col gap-10">
         {/* OPEN SAVINGS INTRO IMAGE */}
         <section className="mt-12 flex w-[100%] items-center justify-center">
           <img
@@ -148,7 +148,7 @@ const CreateOpenGroup = () => {
         {formSteps[formStepsIndex]}
 
         <div
-          className={`flex w-[100%] ${formStepsIndex > 0 ? "justify-between" : "justify-end"} mt-[20px] items-center`}
+          className={`flex w-[100%] 2xl:w-[80%] self-center ${formStepsIndex > 0 ? "justify-between" : "justify-end"} mt-[20px] items-center`}
         >
           {formStepsIndex > 0 && (
             <Button
@@ -166,14 +166,14 @@ const CreateOpenGroup = () => {
           )}
           {formStepsIndex > 2 ? (
             <Button
-              className={`h-[47px] w-fit rounded-lg bg-[#440080] text-[18px] font-[500] capitalize tracking-tighter text-white `}
+              className={`h-[47px] w-fit rounded-lg bg-[#440080] text-[18px] font-[500] capitalize tracking-tighter font-asap text-white `}
               onClick={openModal}
             >
               Create group
             </Button>
           ) : (
             <Button
-              className={`h-[47px] w-[121px] rounded-lg bg-[#440080] text-[20px] font-[500] capitalize tracking-tighter text-white ${isNextDisabled ? "cursor-not-allowed opacity-70" : ""}`}
+              className={`h-[47px] w-[121px] rounded-lg bg-[#440080] text-[20px] font-[500] capitalize tracking-tighter text-white font-asap ${isNextDisabled ? "cursor-not-allowed opacity-70" : ""}`}
               onClick={nextForm}
               disabled={isNextDisabled}
             >

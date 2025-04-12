@@ -41,7 +41,7 @@ const ThirdOpenGroupForm = ({ data, currency, setData }: Props) => {
 
     return (
         <form className="flex flex-col gap-6 w-[100%] items-center">
-            <label htmlFor="daily_deposit" className="flex flex-col gap-2 w-[100%] lg:w-[80%]">
+            <label htmlFor="daily_deposit" className="flex flex-col gap-2 w-[100%] 2xl:w-[80%]">
                 <Typography className="font-asap  font-[600] text-[18px] text-black tracking-tighter">
                     Daily Deposit
                 </Typography>
@@ -57,7 +57,7 @@ const ThirdOpenGroupForm = ({ data, currency, setData }: Props) => {
                 </Typography>
             </label>
 
-            <div className="flex flex-col gap-2 w-full lg:w-4/5">
+            <div className="flex flex-col gap-2 w-[100%] 2xl:w-[80%]">
                 <div className="flex items-center justify-between w-full">
                     <Typography className="font-asap font-semibold text-[18px] text-black tracking-tighter">
                         Upload Picture <span className="text-[#DDD8D8]">(Optional)</span>

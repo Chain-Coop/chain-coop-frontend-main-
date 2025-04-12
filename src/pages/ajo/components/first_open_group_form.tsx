@@ -27,21 +27,21 @@ const FirstOpenGroupForm = ({ data, setData }: Props) => {
 
     return (
         <form className="flex flex-col gap-6 w-[100%] items-center">
-            <label htmlFor="savings_title" className="flex flex-col gap-2 w-[100%] lg:w-[80%]">
+            <label htmlFor="savings_title" className="flex flex-col gap-2 w-[100%] 2xl:w-[80%]">
                 <Typography className=" font-[600] text-[18px] text-black tracking-tighter font-asap">
                     Group Title
                 </Typography>
                 <input autoFocus type="text" onChange={handleTextChange} value={data.savings_title} name="savings_title" id="savings_title" className="text-[16px] border-2 border-[#95949480] rounded-lg py-2 px-4 outline-none focus:shadow-xl shadow-lg font-[400] text-[#1E1E1E]" />
             </label>
 
-            <label htmlFor="savings_description" className="flex flex-col gap-2 w-[100%] lg:w-[80%]">
+            <label htmlFor="savings_description" className="flex flex-col gap-2 w-[100%] 2xl:w-[80%] ">
                 <Typography className=" font-[600] text-[18px] text-black tracking-tighter font-asap">
                     Group Description <span className="text-[#1E1E1E66]">(Optional)</span>
                 </Typography>
                 <textarea rows={3} value={data.savings_description} onChange={handleTextChange} name="savings_description" id="savings_description"  className="text-[16px] border-2 border-[#95949480] rounded-lg py-2 px-4 outline-none focus:shadow-xl shadow-lg font-[400] text-[#1E1E1E]" />
             </label>
 
-            <div  className="flex flex-col gap-2 w-[100%] lg:w-[80%]">
+            <div  className="flex flex-col gap-2 w-[100%] 2xl:w-[80%] ">
                 <Typography className=" font-[600] text-[18px] text-black tracking-tighter font-asap">
                     What currency are you saving on ?
                 </Typography>                       
@@ -54,7 +54,7 @@ const FirstOpenGroupForm = ({ data, setData }: Props) => {
                             Lisk
                         </Typography>
                         {
-                            data.savings_currency === "Lisk" && <img src={activeIcon} alt="LISK" className="w-[20px]" />
+                            data.savings_currency === "LISK" && <img src={activeIcon} alt="LISK" className="w-[20px]" />
                         }
                     </Button>
                     <Button 
@@ -65,7 +65,7 @@ const FirstOpenGroupForm = ({ data, setData }: Props) => {
                             USDC
                         </Typography>
                         {
-                            data.savings_currency === "USDC" && <img src={activeIcon} alt="LISK" className="w-[20px]" />
+                            data.savings_currency === "USDC" && <img src={activeIcon} alt="USDC" className="w-[20px]" />
                         }
                     </Button>
                     <Button 
@@ -76,7 +76,7 @@ const FirstOpenGroupForm = ({ data, setData }: Props) => {
                             USDT
                         </Typography>
                         {
-                            data.savings_currency === "USDT" && <img src={activeIcon} alt="LISK" className="w-[20px]" />
+                            data.savings_currency === "USDT" && <img src={activeIcon} alt="USDT" className="w-[20px]" />
                         }
                     </Button>
                     <Button 
@@ -87,7 +87,7 @@ const FirstOpenGroupForm = ({ data, setData }: Props) => {
                             Naira
                         </Typography>
                         {
-                            data.savings_currency === "Naira" && <img src={activeIcon} alt="LISK" className="w-[20px]" />
+                            data.savings_currency === "₦" && <img src={activeIcon} alt="Naira" className="w-[20px]" />
                         }
                     </Button>
                 </div>
