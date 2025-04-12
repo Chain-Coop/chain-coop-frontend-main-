@@ -119,6 +119,17 @@ const ViewContribution = () => {
   const balanceInNaira = contributionDetails?.balance || 0;
   const formattedBalance = formatBalance(balanceInNaira);
 
+  const getFirstDepositAmount = () => {
+    if (
+      contributionDetails?.history &&
+      contributionDetails?.history.length > 0
+    ) {
+      const firstDeposit = contributionDetails.history[0];
+      return `${contributionDetails?.currency === "NGN" ? "N" : ""}${firstDeposit.amount?.toLocaleString() || 0}`;
+    }
+    return "N/A";
+  };
+
   const handleBackClick = () => {
     navigate(-1);
   };
@@ -288,10 +299,10 @@ const ViewContribution = () => {
           <section className="my-8 grid grid-cols-2 gap-4">
             <div className="w-full rounded-xl bg-Dh p-5">
               <Typography className="text-lg font-semibold text-gray-600">
-                Deposit Amount (NGN)
+                Deposit Amount
               </Typography>
               <Typography className="mt-2 text-lg font-semibold">
-                N10,000
+                {getFirstDepositAmount()}
               </Typography>
             </div>
 

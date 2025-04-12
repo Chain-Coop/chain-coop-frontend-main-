@@ -15,13 +15,13 @@ export interface ModalProps {
 }
 
 export interface WithdrawAmountModalProps {
-  isModalOpen: boolean;
-  toggleModal: () => void;
-  amount: string;
-  error: string;
-  handleAmountChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleContinue: () => void;
-  withdrawalLimit: number;
+  isModalOpen?: boolean;
+  toggleModal?: () => void;
+  amount?: string;
+  error?: string;
+  handleAmountChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleContinue?: () => void;
+  withdrawalLimit?: number;
 }
 
 export interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -81,27 +81,27 @@ export interface PaymentOptionProps {
 }
 
 export interface firstOpenGroupType {
-  savings_title: string,
-  savings_description: string,
-  savings_currency: string,
-  currency_image: string,
+  savings_title: string;
+  savings_description: string;
+  savings_currency: string;
+  currency_image: string;
 }
 
 export interface secondOpenGroupType {
-  total_saving_amount: string,
-  savings_frequency: string,
-  start_date: string,
-  end_date: string
+  total_saving_amount: string;
+  savings_frequency: string;
+  start_date: string;
+  end_date: string;
 }
 
 export interface thirdOpenGroupType {
-  daily_deposit: number,
-  savings_image: Blob | null,
-  agree: boolean
+  daily_deposit: number;
+  savings_image: Blob | null;
+  agree: boolean;
 }
 
 export interface openGroupFormType {
-  firstForm: firstOpenGroupType,
-  secondForm: secondOpenGroupType,
-  thirdForm: thirdOpenGroupType
+  firstForm: firstOpenGroupType;
+  secondForm: secondOpenGroupType;
+  thirdForm: thirdOpenGroupType;
 }

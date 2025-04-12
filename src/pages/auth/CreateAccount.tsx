@@ -176,7 +176,7 @@ const CreateAccount = () => {
         setPassword("");
         setConfirmPassword("");
         setLoading(false);
-        navigate(`/account-otp?email=${email}`);
+        navigate(`/verify-email?email=${email}`);
       })
       .catch((error: any) => {
         setLoading(false);

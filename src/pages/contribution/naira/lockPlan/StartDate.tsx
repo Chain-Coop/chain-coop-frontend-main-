@@ -28,6 +28,7 @@ import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import { Button } from "@material-tailwind/react";
 import PayWithPaystack from "../../../../components/dashboard/contribution/paymentChoice/PayWithPaystack";
 import PaymentWithCard from "../../../../components/dashboard/contribution/paymentChoice/PaymentWithCard";
+import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg";
 
 interface ContributionResponse {
   result: {
@@ -315,7 +316,7 @@ const StartDate: React.FC = () => {
           onClick={() => navigate(-1)}
           className="mt-[3em] flex items-center transition-transform duration-300 hover:scale-110"
         >
-          <IoIosArrowDropleft size={25} />
+          <img src={prevFormIcon} alt="Previous form" className="w-[40px]" />
         </button>
       </div>
 

@@ -272,7 +272,7 @@ const CryptoMain = () => {
         <section className="flex w-full items-center justify-center">
           <div className="my-8 w-full rounded-3xl border-[2px] border-gray-300 px-4 shadow-md lg:w-[25em]">
             <div className="flex items-center justify-between px-4 py-8 font-semibold text-howtext lg:px-10">
-              <Link to="">
+              <Link to="/dashboard/wallet/crypto/withdraw">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}

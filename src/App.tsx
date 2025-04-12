@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/entry/HomePage";
 import ForgetPassword from "./pages/auth/ForgetPassword";
 import CreateAccount from "./pages/auth/CreateAccount";
-import UserLoginOtp from "./pages/auth/UserLoginOtp";
 import VerificationSuccessfull from "./pages/auth/VerificationSuccessfull";
 import PaaswordRessetSuccessfull from "./pages/auth/PaaswordRessetSuccessfull";
 import Contact from "./pages/entry/Contact";
@@ -19,6 +18,8 @@ import TermsOfService from "./pages/footer/TermsOfService";
 import Team from "./pages/footer/Team";
 import AboutUs from "./pages/footer/AboutUs";
 import PrivacyPolicy from "./pages/footer/PrivacyPolicy";
+import VerifyEmail from "./pages/auth/verifyEmail";
+import VerifyPhoneNumber from "./pages/auth/verifyPhoneNumber";
 
 function App() {
   return (
@@ -33,7 +34,8 @@ function App() {
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/new-password" element={<NewPassword />} />
-        <Route path="/account-otp" element={<UserLoginOtp />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/verify-phone-number" element={<VerifyPhoneNumber />} />
         <Route path="/terms" element={<TermsOfService />} />
         <Route path="/team" element={<Team />} />
         <Route path="/about-us" element={<AboutUs />} />
@@ -46,9 +48,8 @@ function App() {
           path="/reset-successfull"
           element={<PaaswordRessetSuccessfull />}
         />
-        <Route path="/dashboard/*" element={<Dashboard />} />
         <Route element={<ProtectedRoutes />}>
-          
+          <Route path="/dashboard/*" element={<Dashboard />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

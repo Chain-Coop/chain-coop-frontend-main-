@@ -5,11 +5,13 @@ import {
   DialogHeader,
   DialogBody,
   Button,
+  IconButton,
 } from "@material-tailwind/react";
 import { AppDispatch } from "../../../../shared/redux/store";
 import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
 import { FundWallet } from "../../../../shared/redux/slices/transaction.slices";
 import FormInput from "../../../common/FormInput";
+import { IoMdClose } from "react-icons/io";
 
 interface EmailAmountModalProps {
   isOpen: boolean;
@@ -90,14 +92,25 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({
     <Dialog
       open={isOpen}
       handler={closeModal}
-      dismiss={{ outsidePress: false }}
+      dismiss={{ outsidePress: true }}
       className="bg-white p-4"
-      size="sm"
+      size="xs"
     >
       <DialogHeader className="flex items-center justify-between">
-        <h2 className="flex-grow text-center text-xl font-semibold">
+        <h2 className="tetx-text2 flex-grow text-center text-xl font-semibold">
           Pay with Paystack
         </h2>
+        <IconButton
+          variant="text"
+          color="gray"
+          onClick={closeModal}
+          className="p-2"
+          placeholder=""
+          onPointerEnterCapture={() => {}}
+          onPointerLeaveCapture={() => {}}
+        >
+          <IoMdClose size={24} className="text-text2" />
+        </IconButton>
       </DialogHeader>
 
       <DialogBody className="overflow-y-auto">

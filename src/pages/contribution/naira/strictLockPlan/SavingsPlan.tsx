@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { IoIosArrowDropleft } from "react-icons/io";
 import { Alert } from "@mui/material";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import { Plan } from "../../../../data/Data";
+import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg";
 
 const SavingsPlan = () => {
   const [contributionPlan, setContributionPlan] = useState("");
@@ -110,7 +110,7 @@ const SavingsPlan = () => {
             className="flex items-center transition-all duration-300 ease-in-out
               hover:scale-110 hover:text-text2"
           >
-            <IoIosArrowDropleft size={25} />
+            <img src={prevFormIcon} alt="Previous form" className="w-[40px]" />
           </button>
           <button
             className="rounded-md bg-text2 px-6 py-2 text-sm font-semibold text-white

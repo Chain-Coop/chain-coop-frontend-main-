@@ -26,10 +26,12 @@ import {
   DialogBody,
   DialogFooter,
   DialogHeader,
+  IconButton,
   Typography,
 } from "@material-tailwind/react";
 import { ROUTES } from "../../../../shared/routes";
 import { Card } from "../../../../shared/types/types";
+import { IoMdClose } from "react-icons/io";
 
 const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
   const { useWalletCards } = useUserCard();
@@ -117,13 +119,21 @@ const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
       </Snackbar>
 
       <div className="flex flex-col">
-        <DialogHeader className="flex items-center justify-center">
-          <Typography
-            variant="h5"
-            className="text-lg font-bold text-text2 sm:text-xl"
+        <DialogHeader className="flex items-center justify-between">
+          <IconButton
+            variant="text"
+            color="gray"
+            onClick={onClose}
+            className="p-2"
+            placeholder=""
+            onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
           >
+            <IoMdClose size={24} className="text-text2" />
+          </IconButton>
+          <h2 className="flex-grow text-center text-xl font-semibold text-text2">
             Fund Contribution
-          </Typography>
+          </h2>
         </DialogHeader>
 
         <DialogBody>

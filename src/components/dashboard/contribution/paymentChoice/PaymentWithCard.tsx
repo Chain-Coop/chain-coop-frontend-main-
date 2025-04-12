@@ -20,6 +20,7 @@ import {
   Typography,
   Button,
   DialogFooter,
+  IconButton,
 } from "@material-tailwind/react";
 import { ROUTES } from "../../../../shared/routes";
 import { Card } from "../../../../shared/types/types";
@@ -33,6 +34,7 @@ import {
   handlePrev,
   handleCloseError,
 } from "../../../../shared/utils/Helpers";
+import { IoMdClose } from "react-icons/io";
 
 interface PaymentWithCardProps {
   contributionData: {
@@ -157,13 +159,21 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
       </Snackbar>
 
       <div className="flex flex-col">
-        <DialogHeader className="flex items-center justify-center">
-          <Typography
-            variant="h5"
-            className="text-base font-bold text-text2 md:text-lg"
+        <DialogHeader className="flex items-center justify-between">
+          <IconButton
+            variant="text"
+            color="gray"
+            onClick={onClose}
+            className="p-2"
+            placeholder=""
+            onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
           >
+            <IoMdClose size={24} className="text-text2" />
+          </IconButton>
+          <h2 className="flex-grow text-center text-xl font-semibold text-text2">
             Fund Contribution
-          </Typography>
+          </h2>
         </DialogHeader>
 
         <DialogBody>

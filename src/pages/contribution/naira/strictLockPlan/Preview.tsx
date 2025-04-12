@@ -4,11 +4,15 @@ import { IoIosArrowDropleft } from "react-icons/io";
 import { AppDispatch } from "../../../../shared/redux/store";
 import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
 import { useUserCard } from "../../../../shared/Hooks/useUserProfile";
-import { CreateContributionPlan, PayContribution } from "../../../../shared/redux/slices/transaction.slices";
+import {
+  CreateContributionPlan,
+  PayContribution,
+} from "../../../../shared/redux/slices/transaction.slices";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import { Button } from "@material-tailwind/react";
 import PaymentWithCard from "../../../../components/dashboard/contribution/paymentChoice/PaymentWithCard";
 import PayWithPaystack from "../../../../components/dashboard/contribution/paymentChoice/PayWithPaystack";
+import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg";
 
 interface ContributionResponse {
   result: {
@@ -162,7 +166,7 @@ const Preview = () => {
           onClick={() => navigate(-1)}
           className="flex items-center transition-transform duration-300 hover:scale-110"
         >
-          <IoIosArrowDropleft size={25} />
+          <img src={prevFormIcon} alt="Previous form" className="w-[40px]" />
         </button>
         <Button
           onClick={handleSubmit}

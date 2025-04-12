@@ -63,7 +63,7 @@ const kycWhatsAppOtp = async () => {
 
 export const VerifykycWhatsAppOtp = async (codeData: {
   code: string;
-  reference: string;
+  reference?: string;
 }) => {
   const url = `${API_URL}/kyc/verifywaotp`;
   try {
