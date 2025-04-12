@@ -16,7 +16,7 @@ import icon from "../../../Assets/svg/dashboard/ajo/details_icon.svg";
 import currency_icon from "../../../Assets/svg/dashboard/ajo/currency_icon.svg";
 import { IoIosArrowBack } from "react-icons/io";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
-import { membersData } from "../../../data/Data";
+import { membersBriefData } from "../../../data/Data";
 import Members_Template from "./member_template";
 import { useState } from "react";
 import FundModal from "./fund_modal";
@@ -217,7 +217,7 @@ const SavingsDetail = () => {
         </ul>
 
         {/* TRANSACTION BOX */}
-        <Link to={`/dashboard/ajo/transactions/${name}`} className="w-[100%] flex justify-between rounded-md bg-[#ECE6F25E] border border-[#DDD8D84D] px-3 items-center py-6 mt-6">
+        <Link to={`/dashboard/ajo/${name}/transactions`} className="w-[100%] flex justify-between rounded-md bg-[#ECE6F25E] border border-[#DDD8D84D] px-3 items-center py-6 mt-6">
           <div className="flex flex-col gap-4  w-[80%]">
             <h3 className="text-[18px] font-[500] tracking-tight text-[#1E1E1E]">
               Transaction history
@@ -235,7 +235,7 @@ const SavingsDetail = () => {
         <section className="mt-8 flex flex-col gap-3">
           <div className="flex items-center justify-between border-b-2 border-b-[#DDD8D880] pb-2">
             <h3 className="text-[18px] font-[600] tracking-tight text-[#1E1E1E]">
-              Members ({membersData.length})
+              Members ({membersBriefData.length})
             </h3>
             <Link to={'/dashboard/ajo/open-group/members'} className="flex items-center gap-2">
               <div className="w-8 h-8 bg-[#ECE6F25E] rounded-full flex items-center justify-center">
@@ -245,15 +245,15 @@ const SavingsDetail = () => {
               <Typography className="font-asap text-[16px] font-[500] text-[#1E1E1E]">
                 Invite users
               </Typography>
-              </Link>
+            </Link>
           </div>
           <ul className="mt-[10px] flex flex-col gap-4">
-            {membersData.map((data, index) => (
-              <Members_Template amount={data.amount} index={index} name={data.name} userType={data.userType} key={`${index}-${data.name}`} />
+            {membersBriefData.map((data, index) => (
+              <Members_Template amount={data.amount} index={index} name={data.name} userType={data.userType} key={`${index}-${data.name}`} progress={data.progress} />
             ))}
           </ul>
         </section>
-        <Link to={"/dashboard/ajo/open-group/members"} className="bg-white border-2 border-[#440080] text-[#440080] font-[600] mt-8 text-[16px] w-[200px] h-[45px] rounded-md font-asap text-center flex items-center justify-center self-center">
+        <Link to={"/dashboard/ajo/${name}/members"} className="bg-white border-2 border-[#440080] text-[#440080] font-[600] mt-8 text-[16px] w-[200px] h-[45px] rounded-md font-asap text-center flex items-center justify-center self-center">
             See all
         </Link>
       </section>

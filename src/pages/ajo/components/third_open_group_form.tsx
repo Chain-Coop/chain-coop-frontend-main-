@@ -52,7 +52,7 @@ const ThirdOpenGroupForm = ({ data, currency, setData }: Props) => {
                     <input
                     autoFocus type="range" min="0" max="1000" step="10" onChange={handleChange} value={data.daily_deposit} name="daily_deposit" id="daily_deposit" className="w-full cursor-pointer" />
                 </div>
-                <Typography className="font-asap font-[500] text-[14px] text-[#1E1E1E99]">
+                <Typography className="font-asap font-[500] text-[14px] text-[#1E1E1E]">
                     This amount is not fixed, members deposit any amount until the target amount is achieved.
                 </Typography>
             </label>

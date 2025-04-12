@@ -129,28 +129,125 @@ export const groupSavingsOptions = [
   }
 ]
 
-export const membersData = [
+export const membersBriefData = [
     {
       name: "John Doe",
       amount: "$20",
       userType: "member",
       status: "Joined",
       funded: '$20',
-      time: "4 minutes ago"
+      time: "4 minutes ago",
+      progress: 10
     },
     {
       name: "Jane Doe",
       amount: "$30",
       userType: "member",
       status: "Joined",
+      progress: 0
     },
     {
       name: "Mark Doe",
       amount: "$0",
       userType: "member",
       status: "Joined",
+      progress: 30
     },
 ];
+
+export const membersData = [
+  {
+    name: "Janet Mark",
+    userType: "Admin",
+    total: "$100",
+    joined: "2023-12-01T09:15:00",
+    next_deposit: "2025-04-15T18:30:00",
+    last_deposit: "2025-03-10T17:00:00",
+    progress: 20
+  },
+  {
+    name: "Michael Chen",
+    userType: "Member",
+    total: "$200",
+    joined: "2023-11-20T10:45:00",
+    next_deposit: "2025-04-18T14:00:00",
+    last_deposit: "2025-03-18T13:45:00",
+    progress: 45
+  },
+  {
+    name: "Sarah Johnson",
+    userType: "Member",
+    total: "$150",
+    joined: "2024-01-05T08:30:00",
+    next_deposit: "2025-04-20T11:15:00",
+    last_deposit: "2025-03-20T10:30:00",
+    progress: 35
+  },
+  {
+    name: "David Kim",
+    userType: "Admin",
+    total: "$300",
+    joined: "2023-10-12T12:00:00",
+    next_deposit: "2025-04-22T09:00:00",
+    last_deposit: "2025-03-22T08:45:00",
+    progress: 60
+  },
+  {
+    name: "Angela White",
+    userType: "Member",
+    total: "$250",
+    joined: "2023-09-28T14:20:00",
+    next_deposit: "2025-04-25T17:30:00",
+    last_deposit: "2025-03-25T17:00:00",
+    progress: 50
+  },
+  {
+    name: "Chris Evans",
+    userType: "Member",
+    total: "$120",
+    joined: "2024-02-01T16:00:00",
+    next_deposit: "2025-04-28T19:00:00",
+    last_deposit: "2025-03-28T18:30:00",
+    progress: 25
+  },
+  {
+    name: "Emily Davis",
+    userType: "Admin",
+    total: "$400",
+    joined: "2023-08-15T11:45:00",
+    next_deposit: "2025-05-01T08:00:00",
+    last_deposit: "2025-04-01T07:30:00",
+    progress: 80
+  },
+  {
+    name: "Samuel Lee",
+    userType: "Member",
+    total: "$180",
+    joined: "2023-10-10T13:15:00",
+    next_deposit: "2025-05-03T15:00:00",
+    last_deposit: "2025-04-03T14:30:00",
+    progress: 40
+  },
+  {
+    name: "Patricia Brown",
+    userType: "Member",
+    total: "$90",
+    joined: "2024-01-20T07:30:00",
+    next_deposit: "2025-05-06T10:00:00",
+    last_deposit: "2025-04-06T09:15:00",
+    progress: 15
+  },
+  {
+    name: "Daniel Lee",
+    userType: "Admin",
+    total: "$350",
+    joined: "2023-11-05T17:45:00",
+    next_deposit: "2025-05-10T13:45:00",
+    last_deposit: "2025-04-10T13:00:00",
+    progress: 70
+  }
+];
+
 
 export const transactionData = [
   {

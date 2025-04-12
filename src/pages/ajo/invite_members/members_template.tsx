@@ -7,10 +7,11 @@ interface Props {
     amount: string;
     index: number;
     funded?: string;
-    time?: string
+    time?: string;
+    progress: number;
 }
 
-const Members_Template = ({ amount, index, name, status, userType, funded, time }: Props) => {
+const Members_Template = ({ amount, index, name, status, userType, funded, time, progress }: Props) => {
     return (
         <li
             key={`${name}-${index}`}
@@ -50,7 +51,7 @@ const Members_Template = ({ amount, index, name, status, userType, funded, time 
                         <Typography className="font-asap text-[14px] font-[500] tracking-tight text-[#61C040]">
                             Funded {funded}
                         </Typography>
-                        <Typography className="font-asap text-[13px] opacity-60 font-[400] tracking-tighter text-[#1E1E1E99]">
+                        <Typography className="font-asap text-[13px] opacity-60 font-[400] tracking-tighter text-[#1E1E1E]">
                             {time}
                         </Typography>
                     </div>
@@ -59,11 +60,15 @@ const Members_Template = ({ amount, index, name, status, userType, funded, time 
             </div>
             <div className="flex w-[100%] items-center gap-0">
                 <div className="w-[50%] h-[7px] bg-[#C5B0D8] rounded-lg flex gap-0 items-center">
-                    <div className="h-[7px] bg-[#440080] rounded-lg" style={{ width: "0%" }} />
-                    <div className="w-[12px] h-[12px] -translate-x-1 bg-[#440080] rounded-full" />
+                    {
+                        progress > 0 && <div className="h-[7px] bg-[#440080] rounded-lg" style={{ width: `${progress}%` }} />
+                    }
+                    {
+                        progress > 0 && <div className="w-[12px] h-[12px] -translate-x-1 bg-[#440080] rounded-full" />
+                    }
                 </div>
-                <Typography className="font-asap text-[14px] opacity-70 font-[400] tracking-tighter text-[#1E1E1E99] px-1">
-                    10% complete
+                <Typography className="font-asap text-[14px] opacity-70 font-[400] tracking-tighter text-[#1E1E1E] px-1">
+                    {progress}% complete
                 </Typography>
             </div>
         </li>

@@ -31,14 +31,14 @@ const FirstOpenGroupForm = ({ data, setData }: Props) => {
                 <Typography className=" font-[600] text-[18px] text-black tracking-tighter font-asap">
                     Group Title
                 </Typography>
-                <input autoFocus type="text" onChange={handleTextChange} value={data.savings_title} name="savings_title" id="savings_title" className="text-[16px] border-2 border-[#95949480] rounded-lg py-2 px-4 outline-none focus:shadow-xl shadow-lg font-[400] text-[#1E1E1E99]" />
+                <input autoFocus type="text" onChange={handleTextChange} value={data.savings_title} name="savings_title" id="savings_title" className="text-[16px] border-2 border-[#95949480] rounded-lg py-2 px-4 outline-none focus:shadow-xl shadow-lg font-[400] text-[#1E1E1E]" />
             </label>
 
             <label htmlFor="savings_description" className="flex flex-col gap-2 w-[100%] lg:w-[80%]">
                 <Typography className=" font-[600] text-[18px] text-black tracking-tighter font-asap">
                     Group Description <span className="text-[#1E1E1E66]">(Optional)</span>
                 </Typography>
-                <textarea rows={3} value={data.savings_description} onChange={handleTextChange} name="savings_description" id="savings_description"  className="text-[16px] border-2 border-[#95949480] rounded-lg py-2 px-4 outline-none focus:shadow-xl shadow-lg font-[400] text-[#1E1E1E99]" />
+                <textarea rows={3} value={data.savings_description} onChange={handleTextChange} name="savings_description" id="savings_description"  className="text-[16px] border-2 border-[#95949480] rounded-lg py-2 px-4 outline-none focus:shadow-xl shadow-lg font-[400] text-[#1E1E1E]" />
             </label>
 
             <div  className="flex flex-col gap-2 w-[100%] lg:w-[80%]">

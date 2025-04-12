@@ -3,8 +3,8 @@ import { DashboardHeader } from "../../../components/common/DashboardHeader"
 import { IoIosArrowBack } from "react-icons/io";
 import { Typography } from "@material-tailwind/react";
 import { Button } from "@material-tailwind/react";
-import { membersData } from "../../../data/Data";
-import Members_Template from "../components/members_template";
+import { membersBriefData } from "../../../data/Data";
+import Members_Template from "./members_template";
 
 
 import inviteImage from "../../../Assets/png/dashboard/ajo/invite_members.png";
@@ -89,11 +89,11 @@ const InviteMembersPage = () => {
                 {/* MEMBERS LIST */}
                 <section className="flex flex-col gap-3">
                     <h3 className="text-[18px] font-[600] tracking-tight text-[#1E1E1E]">
-                        Members ({membersData.length})
+                        Members ({membersBriefData.length})
                     </h3>
                     <ul className="mt-[10px] flex flex-col gap-4">
-                        {membersData.map((data, index) => (
-                            <Members_Template amount={data.amount} index={index} name={data.name} status={data.status}  userType={data.userType} key={`${index}-${data.name}`} />
+                        {membersBriefData.map((data, index) => (
+                            <Members_Template amount={data.amount} index={index} name={data.name} status={data.status}  userType={data.userType} key={`${index}-${data.name}`} progress={data.progress} />
                         ))}
                     </ul>
                 </section>

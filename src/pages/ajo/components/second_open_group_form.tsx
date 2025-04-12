@@ -50,7 +50,7 @@ const SecondOpenGroupForm = ({ data, setData }: Props) => {
                 <Typography className=" font-asap font-[600] text-[18px] text-black tracking-tighter">
                     Total Saving Amount
                 </Typography>
-                <input autoFocus type="text" onChange={handleAmount} value={formatAmountWithCommas(data.total_saving_amount)} name="total_saving_amount" id="total_saving_amount" className="text-[16px] border-2 border-[#95949480] rounded-lg py-2 px-4 outline-none focus:shadow-xl shadow-lg font-[400] text-[#1E1E1E99]" />
+                <input autoFocus type="text" onChange={handleAmount} value={formatAmountWithCommas(data.total_saving_amount)} name="total_saving_amount" id="total_saving_amount" className="text-[16px] border-2 border-[#95949480] rounded-lg py-2 px-4 outline-none focus:shadow-xl shadow-lg font-[400] text-[#1E1E1E]" />
             </label>
 
             <div  className="flex flex-col gap-2 w-[100%] lg:w-[80%]">
@@ -107,21 +107,21 @@ const SecondOpenGroupForm = ({ data, setData }: Props) => {
                 </Typography>
                 <div className="flex flex-col gap-4">
                     <div className="flex w-[100%] items-center justify-between border-2 border-[#95949480] rounded-lg p-2 outline-none focus:shadow-xl shadow-lg font-[400] relative" onClick={openStartDate}>
-                        <Typography className=" font-asaptext-[#1E1E1E99] opacity-60 text-[18px] font-[400]">
+                        <Typography className=" font-asaptext-[#1E1E1E] opacity-60 text-[18px] font-[400]">
                             {data.start_date}
                         </Typography>
                         <CgCalendarDates className="text-[#440080] w-[16px] h-[16px]" /> 
                         <input type="date" name="start_date" onChange={handleChange} value={data.start_date} max={data.end_date} ref={startDateRef} id="start_date" className="opacity-0 absolute" />
                     </div>
                     <div className="flex w-[100%] items-center justify-between relative border-2 border-[#95949480] rounded-lg p-2 outline-none focus:shadow-xl shadow-lg font-[400]" onClick={openEndDate}>
-                        <Typography className=" font-asaptext-[#1E1E1E99] opacity-60 text-[18px] font-[400]">
+                        <Typography className=" font-asaptext-[#1E1E1E] opacity-60 text-[18px] font-[400]">
                             {data.end_date}
                         </Typography>
                         <CgCalendarDates className="text-[#440080] w-[16px] h-[16px]" /> 
                         <input type="date" ref={endDateRef} onChange={handleChange} value={data.end_date} min={data.start_date} name="end_date" id="end_date" className="opacity-0 absolute" />
                     </div>
                 </div>
-                <Typography className=" font-asaptext-[15px] text-[#1E1E1E99] font-[400] mt-[10px]">
+                <Typography className=" font-asaptext-[15px] text-[#1E1E1E] font-[400] mt-[10px]">
                     Set until this savings group last
                 </Typography>
             </div>

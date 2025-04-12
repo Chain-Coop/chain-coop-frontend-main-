@@ -6,6 +6,7 @@ export default withMT({
     extend: {
       screens: {
         'xxl': '1320px',
+        '3xl': '1699px',
       },
       colors: {
         primary: " #E6B8D4",
