@@ -22,7 +22,7 @@ const GroupCard: React.FC<GroupCardProps> = ({ amount, goal, icon, image, member
     <div className="flex w-[100%] sm:w-fit xl:gap-4 sm:flex-row lg:flex-col xl:flex-row flex-col h-fit sm:h-[234px] lg:h-fit xl:h-fit flex-shrink-0 rounded-3xl border-[2px] border-gray-200 bg-white shadow-md">
       {/* Image Section */}
       <div className="w-[100%] sm:w-[158px] h-[150px] lg:w-[100%] xl:w-[158px] sm:h-full lg:h-fit xl:h-full relative rounded-l-xl flex-shrink-0">
-        <img src={image} alt={name} className="w-full h-full lg:w-[100%] lg:h-[150px] xl:h-full lg:object-cover rounded-t-xl rounded-none sm:rounded-l-xl sm:rounded-none lg:rounded-t-xl lg:rounded-none xl:rounded-l-xl xl:rounded-none object-cover sm:object-none" />
+        <img src={image} alt={name} className="w-full h-full lg:w-[100%] lg:h-[150px] xl:h-full lg:object-cover rounded-t-xl rounded-none sm:rounded-l-xl sm:rounded-none lg:rounded-t-xl lg:rounded-none xl:rounded-l-xl xl:rounded-none object-cover sm:object-none flex-shrink-0" />
         <img src={icon} alt={name} className="w-[30px] h-[30px] absolute top-2 right-2" />
       </div>
 
@@ -33,14 +33,14 @@ const GroupCard: React.FC<GroupCardProps> = ({ amount, goal, icon, image, member
           <div className="flex flex-col gap-2">
             <h4 className="font-semibold text-[#1E1E1EE5] text-[22px] lg:text-[24px]">{name}</h4>
             <div className="flex gap-2 items-center">
-              <Typography className="text-[#6E6C6C] font-semibold text-[14px]">{members} members</Typography>
+              <Typography className="font-asap text-[#6E6C6C] font-semibold text-[14px]">{members} members</Typography>
               <div className="w-[10px] h-[10px] bg-[#C5B0D8] rounded-full" />
-              <Typography className="text-[#6E6C6C] font-normal text-[14px]">{amount}</Typography>
+              <Typography className="font-asap text-[#6E6C6C] font-normal text-[14px]">{amount}</Typography>
             </div>
-            <Typography className="text-[#6E6C6C] font-normal text-[16px]">
+            <Typography className="font-asap text-[#6E6C6C] font-normal text-[16px]">
               <strong className="text-black font-semibold">Goal:</strong> {goal}
             </Typography>
-            <Typography className="text-[#6E6C6C] font-medium text-[16px]">
+            <Typography className="font-asap text-[#6E6C6C] font-medium text-[16px]">
               Total saved: {totalSaved}
             </Typography>
           </div>

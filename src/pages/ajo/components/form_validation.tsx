@@ -1,4 +1,4 @@
-import { firstOpenGroupType, secondOpenGroupType, thirdOpenGroupType } from "../../../../shared/types/types";
+import { firstOpenGroupType, secondOpenGroupType, thirdOpenGroupType } from "../../../shared/types/types";
 
 const validateFirstForm = (data: firstOpenGroupType): boolean => {
     return !(data.savings_title.trim() && data.savings_currency.trim());
