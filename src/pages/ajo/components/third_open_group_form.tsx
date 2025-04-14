@@ -4,7 +4,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import { Typography, Button } from "@material-tailwind/react";
 
 import { MdCheckBoxOutlineBlank, MdCheckBox } from "react-icons/md";
-import { thirdOpenGroupType } from "../../../../shared/types/types";
+import { thirdOpenGroupType } from "../../../shared/types/types";
 
 
 interface Props {
@@ -41,25 +41,25 @@ const ThirdOpenGroupForm = ({ data, currency, setData }: Props) => {
 
     return (
         <form className="flex flex-col gap-6 w-[100%] items-center">
-            <label htmlFor="daily_deposit" className="flex flex-col gap-2 w-[100%] lg:w-[80%]">
-                <Typography className=" font-[600] text-[18px] text-black tracking-tighter">
+            <label htmlFor="daily_deposit" className="flex flex-col gap-2 w-[100%] 2xl:w-[80%]">
+                <Typography className="font-asap  font-[600] text-[18px] text-black tracking-tighter">
                     Daily Deposit
                 </Typography>
                 <div className="flex items-center gap-2 flex-col">
-                    <Typography className="text-[24px] font-[600] text-[#1E1E1E]">
+                    <Typography className="font-asap text-[24px] font-[600] text-[#1E1E1E]">
                         {currency} {data.daily_deposit}
                     </Typography>
                     <input
                     autoFocus type="range" min="0" max="1000" step="10" onChange={handleChange} value={data.daily_deposit} name="daily_deposit" id="daily_deposit" className="w-full cursor-pointer" />
                 </div>
-                <Typography className="font-[500] text-[14px] text-[#1E1E1E99]">
+                <Typography className="font-asap font-[500] text-[14px] text-[#1E1E1E]">
                     This amount is not fixed, members deposit any amount until the target amount is achieved.
                 </Typography>
             </label>
 
-            <div className="flex flex-col gap-2 w-full lg:w-4/5">
+            <div className="flex flex-col gap-2 w-[100%] 2xl:w-[80%]">
                 <div className="flex items-center justify-between w-full">
-                    <Typography className="font-semibold text-[18px] text-black tracking-tighter">
+                    <Typography className="font-asap font-semibold text-[18px] text-black tracking-tighter">
                         Upload Picture <span className="text-[#DDD8D8]">(Optional)</span>
                     </Typography>
                     {
@@ -76,7 +76,7 @@ const ThirdOpenGroupForm = ({ data, currency, setData }: Props) => {
                     <div className="w-[50px] h-[50px] rounded-full bg-[#ECE6F2] flex items-center justify-center z-10">
                         <LuUpload className="text-[#440080] text-[20px]" />
                     </div>
-                    <Typography className="font-medium text-[16px] text-[#1E1E1EB2]">
+                    <Typography className="font-asap font-medium text-[16px] text-[#1E1E1EB2]">
                         Choose file or <button className="text-[#440080]">use default</button>
                     </Typography>
                     <input
@@ -106,7 +106,7 @@ const ThirdOpenGroupForm = ({ data, currency, setData }: Props) => {
                         )
                     }
                 </button>
-                <Typography className="font-[500] text-[16px] text-[#1E1E1EB2]">
+                <Typography className="font-asap font-[500] text-[16px] text-[#1E1E1EB2]">
                     I agree to the <span className="text-[#440080] font-[600]">Terms of Service</span> and <span className="text-[#440080] font-[600]">Privacy Policy</span>
                 </Typography>
             </div>

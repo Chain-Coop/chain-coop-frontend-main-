@@ -1,7 +1,7 @@
 import { BsPatchCheck } from "react-icons/bs"
-import { openGroupFormType } from "../../../../shared/types/types"
-import getDateDifferenceInDays from "../../../../shared/utils/get_date_diff"
-import formatAmountWithCommas from "../../../../shared/utils/format_amount_with_commas"
+import { openGroupFormType } from "../../../shared/types/types"
+import getDateDifferenceInDays from "../../../shared/utils/get_date_diff"
+import formatAmountWithCommas from "../../../shared/utils/format_amount_with_commas"
 import { Typography } from "@material-tailwind/react";
 
 
@@ -55,10 +55,10 @@ const ReviewOpenGroupForm = (data: openGroupFormType) => {
         <section className="flex w-[100%]">
             <ul className="flex flex-col w-[100%] mt-[20px]">
                 <li className="flex w-[98%] justify-between items-center pt-6 pb-4 border-b border-b-[#DDD8D887]" >
-                    <Typography className="text-[16px] font-[500] text-[#1E1E1E] tracking-tight">
+                    <Typography className="font-asap text-[16px] font-[500] text-[#1E1E1E] tracking-tight">
                         Group title
                     </Typography>
-                    <Typography className="text-[16px] font-[600] text-[#1E1E1E] w-[50%] truncate text-right">
+                    <Typography className="font-asap text-[16px] font-[600] text-[#1E1E1E] w-[50%] truncate text-right">
                         {reviewData.group_title}
                     </Typography>
                 </li>
@@ -66,10 +66,10 @@ const ReviewOpenGroupForm = (data: openGroupFormType) => {
                 {
                     reviewData.savings_desc !== "" && (
                         <li className="flex w-[98%] justify-between items-center pt-6 pb-4 border-b border-b-[#DDD8D887]" >
-                            <Typography className="text-[16px] font-[500] text-[#1E1E1E] tracking-tight">
+                            <Typography className="font-asap text-[16px] font-[500] text-[#1E1E1E] tracking-tight">
                                 Description
                             </Typography>
-                            <Typography className="text-[16px] font-[600] text-[#1E1E1E] w-[50%] truncate  text-right">
+                            <Typography className="font-asap text-[16px] font-[600] text-[#1E1E1E] w-[50%] truncate  text-right">
                                 {reviewData.savings_desc}
                             </Typography>
                         </li>
@@ -82,7 +82,7 @@ const ReviewOpenGroupForm = (data: openGroupFormType) => {
                     </Typography>
                     <div className="border-2 border-[#440080] rounded-lg bg-[#ECE6F2] p-2 flex items-center w-[150px] gap-1 justify-between">
                         <img src={data.firstForm.currency_image} alt={data.firstForm.savings_currency} className="w-[24px] h-[24px]" />
-                        <Typography className="text-[14px] pr-8 font-[500] text-[#302B2B]">
+                        <Typography className="font-asap text-[14px] pr-8 font-[500] text-[#302B2B]">
                             {
                                 reviewData.savings_currency === "₦" ? <>
                                     Naira
@@ -101,7 +101,7 @@ const ReviewOpenGroupForm = (data: openGroupFormType) => {
                             <Typography  className="text-[16px] font-[500] text-[#1E1E1E] tracking-tight">
                                 {data.key}
                             </Typography>
-                            <Typography className="text-[16px] font-[600] text-[#1E1E1E] tracking-tight">
+                            <Typography className="font-asap text-[16px] font-[600] text-[#1E1E1E] tracking-tight">
                                 {reviewData.savings_currency} {formatAmountWithCommas(data.value)}
                             </Typography>
                         </li>
@@ -109,11 +109,11 @@ const ReviewOpenGroupForm = (data: openGroupFormType) => {
                 }
 
                 <li className="flex w-[98%] justify-between items-center pt-6 pb-4 border-b border-b-[#DDD8D887]" >
-                    <Typography className="text-[16px] font-[500] text-[#1E1E1E] tracking-tight">
+                    <Typography className="font-asap text-[16px] font-[500] text-[#1E1E1E] tracking-tight">
                         Savings Frequency
                     </Typography>
                     <div className="border-2 border-[#440080] rounded-lg bg-[#ECE6F2] p-2 flex items-center w-[150px] gap-1 justify-between">
-                        <Typography className="text-[14px] font-[500] text-[#302B2B]">
+                        <Typography className="font-asap text-[14px] font-[500] text-[#302B2B]">
                             {reviewData.saving_frequency}
                         </Typography>
                         <BsPatchCheck className="text-[#440080] text-[24px]" />
@@ -123,10 +123,10 @@ const ReviewOpenGroupForm = (data: openGroupFormType) => {
                 {
                     thirdReviewData.map((data) => (
                         <li className="flex w-[98%] justify-between items-center pt-6 pb-4 border-b border-b-[#DDD8D887]" key={data.key}>
-                            <Typography className="text-[16px] font-[500] text-[#1E1E1E] tracking-tight">
+                            <Typography className="font-asap text-[16px] font-[500] text-[#1E1E1E] tracking-tight">
                                 {data.key}
                             </Typography>
-                            <Typography className="text-[16px] font-[500] text-[#1E1E1E] tracking-tight">
+                            <Typography className="font-asap text-[16px] font-[500] text-[#1E1E1E] tracking-tight">
                                 {data.extra} <span className="opacity-70 text-[14px] tracking-normal">{data.value}</span>
                             </Typography>
                         </li>
@@ -136,7 +136,7 @@ const ReviewOpenGroupForm = (data: openGroupFormType) => {
                 {
                     reviewData.picture && (
                         <li className="flex w-[98%] justify-between items-center pt-6 pb-4 border-b border-b-[#DDD8D887]">
-                            <Typography className="text-[16px] font-[500] text-[#1E1E1E] tracking-tight">
+                            <Typography className="font-asap text-[16px] font-[500] text-[#1E1E1E] tracking-tight">
                                 Picture
                             </Typography>
                             <img src={URL.createObjectURL(reviewData.picture)} alt="savings picture" className="w-[66px] h-[60px] object-cover" />

@@ -13,10 +13,10 @@ const SuccessModal = () => {
                     <IoClose className="text-[20px] text-[#430280]" />
                 </Link>
                 <BsPatchCheck className="text-[70px] text-[#61C040]" />
-                <Typography  variant="paragraph" className="text-[16px] font-[600] my-3">
+                <Typography  variant="paragraph" className="font-asap text-[16px] font-[600] my-3">
                     Group successfully created
                 </Typography>
-                <Typography variant="paragraph" className="text-[16px] font-[700] flex items-center gap-1 text-[#440080]">
+                <Typography variant="paragraph" className="font-asap text-[16px] font-[700] flex items-center gap-1 text-[#440080]">
                     Invite members <span><FaChevronRight /></span>
                 </Typography>
             </DialogBody>

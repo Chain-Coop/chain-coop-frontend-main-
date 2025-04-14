@@ -43,8 +43,8 @@ import OneTimeStartDate from "../../../pages/contribution/naira/oneTimePlan/Star
 
 //import CryptoMain from "../wallet/crypto/main/CryptoMain";
 
-import AjoPage from "../ajo/main/ajo";
-import SavingsDetail from "../ajo/savings_detail/page";
+import AjoPage from "../../../pages/ajo/main/ajo";
+import SavingsDetail from "../../../pages/ajo/savings_detail/page";
 
 import PreviewStrictLock from "../../../pages/contribution/naira/strictLockPlan/Preview";
 import Contribution from "../../../pages/contribution/Contribution";
@@ -61,8 +61,11 @@ import Profile from "../../../pages/profile/profile";
 import Wallet from "../../../pages/wallet/Wallet";
 import Home from "../../../pages/home/Home";
 import ManageCards from "../../../pages/profile/ManageCards";
-import CreateOpenGroup from "../ajo/open_group/create_open_group";
-import GroupHistoryPage from "../ajo/group_history/page";
+import CreateOpenGroup from "../../../pages/ajo/open_group/create_open_group";
+import GroupHistoryPage from "../../../pages/ajo/group_history/page";
+import InviteMembersPage from "../../../pages/ajo/invite_members/page";
+import TransactionHistoryPage from "../../../pages/ajo/transaction_history/page";
+import MembersPage from "../../../pages/ajo/members/page";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -222,9 +225,14 @@ const Dashboard = () => {
           />
 
           <Route path="ajo" element={<AjoPage />} />
-          <Route path="ajo/:name" element={<SavingsDetail />} />
-          <Route path="ajo/create_open_group" element={<CreateOpenGroup />} />
+          <Route path="ajo/create/open-group" element={<CreateOpenGroup />} />
+          {/* <Route path="ajo/create/closed-group" element={<CreateClosedGroup />} /> */}
           <Route path="ajo/history" element={<GroupHistoryPage />} />
+          <Route path="ajo/open-group/members" element={<InviteMembersPage />} />
+          <Route path="ajo/:name/transactions" element={<TransactionHistoryPage />} />
+          <Route path="ajo/:name/members" element={<MembersPage />} />
+          <Route path="ajo/:name" element={<SavingsDetail />} />
+          
 
           <Route path="wallet/*" element={<Wallet />} />
           <Route path="wallet/crypto_wallet" element={<CryptoMain />} />
