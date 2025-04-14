@@ -285,7 +285,7 @@ const ViewContribution = () => {
             </section>
             <span className="mt-[1em] font-semibold text-gray-500">
               {isDateValid(contributionDetails?.nextContributionDate) && (
-                <span className="mt-[1em] font-semibold text-gray-500">
+                <span className="mt-[1em] font-semibold text-[#626262]">
                   Next Contribution is:{" "}
                   {formatContributionDate(
                     contributionDetails?.nextContributionDate,
