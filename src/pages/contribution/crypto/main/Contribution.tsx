@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useCryptoWallet } from "../../../../shared/Hooks/useBalance";
+import { useAllUserPools } from "../../../../shared/Hooks/useUserProfile";
+import ToggleButton from "../../../../shared/utils/ToggleButton";
 import { motion } from "framer-motion";
 import { IoIosArrowDown } from "react-icons/io";
 import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../../shared/redux/store";
 import { toast } from "react-toastify";
-import { Typography } from "@material-tailwind/react";
-import { useCryptoWallet } from "../../../../shared/Hooks/useBalance";
-import { useAllUserPools } from "../../../../shared/Hooks/useUserProfile";
+import { Typography, Button } from "@material-tailwind/react";
 import { UpdateUserPool } from "../../../../shared/redux/slices/web3.slices";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
-import ToggleButton from "../../../../shared/utils/ToggleButton";
 import { ContributionListSkeleton } from "../../../../components/common/Loading";
-import { AppDispatch } from "../../../../shared/redux/store";
 import { SavingsPlan } from "../../../../components/dashboard/contribution/modals/SavingsPlan";
+import { Flexibile, Lock, StrictLocak } from "../../../../Assets/svg";
 
 const CryptoSavings: React.FC = () => {
   const navigate = useNavigate();
@@ -41,6 +42,14 @@ const CryptoSavings: React.FC = () => {
     return storedVisibility !== null ? storedVisibility === "true" : true;
   });
 
+  const [contributionType, setContributionType] = useState<
+    "auto" | "one-time" | null
+  >(null);
+
+  const [hoveredSavingsType, setHoveredSavingsType] = useState<string | null>(
+    null,
+  );
+
   const formatDuration = (durationInSeconds: any) => {
     const daysRemaining = Math.ceil(
       parseInt(durationInSeconds) / (24 * 60 * 60),
@@ -54,6 +63,13 @@ const CryptoSavings: React.FC = () => {
       navigate("/dashboard/contribution");
     }
     setIsModalOpen(false);
+  };
+
+  const handleContributionTypeChange = (type: "auto" | "one-time") => {
+    setContributionType(type);
+    if (type === "one-time") {
+      navigate("/dashboard/contribution/crypto/one_time_savings");
+    }
   };
 
   const toggleModal = () => {
@@ -98,7 +114,7 @@ const CryptoSavings: React.FC = () => {
 
     dispatch(UpdateUserPool(body))
       .unwrap()
-      .then(() => {
+      .then((response) => {
         setLoading(false);
         toast.success("Payment Updated Successfully");
         toggleUpdatePaymentModal();
@@ -115,7 +131,7 @@ const CryptoSavings: React.FC = () => {
       animate={{ opacity: 1 }}
       className="min-h-screen w-full "
     >
-      <DashboardHeader className="flex items-center justify-center text-2xl md:text-3xl lg:text-xl">
+      <DashboardHeader className="flex items-center justify-center text-2xl md:text-3xl lg:mt-[2em] lg:text-xl">
         Contribution Plan
       </DashboardHeader>
 
@@ -166,41 +182,151 @@ const CryptoSavings: React.FC = () => {
               </div>
             </motion.div>
 
-            <section className="mt-6 lg:mt-8">
-              <div className="flex w-[80%] flex-col gap-4">
-                <Link to="/dashboard/contribution/flexible/crypto_purpose">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 md:py-3 md:text-lg"
+            {/* Contribution Type Selection */}
+            <section className="py-8">
+              <div className="flex justify-between">
+                {/* Auto Savings Button */}
+                <Button
+                  variant="text"
+                  onClick={() => handleContributionTypeChange("auto")}
+                  className={`flex w-fit items-center px-2 py-3 text-center normal-case transition-all duration-300 ${
+                    contributionType === "auto"
+                      ? "bg-text2 text-white hover:bg-text2"
+                      : "border border-gray-500 bg-inherit text-black hover:shadow-lg"
+                  }`}
+                >
+                  <Typography
+                    className={`text-sm font-semibold ${
+                      contributionType === "auto" ? "text-white" : "text-black"
+                    }`}
                   >
-                    Flexible Savings
-                  </motion.button>
-                </Link>
+                    Auto Savings
+                  </Typography>
+                </Button>
 
-                <Link to="/dashboard/contribution/lock/crypto_purpose">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 md:py-3 md:text-lg"
+                {/* One-Time Savings Button */}
+                <Button
+                  variant="text"
+                  onClick={() => handleContributionTypeChange("one-time")}
+                  disabled={true}
+                  className={`relative flex w-fit items-center px-2 py-3 text-center normal-case transition-all duration-300 hover:shadow-lg sm:px-3 md:px-3.5 lg:px-4 xl:px-5 ${
+                    contributionType === "one-time"
+                      ? "bg-text2 text-white"
+                      : "border border-gray-500 bg-inherit text-black"
+                  }`}
+                >
+                  <Typography
+                    className={`text-sm font-semibold ${
+                      contributionType === "one-time"
+                        ? "text-white"
+                        : "text-black"
+                    }`}
                   >
-                    Lock Savings
-                  </motion.button>
-                </Link>
-
-                <Link to="/dashboard/contribution/strict_lock/crypto_purpose">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 md:py-3 md:text-lg"
-                  >
-                    Strict Lock Savings
-                  </motion.button>
-                </Link>
+                    One-Time Savings
+                  </Typography>
+                  <span className="absolute -left-10 -top-2.5 flex items-center justify-center rounded-lg bg-red-900 px-3 py-1 text-center text-white">
+                    Coming soon
+                  </span>
+                </Button>
               </div>
-
-              <hr className="mx-auto mt-8 w-full max-w-2xl" />
             </section>
+
+            {/* Auto Savings Options */}
+            {contributionType === "auto" && (
+              <section className="mb-8">
+                <Typography className="mb-4 text-left font-medium">
+                  Choose savings type
+                </Typography>
+
+                <div className="flex flex-col gap-4">
+                  <Link
+                    to="/dashboard/contribution/flexible/crypto_purpose"
+                    state={{
+                      lockedType: 0,
+                      contributionType: "auto",
+                    }}
+                    className="w-full"
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex items-center justify-between rounded-lg border border-gray-400 bg-white p-4 shadow-md transition-all"
+                      onMouseEnter={() => setHoveredSavingsType("Flexible")}
+                      onMouseLeave={() => setHoveredSavingsType(null)}
+                    >
+                      <Flexibile />
+                      <Typography className="text-lg font-medium text-gray-800">
+                        Flexible Savings
+                      </Typography>
+                      <div
+                        className={`rounded border border-text2 px-8 py-2 text-sm font-medium
+                        transition-all duration-300 ease-in-out
+                        ${hoveredSavingsType === "Flexible" ? "scale-105 transform bg-text2 text-white shadow-md" : ""}
+                      `}
+                      >
+                        Select
+                      </div>
+                    </motion.div>
+                  </Link>
+
+                  <Link
+                    to="/dashboard/contribution/lock/crypto_purpose"
+                    state={{ lockedType: 1, contributionType: "auto" }}
+                    className="w-full"
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex items-center justify-between rounded-lg border border-gray-400 bg-white p-4 shadow-md transition-all"
+                      onMouseEnter={() => setHoveredSavingsType("Lock")}
+                      onMouseLeave={() => setHoveredSavingsType(null)}
+                    >
+                      <Lock />
+                      <Typography className="text-lg font-medium text-gray-800">
+                        Lock Savings
+                      </Typography>
+                      <div
+                        className={`rounded border border-text2 px-8 py-2 text-sm font-medium
+                        transition-all duration-300 ease-in-out
+                        ${hoveredSavingsType === "Lock" ? "scale-105 transform bg-text2 text-white shadow-md" : ""}
+                      `}
+                      >
+                        Select
+                      </div>
+                    </motion.div>
+                  </Link>
+
+                  <Link
+                    to="/dashboard/contribution/strict_lock/crypto_purpose"
+                    state={{ lockedType: 2, contributionType: "auto" }}
+                    className="w-full"
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex items-center justify-between rounded-lg border border-gray-400 bg-white p-4 shadow-md transition-all"
+                      onMouseEnter={() => setHoveredSavingsType("Strict")}
+                      onMouseLeave={() => setHoveredSavingsType(null)}
+                    >
+                      <StrictLocak />
+                      <Typography className="text-lg font-medium text-gray-800">
+                        Strict Lock Savings
+                      </Typography>
+                      <div
+                        className={`rounded border  border-text2 px-8 py-2 text-sm font-medium
+        transition-all duration-300 ease-in-out
+        ${hoveredSavingsType === "Strict" ? "scale-105 transform bg-text2 text-white shadow-md" : ""}
+      `}
+                      >
+                        Select
+                      </div>
+                    </motion.div>
+                  </Link>
+                </div>
+
+                <hr className="mx-auto mt-8 w-full max-w-2xl" />
+              </section>
+            )}
           </article>
         </section>
 
@@ -269,7 +395,14 @@ const CryptoSavings: React.FC = () => {
                         Update
                       </button>
                     </div>
-                    <button className="rounded-lg bg-[#ECE6F2] px-2 py-1 text-xs font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:px-3 sm:text-sm">
+                    <button
+                      onClick={() =>
+                        navigate("/dashboard/contribution/crypto_contribution_details", {
+                          state: pools,
+                        })
+                      }
+                      className="rounded-lg bg-[#ECE6F2] px-2 py-1 text-xs font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:px-3 sm:text-sm"
+                    >
                       Details
                     </button>
                   </div>
@@ -287,6 +420,7 @@ const CryptoSavings: React.FC = () => {
                 className="text-xl font-bold text-how1 md:text-2xl"
               >
                 No Savings Yet
+                <Link to=""></Link>
               </Typography>
             </motion.div>
           )}
@@ -299,77 +433,6 @@ const CryptoSavings: React.FC = () => {
         savingsType={savingsType}
         onSavingsTypeChange={handleSavingsTypeChange}
       />
-
-      {/* 
-      <Modal
-        isOpen={updatePayment}
-        onClose={toggleUpdatePaymentModal}
-        className="bg-white"
-      >
-        <div className="max-w-[28em] px-4 py-5 sm:px-6">
-          <header>
-            <h1 className="text-center text-2xl font-bold text-text2 sm:text-lg">
-              Update Payment
-            </h1>
-          </header>
-          <article>
-            <p className="text-center font-medium">
-              The deposit amount will be credited manually from your crypto
-              wallet.
-            </p>
-          </article>
-          <form action="">
-            <div className="mt-[1.5em]">
-              <label htmlFor="email" className="mb-3 flex text-text2">
-                Enter Amount
-              </label>
-              <input
-                type="amount"
-                id="amount"
-                disabled={loading}
-                required
-                placeholder="enter your amount"
-                onChange={(e) => setAmount(e.target.value)}
-                className="input mb-5 h-[4em] w-full rounded-2xl border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-              />
-            </div>
-
-            <div className="mt-[1.5em] flex justify-center">
-              <button
-                onClick={SubmitPayment}
-                disabled={loading}
-                className="flex w-full transform items-center justify-center gap-2 rounded-lg bg-text2 px-9 py-2 text-center font-semibold text-white transition-all duration-300 hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-70"
-              >
-                {loading ? (
-                  <div className="flex items-center justify-center text-center">
-                    <svg
-                      className="mr-3 h-5 w-5 animate-spin"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                    Updating Payment...
-                  </div>
-                ) : (
-                  "Submmit"
-                )}
-              </button>
-            </div>
-          </form>
-        </div>
-      </Modal> */}
     </motion.main>
   );
 };

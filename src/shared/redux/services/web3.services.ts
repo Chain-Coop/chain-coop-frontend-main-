@@ -57,7 +57,7 @@ const GetCryptoWalletDetails = async () => {
 };
 
 const CreatePool = async (body: any) => {
-  const url = `${API_URL}/web3/saving/openPool`;
+  const url = `${API_URL}/web3/v2/saving/openPool`;
   try {
     const response = await axios.post(url, body, {
       headers: authHeader(),
@@ -65,15 +65,18 @@ const CreatePool = async (body: any) => {
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      throw error.response.data;
+      //console.error("Backend error response:", error.response.data);
+      const backendMessage = error.response.data.message || "An error occurred";
+      throw new Error(backendMessage);
     } else {
+      //console.error("Network error:", error.message);
       throw new Error("Network Error: Please check your internet connection.");
     }
   }
 };
 
 const GetAllUserPools = async () => {
-  const url = `${API_URL}/web3/saving/userPools`;
+  const url = `${API_URL}/web3/v2/saving/userPools`;
   try {
     const response = await axios({
       url,
@@ -85,8 +88,15 @@ const GetAllUserPools = async () => {
       sessionStorage.setItem("userData", token);
     }
     return response.data;
-  } catch (error) {
-    throw error;
+  } catch (error: any) {
+    if (error.response) {
+      console.error("Backend error response:", error.response.data);
+      const backendMessage = error.response.data.message || "An error occurred";
+      throw new Error(backendMessage);
+    } else {
+      console.error("Network error:", error.message);
+      throw new Error("Network Error: Please check your internet connection.");
+    }
   }
 };
 

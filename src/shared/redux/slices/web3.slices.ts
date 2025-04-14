@@ -56,6 +56,29 @@ export const CreatePool = createAsyncThunk(
   },
 );
 
+{
+  /*export const CreatePool = createAsyncThunk(
+  "web3/createPool",
+  async (body: { formData: any; pin: string }, thunkAPI) => {
+    try {
+      const { formData, pin } = body;
+
+      const payload = {
+        ...formData,
+        pin,
+      };
+
+      const data = await web3Services.CreatePool(payload);
+      return data;
+    } catch (error: any) {
+      const message = error.msg || "An error occurred while creating the pool";
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);*/
+}
+
 export const GetAllUserPools = createAsyncThunk(
   "web3/getAllUserPools",
   async (_, thunkAPI) => {

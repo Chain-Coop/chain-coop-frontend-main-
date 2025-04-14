@@ -12,25 +12,33 @@ const SourceFunds = () => {
 
   const [selectedSource, setSelectedSource] =
     useState<string>("internal-wallet");
-  const [tokenAmount, setTokenAmount] = useState<string>("");
+  const [initialSaveAmount, setInitialSaveAmount] = useState<string>("");
+  //const [goalAmount, setGoalAmount] = useState<string>("");
   const [error, setError] = useState<string>("");
 
   const handleNext = () => {
-    if (!tokenAmount) {
+    if (!initialSaveAmount) {
       setError("Please enter a valid token amount.");
       return;
     }
+
+    /*if (!goalAmount) {
+      setError("Please enter a valid goal amount.");
+      return;
+    }*/
 
     setError("");
 
     const updatedFormData = {
       ...formData,
       selectedSource,
-      tokenAmount,
+      initialSaveAmount,
+      //goalAmount,
       fundSource:
         selectedSource === "external-wallet"
           ? "External Crypto Wallet"
           : "Internal Crypto Wallet",
+      lockedType: location.state?.lockedType,
     };
 
     navigate("/dashboard/contribution/flexible/preview_savings", {
@@ -90,16 +98,16 @@ const SourceFunds = () => {
         {selectedSource === "internal-wallet" && (
           <div className="mt-[2.5em]">
             <label
-              htmlFor="internalTokenAmount"
+              htmlFor="initialSaveAmount"
               className="mb-3 flex text-lg font-semibold text-memt1"
             >
               Deposit Amount (Token)
             </label>
             <input
               type="text"
-              id="internalTokenAmount"
-              value={tokenAmount}
-              onChange={(e) => setTokenAmount(e.target.value)}
+              id="initialSaveAmount"
+              value={initialSaveAmount}
+              onChange={(e) => setInitialSaveAmount(e.target.value)}
               placeholder="e.g., Lk 10"
               className="input mb-2 h-[4em] w-full rounded-lg border-[2px] border-gray-300 px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
             />
@@ -118,13 +126,30 @@ const SourceFunds = () => {
             <input
               type="text"
               id="externalTokenAmount"
-              value={tokenAmount}
-              onChange={(e) => setTokenAmount(e.target.value)}
+              value={initialSaveAmount}
+              onChange={(e) => setInitialSaveAmount(e.target.value)}
               placeholder="e.g., Lk 10"
               className="input mb-2 h-[4em] w-full rounded-lg border-[2px] border-gray-300 px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
             />
           </div>
         )}
+
+        {/*<div className="mt-[2.5em]">
+          <label
+            htmlFor="internalTokenAmount"
+            className="mb-3 flex text-lg font-semibold text-memt1"
+          >
+            Set Goal Amount (Token)
+          </label>
+          <input
+            type="text"
+            id="goalAmount"
+            value={goalAmount}
+            onChange={(e) => setGoalAmount(e.target.value)}
+            placeholder="e.g., Lk 1000"
+            className="input mb-2 h-[4em] w-full rounded-lg border-[2px] border-gray-300 px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
+          />
+        </div>*/}
 
         {/* Error Message */}
         {error && (
@@ -143,7 +168,7 @@ const SourceFunds = () => {
             variant="text"
             onClick={handleNext}
             className={`flex justify-center rounded-md ${
-              !tokenAmount
+              !initialSaveAmount
                 ? "cursor-not-allowed bg-gray-400"
                 : "bg-text2 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg active:scale-95"
             } px-8 py-[1em] font-semibold text-white transition-all duration-300 ease-in-out`}

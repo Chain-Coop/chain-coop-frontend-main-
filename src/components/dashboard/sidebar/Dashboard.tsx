@@ -4,7 +4,8 @@ import "../../../../src/App.css";
 import DashboardNav from "../../common/DashboardNav";
 import Sidebar from "./Sidebar";
 import ContributionDetails from "../../../pages/contribution/ViewContribution";
-import CryptoContribution from "../../../pages/contribution/crypto/Contribution";
+import CryptoContributionDetails from "../../../pages/contribution/crypto/ViewContribution";
+import CryptoContribution from "../../../pages/contribution/crypto/main/Contribution";
 import Right from "../rightbar/Right";
 import Purpose from "../../../pages/contribution/naira/flexiblePlan/Purpose";
 import CryptoPurpose from "../../../pages/contribution/crypto/flexiblePlan/ContributionCurrencyType";
@@ -90,8 +91,12 @@ const Dashboard = () => {
             element={<ContributionDetails />}
           />
           <Route
-            path="contribution/crypto_contribution"
+            path="contribution/main/crypto_contribution"
             element={<CryptoContribution />}
+          />
+          <Route
+            path="contribution/crypto_contribution_details"
+            element={<CryptoContributionDetails />}
           />
           <Route
             path="contribution/flexible/crypto_purpose"
@@ -228,11 +233,16 @@ const Dashboard = () => {
           <Route path="ajo/create/open-group" element={<CreateOpenGroup />} />
           {/* <Route path="ajo/create/closed-group" element={<CreateClosedGroup />} /> */}
           <Route path="ajo/history" element={<GroupHistoryPage />} />
-          <Route path="ajo/open-group/members" element={<InviteMembersPage />} />
-          <Route path="ajo/:name/transactions" element={<TransactionHistoryPage />} />
+          <Route
+            path="ajo/open-group/members"
+            element={<InviteMembersPage />}
+          />
+          <Route
+            path="ajo/:name/transactions"
+            element={<TransactionHistoryPage />}
+          />
           <Route path="ajo/:name/members" element={<MembersPage />} />
           <Route path="ajo/:name" element={<SavingsDetail />} />
-          
 
           <Route path="wallet/*" element={<Wallet />} />
           <Route path="wallet/crypto_wallet" element={<CryptoMain />} />
@@ -242,7 +252,10 @@ const Dashboard = () => {
           <Route path="wallet/select-account" element={<SelectAccount />} />
           <Route path="wallet/verify-account" element={<VerifyAccount />} />
 
-          <Route path="wallet/crypto/withdraw" element={<WithdrawCryptoWallet />} />
+          <Route
+            path="wallet/crypto/withdraw"
+            element={<WithdrawCryptoWallet />}
+          />
 
           <Route path="wallet/fund" element={<FundWallet />} />
           <Route

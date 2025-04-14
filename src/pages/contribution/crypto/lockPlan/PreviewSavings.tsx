@@ -4,17 +4,27 @@ import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import { useLocation, useNavigate } from "react-router-dom";
 import cryptoSavings from "../../../../Assets/png/dashboard/cryptSavings.png";
 import { useState } from "react";
-import Pin from "../../../../components/dashboard/contribution/modals/Pin";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../../shared/redux/store";
+import { CreatePool } from "../../../../shared/redux/slices/web3.slices";
+//import Pin from "../../../../components/dashboard/contribution/modals/Pin";
+import PinModal from "../../../../components/common/PinModal";
 import ConnectWallet from "../../../../components/dashboard/contribution/modals/ConnectWallet";
+import { toast } from "react-toastify";
 
 const PreviewSavings = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const formData = location.state || {};
+  const { lockedType } = formData;
 
   const [showPinModal, setShowPinModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showConnectWalletModal, setShowConnectWalletModal] = useState(false);
   const [pin, setPin] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const conversionRate = 1549.43;
 
@@ -28,9 +38,63 @@ const PreviewSavings = () => {
     }
   };
 
-  const handlePinSubmit = () => {
-    console.log("Entered PIN:", pin);
-    setShowPinModal(false);
+  const handlePinSubmit = (formData: any) => {
+    const {
+      interestRate,
+      pin,
+      tokenEquivalent,
+      tokenName,
+      nairaEquivalent,
+      description,
+      fundSource,
+      savingFrequency,
+      selectedSource,
+      currency,
+      startDate,
+      duration,
+      goalAmount,
+      initialSaveAmount,
+      ...payload
+    } = formData;
+
+    const durationInDays = Math.ceil(
+      (new Date(duration).getTime() - new Date(startDate).getTime()) /
+        (1000 * 60 * 60 * 24),
+    );
+
+    const finalPayload = {
+      ...payload,
+      tokenId: formData.tokenId,
+      initialSaveAmount,
+      reasonForSaving: formData.reasonForSaving,
+      duration: durationInDays,
+      lockedType,
+    };
+
+    //console.log("Payload being sent to the backend:", finalPayload);
+    //console.log("Final Payload:", JSON.stringify(finalPayload));
+
+    setLoading(true);
+
+    dispatch(CreatePool(finalPayload))
+      .unwrap()
+      .then((response) => {
+        console.log("Pool created successfully:", response);
+        setShowPinModal(false);
+        toast.success("Savings pool created successfully!");
+        navigate("dashboard/contribution/crypto_contribution");
+      })
+      .catch((error) => {
+        console.error("Error creating pool:", error);
+        toast.error(
+          error.message
+            ? `Failed to create savings pool: ${error.message}`
+            : "Failed to create savings pool. Please try again.",
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const handleConnectWallet = () => {
@@ -39,7 +103,10 @@ const PreviewSavings = () => {
   };
 
   const nairaEquivalent =
-    formData.tokenAmount && parseFloat(formData.tokenAmount) * conversionRate;
+    formData.initialSaveAmount &&
+    parseFloat(formData.initialSaveAmount) * conversionRate;
+  const tokenEquivalent =
+    formData.amount && parseFloat(formData.amount) / conversionRate;
 
   return (
     <main className="pb-[1.5em] ">
@@ -73,7 +140,7 @@ const PreviewSavings = () => {
           <div className="flex items-start">
             <div className="flex flex-col items-center text-left">
               <h2 className="text-sm font-semibold text-gray-500">Title</h2>
-              <p className="text-lg font-bold">{formData.title}</p>
+              <p className="text-lg font-bold">{formData.reasonForSaving}</p>
             </div>
           </div>
 
@@ -91,15 +158,17 @@ const PreviewSavings = () => {
               <h2 className="text-sm font-semibold text-gray-500">
                 Withdrawal Day:
               </h2>
-              <p className="text-sm font-bold md:text-lg">{formData.endDate}</p>
+              <p className="text-sm font-bold md:text-lg">
+                {formData.duration}
+              </p>
             </div>
           </section>
 
-          <section className="flex flex-wrap gap-5">
+          <section className="grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-2">
             {/* Token */}
             <div className="h-[83px] w-full rounded-lg bg-[#ECE6F242] p-4 md:w-[210px] md:p-2">
               <h2 className="text-sm font-semibold text-gray-500">Token</h2>
-              <p className="text-lg font-bold">{formData.cryptoType}</p>
+              <p className="font-bold">{formData.tokenName}</p>
             </div>
 
             {/* Token Amount */}
@@ -107,9 +176,7 @@ const PreviewSavings = () => {
               <h2 className="text-sm font-semibold text-gray-500">
                 Deposit Token
               </h2>
-              <p className="text-lg font-bold">
-                {formData.tokenAmount || "N/A"}
-              </p>
+              <p className="font-bold">{formData.initialSaveAmount}</p>
             </div>
 
             {/* Naira Equivalent */}
@@ -117,9 +184,7 @@ const PreviewSavings = () => {
               <h2 className="text-sm font-semibold text-gray-500">
                 Deposit Amount (NGN)
               </h2>
-              <p className="text-lg font-bold">
-                {nairaEquivalent?.toFixed(2) || "N/A"} NGN
-              </p>
+              <p className="font-bold">{nairaEquivalent?.toFixed(2)} NGN</p>
             </div>
 
             {/* Start Date */}
@@ -127,15 +192,13 @@ const PreviewSavings = () => {
               <h2 className="text-sm font-semibold text-gray-500">
                 Start Date
               </h2>
-              <p className="text-lg font-bold">{formData.startDate || "N/A"}</p>
+              <p className="font-bold">{formData.startDate}</p>
             </div>
 
             {/* End Date */}
             <div className="h-[83px] w-full rounded-lg bg-[#ECE6F242] p-4 md:w-[210px] md:p-2">
               <h2 className="text-sm font-semibold text-gray-500">End Date</h2>
-              <p className="text-lg font-bold">
-                {formData.endDate || "20/07/2025"}
-              </p>
+              <p className="font-bold">{formData.duration}</p>
             </div>
 
             {/* Fund Source */}
@@ -143,7 +206,7 @@ const PreviewSavings = () => {
               <h2 className="text-sm font-semibold text-gray-500">
                 Fund Source
               </h2>
-              <p className="text-lg font-bold">{formData.fundSource}</p>
+              <p className="font-bold">{formData.fundSource}</p>
             </div>
           </section>
         </div>
@@ -171,11 +234,16 @@ const PreviewSavings = () => {
 
       {/* PIN Modal */}
       {showPinModal && (
-        <Pin
-          pin={pin}
-          setPin={setPin}
-          onSubmit={handlePinSubmit}
+        <PinModal
+          isOpen={showPinModal}
           onClose={() => setShowPinModal(false)}
+          onSubmit={() => handlePinSubmit({ ...formData })}
+          header="Enter Your Pin"
+          title="Please enter your 4-digit transaction pin to proceed."
+          loading={loading}
+          error={error}
+          pin={pin}
+          onPinChange={setPin}
         />
       )}
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Button } from "@material-tailwind/react";
 import { IoMdClose } from "react-icons/io";
 import Success from "./Success";
@@ -6,17 +6,56 @@ import Success from "./Success";
 interface PinModalProps {
   pin: string;
   setPin: (pin: string) => void;
-  onSubmit: () => void;
+  formData: any;
+  onSubmit: (formData: any, pin: string) => void;
   onClose: () => void;
 }
 
-const Pin: React.FC<PinModalProps> = ({ pin, setPin, onSubmit, onClose }) => {
+const Pin: React.FC<PinModalProps> = ({
+  pin,
+  setPin,
+  formData,
+  onSubmit,
+  onClose,
+}) => {
   const [showSuccess, setShowSuccess] = useState(false);
 
+  const inputRefs = useRef<HTMLInputElement[]>([]);
+
   const handleSend = () => {
-    setShowSuccess(true);
-    //onSubmit();
+    if (pin.length !== 4) {
+      alert("Please enter a valid 4-digit PIN.");
+      return;
+    }
+
+    onSubmit(formData, pin);
     setPin("");
+    onClose();
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    const value = e.target.value;
+    if (!/^\d*$/.test(value)) return;
+
+    const newPin = pin.split("");
+    newPin[index] = value;
+    setPin(newPin.join(""));
+
+    if (value && index < inputRefs.current.length - 1) {
+      inputRefs.current[index + 1].focus();
+    }
+  };
+
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    if (e.key === "Backspace" && !pin[index] && index > 0) {
+      inputRefs.current[index - 1].focus();
+    }
   };
 
   const handleCloseSuccess = () => {
@@ -53,11 +92,9 @@ const Pin: React.FC<PinModalProps> = ({ pin, setPin, onSubmit, onClose }) => {
                 type="password"
                 maxLength={1}
                 value={pin[index] || ""}
-                onChange={(e) => {
-                  const newPin = pin.split("");
-                  newPin[index] = e.target.value;
-                  setPin(newPin.join(""));
-                }}
+                onChange={(e) => handleInputChange(e, index)}
+                onKeyDown={(e) => handleKeyDown(e, index)}
+                ref={(el) => (inputRefs.current[index] = el!)}
                 className="h-12 w-12 rounded-md border border-gray-300 text-center text-lg focus:border-text2 focus:outline-none"
               />
             ))}

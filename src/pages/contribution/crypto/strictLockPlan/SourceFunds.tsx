@@ -12,7 +12,7 @@ const SourceFunds = () => {
 
   const [selectedSource, setSelectedSource] =
     useState<string>("internal-wallet");
-  const [tokenAmount, setTokenAmount] = useState<string>("");
+  const [initialSaveAmount, setInitialSaveAmount] = useState<string>("");
   const [termsAccepted, setTermsAccepted] = useState(false);
 
   const handlePreview = () => {
@@ -25,11 +25,12 @@ const SourceFunds = () => {
       state: {
         ...formData,
         selectedSource,
-        tokenAmount,
+        initialSaveAmount,
         fundSource:
           selectedSource === "external-wallet"
             ? "External Crypto Wallet"
             : "Internal Crypto Wallet",
+        lockedType: location.state?.lockedType,
       },
     });
   };
@@ -90,9 +91,9 @@ const SourceFunds = () => {
             </label>
             <input
               type="text"
-              id="internalTokenAmount"
-              value={tokenAmount}
-              onChange={(e) => setTokenAmount(e.target.value)}
+              id="initialSaveAmount"
+              value={initialSaveAmount}
+              onChange={(e) => setInitialSaveAmount(e.target.value)}
               placeholder="e.g., LK 10"
               className="input mb-2 h-[4em] w-full rounded-lg border-[2px] border-gray-300 px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
             />
@@ -115,8 +116,8 @@ const SourceFunds = () => {
             <input
               type="text"
               id="externalTokenAmount"
-              value={tokenAmount}
-              onChange={(e) => setTokenAmount(e.target.value)}
+              value={initialSaveAmount}
+              onChange={(e) => setInitialSaveAmount(e.target.value)}
               placeholder="e.g., LK 10"
               className="input mb-2 h-[4em] w-full rounded-lg border-[2px] border-gray-300 px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
             />
@@ -154,9 +155,9 @@ const SourceFunds = () => {
           <Button
             variant="text"
             onClick={handlePreview}
-            disabled={!tokenAmount || !termsAccepted}
+            disabled={!initialSaveAmount || !termsAccepted}
             className={`flex justify-center rounded-md ${
-              !tokenAmount || !termsAccepted
+              !initialSaveAmount || !termsAccepted
                 ? "cursor-not-allowed bg-gray-400"
                 : "bg-text2 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg active:scale-95"
             } px-8 py-[1em] font-semibold text-white transition-all duration-300 ease-in-out`}

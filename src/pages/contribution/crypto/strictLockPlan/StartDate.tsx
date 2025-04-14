@@ -12,13 +12,13 @@ const StartDate = () => {
   const formData = location.state || {};
 
   const today = new Date().toISOString().split("T")[0];
-  const [endDate, setEndDate] = useState<string>("");
+  const [duration, setDuration] = useState<string>("");
   const [savingsDuration, setSavingsDuration] = useState<string>("");
   const [error, setError] = useState<string>("");
 
   const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedEndDate = e.target.value;
-    setEndDate(selectedEndDate);
+    setDuration(selectedEndDate);
 
     const start = new Date(today);
     const end = new Date(selectedEndDate);
@@ -36,14 +36,20 @@ const StartDate = () => {
   };
 
   const handleNext = () => {
-    if (!endDate) {
+    if (!duration) {
       setError("Please select an end date.");
       return;
     }
 
     setError("");
     navigate("/dashboard/contribution/strict_lock/source_funds", {
-      state: { ...formData, startDate: today, endDate, savingsDuration },
+      state: {
+        ...formData,
+        startDate: today,
+        duration,
+        savingsDuration,
+        lockedType: location.state?.lockedType,
+      },
     });
   };
 
@@ -87,8 +93,8 @@ const StartDate = () => {
             </label>
             <input
               type="date"
-              id="endDate"
-              value={endDate}
+              id="duration"
+              value={duration}
               onChange={handleEndDateChange}
               required
               className="input mb-5 h-[4em] w-full rounded-lg border-[2px] border-gray-300 px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"

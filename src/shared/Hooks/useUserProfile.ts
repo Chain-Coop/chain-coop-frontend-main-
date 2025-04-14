@@ -254,12 +254,23 @@ export const useAllNotification = () => {
 
 export const useAllUserPools = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { userPools, loading } = useSelector((state: any) => state?.kyc);
+  const { userPools, loading, error } = useSelector((state: any) => {
+    return state?.web3;
+  });
   const { profileDetails } = useUserProfile();
 
   const fetchUserPools = useCallback(() => {
     if (profileDetails?.isWalletActivated) {
-      dispatch(GetAllUserPools());
+      dispatch(GetAllUserPools())
+        .unwrap()
+        .then((data) => {
+          console.log("Fetched User Pools:", data);
+        })
+        .catch((err: any) => {
+          console.error("Failed to fetch user pools:", err.message || err);
+        });
+    } else {
+      console.log("Wallet is not activated. Skipping fetch for user pools.");
     }
   }, [dispatch, profileDetails?.isWalletActivated]);
 
@@ -269,7 +280,8 @@ export const useAllUserPools = () => {
 
   return {
     loading,
-    userPools: profileDetails?.isWalletActivated ? userPools : null,
+    userPools: profileDetails?.isWalletActivated ? userPools || [] : [],
     isWalletActivated: profileDetails?.isWalletActivated || false,
+    error,
   };
 };
