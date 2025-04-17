@@ -19,6 +19,7 @@ const LockPlanContribution = () => {
     description: "",
     currency: "",
     tokenId: "",
+    tokenName: "",
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -205,7 +206,7 @@ const LockPlanContribution = () => {
                     onClick={() => handleCryptoTypeSelect(type)}
                     className={`flex w-[9em] items-center gap-2 rounded-md bg-[#ECE6F2] px-6 font-medium transition-all duration-300 lg:py-1
                       ${
-                        formData.tokenId === type
+                        formData.tokenName === type
                           ? "border-2 border-text2"
                           : "hover:bg-text2 hover:text-white"
                       }

@@ -31,8 +31,10 @@ import SavingsAmount from "../../../pages/contribution/naira/flexiblePlan/Saving
 import LockSavingsAmount from "../../../pages/contribution/naira/lockPlan/SavingsAmount";
 import StrictLockSavingsAmount from "../../../pages/contribution/naira/strictLockPlan/SavingsAmount";
 import WithdrawContribution from "../../../pages/contribution/withdrawContribution/WithdrawContribution";
+import WithdrawCryptoContribution from "../../../pages/contribution/withdrawContribution/WithdrawCryptoContribution";
 import WithdrawCryptoWallet from "../../../pages/wallet/crypto/withdraw";
 import ConfirmWithdrawal from "../../../pages/contribution/withdrawContribution/ConfirmAmount";
+import ConfirmCryptoWithdrawal from "../../../pages/contribution/withdrawContribution/ConfirmCryptoAmount";
 import ContributionCurrencyType from "../../../pages/contribution/naira/flexiblePlan/ContributionCurrencyType";
 import LockContributionCurrencyType from "../../../pages/contribution/naira/lockPlan/ContributionCurrencyType";
 import StrictLockContributionCurrencyType from "../../../pages/contribution/naira/strictLockPlan/ContributionCurrencyType";
@@ -210,6 +212,16 @@ const Dashboard = () => {
           <Route
             path="contribution/strict_lock/preview_savings"
             element={<StrictLockCryptoPreviewSavings />}
+          />
+
+          <Route
+            path="/contribution/withdraw_crypto_contribution"
+            element={<WithdrawCryptoContribution />}
+          />
+
+          <Route
+            path="/contribution/withdraw_contribution/confirm_crypto_amount"
+            element={<ConfirmCryptoWithdrawal />}
           />
 
           <Route

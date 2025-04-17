@@ -4,7 +4,6 @@ import { useCryptoWallet } from "../../../../shared/Hooks/useBalance";
 import { useAllUserPools } from "../../../../shared/Hooks/useUserProfile";
 import ToggleButton from "../../../../shared/utils/ToggleButton";
 import { motion } from "framer-motion";
-import { IoIosArrowDown } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../shared/redux/store";
 import { toast } from "react-toastify";
@@ -14,6 +13,12 @@ import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import { ContributionListSkeleton } from "../../../../components/common/Loading";
 import { SavingsPlan } from "../../../../components/dashboard/contribution/modals/SavingsPlan";
 import { Flexibile, Lock, StrictLocak } from "../../../../Assets/svg";
+import FundSavingsModal from "../../../../components/dashboard/contribution/modals/FundContribution";
+import {
+  IoIosArrowDown,
+  IoIosArrowForward,
+  IoIosArrowBack,
+} from "react-icons/io";
 
 const CryptoSavings: React.FC = () => {
   const navigate = useNavigate();
@@ -28,12 +33,27 @@ const CryptoSavings: React.FC = () => {
   const [savingsType, setSavingsType] = useState<"naira" | "crypto">("crypto");
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isFundModalOpen, setIsFundModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
   const { userPools = [], loading: poolsLoading } = useAllUserPools() || {};
   const [selectedPool, setSelectedPool] = useState<{
     poolId_bytes: string;
     tokenAddressToSaveWith: string;
   } | null>(null);
   const dispatch: AppDispatch = useDispatch();
+  const [selectedContribution, setSelectedContribution] = useState<{
+    poolIndex: string;
+    tokenToSaveWith: string;
+  } | null>(null);
+
+  const handleOpenFundModal = (pool: any) => {
+    setSelectedContribution({
+      poolIndex: pool.poolIndex,
+      tokenToSaveWith: pool.tokenToSaveWith,
+    });
+    setIsFundModalOpen(true);
+  };
 
   const [isContributionVisible, setIsContributionVisible] = useState(() => {
     const storedVisibility = sessionStorage.getItem(
@@ -50,13 +70,43 @@ const CryptoSavings: React.FC = () => {
     null,
   );
 
-  const formatDuration = (durationInSeconds: any) => {
-    const daysRemaining = Math.ceil(
-      parseInt(durationInSeconds) / (24 * 60 * 60),
-    );
-    return `Ends in ${daysRemaining} Days`;
-  };
+  const formatDuration = (durationInDays: any, startDateTimestamp: any) => {
+    if (!durationInDays || !startDateTimestamp) {
+      return "Duration info missing";
+    }
 
+    try {
+      const durationDays = parseInt(durationInDays);
+      const startDateSeconds = parseInt(startDateTimestamp);
+
+      if (
+        isNaN(durationDays) ||
+        isNaN(startDateSeconds) ||
+        durationDays <= 0 ||
+        startDateSeconds <= 0
+      ) {
+        return "Invalid data";
+      }
+
+      const secondsPerDay = 24 * 60 * 60;
+      const endDateSeconds = startDateSeconds + durationDays * secondsPerDay;
+
+      const currentTimestampSeconds = Math.floor(Date.now() / 1000);
+
+      const remainingSeconds = endDateSeconds - currentTimestampSeconds;
+
+      if (remainingSeconds <= 0) {
+        return "Pool closed";
+      }
+
+      const remainingDays = Math.ceil(remainingSeconds / secondsPerDay);
+
+      return `Ends in ${remainingDays} day${remainingDays !== 1 ? "s" : ""}`;
+    } catch (error) {
+      console.error("Error calculating duration:", error);
+      return "Error calculating";
+    }
+  };
   const handleSavingsTypeChange = (type: "naira" | "crypto") => {
     setSavingsType(type);
     if (type === "naira") {
@@ -125,6 +175,24 @@ const CryptoSavings: React.FC = () => {
       });
   };
 
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems =
+    userPools?.slice(indexOfFirstItem, indexOfLastItem) || [];
+  const totalPages = Math.ceil((userPools?.length || 0) / itemsPerPage);
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const goToPrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
     <motion.main
       initial={{ opacity: 0 }}
@@ -159,11 +227,12 @@ const CryptoSavings: React.FC = () => {
                   Total Contribution Balance
                 </p>
                 <ToggleButton
-                  isVisible={isWalletVisible}
+                  isVisible={isContributionVisible}
                   onToggle={(newVisibility) => {
                     setIsWalletVisible(newVisibility);
+                    setIsContributionVisible(newVisibility);
                     sessionStorage.setItem(
-                      "walletBalanceVisible",
+                      "contributionBalanceVisible",
                       newVisibility.toString(),
                     );
                   }}
@@ -340,14 +409,39 @@ const CryptoSavings: React.FC = () => {
           {poolsLoading ? (
             <ContributionListSkeleton />
           ) : userPools?.length > 0 ? (
-            <div className="p3 mt-4 flex h-auto flex-col gap-3 rounded-lg bg-text2 text-center sm:mt-6 sm:gap-4">
-              {userPools?.map((pools: any) => (
+            <div className="p3 mb-10 mt-4 flex h-auto flex-col gap-3 rounded-2xl bg-text2 px-7 py-10 text-center sm:mt-6 sm:gap-4">
+              {/* Pagination UI */}
+              {userPools.length > itemsPerPage && (
+                <div className="mb-3 flex items-center justify-between px-4">
+                  <span className="text-sm font-medium text-white md:text-base">
+                    Page {currentPage} of {totalPages}
+                  </span>
+                  <div className="flex gap-2 font-semibold">
+                    <button
+                      onClick={goToPrevPage}
+                      disabled={currentPage === 1}
+                      className="rounded p-1 text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      <IoIosArrowBack size={20} />
+                    </button>
+                    <button
+                      onClick={goToNextPage}
+                      disabled={currentPage === totalPages}
+                      className="rounded p-1 text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      <IoIosArrowForward size={20} />
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {currentItems.map((pools: any) => (
                 <motion.div
                   key={pools.poolIndex}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   whileHover={{ scale: 1.01 }}
-                  className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-2xl border border-gray-300 bg-white p-3 transition-all hover:bg-gray-50 sm:gap-3 sm:p-4"
+                  className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-3xl border border-gray-300 bg-white p-3 transition-all hover:bg-gray-50 sm:gap-3 sm:p-4"
                 >
                   <div className="flex justify-between text-xs font-medium text-gray-500 sm:text-sm">
                     <p>Savings Token: {pools?.symbol}</p>
@@ -355,10 +449,8 @@ const CryptoSavings: React.FC = () => {
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <p className="text-sm font-bold sm:text-base">
-                      {pools?.Reason}
-                    </p>
-                    <p className="text-sm font-semibold sm:text-base">
+                    <p className="font-bold">{pools?.Reason}</p>
+                    <p className="text-sm font-semibold">
                       Deposited Amount:{" "}
                       <span className="font-bold text-text2">
                         ${pools?.amountSaved}
@@ -370,7 +462,7 @@ const CryptoSavings: React.FC = () => {
                     <p className="text-sm font-semibold">
                       Duration:{" "}
                       <span className="text-gray-500">
-                        {formatDuration(pools?.Duration)}
+                        {formatDuration(pools?.Duration, pools?.startDate)}
                       </span>
                     </p>
                     <p className="text-xs font-semibold sm:text-sm">
@@ -385,11 +477,8 @@ const CryptoSavings: React.FC = () => {
 
                   <div className="flex justify-between">
                     <div className="flex gap-2 sm:gap-3">
-                      <button className="rounded-lg border border-text2 px-2 py-1 text-xs font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:px-3 sm:text-sm">
-                        Withdraw
-                      </button>
                       <button
-                        onClick={() => toggleUpdatePaymentModal(pools)}
+                        onClick={() => handleOpenFundModal(pools)}
                         className="rounded-lg bg-[#ECE6F2] px-2 py-1 text-xs font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:px-3 sm:text-sm"
                       >
                         Update
@@ -397,9 +486,12 @@ const CryptoSavings: React.FC = () => {
                     </div>
                     <button
                       onClick={() =>
-                        navigate("/dashboard/contribution/crypto_contribution_details", {
-                          state: pools,
-                        })
+                        navigate(
+                          "/dashboard/contribution/crypto_contribution_details",
+                          {
+                            state: pools,
+                          },
+                        )
                       }
                       className="rounded-lg bg-[#ECE6F2] px-2 py-1 text-xs font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:px-3 sm:text-sm"
                     >
@@ -420,7 +512,6 @@ const CryptoSavings: React.FC = () => {
                 className="text-xl font-bold text-how1 md:text-2xl"
               >
                 No Savings Yet
-                <Link to=""></Link>
               </Typography>
             </motion.div>
           )}
@@ -433,6 +524,14 @@ const CryptoSavings: React.FC = () => {
         savingsType={savingsType}
         onSavingsTypeChange={handleSavingsTypeChange}
       />
+
+      {selectedContribution && (
+        <FundSavingsModal
+          isOpen={isFundModalOpen}
+          onClose={() => setIsFundModalOpen(false)}
+          contribution={selectedContribution}
+        />
+      )}
     </motion.main>
   );
 };

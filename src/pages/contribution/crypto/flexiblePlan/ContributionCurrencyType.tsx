@@ -19,6 +19,7 @@ const ContributionCurrencyType = () => {
     description: "",
     currency: "",
     tokenId: "",
+    tokenName: "",
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -203,12 +204,12 @@ const ContributionCurrencyType = () => {
                     key={type}
                     onClick={() => handleCryptoTypeSelect(type)}
                     className={`flex w-[9em] items-center gap-2 rounded-md bg-[#ECE6F2] px-6 font-medium transition-all duration-300 lg:py-1
-                      ${
-                        formData.tokenId === type
-                          ? "border-2 border-text2"
-                          : "hover:bg-text2 hover:text-white"
-                      }
-                      transform uppercase hover:scale-105 active:scale-95`}
+        ${
+          formData.tokenName === type
+            ? "border-2 border-text2"
+            : "hover:bg-text2 hover:text-white"
+        }
+        transform uppercase hover:scale-105 active:scale-95`}
                   >
                     <img src={icon} alt={type} className="h-8 w-8" />
                     <span>{type}</span>

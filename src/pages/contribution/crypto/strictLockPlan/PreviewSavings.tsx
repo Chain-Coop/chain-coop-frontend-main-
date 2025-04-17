@@ -83,7 +83,7 @@ const PreviewSavings = () => {
         console.log("Pool created successfully:", response);
         setShowPinModal(false);
         toast.success("Savings pool created successfully!");
-        navigate("dashboard/contribution/crypto_contribution");
+        navigate("/dashboard/contribution/main/crypto_contribution");
       })
       .catch((error) => {
         console.error("Error creating pool:", error);
