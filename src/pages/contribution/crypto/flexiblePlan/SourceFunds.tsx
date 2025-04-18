@@ -1,14 +1,19 @@
-import { IoIosArrowDropleft } from "react-icons/io";
+import {
+  IoIosArrowDropleft,
+  IoIosCheckmarkCircleOutline,
+} from "react-icons/io";
+import { IoChevronDown } from "react-icons/io5";
 import { Button } from "@material-tailwind/react";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import { useLocation, useNavigate } from "react-router-dom";
 import cryptoSavings from "../../../../Assets/png/dashboard/cryptSavings.png";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const SourceFunds = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const formData = location.state || {};
+  const { tokenName } = formData || {};
 
   const [selectedSource, setSelectedSource] =
     useState<string>("internal-wallet");
@@ -58,7 +63,7 @@ const SourceFunds = () => {
         <header className="mt-[1.5em] lg:mt-[3em]">
           <h1 className="text-center text-2xl font-bold">Flexible Savings</h1>
           <p className="mt-[1em] text-center font-medium">
-            You are about to save in Lisk token cryptocurrency
+            You are about to save in {tokenName} token cryptocurrency
           </p>
         </header>
 
@@ -78,16 +83,16 @@ const SourceFunds = () => {
           <label className="mb-3 flex text-lg font-semibold text-memt1">
             Source of Funds
           </label>
-          <select
+          <CustomSelect
             value={selectedSource}
-            onChange={(e) => setSelectedSource(e.target.value)}
-            className="input mb-2 h-[4em] w-full rounded-lg border-[2px] border-gray-300 bg-white px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-          >
-            <option value="internal-wallet">Internal Crypto Wallet</option>
-            <option value="external-wallet">External Crypto Wallet</option>
-          </select>
+            onChange={(value) => setSelectedSource(value)}
+            options={[
+              { value: "internal-wallet", label: "Internal Crypto Wallet" },
+              { value: "external-wallet", label: "External Crypto Wallet" },
+            ]}
+          />
           {selectedSource === "internal-wallet" && (
-            <p className="text-sm text-red-500">
+            <p className="mt-2 text-sm text-red-500">
               Funds will automatically be deducted from your chain co-op crypto
               wallet.
             </p>
@@ -178,6 +183,78 @@ const SourceFunds = () => {
         </div>
       </div>
     </main>
+  );
+};
+
+const CustomSelect = ({
+  value,
+  onChange,
+  options,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  options: { value: string; label: string }[];
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const selectedOption = options.find((option) => option.value === value);
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      {/* Selected value display */}
+      <div
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex h-12 cursor-pointer items-center justify-between rounded-lg border-2 border-gray-100 bg-white px-4 py-2 shadow-sm"
+      >
+        <div className="flex items-center">
+          <IoIosCheckmarkCircleOutline className="mr-2 h-5 w-5 text-green-500" />
+          <span className="text-sm text-gray-700">{selectedOption?.label}</span>
+        </div>
+        <IoChevronDown
+          className={`h-4 w-4 text-gray-400 transition-transform ${isOpen ? "rotate-180 transform" : ""}`}
+        />
+      </div>
+
+      {/* Dropdown options */}
+      {isOpen && (
+        <div className="absolute z-10 mt-1 w-full rounded-lg border border-gray-200 bg-white shadow-lg">
+          {options.map((option) => (
+            <div
+              key={option.value}
+              className="flex cursor-pointer items-center px-4 py-2 hover:bg-gray-50"
+              onClick={() => {
+                onChange(option.value);
+                setIsOpen(false);
+              }}
+            >
+              {value === option.value && (
+                <IoIosCheckmarkCircleOutline className="mr-2 h-5 w-5 text-green-500" />
+              )}
+              <span
+                className={`text-sm ${value === option.value ? "text-gray-700" : "text-gray-600"}`}
+              >
+                {option.label}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 };
 

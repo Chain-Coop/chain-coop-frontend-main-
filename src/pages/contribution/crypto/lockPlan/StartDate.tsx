@@ -16,7 +16,7 @@ const StartDate: React.FC = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { purpose, plan, amount, currency } = location.state || {};
+  const { tokenName } = location.state || {};
 
   const handleFrequencySelect = (frequency: string) => {
     setSavingFrequency(frequency);
@@ -68,7 +68,7 @@ const StartDate: React.FC = () => {
         <header className="mt-[1.5em] flex flex-col lg:mt-[3em]">
           <h1 className="text-2xl font-bold">Lock Savings</h1>
           <p className="mt-[1em] font-medium">
-            You are about to save in ** crypto currency
+            You are about to save in {tokenName} crypto currency
           </p>
         </header>
         <section className="mt-[2.5em] flex justify-center">

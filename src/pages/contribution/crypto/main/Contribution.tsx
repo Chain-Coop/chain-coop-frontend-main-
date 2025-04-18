@@ -400,16 +400,17 @@ const CryptoSavings: React.FC = () => {
         </section>
 
         <section className="mt-6 w-full sm:mt-8 lg:mt-10">
-          <header>
+          <header className="flex items-center justify-between">
             <h1 className="text-lg font-bold sm:text-xl lg:text-2xl">
               My Savings
             </h1>
+            <input className="hidden border-2 border-[#F5F0F0] py-1 px-3 md:px-5 md:py-3 rounded-lg placeholder:text-sm" type="text" placeholder="Search by categories" />
           </header>
 
           {poolsLoading ? (
             <ContributionListSkeleton />
           ) : userPools?.length > 0 ? (
-            <div className="p3 mb-10 mt-4 flex h-auto flex-col gap-3 rounded-2xl bg-text2 px-7 py-10 text-center sm:mt-6 sm:gap-4">
+            <div className="p3 mb-10 mt-4 flex h-auto flex-col gap-3 rounded-2xl bg-text2 px-3 py-5 md:px-7 md:py-10 text-center sm:mt-6 sm:gap-4">
               {/* Pagination UI */}
               {userPools.length > itemsPerPage && (
                 <div className="mb-3 flex items-center justify-between px-4">
@@ -441,7 +442,7 @@ const CryptoSavings: React.FC = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   whileHover={{ scale: 1.01 }}
-                  className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-3xl border border-gray-300 bg-white p-3 transition-all hover:bg-gray-50 sm:gap-3 sm:p-4"
+                  className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-xl md:rounded-3xl border border-gray-300 bg-white p-3 transition-all hover:bg-gray-50 sm:gap-3 sm:p-4"
                 >
                   <div className="flex justify-between text-xs font-medium text-gray-500 sm:text-sm">
                     <p>Savings Token: {pools?.symbol}</p>

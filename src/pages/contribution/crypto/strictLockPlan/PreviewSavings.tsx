@@ -139,7 +139,7 @@ const PreviewSavings = () => {
         <div className="mt-[2.5em] flex w-full flex-col gap-4">
           {/* Title */}
           <div className="flex items-start">
-            <div className="flex flex-col items-center text-left">
+            <div className="flex flex-col items-start text-left">
               <h2 className="text-sm font-semibold text-gray-500">Title</h2>
               <p className="text-lg font-bold">{formData.reasonForSaving}</p>
             </div>
@@ -147,7 +147,7 @@ const PreviewSavings = () => {
 
           {/* Interest Rate and Withdrawal Day */}
           <section className="flex w-full flex-col gap-2 md:flex-row md:gap-5">
-            <div className="flex items-center gap-1 md:gap-2">
+            <div className="hidden items-center gap-1 md:gap-2">
               <h2 className="text-sm font-semibold text-gray-500">
                 Interest Rate
               </h2>

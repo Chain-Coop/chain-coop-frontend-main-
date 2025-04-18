@@ -91,7 +91,7 @@ const ViewCryptoContribution = () => {
               </div>
 
               <div className="mt-[1.5em] flex flex-col items-center justify-center gap-4 text-center text-text3">
-                <p className="flex w-[50%] items-center justify-center gap-1 rounded-lg border-[1px] border-dashed border-text2 py-4 text-sm font-bold text-text2">
+                <p className="flex w-full lg:w-[50%] items-center justify-center gap-1 rounded-lg border-[1px] border-dashed border-text2 py-4 text-sm font-bold text-text2">
                   <img src={Naira} alt="naira-symbol" />
                   Naira Equivalent: <span>NGN 8000</span>
                 </p>
@@ -104,11 +104,11 @@ const ViewCryptoContribution = () => {
               </div>
 
               <section className="mt-5">
-                <div className="flex justify-between">
+                <div className="flex justify-between gap-2 md:gap-4">
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="whitespace-nowrap rounded-lg border-2 border-gray-200 bg-inherit bg-text2 px-[1.5em] py-[5px] text-lg font-semibold text-white shadow-lg lg:px-[3em] lg:py-[13px]"
+                    className="whitespace-nowrap rounded-lg flex-1 border-2 border-gray-200 bg-inherit bg-text2 px-[1.5em] py-[5px] text-lg font-semibold text-white shadow-lg lg:px-[3em] lg:py-[13px]"
                     onClick={() => setIsFundModalOpen(true)}
                   >
                     Fund
@@ -128,7 +128,7 @@ const ViewCryptoContribution = () => {
                         },
                       )
                     }
-                    className="whitespace-nowrap rounded-lg border-2 border-gray-200 bg-inherit px-[1.5em] py-[5px] text-lg font-semibold shadow-lg lg:px-[3em] lg:py-[13px]"
+                    className="whitespace-nowrap rounded-lg flex-1 border-2 border-gray-200 bg-inherit px-[1.5em] py-[5px] text-lg font-semibold shadow-lg lg:px-[3em] lg:py-[13px]"
                   >
                     Withdraw
                   </motion.button>
