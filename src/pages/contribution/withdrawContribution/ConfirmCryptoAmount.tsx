@@ -62,7 +62,7 @@ const ConfirmCryptoAmount: React.FC = () => {
 
   const handleSuccessModalClose = () => {
     setIsSuccessModalOpen(false);
-    navigate("/dashboard/contribution");
+    navigate("/dashboard/contribution/main/crypto_contribution");
   };
 
   return (
@@ -92,7 +92,7 @@ const ConfirmCryptoAmount: React.FC = () => {
             <p className="text-sm font-semibold text-gray-800">{symbol} {amount}</p>
           </div>
           <hr className="my-4 border-gray-300" />
-          <div className="flex justify-between">
+          <div className="hidden justify-between">
             <p className="text-sm font-medium text-gray-600">
               Contribution Plan
             </p>
