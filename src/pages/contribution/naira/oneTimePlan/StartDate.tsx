@@ -84,9 +84,8 @@ const StartDate: React.FC = () => {
       startDate: today,
       endDate,
       currency: currency,
-      // savingsType: savingsType,
       contributionType: contributionType,
-      savingsType: "Strict",
+      savingsType: "One-time",
     };
 
     try {
