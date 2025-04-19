@@ -139,14 +139,17 @@ export const useCryptoWallet = () => {
     error,
     fetch,
   } = useBalanceFetcher(
-    (state: any) => state.kyc,
+    (state: any) => state.web3,
     Web3Slices.GetTotalCryptoWalletBalance,
     { refreshInterval: 30000 },
   );
+  useEffect(() => {
+    //console.log('Web3 State:', cryptoState);
+  }, [cryptoState]);
 
   const Balance =
     cryptoState?.walletMessage === "No Wallet found"
-      ? 0
+      ? "----"
       : cryptoState?.cryptoBalance || 0;
 
   return {
@@ -164,7 +167,7 @@ export const useCryptoWallet = () => {
 const useDataFetcher = (selector: (state: any) => any, fetchAction: any) => {
   const dispatch = useDispatch<AppDispatch>();
   const data = useSelector(selector);
-  const { loading, error } = useSelector((state: any) => state.kyc);
+  const { loading, error } = useSelector((state: any) => state.web3);
 
   const fetch = useCallback(() => {
     dispatch(fetchAction());
@@ -179,7 +182,7 @@ const useDataFetcher = (selector: (state: any) => any, fetchAction: any) => {
 
 export const useCryptoWalletDetails = () => {
   const { data, loading, error } = useDataFetcher(
-    (state: any) => state.kyc.cryptoWalletDetails,
+    (state: any) => state.web3.cryptoWalletDetails,
     Web3Slices.GetCryptoWalletDetails,
   );
   return { cryptoWalletDetails: data, loading, error };
@@ -187,7 +190,7 @@ export const useCryptoWalletDetails = () => {
 
 export const useAllUserPools = () => {
   const { data, loading, error } = useDataFetcher(
-    (state: any) => state.kyc.userPools,
+    (state: any) => state.web3.userPools,
     Web3Slices.GetAllUserPools,
   );
   return { userPools: data, loading, error };
@@ -195,7 +198,7 @@ export const useAllUserPools = () => {
 
 export const useAllUserTokens = () => {
   const { data, loading, error } = useDataFetcher(
-    (state: any) => state.kyc.userTokens,
+    (state: any) => state.web3.userTokens,
     Web3Slices.GetAllUserTokens,
   );
   return { userTokens: data, loading, error };

@@ -82,7 +82,7 @@ const Contribution: React.FC = () => {
   const handleSavingsTypeChange = (type: "naira" | "crypto") => {
     setSavingsType(type);
     if (type === "crypto") {
-      navigate("/dashboard/contribution/crypto_contribution");
+      navigate("/dashboard/contribution/main/crypto_contribution");
     }
     setIsModalOpen(false);
   };

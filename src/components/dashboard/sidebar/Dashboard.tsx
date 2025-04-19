@@ -4,7 +4,8 @@ import "../../../../src/App.css";
 import DashboardNav from "../../common/DashboardNav";
 import Sidebar from "./Sidebar";
 import ContributionDetails from "../../../pages/contribution/ViewContribution";
-import CryptoContribution from "../../../pages/contribution/crypto/Contribution";
+import CryptoContributionDetails from "../../../pages/contribution/crypto/ViewContribution";
+import CryptoContribution from "../../../pages/contribution/crypto/main/Contribution";
 import Right from "../rightbar/Right";
 import Purpose from "../../../pages/contribution/naira/flexiblePlan/Purpose";
 import CryptoPurpose from "../../../pages/contribution/crypto/flexiblePlan/ContributionCurrencyType";
@@ -30,8 +31,10 @@ import SavingsAmount from "../../../pages/contribution/naira/flexiblePlan/Saving
 import LockSavingsAmount from "../../../pages/contribution/naira/lockPlan/SavingsAmount";
 import StrictLockSavingsAmount from "../../../pages/contribution/naira/strictLockPlan/SavingsAmount";
 import WithdrawContribution from "../../../pages/contribution/withdrawContribution/WithdrawContribution";
+import WithdrawCryptoContribution from "../../../pages/contribution/withdrawContribution/WithdrawCryptoContribution";
 import WithdrawCryptoWallet from "../../../pages/wallet/crypto/withdraw";
 import ConfirmWithdrawal from "../../../pages/contribution/withdrawContribution/ConfirmAmount";
+import ConfirmCryptoWithdrawal from "../../../pages/contribution/withdrawContribution/ConfirmCryptoAmount";
 import ContributionCurrencyType from "../../../pages/contribution/naira/flexiblePlan/ContributionCurrencyType";
 import LockContributionCurrencyType from "../../../pages/contribution/naira/lockPlan/ContributionCurrencyType";
 import StrictLockContributionCurrencyType from "../../../pages/contribution/naira/strictLockPlan/ContributionCurrencyType";
@@ -90,8 +93,12 @@ const Dashboard = () => {
             element={<ContributionDetails />}
           />
           <Route
-            path="contribution/crypto_contribution"
+            path="contribution/main/crypto_contribution"
             element={<CryptoContribution />}
+          />
+          <Route
+            path="contribution/crypto_contribution_details"
+            element={<CryptoContributionDetails />}
           />
           <Route
             path="contribution/flexible/crypto_purpose"
@@ -205,6 +212,16 @@ const Dashboard = () => {
           <Route
             path="contribution/strict_lock/preview_savings"
             element={<StrictLockCryptoPreviewSavings />}
+          />
+
+          <Route
+            path="/contribution/withdraw_crypto_contribution"
+            element={<WithdrawCryptoContribution />}
+          />
+
+          <Route
+            path="/contribution/withdraw_contribution/confirm_crypto_amount"
+            element={<ConfirmCryptoWithdrawal />}
           />
 
           <Route

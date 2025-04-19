@@ -8,7 +8,7 @@ import cryptoSavings from "../../../../Assets/png/dashboard/cryptSavings.png";
 
 const StartDate: React.FC = () => {
   const today = new Date().toISOString().split("T")[0];
-  const [endDate, setEndDate] = useState("");
+  const [duration, setDuration] = useState("");
   const [customEndDate, setCustomEndDate] = useState("");
   const [savingFrequency, setSavingFrequency] = useState<string>("");
   const [error, setError] = useState("");
@@ -16,7 +16,7 @@ const StartDate: React.FC = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { purpose, plan, amount, currency } = location.state || {};
+  const { tokenName } = location.state || {};
 
   const handleFrequencySelect = (frequency: string) => {
     setSavingFrequency(frequency);
@@ -25,7 +25,7 @@ const StartDate: React.FC = () => {
   const handleNext = async (e: React.MouseEvent) => {
     e.preventDefault();
 
-    const finalEndDate = customEndDate || endDate;
+    const finalEndDate = customEndDate || duration;
 
     if (!finalEndDate) {
       setError("Please select or enter an end date.");
@@ -43,8 +43,9 @@ const StartDate: React.FC = () => {
     const formData = {
       ...location.state,
       startDate: today,
-      endDate: finalEndDate,
+      duration: finalEndDate,
       savingFrequency,
+      lockedType: location.state?.lockedType,
     };
 
     try {
@@ -67,7 +68,7 @@ const StartDate: React.FC = () => {
         <header className="mt-[1.5em] flex flex-col lg:mt-[3em]">
           <h1 className="text-2xl font-bold">Lock Savings</h1>
           <p className="mt-[1em] font-medium">
-            You are about to save in ** crypto currency
+            You are about to save in {tokenName} crypto currency
           </p>
         </header>
         <section className="mt-[2.5em] flex justify-center">
@@ -145,9 +146,9 @@ const StartDate: React.FC = () => {
             </label>
             <input
               type="date"
-              id="endDate"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+              id="duration"
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
               required
               className="input mb-5 h-[4em] w-full rounded-lg border-[2px] border-gray-300 px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
             />

@@ -254,7 +254,7 @@ export const useAllNotification = () => {
 
 export const useAllUserPools = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { userPools, loading } = useSelector((state: any) => state?.kyc);
+  const { userPools, loading } = useSelector((state: any) => state?.web3);
   const { profileDetails } = useUserProfile();
 
   const fetchUserPools = useCallback(() => {

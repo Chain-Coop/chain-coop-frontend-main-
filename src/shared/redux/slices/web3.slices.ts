@@ -56,6 +56,29 @@ export const CreatePool = createAsyncThunk(
   },
 );
 
+{
+  /*export const CreatePool = createAsyncThunk(
+  "web3/createPool",
+  async (body: { formData: any; pin: string }, thunkAPI) => {
+    try {
+      const { formData, pin } = body;
+
+      const payload = {
+        ...formData,
+        pin,
+      };
+
+      const data = await web3Services.CreatePool(payload);
+      return data;
+    } catch (error: any) {
+      const message = error.msg || "An error occurred while creating the pool";
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);*/
+}
+
 export const GetAllUserPools = createAsyncThunk(
   "web3/getAllUserPools",
   async (_, thunkAPI) => {
@@ -74,6 +97,20 @@ export const UpdateUserPool = createAsyncThunk(
   async (body: any, thunkAPI) => {
     try {
       const data = await web3Services.UpdateUserPool(body);
+      return data;
+    } catch (error: any) {
+      const message = error.msg;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
+export const WithdrawUserPool = createAsyncThunk(
+  "web3/withdraw",
+  async (body: any, thunkAPI) => {
+    try {
+      const data = await web3Services.WithdrawUserPool(body);
       return data;
     } catch (error: any) {
       const message = error.msg;
@@ -217,6 +254,21 @@ export const Web3Slices = createSlice({
         state.loading = false;
         state.updateRegisteredUserPool = null;
         state.error = (action.payload as string) || "Failed to update Pool";
+      })
+
+      .addCase(WithdrawUserPool.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(WithdrawUserPool.fulfilled, (state, action) => {
+        state.loading = false;
+        state.updateRegisteredUserPool = action.payload.data;
+        state.error = null;
+      })
+      .addCase(WithdrawUserPool.rejected, (state, action) => {
+        state.loading = false;
+        state.updateRegisteredUserPool = null;
+        state.error = (action.payload as string) || "Failed to withdraw Pool";
       })
 
       .addCase(GetAllUserTokens.pending, (state) => {

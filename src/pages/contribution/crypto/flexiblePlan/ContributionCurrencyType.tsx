@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Alert } from "@mui/material";
 import etherium from "../../../../Assets/svg/dashboard/contribution/etherum.svg";
 import usdc from "../../../../Assets/svg/dashboard/Group 99764.png";
@@ -8,16 +8,24 @@ import usdt from "../../../../Assets/svg/dashboard/usdc.svg";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 
+interface LocationState {
+  lockedType?: number;
+}
+
 const ContributionCurrencyType = () => {
   const [hoveredPlan, setHoveredPlan] = useState<number | null>(null);
   const [formData, setFormData] = useState({
-    title: "",
+    reasonForSaving: "",
     description: "",
     currency: "",
-    cryptoType: "",
+    tokenId: "",
+    tokenName: "",
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state as LocationState;
+  const { lockedType } = state || {};
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -33,19 +41,25 @@ const ContributionCurrencyType = () => {
     setFormData((prev) => ({
       ...prev,
       currency: category,
-      cryptoType: "",
+      tokenId: "",
     }));
   };
 
-  const handleCryptoTypeSelect = (cryptoType: string) => {
+  const handleCryptoTypeSelect = (tokenName: string) => {
+    const tokenMapping: Record<string, string> = {
+      LISK: "1",
+      USDC: "2",
+      USDT: "3",
+    };
+
     setFormData((prev) => ({
       ...prev,
-      cryptoType,
+      tokenId: tokenMapping[tokenName],
+      tokenName,
     }));
   };
-
   const handleNext = () => {
-    if (!formData.title) {
+    if (!formData.reasonForSaving) {
       setError("Please enter a savings title");
       return;
     }
@@ -55,14 +69,17 @@ const ContributionCurrencyType = () => {
       return;
     }
 
-    if (formData.currency === "Cryptocurrency" && !formData.cryptoType) {
+    if (formData.currency === "Cryptocurrency" && !formData.tokenId) {
       setError("Please select a cryptocurrency type");
       return;
     }
 
     setError("");
     navigate("/dashboard/contribution/flexible_crypto/date", {
-      state: formData,
+      state: {
+        ...formData,
+        lockedType,
+      },
     });
   };
 
@@ -92,8 +109,8 @@ const ContributionCurrencyType = () => {
               </label>
               <input
                 type="text"
-                id="title"
-                value={formData.title}
+                id="reasonForSaving"
+                value={formData.reasonForSaving}
                 onChange={handleInputChange}
                 required
                 placeholder="Buy a car"
@@ -187,12 +204,12 @@ const ContributionCurrencyType = () => {
                     key={type}
                     onClick={() => handleCryptoTypeSelect(type)}
                     className={`flex w-[9em] items-center gap-2 rounded-md bg-[#ECE6F2] px-6 font-medium transition-all duration-300 lg:py-1
-                      ${
-                        formData.cryptoType === type
-                          ? "border-2 border-text2"
-                          : "hover:bg-text2 hover:text-white"
-                      }
-                      transform uppercase hover:scale-105 active:scale-95`}
+        ${
+          formData.tokenName === type
+            ? "border-2 border-text2"
+            : "hover:bg-text2 hover:text-white"
+        }
+        transform uppercase hover:scale-105 active:scale-95`}
                   >
                     <img src={icon} alt={type} className="h-8 w-8" />
                     <span>{type}</span>

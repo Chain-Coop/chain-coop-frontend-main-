@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Alert } from "@mui/material";
 import etherium from "../../../../Assets/svg/dashboard/contribution/etherum.svg";
 import usdc from "../../../../Assets/svg/dashboard/Group 99764.png";
@@ -8,16 +8,24 @@ import usdt from "../../../../Assets/svg/dashboard/usdc.svg";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 
+interface LocationState {
+  lockedType?: number;
+}
+
 const LockPlanContribution = () => {
   const [hoveredPlan, setHoveredPlan] = useState<number | null>(null);
   const [formData, setFormData] = useState({
-    title: "",
+    reasonForSaving: "",
     description: "",
     currency: "",
-    cryptoType: "",
+    tokenId: "",
+    tokenName: "",
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state as LocationState;
+  const { lockedType } = state || {};
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -33,19 +41,25 @@ const LockPlanContribution = () => {
     setFormData((prev) => ({
       ...prev,
       currency: category,
-      cryptoType: "",
+      tokenId: "",
     }));
   };
 
-  const handleCryptoTypeSelect = (cryptoType: string) => {
+  const handleCryptoTypeSelect = (tokenName: string) => {
+    const tokenMapping: Record<string, string> = {
+      LISK: "1",
+      USDC: "2",
+      USDT: "3",
+    };
+
     setFormData((prev) => ({
       ...prev,
-      cryptoType,
+      tokenId: tokenMapping[tokenName],
+      tokenName,
     }));
   };
-
   const handleNext = () => {
-    if (!formData.title) {
+    if (!formData.reasonForSaving) {
       setError("Please enter a savings title");
       return;
     }
@@ -55,14 +69,17 @@ const LockPlanContribution = () => {
       return;
     }
 
-    if (formData.currency === "Cryptocurrency" && !formData.cryptoType) {
+    if (formData.currency === "Cryptocurrency" && !formData.tokenId) {
       setError("Please select a cryptocurrency type");
       return;
     }
 
     setError("");
     navigate("/dashboard/contribution/lock/date", {
-      state: formData,
+      state: {
+        ...formData,
+        lockedType,
+      },
     });
   };
 
@@ -93,8 +110,8 @@ const LockPlanContribution = () => {
               </label>
               <input
                 type="text"
-                id="title"
-                value={formData.title}
+                id="reasonForSaving"
+                value={formData.reasonForSaving}
                 onChange={handleInputChange}
                 required
                 placeholder="Buy a car"
@@ -189,7 +206,7 @@ const LockPlanContribution = () => {
                     onClick={() => handleCryptoTypeSelect(type)}
                     className={`flex w-[9em] items-center gap-2 rounded-md bg-[#ECE6F2] px-6 font-medium transition-all duration-300 lg:py-1
                       ${
-                        formData.cryptoType === type
+                        formData.tokenName === type
                           ? "border-2 border-text2"
                           : "hover:bg-text2 hover:text-white"
                       }
