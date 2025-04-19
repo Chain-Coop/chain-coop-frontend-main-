@@ -217,7 +217,7 @@ const PreviewSavings = () => {
             {/* Saving Frequency */}
             <div className="h-[83px] w-full rounded-lg bg-[#ECE6F242] p-4 md:w-[210px] md:p-2">
               <h2 className="text-sm font-semibold text-gray-500">
-                Saving Frequency
+                Contribution Schedule
               </h2>
               <p className="font-bold">{formData.savingFrequency}</p>
             </div>

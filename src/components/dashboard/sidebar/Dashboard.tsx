@@ -118,7 +118,7 @@ const Dashboard = () => {
             element={<LockCryptoPurpose />}
           />
           <Route
-            path="contribution/lock/date"
+            path="contribution/lock/cryoto_date"
             element={<LockCryptoStartDate />}
           />
           <Route
