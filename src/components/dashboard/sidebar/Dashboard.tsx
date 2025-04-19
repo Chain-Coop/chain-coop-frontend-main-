@@ -102,7 +102,7 @@ const Dashboard = () => {
             element={<LockCryptoPurpose />}
           />
           <Route
-            path="contribution/lock/date"
+            path="contribution/lock/cryoto_date"
             element={<LockCryptoStartDate />}
           />
           <Route
@@ -228,11 +228,16 @@ const Dashboard = () => {
           <Route path="ajo/create/open-group" element={<CreateOpenGroup />} />
           {/* <Route path="ajo/create/closed-group" element={<CreateClosedGroup />} /> */}
           <Route path="ajo/history" element={<GroupHistoryPage />} />
-          <Route path="ajo/open-group/members" element={<InviteMembersPage />} />
-          <Route path="ajo/:name/transactions" element={<TransactionHistoryPage />} />
+          <Route
+            path="ajo/open-group/members"
+            element={<InviteMembersPage />}
+          />
+          <Route
+            path="ajo/:name/transactions"
+            element={<TransactionHistoryPage />}
+          />
           <Route path="ajo/:name/members" element={<MembersPage />} />
           <Route path="ajo/:name" element={<SavingsDetail />} />
-          
 
           <Route path="wallet/*" element={<Wallet />} />
           <Route path="wallet/crypto_wallet" element={<CryptoMain />} />
@@ -242,7 +247,10 @@ const Dashboard = () => {
           <Route path="wallet/select-account" element={<SelectAccount />} />
           <Route path="wallet/verify-account" element={<VerifyAccount />} />
 
-          <Route path="wallet/crypto/withdraw" element={<WithdrawCryptoWallet />} />
+          <Route
+            path="wallet/crypto/withdraw"
+            element={<WithdrawCryptoWallet />}
+          />
 
           <Route path="wallet/fund" element={<FundWallet />} />
           <Route

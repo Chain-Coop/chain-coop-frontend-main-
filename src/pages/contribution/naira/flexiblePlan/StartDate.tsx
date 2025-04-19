@@ -45,7 +45,8 @@ interface ContributionResponse {
 const StartDate: React.FC = () => {
   const { useWalletCards } = useUserCard();
   const { profileDetails } = useUserProfile();
-  const today = formatDate(new Date());
+  const now = new Date();
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
   const [endDate, setEndDate] = useState("");
   const [availableEndDates, setAvailableEndDates] = useState<string[]>([]);
   const [customEndDate, setCustomEndDate] = useState("");

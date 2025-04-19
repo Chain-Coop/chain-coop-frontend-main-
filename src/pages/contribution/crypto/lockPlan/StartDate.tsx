@@ -78,7 +78,7 @@ const StartDate: React.FC = () => {
         <section className="mt-[2em]">
           <div>
             <h2 className="text-lg font-bold text-memt1">
-              Select Saving Frequency
+              Select Contribution Schedule
             </h2>
           </div>
           <div className="mt-[1.5em] flex flex-col items-center justify-center gap-4 md:flex-row md:items-start md:justify-start lg:flex-wrap">
