@@ -43,6 +43,15 @@ import OneTimeCurrencyType from "../../../pages/contribution/naira/oneTimePlan/C
 import OneTimePurpose from "../../../pages/contribution/naira/oneTimePlan/Purpose";
 import OneTimeAmount from "../../../pages/contribution/naira/oneTimePlan/SavingsAmount";
 import OneTimeStartDate from "../../../pages/contribution/naira/oneTimePlan/StartDate";
+import OneTimeFlexibleCryptoPurpose from "../../../pages/contribution/crypto/oneTimePlan/flexiblePlan/ContributionCurrencyType";
+import OneTimeFlexibleCryptoStartDate from "../../../pages/contribution/crypto/oneTimePlan/flexiblePlan/StartDate";
+import OneTimeFlexibleCryptoSourceFunds from "../../../pages/contribution/crypto/oneTimePlan/flexiblePlan/SourceFunds";
+import OneTimeFlexibleCryptoPreviewSavings from "../../../pages/contribution/crypto/oneTimePlan/flexiblePlan/PreviewSavings";
+import OneTimeStrictLockCryptoPurpose from "../../../pages/contribution/crypto/oneTimePlan/strictLockPlan/ContributionCurrencyType";
+import OneTimeStrictLockCryptoStartDate from "../../../pages/contribution/crypto/oneTimePlan/strictLockPlan/StartDate";
+import OneTimeStrictLockCryptoSourceFunds from "../../../pages/contribution/crypto/oneTimePlan/strictLockPlan/SourceFunds";
+import OneTimeStrictLockCryptoPreviewSavings from "../../../pages/contribution/crypto/oneTimePlan/strictLockPlan/PreviewSavings";
+
 
 //import CryptoMain from "../wallet/crypto/main/CryptoMain";
 
@@ -222,6 +231,42 @@ const Dashboard = () => {
           <Route
             path="/contribution/withdraw_contribution/confirm_crypto_amount"
             element={<ConfirmCryptoWithdrawal />}
+          />
+
+          {/* One-Time Flexible Plan Routes */}
+          <Route
+            path="contribution/one_time_plan/flexible/crypto_purpose"
+            element={<OneTimeFlexibleCryptoPurpose />}
+          />
+          <Route
+            path="contribution/one_time_plan/flexible/date"
+            element={<OneTimeFlexibleCryptoStartDate />}
+          />
+          <Route
+            path="contribution/one_time_plan/flexible/source_funds"
+            element={<OneTimeFlexibleCryptoSourceFunds />}
+          />
+          <Route
+            path="contribution/one_time_plan/flexible/preview_savings"
+            element={<OneTimeFlexibleCryptoPreviewSavings />}
+          />
+
+          {/* One-Time Strict Lock Plan Routes */}
+          <Route
+            path="contribution/one_time_plan/strict_lock/crypto_purpose"
+            element={<OneTimeStrictLockCryptoPurpose />}
+          />
+          <Route
+            path="contribution/one_time_plan/strict_lock/date"
+            element={<OneTimeStrictLockCryptoStartDate />}
+          />
+          <Route
+            path="contribution/one_time_plan/strict_lock/source_funds"
+            element={<OneTimeStrictLockCryptoSourceFunds />}
+          />
+          <Route
+            path="contribution/one_time_plan/strict_lock/preview_savings"
+            element={<OneTimeStrictLockCryptoPreviewSavings />}
           />
 
           <Route

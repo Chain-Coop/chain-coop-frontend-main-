@@ -117,9 +117,6 @@ const CryptoSavings: React.FC = () => {
 
   const handleContributionTypeChange = (type: "auto" | "one-time") => {
     setContributionType(type);
-    if (type === "one-time") {
-      navigate("/dashboard/contribution/crypto/one_time_savings");
-    }
   };
 
   const toggleModal = () => {
@@ -277,7 +274,6 @@ const CryptoSavings: React.FC = () => {
                 <Button
                   variant="text"
                   onClick={() => handleContributionTypeChange("one-time")}
-                  disabled={true}
                   className={`relative flex w-fit items-center px-2 py-3 text-center normal-case transition-all duration-300 hover:shadow-lg sm:px-3 md:px-3.5 lg:px-4 xl:px-5 ${
                     contributionType === "one-time"
                       ? "bg-text2 text-white"
@@ -293,15 +289,13 @@ const CryptoSavings: React.FC = () => {
                   >
                     One-Time Savings
                   </Typography>
-                  <span className="absolute -left-10 -top-2.5 flex items-center justify-center rounded-lg bg-red-900 px-3 py-1 text-center text-white">
-                    Coming soon
-                  </span>
                 </Button>
               </div>
             </section>
 
-            {/* Auto Savings Options */}
-            {contributionType === "auto" && (
+            {/* Savings Options */}
+            {(contributionType === "auto" ||
+              contributionType === "one-time") && (
               <section className="mb-8">
                 <Typography className="mb-4 text-left font-medium">
                   Choose savings type
@@ -309,10 +303,14 @@ const CryptoSavings: React.FC = () => {
 
                 <div className="flex flex-col gap-4">
                   <Link
-                    to="/dashboard/contribution/flexible/crypto_purpose"
+                    to={
+                      contributionType === "auto"
+                        ? "/dashboard/contribution/flexible/crypto_purpose"
+                        : "/dashboard/contribution/one_time_plan/flexible/crypto_purpose"
+                    }
                     state={{
                       lockedType: 0,
-                      contributionType: "auto",
+                      contributionType: contributionType,
                     }}
                     className="w-full"
                   >
@@ -329,45 +327,54 @@ const CryptoSavings: React.FC = () => {
                       </Typography>
                       <div
                         className={`rounded border border-text2 px-8 py-2 text-sm font-medium
-                        transition-all duration-300 ease-in-out
-                        ${hoveredSavingsType === "Flexible" ? "scale-105 transform bg-text2 text-white shadow-md" : ""}
-                      `}
+              transition-all duration-300 ease-in-out
+              ${hoveredSavingsType === "Flexible" ? "scale-105 transform bg-text2 text-white shadow-md" : ""}
+            `}
                       >
                         Select
                       </div>
                     </motion.div>
                   </Link>
 
-                  <Link
-                    to="/dashboard/contribution/lock/crypto_purpose"
-                    state={{ lockedType: 1, contributionType: "auto" }}
-                    className="w-full"
-                  >
-                    <motion.div
-                      whileHover={{ scale: 1.01 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="flex items-center justify-between rounded-lg border border-gray-400 bg-white p-4 shadow-md transition-all"
-                      onMouseEnter={() => setHoveredSavingsType("Lock")}
-                      onMouseLeave={() => setHoveredSavingsType(null)}
+                  {contributionType === "auto" && (
+                    <Link
+                      to="/dashboard/contribution/lock/crypto_purpose"
+                      state={{ lockedType: 1, contributionType: "auto" }}
+                      className="w-full"
                     >
-                      <Lock />
-                      <Typography className="text-lg font-medium text-gray-800">
-                        Lock Savings
-                      </Typography>
-                      <div
-                        className={`rounded border border-text2 px-8 py-2 text-sm font-medium
-                        transition-all duration-300 ease-in-out
-                        ${hoveredSavingsType === "Lock" ? "scale-105 transform bg-text2 text-white shadow-md" : ""}
-                      `}
+                      <motion.div
+                        whileHover={{ scale: 1.01 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="flex items-center justify-between rounded-lg border border-gray-400 bg-white p-4 shadow-md transition-all"
+                        onMouseEnter={() => setHoveredSavingsType("Lock")}
+                        onMouseLeave={() => setHoveredSavingsType(null)}
                       >
-                        Select
-                      </div>
-                    </motion.div>
-                  </Link>
+                        <Lock />
+                        <Typography className="text-lg font-medium text-gray-800">
+                          Lock Savings
+                        </Typography>
+                        <div
+                          className={`rounded border border-text2 px-8 py-2 text-sm font-medium
+                transition-all duration-300 ease-in-out
+                ${hoveredSavingsType === "Lock" ? "scale-105 transform bg-text2 text-white shadow-md" : ""}
+              `}
+                        >
+                          Select
+                        </div>
+                      </motion.div>
+                    </Link>
+                  )}
 
                   <Link
-                    to="/dashboard/contribution/strict_lock/crypto_purpose"
-                    state={{ lockedType: 2, contributionType: "auto" }}
+                    to={
+                      contributionType === "auto"
+                        ? "/dashboard/contribution/strict_lock/crypto_purpose"
+                        : "/dashboard/contribution/one_time_plan/strict_lock/crypto_purpose"
+                    }
+                    state={{
+                      lockedType: 2,
+                      contributionType: contributionType,
+                    }}
                     className="w-full"
                   >
                     <motion.div
@@ -382,10 +389,10 @@ const CryptoSavings: React.FC = () => {
                         Strict Lock Savings
                       </Typography>
                       <div
-                        className={`rounded border  border-text2 px-8 py-2 text-sm font-medium
-        transition-all duration-300 ease-in-out
-        ${hoveredSavingsType === "Strict" ? "scale-105 transform bg-text2 text-white shadow-md" : ""}
-      `}
+                        className={`rounded border border-text2 px-8 py-2 text-sm font-medium
+              transition-all duration-300 ease-in-out
+              ${hoveredSavingsType === "Strict" ? "scale-105 transform bg-text2 text-white shadow-md" : ""}
+            `}
                       >
                         Select
                       </div>
@@ -404,13 +411,17 @@ const CryptoSavings: React.FC = () => {
             <h1 className="text-lg font-bold sm:text-xl lg:text-2xl">
               My Savings
             </h1>
-            <input className="hidden border-2 border-[#F5F0F0] py-1 px-3 md:px-5 md:py-3 rounded-lg placeholder:text-sm" type="text" placeholder="Search by categories" />
+            <input
+              className="hidden rounded-lg border-2 border-[#F5F0F0] px-3 py-1 placeholder:text-sm md:px-5 md:py-3"
+              type="text"
+              placeholder="Search by categories"
+            />
           </header>
 
           {poolsLoading ? (
             <ContributionListSkeleton />
           ) : userPools?.length > 0 ? (
-            <div className="p3 mb-10 mt-4 flex h-auto flex-col gap-3 rounded-2xl bg-text2 px-3 py-5 md:px-7 md:py-10 text-center sm:mt-6 sm:gap-4">
+            <div className="p3 mb-10 mt-4 flex h-auto flex-col gap-3 rounded-2xl bg-text2 px-3 py-5 text-center sm:mt-6 sm:gap-4 md:px-7 md:py-10">
               {/* Pagination UI */}
               {userPools.length > itemsPerPage && (
                 <div className="mb-3 flex items-center justify-between px-4">
@@ -442,7 +453,7 @@ const CryptoSavings: React.FC = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   whileHover={{ scale: 1.01 }}
-                  className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-xl md:rounded-3xl border border-gray-300 bg-white p-3 transition-all hover:bg-gray-50 sm:gap-3 sm:p-4"
+                  className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-xl border border-gray-300 bg-white p-3 transition-all hover:bg-gray-50 sm:gap-3 sm:p-4 md:rounded-3xl"
                 >
                   <div className="flex justify-between text-xs font-medium text-gray-500 sm:text-sm">
                     <p>Savings Token: {pools?.symbol}</p>
