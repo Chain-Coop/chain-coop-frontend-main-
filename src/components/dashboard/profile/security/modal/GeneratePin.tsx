@@ -10,8 +10,10 @@ import {
   Typography,
   Button,
   DialogFooter,
+  IconButton,
 } from "@material-tailwind/react";
 import { MoveRight } from "lucide-react";
+import { IoMdClose } from "react-icons/io";
 
 interface GeneratePinModalProps {
   isOpen: boolean;
@@ -49,7 +51,17 @@ const GeneratePin = ({
       size="sm"
       className="overflow-y-auto py-3 "
     >
-      <DialogHeader className="flex flex-col gap-2 px-2 text-center sm:px-4">
+      <DialogHeader className="relative flex justify-center px-2 text-center sm:px-4">
+        <div className="absolute left-2 top-2">
+          <IconButton
+            variant="text"
+            color="gray"
+            onClick={onClose}
+            className="h-10 w-10 p-0 hover:bg-gray-100"
+          >
+            <IoMdClose size={24} className="text-text2" />
+          </IconButton>
+        </div>
         <Typography variant="h1" className="text-2xl font-semibold">
           Change Card Pin
         </Typography>

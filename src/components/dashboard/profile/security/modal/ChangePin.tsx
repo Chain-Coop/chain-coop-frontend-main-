@@ -11,7 +11,9 @@ import {
   DialogFooter,
   Button,
   Typography,
+  IconButton,
 } from "@material-tailwind/react";
+import { IoMdClose } from "react-icons/io";
 
 interface ChangePinProps {
   otp: string;
@@ -65,11 +67,25 @@ const ChangePin: React.FC<ChangePinProps> = ({
 
   return (
     <Dialog size="sm" open={isOpen} handler={onClose}>
-      <DialogHeader className="flex justify-center text-center">
-        <Typography variant="h1" className="text-2xl font-bold">
-          Change Pin
-        </Typography>
-      </DialogHeader>
+      <div className="relative">
+        <IconButton
+          variant="text"
+          color="gray"
+          onClick={onClose}
+          className="absolute left-2 top-2 p-2"
+          placeholder=""
+          onPointerEnterCapture={() => {}}
+          onPointerLeaveCapture={() => {}}
+        >
+          <IoMdClose size={24} className="text-text2" />
+        </IconButton>
+
+        <DialogHeader className="flex justify-center pt-10 text-center">
+          <Typography variant="h1" className="text-2xl font-bold">
+            Change Pin
+          </Typography>
+        </DialogHeader>
+      </div>
 
       <DialogBody className="flex flex-col gap-4">
         <OtpInput

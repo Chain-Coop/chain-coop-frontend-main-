@@ -7,7 +7,9 @@ import {
   DialogBody,
   DialogFooter,
   Typography,
+  IconButton,
 } from "@material-tailwind/react";
+import { IoMdClose } from "react-icons/io";
 
 interface OtpInputProps {
   otp: string;
@@ -43,7 +45,20 @@ const OtpInput: React.FC<OtpInputProps> = ({
       handler={onClose}
       className="bg-[#E9E9E9] p-4 sm:p-6"
     >
-      <DialogHeader className="flex flex-col justify-center text-center">
+      <DialogHeader className="relative flex flex-col justify-center text-center">
+        <IconButton
+          variant="text"
+          color="gray"
+          onClick={onClose}
+          className="absolute left-2 top-2 h-10 w-10 p-2"
+          ripple={false}
+          placeholder=""
+          onPointerEnterCapture={() => {}}
+          onPointerLeaveCapture={() => {}}
+        >
+          <IoMdClose size={24} className="m-auto text-gray-700" />
+        </IconButton>
+
         <Typography variant="h4" className="text-xl font-semibold sm:text-2xl">
           Reset Password
         </Typography>

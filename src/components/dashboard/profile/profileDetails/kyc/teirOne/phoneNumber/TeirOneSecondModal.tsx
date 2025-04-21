@@ -10,7 +10,9 @@ import {
   Typography,
   Button,
   DialogFooter,
+  IconButton,
 } from "@material-tailwind/react";
+import { IoMdClose } from "react-icons/io";
 
 interface TierOneSecondModalProps {
   onClose: () => void;
@@ -46,7 +48,20 @@ const TierOneSecondModal: React.FC<TierOneSecondModalProps> = ({
 
   return (
     <Dialog open={open} handler={onClose} size="sm" className="bg-white py-4">
-      <DialogHeader className="justify-center">
+      <DialogHeader className="relative justify-center">
+        <IconButton
+          variant="text"
+          color="gray"
+          onClick={onClose}
+          className="absolute left-2 top-2 h-10 w-10 p-2"
+          ripple={false}
+          placeholder=""
+          onPointerEnterCapture={() => {}}
+          onPointerLeaveCapture={() => {}}
+        >
+          <IoMdClose size={24} className="m-auto text-gray-700" />
+        </IconButton>
+
         <Typography
           variant="h2"
           className="text-base font-bold leading-tight sm:text-lg md:text-lg"

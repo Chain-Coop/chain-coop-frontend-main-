@@ -81,7 +81,7 @@ const ResetPassword = () => {
           <div className="mt-[1em] h-16 lg:mt-[2em]">
             <Button
               onClick={ResendOtp}
-              className="w-[12em] rounded-full bg-text2 py-3 font-medium text-text5 sm:text-lg"
+              className="w-[12em] rounded-full bg-text2 py-3 font-medium normal-case text-text5 sm:text-lg"
               disabled={loading || timer > 0}
             >
               {getButtonText()}

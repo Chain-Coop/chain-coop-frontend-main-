@@ -166,7 +166,7 @@ const WhatsAppVerificationModal: React.FC<WhatsAppVerificationModalProps> = ({
             onClick={verifyCode}
             disabled={loading || code.length !== 6}
           >
-            {loading && "Verify"}
+            {loading ? "Verifying..." : "Verify"}
           </Button>
         </div>
       </DialogBody>

@@ -6,7 +6,9 @@ import {
   Dialog,
   DialogHeader,
   DialogBody,
+  IconButton,
 } from "@material-tailwind/react";
+import { IoMdClose } from "react-icons/io";
 
 interface TierOneFirstModalProps {
   isOpen: boolean;
@@ -25,7 +27,19 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
 }) => {
   return (
     <Dialog size="sm" open={isOpen} handler={onClose} className="bg-white">
-      <DialogHeader className="justify-center">
+      <DialogHeader className="relative justify-center pt-10">
+        <IconButton
+          variant="text"
+          color="gray"
+          onClick={onClose}
+          className="absolute left-2 top-2 h-10 w-10 min-w-[40px] p-0 hover:bg-gray-100"
+          ripple={false}
+          placeholder=""
+          onPointerEnterCapture={() => {}}
+          onPointerLeaveCapture={() => {}}
+        >
+          <IoMdClose size={24} className="m-auto text-gray-700" />
+        </IconButton>
         <div className="flex w-full justify-center">
           <img
             src={kyc}
