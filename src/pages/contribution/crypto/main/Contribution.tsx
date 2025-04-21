@@ -336,34 +336,39 @@ const CryptoSavings: React.FC = () => {
                     </motion.div>
                   </Link>
 
-                  {contributionType === "auto" && (
-                    <Link
-                      to="/dashboard/contribution/lock/crypto_purpose"
-                      state={{ lockedType: 1, contributionType: "auto" }}
-                      className="w-full"
+                  <Link
+                    to={
+                      contributionType === "auto"
+                        ? "/dashboard/contribution/lock/crypto_purpose"
+                        : "/dashboard/contribution/one_time_plan/lock/crypto_purpose"
+                    }
+                    state={{
+                      lockedType: 0,
+                      contributionType: contributionType,
+                    }}
+                    className="w-full"
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex items-center justify-between rounded-lg border border-gray-400 bg-white p-4 shadow-md transition-all"
+                      onMouseEnter={() => setHoveredSavingsType("Lock")}
+                      onMouseLeave={() => setHoveredSavingsType(null)}
                     >
-                      <motion.div
-                        whileHover={{ scale: 1.01 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="flex items-center justify-between rounded-lg border border-gray-400 bg-white p-4 shadow-md transition-all"
-                        onMouseEnter={() => setHoveredSavingsType("Lock")}
-                        onMouseLeave={() => setHoveredSavingsType(null)}
-                      >
-                        <Lock />
-                        <Typography className="text-lg font-medium text-gray-800">
-                          Lock Savings
-                        </Typography>
-                        <div
-                          className={`rounded border border-text2 px-8 py-2 text-sm font-medium
+                      <Lock />
+                      <Typography className="text-lg font-medium text-gray-800">
+                        Lock Savings
+                      </Typography>
+                      <div
+                        className={`rounded border border-text2 px-8 py-2 text-sm font-medium
                 transition-all duration-300 ease-in-out
                 ${hoveredSavingsType === "Lock" ? "scale-105 transform bg-text2 text-white shadow-md" : ""}
               `}
-                        >
-                          Select
-                        </div>
-                      </motion.div>
-                    </Link>
-                  )}
+                      >
+                        Select
+                      </div>
+                    </motion.div>
+                  </Link>
 
                   <Link
                     to={

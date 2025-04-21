@@ -76,9 +76,7 @@ const ViewCryptoContribution = () => {
           <article className="text-center text-text4">
             <div className="mt-4 rounded-3xl border-[2px] border-gray-200 bg-white p-12 pb-5 shadow-md">
               <div className="flex justify-center gap-4 ">
-                <p className="font-medium">
-                  {contribution.symbol} Wallet balance
-                </p>
+                <p className="font-medium">Contribution balance</p>
                 <div className="hidden">
                   <ToggleButton isVisible={true} onToggle={() => {}} />
                 </div>
@@ -91,7 +89,7 @@ const ViewCryptoContribution = () => {
               </div>
 
               <div className="mt-[1.5em] flex flex-col items-center justify-center gap-4 text-center text-text3">
-                <p className="flex w-full lg:w-[50%] items-center justify-center gap-1 rounded-lg border-[1px] border-dashed border-text2 py-4 text-sm font-bold text-text2">
+                <p className="flex w-full items-center justify-center gap-1 rounded-lg border-[1px] border-dashed border-text2 py-4 text-sm font-bold text-text2 lg:w-[50%]">
                   <img src={Naira} alt="naira-symbol" />
                   Naira Equivalent: <span>NGN 8000</span>
                 </p>
@@ -108,7 +106,7 @@ const ViewCryptoContribution = () => {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="whitespace-nowrap rounded-lg flex-1 border-2 border-gray-200 bg-inherit bg-text2 px-[1.5em] py-[5px] text-lg font-semibold text-white shadow-lg lg:px-[3em] lg:py-[13px]"
+                    className="flex-1 whitespace-nowrap rounded-lg border-2 border-gray-200 bg-inherit bg-text2 px-[1.5em] py-[5px] text-lg font-semibold text-white shadow-lg lg:px-[3em] lg:py-[13px]"
                     onClick={() => setIsFundModalOpen(true)}
                   >
                     Fund
@@ -128,7 +126,7 @@ const ViewCryptoContribution = () => {
                         },
                       )
                     }
-                    className="whitespace-nowrap rounded-lg flex-1 border-2 border-gray-200 bg-inherit px-[1.5em] py-[5px] text-lg font-semibold shadow-lg lg:px-[3em] lg:py-[13px]"
+                    className="flex-1 whitespace-nowrap rounded-lg border-2 border-gray-200 bg-inherit px-[1.5em] py-[5px] text-lg font-semibold shadow-lg lg:px-[3em] lg:py-[13px]"
                   >
                     Withdraw
                   </motion.button>
@@ -175,7 +173,7 @@ const ViewCryptoContribution = () => {
               <Typography className="text-lg font-semibold text-text1">
                 Token
               </Typography>
-              <Typography className="mt-2 text-lg text-[#939090]  font-semibold">
+              <Typography className="mt-2 text-lg font-semibold  text-[#939090]">
                 {contribution.symbol}
               </Typography>
             </div>
@@ -184,7 +182,7 @@ const ViewCryptoContribution = () => {
               <Typography className="text-lg font-semibold text-text1">
                 Deposit Amount
               </Typography>
-              <Typography className="mt-2 text-lg text-[#939090] font-semibold">
+              <Typography className="mt-2 text-lg font-semibold text-[#939090]">
                 ${contribution.amountSaved || "N/A"}
               </Typography>
             </div>
@@ -193,7 +191,7 @@ const ViewCryptoContribution = () => {
               <Typography className="text-lg font-semibold text-text1">
                 Savings Duration
               </Typography>
-              <Typography className="mt-2 text-lg text-[#939090] font-semibold">
+              <Typography className="mt-2 text-lg font-semibold text-[#939090]">
                 {contribution.Duration
                   ? `${Math.floor(contribution.Duration / (30 * 24 * 60 * 60))} months (${Math.floor((contribution.Duration % (30 * 24 * 60 * 60)) / (24 * 60 * 60))} Days)`
                   : "N/A"}
@@ -204,7 +202,7 @@ const ViewCryptoContribution = () => {
               <Typography className="text-lg font-semibold text-text1">
                 Start Date
               </Typography>
-              <Typography className="mt-2 text-lg text-[#939090] font-semibold">
+              <Typography className="mt-2 text-lg font-semibold text-[#939090]">
                 {formatDate(startDate)}
               </Typography>
             </div>
@@ -213,7 +211,7 @@ const ViewCryptoContribution = () => {
               <Typography className="text-lg font-semibold text-text1">
                 End Date
               </Typography>
-              <Typography className="mt-2 text-lg text-[#939090] font-semibold">
+              <Typography className="mt-2 text-lg font-semibold text-[#939090]">
                 {formatDate(endDate)} ({contribution.Duration} days)
               </Typography>
             </div>
