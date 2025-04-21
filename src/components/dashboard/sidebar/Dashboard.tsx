@@ -47,11 +47,14 @@ import OneTimeFlexibleCryptoPurpose from "../../../pages/contribution/crypto/one
 import OneTimeFlexibleCryptoStartDate from "../../../pages/contribution/crypto/oneTimePlan/flexiblePlan/StartDate";
 import OneTimeFlexibleCryptoSourceFunds from "../../../pages/contribution/crypto/oneTimePlan/flexiblePlan/SourceFunds";
 import OneTimeFlexibleCryptoPreviewSavings from "../../../pages/contribution/crypto/oneTimePlan/flexiblePlan/PreviewSavings";
+import OneTimeLockCryptoPurpose from "../../../pages/contribution/crypto/oneTimePlan/lockPlan/ContributionCurrencyType";
+import OneTimeLockCryptoStartDate from "../../../pages/contribution/crypto/oneTimePlan/lockPlan/StartDate";
+import OneTimeLockCryptoSourceFunds from "../../../pages/contribution/crypto/oneTimePlan/lockPlan/SourceFunds";
+import OneTimeLockCryptoPreviewSavings from "../../../pages/contribution/crypto/oneTimePlan/lockPlan/PreviewSavings";
 import OneTimeStrictLockCryptoPurpose from "../../../pages/contribution/crypto/oneTimePlan/strictLockPlan/ContributionCurrencyType";
 import OneTimeStrictLockCryptoStartDate from "../../../pages/contribution/crypto/oneTimePlan/strictLockPlan/StartDate";
 import OneTimeStrictLockCryptoSourceFunds from "../../../pages/contribution/crypto/oneTimePlan/strictLockPlan/SourceFunds";
 import OneTimeStrictLockCryptoPreviewSavings from "../../../pages/contribution/crypto/oneTimePlan/strictLockPlan/PreviewSavings";
-
 
 //import CryptoMain from "../wallet/crypto/main/CryptoMain";
 
@@ -249,6 +252,24 @@ const Dashboard = () => {
           <Route
             path="contribution/one_time_plan/flexible/preview_savings"
             element={<OneTimeFlexibleCryptoPreviewSavings />}
+          />
+
+          {/* One-Time Lock Plan Routes */}
+          <Route
+            path="contribution/one_time_plan/lock/crypto_purpose"
+            element={<OneTimeLockCryptoPurpose />}
+          />
+          <Route
+            path="contribution/one_time_plan/lock/date"
+            element={<OneTimeLockCryptoStartDate />}
+          />
+          <Route
+            path="contribution/one_time_plan/lock/source_funds"
+            element={<OneTimeLockCryptoSourceFunds />}
+          />
+          <Route
+            path="contribution/one_time_plan/lock/preview_savings"
+            element={<OneTimeLockCryptoPreviewSavings />}
           />
 
           {/* One-Time Strict Lock Plan Routes */}

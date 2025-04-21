@@ -123,7 +123,6 @@ const CryptoMain = () => {
               </div>
             )}
             <div className="ml-auto flex">
-              {" "}
               <Button
                 onClick={switchToNaira}
                 variant="outlined"
@@ -211,91 +210,101 @@ const CryptoMain = () => {
           )}
         </section>
 
-        <section className="mt-6">
-          <h1 className="text-lg font-semibold">Token Balance</h1>
-          <div className="mt-[1em] flex flex-col gap-[1em]">
-            {tokenList?.map((list, index) => (
-              <div
-                key={index}
-                className="flex flex-col rounded-lg border-2 border-gray-300 p-4"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div>
-                      <img
-                        src={list?.img}
-                        alt={list?.symbol}
-                        className="h-8 w-8"
-                      />
+        {profileDetails?.isWalletActivated === true && (
+          <>
+            <section className="mt-6">
+              <h1 className="text-lg font-semibold">Token Balance</h1>
+              <div className="mt-[1em] flex flex-col gap-[1em]">
+                {tokenList?.map((list, index) => (
+                  <div
+                    key={index}
+                    className="flex flex-col rounded-lg border-2 border-gray-300 p-4"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div>
+                          <img
+                            src={list?.img}
+                            alt={list?.symbol}
+                            className="h-8 w-8"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <p className="font-medium text-gray-400">
+                            {list?.symbol}
+                          </p>
+                          <p className="font-bold">{list?.title}</p>
+                        </div>
+                      </div>
+                      <div>
+                        <p className="font-bold">${list?.token?.balance}</p>
+                      </div>
                     </div>
-                    <div className="flex flex-col gap-1">
-                      <p className="font-medium text-gray-400">
-                        {list?.symbol}
-                      </p>
-                      <p className="font-bold">{list?.title}</p>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="font-bold">${list?.token?.balance}</p>
-                  </div>
-                </div>
 
-                {list?.token?.tokenAddress && (
-                  <div className="flex">
-                    <div className="mt-2 flex w-[200px] items-center justify-between rounded-md border border-gray-200 bg-gray-50 px-3 py-1.5">
-                      <span className="font-mono text-sm text-gray-600">
-                        {`${list?.token?.tokenAddress?.slice(0, 6)}...${list?.token?.tokenAddress?.slice(-4)}`}
-                      </span>
-                      <button
-                        onClick={() => handleCopy(list?.token?.tokenAddress)}
-                        className="ml-2 text-gray-500 hover:text-gray-700"
-                        title={
-                          copiedStates[list?.token?.tokenAddress]
-                            ? "Copied!"
-                            : "Copy address"
-                        }
-                      >
-                        {copiedStates[list?.token?.tokenAddress] ? (
-                          <Check className="h-4 w-4 text-green-500" />
-                        ) : (
-                          <Copy className="h-4 w-4" />
-                        )}
-                      </button>
-                    </div>
+                    {list?.token?.tokenAddress && (
+                      <div className="flex">
+                        <div className="mt-2 flex w-[200px] items-center justify-between rounded-md border border-gray-200 bg-gray-50 px-3 py-1.5">
+                          <span className="font-mono text-sm text-gray-600">
+                            {`${list?.token?.tokenAddress?.slice(0, 6)}...${list?.token?.tokenAddress?.slice(-4)}`}
+                          </span>
+                          <button
+                            onClick={() =>
+                              handleCopy(list?.token?.tokenAddress)
+                            }
+                            className="ml-2 text-gray-500 hover:text-gray-700"
+                            title={
+                              copiedStates[list?.token?.tokenAddress]
+                                ? "Copied!"
+                                : "Copy address"
+                            }
+                          >
+                            {copiedStates[list?.token?.tokenAddress] ? (
+                              <Check className="h-4 w-4 text-green-500" />
+                            ) : (
+                              <Copy className="h-4 w-4" />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                )}
+                ))}
               </div>
-            ))}
-          </div>
-        </section>
+            </section>
 
-        <section className="flex w-full items-center justify-center">
-          <div className="my-8 w-full rounded-3xl border-[2px] border-gray-300 px-4 shadow-md lg:w-[25em]">
-            <div className="flex items-center justify-between px-4 py-8 font-semibold text-howtext lg:px-10">
-              <Link to="/dashboard/wallet/crypto/withdraw">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="flex flex-col items-center bg-inherit text-center"
-                >
-                  <WithdrawIcon />
-                  <span className="block text-memt1 lg:text-lg">Withdraw</span>
-                </motion.button>
-              </Link>
+            <section className="flex w-full items-center justify-center">
+              <div className="my-8 w-full rounded-3xl border-[2px] border-gray-300 px-4 shadow-md lg:w-[25em]">
+                <div className="flex items-center justify-between px-4 py-8 font-semibold text-howtext lg:px-10">
+                  <Link to="/dashboard/wallet/crypto/withdraw">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex flex-col items-center bg-inherit text-center"
+                    >
+                      <WithdrawIcon />
+                      <span className="block text-memt1 lg:text-lg">
+                        Withdraw
+                      </span>
+                    </motion.button>
+                  </Link>
 
-              <Link to="">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="flex flex-col items-center bg-inherit text-center"
-                >
-                  <TransferIcon />
-                  <span className="block text-memt1 lg:text-lg">Transfer</span>
-                </motion.button>
-              </Link>
-            </div>
-          </div>
-        </section>
+                  <Link to="">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex flex-col items-center bg-inherit text-center"
+                    >
+                      <TransferIcon />
+                      <span className="block text-memt1 lg:text-lg">
+                        Transfer
+                      </span>
+                    </motion.button>
+                  </Link>
+                </div>
+              </div>
+            </section>
+          </>
+        )}
       </div>
     </main>
   );
