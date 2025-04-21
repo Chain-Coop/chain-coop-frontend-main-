@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Alert } from "@mui/material";
-import etherium from "../../../../Assets/svg/dashboard/contribution/etherum.svg";
-import usdc from "../../../../Assets/svg/dashboard/Group 99764.png";
-import lisk from "../../../../Assets/svg/dashboard/token_lisk.svg";
-import usdt from "../../../../Assets/svg/dashboard/usdc.svg";
+import etherium from "../../../../../Assets/svg/dashboard/contribution/etherum.svg";
+import usdc from "../../../../../Assets/svg/dashboard/Group 99764.png";
+import lisk from "../../../../../Assets/svg/dashboard/token_lisk.svg";
+import usdt from "../../../../../Assets/svg/dashboard/usdc.svg";
 import { IoIosArrowDropleft } from "react-icons/io";
-import { DashboardHeader } from "../../../../components/common/DashboardHeader";
+import { DashboardHeader } from "../../../../../components/common/DashboardHeader";
 
 interface LocationState {
   lockedType?: number;
@@ -75,7 +75,7 @@ const LockPlanContribution = () => {
     }
 
     setError("");
-    navigate("/dashboard/contribution/lock/cryoto_date", {
+    navigate("/dashboard/contribution/one_time_plan/lock/date", {
       state: {
         ...formData,
         lockedType,

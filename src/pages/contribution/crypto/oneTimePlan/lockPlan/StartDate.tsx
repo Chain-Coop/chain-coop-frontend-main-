@@ -3,8 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { Alert } from "@mui/material";
 import { Button } from "@material-tailwind/react";
-import { DashboardHeader } from "../../../../components/common/DashboardHeader";
-import cryptoSavings from "../../../../Assets/png/dashboard/cryptSavings.png";
+import { DashboardHeader } from "../../../../../components/common/DashboardHeader";
+import cryptoSavings from "../../../../../Assets/png/dashboard/cryptSavings.png";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -64,7 +64,7 @@ const StartDate: React.FC = () => {
     };
 
     try {
-      let nextRoute = "/dashboard/contribution/lock/source_funds";
+      let nextRoute = "/dashboard/contribution/one_time_plan/lock/source_funds";
       navigate(nextRoute, {
         state: formData,
       });
@@ -85,7 +85,7 @@ const StartDate: React.FC = () => {
         <header className="mt-[1.5em] flex flex-col lg:mt-[3em]">
           <h1 className="text-2xl font-bold">Lock Savings</h1>
           <p className="mt-[1em] font-medium">
-          You are about to save in {tokenName} crypto currency
+            You are about to save in {tokenName} crypto currency
           </p>
         </header>
         <section className="mt-[2.5em] flex justify-center">
