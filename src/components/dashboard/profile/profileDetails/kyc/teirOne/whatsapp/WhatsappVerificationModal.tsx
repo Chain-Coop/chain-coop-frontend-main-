@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../../../shared/redux/store";
 import OtpPin from "../../../../../../../shared/utils/OtpInput";
-import { Primary } from "../../../../../../common/Button";
 import ReactLoading from "react-loading";
 import { Alert } from "@mui/material";
 import { toast } from "react-toastify";
@@ -10,12 +9,21 @@ import {
   kycWhatsAppOtp,
   VerifykycWhatsAppOtp,
 } from "../../../../../../../shared/redux/slices/kyc.slices";
+import {
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  Typography,
+} from "@material-tailwind/react";
 
 interface WhatsAppVerificationModalProps {
   reference: string;
   onClose: () => void;
   onBack: () => void;
   onVerificationSuccess: () => void;
+  open: boolean;
 }
 
 const WhatsAppVerificationModal: React.FC<WhatsAppVerificationModalProps> = ({
@@ -23,6 +31,7 @@ const WhatsAppVerificationModal: React.FC<WhatsAppVerificationModalProps> = ({
   onClose,
   onBack,
   onVerificationSuccess,
+  open,
 }) => {
   const dispatch: AppDispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -89,20 +98,22 @@ const WhatsAppVerificationModal: React.FC<WhatsAppVerificationModalProps> = ({
   };
 
   return (
-    <main className="w-full max-w-[30em] px-3 py-6 font-sans md:px-8 md:py-8">
-      <section className="flex flex-col gap-4 md:gap-6">
-        <div className="flex flex-col gap-2">
-          <header className="text-center">
-            <h2 className="text-lg font-bold leading-tight md:text-xl">
-              Enter WhatsApp Verification Code
-            </h2>
-          </header>
-          <article className="text-center">
-            <p className="text-gray-600 sm:text-base">
-              A 6 digit code has been sent to your WhatsApp
-            </p>
-          </article>
-        </div>
+    <Dialog open={open} handler={onClose} size="sm">
+      <DialogHeader className="justify-center">
+        <Typography
+          variant="h2"
+          className="text-lg font-bold leading-tight md:text-xl"
+        >
+          Enter WhatsApp Verification Code
+        </Typography>
+      </DialogHeader>
+
+      <DialogBody className="flex flex-col gap-4 md:gap-6">
+        <article className="text-center">
+          <Typography variant="small" className="text-gray-600 sm:text-base">
+            A 6 digit code has been sent to your WhatsApp
+          </Typography>
+        </article>
 
         <div className="flex flex-col items-center gap-4">
           <OtpPin
@@ -146,34 +157,26 @@ const WhatsAppVerificationModal: React.FC<WhatsAppVerificationModalProps> = ({
             {error}
           </Alert>
         )}
-      </section>
 
-      <div className="mt-6 flex justify-center px-4">
-        <Primary
-          className="w-full max-w-md bg-text2 py-3 text-white transition-all hover:bg-text2/90"
-          onClick={verifyCode}
-          disabled={loading || code.length !== 6}
-        >
-          {loading ? (
-            <div className="flex justify-center">
-              <ReactLoading
-                type="spin"
-                color="#ffffff"
-                height={20}
-                width={20}
-              />
-            </div>
-          ) : (
-            "Verify"
-          )}
-        </Primary>
-      </div>
-      <div className="mt-3">
+        <div className="mt-6 flex justify-center px-4">
+          <Button
+            variant="text"
+            loading={loading}
+            className="w-full max-w-md bg-text2 py-3 normal-case text-white transition-all hover:bg-text2/90"
+            onClick={verifyCode}
+            disabled={loading || code.length !== 6}
+          >
+            {loading ? "Verifying..." : "Verify"}
+          </Button>
+        </div>
+      </DialogBody>
+
+      <DialogFooter className="justify-center">
         <button onClick={onBack} className="text-sm font-semibold text-red-500">
           Back
         </button>
-      </div>
-    </main>
+      </DialogFooter>
+    </Dialog>
   );
 };
 

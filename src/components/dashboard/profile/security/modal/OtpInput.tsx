@@ -1,8 +1,31 @@
 import React, { useState } from "react";
 import OtpPin from "../../../../../shared/utils/OtpInput";
-import { Primary } from "../../../../common/Button";
+import {
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  Typography,
+  IconButton,
+} from "@material-tailwind/react";
+import { IoMdClose } from "react-icons/io";
 
-const OtpInput = ({ otp, setOtp, onClose, onOtpEntered }: any) => {
+interface OtpInputProps {
+  otp: string;
+  setOtp: (otp: string) => void;
+  onClose: () => void;
+  onOtpEntered: () => void;
+  isOpen: boolean;
+}
+
+const OtpInput: React.FC<OtpInputProps> = ({
+  otp,
+  setOtp,
+  onClose,
+  onOtpEntered,
+  isOpen,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -11,28 +34,72 @@ const OtpInput = ({ otp, setOtp, onClose, onOtpEntered }: any) => {
       setError("Please enter a 6-digit OTP");
       return;
     }
+    setIsLoading(true);
     onOtpEntered();
   };
 
   return (
-    <div className="py-[2em] text-center lg:w-[25em]">
-      <h2 className="mb-2 text-2xl font-semibold">Reset Password</h2>
-      <p className="mb-4 text-gray-600">Enter Your OTP code</p>
-
-      <div className="mb-6 flex justify-center">
-        <OtpPin length={6} value={otp} className="mt-[1em]" onChange={setOtp} />
-      </div>
-
-      <div className="space-y-3">
-        <Primary
-          onClick={handleContinue}
-          className="m-auto w-[60%] rounded-full bg-text2 py-2 text-white"
-          disabled={isLoading}
+    <Dialog
+      size="sm"
+      open={isOpen}
+      handler={onClose}
+      className="bg-[#E9E9E9] p-4 sm:p-6"
+    >
+      <DialogHeader className="relative flex flex-col justify-center text-center">
+        <IconButton
+          variant="text"
+          color="gray"
+          onClick={onClose}
+          className="absolute left-2 top-2 h-10 w-10 p-2"
+          ripple={false}
+          placeholder=""
+          onPointerEnterCapture={() => {}}
+          onPointerLeaveCapture={() => {}}
         >
-          Continue
-        </Primary>
-      </div>
-    </div>
+          <IoMdClose size={24} className="m-auto text-gray-700" />
+        </IconButton>
+
+        <Typography variant="h4" className="text-xl font-semibold sm:text-2xl">
+          Reset Password
+        </Typography>
+        <Typography
+          color="gray"
+          className="mt-1 text-sm font-normal sm:text-base"
+        >
+          Enter Your OTP code
+        </Typography>
+      </DialogHeader>
+
+      <DialogBody>
+        <div className="mb-4 flex justify-center sm:mb-6">
+          <OtpPin
+            length={6}
+            value={otp}
+            className="mt-2 sm:mt-4"
+            onChange={setOtp}
+            gap={1}
+          />
+        </div>
+
+        {error && (
+          <Typography color="red" className="text-center text-xs sm:text-sm">
+            {error}
+          </Typography>
+        )}
+      </DialogBody>
+
+      <DialogFooter className="flex justify-center">
+        <Button
+          variant="filled"
+          onClick={handleContinue}
+          disabled={isLoading}
+          loading={isLoading}
+          className="w-full rounded-full bg-text2 text-sm font-normal normal-case sm:w-[60%] sm:py-3 lg:py-2"
+        >
+          {isLoading ? "Processing..." : "Continue"}
+        </Button>
+      </DialogFooter>
+    </Dialog>
   );
 };
 

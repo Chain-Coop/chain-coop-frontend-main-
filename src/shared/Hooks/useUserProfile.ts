@@ -6,13 +6,11 @@ import { setMessage } from "../redux/slices/message.slices";
 import {
   GetAllBanks,
   GetAllProject,
-  GetAllUserFundedProject,
-  GetProposal,
   GetUsersContributionHistory,
   GetWalletCard,
 } from "../redux/slices/transaction.slices";
 import { getAllNotification } from "../redux/slices/notification.slices";
-import { GetAllUserPools } from "../redux/slices/kyc.slices";
+import { GetAllUserPools } from "../redux/slices/web3.slices";
 
 enum UploadFields {
   ProfilePicture = "profilePicture",
@@ -60,33 +58,6 @@ export const useUserProfile = () => {
     uploadUserAvatar,
     fetchUserProfile,
   };
-};
-
-export const useProposalLength = () => {
-  const dispatch: AppDispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
-
-  const useLength = useSelector(
-    (state: any) => state?.transaction?.userProposal,
-  );
-  const userToken = sessionStorage.getItem("userData");
-  useEffect(() => {
-    if (userToken) {
-      setLoading(true);
-      dispatch(GetProposal())
-        .unwrap()
-        .then(() => setLoading(false))
-        .catch((error: any) => {
-          const errorMessage = error?.message;
-          dispatch(setMessage(errorMessage));
-          setLoading(false);
-        });
-    } else {
-      dispatch(setMessage("Token not found"));
-    }
-  }, [dispatch, userToken]);
-
-  return { useLength, loading };
 };
 
 export const useAllProjects = () => {
@@ -179,29 +150,6 @@ export const usePinSetup = (isPinCreated: boolean) => {
     setShowReminder,
     showSuccessModal,
     setShowSuccessModal,
-  };
-};
-export const useAllUserFundedProjects = () => {
-  const dispatch: AppDispatch = useDispatch();
-
-  const { allFundedProjects, loading } = useSelector(
-    (state: any) => state.transaction,
-  );
-  const userToken = sessionStorage.getItem("userData");
-
-  useEffect(() => {
-    if (!allFundedProjects && userToken) {
-      dispatch(GetAllUserFundedProject())
-        .unwrap()
-        .catch((error: any) => {
-          dispatch(setMessage(error.message));
-        });
-    }
-  }, [dispatch, userToken, allFundedProjects]);
-
-  return {
-    useUserProjects: allFundedProjects,
-    loading,
   };
 };
 
@@ -306,18 +254,22 @@ export const useAllNotification = () => {
 
 export const useAllUserPools = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const { userPools, loading } = useSelector((state: any) => state?.web3);
+  const { profileDetails } = useUserProfile();
 
-  const { userPools, loading, error } = useSelector((state: any) => state?.kyc);
-  const fetchWalletBalance = () => {
-    dispatch(GetAllUserPools());
-  };
+  const fetchUserPools = useCallback(() => {
+    if (profileDetails?.isWalletActivated) {
+      dispatch(GetAllUserPools());
+    }
+  }, [dispatch, profileDetails?.isWalletActivated]);
+
   useEffect(() => {
-    fetchWalletBalance();
-  }, []);
+    fetchUserPools();
+  }, [fetchUserPools]);
 
   return {
     loading,
-    error,
-    userPools,
+    userPools: profileDetails?.isWalletActivated ? userPools : null,
+    isWalletActivated: profileDetails?.isWalletActivated || false,
   };
 };

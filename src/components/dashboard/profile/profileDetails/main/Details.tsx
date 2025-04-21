@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import Modal from "../../../../common/Modal";
 import TierOneFirstModal from "../kyc/teirOne/phoneNumber/TierOneFirstModal";
 import TierOneSecondModal from "../kyc/teirOne/phoneNumber/TeirOneSecondModal";
 import TierOneThirdModal from "../kyc/teirOne/phoneNumber/TeirOneThirdModal";
 import WhatsappOtpModal from "../kyc/teirOne/whatsapp/WhatsappOtpModal";
-import SuccessModal from "../kyc/teirOne/phoneNumber/SuccessModal";
 import WhatsappVerificationModal from "../kyc/teirOne/whatsapp/WhatsappVerificationModal";
 import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
+import { Typography } from "@material-tailwind/react";
+import Success from "../../../../common/Success";
+import UpdateBvnModal from "../kyc/teirTwo/bvn/UpdateBvnModal";
 
 const Details = () => {
   const navigate = useNavigate();
@@ -23,6 +24,8 @@ const Details = () => {
     useState(false);
   const [whatsAppReference, setWhatsAppReference] = useState<string>("");
 
+  const [showBvnFirstModal, setShowBvnFirstModal] = useState(false);
+
   const sections = [
     {
       title: profileDetails?.isVerified ? (
@@ -31,15 +34,15 @@ const Details = () => {
         <div className="flex w-full items-center justify-between">
           <span>ID Verification</span>
           <button className="rounded-full bg-red-600 px-4 py-1 text-sm font-medium text-white shadow-md">
-            0/2 verified
+            {profileDetails?.isVerified ? "1/2 verified" : "0/2 verified"}
           </button>
         </div>
       ),
       description: profileDetails?.isVerified ? (
         <div className="flex items-center justify-between gap-[1em]">
-          <p className="text-sm text-gray-500">
+          <Typography variant="small" className="font-normal text-gray-500">
             Daily Credit Limit: N20,000 Daily withdrawal Limit: N500
-          </p>
+          </Typography>
           <div className="flex items-center gap-2">
             <button className="rounded-full bg-[#FF0000] px-[1em] py-[2px] font-semibold text-white">
               Upgrade
@@ -62,6 +65,7 @@ const Details = () => {
     setShowWhatsAppModal(false);
     setShowWhatsAppVerificationModal(false);
     setShowSuccessModal(false);
+    setShowBvnFirstModal(false);
   };
 
   const handleVerificationSuccess = () => {
@@ -86,6 +90,11 @@ const Details = () => {
     setShowWhatsAppModal(true);
   };
 
+  const handleBvnStepClick = () => {
+    setShowTierOneModal(false);
+    setShowBvnFirstModal(true);
+  };
+
   const handleSectionClick = (section: any) => {
     if (section.to) {
       navigate(section.to);
@@ -101,9 +110,14 @@ const Details = () => {
   };
 
   return (
-    <main className="mt-4 font-sans">
+    <main className="mt-4">
       <header>
-        <h2 className="font-semibold text-howtext">PROFILE</h2>
+        <Typography
+          variant="h5"
+          className="text-md font-bold uppercase text-[#B3B3B3]"
+        >
+          profile
+        </Typography>
       </header>
       <section className="mt-[1.2em]">
         {sections?.map((section, index) => (
@@ -119,87 +133,57 @@ const Details = () => {
                 {section.description}
               </div>
               <div className="ml-2 flex items-center">
-                <IoIosArrowForward size={15} className="text-text2" />
+                <IoIosArrowForward size={20} className="text-black" />
               </div>
             </div>
           </div>
         ))}
       </section>
 
-      <Modal
-        className="bg-white"
+      <TierOneFirstModal
         isOpen={showTierOneModal}
         onClose={handleModalClose}
-      >
-        <TierOneFirstModal
-          onClose={handleModalClose}
-          onStepOneClick={handleStepOneClick}
-          isVerified={profileDetails?.isVerified}
-        />
-      </Modal>
-
-      <Modal
-        className="bg-white"
-        isOpen={showSecondModal}
+        onStepOneClick={handleStepOneClick}
+        onBvnStepClick={handleBvnStepClick}
+        isVerified={profileDetails?.isVerified}
+      />
+      <TierOneSecondModal
+        open={showSecondModal}
         onClose={handleModalClose}
-      >
-        <TierOneSecondModal
-          onClose={handleModalClose}
-          onSuccess={handleStepTwoSuccess}
-        />
-      </Modal>
-
-      <Modal
-        className="bg-white"
-        isOpen={showThirdModal}
+        onSuccess={handleStepTwoSuccess}
+      />
+      <TierOneThirdModal
+        open={showThirdModal}
+        reference={otpReference}
         onClose={handleModalClose}
-      >
-        <TierOneThirdModal
-          reference={otpReference}
-          onClose={handleModalClose}
-          onSwitchToWhatsapp={handleSwitchToWhatsapp}
-          onVerificationSuccess={handleVerificationSuccess}
-        />
-      </Modal>
-
-      <Modal
-        className="bg-white"
-        isOpen={showWhatsAppModal}
+        onSwitchToWhatsapp={handleSwitchToWhatsapp}
+        onVerificationSuccess={handleVerificationSuccess}
+      />
+      <WhatsappOtpModal
+        open={showWhatsAppModal}
         onClose={handleModalClose}
-      >
-        <WhatsappOtpModal
-          onClose={handleModalClose}
-          onBack={() => {
-            setShowWhatsAppModal(false);
-            setShowThirdModal(true);
-          }}
-          onOtpSuccess={handleWhatsAppOtpSuccess}
-        />
-      </Modal>
-
-      <Modal
-        className="bg-white"
-        isOpen={showWhatsAppVerificationModal}
+        onBack={() => {
+          setShowWhatsAppModal(false);
+          setShowThirdModal(true);
+        }}
+        onOtpSuccess={handleWhatsAppOtpSuccess}
+      />
+      <WhatsappVerificationModal
+        open={showWhatsAppVerificationModal}
+        reference={whatsAppReference}
         onClose={handleModalClose}
-      >
-        <WhatsappVerificationModal
-          reference={whatsAppReference}
-          onClose={handleModalClose}
-          onBack={() => {
-            setShowWhatsAppVerificationModal(false);
-            setShowWhatsAppModal(true);
-          }}
-          onVerificationSuccess={handleVerificationSuccess}
-        />
-      </Modal>
-
-      <Modal
-        className="bg-white"
+        onBack={() => {
+          setShowWhatsAppVerificationModal(false);
+          setShowWhatsAppModal(true);
+        }}
+        onVerificationSuccess={handleVerificationSuccess}
+      />
+      <UpdateBvnModal isOpen={showBvnFirstModal} onClose={handleModalClose} />
+      <Success
         isOpen={showSuccessModal}
         onClose={handleModalClose}
-      >
-        <SuccessModal onClose={handleModalClose} />
-      </Modal>
+        title="Your phone number has now been verified you are now in Teir 0."
+      />
     </main>
   );
 };

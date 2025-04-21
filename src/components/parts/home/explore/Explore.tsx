@@ -1,171 +1,106 @@
-import React, { useState } from "react";
 import "./explore.css";
-import explore1 from "../../../../Assets/png/home/automated-ai.png";
-import explore2 from "../../../../Assets/png/home/group-savings.png";
-import explore3 from "../../../../Assets/png/home/savings-credit-service.png";
+import flexible from "../../../../Assets/png/home/flexible_savings.png";
+import lock from "../../../../Assets/png/home/lock_savings.png";
+import strict_lock from "../../../../Assets/png/home/strict_lock.png";
 import { motion } from "framer-motion";
-import { Primary } from "../../../common/Button";
-import Modal from "../../../common/Modal";
-import FirstModal from "./details/FirstModal";
-import SecondModal from "./details/SecondModal";
-import ThirdModal from "./details/ThirdModal";
+import { MotionTypography } from "../../../common/motionTypography";
+import { Button, Typography } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
+import { ROUTES } from "../../../../shared/routes";
 
 const Explore = () => {
-  const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
-  const [isSecondModalOpen, setIsSecodModalOpen] = useState(false);
-  const [isThirdModalOpen, setIsThirdModalOpen] = useState(false);
-
-  const handleFirstModalOpen = () => {
-    setIsFirstModalOpen(true);
-  };
-
-  const handleFirstModalClose = () => {
-    setIsFirstModalOpen(false);
-  };
-
-  const handleSecondModalOpen = () => {
-    setIsSecodModalOpen(true);
-  };
-
-  const handleSecondModalClose = () => {
-    setIsSecodModalOpen(false);
-  };
-
-  const handleThirdModalOpen = () => {
-    setIsThirdModalOpen(true);
-  };
-
-  const handleThirdModalClose = () => {
-    setIsThirdModalOpen(false);
-  };
-
   return (
-    <main className="flex h-full items-center justify-center font-sans sm:mt-[1em] lg:mt-[5em]">
-      <section className="lg:w-[89%] lg:px-[0]">
-        <header className="py-8 text-center text-text4">
-          <motion.h1
+    <main className="container mx-auto mt-5 max-w-[95%] px-3  md:mt-0  lg:mt-0 lg:px-8">
+      <section className="w-full">
+        <header className="mx-auto w-full py-6 text-center text-text4 md:py-8 lg:max-w-3xl lg:py-12">
+          <MotionTypography
+            variant="h1"
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: -100 }}
             transition={{ duration: 0.5 }}
-            className="mb-2 font-bold sm:text-[1em] md:text-2xl lg:text-3xl"
+            className="text-2xl font-bold md:text-3xl lg:text-4xl"
           >
-            Explore Our Investment Opportunities
-          </motion.h1>
+            Savings Made Simple
+          </MotionTypography>
+
           <motion.div
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: -100 }}
             transition={{ duration: 0.5 }}
-            className="m-auto lg:w-[53%]"
+            className="mx-auto mt-3 max-w-xl px-3"
           >
-            <p className="font-sans lg:mt-[1.5em]">
-              Access low risk options that prioritize keeping your money safe.
-            </p>
-            <p className="font-sans">
-              Invest in your tomorrow: Explore innovative, self-sustaining
-              businesses backed by the power of blockchain and cooperative
-              ownership.
-            </p>
+            <Typography className="mb-6 text-sm font-normal md:text-base lg:text-lg">
+              Join hundreds of others using our smart lock savings options.
+            </Typography>
+
+            <Link to={ROUTES.sign_up} className="inline-block">
+              <Button className="bg-text2 px-8 py-3 text-sm font-semibold normal-case text-text5 transition-all hover:opacity-90 md:text-base">
+                Start Saving
+              </Button>
+            </Link>
           </motion.div>
         </header>
 
-        <div className="wrapper flex w-full flex-wrap items-center justify-center gap-[24px]">
-          <div className="card">
-            <div className="poster">
-              <img src={explore1} alt="Location Unknown" />
-            </div>
-
-            <div className="details flex flex-col gap-3">
-              <h1>Automated Ai Learning Platform</h1>
-              <p className="text-#000a font-medium">
-                Our AI-Driven Learning Platform will change how members learn
-                and grow. Stay tuned for its launch.
-              </p>
-              <div className="tags text-text2">
-                <span className="tag">Growth</span>
-                <span className="tag">Education</span>
-                <span className="tag">Partnership</span>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            {
+              title: "Flexible Savings",
+              image: flexible,
+              description:
+                "Savings at your convenience and access funds whenever needed.",
+              tags: ["Accessible", "Convenient", "Liquidity"],
+            },
+            {
+              title: "Lock Savings",
+              image: lock,
+              description:
+                "We are committed to helping you reach your savings target. If you break your goal, you pay a 1% penalty fee for early withdrawal.",
+              tags: ["Set Target", "Commit", "Execute"],
+            },
+            {
+              title: "Strict Lock",
+              image: strict_lock,
+              description:
+                "Build unshakable savings habits. Stay locked in; no withdrawals are allowed until you reach your selected target or timeline.",
+              tags: ["Smartsave", "Easy Entry", "Simple Withdrawal"],
+            },
+          ].map((item, index) => (
+            <div key={index} className="card mx-auto w-full lg:max-w-[374px]">
+              <div className="poster">
+                <img src={item.image} alt={item.title} />
               </div>
-              <Primary
-                onClick={handleFirstModalOpen}
-                className="mt-8 w-[9em] rounded-md bg-text2 px-5 py-2 font-semibold text-white transition-transform duration-300 hover:scale-110"
-              >
-                Learn More
-              </Primary>
-            </div>
-          </div>
-
-          <div className="card">
-            <div className="poster">
-              <img src={explore2} alt="explore-img" />
-            </div>
-
-            <div className="details flex flex-col gap-3">
-              <h1>GROUP SAVINGS CYCLE</h1>
-              <p className="text-#000a font-medium">
-                Get access to 5x your funds in Naira, Dollars, BTC, and more
-                automaticallyand secured by Chain Co-op.
-              </p>
-
-              <div className="tags text-text2">
-                <span className="tag">Growth</span>
-                <span className="tag">Partnership</span>
-                <span className="tag">Funding</span>
+              <div className="details flex flex-col gap-3">
+                <Typography
+                  variant="h1"
+                  className="text-lg font-bold md:text-xl"
+                >
+                  {item.title}
+                </Typography>
+                <Typography
+                  variant="small"
+                  className="text-sm text-gray-800 md:text-base"
+                >
+                  {item.description}
+                </Typography>
+                <div className="tags text-text2">
+                  {item.tags.map((tag, idx) => (
+                    <span key={idx} className="tag text-xs md:text-sm">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <div>
+                  <Link to={ROUTES.sign_up}>
+                    <Button className="mt-4 bg-text2 px-8 py-3 text-sm font-semibold text-white transition-transform duration-300 hover:scale-105 md:text-base">
+                      Start Saving
+                    </Button>
+                  </Link>
+                </div>
               </div>
-              <Primary
-                onClick={handleSecondModalOpen}
-                className="mt-8 w-[9em] rounded-md bg-text2 px-5 py-2 font-semibold text-white transition-transform duration-300 hover:scale-110"
-              >
-                Learn More
-              </Primary>
             </div>
-          </div>
-
-          <div className="card">
-            <div className="poster">
-              <img src={explore3} alt="Location Unknown" />
-            </div>
-            <div className="details flex flex-col gap-3">
-              <h1>SAVINGS AND CREDIT AS A SERVICE</h1>
-              <p className="text-#000a font-medium">
-                Launch your savings ad credit solution effortlessly using our
-                API, and unlock endless opportunities for financial freedom.
-              </p>
-              <div className="tags text-text2">
-                <span className="tag">Automation</span>
-                <span className="tag"> Partnership</span>
-                <span className="tag"> Developers </span>
-              </div>
-              <Primary
-                onClick={handleThirdModalOpen}
-                className="mt-8 w-[9em] rounded-md bg-text2 px-5 py-2 font-semibold text-white transition-transform duration-300 hover:scale-110"
-              >
-                Learn More
-              </Primary>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
-      <Modal
-        isOpen={isFirstModalOpen}
-        className="bg-white"
-        onClose={handleFirstModalClose}
-      >
-        <FirstModal />
-      </Modal>
-      <Modal
-        isOpen={isSecondModalOpen}
-        className="bg-white"
-        onClose={handleSecondModalClose}
-      >
-        <SecondModal />
-      </Modal>
-      <Modal
-        isOpen={isThirdModalOpen}
-        className="bg-white"
-        onClose={handleThirdModalClose}
-      >
-        <ThirdModal />
-      </Modal>
     </main>
   );
 };

@@ -28,7 +28,7 @@ const How = () => {
   };
 
   return (
-    <main className="m-auto mt-[3em] w-[100%] font-sans sm:px-[1em] lg:mt-[8em]">
+    <main className="m-auto mt-[3em] w-[100%]  sm:px-[1em] lg:mt-[8em]">
       <header className="flex justify-center">
         <motion.h1
           whileInView={{ opacity: 1, y: 0 }}
@@ -60,7 +60,7 @@ const How = () => {
             <h1 className="text-2xl font-bold text-howtext">
               Secure <br /> Registration
             </h1>
-            <p className="mt-4 font-sans font-medium text-howtext">
+            <p className="mt-4  font-medium text-howtext">
               Complete our KYC process for safe, compliant registration. Once
               verified, you can invest in projects and drive sustainable
               business growth.

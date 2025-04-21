@@ -1,115 +1,45 @@
-// import "./App.css";
-// import React from "react";
-// import {
-//   BrowserRouter as Router,
-//   Route,
-//   Routes,
-//   Navigate,
-// } from "react-router-dom";
-// import HomePage from "./components/pages/entry/HomePage";
-// // import OurStory from "./components/pages/entry/OurStory";
-// import Membership from "./components/pages/entry/Membership";
-// // import ForgetPassword from "./components/pages/auth/ForgetPassword";
-// // import CreateAccount from "./components/pages/auth/CreateAccount";
-// // import UserLoginOtp from "./components/pages/auth/UserLoginOtp";
-// import VerificationSuccessfull from "./components/pages/auth/VerificationSuccessfull";
-// import PaaswordRessetSuccessfull from "./components/pages/auth/PaaswordRessetSuccessfull";
-// import Contact from "./components/pages/entry/Contact";
-// // import ResetPassword from "./components/pages/auth/ResetPassword";
-// // import NewPassword from "./components/pages/auth/NewPassword";
-// import UserLogin from "./components/pages/auth/UserLogin";
-// import Dashboard from "./components/dashboard/sidebar/Dashboard";
-// import NotFound from "./components/pages/NotFound";
-// import Team from "./components/pages/footer/team/Team";
-// import Blogs from "./components/pages/footer/blogs/Blogs";
-// import Story from "./components/pages/entry/Story";
-// import Career from "./components/pages/footer/careers/Career";
-// import Landing from "./components/pages/entry/Landing";
-
-// function App() {
-//   return (
-//     <Router>
-//       <Routes>
-//         <Route path="/why-chain-co-op" element={<Landing />} />
-//         <Route path="/" element={<HomePage />} />
-//         <Route path="/our-story" element={<Story />} />
-//         <Route path="/membership" element={<Membership />} />
-//         <Route path="/contact" element={<Contact />} />
-//         {/* <Route path="/login" element={<UserLogin />} /> */}
-//         {/* <Route path="/sign-up" element={<CreateAccount />} /> */}
-//         {/* <Route path="/forget-password" element={<ForgetPassword />} /> */}
-//         {/* <Route path="/reset-password" element={<ResetPassword />} /> */}
-//         {/* <Route path="/new-password" element={<NewPassword />} /> */}
-//         {/* <Route path="/account-otp" element={<UserLoginOtp />} /> */}
-
-//         <Route
-//           path="/verification-successfull"
-//           element={<VerificationSuccessfull />}
-//         />
-//         <Route
-//           path="/reset-successfull"
-//           element={<PaaswordRessetSuccessfull />}
-//         />
-
-//         {/* <Route path="/dashboard/*" element={<AuthWrapper><Dashboard /></AuthWrapper>} />
-//     <Route path="*" element={<Navigate to="/dashboard" replace />} />    */}
-
-//         {/* <Route path="/dashboard/*" element={<Dashboard />} />  */}
-//         <Route path="/team" element={<Team />} />
-//         <Route path="/blog" element={<Blogs />} />
-//         <Route path="/career" element={<Career />} />
-//         <Route path="*" element={<NotFound />} />
-//       </Routes>
-//     </Router>
-//   );
-// }
-
-// export default App;
-
 import "./App.css";
-import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
-import HomePage from "./components/pages/entry/HomePage";
-import Membership from "./components/pages/entry/Membership";
-import ForgetPassword from "./components/pages/auth/ForgetPassword";
-import CreateAccount from "./components/pages/auth/CreateAccount";
-import UserLoginOtp from "./components/pages/auth/UserLoginOtp";
-import VerificationSuccessfull from "./components/pages/auth/VerificationSuccessfull";
-import PaaswordRessetSuccessfull from "./components/pages/auth/PaaswordRessetSuccessfull";
-import Contact from "./components/pages/entry/Contact";
-import ResetPassword from "./components/pages/auth/ResetPassword";
-import NewPassword from "./components/pages/auth/NewPassword";
-import UserLogin from "./components/pages/auth/UserLogin";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import HomePage from "./pages/entry/HomePage";
+import ForgetPassword from "./pages/auth/ForgetPassword";
+import CreateAccount from "./pages/auth/CreateAccount";
+import VerificationSuccessfull from "./pages/auth/VerificationSuccessfull";
+import PaaswordRessetSuccessfull from "./pages/auth/PaaswordRessetSuccessfull";
+import Contact from "./pages/entry/Contact";
+import ResetPassword from "./pages/auth/ResetPassword";
+import NewPassword from "./pages/auth/NewPassword";
+import UserLogin from "./pages/auth/UserLogin";
 import Dashboard from "./components/dashboard/sidebar/Dashboard";
-import NotFound from "./components/pages/NotFound";
-import Team from "./components/pages/footer/team/Team";
-import Blogs from "./components/pages/footer/blogs/Blogs";
-import Story from "./components/pages/entry/Story";
-import Career from "./components/pages/footer/careers/Career";
-import Landing from "./components/pages/entry/Landing";
+import NotFound from "./pages/NotFound";
+import WhyChainCoop from "./pages/entry/WhyChainCoop";
 import ProtectedRoutes from "./components/protected/ProtectedRoute";
+import PartnerWithUs from "./pages/entry/PartnerWithUs";
+import TermsOfService from "./pages/footer/TermsOfService";
+import Team from "./pages/footer/Team";
+import AboutUs from "./pages/footer/AboutUs";
+import PrivacyPolicy from "./pages/footer/PrivacyPolicy";
+import VerifyEmail from "./pages/auth/verifyEmail";
+import VerifyPhoneNumber from "./pages/auth/verifyPhoneNumber";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/why-chain-co-op" element={<Landing />} />
+        <Route path="/why-chain-co-op" element={<WhyChainCoop />} />
         <Route path="/" element={<HomePage />} />
-        <Route path="/our-story" element={<Story />} />
-        <Route path="/membership" element={<Membership />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/partner-with-us" element={<PartnerWithUs />} />
         <Route path="/login" element={<UserLogin />} />
         <Route path="/sign-up" element={<CreateAccount />} />
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/new-password" element={<NewPassword />} />
-        <Route path="/account-otp" element={<UserLoginOtp />} />
-
+        <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/verify-phone-number" element={<VerifyPhoneNumber />} />
+        <Route path="/terms" element={<TermsOfService />} />
+        <Route path="/team" element={<Team />} />
+        <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route
           path="/verification-successfull"
           element={<VerificationSuccessfull />}
@@ -118,15 +48,10 @@ function App() {
           path="/reset-successfull"
           element={<PaaswordRessetSuccessfull />}
         />
-
         <Route element={<ProtectedRoutes />}>
           <Route path="/dashboard/*" element={<Dashboard />} />
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Route>
 
-        <Route path="/team" element={<Team />} />
-        <Route path="/blog" element={<Blogs />} />
-        <Route path="/career" element={<Career />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

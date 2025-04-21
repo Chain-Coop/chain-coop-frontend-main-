@@ -1,7 +1,7 @@
 import axios from "axios";
 import authHeader from "./headers";
 
-const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
+const API_URL = (import.meta as any).env.VITE_REACT_APP_API_URL;
 
 const RegisterUser = async (body: any) => {
   const url = `${API_URL}/auth/register`;
@@ -62,7 +62,7 @@ const VerifyUserAuth = async (body: any) => {
 };
 
 export async function FORGOT_PASSWORD(endpoint: string, data: any) {
-  const url = import.meta.env.VITE_REACT_APP_API_URL + endpoint;
+  const url = API_URL + endpoint;
   try {
     return await axios.post(url, data);
   } catch (error: any) {
@@ -86,7 +86,7 @@ const ResetPassword = async (body: any) => {
 };
 
 export async function RESEND_LOGIN_OTP(endpoint: string, data: any) {
-  const url = import.meta.env.VITE_REACT_APP_API_URL + endpoint;
+  const url = API_URL + endpoint;
   try {
     return await axios.post(url, data);
   } catch (error: any) {
@@ -95,7 +95,7 @@ export async function RESEND_LOGIN_OTP(endpoint: string, data: any) {
 }
 
 export async function RESET_PASSWORD(endpoint: string, data: any) {
-  const url = import.meta.env.VITE_REACT_APP_API_URL + endpoint;
+  const url = API_URL + endpoint;
   try {
     return await axios.post(url, data);
   } catch (error: any) {
@@ -117,7 +117,7 @@ const PublicContact = async (body: any) => {
 };
 
 const GetUserProfile = async () => {
-  const url = import.meta.env.VITE_REACT_APP_API_URL + "/auth/user";
+  const url = API_URL + "/auth/user";
 
   try {
     const response = await axios({

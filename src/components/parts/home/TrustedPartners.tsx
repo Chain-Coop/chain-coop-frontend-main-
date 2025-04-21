@@ -1,6 +1,7 @@
 import React from "react";
+import Marquee from "react-fast-marquee";
 import { trustedPartners } from "../../../data/Data";
-import "../../parts/home/animation.css";
+import { Typography } from "@material-tailwind/react";
 
 interface TrustedPartner {
   src: string;
@@ -8,18 +9,23 @@ interface TrustedPartner {
 
 const TrustedPartners: React.FC = () => {
   return (
-    <main className="logos flex justify-center shadow-md sm:py-[15px] lg:p-[2rem]">
-      <div className="logos-slide flex w-[96vw] items-center justify-between whitespace-nowrap">
-        <div className="flex sm:mt-4">
-          {trustedPartners.map((img: TrustedPartner, index: number) => (
-            <img
-              key={index}
-              src={img.src}
-              alt={`Image ${index + 1}`}
-              className="mr-4 h-[5em]"
-            />
-          ))}
-        </div>
+    <main className="shadow-md">
+      <div className="container mx-auto py-8 lg:max-w-[95%]">
+        <Typography className="mb-6 px-8 text-lg font-semibold text-[#440080]">
+          Meet our Partners
+        </Typography>
+        <Marquee speed={40} gradient={true} pauseOnHover={true}>
+          <div className="container flex max-w-[90%] items-center">
+            {trustedPartners.map((partner: TrustedPartner, index: number) => (
+              <img
+                key={index}
+                src={partner.src}
+                alt={`Partner ${index + 1}`}
+                className="mx-4 h-12 w-auto sm:h-16"
+              />
+            ))}
+          </div>
+        </Marquee>
       </div>
     </main>
   );

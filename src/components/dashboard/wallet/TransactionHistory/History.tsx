@@ -6,9 +6,9 @@ import {
   formatRelativeTime,
 } from "../../../../shared/utils/format";
 import transact from "../../../../Assets/png/dashboard/wallet/transaction.png";
-import { Primary } from "../../../common/Button";
 import { useUserTransaction } from "../../../../shared/Hooks/useBalance";
 import Tooltip from "@mui/material/Tooltip";
+import { Button } from "@material-tailwind/react";
 
 const History = () => {
   const { getTransaction } = useUserTransaction();
@@ -40,19 +40,19 @@ const History = () => {
   };
 
   return (
-    <main className="font-sans">
-      <div className="mt-[3em] flex flex-col gap-[1.5em]">
+    <main className="">
+      <div className="flex flex-col gap-[1.5em] py-6">
         <div className="flex items-center justify-between px-2">
-          <h1 className="text-lg font-semibold text-memt1 md:text-xl">
+          <h1 className="text-xl font-semibold text-memt1 lg:text-xl">
             Recent Transactions
           </h1>
           {getTransaction && getTransaction.length > 3 && (
-            <Primary
+            <Button
               className="flex items-center rounded-lg border-[2px] border-text2 bg-inherit px-3 py-1 text-sm font-semibold text-memt1 md:px-4 md:text-base"
               onClick={handleViewAll}
             >
               {showAll ? "Close" : "View All"}
-            </Primary>
+            </Button>
           )}
         </div>
 
@@ -64,7 +64,7 @@ const History = () => {
               return (
                 <div
                   key={index}
-                  className="flex flex-col gap-[10px] rounded-lg px-3 py-[1em] shadow-md md:px-[1.5em]"
+                  className="flex flex-col gap-[10px] rounded-lg border border-gray-300 px-3 py-[1em] shadow-md md:px-[1.5em]"
                 >
                   <div className="flex flex-col gap-1 md:flex-row md:justify-between md:gap-0">
                     <div className="flex items-center justify-between md:justify-start md:gap-4">

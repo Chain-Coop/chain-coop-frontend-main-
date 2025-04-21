@@ -1,7 +1,7 @@
 import axios from "axios";
 import authHeader from "./headers";
 
-const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
+const API_URL = (import.meta as any).env.VITE_REACT_APP_API_URL;
 
 const handleApiError = (error: any) => {
   if (!error.response) {
@@ -119,8 +119,12 @@ const GetContributionBalance = async () => {
   }
 };
 
-const GetUsersContributionHistory = async (page: number, limit: number) => {
-  const url = `${API_URL}/contribution/contribute?page=${page}&limit=${limit}`;
+const GetUsersContributionHistory = async (
+  page: number,
+  limit: number,
+  sort: string = "desc",
+) => {
+  const url = `${API_URL}/contribution/contribute?page=${page}&limit=${limit}&sort=${sort}`;
   try {
     const response = await axios.get(url, { headers: authHeader() });
     return response.data;
@@ -130,6 +134,18 @@ const GetUsersContributionHistory = async (page: number, limit: number) => {
 };
 
 const PayContribution = async (body: any) => {
+  const url = `${API_URL}/contribution/pay-contribution`;
+  try {
+    const response = await axios.post(url, body, {
+      headers: authHeader(),
+    });
+    return response?.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
+const PayContributionPaystack = async (body: any) => {
   const url = `${API_URL}/contribution/pay`;
   try {
     const response = await axios.post(url, body, {
@@ -137,11 +153,7 @@ const PayContribution = async (body: any) => {
     });
     return response?.data;
   } catch (error: any) {
-    if (error.response && error.response.data) {
-      throw error.response.data;
-    } else {
-      throw new Error("Network Error: Please check your internet connection.");
-    }
+    handleApiError(error);
   }
 };
 
@@ -186,68 +198,8 @@ const WithdrawalFromContribution = async (body: any) => {
   }
 };
 
-const SendProposal = async (formData: FormData) => {
-  try {
-    const config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        ...authHeader(),
-      },
-    };
-    const response = await axios.post(`${API_URL}/proposals`, formData, config);
-    return response.data;
-  } catch (error: any) {
-    handleApiError(error);
-  }
-};
-
-const GetProposal = async () => {
-  const url = `${API_URL}/proposals`;
-  try {
-    const response = await axios.get(url, { headers: authHeader() });
-    return response.data;
-  } catch (error: any) {
-    handleApiError(error);
-  }
-};
-
 const GetAllProject = async () => {
   const url = `${API_URL}/project/all-projects`;
-  try {
-    const response = await axios.get(url, { headers: authHeader() });
-    return response.data;
-  } catch (error: any) {
-    handleApiError(error);
-  }
-};
-
-const GetAllUserFundedProject = async () => {
-  const url = `${API_URL}/project/funded`;
-  try {
-    const response = await axios.get(url, { headers: authHeader() });
-    return response.data;
-  } catch (error: any) {
-    handleApiError(error);
-  }
-};
-
-const FundProject = async (body: any, projectId: string) => {
-  try {
-    const response = await axios.post(
-      `${API_URL}/project/${projectId}/fund`,
-      body,
-      {
-        headers: authHeader(),
-      },
-    );
-    return response.data;
-  } catch (error: any) {
-    handleApiError(error);
-  }
-};
-
-const GetProjectById = async (projectId: string) => {
-  const url = `${API_URL}/project/${projectId}`;
   try {
     const response = await axios.get(url, { headers: authHeader() });
     return response.data;
@@ -369,19 +321,14 @@ const TransactionServices = {
   GetWalletBalance,
   GetContributionBalance,
   GetUsersTransaction,
-  SendProposal,
-  GetProposal,
   GetAllProject,
   CreateContributionPlan,
   FundWallet,
   VerifyFundWallet,
-  FundProject,
-  GetProjectById,
   GetAllBanks,
   GetAccountName,
   CreateTransactionPin,
   WithdrawalFromWallet,
-  GetAllUserFundedProject,
   GetUsersContributionHistory,
   GetContributionDetailsById,
   PayContribution,
@@ -391,6 +338,7 @@ const TransactionServices = {
   GetUnPaidBalance,
   GeneratePinOTP,
   GetWalletCard,
+  PayContributionPaystack,
 };
 
 export default TransactionServices;

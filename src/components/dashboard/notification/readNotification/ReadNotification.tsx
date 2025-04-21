@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import bell from "../../../../Assets/png/dashboard/notification.png";
 import { useAllNotification } from "../../../../shared/Hooks/useUserProfile";
-import { NotificationSkeleton } from "../main/Notification";
 import { IoCheckmarkDoneSharp } from "react-icons/io5";
 import ViewNotificationDetailsRead from "../ViewNotificationDetails/ViewNotificationDetailsRead";
 import Modal from "../../../common/Modal";
+import { NotificationSkeleton } from "../../../common/Loading";
 
 const ReadNotification = () => {
   const { updates, fetchNotification, currentPage, loading, totalPages } =
@@ -91,7 +91,7 @@ const ReadNotification = () => {
   }
 
   return (
-    <main className="h-auto space-y-4 font-sans">
+    <main className="h-auto space-y-4 ">
       {readNotifications.map((notification: any, index: number) => (
         <section
           key={notification?._id}
@@ -185,16 +185,11 @@ const ReadNotification = () => {
         </div>
       )}
       {selectedNotification && (
-        <Modal
-          isOpen={isNewsModalOpen}
-          onClose={handleCloseModal}
-          data-aos="zoom-in"
-          className="bg-white"
-        >
-          <ViewNotificationDetailsRead
-            notificationDetails={selectedNotification}
-          />
-        </Modal>
+        <ViewNotificationDetailsRead
+          notificationDetails={selectedNotification}
+          open={isNewsModalOpen}
+          handleOpen={handleCloseModal}
+        />
       )}
     </main>
   );

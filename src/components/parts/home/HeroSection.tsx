@@ -1,8 +1,9 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import subicon from "../../../Assets/png/home/subicon.png";
-import { Primary } from "../../common/Button";
 import { motion } from "framer-motion";
+import { Button, Typography } from "@material-tailwind/react";
+import { MotionTypography } from "../../common/motionTypography";
+import { ROUTES } from "../../../shared/routes";
 
 const container = (delay: any) => ({
   hidden: { x: -100, opacity: 0 },
@@ -15,53 +16,63 @@ const container = (delay: any) => ({
 
 const HeroSection = () => {
   return (
-    <main className="relative flex w-full flex-col font-sans lg:flex-row">
-      <div className="flex items-center px-4 py-5 lg:w-1/2 lg:px-[4em] lg:py-[10em]">
-        <div className="max-w-xl">
-          <div className="mb-4 lg:mb-6">
-            <motion.h1
-              variants={container(0.5)}
-              initial="hidden"
-              animate="visible"
-              className="text-xl font-bold  lg:text-4xl"
-            >
-              Save in Naira, Dollars, Gold, or BTC{" "}
-              <span className="text-text2"> with Chain Co-op</span>
-            </motion.h1>
-          </div>
-          <motion.p
+    <main className="relative flex w-full flex-col  lg:min-h-screen lg:flex-row">
+      <div className="flex items-center  py-8 lg:w-1/2 lg:py-24">
+        <div className="container mx-auto max-w-[90%]">
+          <MotionTypography
+            variant="h1"
+            variants={container(0.5)}
+            initial="hidden"
+            animate="visible"
+            className="mb-2 text-2xl font-bold tracking-tight lg:mb-8 lg:text-4xl"
+          >
+            Save Smarter, Grow <br /> Faster{" "}
+            <span className="text-text2">with Chain Co-op</span>
+          </MotionTypography>
+          <MotionTypography
             variants={container(1)}
             initial="hidden"
             animate="visible"
-            className="mb-6 text-sm text-gray-600 sm:text-base lg:mb-8"
+            variant="small"
+            className="mb-8 font-normal tracking-tight text-gray-600 lg:text-lg"
           >
-            Introducing Chain Co-op Savings. A secure platform to save in Naira,
-            Dollars, Gold, or BTC. Protecting your wealth and preparing you for
-            potential loans, with a focus on financial stability over growth.
-          </motion.p>
+            Your all-in-one platform for automated savings in <br /> Naira and
+            crypto
+          </MotionTypography>
           <motion.div
             variants={container(1)}
             initial="hidden"
             animate="visible"
-            className="flex gap-[2.5em]  sm:items-center"
+            className="flex flex-row gap-4 sm:gap-6 lg:gap-8"
           >
-            <Link to="/sign-up" className="w-full sm:w-auto">
-              <Primary className="w-full rounded-md bg-text2 px-[9px] py-2 text-center text-sm text-text5 sm:text-base lg:px-4 lg:py-2">
-                Start Saving
-              </Primary>
+            <Link to={ROUTES.sign_up} className="flex-shrink-0">
+              <Button
+                variant="text"
+                className="bg-text2 px-6 py-3 text-center normal-case transition-all duration-300 hover:bg-text2 hover:bg-opacity-90 hover:shadow-lg"
+              >
+                <Typography className="text-sm font-semibold text-text5 sm:text-base">
+                  Start Saving
+                </Typography>
+              </Button>
             </Link>
-            <Primary className="flex w-full items-center justify-center rounded-md bg-white py-2 text-sm font-semibold text-text2 shadow-xl outline-none sm:w-auto sm:px-4 sm:py-3 sm:text-base">
+            <Button className="flex flex-shrink-0 items-center justify-center rounded-md bg-white px-6 py-3 text-sm font-semibold normal-case text-text2 shadow-xl transition-all duration-300 hover:bg-gray-50 hover:shadow-2xl sm:text-base">
               <img
                 src={subicon}
-                className="mr-2 h-[20px] sm:h-[25px]"
+                className="mr-2 h-5 w-5 sm:h-6 sm:w-6"
                 alt="Subicon"
               />
-              50+ Subscribes
-            </Primary>
+              50+ Subscribers
+            </Button>
           </motion.div>
         </div>
       </div>
-      <div className="hidden w-full bg-heroBackground bg-cover bg-center bg-no-repeat lg:block lg:h-auto lg:w-1/2"></div>
+
+      <div className="hidden lg:block lg:h-full lg:w-1/2">
+        <div
+          className="h-full w-full bg-heroBackground bg-cover bg-center bg-no-repeat"
+          style={{ minHeight: "94vh" }}
+        ></div>
+      </div>
     </main>
   );
 };

@@ -5,6 +5,7 @@ import { sidebarLinks } from "../../../data/Data";
 import member from "../../../Assets/jpg/membership/customer.jpg";
 import investor from "../../../Assets/jpg/membership/investor.jpg";
 import useUserProfile from "../../../shared/Hooks/useUserProfile";
+import { Typography } from "@material-tailwind/react";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -36,7 +37,7 @@ const Sidebar = () => {
   const { text, bgColor } = getButtonProps();
 
   return (
-    <aside className="flex h-screen flex-col border-r border-bl bg-rec1 font-sans text-memt1 shadow-md">
+    <aside className="flex h-screen flex-col border-r border-bl bg-rec1 text-memt1 shadow-md">
       <div className="flex-shrink-0 px-[1em] py-[2em]" onClick={home}>
         <img src={logo} alt="ChainCoop-logo" className="cursor-pointer" />
       </div>
@@ -53,7 +54,7 @@ const Sidebar = () => {
               <Link
                 key={index}
                 to={link.to}
-                className={`text flex items-center px-4 py-3 font-sans text-lg hover:bg-Dh ${
+                className={`text flex items-center px-4 py-5  text-[16px] text-[#1E1E1E] hover:bg-Dh ${
                   isActive
                     ? "active !important border-l-2 border-text2 bg-Dh font-semibold"
                     : ""
@@ -62,7 +63,7 @@ const Sidebar = () => {
                 <img
                   src={link.img}
                   alt={`${link.text} icon`}
-                  className="mr-3 h-6 w-6"
+                  className="mr-3 h-5 w-5"
                 />
                 {link.text}
               </Link>
@@ -86,10 +87,13 @@ const Sidebar = () => {
           </section>
 
           <section className="mt-4 flex">
-            <p className="text-sm text-howtext">
+            <Typography
+              variant="small"
+              className="leading-snug tracking-tight text-howtext"
+            >
               This card grants you access to the Chain Coop Chain Network
               ecosystem. Once activated, it becomes non-transferable.
-            </p>
+            </Typography>
           </section>
         </nav>
       </div>

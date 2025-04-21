@@ -13,7 +13,7 @@ const About = () => {
   ];
 
   return (
-    <main className="mt-4 font-sans">
+    <main className="mt-4 ">
       <header>
         <h2 className="font-semibold text-howtext">About Chain Coop</h2>
       </header>
@@ -23,12 +23,15 @@ const About = () => {
             <hr className="h-[1px] rounded-full bg-gray-200" />
             <div className="flex items-center justify-between py-1">
               {section.link ? (
-                <Link to={section.link} className="flex items-center justify-between w-full">
+                <Link
+                  to={section.link}
+                  className="flex w-full items-center justify-between"
+                >
                   <span className="font-semibold">{section.title}</span>
                   <IoIosArrowForward size={15} className="text-text2" />
                 </Link>
               ) : (
-                <div className="flex items-center justify-between w-full">
+                <div className="flex w-full items-center justify-between">
                   <span className="font-semibold">{section.title}</span>
                   <IoIosArrowForward size={15} className="text-text2" />
                 </div>

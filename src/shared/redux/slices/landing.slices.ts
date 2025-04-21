@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message.slices";
 import LandingServices from "../services/landing.services";
-import React from "react";
+
 
 export const RegisterUser = createAsyncThunk(
   "landing/registerUser",

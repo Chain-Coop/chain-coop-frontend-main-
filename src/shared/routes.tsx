@@ -1,0 +1,16 @@
+export const ROUTES = {
+  sign_up: "/sign-up",
+  sign_in: "/login",
+  dashoard: "/dashboard",
+  forget_password: "/forget-password",
+  notification: "/dashboard/notification",
+  flexibleContributionType: "/dashboard/contribution/contribution_curency_type",
+  lockContributionType:
+    "/dashboard/contribution/lock/contribution_curency_type",
+  strictLockContributionType:
+    "/dashboard/contribution/strict_lock/contribution_curency_type",
+  oneTimeContributionType:
+    "/dashboard/contribution/one_time/contribution_curency_type",
+  manage_cards: "/dashboard/profile/manage-cards",
+  crypto_Wallet: "/dashboard/wallet/crypto_wallet",
+};

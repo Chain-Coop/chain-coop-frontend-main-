@@ -2,20 +2,19 @@ import React, { useEffect, useState } from "react";
 import bell from "../../../../Assets/png/dashboard/notification.png";
 import { useAllNotification } from "../../../../shared/Hooks/useUserProfile";
 import { GoDotFill } from "react-icons/go";
-import { NotificationSkeleton } from "../main/Notification";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../shared/redux/store";
 import { updateNotificationStatus } from "../../../../shared/redux/slices/notification.slices";
-import Modal from "../../../common/Modal";
 import ViewNotificationDetailsRead from "../ViewNotificationDetails/ViewNotificationDetailsRead";
 import { IoCheckmarkDoneSharp } from "react-icons/io5";
+import { NotificationSkeleton } from "../../../common/Loading";
 
 const UnReadNotification = () => {
   const { updates, fetchNotification, currentPage, loading, totalPages } =
     useAllNotification();
   const dispatch: AppDispatch = useDispatch();
   const [isInitialLoad, setIsInitialLoad] = useState(true);
-  const [isNewsModalOpen, setNewsModalOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedNotification, setSelectedNotification] = useState(null);
 
   const itemsPerPage = 10;
@@ -37,15 +36,15 @@ const UnReadNotification = () => {
     try {
       await dispatch(updateNotificationStatus(notification._id));
       await fetchNotification(currentPage, itemsPerPage);
-      handleCloseModal();
+      handleCloseDialog();
     } catch (error) {
       console.error("Failed to update notification status:", error);
     }
   };
 
-  const handleOpenModal = async (notification: any) => {
+  const handleOpenDialog = async (notification: any) => {
     setSelectedNotification(notification);
-    setNewsModalOpen(true);
+    setIsDialogOpen(true);
 
     try {
       await dispatch(updateNotificationStatus(updates.id));
@@ -55,9 +54,13 @@ const UnReadNotification = () => {
     }
   };
 
-  const handleCloseModal = () => {
-    setNewsModalOpen(false);
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
     setSelectedNotification(null);
+  };
+
+  const handleDialogToggle = () => {
+    setIsDialogOpen(!isDialogOpen);
   };
 
   const handlePageChange = (page: number) => {
@@ -106,11 +109,11 @@ const UnReadNotification = () => {
             />
           </div>
           <header>
-            <h1 className="text-lg font-bold md:text-xl lg:text-2xl">
+            <h1 className="text-lg font-bold tracking-tight md:text-xl lg:text-2xl">
               No unread notifications!
             </h1>
           </header>
-          <p className="max-w-md text-sm font-semibold text-gray-600 md:text-base lg:text-lg">
+          <p className="max-w-md text-sm font-semibold tracking-tight text-gray-600">
             You're all caught up! Check back later for new notifications.
           </p>
         </div>
@@ -119,11 +122,11 @@ const UnReadNotification = () => {
   }
 
   return (
-    <main className="h-auto space-y-4 font-sans">
+    <main className="h-auto space-y-4 ">
       {unreadNotifications.map((notification: any, index: number) => (
         <section
           key={notification?._id}
-          onClick={() => handleOpenModal(notification)}
+          onClick={() => handleOpenDialog(notification)}
           className="flex cursor-pointer flex-col gap-[1em] rounded-lg bg-gray-100 px-[1em] py-[1em]"
         >
           <div className="flex items-start gap-4">
@@ -213,18 +216,14 @@ const UnReadNotification = () => {
           </button>
         </div>
       )}
+
       {selectedNotification && (
-        <Modal
-          isOpen={isNewsModalOpen}
-          onClose={handleCloseModal}
-          data-aos="zoom-in"
-          className="bg-white"
-        >
-          <ViewNotificationDetailsRead
-            notificationDetails={selectedNotification}
-            handleUpdateStatus={handleUpdateStatus}
-          />
-        </Modal>
+        <ViewNotificationDetailsRead
+          notificationDetails={selectedNotification}
+          handleUpdateStatus={handleUpdateStatus}
+          open={isDialogOpen}
+          handleOpen={handleDialogToggle}
+        />
       )}
     </main>
   );

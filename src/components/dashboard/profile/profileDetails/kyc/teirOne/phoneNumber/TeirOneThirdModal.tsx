@@ -3,21 +3,31 @@ import useUserProfile from "../../../../../../../shared/Hooks/useUserProfile";
 import OtpPin from "../../../../../../../shared/utils/OtpInput";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../../../shared/redux/store";
-import { kycPhoneOtp } from "../../../../../../../shared/redux/slices/kyc.slices";
-import { Alert } from "@mui/material";
-import { Primary } from "../../../../../../common/Button";
-import ReactLoading from "react-loading";
+import {
+  kycPhoneOtp,
+  VerifykycPhoneOtp,
+} from "../../../../../../../shared/redux/slices/kyc.slices";
 import { toast } from "react-toastify";
-import { VerifykycPhoneOtp } from "../../../../../../../shared/redux/slices/kyc.slices";
+import {
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  Button,
+  Typography,
+} from "@material-tailwind/react";
+import { Alert } from "@mui/material";
 
-interface TierOneThirdModalProps {
+interface TierOneThirdDialogProps {
+  open: boolean;
   reference: string;
   onClose: () => void;
   onSwitchToWhatsapp: () => void;
   onVerificationSuccess: () => void;
 }
 
-const TierOneThirdModal: React.FC<TierOneThirdModalProps> = ({
+const TierOneThirdDialog: React.FC<TierOneThirdDialogProps> = ({
+  open,
   onClose,
   onSwitchToWhatsapp,
   onVerificationSuccess,
@@ -71,6 +81,7 @@ const TierOneThirdModal: React.FC<TierOneThirdModalProps> = ({
       setLoading(false);
     }
   };
+
   const getOtp = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (timeLeft > 0) return;
@@ -88,23 +99,17 @@ const TierOneThirdModal: React.FC<TierOneThirdModalProps> = ({
   };
 
   return (
-    <main className="w-full max-w-[30em] px-3 py-6 font-sans md:px-8 md:py-8">
-      <section className="flex flex-col gap-4 md:gap-6">
-        <div className="flex flex-col gap-2">
-          <header className="text-center">
-            <h2 className="text-lg font-bold leading-tight md:text-xl">
-              Enter OTP Verification Code
-            </h2>
-          </header>
-          <article className="text-center">
-            <p className="text-gray-600 sm:text-base">
-              A 6 digit code has been sent to{" "}
-              <span className="font-semibold">
-                {profileDetails.phoneNumber}
-              </span>
-            </p>
-          </article>
-        </div>
+    <Dialog open={open} handler={onClose} size="md" className="py-4">
+      <DialogHeader className="justify-center">
+        <Typography variant="h5">Phone Number Authentication</Typography>
+      </DialogHeader>
+
+      <DialogBody className="flex flex-col gap-6">
+        <Typography className="text-center text-gray-600">
+          A 6 digit sms code has been sent to this number
+          <span className="font-semibold">{profileDetails?.phoneNumber}</span>,
+          Kindly enter the code
+        </Typography>
 
         <div className="flex flex-col items-center gap-4">
           <OtpPin
@@ -114,75 +119,58 @@ const TierOneThirdModal: React.FC<TierOneThirdModalProps> = ({
             onChange={(value) => setCode(value)}
           />
 
-          <div className="w-full max-w-md px-4">
+          <div>
             <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold text-gray-500 md:text-base">
-                Time remaining: {formatTime(timeLeft)}
-              </p>
-              <button
-                onClick={getOtp}
-                disabled={timeLeft > 0 || resendLoading}
-                className={`text-sm font-semibold md:text-base ${
-                  timeLeft > 0
-                    ? "cursor-not-allowed text-gray-400"
-                    : "cursor-pointer text-text2 hover:text-text2/80"
-                }`}
+              <Typography
+                variant="small"
+                className="font-semibold text-gray-500"
               >
-                {resendLoading ? (
-                  <ReactLoading
-                    type="spin"
-                    color="#000000"
-                    height={16}
-                    width={16}
-                  />
-                ) : (
-                  "Resend Code"
-                )}
-              </button>
+                Time remaining: {formatTime(timeLeft)}
+              </Typography>
+              <Button
+                variant="text"
+                size="sm"
+                onClick={getOtp}
+                loading={resendLoading}
+                disabled={timeLeft > 0 || resendLoading}
+                className={`flex justify-center ${
+                  timeLeft > 0 ? "cursor-default text-gray-400" : "text-text2"
+                } hover:bg-transparent`}
+              >
+                <span className="text-sm font-semibold">
+                  {timeLeft > 0 ? "Resend Code" : "Resend Code"}
+                </span>
+              </Button>
             </div>
           </div>
         </div>
 
-        {error && (
-          <Alert severity="error" className="mt-2">
-            {error}
-          </Alert>
-        )}
-      </section>
+        {error && <Alert severity="error">{error}</Alert>}
+      </DialogBody>
 
-      <div className="mt-6 flex justify-center  px-4">
-        <Primary
-          className="w-full max-w-md bg-text2 py-3 text-white transition-all hover:bg-text2/90"
+      <DialogFooter className="flex flex-col gap-2">
+        <Button
+          fullWidth
+          loading={loading}
           onClick={verifyCode}
           disabled={loading || code.length !== 6}
+          className="flex w-72 justify-center bg-text2 text-sm normal-case"
         >
-          {loading ? (
-            <div className="flex justify-center">
-              <ReactLoading
-                type="spin"
-                color="#ffffff"
-                height={20}
-                width={20}
-              />
-            </div>
-          ) : (
-            "Verify"
-          )}
-        </Primary>
-      </div>
-      <div className="mt-3">
-        <p>
+          {!loading && "Verify"}
+        </Button>
+
+        <Typography className="text-center font-normal">
           Didn't receive code?{" "}
           <span
             onClick={onSwitchToWhatsapp}
-            className="cursor-pointer font-semibold text-text2"
+            className="cursor-pointer font-medium text-text2"
           >
             Use a Whatsapp number instead
           </span>
-        </p>
-      </div>
-    </main>
+        </Typography>
+      </DialogFooter>
+    </Dialog>
   );
 };
 
-export default TierOneThirdModal;
+export default TierOneThirdDialog;

@@ -1,57 +1,86 @@
-import React from "react";
 import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import "../../../../src/App.css";
 import DashboardNav from "../../common/DashboardNav";
 import Sidebar from "./Sidebar";
-import Home from "../home/Home";
-import Contribution from "../contribution/main/Contribution";
-import ContributionDetails from "../contribution/viewContribution/ViewContribution";
-import CryptoContribution from "../contribution/contributionType/crypto/main/Contribution";
-import Wallet from "../wallet/Wallet";
-import Project from "../nestedproject/Project";
-import Proposal from "../proposal/Proposal";
-import SubmitProposal from "../proposal/SubmitProposal";
-import Profile from "../profile/main/Profile";
+import ContributionDetails from "../../../pages/contribution/ViewContribution";
+import CryptoContributionDetails from "../../../pages/contribution/crypto/ViewContribution";
+import CryptoContribution from "../../../pages/contribution/crypto/main/Contribution";
 import Right from "../rightbar/Right";
-import Withdraw from "../wallet/withdraw/Withdraw";
-import SelectBank from "../wallet/withdraw/SelectBank";
-import BankAccount from "../wallet/withdraw/BankAccount";
-import SelectAccount from "../wallet/withdraw/SelectAccount";
-import VerifyAccount from "../wallet/withdraw/VerifyAccount";
-import FundWallet from "../wallet/fund/FundWallet";
-import TransferWallet from "../wallet/transfer/main/Transfer";
-import AddFund from "../wallet/transfer/fundProject/AddFund";
-import ProfileTransactions from "../profile/profileDetails/transactions/Transactions";
-import Shares from "../shares/main/Shares";
-import VerifyTransaction from "../wallet/fund/verifyTransaction/VerifyTransaction";
-import ConfirmTransaction from "../wallet/transfer/fundContribution/confirmTransaction";
-// import ProjectContentOverView from "../nestedproject/nested/ProjectContentOverView";
-import Purpose from "../contribution/contributionType/naira/flexiblePlan/Purpose";
-import CryptoPurpose from "../contribution/contributionType/crypto/flexiblePlan/ContributionCurrencyType";
-import StrictLockCryptoPurpose from "../contribution/contributionType/crypto/strictLockPlan/ContributionCurrencyType";
-import LockPurpose from "../contribution/contributionType/naira/lockPlan/Purpose";
-import SavingsPlan from "../contribution/contributionType/naira/flexiblePlan/SavingsPlan";
-import LockPlan from "../contribution/contributionType/naira/lockPlan/SavingsPlan";
-import StrictLockPurpose from "../contribution/contributionType/naira/strictLockPlan/Purpose";
-import StartDate from "../contribution/contributionType/naira/flexiblePlan/StartDate";
-import FlexibleCryptoStartDate from "../contribution/contributionType/crypto/flexiblePlan/StartDate";
-import StrictLockCryptoStartDate from "../contribution/contributionType/crypto/strictLockPlan/StartDate";
-import LockStartDate from "../contribution/contributionType/naira/lockPlan/StartDate";
-import StrictLockStartDate from "../contribution/contributionType/naira/strictLockPlan/StartDate";
-import SavingsAmount from "../contribution/contributionType/naira/flexiblePlan/SavingsAmount";
-import LockSavingsAmount from "../contribution/contributionType/naira/lockPlan/SavingsAmount";
-import StrictLockSavingsAmount from "../contribution/contributionType/naira/strictLockPlan/SavingsAmount";
-import WithdrawContribution from "../contribution/withdrawContribution/WithdrawContribution";
-import ConfirmWithdrawal from "../contribution/withdrawContribution/ConfirmAmount";
-import ManageAccountCards from "../profile/profileDetails/accountsAndCard/ManageCards";
-import Notification from "../notification/main/Notification";
-import ContributionCurrencyType from "../contribution/contributionType/naira/flexiblePlan/ContributionCurrencyType";
-import LockContributionCurrencyType from "../contribution/contributionType/naira/lockPlan/ContributionCurrencyType";
-import StrictLockContributionCurrencyType from "../contribution/contributionType/naira/strictLockPlan/ContributionCurrencyType";
+import Purpose from "../../../pages/contribution/naira/flexiblePlan/Purpose";
+import CryptoPurpose from "../../../pages/contribution/crypto/flexiblePlan/ContributionCurrencyType";
+import LockCryptoPurpose from "../../../pages/contribution/crypto/lockPlan/ContributionCurrencyType";
+import LockCryptoStartDate from "../../../pages/contribution/crypto/lockPlan/StartDate";
+import LockCryptoPreviewSavings from "../../../pages/contribution/crypto/lockPlan/PreviewSavings";
+import StrictLockCryptoPurpose from "../../../pages/contribution/crypto/strictLockPlan/ContributionCurrencyType";
+import LockCryptoSourceFunds from "../../../pages/contribution/crypto/lockPlan/SourceFunds";
+import LockPurpose from "../../../pages/contribution/naira/lockPlan/Purpose";
+import SavingsPlan from "../../../pages/contribution/naira/flexiblePlan/SavingsPlan";
+import LockPlan from "../../../pages/contribution/naira/lockPlan/SavingsPlan";
+import StrictLockPurpose from "../../../pages/contribution/naira/strictLockPlan/Purpose";
+import StartDate from "../../../pages/contribution/naira/flexiblePlan/StartDate";
+import FlexibleCryptoStartDate from "../../../pages/contribution/crypto/flexiblePlan/StartDate";
+import FlexibleCryptoSourceFunds from "../../../pages/contribution/crypto/flexiblePlan/SourceFunds";
+import FlexibleCryptoPreviewSavings from "../../../pages/contribution/crypto/flexiblePlan/PreviewSavings";
+import StrictLockCryptoStartDate from "../../../pages/contribution/crypto/strictLockPlan/StartDate";
+import StrictLockCryptoSourceFunds from "../../../pages/contribution/crypto/strictLockPlan/SourceFunds";
+import StrictLockCryptoPreviewSavings from "../../../pages/contribution/crypto/strictLockPlan/PreviewSavings";
+import LockStartDate from "../../../pages/contribution/naira/lockPlan/StartDate";
+import StrictLockStartDate from "../../../pages/contribution/naira/strictLockPlan/StartDate";
+import SavingsAmount from "../../../pages/contribution/naira/flexiblePlan/SavingsAmount";
+import LockSavingsAmount from "../../../pages/contribution/naira/lockPlan/SavingsAmount";
+import StrictLockSavingsAmount from "../../../pages/contribution/naira/strictLockPlan/SavingsAmount";
+import WithdrawContribution from "../../../pages/contribution/withdrawContribution/WithdrawContribution";
+import WithdrawCryptoContribution from "../../../pages/contribution/withdrawContribution/WithdrawCryptoContribution";
+import WithdrawCryptoWallet from "../../../pages/wallet/crypto/withdraw";
+import ConfirmWithdrawal from "../../../pages/contribution/withdrawContribution/ConfirmAmount";
+import ConfirmCryptoWithdrawal from "../../../pages/contribution/withdrawContribution/ConfirmCryptoAmount";
+import ContributionCurrencyType from "../../../pages/contribution/naira/flexiblePlan/ContributionCurrencyType";
+import LockContributionCurrencyType from "../../../pages/contribution/naira/lockPlan/ContributionCurrencyType";
+import StrictLockContributionCurrencyType from "../../../pages/contribution/naira/strictLockPlan/ContributionCurrencyType";
+import StrictLockPlan from "../../../pages/contribution/naira/strictLockPlan/SavingsPlan";
+import OneTimeCurrencyType from "../../../pages/contribution/naira/oneTimePlan/ContributionCurrencyType";
+import OneTimePurpose from "../../../pages/contribution/naira/oneTimePlan/Purpose";
+import OneTimeAmount from "../../../pages/contribution/naira/oneTimePlan/SavingsAmount";
+import OneTimeStartDate from "../../../pages/contribution/naira/oneTimePlan/StartDate";
+import OneTimeFlexibleCryptoPurpose from "../../../pages/contribution/crypto/oneTimePlan/flexiblePlan/ContributionCurrencyType";
+import OneTimeFlexibleCryptoStartDate from "../../../pages/contribution/crypto/oneTimePlan/flexiblePlan/StartDate";
+import OneTimeFlexibleCryptoSourceFunds from "../../../pages/contribution/crypto/oneTimePlan/flexiblePlan/SourceFunds";
+import OneTimeFlexibleCryptoPreviewSavings from "../../../pages/contribution/crypto/oneTimePlan/flexiblePlan/PreviewSavings";
+import OneTimeLockCryptoPurpose from "../../../pages/contribution/crypto/oneTimePlan/lockPlan/ContributionCurrencyType";
+import OneTimeLockCryptoStartDate from "../../../pages/contribution/crypto/oneTimePlan/lockPlan/StartDate";
+import OneTimeLockCryptoSourceFunds from "../../../pages/contribution/crypto/oneTimePlan/lockPlan/SourceFunds";
+import OneTimeLockCryptoPreviewSavings from "../../../pages/contribution/crypto/oneTimePlan/lockPlan/PreviewSavings";
+import OneTimeStrictLockCryptoPurpose from "../../../pages/contribution/crypto/oneTimePlan/strictLockPlan/ContributionCurrencyType";
+import OneTimeStrictLockCryptoStartDate from "../../../pages/contribution/crypto/oneTimePlan/strictLockPlan/StartDate";
+import OneTimeStrictLockCryptoSourceFunds from "../../../pages/contribution/crypto/oneTimePlan/strictLockPlan/SourceFunds";
+import OneTimeStrictLockCryptoPreviewSavings from "../../../pages/contribution/crypto/oneTimePlan/strictLockPlan/PreviewSavings";
 
-import CryptoMain from "../wallet/crypto/main/CryptoMain";
-import Preview from "../contribution/contributionType/naira/strictLockPlan/Preview";
+//import CryptoMain from "../wallet/crypto/main/CryptoMain";
+
+import AjoPage from "../../../pages/ajo/main/ajo";
+import SavingsDetail from "../../../pages/ajo/savings_detail/page";
+
+import PreviewStrictLock from "../../../pages/contribution/naira/strictLockPlan/Preview";
+import Contribution from "../../../pages/contribution/Contribution";
+import Notification from "../../../pages/notification/Notification";
+import CryptoMain from "../../../pages/wallet/crypto/CryptoMain";
+import FundWallet from "../../../pages/wallet/fund/FundWallet";
+import VerifyTransaction from "../../../pages/wallet/fund/VerifyTransaction";
+import VerifyAccount from "../../../pages/wallet/withdraw/VerifyAccount";
+import SelectAccount from "../../../pages/wallet/withdraw/SelectAccount";
+import BankAccount from "../../../pages/wallet/withdraw/BankAccount";
+import SelectBank from "../../../pages/wallet/withdraw/SelectBank";
+import Withdraw from "../../../pages/wallet/withdraw/Withdraw";
+import Profile from "../../../pages/profile/profile";
+import Wallet from "../../../pages/wallet/Wallet";
+import Home from "../../../pages/home/Home";
+import ManageCards from "../../../pages/profile/ManageCards";
+import CreateOpenGroup from "../../../pages/ajo/open_group/create_open_group";
+import GroupHistoryPage from "../../../pages/ajo/group_history/page";
+import InviteMembersPage from "../../../pages/ajo/invite_members/page";
+import TransactionHistoryPage from "../../../pages/ajo/transaction_history/page";
+import MembersPage from "../../../pages/ajo/members/page";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -60,11 +89,11 @@ const Dashboard = () => {
 
   return (
     <main className="flex min-h-screen w-full flex-col lg:flex-row lg:justify-between">
-      <aside className="custom-scroll-bar hidden h-screen overflow-y-auto lg:block lg:w-[22%]">
+      <aside className="custom-scroll-bar hidden h-screen overflow-y-auto md:w-[22%] lg:block">
         <Sidebar />
       </aside>
-      <section className="custom-scroll-bar h-screen flex-1 overflow-y-auto sm:w-full lg:w-[55%]">
-        <nav className="sm:block lg:hidden">
+      <section className="custom-scroll-bar h-screen w-full flex-1 overflow-y-auto px-4 md:px-14">
+        <nav className="px-4 sm:block lg:hidden">
           <DashboardNav />
         </nav>
         <Routes>
@@ -76,12 +105,32 @@ const Dashboard = () => {
             element={<ContributionDetails />}
           />
           <Route
-            path="contribution/crypto_contribution"
+            path="contribution/main/crypto_contribution"
             element={<CryptoContribution />}
+          />
+          <Route
+            path="contribution/crypto_contribution_details"
+            element={<CryptoContributionDetails />}
           />
           <Route
             path="contribution/flexible/crypto_purpose"
             element={<CryptoPurpose />}
+          />
+          <Route
+            path="contribution/lock/crypto_purpose"
+            element={<LockCryptoPurpose />}
+          />
+          <Route
+            path="contribution/lock/cryoto_date"
+            element={<LockCryptoStartDate />}
+          />
+          <Route
+            path="contribution/lock/source_funds"
+            element={<LockCryptoSourceFunds />}
+          />
+          <Route
+            path="contribution/lock/preview_savings"
+            element={<LockCryptoPreviewSavings />}
           />
           <Route
             path="contribution/strict_lock/crypto_purpose"
@@ -92,8 +141,33 @@ const Dashboard = () => {
             element={<FlexibleCryptoStartDate />}
           />
           <Route
-            path="contribution/strict_lock_crypto/date"
+            path="contribution/flexible/source_funds"
+            element={<FlexibleCryptoSourceFunds />}
+          />
+
+          <Route
+            path="contribution/flexible/preview_savings"
+            element={<FlexibleCryptoPreviewSavings />}
+          />
+
+          <Route
+            path="contribution/strict_lock/date"
             element={<StrictLockCryptoStartDate />}
+          />
+
+          <Route
+            path="contribution/strict_lock/source_funds"
+            element={<StrictLockCryptoSourceFunds />}
+          />
+
+          <Route
+            path="/dashboard/contribution/strict_lock/preview"
+            element={<StrictLockCryptoPreviewSavings />}
+          />
+
+          <Route
+            path="/contribution/naira/strict_lock/preview"
+            element={<PreviewStrictLock />}
           />
 
           <Route path="contribution/purpose" element={<Purpose />} />
@@ -136,17 +210,117 @@ const Dashboard = () => {
             element={<StrictLockPurpose />}
           />
           <Route
+            path="contribution/strict_lock/plan"
+            element={<StrictLockPlan />}
+          />
+          <Route
             path="contribution/strict_lock/amount"
             element={<StrictLockSavingsAmount />}
           />
           <Route
-            path="contribution/strict_lock/date"
+            path="contribution/naira/strict_lock/date"
             element={<StrictLockStartDate />}
           />
           <Route
-            path="contribution/strict_lock/preview"
-            element={<Preview />}
+            path="contribution/strict_lock/preview_savings"
+            element={<StrictLockCryptoPreviewSavings />}
           />
+
+          <Route
+            path="/contribution/withdraw_crypto_contribution"
+            element={<WithdrawCryptoContribution />}
+          />
+
+          <Route
+            path="/contribution/withdraw_contribution/confirm_crypto_amount"
+            element={<ConfirmCryptoWithdrawal />}
+          />
+
+          {/* One-Time Flexible Plan Routes */}
+          <Route
+            path="contribution/one_time_plan/flexible/crypto_purpose"
+            element={<OneTimeFlexibleCryptoPurpose />}
+          />
+          <Route
+            path="contribution/one_time_plan/flexible/date"
+            element={<OneTimeFlexibleCryptoStartDate />}
+          />
+          <Route
+            path="contribution/one_time_plan/flexible/source_funds"
+            element={<OneTimeFlexibleCryptoSourceFunds />}
+          />
+          <Route
+            path="contribution/one_time_plan/flexible/preview_savings"
+            element={<OneTimeFlexibleCryptoPreviewSavings />}
+          />
+
+          {/* One-Time Lock Plan Routes */}
+          <Route
+            path="contribution/one_time_plan/lock/crypto_purpose"
+            element={<OneTimeLockCryptoPurpose />}
+          />
+          <Route
+            path="contribution/one_time_plan/lock/date"
+            element={<OneTimeLockCryptoStartDate />}
+          />
+          <Route
+            path="contribution/one_time_plan/lock/source_funds"
+            element={<OneTimeLockCryptoSourceFunds />}
+          />
+          <Route
+            path="contribution/one_time_plan/lock/preview_savings"
+            element={<OneTimeLockCryptoPreviewSavings />}
+          />
+
+          {/* One-Time Strict Lock Plan Routes */}
+          <Route
+            path="contribution/one_time_plan/strict_lock/crypto_purpose"
+            element={<OneTimeStrictLockCryptoPurpose />}
+          />
+          <Route
+            path="contribution/one_time_plan/strict_lock/date"
+            element={<OneTimeStrictLockCryptoStartDate />}
+          />
+          <Route
+            path="contribution/one_time_plan/strict_lock/source_funds"
+            element={<OneTimeStrictLockCryptoSourceFunds />}
+          />
+          <Route
+            path="contribution/one_time_plan/strict_lock/preview_savings"
+            element={<OneTimeStrictLockCryptoPreviewSavings />}
+          />
+
+          <Route
+            path="contribution/one_time/contribution_curency_type"
+            element={<OneTimeCurrencyType />}
+          />
+          <Route
+            path="contribution/one_time/purpose"
+            element={<OneTimePurpose />}
+          />
+          <Route
+            path="contribution/one_time/amount"
+            element={<OneTimeAmount />}
+          />
+          <Route
+            path="contribution/one_time/date"
+            element={<OneTimeStartDate />}
+          />
+
+          <Route path="ajo" element={<AjoPage />} />
+          <Route path="ajo/create/open-group" element={<CreateOpenGroup />} />
+          {/* <Route path="ajo/create/closed-group" element={<CreateClosedGroup />} /> */}
+          <Route path="ajo/history" element={<GroupHistoryPage />} />
+          <Route
+            path="ajo/open-group/members"
+            element={<InviteMembersPage />}
+          />
+          <Route
+            path="ajo/:name/transactions"
+            element={<TransactionHistoryPage />}
+          />
+          <Route path="ajo/:name/members" element={<MembersPage />} />
+          <Route path="ajo/:name" element={<SavingsDetail />} />
 
           <Route path="wallet/*" element={<Wallet />} />
           <Route path="wallet/crypto_wallet" element={<CryptoMain />} />
@@ -156,36 +330,20 @@ const Dashboard = () => {
           <Route path="wallet/select-account" element={<SelectAccount />} />
           <Route path="wallet/verify-account" element={<VerifyAccount />} />
 
+          <Route
+            path="wallet/crypto/withdraw"
+            element={<WithdrawCryptoWallet />}
+          />
+
           <Route path="wallet/fund" element={<FundWallet />} />
           <Route
             path="wallet/fund_wallet/verify_transaction"
             element={<VerifyTransaction />}
           />
 
-          <Route path="wallet/transfer" element={<TransferWallet />} />
-          <Route path="wallet/transfer/fund-project" element={<AddFund />} />
-          <Route
-            path="wallet/transfer/confirm-amount"
-            element={<ConfirmTransaction />}
-          />
-          {/* 
-          <Route path="project" element={<Project />} />
-          <Route
-            path="project/project_over-view"
-            element={<ProjectContentOverView />}
-          /> */}
-
-          <Route path="proposal/*" element={<Proposal />} />
-          <Route path="proposal/submit-proposal" element={<SubmitProposal />} />
-
-          <Route path="shares" element={<Shares />} />
-
           <Route path="profile" element={<Profile />} />
-          <Route
-            path="profile/transactions"
-            element={<ProfileTransactions />}
-          />
-          <Route path="profile/manage-cards" element={<ManageAccountCards />} />
+
+          <Route path="profile/manage-cards" element={<ManageCards />} />
           <Route path="notification" element={<Notification />} />
         </Routes>
       </section>

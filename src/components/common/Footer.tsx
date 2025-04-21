@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { company, Contacts, Explore } from "../../data/Data";
+import { Company, Explore, Legal } from "../../data/Data";
 import X from "../../Assets/png/home/twitterx.png";
-// import instagram from "../../Assets/png/home/instagram.png";
-// import facebook from "../../Assets/png/home/facebook.png";
 import linkedin from "../../Assets/png/home/linkedin.png";
-// import { Primary } from "./Button";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../shared/redux/store";
 import { toast } from "react-toastify";
 import { JoinNewsLetter } from "../../shared/redux/slices/landing.slices";
-import ReactLoading from "react-loading";
+import { Button, Typography } from "@material-tailwind/react";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -43,18 +40,24 @@ const Footer = () => {
 
   return (
     <footer className="w-full overflow-hidden">
-      <div className="relative z-10 mx-auto mb-[-50px] flex   w-full items-center justify-center rounded-2xl bg-[#CCA3BC] p-4   font-sans sm:mb-[-60px] sm:mt-[2em] sm:py-6 lg:mb-[-115px] lg:w-[90%] lg:p-8">
-        <div className="w-full px-4 text-center">
-          <h1 className="mb-1 text-sm font-semibold lg:text-2xl">
+      <header className="relative z-10 mx-auto mb-[-50px] mt-[3em] flex w-full items-center justify-center rounded-2xl bg-[#CCA3BC] p-3  sm:mb-[-60px] sm:py-5 lg:mb-[-115px] lg:w-[90%] lg:p-8">
+        <div className="w-full px-2 text-center sm:px-4">
+          <Typography
+            variant="h1"
+            className="mb-1 text-xl font-semibold md:text-xl lg:text-2xl"
+          >
             Stay Ahead with Chain Co-op
-          </h1>
-          <h1 className="m-auto mb-4 w-full text-sm font-semibold sm:px-4 lg:w-[73%] lg:text-2xl">
+          </Typography>
+          <Typography
+            variant="h1"
+            className="m-auto mb-3 w-full text-sm font-semibold tracking-tight sm:px-4 md:text-lg lg:w-[73%] lg:text-2xl"
+          >
             Subscribe to the latest tech in tech-driven cooperative innovations
-            and investment opportunities.
-          </h1>
+            and Savings opportunities.
+          </Typography>
           <form
             onSubmit={joinNews}
-            className="mx-auto flex w-full flex-col items-center justify-center gap-4 lg:max-w-[60%] lg:flex-row"
+            className="mx-auto mt-2 flex w-full flex-col items-center justify-center gap-3 lg:mt-8 lg:max-w-[60%] lg:flex-row"
           >
             <input
               type="email"
@@ -64,52 +67,45 @@ const Footer = () => {
               required
               onChange={(e) => setEmail(e.target.value)}
             />
-            <button
+            <Button
               type="submit"
-              className="flex w-full justify-center rounded-md bg-text2 px-4 py-2 text-center text-lg text-text5 lg:w-[30%] lg:text-xl"
+              disabled={loading}
+              loading={loading}
+              className="flex min-w-[120px] items-center justify-center rounded-md bg-text2 px-10 py-2 text-sm normal-case text-text5 lg:py-3 lg:text-sm"
             >
-              {loading ? (
-                <ReactLoading
-                  color="#FFFFFF"
-                  width={25}
-                  height={25}
-                  type="spin"
-                />
-              ) : (
-                "Join Now"
-              )}
-            </button>
+              <Typography className="font-medium">Join</Typography>
+            </Button>
           </form>
         </div>
-      </div>
+      </header>
 
-      <div className="w-full bg-text2 font-sans">
-        <div className="mx-auto px-6 pt-[120px] lg:w-[90%] lg:pb-[10px] lg:pt-[190px]">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
+      <div className="w-full bg-text2 ">
+        <div className="mx-auto px-4 pt-[120px] lg:w-[93%] lg:pb-[10px] lg:pt-[190px]">
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
             <section className="w-full space-y-4">
-              <h3 className="font-bold text-text3">
-                Nigeria's First Blockchain Powered Cooperative
-              </h3>
-              <p className="font-light text-text3">
-                Chain Co-op is a tech-driven worker-owned cooperative that
-                guarantees returns through cutting-edge blockchain technology
-                and sustainable business investments.
-              </p>
-              <div>
-                <p className="font-medium text-text3">
-                  Chain Co-op Statute & Legal Structure
-                </p>
-                <p className="mt-1 font-medium text-text3">
-                  Understand the legal framework and cooperative governance that
-                  protect your investment.
-                </p>
-              </div>
+              <Typography
+                variant="h2"
+                className="text-sm font-light text-text3"
+              >
+                Chain Co-Op is a secure, registered cooperative dedicated to
+                empowering individuals with innovative savings solutions in
+                Naira and crypto.
+              </Typography>
+              <Typography variant="small" className="font-light text-text3">
+                Our platform combines cutting-edge technology with trusted
+                financial practices to help you build and protect your wealth.
+              </Typography>
             </section>
 
             <section className="w-full space-y-4">
-              <h3 className="font-bold text-text3">Company</h3>
+              <Typography
+                variant="h2"
+                className="text-sm font-semibold text-text3"
+              >
+                Company
+              </Typography>
               <div>
-                {company.map((data, index) => (
+                {Company.map((data, index) => (
                   <p className="mb-2 font-light text-text3" key={index}>
                     <Link to={data.to}>{data.text}</Link>
                   </p>
@@ -118,7 +114,12 @@ const Footer = () => {
             </section>
 
             <section className="w-full space-y-4">
-              <h3 className="font-bold text-text3">Explore</h3>
+              <Typography
+                variant="h2"
+                className="text-sm font-semibold text-text3"
+              >
+                Explore
+              </Typography>
               <div>
                 {Explore.map((data, index) => (
                   <p className="mb-2 font-light text-text3" key={index}>
@@ -129,16 +130,38 @@ const Footer = () => {
             </section>
 
             <section className="w-full space-y-4">
-              <h3 className="font-bold text-text3">Contact</h3>
+              <Typography
+                variant="h2"
+                className="text-sm font-semibold text-text3"
+              >
+                Legal
+              </Typography>
               <div>
-                <p className="font-light text-text3">
-                  Let's build a better future together! Ketu, Lagos, or reach
-                  out via email or phone. Join Chain Coop today!
-                </p>
-                <p className="font-light text-text3">
-                  info@chaincooperative.com
-                </p>
-                <p className="font-light text-text3">+234 809 322 7696</p>
+                {Legal.map((data, index) => (
+                  <p className="mb-2 font-light text-text3" key={index}>
+                    <Link to={data.to}>{data.text}</Link>
+                  </p>
+                ))}
+              </div>
+            </section>
+
+            <section className="w-full space-y-4">
+              <Typography
+                variant="h2"
+                className="text-sm font-semibold text-text3"
+              >
+                Contact
+              </Typography>
+              <div className="flex flex-col gap-3">
+                <Typography className="font-light text-text3">
+                  Let's build a better future together!
+                </Typography>
+                <Typography className="font-light text-text3">
+                  info@chaincoop.org
+                </Typography>
+                <Typography className="font-light text-text3">
+                  +234 809 322 7696
+                </Typography>
               </div>
             </section>
           </div>

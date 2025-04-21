@@ -1,14 +1,13 @@
-export default {
+import withMT from "@material-tailwind/react/utils/withMT";
+
+export default withMT({
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    screens: {
-      sm: "480px",
-      md: "768px",
-      lg: "1024px",
-      xl: "1280px",
-      "2xl": "1536px",
-    },
     extend: {
+      screens: {
+        'xxl': '1320px',
+        '3xl': '1700px',
+      },
       colors: {
         primary: " #E6B8D4",
         fbg: "#c183cc",
@@ -38,7 +37,7 @@ export default {
         blog: "#EEE7F3",
       },
       fontFamily: {
-        sans: ["Open Sans", "sans-serif", "Asap"],
+        asap: ["Asap", "sans-serif"],
       },
       backgroundImage: {
         background: "url('/src/Assets/png/story/background.png')",
@@ -51,21 +50,4 @@ export default {
       },
     },
   },
-};
-
-const styles = `
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.3s ease-in-out;
-}
-`;
+});

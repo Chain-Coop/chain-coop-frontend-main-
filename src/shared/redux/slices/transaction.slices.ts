@@ -2,15 +2,6 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { setMessage } from "./message.slices";
 import TransactionServices from "../services/transaction.services";
 
-interface FundProjectBody {
-  amount: number;
-}
-
-interface FundProjectPayload {
-  body: FundProjectBody;
-  projectId: string;
-}
-
 interface ContributionHistory {
   _id: string;
   contribution: string;
@@ -87,30 +78,6 @@ export const GetUsersTransaction = createAsyncThunk(
   },
 );
 
-export const sendProposal = createAsyncThunk(
-  "transaction/sendProposal",
-  async (formData: FormData, thunkAPI) => {
-    try {
-      const response = await TransactionServices.SendProposal(formData);
-      return { transaction: response };
-    } catch (error: any) {
-      return handleAsyncError(error, thunkAPI);
-    }
-  },
-);
-
-export const GetProposal = createAsyncThunk(
-  "transaction/getProposal",
-  async (_, thunkAPI) => {
-    try {
-      const data = await TransactionServices.GetProposal();
-      return { transaction: data };
-    } catch (error: any) {
-      return handleAsyncError(error, thunkAPI);
-    }
-  },
-);
-
 export const GetAllProject = createAsyncThunk(
   "transaction/getAllProject",
   async (_, thunkAPI) => {
@@ -119,20 +86,6 @@ export const GetAllProject = createAsyncThunk(
       return { transaction: data };
     } catch (error: any) {
       return handleAsyncError(error, thunkAPI);
-    }
-  },
-);
-
-export const GetAllUserFundedProject = createAsyncThunk(
-  "transaction/getAllUserFundedProject",
-  async (_, thunkAPI) => {
-    try {
-      const data = await TransactionServices.GetAllUserFundedProject();
-      return { transaction: data };
-    } catch (error: any) {
-      const message = error.msg;
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue(message);
     }
   },
 );
@@ -181,33 +134,6 @@ export const VerifyFundWallet = createAsyncThunk(
       return { transaction: data };
     } catch (error: any) {
       return handleAsyncError(error, thunkAPI);
-    }
-  },
-);
-
-export const FundProject = createAsyncThunk(
-  "transaction/fundProject",
-  async ({ body, projectId }: FundProjectPayload, thunkAPI) => {
-    try {
-      const data = await TransactionServices.FundProject(body, projectId);
-      return { transaction: data };
-    } catch (error: any) {
-      const message = error.msg;
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue(message);
-    }
-  },
-);
-
-export const GetProjectById = createAsyncThunk(
-  "transaction/getProjectById",
-  async ({ projectId }: { projectId: string }, thunkAPI) => {
-    try {
-      const data = await TransactionServices.GetProjectById(projectId);
-      return data;
-    } catch (error: any) {
-      const message = error.msg || "Failed to fetch project";
-      return thunkAPI.rejectWithValue(message);
     }
   },
 );
@@ -304,6 +230,7 @@ export const GetUsersContributionHistory = createAsyncThunk(
         limit,
       );
       return { transaction: data };
+      console.log("data", data);
     } catch (error: any) {
       return handleAsyncError(error, thunkAPI);
     }
@@ -337,6 +264,21 @@ export const PayContribution = createAsyncThunk(
       const data = await TransactionServices.PayContribution(body);
       return { landing: data };
     } catch (error: any) {
+      const message = error.msg;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
+export const PayContributionPaystack = createAsyncThunk(
+  "transaction/payContributionPaystck",
+  async (body: any, thunkAPI) => {
+    try {
+      const data = await TransactionServices.PayContributionPaystack(body);
+      return { landing: data };
+    } catch (error: any) {
+      console.log("error", error);
       const message = error.msg;
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);
@@ -389,22 +331,19 @@ interface TransactionState {
   getContributionBalance: any | null;
   getUsersTransaction: any | null;
   getUsersContribution: any | null;
-  createProposal: any | null;
-  userProposal: any | null;
   fundWalletStatus: "idle" | "loading" | "success" | "failed";
   allProjects: any;
-  allFundedProjects: any;
   allBanks: any;
   contributionPlan: any;
   fundUserWallet: any | null;
   veryfyFundUserWallet: any | null;
-  fundUserProject: null;
   getUserAccountName: null;
   currentProject: any | null;
   createPin: any | null;
   getPinOtp: any | null;
   removeCard: null;
   fundContribution: any | null;
+  fundContributionPaystack: any | null;
   fundUnPaidContribution: any | null;
   requestWithdrawalWallet: any | null;
   requestWithdrawalContribution: any | null;
@@ -420,21 +359,18 @@ const initialState: TransactionState = {
   getContributionBalance: null,
   getUsersTransaction: null,
   getUsersContribution: null,
-  createProposal: null,
-  userProposal: null,
   fundWalletStatus: "idle",
   allProjects: null,
-  allFundedProjects: null,
   allBanks: null,
   contributionPlan: null,
   fundUserWallet: null,
   getUserAccountName: null,
   veryfyFundUserWallet: null,
-  fundUserProject: null,
   currentProject: null,
   createPin: null,
   getPinOtp: null,
   fundContribution: null,
+  fundContributionPaystack: null,
   fundUnPaidContribution: null,
   requestWithdrawalWallet: null,
   requestWithdrawalContribution: null,
@@ -504,26 +440,6 @@ export const transactionSlice = createSlice({
         state.getUsersTransaction = null;
       })
 
-      .addCase(
-        sendProposal.fulfilled,
-        (state, action: PayloadAction<{ transaction: any }>) => {
-          state.createProposal = action.payload.transaction;
-        },
-      )
-      .addCase(sendProposal.rejected, (state) => {
-        state.createProposal = null;
-      })
-
-      .addCase(
-        GetProposal.fulfilled,
-        (state, action: PayloadAction<{ transaction: any }>) => {
-          state.userProposal = action.payload.transaction;
-        },
-      )
-      .addCase(GetProposal.rejected, (state) => {
-        state.userProposal = null;
-      })
-
       .addCase(GetAllProject.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -564,26 +480,6 @@ export const transactionSlice = createSlice({
       )
       .addCase(VerifyFundWallet.rejected, (state) => {
         state.veryfyFundUserWallet = null;
-      })
-
-      .addCase(FundProject.fulfilled, (state, action: PayloadAction<any>) => {
-        state.fundUserProject = action.payload;
-      })
-      .addCase(FundProject.rejected, (state, action) => {
-        state.fundUserProject = null;
-      })
-
-      .addCase(GetProjectById.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(GetProjectById.fulfilled, (state, action) => {
-        state.loading = false;
-        state.currentProject = action.payload;
-      })
-      .addCase(GetProjectById.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
       })
 
       .addCase(GetAllBanks.pending, (state) => {
@@ -672,24 +568,6 @@ export const transactionSlice = createSlice({
         state.requestWithdrawalContribution = null;
       })
 
-      .addCase(GetAllUserFundedProject.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(
-        GetAllUserFundedProject.fulfilled,
-        (state, action: PayloadAction<{ transaction: any }>) => {
-          state.loading = false;
-          state.allFundedProjects = action.payload.transaction;
-          state.error = null;
-        },
-      )
-      .addCase(GetAllUserFundedProject.rejected, (state, action) => {
-        state.loading = false;
-        state.allFundedProjects = null;
-        state.error = action.payload as string;
-      })
-
       .addCase(GetUsersContributionHistory.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -736,13 +614,25 @@ export const transactionSlice = createSlice({
       .addCase(PayContribution.pending, (state) => {
         state.loading = true;
         state.error = null;
-      });
-    builder.addCase(PayContribution.fulfilled, (state, action) => {
-      state.fundContribution = action.payload.landing;
-    });
-    builder
+      })
+      .addCase(PayContribution.fulfilled, (state, action) => {
+        state.fundContribution = action.payload.landing;
+      })
+
       .addCase(PayContribution.rejected, (state) => {
         state.fundContribution = null;
+      })
+
+      .addCase(PayContributionPaystack.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      });
+    builder.addCase(PayContributionPaystack.fulfilled, (state, action) => {
+      state.fundContributionPaystack = action.payload.landing;
+    });
+    builder
+      .addCase(PayContributionPaystack.rejected, (state) => {
+        state.fundContributionPaystack = null;
       })
 
       .addCase(PayUnPaidContribution.pending, (state) => {
