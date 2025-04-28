@@ -17,6 +17,7 @@ import ToggleButton from "../../shared/utils/ToggleButton";
 import { DashboardHeader } from "../../components/common/DashboardHeader";
 import { ContributionListSkeleton } from "../../components/common/Loading";
 import { Flexibile, Lock, StrictLocak } from "../../Assets/svg";
+import FormInput from "../../components/common/FormInput";
 
 type Contribution = {
   _id: string;
@@ -42,13 +43,20 @@ const Contribution: React.FC = () => {
   const [hoveredSavingsType, setHoveredSavingsType] = useState<string | null>(
     null,
   );
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const limit = 10;
 
   const {
     getContributions,
     isLoading: isContributionsLoading,
     error,
-  } = useUserContributionHistory(page, limit);
+  } = useUserContributionHistory(page, limit, searchTerm);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setPage(1);
+  };
+
   const [isContributionVisible, setIsContributionVisible] = useState(() => {
     const storedVisibility = sessionStorage.getItem(
       "contributionBalanceVisible",
@@ -311,14 +319,20 @@ const Contribution: React.FC = () => {
           </article>
         </section>
 
-        <section className="mt-6 w-full  md:mt-10 lg:mt-8">
-          <header>
+        <section className="mt-6 w-full md:mt-10">
+          <header className="flex items-center justify-between">
             <Typography
               variant="h1"
-              className="text-xl font-bold tracking-tight md:text-2xl"
+              className="whitespace-nowrap text-xl font-bold tracking-tight md:text-2xl"
             >
               My Savings
             </Typography>
+            <FormInput
+              placeholder="Search Contribution"
+              wrapperClassName="max-w-[400px]"
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
           </header>
 
           {isContributionsLoading ? (

@@ -223,14 +223,22 @@ export const WithdrawalFromContribution = createAsyncThunk(
 
 export const GetUsersContributionHistory = createAsyncThunk(
   "transaction/getUsersContributionHistory",
-  async ({ page, limit }: { page: number; limit: number }, thunkAPI) => {
+  async (
+    {
+      page,
+      limit,
+      search = "",
+    }: { page: number; limit: number; search: string },
+    thunkAPI,
+  ) => {
     try {
       const data = await TransactionServices.GetUsersContributionHistory(
         page,
         limit,
+        "desc",
+        search,
       );
       return { transaction: data };
-      console.log("data", data);
     } catch (error: any) {
       return handleAsyncError(error, thunkAPI);
     }

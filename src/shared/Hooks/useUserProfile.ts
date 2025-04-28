@@ -152,9 +152,21 @@ export const usePinSetup = (isPinCreated: boolean) => {
     setShowSuccessModal,
   };
 };
-
-export const useUserContributionHistory = (page: number, limit: number) => {
+export const useUserContributionHistory = (
+  page: number,
+  limit: number,
+  search: string = "",
+) => {
   const dispatch: AppDispatch = useDispatch();
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [search]);
 
   const getContributions = useSelector(
     (state: any) => state?.transaction?.getUsersContribution,
@@ -167,7 +179,9 @@ export const useUserContributionHistory = (page: number, limit: number) => {
   useEffect(() => {
     const userToken = sessionStorage.getItem("userData");
     if (userToken) {
-      dispatch(GetUsersContributionHistory({ page, limit }))
+      dispatch(
+        GetUsersContributionHistory({ page, limit, search: debouncedSearch }),
+      )
         .unwrap()
         .catch((err: any) => {
           dispatch(setMessage(err.message || "Failed to fetch contributions"));
@@ -175,7 +189,7 @@ export const useUserContributionHistory = (page: number, limit: number) => {
     } else {
       dispatch(setMessage("User token not found"));
     }
-  }, [dispatch, page, limit]);
+  }, [dispatch, page, limit, debouncedSearch]);
 
   return {
     getContributions,

@@ -118,13 +118,17 @@ const GetContributionBalance = async () => {
     handleApiError(error);
   }
 };
-
 const GetUsersContributionHistory = async (
   page: number,
   limit: number,
   sort: string = "desc",
+  search: string = "",
 ) => {
-  const url = `${API_URL}/contribution/contribute?page=${page}&limit=${limit}&sort=${sort}`;
+  const searchParam = search
+    ? `&search=${encodeURIComponent(search.trim())}`
+    : "";
+  const url = `${API_URL}/contribution/contribute?page=${page}&limit=${limit}&sort=${sort}${searchParam}`;
+
   try {
     const response = await axios.get(url, { headers: authHeader() });
     return response.data;
