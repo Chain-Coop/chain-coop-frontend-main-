@@ -69,7 +69,8 @@ const Wallet = () => {
 
           <section className="my-8 rounded-3xl border-[1px] border-gray-300 px-4 shadow-md">
             <div className="flex items-center justify-between gap-4 px-3 py-8 font-semibold text-howtext sm:gap-8 lg:px-10">
-              <Link to="/dashboard/wallet/withdraw">
+              <Link to="/dashboard/wallet/withdraw"
+              state={{ walletType: "naira" }}>
                 <div className="flex cursor-pointer flex-col items-center bg-inherit text-center">
                   <WithdrawIcon />
                   <span className="block text-sm text-memt1 sm:text-base lg:text-lg">

@@ -5,22 +5,61 @@ import {
   DialogFooter,
   DialogHeader,
   Typography,
+  IconButton,
 } from "@material-tailwind/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { WithdrawAmountModalProps } from "../../../../../shared/types/types";
-import etherium from "../../../../../Assets/svg/dashboard/contribution/etherum.svg";
 import usdc from "../../../../../Assets/svg/dashboard/Group 99764.png";
 import lisk from "../../../../../Assets/svg/dashboard/token_lisk.svg";
 import usdt from "../../../../../Assets/svg/dashboard/usdc.svg";
 import FormInput from "../../../../common/FormInput";
+import { IoMdClose } from "react-icons/io";
+
+const NAIRA_EQUIVALENT_RATE = 1549.43;
 
 const WithdrawBankAccount: React.FC<WithdrawAmountModalProps> = ({
   isModalOpen,
   toggleModal,
+  walletType,
 }) => {
+  const navigate = useNavigate();
   const [selectedToken, setSelectedToken] = useState<string | null>(null);
+  const [tokenAmount, setTokenAmount] = useState<string>("");
+  const [nairaValue, setNairaValue] = useState<string>("NGN 0.00");
 
-  const handleOpen = () => {
+  useEffect(() => {
+    if (tokenAmount && !isNaN(parseFloat(tokenAmount)) && selectedToken) {
+      const calculated = parseFloat(tokenAmount) * NAIRA_EQUIVALENT_RATE;
+      setNairaValue(`NGN ${calculated.toLocaleString(undefined, { minimumFractionDigits: 2 })}`);
+    } else {
+      setNairaValue("NGN 0.00");
+    }
+  }, [tokenAmount, selectedToken]);
+
+  const handleCryptoTypeSelect = (cryptoType: string) => {
+    setSelectedToken(cryptoType);
+  };
+
+  const handleTokenAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value === "" || /^\d*\.?\d*$/.test(value)) {
+      setTokenAmount(value);
+    }
+  };
+
+  const handleContinue = () => {
+    if (!selectedToken || !tokenAmount) return;
+
+    navigate("/dashboard/wallet/select-bank", {
+      state: {
+        amount: tokenAmount,
+        nairaEquivalent: nairaValue,
+        tokenSymbol: selectedToken,
+        walletType: walletType,
+      },
+    });
+
     if (toggleModal) {
       toggleModal();
     }
@@ -28,44 +67,63 @@ const WithdrawBankAccount: React.FC<WithdrawAmountModalProps> = ({
 
   const isOpen = isModalOpen === true;
 
-  const handleCryptoTypeSelect = (cryptoType: string) => {
-    setSelectedToken(cryptoType);
-  };
+  useEffect(() => {
+    if (!isOpen) {
+      setSelectedToken(null);
+      setTokenAmount("");
+      setNairaValue("NGN 0.00");
+    }
+  }, [isOpen]);
 
   return (
-    <main>
-      <Dialog open={isOpen} handler={handleOpen} size="sm" className="p-4">
-        <DialogHeader>
+    <>
+      <Dialog open={isOpen} handler={toggleModal || (() => {})}  size="sm" className="p-4">
+        <DialogHeader className="flex items-center justify-between">
+          <div className="w-8" /> 
           <Typography
             variant="h1"
-            className="flex items-center justify-center text-center text-lg font-semibold text-black sm:text-xl"
+            className="flex-grow text-center text-lg font-semibold text-black sm:text-xl"
+            placeholder=""
+            onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
           >
             Bank Account Withdrawal
           </Typography>
+          <IconButton
+            variant="text"
+            color="gray"
+            onClick={toggleModal}
+            className="p-2"
+            placeholder=""
+            onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
+          >
+            <IoMdClose size={24} />
+          </IconButton>
         </DialogHeader>
 
         <DialogBody>
           <hr className="h-[1px] rounded-md" />
           <div className="mt-3 flex flex-col justify-between gap-2 text-sm sm:flex-row sm:text-base">
-            <Typography className="font-normal text-howtext">
+            <Typography className="font-normal text-howtext" placeholder="" onPointerEnterCapture={() => {}} onPointerLeaveCapture={() => {}}>
               Duration
             </Typography>
-            <Typography className="font-medium text-black">
+            <Typography className="font-medium text-black" placeholder="" onPointerEnterCapture={() => {}} onPointerLeaveCapture={() => {}}>
               2-3 business days
             </Typography>
           </div>
           <hr className="mt-3 h-[1px] rounded-md" />
           <div className="mt-5 flex flex-col justify-between gap-2 text-sm sm:flex-row sm:text-base">
-            <Typography className="font-normal text-howtext">
+            <Typography className="font-normal text-howtext" placeholder="" onPointerEnterCapture={() => {}} onPointerLeaveCapture={() => {}}>
               Withdrawal limit
             </Typography>
-            <Typography className="font-medium text-black">
+            <Typography className="font-medium text-black" placeholder="" onPointerEnterCapture={() => {}} onPointerLeaveCapture={() => {}}>
               $10,000 per transaction
             </Typography>
           </div>
           <hr className="mt-3 h-[1px] rounded-md" />
           <div className="mt-3 flex flex-col justify-between gap-2 text-sm sm:text-base">
-            <Typography className="font-normal text-howtext">
+            <Typography className="font-normal text-howtext" placeholder="" onPointerEnterCapture={() => {}} onPointerLeaveCapture={() => {}}>
               Select token type
             </Typography>
             <hr className="h-[1px] rounded-md" />
@@ -93,22 +151,30 @@ const WithdrawBankAccount: React.FC<WithdrawAmountModalProps> = ({
             </div>
           </div>
           <FormInput
-            label="Enter USDT amount"
-            placeholder="USDC"
+            label={`Enter ${selectedToken || "token"} amount`}
+            placeholder="0.00"
             className="mb-2 rounded-none"
             labelClassName="text-black mt-4 text-gray-800"
             paddingY="3"
+            value={tokenAmount}
+            onChange={handleTokenAmountChange}
+            type="text"
+            disabled={!selectedToken}
           />
-          <span className="text-sm text-[#61C040]">
-            1 USDC equivalent rate = 1549,43 NGN{" "}
-          </span>
+          {selectedToken && (
+            <span className="text-sm text-[#61C040]">
+              1 {selectedToken} equivalent rate = {NAIRA_EQUIVALENT_RATE} NGN
+            </span>
+          )}
 
           <FormInput
             label="Naira Amount"
-            placeholder="USDC"
-            className=" rounded-none"
+            placeholder="NGN 0.00"
+            className="rounded-none"
             labelClassName="text-black mt-4 text-gray-800"
             paddingY="3"
+            value={nairaValue}
+            readOnly
           />
         </DialogBody>
 
@@ -116,14 +182,17 @@ const WithdrawBankAccount: React.FC<WithdrawAmountModalProps> = ({
           <Button
             variant="text"
             className="w-full bg-text2 py-3 text-sm font-normal normal-case text-white hover:bg-text2"
-            onClick={handleOpen}
-            disabled={!selectedToken}
+            onClick={handleContinue}
+            disabled={!selectedToken || !tokenAmount || parseFloat(tokenAmount) <= 0}
+            placeholder=""
+            onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
           >
             Continue
           </Button>
         </DialogFooter>
       </Dialog>
-    </main>
+    </>
   );
 };
 

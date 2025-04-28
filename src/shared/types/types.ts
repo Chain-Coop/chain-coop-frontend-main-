@@ -22,6 +22,7 @@ export interface WithdrawAmountModalProps {
   handleAmountChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleContinue?: () => void;
   withdrawalLimit?: number;
+  walletType?: "naira" | "crypto";
 }
 
 export interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {

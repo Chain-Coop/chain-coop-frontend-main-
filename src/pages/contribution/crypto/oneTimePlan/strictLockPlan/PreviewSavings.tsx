@@ -38,10 +38,9 @@ const PreviewSavings = () => {
     }
   };
 
-  const handlePinSubmit = (formData: any) => {
+  const handlePinSubmit = (enteredPin: string) => {
     const {
       interestRate,
-      pin,
       tokenEquivalent,
       tokenName,
       nairaEquivalent,
@@ -70,6 +69,7 @@ const PreviewSavings = () => {
       reasonForSaving: formData.reasonForSaving,
       duration: durationInDays,
       lockedType,
+      pin: enteredPin,
     };
 
     //console.log("Payload being sent to the backend:", finalPayload);
@@ -87,11 +87,11 @@ const PreviewSavings = () => {
       })
       .catch((error) => {
         console.error("Error creating pool:", error);
-        toast.error(
-          error.message
-            ? `Failed to create savings pool: ${error.message}`
-            : "Failed to create savings pool. Please try again.",
-        );
+        const message = error?.message || error?.msg;
+        error?.payload?.message || error?.payload?.msg;
+        ("Failed to create savings pool. Please try again.");
+        setError(message);
+        toast.error(message);
       })
       .finally(() => {
         setLoading(false);
@@ -237,8 +237,11 @@ const PreviewSavings = () => {
       {showPinModal && (
         <PinModal
           isOpen={showPinModal}
-          onClose={() => setShowPinModal(false)}
-          onSubmit={() => handlePinSubmit({ ...formData })}
+          onClose={() => {
+            setShowPinModal(false);
+            setError(undefined);
+          }}
+          onSubmit={handlePinSubmit}
           header="Enter Your Pin"
           title="Please enter your 4-digit transaction pin to proceed."
           loading={loading}

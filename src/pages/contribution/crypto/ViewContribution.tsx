@@ -14,9 +14,11 @@ import { Typography } from "@material-tailwind/react";
 import Naira from "../../../Assets/svg/dashboard/contribution/naira.svg";
 import up from "../../../Assets/svg/dashboard/contribution/up.svg";
 import FundSavingsModal from "../../../components/dashboard/contribution/modals/FundContribution";
+import UpdateSavingsModal from "../../../components/dashboard/contribution/modals/UpdateContribution";
 
 const ViewCryptoContribution = () => {
   const [isFundModalOpen, setIsFundModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const contribution = location.state;
@@ -31,29 +33,57 @@ const ViewCryptoContribution = () => {
     );
   }
 
-  const startDateTimestamp = contribution.startDate
-    ? parseInt(contribution.startDate)
-    : null;
+  const formatDate = (date: Date | null | string) => {
+    if (!date) return "--/--/----";
+    try {
+      const d = new Date(date);
+      if (isNaN(d.getTime())) return "--/--/----";
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    } catch (error) {
+      console.error("Error formatting date:", date, error);
+      return "--/--/----";
+    }
+  };
 
-  const durationSeconds = contribution.Duration
-    ? parseInt(contribution.Duration)
-    : null;
+  const calculateEndDate = (
+    startDateISO: string,
+    durationDays: number,
+  ): Date | null => {
+    if (!startDateISO || durationDays === undefined || durationDays === null) {
+      return null;
+    }
+    try {
+      const startDate = new Date(startDateISO);
+      if (isNaN(startDate.getTime())) return null;
+      const endDate = new Date(startDate);
+      endDate.setDate(startDate.getDate() + Number(durationDays));
+      return endDate;
+    } catch (error) {
+      console.error(
+        "Error calculating end date:",
+        { startDateISO, durationDays },
+        error,
+      );
+      return null;
+    }
+  };
 
-  const startDate = startDateTimestamp
-    ? new Date(startDateTimestamp * 1000)
-    : null;
+  const endDate = calculateEndDate(
+    contribution.createdAt,
+    contribution.duration,
+  );
 
-  const endDate =
-    startDateTimestamp && durationSeconds
-      ? new Date((startDateTimestamp + durationSeconds) * 1000)
-      : null;
+  const handleOpenModalBasedOnType = () => {
+    if (!contribution) return;
 
-  const formatDate = (date: Date | null) => {
-    if (!date || isNaN(date.getTime())) return "--/--/----";
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+    if (contribution.poolType === "periodic") {
+      setIsUpdateModalOpen(true);
+    } else {
+      setIsFundModalOpen(true);
+    }
   };
 
   return (
@@ -83,13 +113,13 @@ const ViewCryptoContribution = () => {
               </div>
               <div className="mx-auto mt-[1.5em] w-[15em] rounded-md">
                 <p className="text-2xl font-bold text-text2 md:text-3xl">
-                  $ {contribution.amountSaved || "*********"}
+                  $ {contribution.totalAmount || "*********"}
                 </p>
                 <hr className="mt-[1em] h-[1px] rounded-md bg-howtext" />
               </div>
 
               <div className="mt-[1.5em] flex flex-col items-center justify-center gap-4 text-center text-text3">
-                <p className="flex w-full items-center justify-center gap-1 rounded-lg border-[1px] border-dashed border-text2 py-4 text-sm font-bold text-text2 lg:w-[50%]">
+                <p className="flex w-full items-center justify-center gap-1 rounded-lg border-[1px] border-dashed border-text2 py-4 text-sm font-bold text-text2 lg:w-[80%]">
                   <img src={Naira} alt="naira-symbol" />
                   Naira Equivalent: <span>NGN 8000</span>
                 </p>
@@ -107,9 +137,9 @@ const ViewCryptoContribution = () => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className="flex-1 whitespace-nowrap rounded-lg border-2 border-gray-200 bg-inherit bg-text2 px-[1.5em] py-[5px] text-lg font-semibold text-white shadow-lg lg:px-[3em] lg:py-[13px]"
-                    onClick={() => setIsFundModalOpen(true)}
+                    onClick={handleOpenModalBasedOnType}
                   >
-                    Fund
+                    {contribution.poolType === "periodic" ? "Update" : "Fund"}
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.02 }}
@@ -119,9 +149,9 @@ const ViewCryptoContribution = () => {
                         "/dashboard/contribution/withdraw_crypto_contribution",
                         {
                           state: {
-                            poolIndex: contribution.poolIndex,
-                            symbol: contribution.symbol,
-                            amount: contribution.amountSaved,
+                            poolIndex: contribution.poolId,
+                            symbol: contribution.tokenSymbol,
+                            amount: contribution.totalAmount,
                           },
                         },
                       )
@@ -138,7 +168,7 @@ const ViewCryptoContribution = () => {
           <section className="my-10 flex flex-col gap-2">
             <div className="flex items-start">
               <h2 className="text-2xl font-bold text-black">
-                {contribution.Reason}
+                {contribution.reason}
               </h2>
             </div>
 
@@ -174,7 +204,7 @@ const ViewCryptoContribution = () => {
                 Token
               </Typography>
               <Typography className="mt-2 text-lg font-semibold  text-[#939090]">
-                {contribution.symbol}
+                {contribution.tokenSymbol}
               </Typography>
             </div>
 
@@ -183,17 +213,31 @@ const ViewCryptoContribution = () => {
                 Deposit Amount
               </Typography>
               <Typography className="mt-2 text-lg font-semibold text-[#939090]">
-                ${contribution.amountSaved || "N/A"}
+                ${contribution.initialAmount || "N/A"}
               </Typography>
             </div>
+
+            {contribution.poolType === "periodic" ? (
+              <div className="w-full rounded-xl bg-Dh p-5">
+                <Typography className="text-lg font-semibold text-text1">
+                  Periodic Amount
+                </Typography>
+                <Typography className="mt-2 text-lg font-semibold text-[#939090]">
+                  ${contribution.periodicAmount || "N/A"}
+                </Typography>
+              </div>
+            ) : (
+              <div className="hidden"></div>
+            )}
 
             <div className="hidden w-full rounded-xl bg-Dh p-5">
               <Typography className="text-lg font-semibold text-text1">
                 Savings Duration
               </Typography>
               <Typography className="mt-2 text-lg font-semibold text-[#939090]">
-                {contribution.Duration
-                  ? `${Math.floor(contribution.Duration / (30 * 24 * 60 * 60))} months (${Math.floor((contribution.Duration % (30 * 24 * 60 * 60)) / (24 * 60 * 60))} Days)`
+                {contribution.duration !== undefined &&
+                contribution.duration !== null
+                  ? `${contribution.duration} day${contribution.duration !== 1 ? "s" : ""}`
                   : "N/A"}
               </Typography>
             </div>
@@ -203,7 +247,7 @@ const ViewCryptoContribution = () => {
                 Start Date
               </Typography>
               <Typography className="mt-2 text-lg font-semibold text-[#939090]">
-                {formatDate(startDate)}
+                {formatDate(contribution.createdAt)}
               </Typography>
             </div>
 
@@ -212,18 +256,30 @@ const ViewCryptoContribution = () => {
                 End Date
               </Typography>
               <Typography className="mt-2 text-lg font-semibold text-[#939090]">
-                {formatDate(endDate)} ({contribution.Duration} days)
+                {formatDate(endDate)}
               </Typography>
             </div>
           </section>
         </section>
       </section>
 
-      {/* Fund Savings Modal */}
       <FundSavingsModal
         isOpen={isFundModalOpen}
         onClose={() => setIsFundModalOpen(false)}
-        contribution={contribution}
+        contribution={{
+          poolIndex: contribution.poolId,
+          tokenToSaveWith: contribution.tokenAddress,
+        }}
+      />
+
+      {/* Update Savings Modal*/}
+      <UpdateSavingsModal
+        isOpen={isUpdateModalOpen}
+        onClose={() => setIsUpdateModalOpen(false)}
+        contribution={{
+          poolIndex: contribution.poolId,
+          tokenToSaveWith: contribution.tokenAddress,
+        }}
       />
     </main>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import { WithdrawIcon } from "../../../Assets/svg";
@@ -12,6 +12,8 @@ const Withdraw = () => {
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const { walletType } = location.state || {};
 
   const handleBackClick = () => {
     navigate(-1);
@@ -46,7 +48,7 @@ const Withdraw = () => {
       );
     } else {
       navigate("/dashboard/wallet/select-bank", {
-        state: { amount: numAmount },
+        state: { amount: numAmount, walletType },
       });
     }
   };

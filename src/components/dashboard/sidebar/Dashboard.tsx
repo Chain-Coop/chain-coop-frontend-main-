@@ -55,6 +55,7 @@ import OneTimeStrictLockCryptoPurpose from "../../../pages/contribution/crypto/o
 import OneTimeStrictLockCryptoStartDate from "../../../pages/contribution/crypto/oneTimePlan/strictLockPlan/StartDate";
 import OneTimeStrictLockCryptoSourceFunds from "../../../pages/contribution/crypto/oneTimePlan/strictLockPlan/SourceFunds";
 import OneTimeStrictLockCryptoPreviewSavings from "../../../pages/contribution/crypto/oneTimePlan/strictLockPlan/PreviewSavings";
+import FundCryptoWallet from "../../../pages/wallet/fund/FundCryptoWallet";
 
 //import CryptoMain from "../wallet/crypto/main/CryptoMain";
 
@@ -334,6 +335,8 @@ const Dashboard = () => {
             path="wallet/crypto/withdraw"
             element={<WithdrawCryptoWallet />}
           />
+
+          <Route path="wallet/fund/fund_crypto_wallet" element={<FundCryptoWallet />} />
 
           <Route path="wallet/fund" element={<FundWallet />} />
           <Route
