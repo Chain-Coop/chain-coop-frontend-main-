@@ -49,35 +49,32 @@ export const CreatePool = createAsyncThunk(
       const data = await web3Services.CreatePool(body);
       return data;
     } catch (error: any) {
-      const message = error.msg;
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue(message);
+      const message =
+        error?.response?.data?.message ||
+        error?.data?.message ||
+        error?.message ||
+        "An unknown error occurred while creating the pool";
+      return thunkAPI.rejectWithValue({ message });
     }
   },
 );
 
-{
-  /*export const CreatePool = createAsyncThunk(
-  "web3/createPool",
-  async (body: { formData: any; pin: string }, thunkAPI) => {
+export const CreatePeriodicPool = createAsyncThunk(
+  "web3/createPeriodicPool",
+  async (body: any, thunkAPI) => {
     try {
-      const { formData, pin } = body;
-
-      const payload = {
-        ...formData,
-        pin,
-      };
-
-      const data = await web3Services.CreatePool(payload);
+      const data = await web3Services.CreatePeriodicPool(body);
       return data;
     } catch (error: any) {
-      const message = error.msg || "An error occurred while creating the pool";
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue(message);
+      const message =
+        error?.response?.data?.message ||
+        error?.data?.message ||
+        error?.message ||
+        "An unknown error occurred while creating the pool";
+      return thunkAPI.rejectWithValue({ message });
     }
   },
-);*/
-}
+);
 
 export const GetAllUserPools = createAsyncThunk(
   "web3/getAllUserPools",
@@ -99,25 +96,69 @@ export const UpdateUserPool = createAsyncThunk(
       const data = await web3Services.UpdateUserPool(body);
       return data;
     } catch (error: any) {
-      const message = error.msg;
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue(message);
+      const message =
+        error?.response?.data?.message ||
+        error?.data?.message ||
+        error?.message ||
+        "An unknown error occurred while funding the pool";
+      return thunkAPI.rejectWithValue({ message });
     }
   },
 );
 
-export const WithdrawUserPool = createAsyncThunk(
-  "web3/withdraw",
-  async (body: any, thunkAPI) => {
+interface UpdateAutoPoolPayload {
+  id?: string;
+  body: { amount: string };
+}
+
+export const UpdateAutoPool = createAsyncThunk<
+  any,
+  UpdateAutoPoolPayload,
+  { rejectValue: { message: string } }
+>(
+  "web3/updateAutoPool",
+  async ({ id, body }, { rejectWithValue }) => { 
+    if (!id) {
+      return rejectWithValue({ message: "Pool ID is missing." });
+    }
     try {
-      const data = await web3Services.WithdrawUserPool(body);
+      const data = await web3Services.UpdateAutoPool({ id, body }); 
       return data;
     } catch (error: any) {
-      const message = error.msg;
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue(message);
+      const message =
+        error?.response?.data?.message ||
+        error?.data?.message ||
+        error?.message ||
+        "An unknown error occurred while updating the pool";
+      return rejectWithValue({ message });
     }
   },
+);
+
+interface WithdrawUserPoolPayload {
+  poolId_bytes: string;
+  amount: string;
+  pin: string;
+}
+
+export const WithdrawUserPool = createAsyncThunk<
+  any,
+  WithdrawUserPoolPayload,
+  { rejectValue: { message: string } }
+>(
+  "web3/withdrawUserPool",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await web3Services.WithdrawUserPool(payload); 
+      return response;
+    } catch (error: any) {
+      const message = 
+        error?.message ||
+        "An unknown error occurred during withdrawal.";
+      
+      return rejectWithValue({ message }); 
+    }
+  }
 );
 
 export const GetAllUserTokens = createAsyncThunk(
@@ -227,6 +268,22 @@ export const Web3Slices = createSlice({
           (action.payload as string) || "Failed to  register user Pool";
       })
 
+      .addCase(CreatePeriodicPool.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(CreatePeriodicPool.fulfilled, (state, action) => {
+        state.loading = false;
+        state.registerUserPool = action.payload.data;
+        state.error = null;
+      })
+      .addCase(CreatePeriodicPool.rejected, (state, action) => {
+        state.loading = false;
+        state.registerUserPool = null;
+        state.error =
+          (action.payload as string) || "Failed to  register user Pool";
+      })
+
       .addCase(GetAllUserPools.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -256,6 +313,21 @@ export const Web3Slices = createSlice({
         state.error = (action.payload as string) || "Failed to update Pool";
       })
 
+      .addCase(UpdateAutoPool.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(UpdateAutoPool.fulfilled, (state, action) => {
+        state.loading = false;
+        state.updateRegisteredUserPool = action.payload.data;
+        state.error = null;
+      })
+      .addCase(UpdateAutoPool.rejected, (state, action) => {
+        state.loading = false;
+        state.updateRegisteredUserPool = null;
+        state.error = (action.payload?.message) || "Failed to update Pool";
+      })
+
       .addCase(WithdrawUserPool.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -268,7 +340,7 @@ export const Web3Slices = createSlice({
       .addCase(WithdrawUserPool.rejected, (state, action) => {
         state.loading = false;
         state.updateRegisteredUserPool = null;
-        state.error = (action.payload as string) || "Failed to withdraw Pool";
+        state.error = action.payload?.message|| "Failed to withdraw Pool";
       })
 
       .addCase(GetAllUserTokens.pending, (state) => {

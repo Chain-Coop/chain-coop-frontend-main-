@@ -14,17 +14,12 @@ const StartDate: React.FC = () => {
 
   const [endDate, setEndDate] = useState<Date | null>(null);
 
-  const [savingFrequency, setSavingFrequency] = useState<string>("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
   const { tokenName } = location.state || {};
-
-  const handleFrequencySelect = (frequency: string) => {
-    setSavingFrequency(frequency);
-  };
 
   const formatDate = (date: Date | null): string => {
     if (!date) return "";
@@ -41,11 +36,6 @@ const StartDate: React.FC = () => {
       return;
     }
 
-    if (!savingFrequency) {
-      setError("Please select a saving frequency.");
-      return;
-    }
-
     if (!endDate || endDate <= todayDate) {
       setError("End date must be in the future.");
       return;
@@ -58,7 +48,6 @@ const StartDate: React.FC = () => {
       ...location.state,
       startDate: todayString,
       duration: finalEndDateString,
-      savingFrequency,
       lockedType: location.state?.lockedType,
       contributionType: location.state?.contributionType,
     };
@@ -98,30 +87,6 @@ const StartDate: React.FC = () => {
               alt="savings-img"
               className="h-auto w-[100px]"
             />
-          </div>
-        </section>
-        <section className="mt-[2em]">
-          <div>
-            <h2 className="text-lg font-bold text-memt1">
-              Select Contribution Schedule
-            </h2>
-          </div>
-          <div className="mt-[1.5em] flex flex-col items-center justify-center gap-4 md:flex-row md:items-start md:justify-start lg:flex-wrap">
-            {(["Daily", "Weekly", "Monthly", "Manually"] as const).map(
-              (freq) => (
-                <button
-                  key={freq}
-                  onClick={() => handleFrequencySelect(freq)}
-                  className={`flex h-[45px] w-[174px] transform items-center justify-center rounded-md px-6 font-semibold transition-all duration-300 hover:scale-105 active:scale-95 lg:py-2 ${
-                    savingFrequency === freq
-                      ? "bg-text2 text-white"
-                      : "bg-[#ECE6F2] text-memt1"
-                  }`}
-                >
-                  {freq}
-                </button>
-              ),
-            )}
           </div>
         </section>
         <div>

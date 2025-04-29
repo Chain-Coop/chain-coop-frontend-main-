@@ -4,16 +4,14 @@ import { useCryptoWallet } from "../../../../shared/Hooks/useBalance";
 import { useAllUserPools } from "../../../../shared/Hooks/useUserProfile";
 import ToggleButton from "../../../../shared/utils/ToggleButton";
 import { motion } from "framer-motion";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../../shared/redux/store";
-import { toast } from "react-toastify";
 import { Typography, Button } from "@material-tailwind/react";
-import { UpdateUserPool } from "../../../../shared/redux/slices/web3.slices";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import { ContributionListSkeleton } from "../../../../components/common/Loading";
 import { SavingsPlan } from "../../../../components/dashboard/contribution/modals/SavingsPlan";
 import { Flexibile, Lock, StrictLocak } from "../../../../Assets/svg";
 import FundSavingsModal from "../../../../components/dashboard/contribution/modals/FundContribution";
+import UpdateSavingsModal from "../../../../components/dashboard/contribution/modals/UpdateContribution";
+
 import {
   IoIosArrowDown,
   IoIosArrowForward,
@@ -31,9 +29,8 @@ const CryptoSavings: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [updatePayment, setUpdatePayment] = useState(false);
   const [savingsType, setSavingsType] = useState<"naira" | "crypto">("crypto");
-  const [amount, setAmount] = useState("");
-  const [loading, setLoading] = useState(false);
   const [isFundModalOpen, setIsFundModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const { userPools = [], loading: poolsLoading } = useAllUserPools() || {};
@@ -41,18 +38,24 @@ const CryptoSavings: React.FC = () => {
     poolId_bytes: string;
     tokenAddressToSaveWith: string;
   } | null>(null);
-  const dispatch: AppDispatch = useDispatch();
+
   const [selectedContribution, setSelectedContribution] = useState<{
     poolIndex: string;
     tokenToSaveWith: string;
+    poolType?: "oneTime" | "periodic";
   } | null>(null);
 
-  const handleOpenFundModal = (pool: any) => {
+  const handleOpenModalBasedOnType = (pool: any) => {
     setSelectedContribution({
-      poolIndex: pool.poolIndex,
-      tokenToSaveWith: pool.tokenToSaveWith,
+      poolIndex: pool.poolId,
+      tokenToSaveWith: pool.tokenAddress,
     });
-    setIsFundModalOpen(true);
+
+    if (pool.poolType === "periodic") {
+      setIsUpdateModalOpen(true);
+    } else {
+      setIsFundModalOpen(true);
+    }
   };
 
   const [isContributionVisible, setIsContributionVisible] = useState(() => {
@@ -133,43 +136,6 @@ const CryptoSavings: React.FC = () => {
       setSelectedPool(null);
     }
     setUpdatePayment(!updatePayment);
-  };
-
-  const fundContribution = () => {
-    navigate("/dashboard/contribution/contribution_curency_type");
-  };
-
-  const SubmitPayment = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (
-      !selectedPool ||
-      !amount ||
-      isNaN(Number(amount)) ||
-      Number(amount) <= 0
-    ) {
-      toast.error("Please enter a valid amount");
-      return;
-    }
-
-    setLoading(true);
-    const body = {
-      amount,
-      poolId_bytes: selectedPool.poolId_bytes,
-      tokenAddressToSaveWith: selectedPool.tokenAddressToSaveWith,
-    };
-
-    dispatch(UpdateUserPool(body))
-      .unwrap()
-      .then((response) => {
-        setLoading(false);
-        toast.success("Payment Updated Successfully");
-        toggleUpdatePaymentModal();
-      })
-      .catch((error: any) => {
-        setLoading(false);
-        toast.error(error?.message || "Failed to update payment");
-      });
   };
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -461,16 +427,19 @@ const CryptoSavings: React.FC = () => {
                   className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-xl border border-gray-300 bg-white p-3 transition-all hover:bg-gray-50 sm:gap-3 sm:p-4 md:rounded-3xl"
                 >
                   <div className="flex justify-between text-xs font-medium text-gray-500 sm:text-sm">
-                    <p>Savings Token: {pools?.symbol}</p>
-                    <p>Target Amount: ${pools?.goalAmount}</p>
+                    <p>Savings Token: {pools?.tokenSymbol}</p>
+                    <p className="text-sm font-semibold text-text2">
+                      Type:{" "}
+                      {pools?.poolType === "periodic" ? "Auto" : "One-Time"}
+                    </p>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <p className="font-bold">{pools?.Reason}</p>
+                    <p className="font-bold">{pools?.reason}</p>
                     <p className="text-sm font-semibold">
                       Deposited Amount:{" "}
                       <span className="font-bold text-text2">
-                        ${pools?.amountSaved}
+                        ${pools?.initialAmount}
                       </span>
                     </p>
                   </div>
@@ -478,14 +447,12 @@ const CryptoSavings: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold">
                       Duration:{" "}
-                      <span className="text-gray-500">
-                        {formatDuration(pools?.Duration, pools?.startDate)}
-                      </span>
+                      <span className="text-gray-500">{pools?.duration}</span>
                     </p>
                     <p className="text-xs font-semibold sm:text-sm">
                       Current Balance:{" "}
                       <span className="text-gray-800">
-                        ${pools?.amountSaved}
+                        ${pools?.totalAmount}
                       </span>
                     </p>
                   </div>
@@ -495,10 +462,10 @@ const CryptoSavings: React.FC = () => {
                   <div className="flex justify-between">
                     <div className="flex gap-2 sm:gap-3">
                       <button
-                        onClick={() => handleOpenFundModal(pools)}
+                        onClick={() => handleOpenModalBasedOnType(pools)}
                         className="rounded-lg bg-[#ECE6F2] px-2 py-1 text-xs font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:px-3 sm:text-sm"
                       >
-                        Update
+                        {pools.poolType === "periodic" ? "Update" : "Fund"}
                       </button>
                     </div>
                     <button
@@ -541,11 +508,20 @@ const CryptoSavings: React.FC = () => {
         savingsType={savingsType}
         onSavingsTypeChange={handleSavingsTypeChange}
       />
-
+      {/* FundSavingsModal (for oneTime pools) */}
       {selectedContribution && (
         <FundSavingsModal
           isOpen={isFundModalOpen}
           onClose={() => setIsFundModalOpen(false)}
+          contribution={selectedContribution}
+        />
+      )}
+
+      {/* UpdateSavingsModal (for periodic/autosavings pools) */}
+      {selectedContribution && (
+        <UpdateSavingsModal
+          isOpen={isUpdateModalOpen}
+          onClose={() => setIsUpdateModalOpen(false)}
           contribution={selectedContribution}
         />
       )}

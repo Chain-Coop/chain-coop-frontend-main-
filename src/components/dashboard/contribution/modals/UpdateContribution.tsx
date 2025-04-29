@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../shared/redux/store";
-import { UpdateUserPool } from "../../../../shared/redux/slices/web3.slices";
+import { UpdateAutoPool } from "../../../../shared/redux/slices/web3.slices";
 import Success from "../../../../components/common/Success";
 import { motion } from "framer-motion";
 
-interface FundSavingsModalProps {
+interface UpdateSavingsModalProps {
   isOpen: boolean;
   onClose: () => void;
   contribution: {
@@ -15,7 +15,7 @@ interface FundSavingsModalProps {
   };
 }
 
-const FundSavingsModal: React.FC<FundSavingsModalProps> = ({
+const UpdateSavingsModal: React.FC<UpdateSavingsModalProps> = ({
   isOpen,
   onClose,
   contribution,
@@ -39,10 +39,9 @@ const FundSavingsModal: React.FC<FundSavingsModalProps> = ({
 
     try {
       await dispatch(
-        UpdateUserPool({
-          poolId_bytes: contribution.poolIndex,
-          tokenAddressToSaveWith: contribution.tokenToSaveWith,
-          amount,
+        UpdateAutoPool({
+          body: { amount },
+          id: contribution.poolIndex,
         }),
       ).unwrap();
 
@@ -112,7 +111,7 @@ const FundSavingsModal: React.FC<FundSavingsModalProps> = ({
               onClick={onClose}
             />
             <h2 className="flex-1 text-center text-xl font-semibold text-text2 md:text-3xl">
-              Fund Savings
+              Update Savings
             </h2>
           </div>
 
@@ -156,10 +155,10 @@ const FundSavingsModal: React.FC<FundSavingsModalProps> = ({
       <Success
         isOpen={isSuccessOpen}
         onClose={handleSuccessClose}
-        title="Funding Successful"
+        title="Update Successful"
       />
     </>
   );
 };
 
-export default FundSavingsModal;
+export default UpdateSavingsModal;

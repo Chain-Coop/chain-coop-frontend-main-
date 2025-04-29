@@ -106,7 +106,7 @@ const StartDate: React.FC = () => {
             </h2>
           </div>
           <div className="mt-[1.5em] flex flex-col items-center justify-center gap-4 md:flex-row md:items-start md:justify-start lg:flex-wrap">
-            {(["Daily", "Weekly", "Monthly", "Manually"] as const).map(
+            {(["DAILY", "WEEKLY", "MONTHLY", "MANUALLY"] as const).map(
               (freq) => (
                 <button
                   key={freq}

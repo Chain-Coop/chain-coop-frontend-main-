@@ -19,12 +19,17 @@ const StartDate = () => {
 
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [savingsDuration, setSavingsDuration] = useState<string>("");
+  const [savingFrequency, setSavingFrequency] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
   const formatDate = (date: Date | null): string => {
     if (!date) return "";
     return date.toISOString().split("T")[0];
+  };
+
+  const handleFrequencySelect = (frequency: string) => {
+    setSavingFrequency(frequency);
   };
 
   const handleEndDateChange = (date: Date | null) => {
@@ -63,6 +68,11 @@ const StartDate = () => {
       return;
     }
 
+    if (!savingFrequency) {
+      setError("Please select a saving frequency.");
+      return;
+    }
+
     setError("");
     setLoading(true);
 
@@ -74,6 +84,7 @@ const StartDate = () => {
         startDate: todayString,
         duration: finalEndDateString,
         savingsDuration,
+        savingFrequency,
         lockedType: location.state?.lockedType,
         contributionType: location.state?.contributionType,
       },
@@ -103,6 +114,30 @@ const StartDate = () => {
             />
           </div>
         </section>
+        <section className="mt-[2em]">
+          <div>
+            <h2 className="text-lg font-bold text-memt1">
+              Select Contribution Schedule
+            </h2>
+          </div>
+          <div className="mt-[1.5em] flex flex-col items-center justify-center gap-4 md:flex-row md:items-start md:justify-start lg:flex-wrap">
+            {(["DAILY", "WEEKLY", "MONTHLY", "MANUALLY"] as const).map(
+              (freq) => (
+                <button
+                  key={freq}
+                  onClick={() => handleFrequencySelect(freq)}
+                  className={`flex h-[45px] w-[174px] transform items-center justify-center rounded-md px-6 font-semibold transition-all duration-300 hover:scale-105 active:scale-95 lg:py-2 ${
+                    savingFrequency === freq
+                      ? "bg-text2 text-white"
+                      : "bg-[#ECE6F2] text-memt1"
+                  }`}
+                >
+                  {freq}
+                </button>
+              ),
+            )}
+          </div>
+        </section>
 
         <div>
           {/* Start Date */}
@@ -117,9 +152,7 @@ const StartDate = () => {
 
           {/* End Date */}
           <div className="flex flex-col gap-1">
-            <label
-              className="flex text-lg font-semibold text-memt1 mb-1"
-            >
+            <label className="mb-1 flex text-lg font-semibold text-memt1">
               End Date
             </label>
             <DatePicker

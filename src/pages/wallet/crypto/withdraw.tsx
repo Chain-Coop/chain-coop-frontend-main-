@@ -1,24 +1,45 @@
 import { Typography } from "@material-tailwind/react";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
-import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import WithdrawBankAccount from "../../../components/dashboard/wallet/modal/crypro/withdrawBankAccount";
+import WithdrawCryptoModal from "../../../components/dashboard/wallet/modal/crypro/withdrawCryptoModal";
 
 const Withdraw = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { walletType } = location.state || {};
   const [isBankAccountModalOpen, setIsBankAccountModalOpen] = useState(false);
+  const [isCryptoModalOpen, setIsCryptoModalOpen] = useState(false);
 
   const toggleModal = () => {
     setIsBankAccountModalOpen((prev) => !prev);
   };
 
+  const handleCryptoModalSubmit = (data: { walletAddress: string }) => {
+    console.log("Withdraw Data:", data);
+    setIsCryptoModalOpen(false);
+  };
+
+  const handleBackClick = () => {
+    navigate(-1);
+  };
+
   return (
     <main>
-      <div className="mt-0 lg:mt-8">
-        <DashboardHeader className="flex items-center justify-center text-2xl tracking-wide md:text-3xl lg:text-xl">
+       <div className="mt-0 lg:mt-8">
+        <DashboardHeader className="relative flex items-center justify-center text-2xl tracking-wide md:text-3xl lg:text-xl">
+          <IoIosArrowBack
+            onClick={handleBackClick}
+            size={25}
+            className="absolute left-2 top-1/2 -translate-y-1/2 transform cursor-pointer lg:left-7"
+          />
           Withdraw
         </DashboardHeader>
       </div>
       <section className="mt-6 flex flex-col gap-6">
+        {/* Withdraw to Bank */}
         <div
           className="flex cursor-pointer flex-col gap-1"
           onClick={toggleModal}
@@ -35,7 +56,11 @@ const Withdraw = () => {
           <hr />
         </div>
 
-        <div className="flex cursor-pointer flex-col gap-1">
+        {/* Withdraw to Crypto */}
+        <div
+          className="flex cursor-pointer flex-col gap-1"
+          onClick={() => setIsCryptoModalOpen(true)}
+        >
           <Typography className="text-lg font-semibold text-gray-800">
             Withdraw to Crypto wallet
           </Typography>
@@ -52,6 +77,13 @@ const Withdraw = () => {
       <WithdrawBankAccount
         isModalOpen={isBankAccountModalOpen}
         toggleModal={toggleModal}
+        walletType={walletType}
+      />
+
+      <WithdrawCryptoModal
+        isOpen={isCryptoModalOpen}
+        onClose={() => setIsCryptoModalOpen(false)}
+        onSubmit={handleCryptoModalSubmit}
       />
     </main>
   );
