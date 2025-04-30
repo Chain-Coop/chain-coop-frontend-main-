@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message.slices";
 import web3Services from "../services/web3.services";
+import { WithdrawUserPoolPayload } from "../../types/types";
 
 export const ActivateCryptoWallet = createAsyncThunk(
   "web3/activateCryptoWallet",
@@ -115,51 +116,38 @@ export const UpdateAutoPool = createAsyncThunk<
   any,
   UpdateAutoPoolPayload,
   { rejectValue: { message: string } }
->(
-  "web3/updateAutoPool",
-  async ({ id, body }, { rejectWithValue }) => { 
-    if (!id) {
-      return rejectWithValue({ message: "Pool ID is missing." });
-    }
-    try {
-      const data = await web3Services.UpdateAutoPool({ id, body }); 
-      return data;
-    } catch (error: any) {
-      const message =
-        error?.response?.data?.message ||
-        error?.data?.message ||
-        error?.message ||
-        "An unknown error occurred while updating the pool";
-      return rejectWithValue({ message });
-    }
-  },
-);
-
-interface WithdrawUserPoolPayload {
-  poolId_bytes: string;
-  amount: string;
-  pin: string;
-}
+>("web3/updateAutoPool", async ({ id, body }, { rejectWithValue }) => {
+  if (!id) {
+    return rejectWithValue({ message: "Pool ID is missing." });
+  }
+  try {
+    const data = await web3Services.UpdateAutoPool({ id, body });
+    return data;
+  } catch (error: any) {
+    const message =
+      error?.response?.data?.message ||
+      error?.data?.message ||
+      error?.message ||
+      "An unknown error occurred while updating the pool";
+    return rejectWithValue({ message });
+  }
+});
 
 export const WithdrawUserPool = createAsyncThunk<
   any,
   WithdrawUserPoolPayload,
   { rejectValue: { message: string } }
->(
-  "web3/withdrawUserPool",
-  async (payload, { rejectWithValue }) => {
-    try {
-      const response = await web3Services.WithdrawUserPool(payload); 
-      return response;
-    } catch (error: any) {
-      const message = 
-        error?.message ||
-        "An unknown error occurred during withdrawal.";
-      
-      return rejectWithValue({ message }); 
-    }
+>("web3/withdrawUserPool", async (payload, { rejectWithValue }) => {
+  try {
+    const response = await web3Services.WithdrawUserPool(payload);
+    return response;
+  } catch (error: any) {
+    const message =
+      error?.message || "An unknown error occurred during withdrawal.";
+
+    return rejectWithValue({ message });
   }
-);
+});
 
 export const GetAllUserTokens = createAsyncThunk(
   "web3/getAllUserTokens",
@@ -174,6 +162,36 @@ export const GetAllUserTokens = createAsyncThunk(
   },
 );
 
+export const StopPeriodicPool = createAsyncThunk<
+  any,
+  string,
+  { rejectValue: { message: string } }
+>("web3/stopPeriodicPool", async (poolId, { rejectWithValue }) => {
+  try {
+    const response = await web3Services.StopPeriodicPool(poolId);
+    return response;
+  } catch (error: any) {
+    const message =
+      error?.message || "An unknown error occurred stopping the pool.";
+    return rejectWithValue({ message });
+  }
+});
+
+export const ResumePeriodicPool = createAsyncThunk<
+  any,
+  string,
+  { rejectValue: { message: string } }
+>("web3/resumePeriodicPool", async (poolId, { rejectWithValue }) => {
+  try {
+    const response = await web3Services.ResumePeriodicPool(poolId);
+    return response;
+  } catch (error: any) {
+    const message =
+      error?.message || "An unknown error occurred resuming the pool.";
+    return rejectWithValue({ message });
+  }
+});
+
 interface CryptoState {
   actvateCryptWallet: Record<string, any> | null;
   cryptoBalance: number;
@@ -183,7 +201,9 @@ interface CryptoState {
   userPools: Record<string, any> | null;
   userTokens: string | null;
   loading: boolean;
+  userPoolsLoading: boolean;
   error: string | null;
+  userPoolsError: string | null;
   walletMessage: string | null;
 }
 
@@ -197,7 +217,9 @@ const initialState: CryptoState = {
   userPools: null,
   userTokens: null,
   loading: false,
+  userPoolsLoading: false,
   error: null,
+  userPoolsError: null,
 };
 
 export const Web3Slices = createSlice({
@@ -233,7 +255,7 @@ export const Web3Slices = createSlice({
       })
       .addCase(GetTotalCryptoWalletBalance.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
+        state.error = (action.payload as string) || "Failed to fetch balance";
         state.cryptoBalance = 0;
         state.walletMessage = null;
       })
@@ -285,17 +307,17 @@ export const Web3Slices = createSlice({
       })
 
       .addCase(GetAllUserPools.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.userPoolsLoading = true;
+        state.userPoolsError = null;
       })
       .addCase(GetAllUserPools.fulfilled, (state, action) => {
-        state.loading = false;
+        state.userPoolsLoading = false;
         state.userPools = action.payload.data;
-        state.error = null;
+        state.userPoolsError = null;
       })
       .addCase(GetAllUserPools.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
+        state.userPoolsLoading = false;
+        state.userPoolsError = (action.payload as string) || "Failed to fetch user pools";
       })
 
       .addCase(UpdateUserPool.pending, (state) => {
@@ -325,7 +347,7 @@ export const Web3Slices = createSlice({
       .addCase(UpdateAutoPool.rejected, (state, action) => {
         state.loading = false;
         state.updateRegisteredUserPool = null;
-        state.error = (action.payload?.message) || "Failed to update Pool";
+        state.error = action.payload?.message || "Failed to update Pool";
       })
 
       .addCase(WithdrawUserPool.pending, (state) => {
@@ -340,7 +362,7 @@ export const Web3Slices = createSlice({
       .addCase(WithdrawUserPool.rejected, (state, action) => {
         state.loading = false;
         state.updateRegisteredUserPool = null;
-        state.error = action.payload?.message|| "Failed to withdraw Pool";
+        state.error = action.payload?.message || "Failed to withdraw Pool";
       })
 
       .addCase(GetAllUserTokens.pending, (state) => {
@@ -355,6 +377,32 @@ export const Web3Slices = createSlice({
       .addCase(GetAllUserTokens.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+
+      .addCase(StopPeriodicPool.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(StopPeriodicPool.fulfilled, (state, action) => {
+        state.loading = false;
+        //console.log("StopPeriodicPool fulfilled:", action.payload);
+      })
+      .addCase(StopPeriodicPool.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload?.message || "Failed to stop pool";
+      })
+
+      .addCase(ResumePeriodicPool.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(ResumePeriodicPool.fulfilled, (state, action) => {
+        state.loading = false;
+        //console.log("ResumePeriodicPool fulfilled:", action.payload);
+      })
+      .addCase(ResumePeriodicPool.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload?.message || "Failed to resume pool";
       });
   },
 });

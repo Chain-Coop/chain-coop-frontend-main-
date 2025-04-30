@@ -1,22 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCryptoWallet } from "../../../../shared/Hooks/useBalance";
-import { useAllUserPools } from "../../../../shared/Hooks/useUserProfile";
+import { useAllUserPools } from "../../../../shared/Hooks/useBalance";
 import ToggleButton from "../../../../shared/utils/ToggleButton";
 import { motion } from "framer-motion";
 import { Typography, Button } from "@material-tailwind/react";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
-import { ContributionListSkeleton } from "../../../../components/common/Loading";
 import { SavingsPlan } from "../../../../components/dashboard/contribution/modals/SavingsPlan";
 import { Flexibile, Lock, StrictLocak } from "../../../../Assets/svg";
 import FundSavingsModal from "../../../../components/dashboard/contribution/modals/FundContribution";
 import UpdateSavingsModal from "../../../../components/dashboard/contribution/modals/UpdateContribution";
-
-import {
-  IoIosArrowDown,
-  IoIosArrowForward,
-  IoIosArrowBack,
-} from "react-icons/io";
+import MySavingsList from "../../../../components/dashboard/contribution/MySavingsList";
+import FilterSavings, {
+  SavingsFilters,
+} from "../../../../components/dashboard/contribution/modals/FilterSavings";
+import { Pool } from "../../../../shared/types/types";
+import { IoIosArrowDown } from "react-icons/io";
 
 const CryptoSavings: React.FC = () => {
   const navigate = useNavigate();
@@ -27,28 +26,29 @@ const CryptoSavings: React.FC = () => {
     setIsWalletVisible,
   } = useCryptoWallet();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [updatePayment, setUpdatePayment] = useState(false);
   const [savingsType, setSavingsType] = useState<"naira" | "crypto">("crypto");
   const [isFundModalOpen, setIsFundModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const { userPools = [], loading: poolsLoading } = useAllUserPools() || {};
-  const [selectedPool, setSelectedPool] = useState<{
-    poolId_bytes: string;
-    tokenAddressToSaveWith: string;
-  } | null>(null);
-
   const [selectedContribution, setSelectedContribution] = useState<{
     poolIndex: string;
     tokenToSaveWith: string;
     poolType?: "oneTime" | "periodic";
   } | null>(null);
 
-  const handleOpenModalBasedOnType = (pool: any) => {
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [activeFilters, setActiveFilters] = useState<SavingsFilters>({
+    contributionType: "all",
+    lockType: "all",
+  });
+
+  const handleOpenModalBasedOnType = useCallback((pool: Pool) => {
     setSelectedContribution({
       poolIndex: pool.poolId,
       tokenToSaveWith: pool.tokenAddress,
+      poolType: pool.poolType,
     });
 
     if (pool.poolType === "periodic") {
@@ -56,7 +56,7 @@ const CryptoSavings: React.FC = () => {
     } else {
       setIsFundModalOpen(true);
     }
-  };
+  }, []);
 
   const [isContributionVisible, setIsContributionVisible] = useState(() => {
     const storedVisibility = sessionStorage.getItem(
@@ -73,43 +73,6 @@ const CryptoSavings: React.FC = () => {
     null,
   );
 
-  const formatDuration = (durationInDays: any, startDateTimestamp: any) => {
-    if (!durationInDays || !startDateTimestamp) {
-      return "Duration info missing";
-    }
-
-    try {
-      const durationDays = parseInt(durationInDays);
-      const startDateSeconds = parseInt(startDateTimestamp);
-
-      if (
-        isNaN(durationDays) ||
-        isNaN(startDateSeconds) ||
-        durationDays <= 0 ||
-        startDateSeconds <= 0
-      ) {
-        return "Invalid data";
-      }
-
-      const secondsPerDay = 24 * 60 * 60;
-      const endDateSeconds = startDateSeconds + durationDays * secondsPerDay;
-
-      const currentTimestampSeconds = Math.floor(Date.now() / 1000);
-
-      const remainingSeconds = endDateSeconds - currentTimestampSeconds;
-
-      if (remainingSeconds <= 0) {
-        return "Pool closed";
-      }
-
-      const remainingDays = Math.ceil(remainingSeconds / secondsPerDay);
-
-      return `Ends in ${remainingDays} day${remainingDays !== 1 ? "s" : ""}`;
-    } catch (error) {
-      console.error("Error calculating duration:", error);
-      return "Error calculating";
-    }
-  };
   const handleSavingsTypeChange = (type: "naira" | "crypto") => {
     setSavingsType(type);
     if (type === "naira") {
@@ -126,35 +89,50 @@ const CryptoSavings: React.FC = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const toggleUpdatePaymentModal = (pool?: any) => {
-    if (pool) {
-      setSelectedPool({
-        poolId_bytes: pool.poolIndex,
-        tokenAddressToSaveWith: pool.tokenToSaveWith,
-      });
-    } else {
-      setSelectedPool(null);
-    }
-    setUpdatePayment(!updatePayment);
-  };
+  const handleApplyFilters = useCallback((newFilters: SavingsFilters) => {
+    setActiveFilters(newFilters);
+    setCurrentPage(1);
+  }, []);
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems =
-    userPools?.slice(indexOfFirstItem, indexOfLastItem) || [];
-  const totalPages = Math.ceil((userPools?.length || 0) / itemsPerPage);
+  const filteredPools = useMemo(() => {
+    const poolsArray = Array.isArray(userPools) ? userPools : [];
+    return (poolsArray as Pool[]).filter((pool) => {
+      if (!pool || typeof pool !== "object") return false;
 
-  const goToNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
+      const contributionMatch =
+        activeFilters.contributionType === "all" ||
+        pool.poolType === activeFilters.contributionType;
 
-  const goToPrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+      const lockMatch =
+        activeFilters.lockType === "all" ||
+        pool.lockType === activeFilters.lockType;
+
+      return contributionMatch && lockMatch;
+    });
+  }, [userPools, activeFilters]);
+
+  const { currentItems, totalPages } = useMemo(() => {
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const items = Array.isArray(filteredPools)
+      ? filteredPools.slice(indexOfFirstItem, indexOfLastItem)
+      : [];
+    const pages =
+      Array.isArray(filteredPools) && filteredPools.length > 0
+        ? Math.ceil(filteredPools.length / itemsPerPage)
+        : 1;
+    return { currentItems: items, totalPages: pages };
+  }, [filteredPools, currentPage, itemsPerPage]);
+
+  const goToNextPage = useCallback(() => {
+    setCurrentPage((prevPage) =>
+      prevPage < totalPages ? prevPage + 1 : prevPage,
+    );
+  }, [totalPages]);
+
+  const goToPrevPage = useCallback(() => {
+    setCurrentPage((prevPage) => (prevPage > 1 ? prevPage - 1 : prevPage));
+  }, []);
 
   return (
     <motion.main
@@ -169,6 +147,7 @@ const CryptoSavings: React.FC = () => {
       <main>
         <section>
           <article className="text-center text-gray-700">
+            {/* Top Balance Section */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -217,7 +196,6 @@ const CryptoSavings: React.FC = () => {
             {/* Contribution Type Selection */}
             <section className="py-8">
               <div className="flex justify-between">
-                {/* Auto Savings Button */}
                 <Button
                   variant="text"
                   onClick={() => handleContributionTypeChange("auto")}
@@ -236,7 +214,6 @@ const CryptoSavings: React.FC = () => {
                   </Typography>
                 </Button>
 
-                {/* One-Time Savings Button */}
                 <Button
                   variant="text"
                   onClick={() => handleContributionTypeChange("one-time")}
@@ -259,7 +236,7 @@ const CryptoSavings: React.FC = () => {
               </div>
             </section>
 
-            {/* Savings Options */}
+            {/* Savings Options Links */}
             {(contributionType === "auto" ||
               contributionType === "one-time") && (
               <section className="mb-8">
@@ -309,7 +286,7 @@ const CryptoSavings: React.FC = () => {
                         : "/dashboard/contribution/one_time_plan/lock/crypto_purpose"
                     }
                     state={{
-                      lockedType: 0,
+                      lockedType: 1,
                       contributionType: contributionType,
                     }}
                     className="w-full"
@@ -377,138 +354,40 @@ const CryptoSavings: React.FC = () => {
           </article>
         </section>
 
-        <section className="mt-6 w-full sm:mt-8 lg:mt-10">
-          <header className="flex items-center justify-between">
-            <h1 className="text-lg font-bold sm:text-xl lg:text-2xl">
-              My Savings
-            </h1>
-            <input
-              className="hidden rounded-lg border-2 border-[#F5F0F0] px-3 py-1 placeholder:text-sm md:px-5 md:py-3"
-              type="text"
-              placeholder="Search by categories"
-            />
-          </header>
-
-          {poolsLoading ? (
-            <ContributionListSkeleton />
-          ) : userPools?.length > 0 ? (
-            <div className="p3 mb-10 mt-4 flex h-auto flex-col gap-3 rounded-2xl bg-text2 px-3 py-5 text-center sm:mt-6 sm:gap-4 md:px-7 md:py-10">
-              {/* Pagination UI */}
-              {userPools.length > itemsPerPage && (
-                <div className="mb-3 flex items-center justify-between px-4">
-                  <span className="text-sm font-medium text-white md:text-base">
-                    Page {currentPage} of {totalPages}
-                  </span>
-                  <div className="flex gap-2 font-semibold">
-                    <button
-                      onClick={goToPrevPage}
-                      disabled={currentPage === 1}
-                      className="rounded p-1 text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                      <IoIosArrowBack size={20} />
-                    </button>
-                    <button
-                      onClick={goToNextPage}
-                      disabled={currentPage === totalPages}
-                      className="rounded p-1 text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                      <IoIosArrowForward size={20} />
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {currentItems.map((pools: any) => (
-                <motion.div
-                  key={pools.poolIndex}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  whileHover={{ scale: 1.01 }}
-                  className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-xl border border-gray-300 bg-white p-3 transition-all hover:bg-gray-50 sm:gap-3 sm:p-4 md:rounded-3xl"
-                >
-                  <div className="flex justify-between text-xs font-medium text-gray-500 sm:text-sm">
-                    <p>Savings Token: {pools?.tokenSymbol}</p>
-                    <p className="text-sm font-semibold text-text2">
-                      Type:{" "}
-                      {pools?.poolType === "periodic" ? "Auto" : "One-Time"}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <p className="font-bold">{pools?.reason}</p>
-                    <p className="text-sm font-semibold">
-                      Deposited Amount:{" "}
-                      <span className="font-bold text-text2">
-                        ${pools?.initialAmount}
-                      </span>
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-semibold">
-                      Duration:{" "}
-                      <span className="text-gray-500">{pools?.duration}</span>
-                    </p>
-                    <p className="text-xs font-semibold sm:text-sm">
-                      Current Balance:{" "}
-                      <span className="text-gray-800">
-                        ${pools?.totalAmount}
-                      </span>
-                    </p>
-                  </div>
-
-                  <hr className="my-1" />
-
-                  <div className="flex justify-between">
-                    <div className="flex gap-2 sm:gap-3">
-                      <button
-                        onClick={() => handleOpenModalBasedOnType(pools)}
-                        className="rounded-lg bg-[#ECE6F2] px-2 py-1 text-xs font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:px-3 sm:text-sm"
-                      >
-                        {pools.poolType === "periodic" ? "Update" : "Fund"}
-                      </button>
-                    </div>
-                    <button
-                      onClick={() =>
-                        navigate(
-                          "/dashboard/contribution/crypto_contribution_details",
-                          {
-                            state: pools,
-                          },
-                        )
-                      }
-                      className="rounded-lg bg-[#ECE6F2] px-2 py-1 text-xs font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:px-3 sm:text-sm"
-                    >
-                      Details
-                    </button>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mb-3 mt-4 flex h-[12em] w-full flex-col items-center justify-center gap-4 rounded-lg bg-text2 p-6 text-center md:mt-6 md:p-8"
-            >
-              <Typography
-                variant="h2"
-                className="text-xl font-bold text-how1 md:text-2xl"
-              >
-                No Savings Yet
-              </Typography>
-            </motion.div>
-          )}
-        </section>
+        {/* Render the new MySavingsList component */}
+        <MySavingsList
+          userPools={userPools}
+          poolsLoading={poolsLoading}
+          filteredPools={filteredPools}
+          currentItems={currentItems}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          itemsPerPage={itemsPerPage}
+          handleOpenModalBasedOnType={handleOpenModalBasedOnType}
+          goToPrevPage={goToPrevPage}
+          goToNextPage={goToNextPage}
+          navigate={navigate}
+          setIsFilterModalOpen={setIsFilterModalOpen}
+          handleApplyFilters={handleApplyFilters}
+        />
       </main>
 
+      {/* Filter Modal */}
+      <FilterSavings
+        isOpen={isFilterModalOpen}
+        onClose={() => setIsFilterModalOpen(false)}
+        currentFilters={activeFilters}
+        onApplyFilters={handleApplyFilters}
+      />
+
+      {/* SavingsPlan Modal */}
       <SavingsPlan
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         savingsType={savingsType}
         onSavingsTypeChange={handleSavingsTypeChange}
       />
-      {/* FundSavingsModal (for oneTime pools) */}
+      {/* FundSavingsModal */}
       {selectedContribution && (
         <FundSavingsModal
           isOpen={isFundModalOpen}
@@ -517,7 +396,7 @@ const CryptoSavings: React.FC = () => {
         />
       )}
 
-      {/* UpdateSavingsModal (for periodic/autosavings pools) */}
+      {/* UpdateSavingsModal */}
       {selectedContribution && (
         <UpdateSavingsModal
           isOpen={isUpdateModalOpen}

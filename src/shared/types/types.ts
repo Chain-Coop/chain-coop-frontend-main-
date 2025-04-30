@@ -106,3 +106,23 @@ export interface openGroupFormType {
   secondForm: secondOpenGroupType;
   thirdForm: thirdOpenGroupType;
 }
+
+
+export interface WithdrawUserPoolPayload {
+  poolId_bytes: string;
+  amount: string;
+  pin: string;
+}
+
+export interface Pool {
+  _id: string;
+  poolId: string;
+  tokenSymbol: string;
+  poolType: "periodic" | "oneTime";
+  reason: string;
+  initialAmount: string;
+  duration: number;
+  totalAmount: string;
+  tokenAddress: string;
+  lockType: 0 | 1 | 2;
+}

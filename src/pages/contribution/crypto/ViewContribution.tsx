@@ -15,6 +15,7 @@ import Naira from "../../../Assets/svg/dashboard/contribution/naira.svg";
 import up from "../../../Assets/svg/dashboard/contribution/up.svg";
 import FundSavingsModal from "../../../components/dashboard/contribution/modals/FundContribution";
 import UpdateSavingsModal from "../../../components/dashboard/contribution/modals/UpdateContribution";
+import TransactionHistory from "./TransactionHistory";
 
 const ViewCryptoContribution = () => {
   const [isFundModalOpen, setIsFundModalOpen] = useState(false);
@@ -191,7 +192,7 @@ const ViewCryptoContribution = () => {
               </div>
             </section>
 
-            <p className="text-lg">
+            <p className="hidden text-lg">
               bh dui. Habitant ue mattis amet duis dis tincidunt vitae imperdiet
               morbi. Niestas neque vulputate. Et aliquet odio mattis eget ornare
               nisl semper donec velit.
@@ -216,6 +217,19 @@ const ViewCryptoContribution = () => {
                 ${contribution.initialAmount || "N/A"}
               </Typography>
             </div>
+
+            {contribution.poolType === "periodic" ? (
+              <div className="w-full rounded-xl bg-Dh p-5">
+                <Typography className="text-lg font-semibold text-text1">
+                  Frequency
+                </Typography>
+                <Typography className="mt-2 text-lg font-semibold text-[#939090]">
+                  {contribution.interval || "N/A"}
+                </Typography>
+              </div>
+            ) : (
+              <div className="hidden"></div>
+            )}
 
             {contribution.poolType === "periodic" ? (
               <div className="w-full rounded-xl bg-Dh p-5">
@@ -256,10 +270,11 @@ const ViewCryptoContribution = () => {
                 End Date
               </Typography>
               <Typography className="mt-2 text-lg font-semibold text-[#939090]">
-                {formatDate(endDate)}
+                {formatDate(endDate)} ({contribution.duration} days)
               </Typography>
             </div>
           </section>
+          <TransactionHistory contribution={contribution} />
         </section>
       </section>
 
