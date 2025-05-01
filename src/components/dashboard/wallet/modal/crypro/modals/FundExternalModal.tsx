@@ -22,11 +22,7 @@ const tokenOptions = [
   { type: "USDT", icon: usdt },
 ];
 
-const FundExternalModal = ({
-  isOpen,
-  onClose,
-  onSubmit,
-}: {
+interface FundExternalModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: {
@@ -34,7 +30,13 @@ const FundExternalModal = ({
     token: string;
     amount: string;
   }) => void;
-}) => {
+}
+
+const FundExternalModal = ({
+  isOpen,
+  onClose,
+  onSubmit,
+}: FundExternalModalProps) => {
   const [selectedToken, setSelectedToken] = useState<string | null>(null);
   const [walletAddress, setWalletAddress] = useState("");
   const [amount, setAmount] = useState("");
@@ -175,7 +177,6 @@ const FundExternalModal = ({
           </Button>
         </DialogFooter>
       </Dialog>
-
 
       <Success
         isOpen={showSuccess}
