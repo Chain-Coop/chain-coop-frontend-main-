@@ -213,9 +213,9 @@ const WithdrawUserPool = async (body: any) => {
     if (error.response) {
       console.error("Backend error response:", error.response.data);
       const backendMessage =
-        error.response.data.msg || // Check if it's really .msg
-        error.response.data.message || // Or maybe .message
-        error.response.data?.error?.message || // Or nested?
+        error.response.data.msg ||
+        error.response.data.message ||
+        error.response.data?.error?.message ||
         "An error occurred";
       throw new Error(backendMessage);
     } else {
@@ -243,6 +243,52 @@ const GetAllUserTokens = async () => {
   }
 };
 
+// --- New Service Function to Stop Periodic Pool ---
+const StopPeriodicPool = async (id: string) => {
+  const url = `${API_URL}/web3/v2/periodicSaving/periodicPool/${id}/stop`;
+  try {
+    const response = await axios.post(url, null, {
+      // No body needed
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    if (axios.isAxiosError(error) && error.response) {
+      const backendMessage =
+        error.response.data?.msg ||
+        error.response.data?.message ||
+        "An error occurred stopping the pool";
+      throw new Error(backendMessage);
+    } else if (axios.isCancel(error)) {
+      throw new Error("Request canceled.");
+    } else {
+      throw new Error("Network Error: Could not stop the pool.");
+    }
+  }
+};
+
+const ResumePeriodicPool = async (id: string) => {
+  const url = `${API_URL}/web3/v2/periodicSaving/periodicPool/${id}/resume`;
+  try {
+    const response = await axios.post(url, null, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    if (axios.isAxiosError(error) && error.response) {
+      const backendMessage =
+        error.response.data?.msg ||
+        error.response.data?.message ||
+        "An error occurred resuming the pool";
+      throw new Error(backendMessage);
+    } else if (axios.isCancel(error)) {
+      throw new Error("Request canceled.");
+    } else {
+      throw new Error("Network Error: Could not resume the pool.");
+    }
+  }
+};
+
 const web3Services = {
   ActivateCryptoWallet,
   GetTotalCryptoWalletBalance,
@@ -254,6 +300,8 @@ const web3Services = {
   WithdrawUserPool,
   GetAllUserTokens,
   UpdateAutoPool,
+  StopPeriodicPool,
+  ResumePeriodicPool,
 };
 
 export default web3Services;

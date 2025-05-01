@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { AppDispatch } from "../redux/store";
 import { useLocation } from "react-router";
 import { formatBalance } from "../utils/format";
@@ -166,8 +166,7 @@ export const useCryptoWallet = () => {
 
 const useDataFetcher = (selector: (state: any) => any, fetchAction: any) => {
   const dispatch = useDispatch<AppDispatch>();
-  const data = useSelector(selector);
-  const { loading, error } = useSelector((state: any) => state.web3);
+  const data = useSelector(selector, shallowEqual);
 
   const fetch = useCallback(() => {
     dispatch(fetchAction());
@@ -177,31 +176,34 @@ const useDataFetcher = (selector: (state: any) => any, fetchAction: any) => {
     fetch();
   }, [fetch]);
 
-  return { data, loading, error, fetch };
+  return { data, fetch };
 };
 
 export const useCryptoWalletDetails = () => {
-  const { data, loading, error } = useDataFetcher(
+  const { data, fetch } = useDataFetcher(
     (state: any) => state.web3.cryptoWalletDetails,
     Web3Slices.GetCryptoWalletDetails,
   );
-  return { cryptoWalletDetails: data, loading, error };
+  return { cryptoWalletDetails: data, fetchCryptoWalletDetails: fetch };
 };
 
 export const useAllUserPools = () => {
-  const { data, loading, error } = useDataFetcher(
+  const { data, fetch } = useDataFetcher(
     (state: any) => state.web3.userPools,
     Web3Slices.GetAllUserPools,
   );
-  return { userPools: data, loading, error };
+  const loading = useSelector((state: any) => state.web3.userPoolsLoading);
+  const error = useSelector((state: any) => state.web3.userPoolsError);
+
+  return { userPools: data, loading, error, fetchUserPools: fetch };
 };
 
 export const useAllUserTokens = () => {
-  const { data, loading, error } = useDataFetcher(
+  const { data, fetch } = useDataFetcher(
     (state: any) => state.web3.userTokens,
     Web3Slices.GetAllUserTokens,
   );
-  return { userTokens: data, loading, error };
+  return { userTokens: data, fetchUserTokens: fetch };
 };
 
 export default useWalletBalance;

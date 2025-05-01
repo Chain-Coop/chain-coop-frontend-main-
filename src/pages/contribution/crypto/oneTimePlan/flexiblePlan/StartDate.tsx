@@ -1,18 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowDropleft } from "react-icons/io";
-import { Alert } from "@mui/material";
+import {
+  Alert,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
 import { Button } from "@material-tailwind/react";
 import { DashboardHeader } from "../../../../../components/common/DashboardHeader";
 import cryptoSavings from "../../../../../Assets/png/dashboard/cryptSavings.png";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import {
+  formatDate,
+  addDays,
+  addMonths,
+  getDateDifference,
+  calculateAvailableEndDates,
+  validateCustomEndDate,
+} from "../../../../../shared/utils/format";
 
 const StartDate: React.FC = () => {
   const todayDate = new Date();
+  todayDate.setHours(0, 0, 0, 0);
   const todayString = todayDate.toISOString().split("T")[0];
 
-  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState("");
+  const [customEndDate, setCustomEndDate] = useState("");
+  const [useCustomDate, setUseCustomDate] = useState(false);
+  const [availableEndDates, setAvailableEndDates] = useState<string[]>([]);
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -21,33 +38,73 @@ const StartDate: React.FC = () => {
   const location = useLocation();
   const { tokenName } = location.state || {};
 
-  const formatDate = (date: Date | null): string => {
-    if (!date) return "";
-    return date.toISOString().split("T")[0];
+  // useEffect to calculate available dates (run once)
+  useEffect(() => {
+    // Calculate presets assuming a 'daily' type for interval variety
+    const config = { dailyIntervals: [7, 14, 30, 60, 90, 180] }; // Example presets
+    const dates = calculateAvailableEndDates(todayString, "daily", config);
+    setAvailableEndDates(dates);
+  }, [todayString]); // Run only when todayString changes (effectively once on mount)
+
+  // Handler for dropdown change
+  const handleEndDateChange = (event: any) => {
+    const value = event.target.value;
+    if (value === "custom") {
+      // Allow custom
+      setUseCustomDate(true);
+      setEndDate("");
+    } else {
+      setUseCustomDate(false);
+      setEndDate(value);
+      setCustomEndDate("");
+    }
+    setError(""); // Clear error on change
+  };
+
+  // Handler for custom date input change
+  const handleCustomEndDateChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const value = event.target.value;
+    setCustomEndDate(value);
+    // Validate on change
+    const validation = validateCustomEndDate(todayString, value, {
+      type: "daily",
+      minDays: 7,
+    });
+    setError(validation.isValid ? "" : validation.error || "Invalid date");
   };
 
   const handleNext = async (e: React.MouseEvent) => {
     e.preventDefault();
+    setError("");
 
-    const finalEndDateString = formatDate(endDate);
+    const finalEndDate = useCustomDate ? customEndDate : endDate;
 
-    if (!finalEndDateString) {
-      setError("Please select an end date.");
+    // No frequency check needed for one-time
+
+    if (!finalEndDate) {
+      setError("Please select or enter an end date.");
       return;
     }
 
-    if (!endDate || endDate <= todayDate) {
-      setError("End date must be in the future.");
+    // Final validation before submitting
+    const validation = validateCustomEndDate(todayString, finalEndDate, {
+      type: "daily", // Use 'daily' type validation for one-time
+      minDays: 7, // Keep a minimum duration
+    });
+    if (!validation.isValid) {
+      setError(validation.error || "Invalid end date selected.");
       return;
     }
 
     setLoading(true);
-    setError("");
 
     const formData = {
       ...location.state,
       startDate: todayString,
-      duration: finalEndDateString,
+      duration: finalEndDate, // Use the chosen/validated end date
+      // No savingFrequency needed
       lockedType: location.state?.lockedType,
       contributionType: location.state?.contributionType,
     };
@@ -94,26 +151,85 @@ const StartDate: React.FC = () => {
             <label className="mb-3 flex font-semibold">
               Start Date (Today)
             </label>
-            <p className="input mb-5 flex h-[4em] w-full items-center rounded-lg border-[1px] bg-gray-100 px-4 text-sm shadow-md">
+            <p className="input mb-2 flex h-[4em] w-full items-center rounded-lg border-[1px] bg-gray-100 px-4 text-sm shadow-md">
               {todayString}
             </p>
           </div>
-          <div className="flex flex-col gap-1">
-            <label className="mb-1 flex text-lg font-semibold text-memt1">
-              End Date
-            </label>
-            <DatePicker
-              selected={endDate}
-              onChange={(date: Date | null) => setEndDate(date)}
-              dateFormat="yyyy-MM-dd"
-              minDate={new Date(todayDate.setDate(todayDate.getDate() + 1))}
-              placeholderText="YYYY-MM-DD"
-              required
-              className="input mb-5 h-[4em] w-full rounded-lg border-[2px] border-gray-300 px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2" // Apply your styles
-              wrapperClassName="w-full"
-            />
-          </div>
         </div>
+
+        {/* --- Duration Selection UI (using MUI) --- */}
+        <section className="mt-[1em]">
+          <FormControl fullWidth>
+            <InputLabel id="end-date-select-label" style={{ color: "#000000" }}>
+              Choose End Date / Duration
+            </InputLabel>
+            <Select
+              labelId="end-date-select-label"
+              id="end-date-select"
+              value={useCustomDate ? "custom" : endDate}
+              label="Choose End Date / Duration"
+              onChange={handleEndDateChange}
+              className="mb-1"
+              sx={{
+                height: "3.5em",
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderRadius: "0.5rem",
+                  borderColor: "#D1D5DB",
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#440080",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#440080",
+                },
+              }}
+            >
+              <MenuItem value="" disabled>
+                <em>Select duration...</em>
+              </MenuItem>
+              {availableEndDates.map((date) => (
+                <MenuItem key={date} value={date}>
+                  {new Date(date).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}{" "}
+                  ({getDateDifference(todayString, date, "daily")}){" "}
+                  {/* Always daily diff */}
+                </MenuItem>
+              ))}
+              {/* Always allow custom for one-time */}
+              <MenuItem value="custom">
+                <em>Set custom end date</em>
+              </MenuItem>
+            </Select>
+          </FormControl>
+
+          {/* Custom Date Input */}
+          {useCustomDate && (
+            <div className="mt-2">
+              <label className="mb-1 block text-sm font-medium text-gray-600">
+                Custom End Date
+              </label>
+              <input
+                type="date"
+                value={customEndDate}
+                onChange={handleCustomEndDateChange}
+                min={formatDate(addDays(new Date(todayString), 7))} // Min 7 days
+                required
+                className="input h-[3.5em] w-full rounded-lg border-[2px] border-gray-300 bg-white px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
+              />
+              {customEndDate && (
+                <p className="mt-1 text-xs text-gray-600">
+                  Duration:{" "}
+                  {getDateDifference(todayString, customEndDate, "daily")}
+                </p>
+              )}
+            </div>
+          )}
+        </section>
+        {/* --- End Duration Selection UI --- */}
+
         {error && (
           <Alert severity="error" className="mb-4 mt-4">
             {error}
