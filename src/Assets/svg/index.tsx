@@ -474,3 +474,35 @@ export const TrashIcon = () => (
     />
   </svg>
 );
+
+export const Filter = () => (
+  <svg
+    width="22"
+    height="22"
+    viewBox="0 0 16 17"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M1 4.5H15"
+      stroke="#51526C"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M4 8.5H12"
+      stroke="#51526C"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M6 12.5H10"
+      stroke="#51526C"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+);
