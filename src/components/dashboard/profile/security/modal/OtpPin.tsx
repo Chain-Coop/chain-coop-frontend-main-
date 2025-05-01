@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../../../shared/redux/store";
 import OtpInput from "../../../../../shared/utils/OtpInput";
 import {
   Dialog,
@@ -10,6 +12,9 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import { IoMdClose } from "react-icons/io";
+import { toast } from "react-toastify";
+import { VerifyUserAuth } from "../../../../../shared/redux/slices/landing.slices";
+import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 
 interface OtpPinProps {
   isOpen: boolean;
@@ -18,15 +23,40 @@ interface OtpPinProps {
 }
 
 const OtpPin = ({ isOpen, onNext, onClose }: OtpPinProps) => {
+  const dispatch = useDispatch<AppDispatch>();
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { profileDetails } = useUserProfile();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (otp.length !== 6) {
       setError("Please enter a 6-digit OTP");
       return;
     }
-    onNext(otp);
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const resultAction = await dispatch(
+        VerifyUserAuth({
+          email: profileDetails.email,
+          otp,
+        }) as any,
+      );
+
+      if (VerifyUserAuth.fulfilled.match(resultAction)) {
+        toast.success("OTP verified successfully");
+        onNext(otp);
+      } else {
+        setError(resultAction.payload || "Invalid OTP. Please try again.");
+      }
+    } catch (error: any) {
+      setError(error.message || "Failed to verify OTP");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -76,9 +106,11 @@ const OtpPin = ({ isOpen, onNext, onClose }: OtpPinProps) => {
       <DialogFooter className="flex justify-center">
         <Button
           onClick={handleSubmit}
+          disabled={loading}
+          loading={loading}
           className="w-60 rounded-full bg-text2 normal-case text-white"
         >
-          <Typography>Next</Typography>
+          <Typography>{loading ? "Verifying..." : "Next"}</Typography>
         </Button>
       </DialogFooter>
     </Dialog>

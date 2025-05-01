@@ -25,7 +25,7 @@ const PinModal = ({
     <Dialog
       open={isOpen}
       handler={onClose}
-      size="xs"
+      size="sm"
       className="flex flex-col justify-center bg-white px-2 py-8 text-center"
     >
       <DialogHeader className="relative flex items-center">
@@ -52,10 +52,10 @@ const PinModal = ({
         </div>
       </DialogHeader>
 
-      <DialogBody className="mx-auto max-w-xs py-2">
+      <DialogBody>
         <OtpInput value={pin} onChange={onPinChange} gap={6} />
         {error && (
-          <Alert severity="error" className="mb-4 mt-4">
+          <Alert severity="error" className="my-4">
             {error}
           </Alert>
         )}
@@ -67,7 +67,7 @@ const PinModal = ({
           }}
           disabled={loading}
           loading={loading}
-          className="hover:bg-text2-dark mt-10 flex w-full justify-center rounded-full bg-text2 px-2 py-3 text-sm font-semibold normal-case text-white"
+          className="hover:bg-text2-dark mx-auto mt-10 w-60 rounded-full bg-text2 px-2 py-3 text-sm font-semibold normal-case text-white"
         >
           {loading ? "Verifying..." : "Send"}
         </Button>

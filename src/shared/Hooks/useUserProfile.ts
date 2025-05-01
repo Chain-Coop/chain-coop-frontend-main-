@@ -152,10 +152,13 @@ export const usePinSetup = (isPinCreated: boolean) => {
     setShowSuccessModal,
   };
 };
+
 export const useUserContributionHistory = (
   page: number,
   limit: number,
   search: string = "",
+  sort: string = "desc",
+  filter: string = "",
 ) => {
   const dispatch: AppDispatch = useDispatch();
   const [debouncedSearch, setDebouncedSearch] = useState(search);
@@ -180,7 +183,13 @@ export const useUserContributionHistory = (
     const userToken = sessionStorage.getItem("userData");
     if (userToken) {
       dispatch(
-        GetUsersContributionHistory({ page, limit, search: debouncedSearch }),
+        GetUsersContributionHistory({
+          page,
+          limit,
+          search: debouncedSearch,
+          sort,
+          filter,
+        }),
       )
         .unwrap()
         .catch((err: any) => {
@@ -189,7 +198,7 @@ export const useUserContributionHistory = (
     } else {
       dispatch(setMessage("User token not found"));
     }
-  }, [dispatch, page, limit, debouncedSearch]);
+  }, [dispatch, page, limit, debouncedSearch, sort, filter]);
 
   return {
     getContributions,

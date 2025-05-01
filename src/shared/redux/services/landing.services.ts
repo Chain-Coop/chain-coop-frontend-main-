@@ -61,6 +61,19 @@ const VerifyUserAuth = async (body: any) => {
   }
 };
 
+const VerifyUserPhoneNumber = async (body: any) => {
+  const url = `${API_URL}/auth/verify_whatsapp_otp`;
+
+  try {
+    const response = await axios.post(url, body, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
 export async function FORGOT_PASSWORD(endpoint: string, data: any) {
   const url = API_URL + endpoint;
   try {
@@ -171,6 +184,7 @@ const LandingServices = {
   UploadAvatar,
   JoinNewsLetter,
   ResetPassword,
+  VerifyUserPhoneNumber,
 };
 
 export default LandingServices;

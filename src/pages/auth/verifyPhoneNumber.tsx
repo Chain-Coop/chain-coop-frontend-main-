@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Button } from "@material-tailwind/react";
 import { AppDispatch } from "../../shared/redux/store";
 import OtpInput from "../../shared/utils/OtpInput";
-import { kycWhatsAppOtp, VerifykycWhatsAppOtp } from "../../shared/redux/slices/kyc.slices";
+import { VerifyUserPhoneNumber } from "../../shared/redux/slices/landing.slices";
 
 const VerifyPhoneNumber = () => {
   const navigate = useNavigate();
@@ -20,6 +20,8 @@ const VerifyPhoneNumber = () => {
   const dispatch: AppDispatch = useDispatch();
 
   const queryParams = new URLSearchParams(location.search);
+  const phoneNumber = queryParams.get("phoneNumber");
+  const userId = queryParams.get("userId");
 
   const handleOtpChange = (otpValue: string) => {
     setCode(otpValue);
@@ -28,13 +30,39 @@ const VerifyPhoneNumber = () => {
     }
   };
 
+  // useEffect(() => {
+  //   if (phoneNumber && userId) {
+  //     handleSendOtp();
+  //   }
+  // }, []);
+
+  // const handleSendOtp = async () => {
+  //   try {
+  //     await dispatch(
+  //       VerifyUserPhoneNumber({
+  //         phoneNumber, // Include phone number in the request
+  //         userId,
+  //       }),
+  //     ).unwrap();
+  //     setTimeLeft(360);
+  //   } catch (error: any) {
+  //     toast.error(error);
+  //   }
+  // };
+
   const verifyUserData = (otpValue: string) => {
     setIsVerifying(true);
-    dispatch(VerifykycWhatsAppOtp({ code: otpValue }))
+    dispatch(
+      VerifyUserPhoneNumber({
+        otp: otpValue,
+        userId,
+        phoneNumber: "+2348073632834",
+      }),
+    )
       .unwrap()
       .then(() => {
         setIsVerifying(false);
-        toast.success("phone number verified successfully");
+        toast.success("Phone number verified successfully");
         navigate("/login");
       })
       .catch((error) => {
@@ -56,21 +84,32 @@ const VerifyPhoneNumber = () => {
     return () => clearInterval(timer);
   }, [timeLeft]);
 
-  const ResendOtp = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (timeLeft > 0) return;
-
-    setIsResending(true);
-    try {
-      const response = await dispatch(kycWhatsAppOtp()).unwrap();
-      toast.success(response.message);
-      setTimeLeft(360);
-    } catch (error: any) {
-      toast.error(error);
-    } finally {
-      setIsResending(false);
-    }
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
+
+  // const ResendOtp = async (e: React.MouseEvent) => {
+  //   e.preventDefault();
+  //   if (timeLeft > 0) return;
+
+  //   setIsResending(true);
+  //   try {
+  //     const response = await dispatch(
+  //       kycWhatsAppOtp({
+  //         phoneNumber, // Include phone number in the request
+  //         userId,
+  //       }),
+  //     ).unwrap();
+  //     toast.success(response.message);
+  //     setTimeLeft(360);
+  //   } catch (error: any) {
+  //     toast.error(error);
+  //   } finally {
+  //     setIsResending(false);
+  //   }
+  // };
 
   return (
     <main className="flex h-screen items-center justify-center bg-log ">
@@ -92,16 +131,18 @@ const VerifyPhoneNumber = () => {
             </div>
           </div>
 
+          {timeLeft > 0 && (
+            <p className="mt-3 text-gray-600">
+              Resend available in {formatTime(timeLeft)}
+            </p>
+          )}
+
           <Button
-            onClick={ResendOtp}
-            disabled={isVerifying || isResending || resendDisabled}
+            // onClick={ResendOtp}
+            disabled={isVerifying || isResending || timeLeft > 0}
             className="m-auto mt-6 flex w-[12em] justify-center rounded-full bg-text2 px-2 py-3 text-center font-medium normal-case text-text5 disabled:opacity-50 sm:text-lg lg:mt-[2em]"
           >
-            {isResending
-              ? "Resending..."
-              : resendDisabled
-                ? `Resend OTP (${resendTimer}s)`
-                : "Resend OTP"}
+            {isResending ? "Resending..." : "Resend OTP"}
           </Button>
         </div>
       </section>

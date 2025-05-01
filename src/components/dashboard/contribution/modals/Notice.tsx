@@ -130,7 +130,7 @@ const NoticeModal: React.FC<NoticeModalProps> = ({
           </div>
         )}
 
-        <div className="space-y-2 rounded-lg bg-gray-50 p-4">
+        <div className="space-y-2 rounded-lg  p-4">
           <h4 className="font-semibold">Withdrawal Summary:</h4>
 
           <div className="space-y-1">
@@ -210,18 +210,18 @@ const NoticeModal: React.FC<NoticeModalProps> = ({
         <Button
           variant="outlined"
           onClick={onClose}
-          className="border-2 border-black normal-case"
+          className="border-2 border-black py-2 normal-case"
         >
-          Cancel
+          <Typography>Cancel</Typography>
         </Button>
         {(!isBeforeWithdrawalDate() || savingsType !== "StrictLock") && (
           <Button
             variant="outlined"
             onClick={onConfirm}
-            className="border-2 border-black normal-case"
+            className="bg-text2 px-5 py-2 normal-case text-white"
             disabled={!validateWithdrawal().isValid}
           >
-            Confirm
+            <Typography>Confirm</Typography>
           </Button>
         )}
       </DialogFooter>
