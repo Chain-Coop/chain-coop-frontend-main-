@@ -4,6 +4,7 @@ import { Alert } from "@mui/material";
 import { SavingOn } from "../../../../data/Data";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg";
+import { Typography } from "@material-tailwind/react";
 
 const Purpose = () => {
   const [savingsCategory, setSavingsCategory] = useState("");
@@ -48,7 +49,11 @@ const Purpose = () => {
       </DashboardHeader>
       <div>
         <header className="mt-[1.5em] flex flex-col gap-2 lg:mt-[3em]">
-          <h1 className="text-2xl font-bold">Lock Savings</h1>
+          <Typography className="text-2xl font-bold">Lock Savings</Typography>
+          <Typography className="text-lg font-medium">
+            You can save and withdrawal will be locked untill saving duration is
+            completed but you can withdraw before the time frame.{" "}
+          </Typography>
         </header>
         <header className="mt-2 lg:mt-[1.5em]">
           <h1 className="text-xl font-semibold">What are you saving on ?</h1>
