@@ -115,7 +115,7 @@ const NoticeModal: React.FC<NoticeModalProps> = ({
     }
 
     return (
-      <div className="space-y-4">
+      <div className="space-y-5">
         {withdrawalDate && (
           <div className="space-y-2">
             <p>
@@ -130,7 +130,7 @@ const NoticeModal: React.FC<NoticeModalProps> = ({
           </div>
         )}
 
-        <div className="space-y-2 rounded-lg bg-gray-50 p-4">
+        <div className="space-y-4 rounded-lg  p-4">
           <h4 className="font-semibold">Withdrawal Summary:</h4>
 
           <div className="space-y-1">
@@ -143,7 +143,7 @@ const NoticeModal: React.FC<NoticeModalProps> = ({
             </p>
           </div>
 
-          <div className="mt-3 space-y-1">
+          <div className="mt-3 space-y-3">
             <p className="font-medium">Applicable Fees:</p>
             <p>Transaction fee: ₦50</p>
             {membershipStatus === "inactive" && (
@@ -178,13 +178,6 @@ const NoticeModal: React.FC<NoticeModalProps> = ({
             )}
           </div>
         </div>
-
-        {savingsType === "Lock" && isEarlyWithdrawal && (
-          <p className="text-amber-600">
-            <strong>Warning:</strong> You are attempting to withdraw before your
-            scheduled date. Early withdrawal fees of ₦2,000 will apply.
-          </p>
-        )}
       </div>
     );
   };
@@ -225,7 +218,7 @@ const NoticeModal: React.FC<NoticeModalProps> = ({
           <Button
             variant="outlined"
             onClick={onConfirm}
-            className="border-2 border-black normal-case"
+            className="bg-text2 normal-case text-white"
             disabled={!validateWithdrawal().isValid}
           >
             Confirm

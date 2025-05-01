@@ -228,15 +228,24 @@ export const GetUsersContributionHistory = createAsyncThunk(
       page,
       limit,
       search = "",
-    }: { page: number; limit: number; search: string },
+      sort = "desc",
+      filter = "",
+    }: {
+      page: number;
+      limit: number;
+      search: string;
+      sort?: string;
+      filter?: string;
+    },
     thunkAPI,
   ) => {
     try {
       const data = await TransactionServices.GetUsersContributionHistory(
         page,
         limit,
-        "desc",
+        sort,
         search,
+        filter,
       );
       return { transaction: data };
     } catch (error: any) {

@@ -68,10 +68,10 @@ const FirstOpenGroupForm = ({ data, setData }: Props) => {
           <div className="flex w-full flex-col gap-8">
             <Button
               onClick={(event) =>
-                handleButtonSelection(event, "LISK", liskIcon)
+                handleButtonSelection(event, "Lisk", liskIcon)
               }
               className={`flex w-fit  items-center justify-center gap-3 rounded-lg border-2 bg-[#ECE6F2] p-2 px-3 hover:border-[#440080] ${
-                data.savings_currency === "LISK"
+                data.savings_currency === "Lisk"
                   ? "border-[#440080]"
                   : "border-transparent"
               }`}
@@ -133,7 +133,7 @@ const FirstOpenGroupForm = ({ data, setData }: Props) => {
                   : "border-transparent"
               }`}
             >
-              <img src={nairaIcon} alt="NAIRA" className="w-[20px]" />
+              <img src={nairaIcon} alt="Naira" className="w-[20px]" />
               <Typography className="text-[16px] font-[600] tracking-tighter text-[#302B2B]">
                 Naira
               </Typography>
