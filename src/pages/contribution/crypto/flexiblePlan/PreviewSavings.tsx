@@ -6,8 +6,7 @@ import cryptoSavings from "../../../../Assets/png/dashboard/cryptSavings.png";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../shared/redux/store";
-import { CreatePool } from "../../../../shared/redux/slices/web3.slices";
-//import Pin from "../../../../components/dashboard/contribution/modals/Pin";
+import { CreatePeriodicPool } from "../../../../shared/redux/slices/web3.slices";
 import PinModal from "../../../../components/common/PinModal";
 import PaymentWithCard from "../../../../components/dashboard/contribution/paymentChoice/PaymentWithCard";
 import ConnectWallet from "../../../../components/dashboard/contribution/modals/ConnectWallet";
@@ -39,10 +38,9 @@ const PreviewSavings = () => {
     }
   };
 
-  const handlePinSubmit = (formData: any) => {
+  const handlePinSubmit = (enteredPin: string) => {
     const {
       interestRate,
-      pin,
       tokenEquivalent,
       tokenName,
       nairaEquivalent,
@@ -53,8 +51,8 @@ const PreviewSavings = () => {
       currency,
       startDate,
       duration,
-      goalAmount,
       initialSaveAmount,
+      debitAmount,
       ...payload
     } = formData;
 
@@ -70,6 +68,9 @@ const PreviewSavings = () => {
       reasonForSaving: formData.reasonForSaving,
       duration: durationInDays,
       lockedType,
+      pin: enteredPin,
+      interval: savingFrequency,
+      periodicAmount: debitAmount,
     };
 
     //console.log("Payload being sent to the backend:", finalPayload);
@@ -77,7 +78,7 @@ const PreviewSavings = () => {
 
     setLoading(true);
 
-    dispatch(CreatePool(finalPayload))
+    dispatch(CreatePeriodicPool(finalPayload))
       .unwrap()
       .then((response) => {
         console.log("Pool created successfully:", response);
@@ -87,11 +88,11 @@ const PreviewSavings = () => {
       })
       .catch((error) => {
         console.error("Error creating pool:", error);
-        toast.error(
-          error.message
-            ? `Failed to create savings pool: ${error.message}`
-            : "Failed to create savings pool. Please try again.",
-        );
+        const message = error?.message || error?.msg;
+        error?.payload?.message || error?.payload?.msg;
+        ("Failed to create savings pool. Please try again.");
+        setError(message);
+        toast.error(message);
       })
       .finally(() => {
         setLoading(false);
@@ -222,11 +223,11 @@ const PreviewSavings = () => {
               <p className="font-bold">{formData.savingFrequency}</p>
             </div>
 
-            <div className="hidden h-[83px] w-full rounded-lg bg-[#ECE6F242] p-4 md:w-[210px] md:p-2">
+            <div className="h-[83px] w-full rounded-lg bg-[#ECE6F242] p-4 md:w-[210px] md:p-2">
               <h2 className="text-sm font-semibold text-gray-500">
-                Goal Amount
+                Periodic Amount
               </h2>
-              <p className="font-bold">{formData.goalAmount}</p>
+              <p className="font-bold">{formData.debitAmount}</p>
             </div>
 
             {/* Start Date */}
@@ -280,8 +281,11 @@ const PreviewSavings = () => {
       {showPinModal && (
         <PinModal
           isOpen={showPinModal}
-          onClose={() => setShowPinModal(false)}
-          onSubmit={() => handlePinSubmit({ ...formData })}
+          onClose={() => {
+            setShowPinModal(false);
+            setError(undefined);
+          }}
+          onSubmit={handlePinSubmit}
           header="Enter Your Pin"
           title="Please enter your 4-digit transaction pin to proceed."
           loading={loading}

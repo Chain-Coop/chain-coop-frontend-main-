@@ -86,11 +86,17 @@ const SourceFunds = () => {
   const [selectedSource, setSelectedSource] =
     useState<string>("internal-wallet");
   const [initialSaveAmount, setInitialSaveAmount] = useState<string>("");
+  const [debitAmount, setDebitAmount] = useState<string>("");
   const [error, setError] = useState<string>("");
 
   const handleNext = () => {
     if (!initialSaveAmount) {
       setError("Please enter a valid token amount.");
+      return;
+    }
+
+    if (!debitAmount) {
+      setError("Please enter an amount to be debited.");
       return;
     }
 
@@ -100,6 +106,7 @@ const SourceFunds = () => {
       ...formData,
       selectedSource,
       initialSaveAmount,
+      debitAmount,
       fundSource:
         selectedSource === "external-wallet"
           ? "External Crypto Wallet"
@@ -193,6 +200,23 @@ const SourceFunds = () => {
             />
           </div>
         )}
+
+        <div className="mt-[2.5em]">
+          <label
+            htmlFor="internalTokenAmount"
+            className="mb-3 flex text-lg font-semibold text-memt1"
+          >
+            Periodic Amount (Token)
+          </label>
+          <input
+            type="text"
+            id="debitAmount"
+            value={debitAmount}
+            onChange={(e) => setDebitAmount(e.target.value)}
+            placeholder="Amount to be debited frequently"
+            className="input mb-2 h-[4em] w-full rounded-lg border-[2px] border-gray-300 px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
+          />
+        </div>
 
         {error && (
           <p className="mt-2 text-sm font-semibold text-red-500">{error}</p>

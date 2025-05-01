@@ -22,6 +22,7 @@ export interface WithdrawAmountModalProps {
   handleAmountChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleContinue?: () => void;
   withdrawalLimit?: number;
+  walletType?: "naira" | "crypto";
 }
 
 export interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -104,4 +105,24 @@ export interface openGroupFormType {
   firstForm: firstOpenGroupType;
   secondForm: secondOpenGroupType;
   thirdForm: thirdOpenGroupType;
+}
+
+
+export interface WithdrawUserPoolPayload {
+  poolId_bytes: string;
+  amount: string;
+  pin: string;
+}
+
+export interface Pool {
+  _id: string;
+  poolId: string;
+  tokenSymbol: string;
+  poolType: "periodic" | "oneTime";
+  reason: string;
+  initialAmount: string;
+  duration: number;
+  totalAmount: string;
+  tokenAddress: string;
+  lockType: 0 | 1 | 2;
 }

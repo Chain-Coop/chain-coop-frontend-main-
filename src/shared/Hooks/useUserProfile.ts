@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GetUserProfile, uploadAvatar } from "../redux/slices/landing.slices";
 import { AppDispatch } from "../redux/store";
@@ -277,22 +277,26 @@ export const useAllNotification = () => {
 
 export const useAllUserPools = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { userPools, loading } = useSelector((state: any) => state?.web3);
-  const { profileDetails } = useUserProfile();
 
-  const fetchUserPools = useCallback(() => {
-    if (profileDetails?.isWalletActivated) {
-      dispatch(GetAllUserPools());
-    }
-  }, [dispatch, profileDetails?.isWalletActivated]);
+  const userPools = useSelector((state: any) => state?.web3?.userPools);
+  const loading = useSelector((state: any) => state?.web3?.loading);
+
+  const isWalletActivated = useSelector(
+    (state: any) => state?.landing?.getProfile?.isWalletActivated || false
+  );
+  const hasFetchedForActiveWallet = useRef(false);
 
   useEffect(() => {
-    fetchUserPools();
-  }, [fetchUserPools]);
+    if (isWalletActivated && !hasFetchedForActiveWallet.current) {
+      console.log("Dispatching GetAllUserPools because wallet is active and fetch hasn't occurred.");
+      dispatch(GetAllUserPools());
+      hasFetchedForActiveWallet.current = true;
+    }
+  }, [dispatch, isWalletActivated]);
 
   return {
     loading,
-    userPools: profileDetails?.isWalletActivated ? userPools : null,
-    isWalletActivated: profileDetails?.isWalletActivated || false,
+    userPools: isWalletActivated ? userPools || [] : [],
+    isWalletActivated,
   };
 };

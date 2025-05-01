@@ -18,7 +18,7 @@ const SourceFunds = () => {
   const [selectedSource, setSelectedSource] =
     useState<string>("internal-wallet");
   const [initialSaveAmount, setInitialSaveAmount] = useState<string>("");
-  //const [goalAmount, setGoalAmount] = useState<string>("");
+  const [debitAmount, setDebitAmount] = useState<string>("");
   const [error, setError] = useState<string>("");
 
   const handleNext = () => {
@@ -27,10 +27,10 @@ const SourceFunds = () => {
       return;
     }
 
-    /*if (!goalAmount) {
-      setError("Please enter a valid goal amount.");
+    if (!debitAmount) {
+      setError("Please enter an amount to be debited.");
       return;
-    }*/
+    }
 
     setError("");
 
@@ -38,7 +38,7 @@ const SourceFunds = () => {
       ...formData,
       selectedSource,
       initialSaveAmount,
-      //goalAmount,
+      debitAmount,
       fundSource:
         selectedSource === "external-wallet"
           ? "External Crypto Wallet"
@@ -139,22 +139,22 @@ const SourceFunds = () => {
           </div>
         )}
 
-        {/*<div className="mt-[2.5em]">
+        <div className="mt-[2.5em]">
           <label
             htmlFor="internalTokenAmount"
             className="mb-3 flex text-lg font-semibold text-memt1"
           >
-            Set Goal Amount (Token)
+            Periodic Amount (Token)
           </label>
           <input
             type="text"
-            id="goalAmount"
-            value={goalAmount}
-            onChange={(e) => setGoalAmount(e.target.value)}
-            placeholder="e.g., Lk 1000"
+            id="debitAmount"
+            value={debitAmount}
+            onChange={(e) => setDebitAmount(e.target.value)}
+            placeholder="Amount to be debited frequently"
             className="input mb-2 h-[4em] w-full rounded-lg border-[2px] border-gray-300 px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
           />
-        </div>*/}
+        </div>
 
         {/* Error Message */}
         {error && (

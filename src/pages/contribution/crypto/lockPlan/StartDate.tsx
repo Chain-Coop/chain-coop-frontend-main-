@@ -1,20 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowDropleft } from "react-icons/io";
-import { Alert } from "@mui/material";
+import {
+  Alert,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
 import { Button } from "@material-tailwind/react";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import cryptoSavings from "../../../../Assets/png/dashboard/cryptSavings.png";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import {
+  formatDate,
+  addDays,
+  addMonths,
+  getDateDifference,
+  calculateAvailableEndDates,
+  validateCustomEndDate,
+} from "../../../../shared/utils/format";
 
 const StartDate: React.FC = () => {
   const todayDate = new Date();
+  todayDate.setHours(0, 0, 0, 0);
   const todayString = todayDate.toISOString().split("T")[0];
 
-  const [endDate, setEndDate] = useState<Date | null>(null);
-
   const [savingFrequency, setSavingFrequency] = useState<string>("");
+  const [endDate, setEndDate] = useState("");
+  const [customEndDate, setCustomEndDate] = useState("");
+  const [useCustomDate, setUseCustomDate] = useState(false);
+  const [availableEndDates, setAvailableEndDates] = useState<string[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -22,42 +38,99 @@ const StartDate: React.FC = () => {
   const location = useLocation();
   const { tokenName } = location.state || {};
 
+  // useEffect to calculate available dates based on frequency
+  useEffect(() => {
+    if (!savingFrequency || savingFrequency === "MANUALLY") {
+      setAvailableEndDates([]);
+      return;
+    }
+    const calculationType = savingFrequency === "WEEKLY" ? "daily" : "monthly";
+    let config = {};
+    if (savingFrequency === "WEEKLY") {
+      config = {
+        dailyIntervals: Array.from({ length: 52 }, (_, i) => (i + 1) * 7),
+      };
+    } else if (savingFrequency === "MONTHLY") {
+      config = {
+        monthlyIntervals: Array.from({ length: 24 }, (_, i) => i + 1),
+      };
+    } else if (savingFrequency === "DAILY") {
+      config = { dailyIntervals: [7, 14, 30, 60, 90, 180] };
+    }
+    const dates = calculateAvailableEndDates(
+      todayString,
+      calculationType,
+      config,
+    );
+    setAvailableEndDates(dates);
+    setEndDate("");
+    setCustomEndDate("");
+    setUseCustomDate(false);
+  }, [savingFrequency, todayString]);
+
   const handleFrequencySelect = (frequency: string) => {
     setSavingFrequency(frequency);
+    setError("");
   };
 
-  const formatDate = (date: Date | null): string => {
-    if (!date) return "";
-    return date.toISOString().split("T")[0];
+  // Handler for dropdown change
+  const handleEndDateChange = (event: any) => {
+    const value = event.target.value;
+    if (
+      value === "custom" &&
+      (savingFrequency === "DAILY" || savingFrequency === "MANUALLY")
+    ) {
+      setUseCustomDate(true);
+      setEndDate("");
+    } else {
+      setUseCustomDate(false);
+      setEndDate(value);
+      setCustomEndDate("");
+    }
+    setError("");
+  };
+
+  // Handler for custom date input change
+  const handleCustomEndDateChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const value = event.target.value;
+    setCustomEndDate(value);
+    const validation = validateCustomEndDate(todayString, value, {
+      type: "daily",
+      minDays: 7,
+    }); // Lock plan might have different minimums?
+    setError(validation.isValid ? "" : validation.error || "Invalid date");
   };
 
   const handleNext = async (e: React.MouseEvent) => {
     e.preventDefault();
-
-    const finalEndDateString = formatDate(endDate);
-
-    if (!finalEndDateString) {
-      setError("Please select an end date.");
-      return;
-    }
+    setError("");
+    const finalEndDate = useCustomDate ? customEndDate : endDate;
 
     if (!savingFrequency) {
       setError("Please select a saving frequency.");
       return;
     }
-
-    if (!endDate || endDate <= todayDate) {
-      setError("End date must be in the future.");
+    if (!finalEndDate) {
+      setError("Please select or enter an end date.");
+      return;
+    }
+    const validation = validateCustomEndDate(todayString, finalEndDate, {
+      type: savingFrequency === "MONTHLY" ? "monthly" : "daily",
+      minDays: 7, // Lock plan might have different minimums?
+    });
+    if (!validation.isValid) {
+      setError(validation.error || "Invalid end date selected.");
       return;
     }
 
     setLoading(true);
-    setError("");
 
     const formData = {
       ...location.state,
       startDate: todayString,
-      duration: finalEndDateString,
+      duration: finalEndDate,
       savingFrequency,
       lockedType: location.state?.lockedType,
       contributionType: location.state?.contributionType,
@@ -85,7 +158,7 @@ const StartDate: React.FC = () => {
         <header className="mt-[1.5em] flex flex-col lg:mt-[3em]">
           <h1 className="text-2xl font-bold">Lock Savings</h1>
           <p className="mt-[1em] font-medium">
-          You are about to save in {tokenName} crypto currency
+            You are about to save in {tokenName} crypto currency
           </p>
         </header>
         <section className="mt-[2.5em] flex justify-center">
@@ -104,21 +177,19 @@ const StartDate: React.FC = () => {
             </h2>
           </div>
           <div className="mt-[1.5em] flex flex-col items-center justify-center gap-4 md:flex-row md:items-start md:justify-start lg:flex-wrap">
-            {(["Daily", "Weekly", "Monthly", "Manually"] as const).map(
-              (freq) => (
-                <button
-                  key={freq}
-                  onClick={() => handleFrequencySelect(freq)}
-                  className={`flex h-[45px] w-[174px] transform items-center justify-center rounded-md px-6 font-semibold transition-all duration-300 hover:scale-105 active:scale-95 lg:py-2 ${
-                    savingFrequency === freq
-                      ? "bg-text2 text-white"
-                      : "bg-[#ECE6F2] text-memt1"
-                  }`}
-                >
-                  {freq}
-                </button>
-              ),
-            )}
+            {(["DAILY", "WEEKLY", "MONTHLY"] as const).map((freq) => (
+              <button
+                key={freq}
+                onClick={() => handleFrequencySelect(freq)}
+                className={`flex h-[45px] w-[174px] transform items-center justify-center rounded-md px-6 font-semibold transition-all duration-300 hover:scale-105 active:scale-95 lg:py-2 ${
+                  savingFrequency === freq
+                    ? "bg-text2 text-white"
+                    : "bg-[#ECE6F2] text-memt1"
+                }`}
+              >
+                {freq}
+              </button>
+            ))}
           </div>
         </section>
         <div>
@@ -126,26 +197,97 @@ const StartDate: React.FC = () => {
             <label className="mb-3 flex font-semibold">
               Start Date (Today)
             </label>
-            <p className="input mb-5 flex h-[4em] w-full items-center rounded-lg border-[1px] bg-gray-100 px-4 text-sm shadow-md">
+            <p className="input mb-2 flex h-[4em] w-full items-center rounded-lg border-[1px] bg-gray-100 px-4 text-sm shadow-md">
               {todayString}
             </p>
           </div>
-          <div className="flex flex-col gap-1">
-            <label className="mb-1 flex text-lg font-semibold text-memt1">
-              End Date
-            </label>
-            <DatePicker
-              selected={endDate}
-              onChange={(date: Date | null) => setEndDate(date)}
-              dateFormat="yyyy-MM-dd"
-              minDate={new Date(todayDate.setDate(todayDate.getDate() + 1))}
-              placeholderText="YYYY-MM-DD"
-              required
-              className="input mb-5 h-[4em] w-full rounded-lg border-[2px] border-gray-300 px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2" // Apply your styles
-              wrapperClassName="w-full"
-            />
-          </div>
         </div>
+
+        {/* --- Duration Selection UI (using MUI) --- */}
+        {savingFrequency && savingFrequency !== "MANUALLY" && (
+          <section className="mt-[1em]">
+            <FormControl fullWidth>
+              <InputLabel
+                id="end-date-select-label"
+                style={{ color: "#000000" }}
+              >
+                Choose End Date / Duration
+              </InputLabel>
+              <Select
+                labelId="end-date-select-label"
+                id="end-date-select"
+                value={useCustomDate ? "custom" : endDate}
+                label="Choose End Date / Duration"
+                onChange={handleEndDateChange}
+                className="mb-1"
+                sx={{
+                  height: "3.5em",
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderRadius: "0.5rem",
+                    borderColor: "#D1D5DB",
+                  },
+                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "#440080",
+                  },
+                  "&:hover .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "#440080",
+                  },
+                }}
+              >
+                <MenuItem value="" disabled>
+                  <em>Select duration...</em>
+                </MenuItem>
+                {availableEndDates.map((date) => (
+                  <MenuItem key={date} value={date}>
+                    {new Date(date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}{" "}
+                    (
+                    {getDateDifference(
+                      todayString,
+                      date,
+                      savingFrequency === "MONTHLY" ? "monthly" : "daily",
+                    )}
+                    )
+                  </MenuItem>
+                ))}
+                {/* Allow custom only for DAILY */}
+                {savingFrequency === "DAILY" && (
+                  <MenuItem value="custom">
+                    <em>Set custom end date</em>
+                  </MenuItem>
+                )}
+              </Select>
+            </FormControl>
+
+            {/* Custom Date Input */}
+            {useCustomDate && savingFrequency === "DAILY" && (
+              <div className="mt-2">
+                <label className="mb-1 block text-sm font-medium text-gray-600">
+                  Custom End Date
+                </label>
+                <input
+                  type="date"
+                  value={customEndDate}
+                  onChange={handleCustomEndDateChange}
+                  min={formatDate(addDays(new Date(todayString), 7))} // Adjust min days if needed for lock plan
+                  required
+                  className="input h-[3.5em] w-full rounded-lg border-[2px] border-gray-300 bg-white px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
+                />
+                {customEndDate && (
+                  <p className="mt-1 text-xs text-gray-600">
+                    Duration:{" "}
+                    {getDateDifference(todayString, customEndDate, "daily")}
+                  </p>
+                )}
+              </div>
+            )}
+          </section>
+        )}
+        {/* --- End Duration Selection UI --- */}
+
         {error && (
           <Alert severity="error" className="mb-4 mt-4">
             {error}

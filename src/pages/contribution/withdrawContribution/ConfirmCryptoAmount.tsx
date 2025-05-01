@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../shared/redux/store";
 import { WithdrawUserPool } from "../../../shared/redux/slices/web3.slices";
 import Success from "../../../components/common/Success";
+import { toast } from "react-toastify";
 
 const ConfirmCryptoAmount: React.FC = () => {
   const navigate = useNavigate();
@@ -35,29 +36,34 @@ const ConfirmCryptoAmount: React.FC = () => {
     setLoading(true);
     setError("");
 
-    setTimeout(async () => {
-      if (enteredPin === "1234") {
-        try {
-          console.log("Dispatching WithdrawUserPool with:", {
-            poolId_bytes,
-            amount,
-          });
+    try {
+      console.log("Dispatching WithdrawUserPool with:", {
+        poolId_bytes,
+        amount,
+        pin: enteredPin,
+      });
 
-          await dispatch(WithdrawUserPool({ poolId_bytes, amount })).unwrap();
+      await dispatch(
+        WithdrawUserPool({
+          poolId_bytes,
+          amount,
+          pin: enteredPin,
+        }),
+      ).unwrap();
 
-          setLoading(false);
-          setIsPinModalOpen(false);
-          setIsSuccessModalOpen(true);
-          console.log("Pool updated successfully!");
-        } catch (err: any) {
-          setLoading(false);
-          setError(err.message || "Failed to withdraw pool. Please try again.");
-        }
-      } else {
-        setLoading(false);
-        setError("Invalid PIN. Please try again.");
-      }
-    }, 2000);
+      setIsPinModalOpen(false);
+      setIsSuccessModalOpen(true);
+      console.log("Withdrawal successful!");
+      toast.success("Withdrawal successful!");
+    } catch (error:any) {
+      console.error("Withdrawal error:", error);
+      const message =
+        error?.message || error?.msg || "Failed to withdraw. Please try again.";
+      setError(message);
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSuccessModalClose = () => {
@@ -89,7 +95,9 @@ const ConfirmCryptoAmount: React.FC = () => {
             <p className="text-sm font-medium text-gray-600">
               Amount to Crypto Wallet
             </p>
-            <p className="text-sm font-semibold text-gray-800">{symbol} {amount}</p>
+            <p className="text-sm font-semibold text-gray-800">
+              {symbol} {amount}
+            </p>
           </div>
           <hr className="my-4 border-gray-300" />
           <div className="hidden justify-between">
@@ -116,10 +124,13 @@ const ConfirmCryptoAmount: React.FC = () => {
       {/* Pin Modal */}
       <PinModal
         isOpen={isPinModalOpen}
-        onClose={() => setIsPinModalOpen(false)}
+        onClose={() => {
+          setIsPinModalOpen(false);
+          setError("");
+        }}
         onSubmit={handlePinSubmit}
         header="Enter PIN"
-        title="Enter your 4-digit PIN to confirm"
+        title="Enter your 4-digit PIN to confirm withdrawal"
         loading={loading}
         error={error}
         pin={pin}

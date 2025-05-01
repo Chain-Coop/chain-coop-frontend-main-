@@ -66,7 +66,32 @@ const CreatePool = async (body: any) => {
   } catch (error: any) {
     if (error.response) {
       //console.error("Backend error response:", error.response.data);
-      const backendMessage = error.response.data.message || "An error occurred";
+      const backendMessage =
+        error.response.data.message ||
+        error.response.data.msg ||
+        "An error occurred";
+      throw new Error(backendMessage);
+    } else {
+      //console.error("Network error:", error.message);
+      throw new Error("Network Error: Please check your internet connection.");
+    }
+  }
+};
+
+const CreatePeriodicPool = async (body: any) => {
+  const url = `${API_URL}/web3/v2/periodicSaving/openPeriodicPool`;
+  try {
+    const response = await axios.post(url, body, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      //console.error("Backend error response:", error.response.data);
+      const backendMessage =
+        error.response.data.message ||
+        error.response.data.msg ||
+        "An error occurred";
       throw new Error(backendMessage);
     } else {
       //console.error("Network error:", error.message);
@@ -76,26 +101,51 @@ const CreatePool = async (body: any) => {
 };
 
 const GetAllUserPools = async () => {
-  const url = `${API_URL}/web3/v2/saving/userPools`;
+  const oneTimePoolsUrl = `${API_URL}/web3/v2/saving/getManualSavingByUser`;
+  const periodicPoolsUrl = `${API_URL}/web3/v2/periodicSaving/getPeriodicPool`;
+
   try {
-    const response = await axios({
-      url,
+    const oneTimePoolsPromise = axios.get(oneTimePoolsUrl, {
       headers: authHeader(),
-      method: "get",
     });
-    const token = response?.data?.data?.tokens?.accessToken;
+    const periodicPoolsPromise = axios.get(periodicPoolsUrl, {
+      headers: authHeader(),
+    });
+
+    const [oneTimeResponse, periodicResponse] = await Promise.all([
+      oneTimePoolsPromise,
+      periodicPoolsPromise,
+    ]);
+
+    const oneTimePools = oneTimeResponse?.data?.data || [];
+    const periodicPools = periodicResponse?.data?.data || [];
+
+    const combinedPools = [
+      ...oneTimePools.map((pool: any) => ({ ...pool, poolType: "oneTime" })),
+      ...periodicPools.map((pool: any) => ({ ...pool, poolType: "periodic" })),
+    ];
+
+    const token =
+      oneTimeResponse?.data?.data?.tokens?.accessToken ||
+      periodicResponse?.data?.data?.tokens?.accessToken;
     if (token) {
       sessionStorage.setItem("userData", token);
     }
-    return response.data;
+
+    return {
+      data: combinedPools,
+      message: "Successfully fetched all pools",
+    };
   } catch (error: any) {
-    if (error.response) {
-      //console.error("Backend error response:", error.response.data);
-      const backendMessage = error.response.data.message || "An error occurred";
+    console.error("Error fetching all user pools:", error);
+    if (axios.isAxiosError(error) && error.response) {
+      const backendMessage =
+        error.response.data?.message || "An error occurred fetching pools";
       throw new Error(backendMessage);
+    } else if (axios.isCancel(error)) {
+      throw new Error("Request canceled.");
     } else {
-      //console.error("Network error:", error.message);
-      throw new Error("Network Error: Please check your internet connection.");
+      throw new Error("Network Error: Could not fetch all user pools.");
     }
   }
 };
@@ -119,6 +169,39 @@ const UpdateUserPool = async (body: any) => {
   }
 };
 
+const UpdateAutoPool = async (payload: {
+  id: string;
+  body: { amount: string };
+}) => {
+  const url = `${API_URL}/web3/v2/periodicSaving/periodicPool/${payload.id}/amount`;
+
+  const headers = {
+    ...authHeader(),
+    "Content-Type": "application/json",
+  };
+
+  try {
+    const response = await axios.put(url, payload.body, { headers });
+
+    const token = response?.data?.data?.tokens?.accessToken;
+    if (token) {
+      sessionStorage.setItem("userData", token);
+    }
+
+    return response.data;
+  } catch (error: any) {
+    if (axios.isAxiosError(error) && error.response) {
+      const backendMessage =
+        error.response.data?.message || "An error occurred updating the pool";
+      throw new Error(backendMessage);
+    } else if (axios.isCancel(error)) {
+      throw new Error("Request canceled.");
+    } else {
+      throw new Error("Network Error: Could not update the pool.");
+    }
+  }
+};
+
 const WithdrawUserPool = async (body: any) => {
   const url = `${API_URL}/web3/v2/saving/withdraw`;
   try {
@@ -129,7 +212,11 @@ const WithdrawUserPool = async (body: any) => {
   } catch (error: any) {
     if (error.response) {
       console.error("Backend error response:", error.response.data);
-      const backendMessage = error.response.data.message || "An error occurred";
+      const backendMessage =
+        error.response.data.msg ||
+        error.response.data.message ||
+        error.response.data?.error?.message ||
+        "An error occurred";
       throw new Error(backendMessage);
     } else {
       console.error("Network error:", error.message);
@@ -156,15 +243,65 @@ const GetAllUserTokens = async () => {
   }
 };
 
+// --- New Service Function to Stop Periodic Pool ---
+const StopPeriodicPool = async (id: string) => {
+  const url = `${API_URL}/web3/v2/periodicSaving/periodicPool/${id}/stop`;
+  try {
+    const response = await axios.post(url, null, {
+      // No body needed
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    if (axios.isAxiosError(error) && error.response) {
+      const backendMessage =
+        error.response.data?.msg ||
+        error.response.data?.message ||
+        "An error occurred stopping the pool";
+      throw new Error(backendMessage);
+    } else if (axios.isCancel(error)) {
+      throw new Error("Request canceled.");
+    } else {
+      throw new Error("Network Error: Could not stop the pool.");
+    }
+  }
+};
+
+const ResumePeriodicPool = async (id: string) => {
+  const url = `${API_URL}/web3/v2/periodicSaving/periodicPool/${id}/resume`;
+  try {
+    const response = await axios.post(url, null, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    if (axios.isAxiosError(error) && error.response) {
+      const backendMessage =
+        error.response.data?.msg ||
+        error.response.data?.message ||
+        "An error occurred resuming the pool";
+      throw new Error(backendMessage);
+    } else if (axios.isCancel(error)) {
+      throw new Error("Request canceled.");
+    } else {
+      throw new Error("Network Error: Could not resume the pool.");
+    }
+  }
+};
+
 const web3Services = {
   ActivateCryptoWallet,
   GetTotalCryptoWalletBalance,
   GetCryptoWalletDetails,
   CreatePool,
+  CreatePeriodicPool,
   GetAllUserPools,
   UpdateUserPool,
   WithdrawUserPool,
   GetAllUserTokens,
+  UpdateAutoPool,
+  StopPeriodicPool,
+  ResumePeriodicPool,
 };
 
 export default web3Services;

@@ -275,7 +275,10 @@ const CryptoMain = () => {
             <section className="flex w-full items-center justify-center">
               <div className="my-8 w-full rounded-3xl border-[2px] border-gray-300 px-4 shadow-md lg:w-[25em]">
                 <div className="flex items-center justify-between px-4 py-8 font-semibold text-howtext lg:px-10">
-                  <Link to="/dashboard/wallet/crypto/withdraw">
+                  <Link
+                    to="/dashboard/wallet/crypto/withdraw"
+                    state={{ walletType: "crypto" }}
+                  >
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
@@ -288,16 +291,14 @@ const CryptoMain = () => {
                     </motion.button>
                   </Link>
 
-                  <Link to="">
+                  <Link to="/dashboard/wallet/fund/fund_crypto_wallet">
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       className="flex flex-col items-center bg-inherit text-center"
                     >
                       <TransferIcon />
-                      <span className="block text-memt1 lg:text-lg">
-                        Transfer
-                      </span>
+                      <span className="block text-memt1 lg:text-lg">Fund</span>
                     </motion.button>
                   </Link>
                 </div>

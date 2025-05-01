@@ -84,26 +84,38 @@ const SourceFunds = () => {
 
   const [selectedSource, setSelectedSource] =
     useState<string>("internal-wallet");
+  const [debitAmount, setDebitAmount] = useState<string>("");
   const [initialSaveAmount, setInitialSaveAmount] = useState<string>("");
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [error, setError] = useState<string>("");
 
   const handlePreview = () => {
     if (!termsAccepted) {
-      alert("Please accept the terms and conditions to proceed.");
+      setError("Please accept the terms and conditions to proceed.");
       return;
     }
 
-    navigate("/dashboard/contribution/strict_lock/preview_savings", {
-      state: {
-        ...formData,
-        selectedSource,
-        initialSaveAmount,
-        fundSource:
-          selectedSource === "external-wallet"
-            ? "External Crypto Wallet"
-            : "Internal Crypto Wallet",
-        lockedType: location.state?.lockedType,
-      },
+    if (!debitAmount) {
+      setError("Please enter an amount to be debited.");
+      return;
+    }
+
+    setError("");
+
+    const updatedFormData = {
+      ...formData,
+      selectedSource,
+      initialSaveAmount,
+      debitAmount,
+      fundSource:
+        selectedSource === "external-wallet"
+          ? "External Crypto Wallet"
+          : "Internal Crypto Wallet",
+      lockedType: location.state?.lockedType,
+    };
+
+    navigate("/dashboard/contribution/lock/preview_savings", {
+      state: updatedFormData,
     });
   };
 
@@ -195,6 +207,23 @@ const SourceFunds = () => {
         )}
 
         <div className="mt-[2.5em]">
+          <label
+            htmlFor="internalTokenAmount"
+            className="mb-3 flex text-lg font-semibold text-memt1"
+          >
+            Periodic Amount (Token)
+          </label>
+          <input
+            type="text"
+            id="debitAmount"
+            value={debitAmount}
+            onChange={(e) => setDebitAmount(e.target.value)}
+            placeholder="Amount to be debited frequently"
+            className="input mb-2 h-[4em] w-full rounded-lg border-[2px] border-gray-300 px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
+          />
+        </div>
+
+        <div className="mt-[2.5em]">
           <label className="flex items-center gap-2">
             <input
               type="checkbox"
@@ -208,6 +237,10 @@ const SourceFunds = () => {
             </span>
           </label>
         </div>
+
+        {error && (
+          <p className="mt-2 text-sm font-semibold text-red-500">{error}</p>
+        )}
 
         <div className="mt-[3em] flex items-center justify-between">
           <button
