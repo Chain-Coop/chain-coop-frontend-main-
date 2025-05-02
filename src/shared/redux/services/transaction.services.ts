@@ -122,15 +122,18 @@ const GetContributionBalance = async () => {
 const GetUsersContributionHistory = async (
   page: number,
   limit: number,
-  sort: string = "desc",
   search: string = "",
   filter: string = "",
 ) => {
-  const searchParam = search
-    ? `&search=${encodeURIComponent(search.trim())}`
-    : "";
-  const filterParam = filter ? `&filter=${encodeURIComponent(filter)}` : "";
-  const url = `${API_URL}/contribution/contribute?page=${page}&limit=${limit}&sort=${sort}${searchParam}${filterParam}`;
+  let url = `${API_URL}/contribution/contribute?page=${page}&limit=${limit}`;
+
+  if (search && search.trim()) {
+    url += `&search=${encodeURIComponent(search.trim())}`;
+  }
+
+  if (filter) {
+    url += `&filter=${encodeURIComponent(filter)}`;
+  }
 
   try {
     const response = await axios.get(url, { headers: authHeader() });

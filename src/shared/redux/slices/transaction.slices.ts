@@ -228,7 +228,7 @@ export const GetUsersContributionHistory = createAsyncThunk(
       page,
       limit,
       search = "",
-      sort = "desc",
+      // sort = "desc",
       filter = "",
     }: {
       page: number;
@@ -243,7 +243,7 @@ export const GetUsersContributionHistory = createAsyncThunk(
       const data = await TransactionServices.GetUsersContributionHistory(
         page,
         limit,
-        sort,
+        // sort,
         search,
         filter,
       );

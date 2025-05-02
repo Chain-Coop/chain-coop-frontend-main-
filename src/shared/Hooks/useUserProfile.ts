@@ -157,7 +157,6 @@ export const useUserContributionHistory = (
   page: number,
   limit: number,
   search: string = "",
-  sort: string = "desc",
   filter: string = "",
 ) => {
   const dispatch: AppDispatch = useDispatch();
@@ -187,7 +186,6 @@ export const useUserContributionHistory = (
           page,
           limit,
           search: debouncedSearch,
-          sort,
           filter,
         }),
       )
@@ -198,7 +196,7 @@ export const useUserContributionHistory = (
     } else {
       dispatch(setMessage("User token not found"));
     }
-  }, [dispatch, page, limit, debouncedSearch, sort, filter]);
+  }, [dispatch, page, limit, debouncedSearch, filter]);
 
   return {
     getContributions,
@@ -282,13 +280,15 @@ export const useAllUserPools = () => {
   const loading = useSelector((state: any) => state?.web3?.loading);
 
   const isWalletActivated = useSelector(
-    (state: any) => state?.landing?.getProfile?.isWalletActivated || false
+    (state: any) => state?.landing?.getProfile?.isWalletActivated || false,
   );
   const hasFetchedForActiveWallet = useRef(false);
 
   useEffect(() => {
     if (isWalletActivated && !hasFetchedForActiveWallet.current) {
-      console.log("Dispatching GetAllUserPools because wallet is active and fetch hasn't occurred.");
+      console.log(
+        "Dispatching GetAllUserPools because wallet is active and fetch hasn't occurred.",
+      );
       dispatch(GetAllUserPools());
       hasFetchedForActiveWallet.current = true;
     }
