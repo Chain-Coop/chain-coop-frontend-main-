@@ -3,11 +3,11 @@ import { motion } from "framer-motion";
 import { Typography } from "@material-tailwind/react";
 import { useCryptoTransactionHistory } from "../../../shared/Hooks/useBalance";
 import { CryptoTransaction } from "../../../shared/types/types";
-import { format, parseISO } from 'date-fns';
+import { format, parseISO } from "date-fns";
 
-const SaveIcon = () => <span>+</span>; 
+const SaveIcon = () => <span>+</span>;
 const WithdrawIcon = () => <span>-</span>;
-const TransferIcon = () => <span>🔄</span>; 
+const TransferIcon = () => <span>🔄</span>;
 
 const CryptoTransactionHistory: React.FC = () => {
   const { transactions, loading, error } = useCryptoTransactionHistory();
@@ -37,12 +37,15 @@ const CryptoTransactionHistory: React.FC = () => {
 
   return (
     <section className="my-8">
-      <Typography variant="h3" className="mb-4 text-lg font-semibold text-gray-800">
+      <Typography
+        variant="h3"
+        className="mb-4 text-lg font-semibold text-gray-800"
+      >
         Transaction History
       </Typography>
 
       {loading}
-      
+
       {error && (
         <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-center text-red-600">
           <Typography>Error loading transaction history: {error}</Typography>
@@ -56,41 +59,60 @@ const CryptoTransactionHistory: React.FC = () => {
       )}
 
       {!loading && !error && transactions && transactions.length > 0 && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="flex flex-col gap-3"
         >
-          {transactions.map((tx: CryptoTransaction) => (
-            <motion.div
-              key={tx._id}
-              whileHover={{ backgroundColor: "#f9fafb" }}
-              className="flex items-center justify-between rounded-lg border border-gray-200 p-3 transition-colors"
-            >
-              <div className="flex items-center gap-3">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100">
-                  {getTransactionIcon(tx.transactionType)}
-                </div>
-                <div>
-                  <Typography className="text-sm font-medium text-gray-700">
-                    {tx.transactionType}
-                  </Typography>
-                  <Typography className="text-xs text-gray-500">
-                    {formatTxDate(tx.createdAt)}
-                  </Typography>
-                </div>
-              </div>
-              <Typography 
-                className={`text-sm font-semibold ${tx.amount < 0 ? 'text-red-600' : 'text-green-600'}`}
+          {transactions.map((tx: CryptoTransaction) => {
+            let amountColor = "text-gray-700";
+            let signPrefix = "";
+            const typeUpper = tx.transactionType?.toUpperCase();
+
+            if (typeUpper === "WITHDRAW") {
+              amountColor = "text-green-600";
+              signPrefix = "+";
+            } else if (
+              typeUpper === "SAVE" ||
+              typeUpper === "DEPOSIT" ||
+              typeUpper === "UPDATE"
+            ) {
+              amountColor = "text-red-600";
+            }
+
+            return (
+              <motion.div
+                key={tx._id}
+                whileHover={{ backgroundColor: "#f9fafb" }}
+                className="flex items-center justify-between rounded-lg border border-gray-200 p-3 transition-colors"
               >
-                {tx.amount >= 0 ? '+' : ''}{tx.amount} {tx.Token} 
-              </Typography>
-            </motion.div>
-          ))}
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100">
+                    {getTransactionIcon(tx.transactionType)}
+                  </div>
+                  <div>
+                    <Typography className="text-sm font-medium text-gray-700">
+                      {tx.transactionType
+                        ? tx.transactionType.charAt(0).toUpperCase() +
+                          tx.transactionType.slice(1).toLowerCase()
+                        : "Transaction"}
+                    </Typography>
+                    <Typography className="text-xs text-gray-500">
+                      {formatTxDate(tx.createdAt)}
+                    </Typography>
+                  </div>
+                </div>
+                <Typography className={`text-sm font-semibold ${amountColor}`}>
+                  {signPrefix}
+                  {Math.abs(tx.amount)} {tx.Token}
+                </Typography>
+              </motion.div>
+            );
+          })}
         </motion.div>
       )}
     </section>
   );
 };
 
-export default CryptoTransactionHistory; 
+export default CryptoTransactionHistory;

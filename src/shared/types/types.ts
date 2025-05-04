@@ -109,7 +109,6 @@ export interface openGroupFormType {
 
 export interface WithdrawUserPoolPayload {
   poolId_bytes: string;
-  amount: string;
   pin: string;
 }
 
@@ -132,11 +131,11 @@ export interface Pool {
 
 export interface CryptoTransaction {
   _id: string;
-  user: string; // Assuming this is user ID
-  transactionType: "SAVE" | "WITHDRAW" | "TRANSFER" | string; // Add other potential types
+  user: string;
+  transactionType: "SAVE" | "WITHDRAW" | "TRANSFER" | string;
   amount: number;
-  Token: string; // e.g., "USDC", "LSK"
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
-  __v?: number; // Optional version key
+  Token: string;
+  createdAt: string;
+  updatedAt: string;
+  __v?: number;
 }

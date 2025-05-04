@@ -39,14 +39,12 @@ const ConfirmCryptoAmount: React.FC = () => {
     try {
       console.log("Dispatching WithdrawUserPool with:", {
         poolId_bytes,
-        amount,
         pin: enteredPin,
       });
 
       await dispatch(
         WithdrawUserPool({
           poolId_bytes,
-          amount,
           pin: enteredPin,
         }),
       ).unwrap();
@@ -55,7 +53,7 @@ const ConfirmCryptoAmount: React.FC = () => {
       setIsSuccessModalOpen(true);
       console.log("Withdrawal successful!");
       toast.success("Withdrawal successful!");
-    } catch (error:any) {
+    } catch (error: any) {
       console.error("Withdrawal error:", error);
       const message =
         error?.message || error?.msg || "Failed to withdraw. Please try again.";
