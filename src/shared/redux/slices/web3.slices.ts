@@ -89,7 +89,13 @@ export const GetAllUserPools = createAsyncThunk<
 >("web3/getAllUserPools", async (_, { rejectWithValue }) => {
   try {
     const response = await web3Services.GetAllUserPools();
-    return response;
+    const pools = response?.data || [];
+    pools.sort((a, b) => {
+      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return dateB - dateA;
+    });
+    return { ...response, data: pools };
   } catch (error: any) {
     const message = error?.message || "Failed to fetch user pools.";
     return rejectWithValue({ message });
@@ -126,6 +132,12 @@ export const SearchUserPools = createAsyncThunk<
         poolType: "periodic" as const,
       })),
     ];
+
+    combinedPools.sort((a, b) => {
+      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return dateB - dateA;
+    });
 
     return { data: combinedPools, message: "Successfully searched pools" };
   } catch (error: any) {
