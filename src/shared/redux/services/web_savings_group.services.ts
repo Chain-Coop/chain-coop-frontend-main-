@@ -35,7 +35,7 @@ const CreateSavingsCircle = createAsyncThunk(
   }
 );
 
-const GetAllSavingCircle = async () => {
+const GetAllSavingCircles = async () => {
   const url = `${API_URL}/savingcircle/circles`;
   try {
     const response = await axios.get(url, { headers: authHeader() });
@@ -68,7 +68,7 @@ const GetSavingCircleByID = async (circleID: string) => {
 
 const WebGroupSavings = {
   CreateSavingsCircle,
-  GetAllSavingCircle,
+  GetAllSavingCircles,
   GetSavingCircleByUser,
   GetSavingCircleByID,
 }
