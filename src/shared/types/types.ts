@@ -107,7 +107,6 @@ export interface openGroupFormType {
   thirdForm: thirdOpenGroupType;
 }
 
-
 export interface WithdrawUserPoolPayload {
   poolId_bytes: string;
   amount: string;
@@ -125,4 +124,19 @@ export interface Pool {
   totalAmount: string;
   tokenAddress: string;
   lockType: 0 | 1 | 2;
+  isActive: boolean;
+  interval?: string;
+  periodicAmount?: number | string;
+  createdAt?: string;
+}
+
+export interface CryptoTransaction {
+  _id: string;
+  user: string; // Assuming this is user ID
+  transactionType: "SAVE" | "WITHDRAW" | "TRANSFER" | string; // Add other potential types
+  amount: number;
+  Token: string; // e.g., "USDC", "LSK"
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  __v?: number; // Optional version key
 }

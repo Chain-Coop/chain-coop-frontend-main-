@@ -6,6 +6,7 @@ import { formatBalance } from "../utils/format";
 import { setMessage } from "../redux/slices/message.slices";
 import * as transactionSlices from "../redux/slices/transaction.slices";
 import * as Web3Slices from "../redux/slices/web3.slices";
+import { Pool, CryptoTransaction } from "../types/types";
 
 const useVisibilityState = (storageKey: string, defaultValue = true) => {
   const [isVisible, setIsVisible] = useState(() => {
@@ -219,5 +220,77 @@ export const useUserTransaction = () => {
 
   return {
     getTransaction: data,
+  };
+};
+
+export const useCryptoTransactionHistory = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { cryptoHistory, cryptoHistoryLoading, cryptoHistoryError } =
+    useSelector(
+      (state: any) => ({
+        cryptoHistory: state.web3.cryptoHistory,
+        cryptoHistoryLoading: state.web3.cryptoHistoryLoading,
+        cryptoHistoryError: state.web3.cryptoHistoryError,
+      }),
+      shallowEqual,
+    );
+
+  const fetchHistory = useCallback(() => {
+    dispatch(Web3Slices.GetCryptoTransactionHistory());
+  }, [dispatch]);
+
+  useEffect(() => {
+    fetchHistory();
+  }, [fetchHistory]);
+
+  return {
+    transactions: cryptoHistory as CryptoTransaction[] | null,
+    loading: cryptoHistoryLoading,
+    error: cryptoHistoryError,
+    fetchHistory,
+  };
+};
+
+export const useTotalContributionBalanceCrypto = (refreshInterval?: number) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { isVisible, setIsVisible } = useVisibilityState(
+    "contributionBalanceVisible",
+    true,
+  );
+
+  const { balance, loading, error } = useSelector(
+    (state: any) => ({
+      balance: state.web3.totalContributionBalanceCrypto,
+      loading: state.web3.totalContributionBalanceLoading,
+      error: state.web3.totalContributionBalanceError,
+    }),
+    shallowEqual,
+  );
+
+  const fetchBalance = useCallback(() => {
+    dispatch(Web3Slices.GetTotalContributionBalanceCrypto());
+  }, [dispatch]);
+
+  useEffect(() => {
+    fetchBalance();
+
+    if (refreshInterval) {
+      const intervalId = setInterval(fetchBalance, refreshInterval);
+      return () => clearInterval(intervalId);
+    }
+  }, [fetchBalance, refreshInterval]);
+
+  const formattedBalance = balance !== null
+    ? Number(balance).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    : "---";
+
+  return {
+    isContributionVisible: isVisible,
+    setIsContributionVisible: setIsVisible,
+    balance: balance,
+    formattedBalance: formattedBalance,
+    loading: loading,
+    error: error,
+    fetchBalance: fetchBalance,
   };
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import {
@@ -16,13 +16,23 @@ import up from "../../../Assets/svg/dashboard/contribution/up.svg";
 import FundSavingsModal from "../../../components/dashboard/contribution/modals/FundContribution";
 import UpdateSavingsModal from "../../../components/dashboard/contribution/modals/UpdateContribution";
 import TransactionHistory from "./TransactionHistory";
+import { Pool } from "../../../shared/types/types";
+import {
+  format,
+  parseISO,
+  addDays,
+  addWeeks,
+  addMonths,
+  isBefore,
+  startOfDay,
+} from "date-fns";
 
 const ViewCryptoContribution = () => {
   const [isFundModalOpen, setIsFundModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const contribution = location.state;
+  const contribution = location.state as Pool | null;
 
   if (!contribution) {
     return (
@@ -34,15 +44,13 @@ const ViewCryptoContribution = () => {
     );
   }
 
-  const formatDate = (date: Date | null | string) => {
+  const formatDate = (date: Date | null | string, time = false): string => {
     if (!date) return "--/--/----";
     try {
-      const d = new Date(date);
+      const d = typeof date === "string" ? parseISO(date) : date;
       if (isNaN(d.getTime())) return "--/--/----";
-      const year = d.getFullYear();
-      const month = String(d.getMonth() + 1).padStart(2, "0");
-      const day = String(d.getDate()).padStart(2, "0");
-      return `${year}-${month}-${day}`;
+      const formatString = time ? "MMM d, yyyy hh:mm a" : "yyyy-MM-dd";
+      return format(d, formatString);
     } catch (error) {
       console.error("Error formatting date:", date, error);
       return "--/--/----";
@@ -73,9 +81,54 @@ const ViewCryptoContribution = () => {
   };
 
   const endDate = calculateEndDate(
-    contribution.createdAt,
-    contribution.duration,
+    contribution?.createdAt ?? null,
+    contribution?.duration ?? 0,
   );
+
+  const nextChargeDate = useMemo(() => {
+    if (
+      contribution?.poolType !== "periodic" ||
+      !contribution.createdAt ||
+      !contribution.interval
+    ) {
+      return null;
+    }
+
+    try {
+      const startDate = parseISO(contribution.createdAt);
+      const now = new Date();
+      let nextDate = startOfDay(startDate);
+
+      let adder: (date: Date | number, amount: number) => Date;
+      switch (contribution.interval.toLowerCase()) {
+        case "daily":
+          adder = addDays;
+          break;
+        case "weekly":
+          adder = addWeeks;
+          break;
+        case "monthly":
+          adder = addMonths;
+          break;
+        default:
+          console.warn(`Unknown interval: ${contribution.interval}`);
+          return null;
+      }
+
+      while (isBefore(nextDate, now)) {
+        nextDate = adder(nextDate, 1);
+      }
+
+      if (isBefore(nextDate, startDate)) {
+        return startDate;
+      }
+
+      return nextDate;
+    } catch (error) {
+      console.error("Error calculating next charge date:", error);
+      return null;
+    }
+  }, [contribution?.poolType, contribution?.createdAt, contribution?.interval]);
 
   const handleOpenModalBasedOnType = () => {
     if (!contribution) return;
@@ -137,7 +190,12 @@ const ViewCryptoContribution = () => {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="flex-1 whitespace-nowrap rounded-lg border-2 border-gray-200 bg-inherit bg-text2 px-[1.5em] py-[5px] text-lg font-semibold text-white shadow-lg lg:px-[3em] lg:py-[13px]"
+                    disabled={!contribution.isActive}
+                    className={`flex-1 whitespace-nowrap rounded-lg border-2 border-gray-200 bg-inherit bg-text2 px-[1.5em] py-[5px] text-lg font-semibold text-white shadow-lg lg:px-[3em] lg:py-[13px] ${
+                      !contribution.isActive
+                        ? "cursor-not-allowed opacity-50"
+                        : ""
+                    }`}
                     onClick={handleOpenModalBasedOnType}
                   >
                     {contribution.poolType === "periodic" ? "Update" : "Fund"}
@@ -145,6 +203,7 @@ const ViewCryptoContribution = () => {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
+                    disabled={!contribution.isActive}
                     onClick={() =>
                       navigate(
                         "/dashboard/contribution/withdraw_crypto_contribution",
@@ -157,7 +216,11 @@ const ViewCryptoContribution = () => {
                         },
                       )
                     }
-                    className="flex-1 whitespace-nowrap rounded-lg border-2 border-gray-200 bg-inherit px-[1.5em] py-[5px] text-lg font-semibold shadow-lg lg:px-[3em] lg:py-[13px]"
+                    className={`flex-1 whitespace-nowrap rounded-lg border-2 border-gray-200 bg-inherit px-[1.5em] py-[5px] text-lg font-semibold shadow-lg lg:px-[3em] lg:py-[13px] ${
+                      !contribution.isActive
+                        ? "cursor-not-allowed opacity-50"
+                        : ""
+                    }`}
                   >
                     Withdraw
                   </motion.button>
@@ -178,9 +241,6 @@ const ViewCryptoContribution = () => {
                 <h2 className="text-sm font-semibold text-gray-500">
                   Interest Rate:
                 </h2>
-                <p className="text-sm font-bold text-green-500 md:text-lg">
-                  {contribution.interestRate || "0.85%"}
-                </p>
               </div>
               <div className="flex items-center gap-1 md:gap-2">
                 <h2 className="text-sm font-semibold text-gray-500">
@@ -199,13 +259,30 @@ const ViewCryptoContribution = () => {
             </p>
           </section>
 
-          <section className="my-8 grid grid-cols-2 gap-4">
+          <section className="my-8 grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="w-full rounded-xl bg-Dh p-5">
               <Typography className="text-lg font-semibold text-text1">
                 Token
               </Typography>
               <Typography className="mt-2 text-lg font-semibold  text-[#939090]">
                 {contribution.tokenSymbol}
+              </Typography>
+            </div>
+
+            <div className="w-full rounded-xl bg-Dh p-5">
+              <Typography className="text-lg font-semibold text-text1">
+                Lock Type
+              </Typography>
+              <Typography className="mt-2 text-lg font-semibold  text-[#939090]">
+                {contribution.poolType === "periodic" || "manual"
+                  ? contribution.lockType === 0
+                    ? "Flexible Savings"
+                    : contribution.lockType === 1
+                      ? "Lock Savings"
+                      : contribution.lockType === 2
+                        ? "Strict Lock Savings"
+                        : "Unknown"
+                  : "N/A"}
               </Typography>
             </div>
 
@@ -218,30 +295,36 @@ const ViewCryptoContribution = () => {
               </Typography>
             </div>
 
-            {contribution.poolType === "periodic" ? (
-              <div className="w-full rounded-xl bg-Dh p-5">
-                <Typography className="text-lg font-semibold text-text1">
-                  Frequency
-                </Typography>
-                <Typography className="mt-2 text-lg font-semibold text-[#939090]">
-                  {contribution.interval || "N/A"}
-                </Typography>
-              </div>
-            ) : (
-              <div className="hidden"></div>
-            )}
+            {contribution?.poolType === "periodic" && (
+              <>
+                <div className="w-full rounded-xl bg-Dh p-5">
+                  <Typography className="text-lg font-semibold text-text1">
+                    Frequency
+                  </Typography>
+                  <Typography className="mt-2 text-lg font-semibold text-[#939090]">
+                    {contribution.interval || "N/A"}
+                  </Typography>
+                </div>
 
-            {contribution.poolType === "periodic" ? (
-              <div className="w-full rounded-xl bg-Dh p-5">
-                <Typography className="text-lg font-semibold text-text1">
-                  Periodic Amount
-                </Typography>
-                <Typography className="mt-2 text-lg font-semibold text-[#939090]">
-                  ${contribution.periodicAmount || "N/A"}
-                </Typography>
-              </div>
-            ) : (
-              <div className="hidden"></div>
+                <div className="w-full rounded-xl bg-Dh p-5">
+                  <Typography className="text-lg font-semibold text-text1">
+                    Periodic Amount
+                  </Typography>
+                  <Typography className="mt-2 text-lg font-semibold text-[#939090]">
+                    ${contribution.periodicAmount || "N/A"}
+                  </Typography>
+                </div>
+
+                {/* Display Next Charge Date */}
+                <div className="w-full rounded-xl bg-Dh p-5">
+                  <Typography className="text-lg font-semibold text-text1">
+                    Next Charge
+                  </Typography>
+                  <Typography className="mt-2 text-lg font-semibold text-[#939090]">
+                    {nextChargeDate ? formatDate(nextChargeDate, true) : "N/A"}
+                  </Typography>
+                </div>
+              </>
             )}
 
             <div className="hidden w-full rounded-xl bg-Dh p-5">
@@ -261,7 +344,7 @@ const ViewCryptoContribution = () => {
                 Start Date
               </Typography>
               <Typography className="mt-2 text-lg font-semibold text-[#939090]">
-                {formatDate(contribution.createdAt)}
+                {formatDate(contribution?.createdAt ?? null)}
               </Typography>
             </div>
 
@@ -270,7 +353,7 @@ const ViewCryptoContribution = () => {
                 End Date
               </Typography>
               <Typography className="mt-2 text-lg font-semibold text-[#939090]">
-                {formatDate(endDate)} ({contribution.duration} days)
+                {formatDate(endDate)} ({contribution?.duration} days)
               </Typography>
             </div>
           </section>
