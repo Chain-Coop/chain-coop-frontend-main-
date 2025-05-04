@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 import { Typography } from "@material-tailwind/react";
 import { IoFilterOutline, IoSearchOutline } from "react-icons/io5";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { ContributionListSkeleton } from "../../common/Loading"; // Adjust path as needed
-import { Pool } from "../../../shared/types/types"; // Adjust path as needed
+import { ContributionListSkeleton } from "../../common/Loading";
+import { Pool } from "../../../shared/types/types";
 import { NavigateFunction } from "react-router-dom";
 
 interface MySavingsListProps {
@@ -21,6 +21,10 @@ interface MySavingsListProps {
   navigate: NavigateFunction;
   setIsFilterModalOpen: (isOpen: boolean) => void;
   handleApplyFilters: (filters: any) => void;
+  searchTerm: string;
+  onSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onSearchSubmit: (event?: React.FormEvent | React.KeyboardEvent) => void;
+  onSearchKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const MySavingsList: React.FC<MySavingsListProps> = ({
@@ -37,23 +41,48 @@ const MySavingsList: React.FC<MySavingsListProps> = ({
   navigate,
   setIsFilterModalOpen,
   handleApplyFilters,
+  searchTerm,
+  onSearchChange,
+  onSearchSubmit,
+  onSearchKeyDown,
 }) => {
+  const getEmptyStateMessage = () => {
+    const hasSearchTerm = searchTerm.trim() !== "";
+    const hasOriginalPools = Array.isArray(userPools) && userPools.length > 0;
+    const hasFilteredPools =
+      Array.isArray(filteredPools) && filteredPools.length > 0;
+
+    if (hasSearchTerm && !hasFilteredPools) {
+      return "Savings not found";
+    } else if (!hasSearchTerm && !hasOriginalPools) {
+      return "No Savings Yet";
+    } else if (!hasSearchTerm && hasOriginalPools && !hasFilteredPools) {
+      return "No Savings Match Filters";
+    } else if (hasSearchTerm && !hasOriginalPools) {
+      return "Savings not found";
+    }
+    return "No Savings Available";
+  };
+
   return (
     <section className="mt-6 w-full sm:mt-8 lg:mt-10">
-      <header className="flex items-center justify-between gap-4">
+      <header className="flex flex-col items-start md:flex-row md:items-center justify-between gap-4">
         <h1 className="text-lg font-bold sm:text-xl lg:text-2xl">My Savings</h1>
         <div className="flex items-center gap-2">
-          {/* Search Input */}
-          <div className="relative hidden md:block">
+          <div className="relative block">
             <input
               className="rounded-lg border-2 border-[#F5F0F0] py-2 pl-8 pr-3 placeholder:text-sm"
-              type="text"
-              placeholder="Search savings"
-              // Add state and onChange handler if search functionality is needed
+              type="search"
+              placeholder="Search savings by title"
+              value={searchTerm}
+              onChange={onSearchChange}
+              onKeyDown={onSearchKeyDown}
             />
-            <IoSearchOutline className="absolute left-2 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+            <IoSearchOutline
+              className="absolute left-2 top-1/2 h-5 w-5 -translate-y-1/2 cursor-pointer text-gray-400"
+              onClick={() => onSearchSubmit()}
+            />
           </div>
-          {/* Filter Button */}
           <button
             onClick={() => setIsFilterModalOpen(true)}
             className="rounded-lg border-2 border-[#F5F0F0] p-2 text-gray-600 transition-colors hover:bg-gray-100"
@@ -66,9 +95,8 @@ const MySavingsList: React.FC<MySavingsListProps> = ({
 
       {poolsLoading ? (
         <ContributionListSkeleton />
-      ) : filteredPools.length > 0 ? (
+      ) : Array.isArray(filteredPools) && filteredPools.length > 0 ? (
         <div className="p3 mb-10 mt-4 flex h-auto flex-col gap-3 rounded-2xl bg-text2 px-3 py-5 text-center sm:mt-6 sm:gap-4 md:px-7 md:py-10">
-          {/* Pagination UI */}
           {filteredPools.length > itemsPerPage && (
             <div className="mb-3 flex items-center justify-between px-4">
               <span className="text-sm font-medium text-white md:text-base">
@@ -102,12 +130,23 @@ const MySavingsList: React.FC<MySavingsListProps> = ({
               whileHover={{ scale: 1.01 }}
               className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-xl border border-gray-300 bg-white p-3 transition-all hover:bg-gray-50 sm:gap-3 sm:p-4 md:rounded-3xl"
             >
-              {/* Pool details rendering */}
               <div className="flex justify-between text-xs font-medium text-gray-500 sm:text-sm">
                 <p>Savings Token: {pool?.tokenSymbol}</p>
-                <p className="text-sm font-semibold text-text2">
-                  Type: {pool?.poolType === "periodic" ? "Auto" : "One-Time"}
-                </p>
+                <div className="flex flex-col md:flex-row gap-2 text-right">
+                  <p className="text-sm font-semibold text-text2">
+                    Type: {pool?.poolType === "periodic" ? "Auto" : "One-Time"}
+                  </p>
+                  <p className="text-sm font-semibold text-text2">
+                    Lock:{" "}
+                    {pool?.lockType === 0
+                      ? "Flexible"
+                      : pool?.lockType === 1
+                        ? "Lock"
+                        : pool?.lockType === 2
+                          ? "Strict Lock"
+                          : "Unknown"}
+                  </p>
+                </div>
               </div>
 
               <div className="flex items-center justify-between">
@@ -137,7 +176,10 @@ const MySavingsList: React.FC<MySavingsListProps> = ({
                 <div className="flex gap-2 sm:gap-3">
                   <button
                     onClick={() => handleOpenModalBasedOnType(pool)}
-                    className="rounded-lg bg-[#ECE6F2] px-2 py-1 text-xs font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:px-3 sm:text-sm"
+                    disabled={!pool.isActive}
+                    className={`rounded-lg bg-[#ECE6F2] px-2 py-1 text-xs font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:px-3 sm:text-sm ${
+                      !pool.isActive ? "cursor-not-allowed opacity-50" : ""
+                    }`}
                   >
                     {pool.poolType === "periodic" ? "Update" : "Fund"}
                   </button>
@@ -169,24 +211,26 @@ const MySavingsList: React.FC<MySavingsListProps> = ({
             variant="h2"
             className="text-xl font-bold text-how1 md:text-2xl"
           >
-            {filteredPools.length === 0 && userPools.length === 0
-              ? "No Savings Yet"
-              : "No Savings Match Filters"}
+            {getEmptyStateMessage()}
           </Typography>
 
-          {filteredPools.length === 0 && userPools.length > 0 && (
+          {getEmptyStateMessage() === "No Savings Match Filters" ||
+          getEmptyStateMessage() === "Savings not found" ? (
             <button
               onClick={() =>
                 handleApplyFilters({
                   contributionType: "all",
                   lockType: "all",
+                  status: "active",
                 })
               }
               className="mt-2 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-text2 transition-colors hover:bg-gray-100"
             >
-              Clear Filters
+              {getEmptyStateMessage() === "Savings not found"
+                ? "Clear Search & Filters"
+                : "Clear Filters"}
             </button>
-          )}
+          ) : null}
         </motion.div>
       )}
     </section>

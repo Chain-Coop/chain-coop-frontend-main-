@@ -4,10 +4,12 @@ import { IoClose } from "react-icons/io5";
 
 export type ContributionTypeFilter = "all" | "periodic" | "oneTime";
 export type LockTypeFilter = "all" | 0 | 1 | 2;
+export type PoolStatusFilter = "all" | "active" | "inactive";
 
 export interface SavingsFilters {
   contributionType: ContributionTypeFilter;
   lockType: LockTypeFilter;
+  status: PoolStatusFilter;
 }
 
 interface FilterSavingsProps {
@@ -28,11 +30,15 @@ const FilterSavings: React.FC<FilterSavingsProps> = ({
   const [selectedLockType, setSelectedLockType] = useState<LockTypeFilter>(
     currentFilters.lockType,
   );
+  const [selectedStatus, setSelectedStatus] = useState<PoolStatusFilter>(
+    currentFilters.status,
+  );
 
   useEffect(() => {
     if (isOpen) {
       setSelectedContributionType(currentFilters.contributionType);
       setSelectedLockType(currentFilters.lockType);
+      setSelectedStatus(currentFilters.status);
     }
   }, [isOpen, currentFilters]);
 
@@ -40,6 +46,7 @@ const FilterSavings: React.FC<FilterSavingsProps> = ({
     onApplyFilters({
       contributionType: selectedContributionType,
       lockType: selectedLockType,
+      status: selectedStatus,
     });
     onClose();
   };
@@ -47,8 +54,9 @@ const FilterSavings: React.FC<FilterSavingsProps> = ({
   const handleReset = () => {
     setSelectedContributionType("all");
     setSelectedLockType("all");
+    setSelectedStatus("active");
     // Optionally apply immediately or wait for explicit apply
-    // onApplyFilters({ contributionType: 'all', lockType: 'all' });
+    // onApplyFilters({ contributionType: 'all', lockType: 'all', status: 'active' });
     // onClose();
   };
 
@@ -81,6 +89,12 @@ const FilterSavings: React.FC<FilterSavingsProps> = ({
     { label: "Flexible", value: 0 },
     { label: "Lock", value: 1 },
     { label: "Strict Lock", value: 2 },
+  ];
+
+  const statusOptions: { label: string; value: PoolStatusFilter }[] = [
+    { label: "Active Pools", value: "active" },
+    { label: "Inactive Pools", value: "inactive" },
+    { label: "All Pools", value: "all" },
   ];
 
   return (
@@ -150,6 +164,28 @@ const FilterSavings: React.FC<FilterSavingsProps> = ({
                     onClick={() => setSelectedLockType(option.value)}
                     className={`rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 ${
                       selectedLockType === option.value
+                        ? "bg-text2 text-white"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Pool Status Filter */}
+            <div className="mb-8">
+              <h3 className="mb-3 text-base font-medium text-gray-700">
+                Pool Status
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {statusOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    onClick={() => setSelectedStatus(option.value)}
+                    className={`rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                      selectedStatus === option.value
                         ? "bg-text2 text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                     }`}

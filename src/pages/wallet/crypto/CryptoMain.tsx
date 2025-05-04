@@ -21,6 +21,7 @@ import { ActivateCryptoWallet } from "../../../shared/redux/slices/web3.slices";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import ToggleButton from "../../../shared/utils/ToggleButton";
 import { TransferIcon, WithdrawIcon } from "../../../Assets/svg";
+import CryptoTransactionHistory from "./CryptoTransactionHistory";
 
 interface TokenInfo {
   tokenAddress: string;
@@ -304,6 +305,8 @@ const CryptoMain = () => {
                 </div>
               </div>
             </section>
+
+            <CryptoTransactionHistory />
           </>
         )}
       </div>

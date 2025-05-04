@@ -243,12 +243,10 @@ const GetAllUserTokens = async () => {
   }
 };
 
-// --- New Service Function to Stop Periodic Pool ---
 const StopPeriodicPool = async (id: string) => {
   const url = `${API_URL}/web3/v2/periodicSaving/periodicPool/${id}/stop`;
   try {
     const response = await axios.post(url, null, {
-      // No body needed
       headers: authHeader(),
     });
     return response.data;
@@ -289,6 +287,109 @@ const ResumePeriodicPool = async (id: string) => {
   }
 };
 
+const getCryptoHistory = async () => {
+  const url = `${API_URL}/web3/transaction/history`;
+  try {
+    const response = await axios.get(url, {
+      headers: authHeader(),
+    });
+    return response.data.data;
+  } catch (error: any) {
+    if (axios.isAxiosError(error) && error.response) {
+      const backendMessage =
+        error.response.data?.msg ||
+        error.response.data?.message ||
+        "An error occurred fetching crypto history";
+      throw new Error(backendMessage);
+    } else if (axios.isCancel(error)) {
+      throw new Error("Request canceled.");
+    } else {
+      throw new Error("Network Error: Could not fetch crypto history.");
+    }
+  }
+};
+
+const SearchOneTimePoolsByReason = async (reason: string) => {
+  const url = `${API_URL}/web3/v2/saving/getPoolByReason`;
+  const body = { reason: reason };
+  try {
+    const response = await axios.post(url, body, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    console.error("Error searching one-time pools by reason:", error);
+    if (axios.isAxiosError(error) && error.response) {
+      const backendMessage =
+        error.response.data?.message || "An error occurred searching pools";
+      throw new Error(backendMessage);
+    } else {
+      throw new Error("Network Error: Could not search one-time pools.");
+    }
+  }
+};
+
+const SearchPeriodicPoolsByReason = async (reason: string) => {
+  const url = `${API_URL}/web3/v2/periodicSaving/getPoolByReason`;
+  const body = { reason: reason };
+  try {
+    const response = await axios.post(url, body, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    console.error("Error searching periodic pools by reason:", error);
+    if (axios.isAxiosError(error) && error.response) {
+      const backendMessage =
+        error.response.data?.message || "An error occurred searching pools";
+      throw new Error(backendMessage);
+    } else {
+      throw new Error("Network Error: Could not search periodic pools.");
+    }
+  }
+};
+
+const GetTotalOneTimeSavings = async () => {
+  const url = `${API_URL}/web3/v2/saving/getTotalAmountSaved`;
+  try {
+    const response = await axios.get(url, {
+      headers: authHeader(),
+    });
+    return response.data?.data || 0;
+
+  } catch (error: any) {
+    console.error("Error fetching total one-time savings:", error);
+    if (axios.isAxiosError(error) && error.response) {
+      const backendMessage =
+        error.response.data?.message ||
+        "An error occurred fetching total savings";
+      throw new Error(backendMessage);
+    } else {
+      throw new Error("Network Error: Could not fetch total one-time savings.");
+    }
+  }
+};
+
+const GetTotalPeriodicSavings = async () => {
+  const url = `${API_URL}/web3/v2/periodicSaving/totalAmountSaved`;
+  try {
+    const response = await axios.get(url, {
+      headers: authHeader(),
+    });
+    return response.data?.data || 0;
+  } catch (error: any) {
+    console.error("Error fetching total periodic savings:", error);
+    if (axios.isAxiosError(error) && error.response) {
+      const backendMessage =
+        error.response.data?.message ||
+        "An error occurred fetching total savings";
+      throw new Error(backendMessage);
+    } else {
+      throw new Error("Network Error: Could not fetch total periodic savings.");
+    }
+  }
+};
+
 const web3Services = {
   ActivateCryptoWallet,
   GetTotalCryptoWalletBalance,
@@ -302,6 +403,11 @@ const web3Services = {
   UpdateAutoPool,
   StopPeriodicPool,
   ResumePeriodicPool,
+  SearchOneTimePoolsByReason,
+  SearchPeriodicPoolsByReason,
+  GetTotalOneTimeSavings,
+  GetTotalPeriodicSavings,
+  getCryptoHistory,
 };
 
 export default web3Services;
