@@ -23,8 +23,18 @@ import SuccessModal from "../components/success_modal";
 import { IoIosArrowBack } from "react-icons/io";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import PrepareData from "./prepare_data";
+import createSavingsCircle from "../../../shared/redux/services/web_savings_group.services";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../../shared/redux/store";
+import { toast } from "react-toastify";
+
+
 
 const CreateOpenGroup = () => {
+  const profileDetails = useSelector(
+    (state: any) => state?.landing?.getProfile,
+  );
+
   const [firstFormData, setFirstFormData] = useState<firstOpenGroupType>({
     savings_title: "",
     savings_description: "",
@@ -44,6 +54,11 @@ const CreateOpenGroup = () => {
     savings_image: null,
     agree: false,
   });
+
+  const dispatch: AppDispatch = useDispatch();
+
+  // state to manage loading
+  const [loading, setLoading] = useState<boolean>(false);
 
   // state to toggle whether the next button is disabled or not
   const [isNextDisabled, setIsNextDisabled] = useState<boolean>(true);
@@ -68,6 +83,7 @@ const CreateOpenGroup = () => {
     <ThirdOpenGroupForm
       data={thirdFormData}
       currency={firstFormData.savings_currency}
+      total_saving_amount={secondFormData.total_saving_amount}
       savings_frequency={secondFormData.savings_frequency}
       setData={setThirdFormData}
       key={2}
@@ -104,19 +120,35 @@ const CreateOpenGroup = () => {
   };
 
   const createCircle = () => {
+    setLoading(true);
+
     const formData = PrepareData({
       first: firstFormData,
       second: secondFormData,
       third: thirdFormData,
       groupType: "open",
+      userId: profileDetails?.userId,
     });
 
-    console.log(formData);
+    dispatch(createSavingsCircle(formData))
+      .unwrap()
+      .then((response: any) => {
+          setLoading(false);
+          if (response?.status === 200) {
+            console.log(response?.data)
+            toast.success(response?.data?.msg);
+            setIsModalOpen(true);
+          } else if (response?.status === 400) {
+            console.log(response?.data)
+          }
+        })
+        .catch((error: any) => {
+          setLoading(false);
+          const errorMessage = error;
+          toast.error(errorMessage);
+        });
   }
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
 
   // function to navigate back to ajo page
   const handleBackClick = () => {
@@ -179,6 +211,7 @@ const CreateOpenGroup = () => {
             <Button
               className={`h-[47px] w-fit rounded-lg bg-[#440080] text-[18px] font-[500] capitalize tracking-tighter font-asap text-white `}
               onClick={createCircle}
+              loading={loading}
             >
               Create group
             </Button>

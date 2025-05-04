@@ -96,7 +96,7 @@ export interface secondOpenGroupType {
 
 export interface thirdOpenGroupType {
   depositAmount: number;
-  savings_image: Blob | null;
+  savings_image: File | null;
   agree: boolean;
 }
 

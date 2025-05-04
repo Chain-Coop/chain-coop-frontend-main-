@@ -11,10 +11,15 @@ interface Props {
     data: thirdOpenGroupType, 
     currency: string
     savings_frequency: string
+    total_saving_amount: string
     setData: React.Dispatch<React.SetStateAction<thirdOpenGroupType>>
 }
 
-const ThirdOpenGroupForm = ({ data, currency, savings_frequency, setData }: Props) => {
+const ThirdOpenGroupForm = ({ data, currency, savings_frequency, total_saving_amount, setData }: Props) => {
+    const max = total_saving_amount.replace(/,/g, "");
+
+    console.log(max, typeof(max))
+
     const handleChange= (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setData({ ...data, [event.target.name]: event.target.value })
     }
@@ -51,7 +56,7 @@ const ThirdOpenGroupForm = ({ data, currency, savings_frequency, setData }: Prop
                         {currency} {Number(data.depositAmount).toLocaleString()}
                     </Typography>
                     <input
-                    autoFocus type="range" min="0" max={currency === "₦" ? "100000" : "10000"} step={currency === "₦" ? "100" : "10"} onChange={handleChange} value={data.depositAmount} name="depositAmount" id="depositAmount" className="w-full cursor-pointer" />
+                    autoFocus type="range" min={"0"} defaultValue={Number(max) / 4} max={Number(max) / 2} step={currency === "₦" ? "100" : "10"} onChange={handleChange} value={data.depositAmount} name="depositAmount" id="depositAmount" className="w-full cursor-pointer" />
                 </div>
                 <Typography className="font-asap font-[500] text-[14px] text-[#1E1E1E]">
                     This amount is not fixed, members deposit any amount until the target amount is achieved.
