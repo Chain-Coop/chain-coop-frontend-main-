@@ -25,6 +25,7 @@ import {
   addMonths,
   isBefore,
   startOfDay,
+  isAfter,
 } from "date-fns";
 
 const ViewCryptoContribution = () => {
@@ -84,6 +85,16 @@ const ViewCryptoContribution = () => {
     contribution?.createdAt ?? null,
     contribution?.duration ?? 0,
   );
+
+  // --- Calculate if withdrawal should be disabled ---
+  const isStrictLock = contribution?.lockType === 2;
+  const isEndDateReached = endDate ? isAfter(new Date(), endDate) : false; // Check if current date is AFTER end date
+
+  // Disable if it's strict lock AND the end date has NOT been reached
+  const disableWithdrawal = isStrictLock && !isEndDateReached;
+  // Also disable if the pool is generally inactive (existing logic)
+  const isWithdrawButtonDisabled = disableWithdrawal || !contribution?.isActive;
+  // --- End calculation ---
 
   const nextChargeDate = useMemo(() => {
     if (
@@ -203,7 +214,7 @@ const ViewCryptoContribution = () => {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    disabled={!contribution.isActive}
+                    disabled={isWithdrawButtonDisabled}
                     onClick={() =>
                       navigate(
                         "/dashboard/contribution/withdraw_crypto_contribution",
@@ -217,7 +228,7 @@ const ViewCryptoContribution = () => {
                       )
                     }
                     className={`flex-1 whitespace-nowrap rounded-lg border-2 border-gray-200 bg-inherit px-[1.5em] py-[5px] text-lg font-semibold shadow-lg lg:px-[3em] lg:py-[13px] ${
-                      !contribution.isActive
+                      isWithdrawButtonDisabled
                         ? "cursor-not-allowed opacity-50"
                         : ""
                     }`}
