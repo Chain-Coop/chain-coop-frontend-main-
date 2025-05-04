@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { motion } from "framer-motion";
-import { useState, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import {
@@ -15,6 +14,7 @@ import Naira from "../../../Assets/svg/dashboard/contribution/naira.svg";
 import up from "../../../Assets/svg/dashboard/contribution/up.svg";
 import FundSavingsModal from "../../../components/dashboard/contribution/modals/FundContribution";
 import UpdateSavingsModal from "../../../components/dashboard/contribution/modals/UpdateContribution";
+import EarlyWithdrawalModal from "../../../components/dashboard/contribution/modals/EarlyWithdrawal"; // Import the new modal
 import TransactionHistory from "./TransactionHistory";
 import { Pool } from "../../../shared/types/types";
 import {
@@ -31,6 +31,9 @@ import {
 const ViewCryptoContribution = () => {
   const [isFundModalOpen, setIsFundModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+
+  const [isEarlyWithdrawalModalOpen, setIsEarlyWithdrawalModalOpen] = useState(false);
+
   const location = useLocation();
   const navigate = useNavigate();
   const contribution = location.state as Pool | null;
@@ -86,15 +89,16 @@ const ViewCryptoContribution = () => {
     contribution?.duration ?? 0,
   );
 
-  // --- Calculate if withdrawal should be disabled ---
-  const isStrictLock = contribution?.lockType === 2;
-  const isEndDateReached = endDate ? isAfter(new Date(), endDate) : false; // Check if current date is AFTER end date
+  const formattedEndDateString = formatDate(endDate); 
 
-  // Disable if it's strict lock AND the end date has NOT been reached
-  const disableWithdrawal = isStrictLock && !isEndDateReached;
-  // Also disable if the pool is generally inactive (existing logic)
-  const isWithdrawButtonDisabled = disableWithdrawal || !contribution?.isActive;
-  // --- End calculation ---
+  const isStrictLock = contribution?.lockType === 2;
+  const isLockSavings = contribution?.lockType === 1;
+
+  const isEndDateReached = endDate ? isAfter(new Date(), endDate) : false;
+
+  const disableStrictWithdrawal = isStrictLock && !isEndDateReached;
+
+  const isWithdrawButtonDisabled = disableStrictWithdrawal || !contribution?.isActive;
 
   const nextChargeDate = useMemo(() => {
     if (
@@ -150,6 +154,45 @@ const ViewCryptoContribution = () => {
       setIsFundModalOpen(true);
     }
   };
+
+  const handleWithdrawClick = () => {
+    if (!contribution) return;
+
+    const currentAmount = contribution.totalAmount || 0;
+
+    if (isLockSavings && !isEndDateReached) {
+      setIsEarlyWithdrawalModalOpen(true);
+    } else {
+     
+      navigate(
+        "/dashboard/contribution/withdraw_crypto_contribution",
+        {
+          state: {
+            poolIndex: contribution.poolId,
+            symbol: contribution.tokenSymbol,
+            amount: currentAmount,
+          },
+        },
+      );
+    }
+  };
+
+  const handleEarlyWithdrawalConfirm = (amountAfterFee: number) => {
+    setIsEarlyWithdrawalModalOpen(false);
+    if (!contribution) return;
+
+    navigate(
+      "/dashboard/contribution/withdraw_crypto_contribution",
+      {
+        state: {
+          poolIndex: contribution.poolId,
+          symbol: contribution.tokenSymbol,
+          amount: amountAfterFee,
+        },
+      },
+    );
+  };
+
 
   return (
     <main className="pb-[1.5em] ">
@@ -211,26 +254,17 @@ const ViewCryptoContribution = () => {
                   >
                     {contribution.poolType === "periodic" ? "Update" : "Fund"}
                   </motion.button>
+
+                  {/* Withdraw Button - Updated onClick */}
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    disabled={isWithdrawButtonDisabled}
-                    onClick={() =>
-                      navigate(
-                        "/dashboard/contribution/withdraw_crypto_contribution",
-                        {
-                          state: {
-                            poolIndex: contribution.poolId,
-                            symbol: contribution.tokenSymbol,
-                            amount: contribution.totalAmount,
-                          },
-                        },
-                      )
-                    }
+                    disabled={isWithdrawButtonDisabled} // Keep existing disabled logic for strict lock/inactive
+                    onClick={handleWithdrawClick} // Use the new handler function
                     className={`flex-1 whitespace-nowrap rounded-lg border-2 border-gray-200 bg-inherit px-[1.5em] py-[5px] text-lg font-semibold shadow-lg lg:px-[3em] lg:py-[13px] ${
                       isWithdrawButtonDisabled
                         ? "cursor-not-allowed opacity-50"
-                        : ""
+                        : "" // Note: Styling doesn't prevent click if lockType is 1 before end date
                     }`}
                   >
                     Withdraw
@@ -390,6 +424,18 @@ const ViewCryptoContribution = () => {
           tokenToSaveWith: contribution.tokenAddress,
         }}
       />
+
+      {contribution && (
+         <EarlyWithdrawalModal
+            isOpen={isEarlyWithdrawalModalOpen}
+            onClose={() => setIsEarlyWithdrawalModalOpen(false)}
+            onConfirm={handleEarlyWithdrawalConfirm}
+            totalAmount={Number(contribution.totalAmount) || 0}
+            feePercentage={3}
+            formattedEndDate={formattedEndDateString}
+         />
+      )}
+
     </main>
   );
 };
