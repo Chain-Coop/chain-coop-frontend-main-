@@ -10,10 +10,11 @@ import { thirdOpenGroupType } from "../../../shared/types/types";
 interface Props {
     data: thirdOpenGroupType, 
     currency: string
+    savings_frequency: string
     setData: React.Dispatch<React.SetStateAction<thirdOpenGroupType>>
 }
 
-const ThirdOpenGroupForm = ({ data, currency, setData }: Props) => {
+const ThirdOpenGroupForm = ({ data, currency, savings_frequency, setData }: Props) => {
     const handleChange= (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setData({ ...data, [event.target.name]: event.target.value })
     }
@@ -41,16 +42,16 @@ const ThirdOpenGroupForm = ({ data, currency, setData }: Props) => {
 
     return (
         <form className="flex flex-col gap-6 w-[100%] items-center">
-            <label htmlFor="daily_deposit" className="flex flex-col gap-2 w-[100%] 2xl:w-[80%]">
+            <label htmlFor="depositAmount" className="flex flex-col gap-2 w-[100%] 2xl:w-[80%]">
                 <Typography className="font-asap  font-[600] text-[18px] text-black tracking-tighter">
-                    Daily Deposit
+                    {savings_frequency} Deposit
                 </Typography>
                 <div className="flex items-center gap-2 flex-col">
                     <Typography className="font-asap text-[24px] font-[600] text-[#1E1E1E]">
-                        {currency} {data.daily_deposit}
+                        {currency} {Number(data.depositAmount).toLocaleString()}
                     </Typography>
                     <input
-                    autoFocus type="range" min="0" max="1000" step="10" onChange={handleChange} value={data.daily_deposit} name="daily_deposit" id="daily_deposit" className="w-full cursor-pointer" />
+                    autoFocus type="range" min="0" max={currency === "₦" ? "100000" : "10000"} step={currency === "₦" ? "100" : "10"} onChange={handleChange} value={data.depositAmount} name="depositAmount" id="depositAmount" className="w-full cursor-pointer" />
                 </div>
                 <Typography className="font-asap font-[500] text-[14px] text-[#1E1E1E]">
                     This amount is not fixed, members deposit any amount until the target amount is achieved.

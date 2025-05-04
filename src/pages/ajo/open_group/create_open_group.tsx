@@ -22,6 +22,7 @@ import ReviewOpenGroupForm from "../components/review_open_group_form";
 import SuccessModal from "../components/success_modal";
 import { IoIosArrowBack } from "react-icons/io";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
+import PrepareData from "./prepare_data";
 
 const CreateOpenGroup = () => {
   const [firstFormData, setFirstFormData] = useState<firstOpenGroupType>({
@@ -39,7 +40,7 @@ const CreateOpenGroup = () => {
   });
 
   const [thirdFormData, setThirdFormData] = useState<thirdOpenGroupType>({
-    daily_deposit: 30,
+    depositAmount: 30,
     savings_image: null,
     agree: false,
   });
@@ -67,6 +68,7 @@ const CreateOpenGroup = () => {
     <ThirdOpenGroupForm
       data={thirdFormData}
       currency={firstFormData.savings_currency}
+      savings_frequency={secondFormData.savings_frequency}
       setData={setThirdFormData}
       key={2}
     />,
@@ -98,8 +100,19 @@ const CreateOpenGroup = () => {
 
   const nextForm = () => {
     setFormStepsIndex((prev) => prev + 1);
-    validateInputs(); // validate inputs
+    validateInputs();
   };
+
+  const createCircle = () => {
+    const formData = PrepareData({
+      first: firstFormData,
+      second: secondFormData,
+      third: thirdFormData,
+      groupType: "open",
+    });
+
+    console.log(formData);
+  }
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -165,7 +178,7 @@ const CreateOpenGroup = () => {
           {formStepsIndex > 2 ? (
             <Button
               className={`h-[47px] w-fit rounded-lg bg-[#440080] text-[18px] font-[500] capitalize tracking-tighter font-asap text-white `}
-              onClick={openModal}
+              onClick={createCircle}
             >
               Create group
             </Button>
