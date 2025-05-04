@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
 
 import createImage from "../../../Assets/png/dashboard/ajo/open_group_image.png";
@@ -23,10 +23,10 @@ import SuccessModal from "../components/success_modal";
 import { IoIosArrowBack } from "react-icons/io";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import PrepareData from "./prepare_data";
-import createSavingsCircle from "../../../shared/redux/services/web_savings_group.services";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../shared/redux/store";
 import { toast } from "react-toastify";
+import WebGroupSavings from "../../../shared/redux/services/web_savings_group.services";
 
 
 
@@ -130,7 +130,7 @@ const CreateOpenGroup = () => {
       userId: profileDetails?.userId,
     });
 
-    dispatch(createSavingsCircle(formData))
+    dispatch(WebGroupSavings.CreateSavingsCircle(formData))
       .unwrap()
       .then((response: any) => {
           setLoading(false);

@@ -7,8 +7,15 @@ import { useSelector } from "react-redux";
 
 const API_URL = (import.meta as any).env.VITE_REACT_APP_API_URL;
 
+const handleApiError = (error: any) => {
+  if (!error.response) {
+    throw new Error("Network Error: Please check your internet connection.");
+  } else {
+    throw error.response.data;
+  }
+};
 
-const createSavingsCircle = createAsyncThunk(
+const CreateSavingsCircle = createAsyncThunk(
   "savingcircle/create",
   async (formData: any, thunkAPI) => {
     try {
@@ -28,5 +35,43 @@ const createSavingsCircle = createAsyncThunk(
   }
 );
 
+const GetAllSavingCircle = async () => {
+  const url = `${API_URL}/savingcircle/circles`;
+  try {
+    const response = await axios.get(url, { headers: authHeader() });
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
 
-export default createSavingsCircle;
+const GetSavingCircleByUser = async (userID: string) => {
+  const url = `${API_URL}/savingcircle/user/${userID}`;
+  try {
+    const response = await axios.get(url, { headers: authHeader() });
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
+const GetSavingCircleByID = async (circleID: string) => {
+  const url = `${API_URL}/savingcircle/${circleID}`;
+  try {
+    const response = await axios.get(url, { headers: authHeader() });
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
+
+const WebGroupSavings = {
+  CreateSavingsCircle,
+  GetAllSavingCircle,
+  GetSavingCircleByUser,
+  GetSavingCircleByID,
+}
+
+
+export default WebGroupSavings;
