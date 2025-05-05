@@ -12,6 +12,7 @@ interface Transaction {
   txHash: string;
   amount: string;
   timestamp: string;
+  depositType: string;
   status: "CONFIRMED" | "PENDING" | "FAILED" | string;
 }
 
@@ -84,7 +85,7 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
   contribution,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const transactions = contribution?.transactions || [];
+  const transactions = (contribution?.transactions || []).slice().reverse();
   const id = contribution.poolId;
 
   const [isActive, setIsActive] = useState(contribution?.isActive);
@@ -176,17 +177,18 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
                 <div className="mb-2 flex items-center justify-between text-xs text-gray-500">
                   <span>Saving token: {contribution.tokenSymbol}</span>
                 </div>
-                <div className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4">
+                <div className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 ">
                   {/* Left Side */}
                   <div className="flex items-center justify-between md:flex-col md:items-start">
                     <p className="mb-1 text-sm font-medium text-gray-800">
-                      Deposited amount:{" "}
+                      {tx.depositType || "Transaction"}:{" "}
                       <span className="text-sm font-semibold text-purple-600">
                         ${tx.amount}
                       </span>
                     </p>
+                    {/* Displaying the contribution's totalAmount here might be confusing as it doesn't reflect the balance *at the time* of this specific transaction */}
                     <p className="text-sm font-medium text-gray-500">
-                      Current Balance: $ {contribution.totalAmount}
+                      Balance: $ {contribution.totalAmount}
                     </p>
                   </div>
                   {/* Right Side */}
