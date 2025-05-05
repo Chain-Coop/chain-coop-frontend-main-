@@ -13,6 +13,7 @@ interface Transaction {
   amount: string;
   timestamp: string;
   depositType: string;
+  poolAmount: string;
   status: "CONFIRMED" | "PENDING" | "FAILED" | string;
 }
 
@@ -186,9 +187,8 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
                         ${tx.amount}
                       </span>
                     </p>
-                    {/* Displaying the contribution's totalAmount here might be confusing as it doesn't reflect the balance *at the time* of this specific transaction */}
                     <p className="text-sm font-medium text-gray-500">
-                      Balance: $ {contribution.totalAmount}
+                      Balance: $ {tx.poolAmount}
                     </p>
                   </div>
                   {/* Right Side */}
