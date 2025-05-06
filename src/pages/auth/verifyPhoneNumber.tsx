@@ -7,6 +7,7 @@ import { Button } from "@material-tailwind/react";
 import { AppDispatch } from "../../shared/redux/store";
 import OtpInput from "../../shared/utils/OtpInput";
 import { VerifyUserPhoneNumber } from "../../shared/redux/slices/landing.slices";
+import { RESEND_VERIFY_OTP } from "../../shared/redux/services/landing.services";
 
 const VerifyPhoneNumber = () => {
   const navigate = useNavigate();
@@ -14,14 +15,29 @@ const VerifyPhoneNumber = () => {
   const [isVerifying, setIsVerifying] = useState(false);
   const [isResending, setIsResending] = useState(false);
   const [code, setCode] = useState("");
-  const [resendDisabled, setResendDisabled] = useState(false);
-  const [resendTimer, setResendTimer] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(60);
 
   const dispatch: AppDispatch = useDispatch();
 
   const queryParams = new URLSearchParams(location.search);
-  const phoneNumber = queryParams.get("phoneNumber");
+  const rawPhoneNumber = queryParams.get("phoneNumber") || "";
   const userId = queryParams.get("userId");
+
+  const formatPhoneNumber = (phone: string) => {
+    const trimmedPhone = phone.trim();
+
+    if (trimmedPhone.startsWith("+")) {
+      return trimmedPhone;
+    }
+
+    if (/^\d{1,3}\d+$/.test(trimmedPhone)) {
+      return `+${trimmedPhone}`;
+    }
+
+    return trimmedPhone;
+  };
+
+  const phoneNumber = formatPhoneNumber(rawPhoneNumber);
 
   const handleOtpChange = (otpValue: string) => {
     setCode(otpValue);
@@ -30,33 +46,13 @@ const VerifyPhoneNumber = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (phoneNumber && userId) {
-  //     handleSendOtp();
-  //   }
-  // }, []);
-
-  // const handleSendOtp = async () => {
-  //   try {
-  //     await dispatch(
-  //       VerifyUserPhoneNumber({
-  //         phoneNumber, // Include phone number in the request
-  //         userId,
-  //       }),
-  //     ).unwrap();
-  //     setTimeLeft(360);
-  //   } catch (error: any) {
-  //     toast.error(error);
-  //   }
-  // };
-
   const verifyUserData = (otpValue: string) => {
     setIsVerifying(true);
     dispatch(
       VerifyUserPhoneNumber({
         otp: otpValue,
         userId,
-        phoneNumber: "+2348073632834",
+        phoneNumber,
       }),
     )
       .unwrap()
@@ -71,8 +67,6 @@ const VerifyPhoneNumber = () => {
         toast.error(error);
       });
   };
-
-  const [timeLeft, setTimeLeft] = useState(360);
 
   useEffect(() => {
     if (timeLeft <= 0) return;
@@ -90,29 +84,23 @@ const VerifyPhoneNumber = () => {
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
 
-  // const ResendOtp = async (e: React.MouseEvent) => {
-  //   e.preventDefault();
-  //   if (timeLeft > 0) return;
-
-  //   setIsResending(true);
-  //   try {
-  //     const response = await dispatch(
-  //       kycWhatsAppOtp({
-  //         phoneNumber, // Include phone number in the request
-  //         userId,
-  //       }),
-  //     ).unwrap();
-  //     toast.success(response.message);
-  //     setTimeLeft(360);
-  //   } catch (error: any) {
-  //     toast.error(error);
-  //   } finally {
-  //     setIsResending(false);
-  //   }
-  // };
+  const ResendOtp = async () => {
+    setIsResending(true);
+    try {
+      const response = await RESEND_VERIFY_OTP("/auth/resend_whatsapp_otp", {
+        phoneNumber,
+      });
+      toast.success(response.data.msg);
+      setTimeLeft(60);
+    } catch (error: any) {
+      toast.error(error);
+    } finally {
+      setIsResending(false);
+    }
+  };
 
   return (
-    <main className="flex h-screen items-center justify-center bg-log ">
+    <main className="flex h-screen items-center justify-center bg-log">
       <section className="text-center md:w-[55%]">
         <div className="px-[2em]">
           <p className="font-medium text-howtext md:text-lg lg:text-base">
@@ -138,7 +126,7 @@ const VerifyPhoneNumber = () => {
           )}
 
           <Button
-            // onClick={ResendOtp}
+            onClick={ResendOtp}
             disabled={isVerifying || isResending || timeLeft > 0}
             className="m-auto mt-6 flex w-[12em] justify-center rounded-full bg-text2 px-2 py-3 text-center font-medium normal-case text-text5 disabled:opacity-50 sm:text-lg lg:mt-[2em]"
           >
