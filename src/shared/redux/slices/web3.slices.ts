@@ -1,7 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import _isEqual from "lodash/isEqual";
 import { setMessage } from "./message.slices";
 import web3Services from "../services/web3.services";
-import { WithdrawUserPoolPayload } from "../../types/types";
+import {
+  WithdrawUserPoolPayload,
+  CryptoTransaction,
+  Pool,
+} from "../../types/types";
 
 export const ActivateCryptoWallet = createAsyncThunk(
   "web3/activateCryptoWallet",
@@ -77,18 +82,69 @@ export const CreatePeriodicPool = createAsyncThunk(
   },
 );
 
-export const GetAllUserPools = createAsyncThunk(
-  "web3/getAllUserPools",
-  async (_, thunkAPI) => {
-    try {
-      const data = await web3Services.GetAllUserPools();
-      return data;
-    } catch (error: any) {
-      const message = error.message;
-      return thunkAPI.rejectWithValue(message);
-    }
-  },
-);
+export const GetAllUserPools = createAsyncThunk<
+  { data: Pool[]; message: string },
+  void,
+  { rejectValue: { message: string } }
+>("web3/getAllUserPools", async (_, { rejectWithValue }) => {
+  try {
+    const response = await web3Services.GetAllUserPools();
+    const pools = response?.data || [];
+    pools.sort((a, b) => {
+      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return dateB - dateA;
+    });
+    return { ...response, data: pools };
+  } catch (error: any) {
+    const message = error?.message || "Failed to fetch user pools.";
+    return rejectWithValue({ message });
+  }
+});
+
+export const SearchUserPools = createAsyncThunk<
+  { data: Pool[]; message: string },
+  string,
+  { rejectValue: { message: string } }
+>("web3/searchUserPools", async (reason, { rejectWithValue }) => {
+  if (!reason || reason.trim() === "") {
+    return { data: [], message: "Search term is empty." };
+  }
+  try {
+    const oneTimePromise = web3Services.SearchOneTimePoolsByReason(reason);
+    const periodicPromise = web3Services.SearchPeriodicPoolsByReason(reason);
+
+    const [oneTimeResponse, periodicResponse] = await Promise.all([
+      oneTimePromise,
+      periodicPromise,
+    ]);
+
+    const oneTimePools = oneTimeResponse?.data || [];
+    const periodicPools = periodicResponse?.data || [];
+
+    const combinedPools = [
+      ...oneTimePools.map((pool: any) => ({
+        ...pool,
+        poolType: "oneTime" as const,
+      })),
+      ...periodicPools.map((pool: any) => ({
+        ...pool,
+        poolType: "periodic" as const,
+      })),
+    ];
+
+    combinedPools.sort((a, b) => {
+      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return dateB - dateA;
+    });
+
+    return { data: combinedPools, message: "Successfully searched pools" };
+  } catch (error: any) {
+    const message = error?.message || "Failed to search user pools.";
+    return rejectWithValue({ message });
+  }
+});
 
 export const UpdateUserPool = createAsyncThunk(
   "web3/updatePool",
@@ -192,19 +248,64 @@ export const ResumePeriodicPool = createAsyncThunk<
   }
 });
 
+export const GetCryptoTransactionHistory = createAsyncThunk(
+  "web3/getCryptoTransactionHistory",
+  async (_, thunkAPI) => {
+    try {
+      const data = await web3Services.getCryptoHistory();
+      return data;
+    } catch (error: any) {
+      const message =
+        error.message || "Failed to fetch crypto transaction history";
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
+export const GetTotalContributionBalanceCrypto = createAsyncThunk<
+  number,
+  void,
+  { rejectValue: { message: string } }
+>("web3/getTotalContributionBalanceCrypto", async (_, { rejectWithValue }) => {
+  try {
+    const oneTimePromise = web3Services.GetTotalOneTimeSavings();
+    const periodicPromise = web3Services.GetTotalPeriodicSavings();
+
+    const [oneTimeAmount, periodicAmount] = await Promise.all([
+      oneTimePromise,
+      periodicPromise,
+    ]);
+
+    const totalAmount =
+      (Number(oneTimeAmount) || 0) + (Number(periodicAmount) || 0);
+    return totalAmount;
+  } catch (error: any) {
+    const message =
+      error?.message || "Failed to fetch total contribution balance.";
+    return rejectWithValue({ message });
+  }
+});
+
 interface CryptoState {
   actvateCryptWallet: Record<string, any> | null;
   cryptoBalance: number;
   cryptoWalletDetails: Record<string, any> | null;
   registerUserPool: null;
   updateRegisteredUserPool: null;
-  userPools: Record<string, any> | null;
-  userTokens: string | null;
+  userPools: Pool[] | null;
+  userTokens: any[] | null;
+  cryptoHistory: CryptoTransaction[] | null;
   loading: boolean;
   userPoolsLoading: boolean;
+  cryptoHistoryLoading: boolean;
   error: string | null;
   userPoolsError: string | null;
+  cryptoHistoryError: string | null;
   walletMessage: string | null;
+  totalContributionBalanceCrypto: number | null;
+  totalContributionBalanceLoading: boolean;
+  totalContributionBalanceError: string | null;
 }
 
 const initialState: CryptoState = {
@@ -213,19 +314,33 @@ const initialState: CryptoState = {
   cryptoBalance: 0,
   registerUserPool: null,
   updateRegisteredUserPool: null,
-  walletMessage: null,
   userPools: null,
   userTokens: null,
+  cryptoHistory: null,
   loading: false,
   userPoolsLoading: false,
+  cryptoHistoryLoading: false,
   error: null,
   userPoolsError: null,
+  cryptoHistoryError: null,
+  walletMessage: null,
+  // --- Initialize New State ---
+  totalContributionBalanceCrypto: null,
+  totalContributionBalanceLoading: false,
+  totalContributionBalanceError: null,
+  // --- End Initialize ---
 };
 
 export const Web3Slices = createSlice({
   name: "web3",
   initialState,
-  reducers: {},
+  reducers: {
+    reset: (state) => {
+      state.cryptoHistory = null;
+      state.cryptoHistoryLoading = false;
+      state.cryptoHistoryError = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(ActivateCryptoWallet.pending, (state) => {
@@ -311,13 +426,39 @@ export const Web3Slices = createSlice({
         state.userPoolsError = null;
       })
       .addCase(GetAllUserPools.fulfilled, (state, action) => {
+        const incomingData = action.payload?.data || [];
+        if (!_isEqual(state.userPools, incomingData)) {
+          console.log("GetAllUserPools: Data changed, updating state.");
+          state.userPools = incomingData;
+        } else {
+          console.log(
+            "GetAllUserPools: Data is the same, skipping state update.",
+          );
+        }
         state.userPoolsLoading = false;
-        state.userPools = action.payload.data;
         state.userPoolsError = null;
       })
       .addCase(GetAllUserPools.rejected, (state, action) => {
         state.userPoolsLoading = false;
-        state.userPoolsError = (action.payload as string) || "Failed to fetch user pools";
+        state.userPoolsError =
+          action.payload?.message || "Failed to fetch pools";
+        state.userPools = null;
+      })
+
+      .addCase(SearchUserPools.pending, (state) => {
+        state.userPoolsLoading = true;
+        state.userPoolsError = null;
+      })
+      .addCase(SearchUserPools.fulfilled, (state, action) => {
+        state.userPools = action.payload?.data || [];
+        state.userPoolsLoading = false;
+        state.userPoolsError = null;
+      })
+      .addCase(SearchUserPools.rejected, (state, action) => {
+        state.userPoolsLoading = false;
+        state.userPoolsError =
+          action.payload?.message || "Failed to search pools";
+        state.userPools = null;
       })
 
       .addCase(UpdateUserPool.pending, (state) => {
@@ -385,7 +526,6 @@ export const Web3Slices = createSlice({
       })
       .addCase(StopPeriodicPool.fulfilled, (state, action) => {
         state.loading = false;
-        //console.log("StopPeriodicPool fulfilled:", action.payload);
       })
       .addCase(StopPeriodicPool.rejected, (state, action) => {
         state.loading = false;
@@ -398,13 +538,43 @@ export const Web3Slices = createSlice({
       })
       .addCase(ResumePeriodicPool.fulfilled, (state, action) => {
         state.loading = false;
-        //console.log("ResumePeriodicPool fulfilled:", action.payload);
       })
       .addCase(ResumePeriodicPool.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload?.message || "Failed to resume pool";
+      })
+
+      .addCase(GetCryptoTransactionHistory.pending, (state) => {
+        state.cryptoHistoryLoading = true;
+        state.cryptoHistoryError = null;
+      })
+      .addCase(GetCryptoTransactionHistory.fulfilled, (state, action) => {
+        state.cryptoHistoryLoading = false;
+        state.cryptoHistory = action.payload as CryptoTransaction[];
+      })
+      .addCase(GetCryptoTransactionHistory.rejected, (state, action) => {
+        state.cryptoHistoryLoading = false;
+        state.cryptoHistoryError = action.payload as string;
+        state.cryptoHistory = null;
+      })
+
+      .addCase(GetTotalContributionBalanceCrypto.pending, (state) => {
+        state.totalContributionBalanceLoading = true;
+        state.totalContributionBalanceError = null;
+      })
+      .addCase(GetTotalContributionBalanceCrypto.fulfilled, (state, action) => {
+        state.totalContributionBalanceLoading = false;
+        state.totalContributionBalanceCrypto = action.payload;
+        state.totalContributionBalanceError = null;
+      })
+      .addCase(GetTotalContributionBalanceCrypto.rejected, (state, action) => {
+        state.totalContributionBalanceLoading = false;
+        state.totalContributionBalanceError =
+          action.payload?.message || "Failed to fetch total balance";
+        state.totalContributionBalanceCrypto = null;
       });
   },
 });
 
+export const { reset } = Web3Slices.actions;
 export default Web3Slices.reducer;

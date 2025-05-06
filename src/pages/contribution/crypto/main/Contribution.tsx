@@ -1,7 +1,13 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useCryptoWallet } from "../../../../shared/Hooks/useBalance";
-import { useAllUserPools } from "../../../../shared/Hooks/useBalance";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../../shared/redux/store";
+import { useTotalContributionBalanceCrypto } from "../../../../shared/Hooks/useBalance";
+import { useAllUserPools } from "../../../../shared/Hooks/useUserProfile";
+import {
+  GetAllUserPools,
+  SearchUserPools,
+} from "../../../../shared/redux/slices/web3.slices";
 import ToggleButton from "../../../../shared/utils/ToggleButton";
 import { motion } from "framer-motion";
 import { Typography, Button } from "@material-tailwind/react";
@@ -19,19 +25,39 @@ import { IoIosArrowDown } from "react-icons/io";
 
 const CryptoSavings: React.FC = () => {
   const navigate = useNavigate();
+
   const {
-    Balance,
-    loading: cryptoBalanceLoading,
-    isWalletVisible,
-    setIsWalletVisible,
-  } = useCryptoWallet();
+    balance: totalContributionCrypto,
+    formattedBalance: formattedTotalContributionCrypto,
+    loading: totalContributionLoading,
+    isContributionVisible,
+    setIsContributionVisible,
+  } = useTotalContributionBalanceCrypto(30000);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [savingsType, setSavingsType] = useState<"naira" | "crypto">("crypto");
   const [isFundModalOpen, setIsFundModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
-  const { userPools = [], loading: poolsLoading } = useAllUserPools() || {};
+
+  const [activeFilters, setActiveFilters] = useState<SavingsFilters>({
+    contributionType: "all",
+    lockType: "all",
+    status: "active",
+  });
+
+  const { userPools: rawUserPoolsData, loading: rawPoolsLoading } =
+      useAllUserPools() || {};
+
+  const poolsToDisplay = Array.isArray(rawUserPoolsData)
+    ? rawUserPoolsData
+    : rawUserPoolsData &&
+        typeof rawUserPoolsData === "object" &&
+        Array.isArray(rawUserPoolsData.data)
+      ? rawUserPoolsData.data
+      : [];
+
   const [selectedContribution, setSelectedContribution] = useState<{
     poolIndex: string;
     tokenToSaveWith: string;
@@ -39,10 +65,6 @@ const CryptoSavings: React.FC = () => {
   } | null>(null);
 
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-  const [activeFilters, setActiveFilters] = useState<SavingsFilters>({
-    contributionType: "all",
-    lockType: "all",
-  });
 
   const handleOpenModalBasedOnType = useCallback((pool: Pool) => {
     setSelectedContribution({
@@ -57,13 +79,6 @@ const CryptoSavings: React.FC = () => {
       setIsFundModalOpen(true);
     }
   }, []);
-
-  const [isContributionVisible, setIsContributionVisible] = useState(() => {
-    const storedVisibility = sessionStorage.getItem(
-      "contributionBalanceVisible",
-    );
-    return storedVisibility !== null ? storedVisibility === "true" : true;
-  });
 
   const [contributionType, setContributionType] = useState<
     "auto" | "one-time" | null
@@ -95,9 +110,14 @@ const CryptoSavings: React.FC = () => {
   }, []);
 
   const filteredPools = useMemo(() => {
-    const poolsArray = Array.isArray(userPools) ? userPools : [];
-    return (poolsArray as Pool[]).filter((pool) => {
-      if (!pool || typeof pool !== "object") return false;
+    return poolsToDisplay.filter((pool: Pool) => {
+      if (
+        !pool ||
+        typeof pool !== "object" ||
+        typeof pool.isActive === "undefined"
+      ) {
+        return false;
+      }
 
       const contributionMatch =
         activeFilters.contributionType === "all" ||
@@ -107,13 +127,19 @@ const CryptoSavings: React.FC = () => {
         activeFilters.lockType === "all" ||
         pool.lockType === activeFilters.lockType;
 
-      return contributionMatch && lockMatch;
+      const statusMatch =
+        activeFilters.status === "all" ||
+        (activeFilters.status === "active" && pool.isActive === true) ||
+        (activeFilters.status === "inactive" && pool.isActive === false);
+
+      return contributionMatch && lockMatch && statusMatch;
     });
-  }, [userPools, activeFilters]);
+  }, [poolsToDisplay, activeFilters]);
 
   const { currentItems, totalPages } = useMemo(() => {
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
     const items = Array.isArray(filteredPools)
       ? filteredPools.slice(indexOfFirstItem, indexOfLastItem)
       : [];
@@ -133,6 +159,58 @@ const CryptoSavings: React.FC = () => {
   const goToPrevPage = useCallback(() => {
     setCurrentPage((prevPage) => (prevPage > 1 ? prevPage - 1 : prevPage));
   }, []);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const {
+      userPools = [],
+      loading: userPoolsLoading,
+      isWalletActivated,
+    } = useAllUserPools() || {};
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const hasFetchedInitialPools = React.useRef(false);
+  useEffect(() => {
+    if (isWalletActivated && !hasFetchedInitialPools.current) {
+      //console.log("CryptoSavings: Wallet active, fetching initial pools.");
+      dispatch(GetAllUserPools());
+      hasFetchedInitialPools.current = true;
+    }
+  }, [dispatch, isWalletActivated]);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newSearchTerm = event.target.value;
+    setSearchTerm(newSearchTerm);
+    if (newSearchTerm.trim() === "" && searchTerm.trim() !== "") {
+      //console.log("Search cleared, fetching all pools.");
+      dispatch(GetAllUserPools());
+    }
+  };
+
+  const handleSearchSubmit = (
+    event?: React.FormEvent | React.KeyboardEvent,
+  ) => {
+    if (
+      event &&
+      typeof (event as React.FormEvent).preventDefault === "function"
+    ) {
+      (event as React.FormEvent).preventDefault();
+    }
+    const termToSearch = searchTerm.trim();
+    if (termToSearch) {
+      //console.log(`Searching for: ${termToSearch}`);
+      dispatch(SearchUserPools(termToSearch));
+    } else {
+      //console.log("Empty search submitted, ensuring all pools are fetched.");
+      dispatch(GetAllUserPools());
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleSearchSubmit(event);
+    }
+  };
 
   return (
     <motion.main
@@ -171,21 +249,16 @@ const CryptoSavings: React.FC = () => {
                 <ToggleButton
                   isVisible={isContributionVisible}
                   onToggle={(newVisibility) => {
-                    setIsWalletVisible(newVisibility);
                     setIsContributionVisible(newVisibility);
-                    sessionStorage.setItem(
-                      "contributionBalanceVisible",
-                      newVisibility.toString(),
-                    );
                   }}
                 />
               </div>
 
               <div className="mt-4 w-full rounded-md sm:mt-6">
-                {cryptoBalanceLoading ? (
+                {totalContributionLoading ? (
                   <div className="h-6 animate-pulse rounded bg-gray-200 sm:h-8"></div>
                 ) : isContributionVisible ? (
-                  <p className="text-xl font-bold lg:text-2xl">${Balance}</p>
+                  <p className="text-xl font-bold lg:text-2xl">${formattedTotalContributionCrypto}</p>
                 ) : (
                   <p className="text-lg font-bold sm:text-xl">*********</p>
                 )}
@@ -354,10 +427,10 @@ const CryptoSavings: React.FC = () => {
           </article>
         </section>
 
-        {/* Render the new MySavingsList component */}
+        {/* MySavingsList */}
         <MySavingsList
-          userPools={userPools}
-          poolsLoading={poolsLoading}
+          userPools={poolsToDisplay}
+          poolsLoading={rawPoolsLoading}
           filteredPools={filteredPools}
           currentItems={currentItems}
           currentPage={currentPage}
@@ -369,6 +442,10 @@ const CryptoSavings: React.FC = () => {
           navigate={navigate}
           setIsFilterModalOpen={setIsFilterModalOpen}
           handleApplyFilters={handleApplyFilters}
+          searchTerm={searchTerm}
+          onSearchChange={handleSearchChange}
+          onSearchSubmit={handleSearchSubmit}
+          onSearchKeyDown={handleKeyDown}
         />
       </main>
 
