@@ -65,9 +65,7 @@ const VerifyUserPhoneNumber = async (body: any) => {
   const url = `${API_URL}/auth/verify_whatsapp_otp`;
 
   try {
-    const response = await axios.post(url, body, {
-      headers: authHeader(),
-    });
+    const response = await axios.post(url, body);
     return response.data;
   } catch (error: any) {
     throw error.response.data;
@@ -99,6 +97,15 @@ const ResetPassword = async (body: any) => {
 };
 
 export async function RESEND_LOGIN_OTP(endpoint: string, data: any) {
+  const url = API_URL + endpoint;
+  try {
+    return await axios.post(url, data);
+  } catch (error: any) {
+    return error.response.data;
+  }
+}
+
+export async function RESEND_VERIFY_OTP(endpoint: string, data: any) {
   const url = API_URL + endpoint;
   try {
     return await axios.post(url, data);

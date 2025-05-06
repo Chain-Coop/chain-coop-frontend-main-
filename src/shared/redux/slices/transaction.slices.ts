@@ -661,6 +661,7 @@ export const transactionSlice = createSlice({
       })
       .addCase(PayUnPaidContribution.rejected, (state) => {
         state.fundUnPaidContribution = null;
+        state.loading = false;
       })
 
       .addCase(deleteCard.pending, (state) => {
