@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Typography } from "@material-tailwind/react";
 import { useCryptoTransactionHistory } from "../../../shared/Hooks/useBalance";
@@ -9,8 +9,11 @@ const SaveIcon = () => <span>+</span>;
 const WithdrawIcon = () => <span>-</span>;
 const TransferIcon = () => <span>🔄</span>;
 
+const ITEMS_PER_PAGE = 10;
+
 const CryptoTransactionHistory: React.FC = () => {
   const { transactions, loading, error } = useCryptoTransactionHistory();
+  const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
   const getTransactionIcon = (type: string) => {
     switch (type?.toUpperCase()) {
@@ -35,6 +38,12 @@ const CryptoTransactionHistory: React.FC = () => {
     }
   };
 
+  const handleSeeMore = () => {
+    setVisibleCount((prevCount) => prevCount + ITEMS_PER_PAGE);
+  };
+
+  const visibleTransactions = transactions ? transactions.slice(0, visibleCount) : [];
+
   return (
     <section className="my-8">
       <Typography
@@ -44,7 +53,11 @@ const CryptoTransactionHistory: React.FC = () => {
         Transaction History
       </Typography>
 
-      {loading}
+      {loading && (
+         <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center text-gray-500">
+          <Typography>Loading history...</Typography>
+        </div>
+      )}
 
       {error && (
         <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-center text-red-600">
@@ -58,13 +71,13 @@ const CryptoTransactionHistory: React.FC = () => {
         </div>
       )}
 
-      {!loading && !error && transactions && transactions.length > 0 && (
+      {!loading && !error && visibleTransactions && visibleTransactions.length > 0 && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="flex flex-col gap-3"
         >
-          {transactions.map((tx: CryptoTransaction) => {
+          {visibleTransactions.map((tx: CryptoTransaction) => {
             let amountColor = "text-gray-700";
             let signPrefix = "";
             const typeUpper = tx.transactionType?.toUpperCase();
@@ -111,6 +124,18 @@ const CryptoTransactionHistory: React.FC = () => {
           })}
         </motion.div>
       )}
+
+      {!loading && transactions && transactions.length > visibleCount && (
+        <div className="mt-4 flex justify-center">
+          <button
+            onClick={handleSeeMore}
+            className="rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200"
+          >
+            See More
+          </button>
+        </div>
+      )}
+
     </section>
   );
 };
