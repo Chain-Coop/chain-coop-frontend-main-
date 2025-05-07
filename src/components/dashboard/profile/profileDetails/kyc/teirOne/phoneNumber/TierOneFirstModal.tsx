@@ -13,7 +13,6 @@ import { IoMdClose } from "react-icons/io";
 interface TierOneFirstModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onStepOneClick: () => void;
   onBvnStepClick: () => void;
   isVerified: boolean;
 }
@@ -21,7 +20,6 @@ interface TierOneFirstModalProps {
 const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
   isOpen,
   onClose,
-  onStepOneClick,
   onBvnStepClick,
   isVerified,
 }) => {
@@ -91,7 +89,6 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
             className={`flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-sm ${
               !isVerified ? "cursor-pointer" : ""
             }`}
-            onClick={!isVerified ? onStepOneClick : undefined}
           >
             <div className="flex flex-col gap-1">
               <Typography

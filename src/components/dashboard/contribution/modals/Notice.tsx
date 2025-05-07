@@ -137,22 +137,23 @@ const NoticeModal: React.FC<NoticeModalProps> = ({
     <Dialog
       open={isOpen}
       handler={onClose}
-      dismiss={{ outsidePress: false }}
       size="sm"
-      className="max-h-[90vh] overflow-y-auto"
+      className="max-h-[90vh] w-[95%] max-w-[500px] overflow-y-scroll"
     >
-      <DialogHeader className="relative flex flex-col text-center">
-        <IconButton
-          variant="text"
-          color="gray"
-          onClick={onClose}
-          className="absolute left-2 top-2 p-2"
-          placeholder=""
-          onPointerEnterCapture={() => {}}
-          onPointerLeaveCapture={() => {}}
-        >
-          <IoMdClose size={24} className="text-text2" />
-        </IconButton>
+      <DialogHeader className="relative flex min-h-[64px] items-center justify-center px-6">
+        <div className="absolute left-2 top-2 z-10">
+          <IconButton
+            variant="text"
+            color="gray"
+            onClick={onClose}
+            className="p-2"
+            placeholder=""
+            onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
+          >
+            <IoMdClose size={24} className="text-text2" />
+          </IconButton>
+        </div>
 
         <Typography variant="h4" className="font-semibold">
           Withdrawal Notice

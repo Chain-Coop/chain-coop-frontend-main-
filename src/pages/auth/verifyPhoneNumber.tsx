@@ -13,9 +13,26 @@ const VerifyPhoneNumber = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isVerifying, setIsVerifying] = useState(false);
+  const [resendDisabled, setResendDisabled] = useState(false);
+  const [resendTimer, setResendTimer] = useState(0);
   const [isResending, setIsResending] = useState(false);
   const [code, setCode] = useState("");
   const [timeLeft, setTimeLeft] = useState(10);
+
+  const startResendTimer = () => {
+    setResendDisabled(true);
+    setResendTimer(30);
+    const interval = setInterval(() => {
+      setResendTimer((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          setResendDisabled(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
 
   const dispatch: AppDispatch = useDispatch();
 
@@ -91,7 +108,7 @@ const VerifyPhoneNumber = () => {
         phoneNumber,
       });
       toast.success(response.data.msg);
-      setTimeLeft(60);
+      startResendTimer();
     } catch (error: any) {
       toast.error(error);
     } finally {
@@ -127,10 +144,14 @@ const VerifyPhoneNumber = () => {
 
           <Button
             onClick={ResendOtp}
-            disabled={isVerifying || isResending || timeLeft > 0}
+            disabled={isVerifying || isResending || resendDisabled}
             className="m-auto mt-6 flex w-[12em] justify-center rounded-full bg-text2 px-2 py-3 text-center font-medium normal-case text-text5 disabled:opacity-50 sm:text-lg lg:mt-[2em]"
           >
-            {isResending ? "Resending..." : "Resend OTP"}
+            {isResending
+              ? "Resending..."
+              : resendDisabled
+                ? `Resend OTP (${resendTimer}s)`
+                : "Resend OTP"}
           </Button>
         </div>
       </section>
