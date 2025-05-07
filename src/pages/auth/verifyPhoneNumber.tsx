@@ -15,7 +15,7 @@ const VerifyPhoneNumber = () => {
   const [isVerifying, setIsVerifying] = useState(false);
   const [isResending, setIsResending] = useState(false);
   const [code, setCode] = useState("");
-  const [timeLeft, setTimeLeft] = useState(60);
+  const [timeLeft, setTimeLeft] = useState(10);
 
   const dispatch: AppDispatch = useDispatch();
 

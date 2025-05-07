@@ -3,10 +3,9 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button, IconButton } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 import { RESET_PASSWORD } from "../../shared/redux/services/landing.services";
 import FormInput from "../../components/common/FormInput";
-import { IoMdClose } from "react-icons/io";
 
 const NewPassword = () => {
   const [passwordType, setPasswordType] = useState("password");
@@ -73,19 +72,6 @@ const NewPassword = () => {
   return (
     <main className="flex h-screen items-center justify-center bg-log px-[1em] ">
       <section className="relative w-full text-center lg:w-[45%]">
-        <IconButton
-          variant="text"
-          color="gray"
-          onClick={handleClose}
-          className="absolute left-2 top-2 h-10 w-10 p-2"
-          ripple={false}
-          placeholder=""
-          onPointerEnterCapture={() => {}}
-          onPointerLeaveCapture={() => {}}
-        >
-          <IoMdClose size={24} className="m-auto text-text2" />
-        </IconButton>
-
         <header className="px-[2em]">
           <h1 className="mb-4 text-3xl font-bold text-text2">Reset Password</h1>
         </header>

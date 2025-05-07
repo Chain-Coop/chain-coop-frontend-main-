@@ -40,7 +40,7 @@ const ConfirmAmount = () => {
   };
 
   const calculateFees = () => {
-    let fees = 50; 
+    let fees = 50;
 
     if (profileDetails?.membershipStatus === "inactive") {
       fees += 1000;
@@ -48,15 +48,16 @@ const ConfirmAmount = () => {
 
     const isLockSavings = savingsType === "Lock";
 
-    if (isLockSavings && isBeforeWithdrawalDate()) {
-      fees += 2000;
+    if (isLockSavings && isBeforeWithdrawalDate() && amountInNaira) {
+      fees += amountInNaira * 0.03; // 3% of requested amount for early withdrawal
     }
 
     return fees;
   };
 
   const totalFees = calculateFees();
-  const totalDeduction = amountInNaira ? amountInNaira + totalFees : 0;
+  const netAmount = amountInNaira ? amountInNaira - totalFees : 0;
+  const totalDeduction = amountInNaira || 0;
 
   useEffect(() => {
     if (!location.state) {
@@ -99,6 +100,13 @@ const ConfirmAmount = () => {
   const handleFund = async () => {
     if (!amountInNaira || !contributionId) {
       setError("Missing required information. Please try again.");
+      return;
+    }
+
+    if (netAmount <= 0) {
+      setError(
+        `Fees (₦${totalFees.toLocaleString()}) exceed the requested amount. Please increase the withdrawal amount.`,
+      );
       return;
     }
 
@@ -156,7 +164,6 @@ const ConfirmAmount = () => {
   }
 
   const isLockSavings = savingsType === "Lock";
-
   const showEarlyWithdrawalFee = isLockSavings && isBeforeWithdrawalDate();
 
   return (
@@ -174,7 +181,7 @@ const ConfirmAmount = () => {
       <section className="px-4">
         <div className="mt-[2.5em] flex justify-center">
           <h1 className="text-xl font-bold">
-            {amountInNaira ? formatBalance(amountInNaira) : "---"}
+            {netAmount > 0 ? formatBalance(netAmount) : "---"}
           </h1>
         </div>
 
@@ -184,7 +191,7 @@ const ConfirmAmount = () => {
               Amount to Receive
             </Typography>
             <span className="font-medium">
-              {amountInNaira ? formatBalance(amountInNaira) : "---"}
+              {netAmount > 0 ? formatBalance(netAmount) : "---"}
             </span>
           </div>
 
@@ -201,12 +208,18 @@ const ConfirmAmount = () => {
                 <span className="text-amber-600">₦1,000.00</span>
               </div>
             )}
-            {showEarlyWithdrawalFee && (
+            {showEarlyWithdrawalFee && amountInNaira && (
               <div className="flex justify-between">
                 <Typography className="text-base text-amber-600">
-                  Early Withdrawal Fee
+                  Early Withdrawal Fee (3%)
                 </Typography>
-                <span className="text-amber-600">₦2,000.00</span>
+                <span className="text-amber-600">
+                  ₦
+                  {(amountInNaira * 0.03).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                </span>
               </div>
             )}
 
@@ -245,7 +258,9 @@ const ConfirmAmount = () => {
             variant="text"
             className="w-[70%] bg-text2 py-3 text-sm normal-case text-white hover:bg-text2 disabled:bg-gray-300"
             onClick={handleFund}
-            disabled={loading || !amountInNaira || !contributionId}
+            disabled={
+              loading || !amountInNaira || !contributionId || netAmount <= 0
+            }
           >
             {loading
               ? "Processing..."
