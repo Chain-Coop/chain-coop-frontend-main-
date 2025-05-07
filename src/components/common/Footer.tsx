@@ -85,13 +85,13 @@ const Footer = () => {
             <section className="w-full space-y-4">
               <Typography
                 variant="h2"
-                className="text-sm font-light text-text3"
+                className="text-md font-light text-text3"
               >
                 Chain Co-Op is a secure, registered cooperative dedicated to
                 empowering individuals with innovative savings solutions in
                 Naira and crypto.
               </Typography>
-              <Typography variant="small" className="font-light text-text3">
+              <Typography className="text-md font-light text-text3">
                 Our platform combines cutting-edge technology with trusted
                 financial practices to help you build and protect your wealth.
               </Typography>
@@ -100,13 +100,13 @@ const Footer = () => {
             <section className="w-full space-y-4">
               <Typography
                 variant="h2"
-                className="text-sm font-semibold text-text3"
+                className="text-lg font-semibold text-text3"
               >
                 Company
               </Typography>
               <div>
                 {Company.map((data, index) => (
-                  <p className="mb-2 font-light text-text3" key={index}>
+                  <p className="mb-2 text-lg font-light text-text3" key={index}>
                     <Link to={data.to}>{data.text}</Link>
                   </p>
                 ))}
@@ -116,13 +116,13 @@ const Footer = () => {
             <section className="w-full space-y-4">
               <Typography
                 variant="h2"
-                className="text-sm font-semibold text-text3"
+                className="text-lg font-semibold text-text3"
               >
                 Explore
               </Typography>
               <div>
                 {Explore.map((data, index) => (
-                  <p className="mb-2 font-light text-text3" key={index}>
+                  <p className="mb-2 text-lg font-light text-text3" key={index}>
                     <Link to={data.to}>{data.text}</Link>
                   </p>
                 ))}
@@ -132,13 +132,13 @@ const Footer = () => {
             <section className="w-full space-y-4">
               <Typography
                 variant="h2"
-                className="text-sm font-semibold text-text3"
+                className="text-lg font-semibold text-text3"
               >
                 Legal
               </Typography>
               <div>
                 {Legal.map((data, index) => (
-                  <p className="mb-2 font-light text-text3" key={index}>
+                  <p className="mb-2 text-lg font-light text-text3" key={index}>
                     <Link to={data.to}>{data.text}</Link>
                   </p>
                 ))}
@@ -148,18 +148,18 @@ const Footer = () => {
             <section className="w-full space-y-4">
               <Typography
                 variant="h2"
-                className="text-sm font-semibold text-text3"
+                className="text-lg font-semibold text-text3"
               >
                 Contact
               </Typography>
               <div className="flex flex-col gap-3">
-                <Typography className="font-light text-text3">
+                <Typography className="text-lg font-light text-text3">
                   Let's build a better future together!
                 </Typography>
-                <Typography className="font-light text-text3">
+                <Typography className="text-lg font-light text-text3">
                   info@chaincoop.org
                 </Typography>
-                <Typography className="font-light text-text3">
+                <Typography className="font-light text-lg text-text3">
                   +234 809 322 7696
                 </Typography>
               </div>
@@ -174,7 +174,8 @@ const Footer = () => {
         <div className="flex flex-col items-center px-6 py-8 lg:flex-row lg:justify-between lg:px-[5em]">
           <div className="mb-4 lg:mb-0">
             <span className="text-text3">
-              @ 2024 Chain Cooperative. All rights reserved
+              © {new Date().getFullYear()} Chain Cooperative. All rights
+              reserved
             </span>
           </div>
           <div className="flex items-center gap-6">

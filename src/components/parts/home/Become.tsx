@@ -83,7 +83,7 @@ const Become = () => {
                       >
                         {item.title}
                       </Typography>
-                      <Typography className="text-sm font-normal leading-normal">
+                      <Typography className="text-lg font-normal leading-normal">
                         {item.paragraph}
                       </Typography>
                     </div>
