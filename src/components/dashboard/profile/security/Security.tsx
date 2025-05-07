@@ -85,6 +85,9 @@ const Security = () => {
         dispatch(resetPasswordState());
       },
     },
+    {
+      title: "Change Password",
+    },
   ];
 
   const renderModal = () => {
@@ -174,7 +177,7 @@ const Security = () => {
           <div key={index} className="mb-2 flex flex-col">
             <hr className="h-[1px] rounded-full bg-gray-200" />
             <div
-              className="flex cursor-pointer items-center justify-between py-1"
+              className="flex cursor-pointer items-center justify-between py-3"
               onClick={section.onClick}
             >
               <span className="font-semibold">{section.title}</span>
