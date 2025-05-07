@@ -7,6 +7,7 @@ import { setMessage } from "../redux/slices/message.slices";
 import * as transactionSlices from "../redux/slices/transaction.slices";
 import * as Web3Slices from "../redux/slices/web3.slices";
 import { Pool, CryptoTransaction } from "../types/types";
+import { parseISO, isAfter, isToday } from "date-fns";
 
 const useVisibilityState = (storageKey: string, defaultValue = true) => {
   const [isVisible, setIsVisible] = useState(() => {
@@ -280,9 +281,13 @@ export const useTotalContributionBalanceCrypto = (refreshInterval?: number) => {
     }
   }, [fetchBalance, refreshInterval]);
 
-  const formattedBalance = balance !== null
-    ? Number(balance).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-    : "---";
+  const formattedBalance =
+    balance !== null
+      ? Number(balance).toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
+      : "---";
 
   return {
     isContributionVisible: isVisible,
@@ -292,5 +297,91 @@ export const useTotalContributionBalanceCrypto = (refreshInterval?: number) => {
     loading: loading,
     error: error,
     fetchBalance: fetchBalance,
+  };
+};
+
+export const isBeforeWithdrawalDate = (
+  withdrawalDate: string | null,
+): boolean => {
+  if (!withdrawalDate) return false;
+  try {
+    const parsedWithdrawalDate = parseISO(withdrawalDate);
+    const today = new Date();
+    return (
+      isAfter(parsedWithdrawalDate, today) && !isToday(parsedWithdrawalDate)
+    );
+  } catch (e) {
+    return false;
+  }
+};
+
+export const calculateFees = (
+  savingsType: string,
+  withdrawalDate: string | null,
+  amount: number,
+  membershipStatus: string,
+): number => {
+  let fees = 50;
+
+  if (membershipStatus === "inactive") {
+    fees += 1000;
+  }
+
+  if (savingsType === "Lock" && isBeforeWithdrawalDate(withdrawalDate)) {
+    fees += amount * 0.03;
+  }
+
+  return fees;
+};
+
+export const useWithdrawalValidation = ({
+  savingsType,
+  withdrawalDate,
+  withdrawalAmount,
+  balance,
+  membershipStatus,
+}: {
+  savingsType: string;
+  withdrawalDate: string | null;
+  withdrawalAmount: number;
+  balance: number;
+  membershipStatus: string;
+}) => {
+  const isStrictLockBlocked =
+    savingsType === "StrictLock" && isBeforeWithdrawalDate(withdrawalDate);
+
+  if (isStrictLockBlocked) {
+    return {
+      isValid: false,
+      error: "Strict Lock savings can only be withdrawn on the maturity date.",
+      totalFees: 0,
+      netAmount: 0,
+      shortfall: 0,
+      isStrictLockBlocked: true,
+    };
+  }
+
+  const totalFees = calculateFees(
+    savingsType,
+    withdrawalDate,
+    withdrawalAmount,
+    membershipStatus,
+  );
+  const netAmount = withdrawalAmount - totalFees;
+  const totalRequired = withdrawalAmount; // Total deduction is the requested amount
+  const shortfall = totalRequired > balance ? totalRequired - balance : 0;
+
+  return {
+    isValid: netAmount > 0 && shortfall === 0,
+    error:
+      shortfall > 0
+        ? `Insufficient balance. You need ₦${shortfall.toLocaleString()} more.`
+        : netAmount <= 0
+          ? `Fees (₦${totalFees.toLocaleString()}) exceed the requested amount. Please increase the withdrawal amount.`
+          : null,
+    totalFees,
+    netAmount,
+    shortfall,
+    isStrictLockBlocked: false,
   };
 };

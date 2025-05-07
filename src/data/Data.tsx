@@ -946,6 +946,17 @@ export const teamMembers = [
   },
   {
     id: 4,
+    name: "Taiwo Odunowo",
+    role: "Financial Analyst",
+    image: taiwo,
+    description:
+      "Taiwo Odunowo is currently the Head of Programs & Strategy at Bridging Horizons, leading high-impact initiatives and partnerships that engage the African diaspora in transformative development. At WTI, he serves as an Investment Analyst, working with the investment team on due diligence, deal analysis, investment calculations, data analysis, market research, and contributing to investment decisions. An alum of Stanford University, he combines a strong foundation in finance and strategy with a passion for global impact.",
+    social: {
+      linkedin: "http://www.linkedin.com/in/taiwo-o-odunowo",
+    },
+  },
+  {
+    id: 5,
     name: "Oluwasegun Awoyinfa",
     role: "Lawyer",
     image: awoyinfa,
@@ -957,7 +968,7 @@ export const teamMembers = [
     },
   },
   {
-    id: 5,
+    id: 6,
     name: "Rebecca Asseh",
     role: "Content Marketer",
     image: rebecca,
@@ -969,7 +980,7 @@ export const teamMembers = [
     },
   },
   {
-    id: 6,
+    id: 7,
     name: "Tshegofatso Seane",
     role: "Backend Developer",
     image: seane,
@@ -982,13 +993,14 @@ export const teamMembers = [
   },
   {
     id: 8,
-    name: "Taiwo Odunowo",
-    role: "Financial Analyst",
-    image: taiwo,
+    name: "Kalu Iwere Eyitemi",
+    role: "UI/UX DESIGNER",
+    image: temi,
     description:
-      "Taiwo Odunowo is currently the Head of Program & Strategy at Bridging Horizons, leading high-impact initiatives and partnerships that engage the african diaspora in transformative development. Formerly a Financial Analyst at WTI, he contributed to venture debt analysis and strategic financial planning. An alum of Stranford Univerisity, he combines a strong foundation in finance and strategy with a passion for global impact.",
+      "Eyitemi is a  skilled product designer with over 3+years experience. She has also volunteered as a designer for Justproject. Holding a UX design degree from Coursera and Ingressive for Good, her expertise spans user research, visual design, interaction design, Figma, prototyping, and motion design Eyitemi is a strong communicator and collaborator, dedicated to creating innovative and impactful products that improve people's lives.",
     social: {
-      linkedin: "http://www.linkedin.com/in/taiwo-o-odunowo",
+      linkedin:
+        "https://www.linkedin.com/in/eyitemi-onorume-849a50211?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
     },
   },
 ];

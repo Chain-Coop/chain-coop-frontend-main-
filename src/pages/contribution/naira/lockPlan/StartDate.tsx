@@ -17,7 +17,9 @@ import {
   validateCustomEndDate,
 } from "../../../../shared/utils/format";
 import { AppDispatch } from "../../../../shared/redux/store";
-import { useUserCard } from "../../../../shared/Hooks/useUserProfile";
+import useUserProfile, {
+  useUserCard,
+} from "../../../../shared/Hooks/useUserProfile";
 import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
 import {
   CreateContributionPlan,
@@ -53,13 +55,14 @@ const StartDate: React.FC = () => {
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [useCustomDate, setUseCustomDate] = useState(false);
 
+  const { profileDetails } = useUserProfile();
+  console.log("prof", profileDetails);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch: AppDispatch = useAppDispatch();
 
   const { purpose, plan, amount, currency, savingsType, contributionType } =
     location.state || {};
-  console.log("lo", location.state);
   const isDaily = plan?.toLowerCase() === "daily";
 
   const MIN_DAILY_DAYS = 7;
@@ -169,6 +172,7 @@ const StartDate: React.FC = () => {
     try {
       const paymentResponse = await dispatch(
         PayContribution({
+          userId: profileDetails?.id,
           contributionId: contributionData?.contributionId,
           paymentType,
         }),
@@ -209,7 +213,7 @@ const StartDate: React.FC = () => {
             {plan} Contribution
           </h1>
           <p className="mt-[1em] text-center font-medium">
-            You are about to save NGN{amount} {plan.toLowerCase()} into your
+            You are about to save NGN{amount} {plan?.toLowerCase()} into your
             contribution amount
           </p>
         </header>
