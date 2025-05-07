@@ -994,7 +994,7 @@ export const teamMembers = [
   {
     id: 8,
     name: "Kalu Iwere Eyitemi",
-    role: "UI/UX DESIGNER",
+    role: "UI/UX Designer",
     image: temi,
     description:
       "Eyitemi is a  skilled product designer with over 3+years experience. She has also volunteered as a designer for Justproject. Holding a UX design degree from Coursera and Ingressive for Good, her expertise spans user research, visual design, interaction design, Figma, prototyping, and motion design Eyitemi is a strong communicator and collaborator, dedicated to creating innovative and impactful products that improve people's lives.",
