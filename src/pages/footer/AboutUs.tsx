@@ -55,13 +55,7 @@ const AboutUs = () => {
           isLoaded ? "opacity-100" : "opacity-0"
         }`}
       >
-        <motion.section
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
-          variants={staggerContainer}
-          className="mx-auto flex w-full flex-col items-center py-8 text-center lg:px-2"
-        >
+        <div className="mx-auto flex w-full flex-col items-center py-8 text-center lg:px-2">
           <div className="max-w-full px-4 text-center sm:px-6 lg:px-8">
             <MotionTypography
               variant="h1"
@@ -81,15 +75,9 @@ const AboutUs = () => {
               co-op we are reshaping the future of work and investment
             </Typography>
           </div>
-        </motion.section>
+        </div>
 
-        <motion.section
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
-          variants={staggerContainer}
-          className="relative w-full py-8 md:py-12 lg:py-[4em]"
-        >
+        <div className="relative w-full py-8 md:py-12 lg:py-[4em]">
           <div className="absolute right-0 top-0 hidden md:block">
             <img src={imageRight} alt="" className="max-w-none" />
           </div>
@@ -125,7 +113,7 @@ const AboutUs = () => {
               </Link>
             </div>
           </div>
-        </motion.section>
+        </div>
 
         <motion.section
           initial="hidden"

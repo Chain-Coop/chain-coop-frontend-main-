@@ -10,7 +10,7 @@ import { ROUTES } from "../../../../shared/routes";
 
 const Explore = () => {
   return (
-    <main className="container mx-auto mt-5 max-w-[82%] md:mt-0 lg:mt-0">
+    <main className="container mx-auto mt-5 px-2 md:mt-0 md:max-w-[82%] md:px-0 lg:mt-0">
       <section className="w-full">
         <header className="mx-auto w-full py-6 text-center text-text4 md:py-8 lg:max-w-3xl lg:py-12">
           <MotionTypography
@@ -29,12 +29,12 @@ const Explore = () => {
             transition={{ duration: 0.5 }}
             className="mx-auto mt-3 max-w-xl px-3"
           >
-            <Typography className="mb-6 text-sm font-normal md:text-base lg:text-lg">
+            <Typography className="mb-6 text-lg font-normal">
               Join hundreds of others using our smart lock savings options.
             </Typography>
 
             <Link to={ROUTES.sign_up} className="inline-block">
-              <Button className="bg-text2 px-8 py-3 text-sm font-semibold normal-case text-text5 transition-all hover:opacity-90 md:text-base">
+              <Button className="bg-text2 px-8 py-3 text-sm font-semibold normal-case text-text5 transition-all hover:opacity-90">
                 Start Saving
               </Button>
             </Link>
