@@ -40,7 +40,7 @@ const Footer = () => {
 
   return (
     <footer className="w-full overflow-hidden">
-      <header className="relative z-10 mx-auto mb-[-50px] mt-[3em] flex w-full items-center justify-center rounded-2xl bg-[#CCA3BC] p-3  sm:mb-[-60px] sm:py-5 lg:mb-[-115px] lg:w-[90%] lg:p-8">
+      <header className="relative z-10 mx-auto mb-[-50px] mt-[3em] flex w-[90%] items-center justify-center rounded-2xl bg-[#CCA3BC] p-3 sm:mb-[-60px] sm:py-5 lg:mb-[-115px] lg:w-[82%] lg:p-8">
         <div className="w-full px-2 text-center sm:px-4">
           <Typography
             variant="h1"
@@ -50,7 +50,7 @@ const Footer = () => {
           </Typography>
           <Typography
             variant="h1"
-            className="m-auto mb-3 w-full text-sm font-semibold tracking-tight sm:px-4 md:text-lg lg:w-[73%] lg:text-2xl"
+            className="m-auto mb-3 w-full px-2 text-sm font-semibold tracking-tight md:text-lg lg:max-w-4xl lg:px-5 lg:text-2xl"
           >
             Subscribe to the latest tech in tech-driven cooperative innovations
             and Savings opportunities.
@@ -79,91 +79,87 @@ const Footer = () => {
         </div>
       </header>
 
-      <div className="w-full bg-text2 ">
-        <div className="mx-auto px-4 pt-[120px] lg:w-[93%] lg:pb-[10px] lg:pt-[190px]">
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
-            <section className="w-full space-y-4">
-              <Typography
-                variant="h2"
-                className="text-md font-light text-text3"
-              >
+      <div className="w-full bg-text2 text-white">
+        <div className="mx-auto px-4 pt-[120px] lg:w-[82%] lg:pb-[10px] lg:pt-[190px]">
+          <div className="grid w-full grid-cols-1 gap-8 lg:grid-cols-2">
+            <section className="w-full max-w-lg space-y-4">
+              <Typography variant="h2" className="text-md font-light">
                 Chain Co-Op is a secure, registered cooperative dedicated to
                 empowering individuals with innovative savings solutions in
                 Naira and crypto.
               </Typography>
-              <Typography className="text-md font-light text-text3">
+              <Typography className="text-md font-light">
                 Our platform combines cutting-edge technology with trusted
-                financial practices to help you build and protect your wealth.
+                financial practices to help you build and protect your wealth.
               </Typography>
             </section>
 
-            <section className="w-full space-y-4">
-              <Typography
-                variant="h2"
-                className="text-lg font-semibold text-text3"
-              >
-                Company
-              </Typography>
-              <div>
-                {Company.map((data, index) => (
-                  <p className="mb-2 text-lg font-light text-text3" key={index}>
-                    <Link to={data.to}>{data.text}</Link>
-                  </p>
-                ))}
-              </div>
-            </section>
-
-            <section className="w-full space-y-4">
-              <Typography
-                variant="h2"
-                className="text-lg font-semibold text-text3"
-              >
-                Explore
-              </Typography>
-              <div>
-                {Explore.map((data, index) => (
-                  <p className="mb-2 text-lg font-light text-text3" key={index}>
-                    <Link to={data.to}>{data.text}</Link>
-                  </p>
-                ))}
-              </div>
-            </section>
-
-            <section className="w-full space-y-4">
-              <Typography
-                variant="h2"
-                className="text-lg font-semibold text-text3"
-              >
-                Legal
-              </Typography>
-              <div>
-                {Legal.map((data, index) => (
-                  <p className="mb-2 text-lg font-light text-text3" key={index}>
-                    <Link to={data.to}>{data.text}</Link>
-                  </p>
-                ))}
-              </div>
-            </section>
-
-            <section className="w-full space-y-4">
-              <Typography
-                variant="h2"
-                className="text-lg font-semibold text-text3"
-              >
-                Contact
-              </Typography>
-              <div className="flex flex-col gap-3">
-                <Typography className="text-lg font-light text-text3">
-                  Let's build a better future together!
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4 lg:flex lg:justify-between lg:gap-8">
+              <section className="w-full space-y-4">
+                <Typography
+                  variant="h2"
+                  className="text-lg font-semibold text-text3"
+                >
+                  Company
                 </Typography>
-                <Typography className="text-lg font-light text-text3">
-                  info@chaincoop.org
+                <div>
+                  {Company.map((data, index) => (
+                    <p className="mb-2 text-lg font-light" key={index}>
+                      <Link to={data.to}>{data.text}</Link>
+                    </p>
+                  ))}
+                </div>
+              </section>
+
+              <section className="w-full space-y-4">
+                <Typography variant="h2" className="text-lg font-semibold">
+                  Explore
                 </Typography>
-                <Typography className="font-light text-lg text-text3">
-                  +234 809 322 7696
+                <div>
+                  {Explore.map((data, index) => (
+                    <p
+                      className="mb-2 whitespace-nowrap text-lg font-light"
+                      key={index}
+                    >
+                      <Link to={data.to}>{data.text}</Link>
+                    </p>
+                  ))}
+                </div>
+              </section>
+
+              <section className="w-full space-y-4">
+                <Typography variant="h2" className="text-lg font-semibold">
+                  Legal
                 </Typography>
-              </div>
-            </section>
+                <div>
+                  {Legal.map((data, index) => (
+                    <p
+                      className="mb-2 whitespace-nowrap text-lg font-light"
+                      key={index}
+                    >
+                      <Link to={data.to}>{data.text}</Link>
+                    </p>
+                  ))}
+                </div>
+              </section>
+
+              <section className="w-full space-y-4">
+                <Typography variant="h2" className="text-lg font-semibold">
+                  Contact
+                </Typography>
+                <div className="flex flex-col gap-3">
+                  <Typography className="whitespace-nowrap text-lg font-light">
+                    Let's build a better future together!
+                  </Typography>
+                  <Typography className="text-lg font-light">
+                    info@chaincoop.org
+                  </Typography>
+                  <Typography className="text-lg font-light">
+                    +234 809 322 7696
+                  </Typography>
+                </div>
+              </section>
+            </div>
           </div>
         </div>
 
@@ -171,8 +167,8 @@ const Footer = () => {
           <div className="w-full border-b-2 text-text3"></div>
         </div>
 
-        <div className="flex flex-col items-center px-6 py-8 lg:flex-row lg:justify-between lg:px-[5em]">
-          <div className="mb-4 lg:mb-0">
+        <div className="mx-auto flex max-w-[90%] flex-col items-center px-3 py-8 lg:max-w-[82%] lg:flex-row lg:justify-between">
+          <div className="mb-4 text-center lg:mb-0 lg:text-left">
             <span className="text-text3">
               © {new Date().getFullYear()} Chain Cooperative. All rights
               reserved

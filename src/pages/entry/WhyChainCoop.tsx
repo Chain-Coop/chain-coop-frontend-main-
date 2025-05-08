@@ -39,52 +39,6 @@ const WhyChainCoop = () => {
     },
   };
 
-  const fadeIn = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut",
-      },
-    },
-  };
-
-  const slideInLeft = {
-    hidden: { x: -50, opacity: 0 },
-    visible: {
-      x: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
-    },
-  };
-
-  const slideInRight = {
-    hidden: { x: 50, opacity: 0 },
-    visible: {
-      x: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
-    },
-  };
-
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
   return (
     <div className="overflow-x-hidden">
       <NavBar />
@@ -103,7 +57,7 @@ const WhyChainCoop = () => {
             minHeight: "100vh",
           }}
         >
-          <section className="relative mx-auto flex w-full flex-col items-center py-8 text-center md:py-12 lg:w-[95%] lg:px-2 lg:py-[4em]">
+          <section className="relative mx-auto flex w-full flex-col items-center px-2 py-8 text-center md:py-[4em]">
             <div className="relative z-10 max-w-full px-1 text-center md:px-1 lg:px-2">
               <MotionTypography
                 variant="h1"
