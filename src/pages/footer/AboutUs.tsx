@@ -60,7 +60,7 @@ const AboutUs = () => {
           whileInView="visible"
           viewport={{ once: false, amount: 0.3 }}
           variants={staggerContainer}
-          className="mx-auto flex w-full flex-col items-center py-8 text-center lg:w-[95%] lg:px-2"
+          className="mx-auto flex w-full flex-col items-center py-8 text-center lg:px-2"
         >
           <div className="max-w-full px-4 text-center sm:px-6 lg:px-8">
             <MotionTypography
@@ -94,7 +94,7 @@ const AboutUs = () => {
             <img src={imageRight} alt="" className="max-w-none" />
           </div>
 
-          <div className="relative z-10 mx-auto w-full px-4 sm:px-6 lg:w-[95%] lg:px-8">
+          <div className="relative z-10 mx-auto w-full px-4 sm:px-6 lg:w-[82%] lg:px-8">
             <div className="text-center">
               <MotionTypography
                 variant="h1"

@@ -10,7 +10,7 @@ import { ROUTES } from "../../../../shared/routes";
 
 const Explore = () => {
   return (
-    <main className="container mx-auto mt-5 max-w-[95%] px-3  md:mt-0  lg:mt-0 lg:px-8">
+    <main className="container mx-auto mt-5 max-w-[82%] md:mt-0 lg:mt-0">
       <section className="w-full">
         <header className="mx-auto w-full py-6 text-center text-text4 md:py-8 lg:max-w-3xl lg:py-12">
           <MotionTypography
@@ -65,7 +65,7 @@ const Explore = () => {
               tags: ["Smartsave", "Easy Entry", "Simple Withdrawal"],
             },
           ].map((item, index) => (
-            <div key={index} className="card mx-auto w-full lg:max-w-[374px]">
+            <div key={index} className="card mx-auto w-full">
               <div className="poster">
                 <img src={item.image} alt={item.title} />
               </div>
