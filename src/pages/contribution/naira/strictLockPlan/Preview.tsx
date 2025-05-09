@@ -170,10 +170,10 @@ const Preview = () => {
         </button>
         <Button
           onClick={handleSubmit}
-          className="rounded-md bg-text2 px-8 py-2 font-semibold normal-case text-white"
+          className="flex items-center justify-center rounded-md bg-text2 px-8 py-2 font-semibold normal-case text-white"
           loading={loading}
         >
-          {loading ? "Please Wait..." : "Next"}
+          Next
         </Button>
       </div>
       {hasCards ? (

@@ -11,6 +11,9 @@ import Email from "./modal/Email";
 import OtpInput from "./modal/OtpInput";
 import NewPassword from "./modal/NewPassword";
 import Success from "../../../common/Success";
+import ChangePhoneNumber from "./modal/changePhoneNumber";
+import PhoneNumberOtp from "./phoneNumberOtp";
+import NewPhoneNumber from "./newPhoneNumber";
 
 const Security = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -24,16 +27,24 @@ const Security = () => {
   const [currentModalType, setCurrentModalType] = useState("");
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isPinSuccessModalOpen, setIsPinSuccessModalOpen] = useState(false);
+  const [changePhoneNumberSteps, setChangePhoneNumberSteps] = useState(0);
+  const [isPhoneNumberSuccessModalOpen, setIsPhoneNumberSuccessModalOpen] =
+    useState(false);
+  const [successMessage, setSuccessMessage] = useState(
+    "Operation completed successfully",
+  );
 
   const resetStates = () => {
     setPasswordResetStep(0);
     setPinResetStep(0);
+    setChangePhoneNumberSteps(0);
     setEmail("");
     setOtp("");
     setIsModalOpen(false);
     setCurrentModalType("");
     setIsSuccessModalOpen(false);
     setIsPinSuccessModalOpen(false);
+    setIsPhoneNumberSuccessModalOpen(false);
   };
 
   const handlePinSuccess = () => {
@@ -53,12 +64,28 @@ const Security = () => {
 
   const handlePasswordResetSuccess = () => {
     setIsModalOpen(false);
+    setSuccessMessage("Password Reset Successfully");
     setIsSuccessModalOpen(true);
   };
 
+  const handlePhoneNumberSuccess = () => {
+    setIsModalOpen(false);
+    setSuccessMessage("Phone Number Updated Successfully");
+    setIsPhoneNumberSuccessModalOpen(true);
+  };
+
+  const handlePhoneNumberSuccessModalClose = () => {
+    setIsPhoneNumberSuccessModalOpen(false);
+    resetStates();
+  };
+
   const handleEmailSent = useCallback(() => {
-    setPasswordResetStep(2);
-  }, []);
+    if (currentModalType === "password") {
+      setPasswordResetStep(2);
+    } else if (currentModalType === "phoneNumber") {
+      setChangePhoneNumberSteps(2);
+    }
+  }, [currentModalType]);
 
   const handleSuccessModalClose = () => {
     setIsSuccessModalOpen(false);
@@ -86,7 +113,13 @@ const Security = () => {
       },
     },
     {
-      title: "Change Password",
+      title: "Change phone number",
+      onClick: () => {
+        setCurrentModalType("phoneNumber");
+        setChangePhoneNumberSteps(1);
+        setIsModalOpen(true);
+        setOtp("");
+      },
     },
   ];
 
@@ -164,6 +197,43 @@ const Security = () => {
           return null;
       }
     }
+
+    if (currentModalType === "phoneNumber") {
+      switch (changePhoneNumberSteps) {
+        case 1:
+          return (
+            <ChangePhoneNumber
+              email={email}
+              setEmail={setEmail}
+              onEmailSent={handleEmailSent}
+              isOpen={true}
+              onClose={handleModalClose}
+            />
+          );
+        case 2:
+          return (
+            <PhoneNumberOtp
+              otp={otp}
+              setOtp={setOtp}
+              isOpen={isModalOpen}
+              onClose={handleModalClose}
+              onOtpEntered={() => setChangePhoneNumberSteps(3)}
+              email={email}
+            />
+          );
+        case 3:
+          return (
+            <NewPhoneNumber
+              otp={otp}
+              isOpen={isModalOpen}
+              onClose={handleModalClose}
+              onSuccess={handlePhoneNumberSuccess}
+            />
+          );
+        default:
+          return null;
+      }
+    }
   };
 
   return (
@@ -194,13 +264,19 @@ const Security = () => {
       <Success
         isOpen={isSuccessModalOpen}
         onClose={handleSuccessModalClose}
-        title="Password Reset Successfully"
+        title={successMessage}
       />
 
       <Success
         isOpen={isPinSuccessModalOpen}
         onClose={handlePinSuccessModalClose}
         title="Pin Successfully Changed"
+      />
+
+      <Success
+        isOpen={isPhoneNumberSuccessModalOpen}
+        onClose={handlePhoneNumberSuccessModalClose}
+        title="Phone Number Updated Successfully"
       />
     </main>
   );
