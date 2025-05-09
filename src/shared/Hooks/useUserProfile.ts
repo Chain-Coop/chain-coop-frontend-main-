@@ -11,6 +11,7 @@ import {
 } from "../redux/slices/transaction.slices";
 import { getAllNotification } from "../redux/slices/notification.slices";
 import { GetAllUserPools } from "../redux/slices/web3.slices";
+import { GetSavingCircleByUser } from "../redux/slices/web_savings_groups.slices";
 
 enum UploadFields {
   ProfilePicture = "profilePicture",
@@ -24,13 +25,45 @@ export const useUserProfile = () => {
   const userToken = sessionStorage.getItem("userData");
   const [loading, setLoading] = useState(false);
 
+  // State for user saving circles
+  const [userCircles, setUserCircles] = useState<any[]>([]);
+  const [circlesLoading, setCirclesLoading] = useState(false);
+  const [circlesError, setCirclesError] = useState<string | null>(null);
+
   const fetchUserProfile = useCallback(() => {
     return dispatch(GetUserProfile()).unwrap();
   }, [dispatch]);
 
+  const fetchUserCircles = useCallback(async () => {
+    if (profileDetails?._id) {
+      setCirclesLoading(true);
+      setCirclesError(null);
+      try {
+        const result = await dispatch(
+          GetSavingCircleByUser(profileDetails._id),
+        ).unwrap();
+
+        console.log(
+          "USEUSERPROFILE HOOK - Raw result from GetSavingCircleByUser:",
+          result,
+        );
+
+        setUserCircles(result?.web_group_savings?.data || []);
+      } catch (error: any) {
+        const errorMessage =
+          error?.message || error?.error || "Failed to fetch user circles";
+        setCirclesError(errorMessage);
+        dispatch(setMessage(errorMessage)); // Might remove this
+      } finally {
+        setCirclesLoading(false);
+      }
+    }
+  }, [dispatch, profileDetails?._id]);
+
   useEffect(() => {
     fetchUserProfile().catch((error) => {});
-  }, [fetchUserProfile]);
+    fetchUserCircles();
+  }, [fetchUserProfile, fetchUserCircles]);
 
   const uploadUserAvatar = async (selectedFile: File) => {
     if (userToken && selectedFile) {
@@ -57,6 +90,10 @@ export const useUserProfile = () => {
     loading,
     uploadUserAvatar,
     fetchUserProfile,
+    userCircles,
+    circlesLoading,
+    circlesError,
+    fetchUserCircles,
   };
 };
 

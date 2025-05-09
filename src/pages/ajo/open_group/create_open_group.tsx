@@ -28,8 +28,6 @@ import { AppDispatch } from "../../../shared/redux/store";
 import { toast } from "react-toastify";
 import WebGroupSavings from "../../../shared/redux/services/web_savings_group.services";
 
-
-
 const CreateOpenGroup = () => {
   const profileDetails = useSelector(
     (state: any) => state?.landing?.getProfile,
@@ -127,28 +125,51 @@ const CreateOpenGroup = () => {
       second: secondFormData,
       third: thirdFormData,
       groupType: "open",
-      userId: profileDetails?.userId,
+      userId: profileDetails?._id,
     });
+
+    // --- Add console.log to inspect formData ---
+    console.log("--- Preparing to send data to backend ---");
+    if (formData instanceof FormData) {
+      console.log("Data is FormData instance. Entries:");
+      for (let [key, value] of formData.entries()) {
+        // For File objects, log the name and type, not the whole object
+        if (value instanceof File) {
+          console.log(key + ":", {
+            name: value.name,
+            size: value.size,
+            type: value.type,
+            lastModified: value.lastModified,
+          });
+        } else {
+          console.log(key + ":", value);
+        }
+      }
+    } else {
+      // If it's a plain JavaScript object
+      console.log("Data is a plain object:", JSON.stringify(formData, null, 2));
+    }
+    console.log("--- End of data to be sent ---");
+    // --- End console.log ---
 
     dispatch(WebGroupSavings.CreateSavingsCircle(formData))
       .unwrap()
       .then((response: any) => {
-          setLoading(false);
-          if (response?.status === 200) {
-            console.log(response?.data)
-            toast.success(response?.data?.msg);
-            setIsModalOpen(true);
-          } else if (response?.status === 400) {
-            console.log(response?.data)
-          }
-        })
-        .catch((error: any) => {
-          setLoading(false);
-          const errorMessage = error;
-          toast.error(errorMessage);
-        });
-  }
-
+        setLoading(false);
+        if (response?.status === 200) {
+          console.log(response?.data);
+          toast.success(response?.data?.msg);
+          setIsModalOpen(true);
+        } else if (response?.status === 400) {
+          console.log(response?.data);
+        }
+      })
+      .catch((error: any) => {
+        setLoading(false);
+        const errorMessage = error;
+        toast.error(errorMessage);
+      });
+  };
 
   // function to navigate back to ajo page
   const handleBackClick = () => {
@@ -156,7 +177,7 @@ const CreateOpenGroup = () => {
   };
 
   return (
-    <main className="mb-[20px] flex  font-asap  flex-col gap-10">
+    <main className="mb-[20px] flex  flex-col  gap-10 font-asap">
       <DashboardHeader
         className="relative cursor-pointer items-center lg:mt-[2em]"
         onClick={handleBackClick}
@@ -173,7 +194,7 @@ const CreateOpenGroup = () => {
           <img
             src={rightArrow}
             alt="create new savings group"
-            className="h-[80px]  hidden sm:block w-[100px] translate-x-10 self-end"
+            className="hidden  h-[80px] w-[100px] translate-x-10 self-end sm:block"
           />
           <img
             src={createImage}
@@ -183,7 +204,7 @@ const CreateOpenGroup = () => {
           <img
             src={rightArrow}
             alt="create new savings group"
-            className="h-[80px]  hidden sm:block w-[100px] -translate-x-10 self-start"
+            className="hidden  h-[80px] w-[100px] -translate-x-10 self-start sm:block"
           />
         </section>
 
@@ -191,7 +212,7 @@ const CreateOpenGroup = () => {
         {formSteps[formStepsIndex]}
 
         <div
-          className={`flex w-[100%] 2xl:w-[80%] self-center ${formStepsIndex > 0 ? "justify-between" : "justify-end"} mt-[20px] items-center`}
+          className={`flex w-[100%] self-center 2xl:w-[80%] ${formStepsIndex > 0 ? "justify-between" : "justify-end"} mt-[20px] items-center`}
         >
           {formStepsIndex > 0 && (
             <Button
@@ -209,15 +230,16 @@ const CreateOpenGroup = () => {
           )}
           {formStepsIndex > 2 ? (
             <Button
-              className={`h-[47px] w-fit rounded-lg bg-[#440080] text-[18px] font-[500] capitalize tracking-tighter font-asap text-white `}
+              className={`h-[47px] w-fit rounded-lg bg-[#440080] font-asap text-[18px] font-[500] capitalize tracking-tighter text-white `}
               onClick={createCircle}
               loading={loading}
+              disabled={!profileDetails?._id || loading} 
             >
               Create group
             </Button>
           ) : (
             <Button
-              className={`h-[47px] w-[121px] rounded-lg bg-[#440080] text-[20px] font-[500] capitalize tracking-tighter text-white font-asap ${isNextDisabled ? "cursor-not-allowed opacity-70" : ""}`}
+              className={`h-[47px] w-[121px] rounded-lg bg-[#440080] font-asap text-[20px] font-[500] capitalize tracking-tighter text-white ${isNextDisabled ? "cursor-not-allowed opacity-70" : ""}`}
               onClick={nextForm}
               disabled={isNextDisabled}
             >

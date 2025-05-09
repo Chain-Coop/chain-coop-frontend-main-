@@ -4,7 +4,6 @@ import axios from "axios";
 import authHeader from "./headers";
 import { useSelector } from "react-redux";
 
-
 const API_URL = (import.meta as any).env.VITE_REACT_APP_API_URL;
 
 const handleApiError = (error: any) => {
@@ -19,20 +18,24 @@ const CreateSavingsCircle = createAsyncThunk(
   "savingcircle/create",
   async (formData: any, thunkAPI) => {
     try {
-      const response = await axios.post(`${API_URL}/savingcircle/create`, formData, {
-        headers: {
-          ...authHeader(),
+      const response = await axios.post(
+        `${API_URL}/savingcircle/create`,
+        formData,
+        {
+          headers: {
+            ...authHeader(),
+          },
         },
-      });
+      );
       console.log(response.data);
       return response.data;
     } catch (error: any) {
       console.log(error);
       return thunkAPI.rejectWithValue(
-        error?.response?.data || "Something went wrong"
+        error?.response?.data || "Something went wrong",
       );
     }
-  }
+  },
 );
 
 const GetAllSavingCircles = async () => {
@@ -65,13 +68,11 @@ const GetSavingCircleByID = async (circleID: string) => {
   }
 };
 
-
 const WebGroupSavings = {
   CreateSavingsCircle,
   GetAllSavingCircles,
   GetSavingCircleByUser,
   GetSavingCircleByID,
-}
-
+};
 
 export default WebGroupSavings;
