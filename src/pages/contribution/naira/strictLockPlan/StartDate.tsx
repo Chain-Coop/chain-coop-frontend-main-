@@ -4,11 +4,13 @@ import { Alert } from "@mui/material";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import FormInput from "../../../../components/common/FormInput";
 import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const StartDate: React.FC = () => {
-  const today = formatDate(new Date());
+  const today = new Date();
   const [startDate, setStartDate] = useState(today);
-  const [endDate, setEndDate] = useState("");
+  const [endDate, setEndDate] = useState<Date | null>(null);
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -17,11 +19,7 @@ const StartDate: React.FC = () => {
   const { purpose, amount, currency, contributionType, contributionPlan } =
     location.state || {};
 
-  function formatDate(date: Date): string {
-    return date.toISOString().split("T")[0];
-  }
-
-  const formattedStartDate = new Date(startDate).toLocaleDateString("en-US", {
+  const formattedStartDate = startDate.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -38,8 +36,8 @@ const StartDate: React.FC = () => {
         savingsCategory: purpose,
         amount,
         currency,
-        startDate,
-        endDate,
+        startDate: startDate.toISOString().split("T")[0],
+        endDate: endDate.toISOString().split("T")[0],
         contributionType,
         contributionPlan,
         savingsType: "strict",
@@ -70,13 +68,18 @@ const StartDate: React.FC = () => {
             {formattedStartDate}
           </p>
         </div>
-        <FormInput
-          label="End Date"
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          className="input mb-5 flex h-[4em] w-full items-center rounded-lg border-[1px] bg-gray-100 px-4 text-sm shadow-md"
-        />
+        <div className="mb-5">
+          <label className="mb-3 flex font-semibold">End Date</label>
+          <DatePicker
+            selected={endDate}
+            onChange={(date: Date | null) => setEndDate(date)}
+            minDate={today}
+            className="input flex h-[4em] w-full items-center rounded-lg border-[1px] bg-gray-100 px-4 text-sm shadow-md"
+            dateFormat="yyyy-MM-dd"
+            placeholderText="Select end date"
+            readOnly
+          />
+        </div>
 
         {error && (
           <Alert severity="error" className="mb-4 mt-4">

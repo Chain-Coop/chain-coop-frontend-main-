@@ -114,6 +114,15 @@ export async function RESEND_VERIFY_OTP(endpoint: string, data: any) {
   }
 }
 
+export async function UPDATE_PHONE_NUMBER(endpoint: string, data: any) {
+  const url = API_URL + endpoint;
+  try {
+    return await axios.put(url, data);
+  } catch (error: any) {
+    return error.response.data;
+  }
+}
+
 export async function RESET_PASSWORD(endpoint: string, data: any) {
   const url = API_URL + endpoint;
   try {
@@ -192,6 +201,7 @@ const LandingServices = {
   JoinNewsLetter,
   ResetPassword,
   VerifyUserPhoneNumber,
+  UPDATE_PHONE_NUMBER,
 };
 
 export default LandingServices;

@@ -325,7 +325,7 @@ const StartDate: React.FC = () => {
             loading={loading}
             className="m-auto flex w-[80%]  justify-center rounded-md bg-text2 px-8 py-[1em] text-sm font-semibold normal-case text-white transition-all duration-300 ease-in-out hover:scale-105 hover:bg-opacity-90 hover:shadow-lg active:scale-95 active:transform"
           >
-            {loading ? "Please Wait..." : "Submit"}
+            Submit
           </Button>
         </div>
 

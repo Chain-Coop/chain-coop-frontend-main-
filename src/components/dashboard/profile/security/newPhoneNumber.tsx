@@ -1,0 +1,124 @@
+import { useState } from "react";
+import {
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  Typography,
+  IconButton,
+} from "@material-tailwind/react";
+import { IoMdClose } from "react-icons/io";
+import { toast } from "react-toastify";
+import useUserProfile from "../../../../shared/Hooks/useUserProfile";
+import { PhoneNumberInput } from "../../../common/phoneNumberInput";
+import { UPDATE_PHONE_NUMBER } from "../../../../shared/redux/services/landing.services";
+
+interface NewPhoneNumberProps {
+  otp: string;
+  isOpen: boolean;
+  onClose: () => void;
+  onSuccess: () => void;
+}
+
+const NewPhoneNumber = ({
+  otp,
+  isOpen,
+  onClose,
+  onSuccess,
+}: NewPhoneNumberProps) => {
+  const [newPhoneNumber, setNewPhoneNumber] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const { profileDetails } = useUserProfile();
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await UPDATE_PHONE_NUMBER("/auth/change_phone_number", {
+        newPhoneNumber,
+        otp,
+        userId: profileDetails.id,
+      });
+
+      //   toast.success("Phone number updated successfully");
+      //   onSuccess();
+    } catch (error: any) {
+      toast.error(error?.message || "Failed to update phone number");
+      setError(error?.message || "Failed to update phone number");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <Dialog
+      size="sm"
+      open={isOpen}
+      handler={onClose}
+      className="bg-[#E9E9E9] p-4 sm:p-6"
+    >
+      <DialogHeader className="relative flex flex-col justify-center text-center">
+        <IconButton
+          variant="text"
+          color="gray"
+          onClick={onClose}
+          className="absolute left-2 top-2 h-10 w-10 p-2"
+          ripple={false}
+          placeholder=""
+          onPointerEnterCapture={() => {}}
+          onPointerLeaveCapture={() => {}}
+        >
+          <IoMdClose size={24} className="m-auto text-gray-700" />
+        </IconButton>
+
+        <Typography variant="h4" className="text-xl font-semibold sm:text-2xl">
+          Update Phone Number
+        </Typography>
+        <Typography
+          color="gray"
+          className="mt-1 text-sm font-normal sm:text-base"
+        >
+          Enter your new phone number
+        </Typography>
+      </DialogHeader>
+
+      <DialogBody>
+        <div className="mb-4 sm:mb-6">
+          <label
+            htmlFor="phoneNumber-input"
+            className="text- textPrimary mb-2 flex font-semibold"
+          >
+            Phone Number
+          </label>
+          <PhoneNumberInput
+            value={newPhoneNumber}
+            onChange={setNewPhoneNumber}
+          />
+        </div>
+
+        {error && (
+          <Typography color="red" className="text-center text-xs sm:text-sm">
+            {error}
+          </Typography>
+        )}
+      </DialogBody>
+
+      <DialogFooter className="flex justify-center">
+        <Button
+          variant="filled"
+          onClick={handleSubmit}
+          disabled={isLoading || !newPhoneNumber}
+          loading={isLoading}
+          className="flex w-full justify-center rounded-full bg-text2 text-sm font-normal normal-case sm:w-[60%] sm:py-3 lg:py-2"
+        >
+          Update Phone Number
+        </Button>
+      </DialogFooter>
+    </Dialog>
+  );
+};
+
+export default NewPhoneNumber;

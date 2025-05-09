@@ -18,6 +18,7 @@ const VerifyPhoneNumber = () => {
   const [isResending, setIsResending] = useState(false);
   const [code, setCode] = useState("");
   const [timeLeft, setTimeLeft] = useState(10);
+  const dispatch: AppDispatch = useDispatch();
 
   const startResendTimer = () => {
     setResendDisabled(true);
@@ -33,8 +34,6 @@ const VerifyPhoneNumber = () => {
       });
     }, 1000);
   };
-
-  const dispatch: AppDispatch = useDispatch();
 
   const queryParams = new URLSearchParams(location.search);
   const rawPhoneNumber = queryParams.get("phoneNumber") || "";
