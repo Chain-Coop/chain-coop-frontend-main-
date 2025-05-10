@@ -74,7 +74,13 @@ const VerifyBvn = ({
       });
   };
   return (
-    <Dialog size="md" open={isOpen} handler={onClose} className="py-6">
+    <Dialog
+      size="md"
+      open={isOpen}
+      handler={onClose}
+      className="py-6"
+      dismiss={{ enabled: false }}
+    >
       <form onSubmit={handleSubmit}>
         <DialogHeader className="flex flex-col justify-center text-center">
           <Typography className="text-lg font-semibold leading-tight tracking-tight text-black lg:text-2xl">

@@ -20,7 +20,7 @@ const WithdrawAmountModal: React.FC<WithdrawAmountModalProps> = ({
   withdrawalLimit,
 }) => {
   return (
-    <Dialog open={isModalOpen} handler={toggleModal} size="sm" className="p-4">
+    <Dialog open={isModalOpen ?? false} handler={toggleModal || (() => {})} size="sm" className="p-4">
       <DialogHeader>
         <Typography
           variant="h1"
@@ -44,7 +44,7 @@ const WithdrawAmountModal: React.FC<WithdrawAmountModalProps> = ({
             Withdrawal limit
           </Typography>
           <Typography className="whitespace-nowrap font-medium text-black">
-            {withdrawalLimit.toLocaleString()} NGN / transaction
+            {withdrawalLimit?.toLocaleString()} NGN / transaction
           </Typography>
         </div>
         <hr className="mt-3 h-[1px] rounded-md" />

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { IoIosArrowDropleft } from "react-icons/io";
 import {
   Alert,
   Select,
@@ -56,7 +55,6 @@ const StartDate: React.FC = () => {
   const [useCustomDate, setUseCustomDate] = useState(false);
 
   const { profileDetails } = useUserProfile();
-  console.log("prof", profileDetails);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch: AppDispatch = useAppDispatch();
@@ -65,7 +63,6 @@ const StartDate: React.FC = () => {
     location.state || {};
   const isDaily = plan?.toLowerCase() === "daily";
 
-  const MIN_DAILY_DAYS = 7;
   const MAX_YEARS = 2;
 
   useEffect(() => {
@@ -284,7 +281,7 @@ const StartDate: React.FC = () => {
                 type="date"
                 value={customEndDate}
                 onChange={handleCustomEndDateChange}
-                min={formatDate(addDays(new Date(startDate), MIN_DAILY_DAYS))}
+                min={formatDate(addDays(new Date(startDate), 1))}
                 max={formatDate(addMonths(new Date(startDate), MAX_YEARS * 12))}
                 className="input mb-2 h-[4em] w-full rounded-lg border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
               />

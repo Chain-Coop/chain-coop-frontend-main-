@@ -27,6 +27,7 @@ const PinModal = ({
       handler={onClose}
       size="sm"
       className="flex flex-col justify-center bg-white px-2 py-8 text-center"
+      dismiss={{ enabled: false }}
     >
       <DialogHeader className="relative flex items-center">
         <IconButton

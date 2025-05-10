@@ -24,6 +24,7 @@ const PartnerModal = ({ isOpen, onClose }: PartnerModalProps) => {
       handler={onClose}
       size="sm"
       className="max-h-[90vh] overflow-y-auto p-7"
+      dismiss={{ enabled: false }}
     >
       <DialogHeader className="flex flex-col gap-2 px-2 text-center sm:px-4">
         <Typography
