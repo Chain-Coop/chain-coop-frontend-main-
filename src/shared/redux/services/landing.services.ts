@@ -50,7 +50,6 @@ const JoinNewsLetter = async (body: any) => {
 
 const VerifyUserAuth = async (body: any) => {
   const url = `${API_URL}/auth/verify_otp`;
-
   try {
     const response = await axios.post(url, body, {
       headers: authHeader(),

@@ -13,7 +13,7 @@ import { motion } from "framer-motion";
 import { Typography, Button } from "@material-tailwind/react";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import { SavingsPlan } from "../../../../components/dashboard/contribution/modals/SavingsPlan";
-import { Flexibile, Lock, StrictLocak } from "../../../../Assets/svg";
+import { Flexibile, Lock, Strict } from "../../../../Assets/svg";
 import FundSavingsModal from "../../../../components/dashboard/contribution/modals/FundContribution";
 import UpdateSavingsModal from "../../../../components/dashboard/contribution/modals/UpdateContribution";
 import MySavingsList from "../../../../components/dashboard/contribution/MySavingsList";
@@ -48,7 +48,7 @@ const CryptoSavings: React.FC = () => {
   });
 
   const { userPools: rawUserPoolsData, loading: rawPoolsLoading } =
-      useAllUserPools() || {};
+    useAllUserPools() || {};
 
   const poolsToDisplay = Array.isArray(rawUserPoolsData)
     ? rawUserPoolsData
@@ -162,10 +162,10 @@ const CryptoSavings: React.FC = () => {
 
   const dispatch = useDispatch<AppDispatch>();
   const {
-      userPools = [],
-      loading: userPoolsLoading,
-      isWalletActivated,
-    } = useAllUserPools() || {};
+    userPools = [],
+    loading: userPoolsLoading,
+    isWalletActivated,
+  } = useAllUserPools() || {};
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -258,7 +258,9 @@ const CryptoSavings: React.FC = () => {
                 {totalContributionLoading ? (
                   <div className="h-6 animate-pulse rounded bg-gray-200 sm:h-8"></div>
                 ) : isContributionVisible ? (
-                  <p className="text-xl font-bold lg:text-2xl">${formattedTotalContributionCrypto}</p>
+                  <p className="text-xl font-bold lg:text-2xl">
+                    ${formattedTotalContributionCrypto}
+                  </p>
                 ) : (
                   <p className="text-lg font-bold sm:text-xl">*********</p>
                 )}
@@ -405,7 +407,7 @@ const CryptoSavings: React.FC = () => {
                       onMouseEnter={() => setHoveredSavingsType("Strict")}
                       onMouseLeave={() => setHoveredSavingsType(null)}
                     >
-                      <StrictLocak />
+                      <Strict />
                       <Typography className="text-lg font-medium text-gray-800">
                         Strict Lock Savings
                       </Typography>

@@ -172,7 +172,7 @@ const NewPassword: React.FC<NewPasswordProps> = ({
             loading={loading}
             className="flex w-60 items-center justify-center rounded-full bg-text2 p-3 text-sm font-medium normal-case text-white"
           >
-            {loading ? "Resetting..." : "Reset"}
+            Reset
           </Button>
         </DialogFooter>
       </form>

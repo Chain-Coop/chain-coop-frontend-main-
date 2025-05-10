@@ -4,6 +4,8 @@ import { Alert } from "@mui/material";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import { SavingOn } from "../../../../data/Data";
 import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg";
+import { Typography } from "@material-tailwind/react";
+import { getSavingsTypeTitle } from "../../../../shared/utils/Helpers";
 
 const Purpose = () => {
   const [savingsCategory, setSavingsCategory] = useState("");
@@ -11,7 +13,7 @@ const Purpose = () => {
   const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const { currency, savingsType } = location.state || {};
+  const { currency, savingsType, contributionType } = location.state || {};
   const [error, setError] = useState("");
 
   const handleNext = () => {
@@ -23,8 +25,13 @@ const Purpose = () => {
       setError("");
       const finalCategory =
         savingsCategory === "Others" ? otherCategory : savingsCategory;
-      navigate("/dashboard/contribution/strict_lock/plan", {
-        state: { purpose: finalCategory, currency, savingsType },
+      navigate("/dashboard/contribution/plan", {
+        state: {
+          purpose: finalCategory,
+          currency,
+          savingsType,
+          contributionType,
+        },
       });
     }
   };
@@ -37,13 +44,22 @@ const Purpose = () => {
   };
 
   return (
-    <main className="pb-[1.5em]">
+    <main className="pb-[1.5em] ">
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
-        Strict Lock Savings
+        {getSavingsTypeTitle(savingsType)}
       </DashboardHeader>
       <div>
-        <header className="mt-[1.5em] flex flex-col gap-2 lg:mt-[3em]">
-          <h1 className="text-2xl font-bold"> Strict Lock Savings</h1>
+        <header className="mt-[1.5em] lg:mt-[3em]">
+          <Typography className="text-2xl font-bold">
+            {getSavingsTypeTitle(savingsType)}
+          </Typography>
+          <Typography className="text-lg font-medium">
+            {savingsType === "Strict"
+              ? ""
+              : savingsType === "Lock"
+                ? "You can save, and withdrawals will be locked until the saving duration is completed. However, you can choose to withdraw early if needed."
+                : "You can save and withdraw anytime you want."}
+          </Typography>
         </header>
 
         {SavingOn?.map((purpose, index) => (

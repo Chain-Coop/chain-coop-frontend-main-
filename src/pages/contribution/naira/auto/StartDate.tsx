@@ -28,7 +28,7 @@
 //   calculateAvailableEndDates,
 //   validateCustomEndDate,
 // } from "../../../../shared/utils/format";
-// import { Button } from "@material-tailwind/react";
+// import { Button, Typography } from "@material-tailwind/react";
 // import { AppDispatch } from "../../../../shared/redux/store";
 // import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
 // import PaymentWithCard from "../../../../components/dashboard/contribution/paymentChoice/PaymentWithCard";
@@ -42,7 +42,7 @@
 //   };
 // }
 
-// const StartDate: React.FC = () => {
+// const StartDate = () => {
 //   const { useWalletCards } = useUserCard();
 //   const { profileDetails } = useUserProfile();
 //   const now = new Date();
@@ -226,7 +226,13 @@
 //           </p>
 //         </header>
 
-//         <div className="mt-6 lg:mt-[2em]">
+//         {savingsType === "Strict" && (
+//           <Typography className="mt-[1.5em] text-xl font-semibold">
+//             How long would you like to restrict access to your funds?
+//           </Typography>
+//         )}
+
+//         <div className="mt-6 lg:mt-[1.5em]">
 //           <label className="mb-3 flex font-semibold">Start Date (Today)</label>
 //           <p className="input mb-5 flex h-[4em] w-full items-center rounded-lg border-[1px] bg-gray-100 px-4 text-sm shadow-md">
 //             {formattedStartDate}
@@ -294,7 +300,7 @@
 //                 type="date"
 //                 value={customEndDate}
 //                 onChange={handleCustomEndDateChange}
-//                 min={formatDate(addDays(new Date(today), 7))}
+//                 min={formatDate(addDays(new Date(today), 1))}
 //                 max={formatDate(addMonths(new Date(today), 24))}
 //                 className="input mb-2 h-[4em] w-full rounded-lg border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
 //               />
@@ -369,18 +375,8 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
-
-import {
-  useUserCard,
-  useUserProfile,
-} from "../../../../shared/Hooks/useUserProfile";
-
-import {
-  CreateContributionPlan,
-  GetWalletCard,
-  PayContributionPaystack,
-} from "../../../../shared/redux/slices/transaction.slices";
-
+import { Button, Typography } from "@material-tailwind/react";
+import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import {
   formatDate,
   addDays,
@@ -389,50 +385,22 @@ import {
   calculateAvailableEndDates,
   validateCustomEndDate,
 } from "../../../../shared/utils/format";
-import { Button } from "@material-tailwind/react";
-import { AppDispatch } from "../../../../shared/redux/store";
-import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
-import PaymentWithCard from "../../../../components/dashboard/contribution/paymentChoice/PaymentWithCard";
-import PayWithPaystack from "../../../../components/dashboard/contribution/paymentChoice/PayWithPaystack";
-import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 
-interface ContributionResponse {
-  result: {
-    contributionId: string;
-    withdrawalDate: string;
-  };
-}
+const StartDate = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-const StartDate: React.FC = () => {
-  const { useWalletCards } = useUserCard();
-  const { profileDetails } = useUserProfile();
+  const { purpose, plan, amount, currency, savingsType, contributionType } =
+    location.state || {};
+  const isDaily = plan?.toLowerCase() === "daily";
+
   const now = new Date();
   const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
   const [endDate, setEndDate] = useState("");
   const [availableEndDates, setAvailableEndDates] = useState<string[]>([]);
   const [customEndDate, setCustomEndDate] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [contributionData, setContributionData] = useState<
-    ContributionResponse["result"] | null
-  >(null);
-  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [useCustomDate, setUseCustomDate] = useState(false);
-
-  const navigate = useNavigate();
-  const location = useLocation();
-  const dispatch: AppDispatch = useAppDispatch();
-
-  const { purpose, plan, amount, currency, savingsType, contributionType } =
-    location.state || {};
-  const isDaily = plan?.toLowerCase() === "daily";
-
-  const hasCards = (useWalletCards?.cards ?? []).length > 0;
-
-  useEffect(() => {
-    dispatch(GetWalletCard());
-  }, [dispatch]);
 
   useEffect(() => {
     const dates = calculateAvailableEndDates(
@@ -469,13 +437,7 @@ const StartDate: React.FC = () => {
     setError(validation.isValid ? "" : validation.error || "");
   };
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-    setIsProcessingPayment(false);
-    setError("");
-  };
-
-  const handleSubmit = async (e: React.MouseEvent) => {
+  const handleSubmit = (e: React.MouseEvent) => {
     e.preventDefault();
 
     const finalEndDate = useCustomDate ? customEndDate : endDate;
@@ -493,75 +455,19 @@ const StartDate: React.FC = () => {
       return;
     }
 
-    setLoading(true);
-    setError("");
-
-    const body = {
-      savingsCategory: purpose,
-      contributionPlan: plan,
-      amount,
-      startDate: today,
-      endDate: finalEndDate,
-      currency: currency,
-      savingsType: savingsType,
-      contributionType: contributionType,
-    };
-
-    try {
-      const response = await dispatch(CreateContributionPlan(body)).unwrap();
-      if (response?.result) {
-        setContributionData(response.result);
-        setIsModalOpen(true);
-      } else {
-        setError("Contribution plan creation failed. Please try again.");
-      }
-    } catch (error: any) {
-      setError(error?.msg || "An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDirectPayment = async (paymentType: "paystack") => {
-    if (!contributionData?.contributionId) {
-      setError("Invalid contribution data");
-      return;
-    }
-
-    setIsProcessingPayment(true);
-    setError("");
-
-    try {
-      const paymentResponse = await dispatch(
-        PayContributionPaystack({
-          contributionId: contributionData.contributionId,
-          userId: profileDetails?._id,
-          paymentType: "paystack",
-        }),
-      ).unwrap();
-
-      if (paymentResponse?.landing?.payment?.info?.data?.authorization_url) {
-        handleModalClose();
-        window.location.href =
-          paymentResponse.landing.payment.info.data.authorization_url;
-      } else {
-        throw new Error("Missing payment authorization URL");
-      }
-    } catch (error: any) {
-      let errorMessage = "An error occurred during payment. Please try again.";
-
-      if (error?.response?.data?.message) {
-        errorMessage = error.response.data.message;
-      } else if (error?.message) {
-        errorMessage = error.message;
-      } else if (typeof error === "string") {
-        errorMessage = error;
-      }
-
-      setError(errorMessage);
-    } finally {
-      setIsProcessingPayment(false);
-    }
+    // Navigate to Preview with all data
+    navigate("/dashboard/contribution/preview", {
+      state: {
+        purpose,
+        plan,
+        amount,
+        currency,
+        savingsType,
+        contributionType,
+        startDate: today,
+        endDate: finalEndDate,
+      },
+    });
   };
 
   const formattedStartDate = new Date(today).toLocaleDateString("en-US", {
@@ -582,12 +488,19 @@ const StartDate: React.FC = () => {
             {plan} Contribution
           </h1>
           <p className="mt-[1em] text-center font-medium">
-            You are about to save NGN{amount} {plan.toLowerCase()} into your
-            contribution amount
+            You are about to save {currency || "NGN"}
+            {amount || "0"} {plan?.toLowerCase() || ""} into your contribution
+            amount
           </p>
         </header>
 
-        <div className="mt-6 lg:mt-[2em]">
+        {savingsType === "Strict" && (
+          <Typography className="mt-[1.5em] text-xl font-semibold">
+            How long would you like to restrict access to your funds?
+          </Typography>
+        )}
+
+        <div className="mt-6 lg:mt-[1.5em]">
           <label className="mb-3 flex font-semibold">Start Date (Today)</label>
           <p className="input mb-5 flex h-[4em] w-full items-center rounded-lg border-[1px] bg-gray-100 px-4 text-sm shadow-md">
             {formattedStartDate}
@@ -682,11 +595,10 @@ const StartDate: React.FC = () => {
         <div className="mt-4 lg:mt-[3em]">
           <Button
             onClick={handleSubmit}
-            disabled={loading || (!endDate && !customEndDate)}
-            loading={loading}
-            className="m-auto flex w-[80%]  justify-center rounded-md bg-text2 px-8 py-[1em] text-sm font-semibold normal-case text-white transition-all duration-300 ease-in-out hover:scale-105 hover:bg-opacity-90 hover:shadow-lg active:scale-95 active:transform"
+            disabled={!endDate && !customEndDate}
+            className="m-auto flex w-[80%] justify-center rounded-md bg-text2 px-8 py-[1em] text-sm font-semibold normal-case text-white transition-all duration-300 ease-in-out hover:scale-105 hover:bg-opacity-90 hover:shadow-lg active:scale-95 active:transform"
           >
-            Submit
+            Next
           </Button>
         </div>
 
@@ -697,23 +609,6 @@ const StartDate: React.FC = () => {
           <img src={prevFormIcon} alt="Previous form" className="w-[40px]" />
         </button>
       </div>
-
-      {hasCards ? (
-        contributionData && (
-          <PaymentWithCard
-            contributionData={contributionData}
-            onClose={handleModalClose}
-            isOpen={isModalOpen}
-          />
-        )
-      ) : (
-        <PayWithPaystack
-          onSelect={handleDirectPayment}
-          isProcessing={isProcessingPayment}
-          isOpen={isModalOpen}
-          onClose={handleModalClose}
-        />
-      )}
     </main>
   );
 };

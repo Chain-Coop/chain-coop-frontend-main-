@@ -15,7 +15,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import {
   formatDate,
   addDays,
-  addMonths,
   getDateDifference,
   calculateAvailableEndDates,
   validateCustomEndDate,
@@ -38,7 +37,6 @@ const StartDate: React.FC = () => {
   const location = useLocation();
   const { tokenName } = location.state || {};
 
-  // useEffect to calculate available dates based on frequency
   useEffect(() => {
     if (!savingFrequency || savingFrequency === "MANUALLY") {
       setAvailableEndDates([]);
