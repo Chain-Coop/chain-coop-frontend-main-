@@ -146,6 +146,7 @@ const Security = () => {
               isOpen={isModalOpen}
               onClose={handleModalClose}
               onOtpEntered={() => setPasswordResetStep(3)}
+              email={email} 
             />
           );
         case 3:

@@ -4,6 +4,7 @@ import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg";
 import { Alert } from "@mui/material";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import { Plan } from "../../../../data/Data";
+import { getSavingsTypeTitle } from "../../../../shared/utils/Helpers";
 
 const SavingsPlan = () => {
   const [contributionPlan, setContributionPlan] = useState("");
@@ -34,7 +35,7 @@ const SavingsPlan = () => {
   return (
     <main className="pb-[1.5em]">
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
-        Flexible Savings
+        {getSavingsTypeTitle(savingsType)}
       </DashboardHeader>
       <div>
         <header className="mt-[1.5em] flex flex-col justify-center gap-2 text-center lg:mt-[3em]">

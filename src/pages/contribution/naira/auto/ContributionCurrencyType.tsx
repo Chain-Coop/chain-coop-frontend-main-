@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
-import NigerianFlag from "../../../../Assets/svg/dashboard/contribution/NigerianFlag.svg";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg";
-
-export const ContributionFundType = [
-  {
-    text: "Naira",
-    icon: <img src={NigerianFlag} alt="Nigerian Flag" className="h-10 w-10" />,
-  },
-];
+import {
+  ContributionFundType,
+  getSavingsTypeTitle,
+} from "../../../../shared/utils/Helpers";
 
 const ContributionCurrencyType = () => {
   const [hoveredPlan, setHoveredPlan] = useState<number | null>(null);
@@ -18,6 +14,7 @@ const ContributionCurrencyType = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const location = useLocation();
+  console.log("loca", location);
   const { savingsType, contributionType } = location.state || {};
 
   const handleNext = () => {
@@ -27,7 +24,7 @@ const ContributionCurrencyType = () => {
     }
 
     setError("");
-    navigate("/dashboard/contribution/lock/purpose", {
+    navigate("/dashboard/contribution/purpose", {
       state: { currency: "NGN", savingsType, contributionType },
     });
   };
@@ -35,15 +32,17 @@ const ContributionCurrencyType = () => {
   return (
     <main className="pb-[1.5em]">
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
-        Lock Savings
+        {getSavingsTypeTitle(savingsType)}
       </DashboardHeader>
       <div>
         <header className="mt-[1.5em] lg:mt-[3em]">
           <h1 className="text-2xl font-bold md:text-2xl lg:text-2xl">
-            Lock Savings
+            {getSavingsTypeTitle(savingsType)}
           </h1>
           <p className="mt-2 font-medium lg:mt-[1em]">
-            You can save and withdraw anytime you want
+            {savingsType === "Strict"
+              ? "You can save and withdrawal will be locked until savings duration is completed."
+              : "You can save and withdraw anytime you want"}
           </p>
         </header>
 
@@ -51,9 +50,11 @@ const ContributionCurrencyType = () => {
           <div
             key={index}
             className={`mt-8 flex w-full items-center justify-between rounded-lg px-4 py-[9px] 
-          transition-all duration-300 ease-in-out
-          ${hoveredPlan === index ? "scale-[1.02] transform bg-[#DED3EA] shadow-lg" : "bg-[#ECE6F2]"}
-          cursor-pointer`}
+              transition-all duration-300 ease-in-out ${
+                hoveredPlan === index
+                  ? "scale-[1.02] transform bg-[#DED3EA] shadow-lg"
+                  : "bg-[#ECE6F2]"
+              } cursor-pointer`}
             onMouseEnter={() => setHoveredPlan(index)}
             onMouseLeave={() => setHoveredPlan(null)}
             onClick={() => setCryptoType(plan.text)}
@@ -62,8 +63,9 @@ const ContributionCurrencyType = () => {
               <div className="flex items-center gap-3">
                 <span className="items-center text-xl">{plan.icon}</span>
                 <h3
-                  className={`${hoveredPlan === index ? "scale-105" : "scale-100"} 
-              transform items-center font-semibold transition-all duration-300 ease-in-out`}
+                  className={`${
+                    hoveredPlan === index ? "scale-105" : "scale-100"
+                  } transform items-center font-semibold transition-all duration-300 ease-in-out`}
                 >
                   {plan.text}
                 </h3>
@@ -75,15 +77,13 @@ const ContributionCurrencyType = () => {
               )}
             </div>
             <button
-              className={`rounded-md border px-6 py-2 font-medium transition-all duration-300 ease-in-out
-      ${
-        cryptoType === plan.text
-          ? "border-[2px] border-[#9F7C6B] bg-text2 font-semibold text-white hover:bg-opacity-90"
-          : "border-text2 bg-white hover:bg-text2 hover:text-white"
-      }
-      transform ${hoveredPlan === index ? "scale-105" : "scale-100"}
-      ${hoveredPlan === index ? "shadow-md" : ""}
-    `}
+              className={`rounded-md border px-6 py-2 font-medium transition-all duration-300 ease-in-out ${
+                cryptoType === plan.text
+                  ? "border-[2px] border-[#9F7C6B] bg-text2 font-semibold text-white hover:bg-opacity-90"
+                  : "border-text2 bg-white hover:bg-text2 hover:text-white"
+              } transform ${
+                hoveredPlan === index ? "scale-105 shadow-md" : "scale-100"
+              }`}
             >
               {cryptoType === plan.text ? "Selected" : "Select"}
             </button>

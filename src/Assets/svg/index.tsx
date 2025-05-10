@@ -376,7 +376,7 @@ export const Lock = () => (
   </svg>
 );
 
-export const StrictLocak = () => (
+export const Strict = () => (
   <svg
     width="30"
     height="30"

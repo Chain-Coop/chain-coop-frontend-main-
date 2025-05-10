@@ -1,4 +1,5 @@
 import { Card } from "../types/types";
+import NigerianFlag from "../../Assets/svg/dashboard/contribution/NigerianFlag.svg";
 
 export const CardBrandLogo = ({ brand }: { brand: string }) => {
   const logoStyle =
@@ -76,3 +77,22 @@ export const handlePrev = (
 export const handleCloseError = (setError: (error: string | null) => void) => {
   setError(null);
 };
+
+export const getSavingsTypeTitle = (savingsType?: string) => {
+  switch (savingsType) {
+    case "Lock":
+      return "Lock Savings";
+    case "Strict":
+      return "Strict Savings";
+    case "Flexible":
+    default:
+      return "Flexible Savings";
+  }
+};
+
+export const ContributionFundType = [
+  {
+    text: "Naira",
+    icon: <img src={NigerianFlag} alt="Nigerian Flag" className="h-10 w-10" />,
+  },
+];
