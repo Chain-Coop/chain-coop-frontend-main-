@@ -133,12 +133,34 @@ const Contribution: React.FC = () => {
 
   const handleContributionTypeChange = (type: "auto" | "one-time") => {
     setContributionType(type);
-    if (type === "one-time") {
-      navigate(ROUTES.oneTimeContributionType, {
-        state: { contributionType: "one-time" },
-      });
-    }
   };
+
+  const savingsOptions = [
+    {
+      type: "Flexible",
+      icon: <Flexibile />,
+      route:
+        contributionType === "auto"
+          ? ROUTES.flexibleContributionType
+          : ROUTES.oneTimeContributionType,
+    },
+    {
+      type: "Lock",
+      icon: <Lock />,
+      route:
+        contributionType === "auto"
+          ? ROUTES.lockContributionType
+          : ROUTES.oneTimeContributionType,
+    },
+    {
+      type: "Strict",
+      icon: <StrictLocak />,
+      route:
+        contributionType === "auto"
+          ? ROUTES.strictLockContributionType
+          : ROUTES.oneTimeContributionType,
+    },
+  ];
 
   return (
     <motion.main
@@ -146,7 +168,7 @@ const Contribution: React.FC = () => {
       animate={{ opacity: 1 }}
       className="mb-2 min-h-screen w-full"
     >
-      <DashboardHeader className="flex items-center justify-center text-2xl  md:text-3xl lg:mt-[2em] lg:text-xl">
+      <DashboardHeader className="flex items-center justify-center text-2xl md:text-3xl lg:mt-[2em] lg:text-xl">
         Contribution Plan
       </DashboardHeader>
 
@@ -161,14 +183,13 @@ const Contribution: React.FC = () => {
               <div className="mb-4 flex justify-end">
                 <Button
                   onClick={toggleModal}
-                  className="text-md flex transform  items-center gap-2 rounded-lg border-[3px] border-gray-200 bg-[#E3D9E6] py-2 font-semibold normal-case text-text2 transition-all duration-300 hover:scale-105
-                  active:scale-95"
+                  className="text-md flex transform items-center gap-2 rounded-lg border-[3px] border-gray-200 bg-[#E3D9E6] py-2 font-semibold normal-case text-text2 transition-all duration-300 hover:scale-105 active:scale-95"
                 >
                   Naira Savings
                   <IoIosArrowDown />
                 </Button>
               </div>
-              <div className="flex items-center justify-center gap-4 ">
+              <div className="flex items-center justify-center gap-4">
                 <Typography
                   variant="small"
                   className="text-sm font-medium tracking-tight md:text-base"
@@ -248,96 +269,47 @@ const Contribution: React.FC = () => {
               </div>
             </section>
 
-            {contributionType === "auto" && (
+            {(contributionType === "auto" ||
+              contributionType === "one-time") && (
               <section className="mb-8">
                 <Typography className="mb-4 text-left font-medium">
                   Choose savings type
                 </Typography>
 
                 <div className="flex flex-col gap-4">
-                  <Link
-                    to={ROUTES.flexibleContributionType}
-                    state={{
-                      savingsType: "Flexible",
-                      contributionType: "auto",
-                    }}
-                    className="w-full"
-                  >
-                    <motion.div
-                      whileHover={{ scale: 1.01 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="flex items-center justify-between rounded-lg border border-gray-400 bg-white p-4 shadow-md transition-all"
-                      onMouseEnter={() => setHoveredSavingsType("Flexible")}
-                      onMouseLeave={() => setHoveredSavingsType(null)}
+                  {savingsOptions.map((option) => (
+                    <Link
+                      key={option.type}
+                      to={option.route}
+                      state={{
+                        savingsType: option.type,
+                        contributionType,
+                      }}
+                      className="w-full"
                     >
-                      <Flexibile />
-                      <Typography className="text-lg font-medium text-gray-800">
-                        Flexible Savings
-                      </Typography>
-                      <div
-                        className={`rounded border border-text2 px-8 py-2 text-sm font-medium
-                        transition-all duration-300 ease-in-out
-                        ${hoveredSavingsType === "Flexible" ? "scale-105 transform bg-text2 text-white shadow-md" : ""}
-                      `}
+                      <motion.div
+                        whileHover={{ scale: 1.01 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="flex items-center justify-between rounded-lg border border-gray-400 bg-white p-4 shadow-md transition-all"
+                        onMouseEnter={() => setHoveredSavingsType(option.type)}
+                        onMouseLeave={() => setHoveredSavingsType(null)}
                       >
-                        Select
-                      </div>
-                    </motion.div>
-                  </Link>
-
-                  <Link
-                    to={ROUTES.lockContributionType}
-                    state={{ savingsType: "Lock", contributionType: "auto" }}
-                    className="w-full"
-                  >
-                    <motion.div
-                      whileHover={{ scale: 1.01 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="flex items-center justify-between rounded-lg border border-gray-400 bg-white p-4 shadow-md transition-all"
-                      onMouseEnter={() => setHoveredSavingsType("Lock")}
-                      onMouseLeave={() => setHoveredSavingsType(null)}
-                    >
-                      <Lock />
-                      <Typography className="text-lg font-medium text-gray-800">
-                        Lock Savings
-                      </Typography>
-                      <div
-                        className={`rounded border border-text2 px-8 py-2 text-sm font-medium
-                        transition-all duration-300 ease-in-out
-                        ${hoveredSavingsType === "Lock" ? "scale-105 transform bg-text2 text-white shadow-md" : ""}
-                      `}
-                      >
-                        Select
-                      </div>
-                    </motion.div>
-                  </Link>
-
-                  <Link
-                    to={ROUTES.strictLockContributionType}
-                    state={{ savingsType: "Strict", contributionType: "auto" }}
-                    className="w-full"
-                  >
-                    <motion.div
-                      whileHover={{ scale: 1.01 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="flex items-center justify-between rounded-lg border border-gray-400 bg-white p-4 shadow-md transition-all"
-                      onMouseEnter={() => setHoveredSavingsType("Strict")}
-                      onMouseLeave={() => setHoveredSavingsType(null)}
-                    >
-                      <StrictLocak />
-                      <Typography className="text-lg font-medium text-gray-800">
-                        Strict Lock Savings
-                      </Typography>
-                      <div
-                        className={`rounded border  border-text2 px-8 py-2 text-sm font-medium
-                                    transition-all duration-300 ease-in-out
-                                    ${hoveredSavingsType === "Strict" ? "scale-105 transform bg-text2 text-white shadow-md" : ""}
-                                  `}
-                      >
-                        Select
-                      </div>
-                    </motion.div>
-                  </Link>
+                        {option.icon}
+                        <Typography className="text-lg font-medium text-gray-800">
+                          {option.type} Savings
+                        </Typography>
+                        <div
+                          className={`rounded border border-text2 px-8 py-2 text-sm font-medium transition-all duration-300 ease-in-out ${
+                            hoveredSavingsType === option.type
+                              ? "scale-105 transform bg-text2 text-white shadow-md"
+                              : ""
+                          }`}
+                        >
+                          Select
+                        </div>
+                      </motion.div>
+                    </Link>
+                  ))}
                 </div>
 
                 <hr className="mx-auto mt-8 w-full max-w-2xl" />
@@ -378,7 +350,9 @@ const Contribution: React.FC = () => {
               {isFilterOpen && (
                 <div className="absolute right-0 top-10 z-10 w-48 rounded-md bg-white p-2 shadow-lg">
                   <div
-                    className={`cursor-pointer rounded-md p-2 hover:bg-gray-100 ${filterType === "" ? "bg-gray-100 font-semibold" : ""}`}
+                    className={`cursor-pointer rounded-md p-2 hover:bg-gray-100 ${
+                      filterType === "" ? "bg-gray-100 font-semibold" : ""
+                    }`}
                     onClick={() => {
                       handleFilterChange("");
                       setIsFilterOpen(false);
@@ -387,7 +361,11 @@ const Contribution: React.FC = () => {
                     All Savings
                   </div>
                   <div
-                    className={`cursor-pointer rounded-md p-2 hover:bg-gray-100 ${filterType === "flexible" ? "bg-gray-100 font-semibold" : ""}`}
+                    className={`cursor-pointer rounded-md p-2 ${
+                      filterType === "flexible"
+                        ? "bg-gray-100 font-semibold"
+                        : ""
+                    }`}
                     onClick={() => {
                       handleFilterChange("flexible");
                       setIsFilterOpen(false);
@@ -396,7 +374,9 @@ const Contribution: React.FC = () => {
                     Flexible
                   </div>
                   <div
-                    className={`cursor-pointer rounded-md p-2 hover:bg-gray-100 ${filterType === "lock" ? "bg-gray-100 font-semibold" : ""}`}
+                    className={`cursor-pointer rounded-md p-2  ${
+                      filterType === "lock" ? "bg-gray-100 font-semibold" : ""
+                    }`}
                     onClick={() => {
                       handleFilterChange("lock");
                       setIsFilterOpen(false);
@@ -405,7 +385,9 @@ const Contribution: React.FC = () => {
                     Lock
                   </div>
                   <div
-                    className={`cursor-pointer rounded-md p-2 hover:bg-gray-100 ${filterType === "strict" ? "bg-gray-100 font-semibold" : ""}`}
+                    className={`cursor-pointer rounded-md p-2 ${
+                      filterType === "strict" ? "bg-gray-100 font-semibold" : ""
+                    }`}
                     onClick={() => {
                       handleFilterChange("strict");
                       setIsFilterOpen(false);
@@ -454,7 +436,7 @@ const Contribution: React.FC = () => {
                   onClick={() =>
                     navigateToContributionDetails(contribution._id)
                   }
-                  className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-full border-2 border-gray-500 bg-white px-4 transition-all hover:bg-gray-50 lg:px-6 "
+                  className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-full border-2 border-gray-500 bg-white px-4 transition-all hover:bg-gray-50 lg:px-6"
                 >
                   <div className="flex justify-between text-sm font-medium text-gray-500 md:text-base">
                     <Typography className="font-normal">
