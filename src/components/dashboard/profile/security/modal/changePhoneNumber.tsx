@@ -65,7 +65,7 @@ const ChangePhoneNumber = ({
       handler={onClose}
       className="bg-[#E9E9E9] p-4 sm:p-6"
       dismiss={{ enabled: false }}
-    >
+s    >
       <DialogHeader className="relative flex flex-col justify-center pt-10 text-center">
         <IconButton
           variant="text"

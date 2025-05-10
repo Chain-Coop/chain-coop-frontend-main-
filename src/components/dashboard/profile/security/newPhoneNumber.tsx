@@ -15,14 +15,12 @@ import { PhoneNumberInput } from "../../../common/phoneNumberInput";
 import { UPDATE_PHONE_NUMBER } from "../../../../shared/redux/services/landing.services";
 
 interface NewPhoneNumberProps {
-  otp: string;
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
 }
 
 const NewPhoneNumber = ({
-  otp,
   isOpen,
   onClose,
   onSuccess,
@@ -31,23 +29,30 @@ const NewPhoneNumber = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const { profileDetails } = useUserProfile();
+  const { profileDetails, fetchUserProfile } = useUserProfile();
 
   const handleSubmit = async () => {
     setIsLoading(true);
+    setError("");
 
     try {
       const response = await UPDATE_PHONE_NUMBER("/auth/change_phone_number", {
         newPhoneNumber,
-        otp,
         userId: profileDetails.id,
       });
 
-      //   toast.success("Phone number updated successfully");
-      //   onSuccess();
+      if (response.status === 200) {
+        await fetchUserProfile();
+        onSuccess();
+      } else {
+        const errorMsg = response.data?.msg || "Failed to update phone number";
+        setError(errorMsg);
+        toast.error(errorMsg);
+      }
     } catch (error: any) {
-      toast.error(error?.message || "Failed to update phone number");
-      setError(error?.message || "Failed to update phone number");
+      const errorMsg = error?.message || "Failed to update phone number";
+      setError(errorMsg);
+      toast.error(errorMsg);
     } finally {
       setIsLoading(false);
     }
@@ -90,7 +95,7 @@ const NewPhoneNumber = ({
         <div className="mb-4 sm:mb-6">
           <label
             htmlFor="phoneNumber-input"
-            className="text- textPrimary mb-2 flex font-semibold"
+            className="text-textPrimary mb-2 flex font-semibold"
           >
             Phone Number
           </label>
