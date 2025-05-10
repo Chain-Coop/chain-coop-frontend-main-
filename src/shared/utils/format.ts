@@ -214,8 +214,7 @@ export const isDateValid = (dateString?: string) => {
  * @param startDate - ISO date string for the starting date
  * @param endDate - ISO date string for the ending date
  * @returns A formatted string representing the duration
- */
-export const calculateSavingsDuration = (
+ */ export const calculateSavingsDuration = (
   startDate?: string,
   endDate?: string,
 ): string => {

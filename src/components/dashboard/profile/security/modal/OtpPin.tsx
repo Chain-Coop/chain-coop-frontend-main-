@@ -66,6 +66,7 @@ const OtpPin = ({ isOpen, onNext, onClose }: OtpPinProps) => {
       animate={{ mount: { scale: 1, y: 0 }, unmount: { scale: 0.9, y: -100 } }}
       size="sm"
       className="overflow-y-auto p-7"
+      dismiss={{ enabled: false }}
     >
       <div className="relative">
         <IconButton
@@ -108,9 +109,9 @@ const OtpPin = ({ isOpen, onNext, onClose }: OtpPinProps) => {
           onClick={handleSubmit}
           disabled={loading}
           loading={loading}
-          className="w-60 rounded-full bg-text2 normal-case text-white"
+          className="flex w-60 justify-center rounded-full bg-text2 normal-case text-white"
         >
-          <Typography>{loading ? "Verifying..." : "Next"}</Typography>
+          <Typography>Next</Typography>
         </Button>
       </DialogFooter>
     </Dialog>

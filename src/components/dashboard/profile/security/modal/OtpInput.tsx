@@ -44,6 +44,7 @@ const OtpInput: React.FC<OtpInputProps> = ({
       open={isOpen}
       handler={onClose}
       className="bg-[#E9E9E9] p-4 sm:p-6"
+      dismiss={{ enabled: false }}
     >
       <DialogHeader className="relative flex flex-col justify-center text-center">
         <IconButton

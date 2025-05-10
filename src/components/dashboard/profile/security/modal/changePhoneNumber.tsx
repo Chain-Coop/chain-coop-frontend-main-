@@ -64,6 +64,7 @@ const ChangePhoneNumber = ({
       open={isOpen}
       handler={onClose}
       className="bg-[#E9E9E9] p-4 sm:p-6"
+      dismiss={{ enabled: false }}
     >
       <DialogHeader className="relative flex flex-col justify-center pt-10 text-center">
         <IconButton
@@ -96,7 +97,7 @@ const ChangePhoneNumber = ({
           type="email"
           value={email}
           readOnly
-          className="border-none"
+          className="border-none text-lg"
           labelClassName="text-text2"
           inputWrapperClassName="text-black font-normal"
           onChange={(e) => setEmail(e.target.value)}

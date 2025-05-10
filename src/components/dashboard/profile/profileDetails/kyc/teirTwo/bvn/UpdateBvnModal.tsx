@@ -53,6 +53,7 @@ const UpdateBvnModal = ({ isOpen, onClose }: BvnModalProps) => {
         open={isOpen && !showVerifyModal}
         handler={onClose}
         className="py-14"
+        dismiss={{ enabled: false }}
       >
         <form onSubmit={handleSubmit}>
           <DialogHeader className="flex flex-col justify-center text-center">
@@ -94,7 +95,11 @@ const UpdateBvnModal = ({ isOpen, onClose }: BvnModalProps) => {
         </form>
       </Dialog>
 
-      <VerifyBvn bvn={bvn} isOpen={showVerifyModal} onClose={handleVerifyClose} />
+      <VerifyBvn
+        bvn={bvn}
+        isOpen={showVerifyModal}
+        onClose={handleVerifyClose}
+      />
     </>
   );
 };

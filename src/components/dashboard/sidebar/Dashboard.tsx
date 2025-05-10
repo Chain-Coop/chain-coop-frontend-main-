@@ -336,7 +336,10 @@ const Dashboard = () => {
             element={<WithdrawCryptoWallet />}
           />
 
-          <Route path="wallet/fund/fund_crypto_wallet" element={<FundCryptoWallet />} />
+          <Route
+            path="wallet/fund/fund_crypto_wallet"
+            element={<FundCryptoWallet />}
+          />
 
           <Route path="wallet/fund" element={<FundWallet />} />
           <Route
