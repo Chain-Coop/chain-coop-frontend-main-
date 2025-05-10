@@ -14,20 +14,15 @@ const NewPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordType, setConfirmPasswordType] = useState("password");
   const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const email = queryParams.get("email");
-    const otp = queryParams.get("otp");
 
     if (email !== null) {
       setEmail(email);
-    }
-    if (otp !== null) {
-      setOtp(otp);
     }
   }, [location]);
 
@@ -52,7 +47,6 @@ const NewPassword = () => {
     try {
       const response = await RESET_PASSWORD(endpoint, {
         email: email,
-        otp: otp,
         password: password,
         confirmPassword: confirmPassword,
       });
