@@ -12,9 +12,9 @@ const WithdrawCryptoPreview: React.FC = () => {
   const data = (state?.data?.data || {}) as OrderData;
   const network = state?.network || "BTC Lightning";
   const networkValue = state?.networkValue || {};
+  const tokenId = state?.tokenId || "";
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // Formatters
   const formatCurrency = (value: number, currency = "NGN") =>
     value?.toLocaleString("en-NG", {
       style: "currency",
@@ -25,7 +25,6 @@ const WithdrawCryptoPreview: React.FC = () => {
   const handleWithdraw = () => {
     setIsProcessing(true);
 
-    // Simply navigate to the bank selection page with the data
     navigate("/dashboard/wallet/select-bank", {
       state: {
         data: {
@@ -42,6 +41,7 @@ const WithdrawCryptoPreview: React.FC = () => {
         },
         network,
         networkValue,
+        tokenId,
       },
     });
   };
