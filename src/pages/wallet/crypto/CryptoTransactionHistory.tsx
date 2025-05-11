@@ -72,12 +72,11 @@ const CryptoTransactionHistory: React.FC = () => {
       case "contribution":
         result = crypto;
         break;
-      default: // "all"
+      default:
         result = [...crypto, ...cashwyre];
         break;
     }
     
-    // Apply search filter if any
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       result = result.filter(tx => 
@@ -185,7 +184,7 @@ const CryptoTransactionHistory: React.FC = () => {
           Recent transactions
         </Typography>
 
-        <div className="flex flex-col lg:flex-row w-full flex-wrap items-start lg:items-center gap-3 md:w-auto">
+        <div className="flex flex-row w-full flex-wrap items-start lg:items-center gap-3 md:w-auto">
           {/* Search bar */}
           <div className="relative flex-grow md:flex-grow-0 md:w-64">
             <input

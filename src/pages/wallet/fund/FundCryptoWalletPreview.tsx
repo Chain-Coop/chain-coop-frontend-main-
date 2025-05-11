@@ -82,7 +82,7 @@ const FundCryptoWalletPreview: React.FC = () => {
   };
 
   return (
-    <main className="mt-0 lg:mt-8">
+    <main className="mt-0 mb-8 lg:mt-8">
       <DashboardHeader className=" relative flex items-center justify-center text-2xl tracking-wide md:text-3xl lg:text-xl">
         <IoIosArrowBack
           onClick={handleBackClick}
@@ -108,43 +108,43 @@ const FundCryptoWalletPreview: React.FC = () => {
             {data.amountInCryptoAsset}{" "}
             {(data.cryptoAsset || "crypto").toUpperCase()}
           </div>
-          <div className="mb-10 text-xl text-[#939090]">
+          <div className="mb-10 text-base text-[#939090] md:text-xl">
             Exchange rate: 1 {(data.cryptoAsset || "crypto").toUpperCase()} ≈{" "}
             {formatCurrency(data.cryptoRate, data.currency)}
           </div>
         </div>
         <div className="space-y-10 text-sm">
           <div className="flex justify-between border-b border-[#C4C0C0] pb-2">
-            <span className="text-xl font-medium">
+            <span className="text-base font-medium md:text-xl">
               Deposit amount ({data.currency || "NGN"})
             </span>
-            <span className="text-lg font-semibold">
+            <span className="text:base font-semibold md:text-lg">
               {formatCurrency(data.amountInLocalCurrency, data.currency)}
             </span>
           </div>
           <div className="flex justify-between border-b border-[#C4C0C0] pb-2">
-            <span className="text-xl font-medium">
+            <span className="text-base font-medium md:text-xl">
               Deposit amount in {(data.cryptoAsset || "crypto").toUpperCase()}
             </span>
-            <span className="text-lg font-semibold">
+            <span className="text:base font-semibold md:text-lg">
               {data.amountInCryptoAsset}{" "}
               {(data.cryptoAsset || "crypto").toUpperCase()}
             </span>
           </div>
           <div className="flex justify-between border-b border-[#C4C0C0] pb-2">
-            <span className="text-xl font-medium">Total to receive</span>
-            <span className="text-lg font-semibold">
+            <span className="text-base font-medium md:text-xl">Total to receive</span>
+            <span className="text:base font-semibold md:text-lg">
               {data.amountInCryptoAsset}{" "}
               {(data.cryptoAsset || "crypto").toUpperCase()}
             </span>
           </div>
           <div className="flex justify-between border-b border-[#C4C0C0] pb-2">
             <span className="text-xl font-medium">Network</span>
-            <span className="text-lg font-semibold">{network}</span>
+            <span className="text:base font-semibold md:text-lg">{network}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-xl font-medium">Convert type</span>
-            <span className="text-lg font-semibold">Market</span>
+            <span className="text-base font-medium md:text-xl">Convert type</span>
+            <span className="text:base font-semibold md:text-lg">Market</span>
           </div>
         </div>
 

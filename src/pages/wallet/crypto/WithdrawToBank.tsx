@@ -131,7 +131,7 @@ const WithdrawToBank: React.FC = () => {
           </div>
         </div>
         {/* Info banner */}
-        <div className="my-4 px-5 text-center text-lg">
+        <div className="my-4 px-3 md:px-5 text-center text-base md:text-lg">
           When withdrawing crypto, the amount will be converted to Naira based
           on current market rates. The final amount you receive may vary
           slightly due to market fluctuations.
