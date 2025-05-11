@@ -356,7 +356,6 @@ const GetTotalOneTimeSavings = async () => {
       headers: authHeader(),
     });
     return response.data?.data || 0;
-
   } catch (error: any) {
     console.error("Error fetching total one-time savings:", error);
     if (axios.isAxiosError(error) && error.response) {
@@ -390,6 +389,94 @@ const GetTotalPeriodicSavings = async () => {
   }
 };
 
+const CashwyreFund = async (body: any) => {
+  const url = `${API_URL}/web3/cashwyre/onramp/quote`;
+  try {
+    const response = await axios.post(url, body, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error("Backend error response:", error.response.data);
+      const backendMessage =
+        error.response.data.message ||
+        error.response.data.msg ||
+        "An error occurred";
+      throw new Error(backendMessage);
+    } else {
+      console.error("Network error:", error.message);
+      throw new Error("Network Error: Please check your internet connection.");
+    }
+  }
+};
+
+const CashwyreOnrampConfirm = async (body: any) => {
+  const url = `${API_URL}/web3/cashwyre/onramp/confirm`;
+  try {
+    const response = await axios.post(url, body, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error("Backend error response:", error.response.data);
+      const backendMessage =
+        error.response.data.message ||
+        error.response.data.msg ||
+        "An error occurred";
+      throw new Error(backendMessage);
+    } else {
+      console.error("Network error:", error.message);
+      throw new Error("Network Error: Please check your internet connection.");
+    }
+  }
+};
+
+const CashwyreOfframpQuote = async (body: any) => {
+  const url = `${API_URL}/web3/cashwyre/offramp/quote`;
+  try {
+    const response = await axios.post(url, body, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error("Backend error response:", error.response.data);
+      const backendMessage =
+        error.response.data.message ||
+        error.response.data.msg ||
+        "An error occurred";
+      throw new Error(backendMessage);
+    } else {
+      console.error("Network error:", error.message);
+      throw new Error("Network Error: Please check your internet connection.");
+    }
+  }
+};
+
+const CashwyreOfframpConfirm = async (body: any) => {
+  const url = `${API_URL}/web3/cashwyre/offramp/confirm`;
+  try {
+    const response = await axios.post(url, body, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error("Backend error response:", error.response.data);
+      const backendMessage =
+        error.response.data.message ||
+        error.response.data.msg ||
+        "An error occurred";
+      throw new Error(backendMessage);
+    } else {
+      console.error("Network error:", error.message);
+      throw new Error("Network Error: Please check your internet connection.");
+    }
+  }
+};
+
 const web3Services = {
   ActivateCryptoWallet,
   GetTotalCryptoWalletBalance,
@@ -408,6 +495,10 @@ const web3Services = {
   GetTotalOneTimeSavings,
   GetTotalPeriodicSavings,
   getCryptoHistory,
+  CashwyreFund,
+  CashwyreOnrampConfirm,
+  CashwyreOfframpQuote,
+  CashwyreOfframpConfirm,
 };
 
 export default web3Services;

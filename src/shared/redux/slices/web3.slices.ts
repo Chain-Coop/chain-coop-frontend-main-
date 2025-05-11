@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import _isEqual from "lodash/isEqual";
 import { setMessage } from "./message.slices";
 import web3Services from "../services/web3.services";
@@ -287,11 +287,157 @@ export const GetTotalContributionBalanceCrypto = createAsyncThunk<
   }
 });
 
+interface CashwyreFundPayload {
+  body: {
+    amount: number;
+    network: string;
+    [key: string]: any;
+  };
+}
+
+interface CashwyreFundResponse {
+  data: {
+    success: boolean;
+    message: string;
+    [key: string]: any;
+  };
+}
+
+export const CashwyreFund = createAsyncThunk<
+  CashwyreFundResponse,
+  CashwyreFundPayload,
+  { rejectValue: { message: string } }
+>("web3/cashwyreFund", async (payload, { rejectWithValue }) => {
+  try {
+    const data = await web3Services.CashwyreFund(payload.body);
+    return data;
+  } catch (error: any) {
+    const message =
+      error?.response?.data?.message ||
+      error?.data?.message ||
+      error?.message ||
+      "An unknown error occurred while funding the wallet";
+    return rejectWithValue({ message });
+  }
+});
+
+// --- Onramp Confirm Types ---
+interface CashwyreOnrampConfirmPayload {
+  body: {
+    amount: number;
+    crypto: string;
+    network: string;
+    reference: string;
+    transactionReference: string;
+    [key: string]: any;
+  };
+}
+
+interface CashwyreOnrampConfirmResponse {
+  data: {
+    success: boolean;
+    message: string;
+    [key: string]: any;
+  };
+}
+
+export const CashwyreOnrampConfirm = createAsyncThunk<
+  CashwyreOnrampConfirmResponse,
+  CashwyreOnrampConfirmPayload,
+  { rejectValue: { message: string } }
+>("web3/cashwyreOnrampConfirm", async (payload, { rejectWithValue }) => {
+  try {
+    const data = await web3Services.CashwyreOnrampConfirm(payload.body);
+    return data;
+  } catch (error: any) {
+    const message =
+      error?.response?.data?.message ||
+      error?.data?.message ||
+      error?.message ||
+      "An unknown error occurred while confirming the onramp transaction";
+    return rejectWithValue({ message });
+  }
+});
+
+// --- Offramp Quote Types ---
+interface CashwyreOfframpQuotePayload {
+  body: {
+    amount: number;
+    crypto: string;
+    network: string;
+    [key: string]: any;
+  };
+}
+
+interface CashwyreOfframpQuoteResponse {
+  data: {
+    success: boolean;
+    message: string;
+    [key: string]: any;
+  };
+}
+
+export const CashwyreOfframpQuote = createAsyncThunk<
+  CashwyreOfframpQuoteResponse,
+  CashwyreOfframpQuotePayload,
+  { rejectValue: { message: string } }
+>("web3/cashwyreOfframpQuote", async (payload, { rejectWithValue }) => {
+  try {
+    const data = await web3Services.CashwyreOfframpQuote(payload.body);
+    return data;
+  } catch (error: any) {
+    const message =
+      error?.response?.data?.message ||
+      error?.data?.message ||
+      error?.message ||
+      "An unknown error occurred while getting withdrawal quote";
+    return rejectWithValue({ message });
+  }
+});
+
+// --- Offramp Confirm Types ---
+interface CashwyreOfframpConfirmPayload {
+  body: {
+    amount: number;
+    crypto: string;
+    network: string;
+    reference: string;
+    transactionReference: string;
+    [key: string]: any;
+  };
+}
+
+interface CashwyreOfframpConfirmResponse {
+  data: {
+    success: boolean;
+    message: string;
+    [key: string]: any;
+  };
+}
+
+export const CashwyreOfframpConfirm = createAsyncThunk<
+  CashwyreOfframpConfirmResponse,
+  CashwyreOfframpConfirmPayload,
+  { rejectValue: { message: string } }
+>("web3/cashwyreOfframpConfirm", async (payload, { rejectWithValue }) => {
+  try {
+    const data = await web3Services.CashwyreOfframpConfirm(payload.body);
+    return data;
+  } catch (error: any) {
+    const message =
+      error?.response?.data?.message ||
+      error?.data?.message ||
+      error?.message ||
+      "An unknown error occurred while confirming the offramp transaction";
+    return rejectWithValue({ message });
+  }
+});
+
 interface CryptoState {
   actvateCryptWallet: Record<string, any> | null;
   cryptoBalance: number;
   cryptoWalletDetails: Record<string, any> | null;
-  registerUserPool: null;
+  registerUserPool: { [key: string]: any } | null;
   updateRegisteredUserPool: null;
   userPools: Pool[] | null;
   userTokens: any[] | null;
@@ -306,6 +452,15 @@ interface CryptoState {
   totalContributionBalanceCrypto: number | null;
   totalContributionBalanceLoading: boolean;
   totalContributionBalanceError: string | null;
+  onrampConfirmLoading?: boolean;
+  onrampConfirmError?: string | null;
+  onrampConfirmResult?: any;
+  offrampQuoteLoading?: boolean;
+  offrampQuoteError?: string | null;
+  offrampQuoteResult?: any;
+  offrampConfirmLoading?: boolean;
+  offrampConfirmError?: string | null;
+  offrampConfirmResult?: any;
 }
 
 const initialState: CryptoState = {
@@ -329,6 +484,15 @@ const initialState: CryptoState = {
   totalContributionBalanceLoading: false,
   totalContributionBalanceError: null,
   // --- End Initialize ---
+  onrampConfirmLoading: false,
+  onrampConfirmError: null,
+  onrampConfirmResult: null,
+  offrampQuoteLoading: false,
+  offrampQuoteError: null,
+  offrampQuoteResult: null,
+  offrampConfirmLoading: false,
+  offrampConfirmError: null,
+  offrampConfirmResult: null,
 };
 
 export const Web3Slices = createSlice({
@@ -572,6 +736,77 @@ export const Web3Slices = createSlice({
         state.totalContributionBalanceError =
           action.payload?.message || "Failed to fetch total balance";
         state.totalContributionBalanceCrypto = null;
+      })
+      .addCase(CashwyreFund.pending, (state: CryptoState) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        CashwyreFund.fulfilled,
+        (state: CryptoState, action: PayloadAction<CashwyreFundResponse>) => {
+          state.loading = false;
+          state.registerUserPool = action.payload.data;
+          state.error = null;
+        },
+      )
+      .addCase(
+        CashwyreFund.rejected,
+        (
+          state: CryptoState,
+          action: PayloadAction<{ message: string } | undefined>,
+        ) => {
+          state.loading = false;
+          state.registerUserPool = null;
+          state.error = action.payload?.message || "Failed to Fund Wallet";
+        },
+      )
+      .addCase(CashwyreOnrampConfirm.pending, (state) => {
+        state.onrampConfirmLoading = true;
+        state.onrampConfirmError = null;
+        state.onrampConfirmResult = null;
+      })
+      .addCase(CashwyreOnrampConfirm.fulfilled, (state, action) => {
+        state.onrampConfirmLoading = false;
+        state.onrampConfirmResult = action.payload.data;
+        state.onrampConfirmError = null;
+      })
+      .addCase(CashwyreOnrampConfirm.rejected, (state, action) => {
+        state.onrampConfirmLoading = false;
+        state.onrampConfirmResult = null;
+        state.onrampConfirmError =
+          action.payload?.message || "Failed to confirm onramp transaction";
+      })
+      .addCase(CashwyreOfframpQuote.pending, (state) => {
+        state.offrampQuoteLoading = true;
+        state.offrampQuoteError = null;
+        state.offrampQuoteResult = null;
+      })
+      .addCase(CashwyreOfframpQuote.fulfilled, (state, action) => {
+        state.offrampQuoteLoading = false;
+        state.offrampQuoteResult = action.payload.data;
+        state.offrampQuoteError = null;
+      })
+      .addCase(CashwyreOfframpQuote.rejected, (state, action) => {
+        state.offrampQuoteLoading = false;
+        state.offrampQuoteResult = null;
+        state.offrampQuoteError =
+          action.payload?.message || "Failed to get withdrawal quote";
+      })
+      .addCase(CashwyreOfframpConfirm.pending, (state) => {
+        state.offrampConfirmLoading = true;
+        state.offrampConfirmError = null;
+        state.offrampConfirmResult = null;
+      })
+      .addCase(CashwyreOfframpConfirm.fulfilled, (state, action) => {
+        state.offrampConfirmLoading = false;
+        state.offrampConfirmResult = action.payload.data;
+        state.offrampConfirmError = null;
+      })
+      .addCase(CashwyreOfframpConfirm.rejected, (state, action) => {
+        state.offrampConfirmLoading = false;
+        state.offrampConfirmResult = null;
+        state.offrampConfirmError =
+          action.payload?.message || "Failed to confirm offramp transaction";
       });
   },
 });

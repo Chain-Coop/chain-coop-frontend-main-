@@ -299,7 +299,7 @@ const CryptoMain = () => {
                       className="flex flex-col items-center bg-inherit text-center"
                     >
                       <TransferIcon />
-                      <span className="block text-memt1 lg:text-lg">Fund</span>
+                      <span className="block text-memt1 lg:text-lg">Fund Wallet</span>
                     </motion.button>
                   </Link>
                 </div>

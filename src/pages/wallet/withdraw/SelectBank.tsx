@@ -9,6 +9,7 @@ import {
   WithdrawalFromWallet,
   GeneratePinOTP,
 } from "../../../shared/redux/slices/transaction.slices";
+import { CashwyreOfframpConfirm } from "../../../shared/redux/slices/web3.slices";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import { WithdrawIcon, Xclamation } from "../../../Assets/svg";
 import PinModal from "../../../components/common/PinModal";
@@ -33,6 +34,8 @@ const SelectBank = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const amount = location.state?.amount;
+  const cryptoData = location.state?.data?.data;
+  const isCryptoWithdrawal = !!cryptoData;
   const dispatch: AppDispatch = useDispatch();
   const { profileDetails, fetchUserProfile } = useUserProfile();
 
@@ -47,6 +50,19 @@ const SelectBank = () => {
   );
 
   const isPinCreated = profileDetails?.isPinCreated || false;
+  const handleBackClick = () => {
+    navigate(-1);
+  };
+
+  const BankAccount = () => {
+    navigate("/dashboard/wallet/bank-account", {
+      state: {
+        amount,
+        isCryptoWithdrawal,
+        cryptoData,
+      },
+    });
+  };
 
   const accountData = useAppSelector(
     (state: any) => state?.transaction?.getWalletBalance,
@@ -54,10 +70,6 @@ const SelectBank = () => {
 
   const hasBankAccount =
     accountData?.bankAccounts && accountData?.bankAccounts?.length > 0;
-
-  const handleBackClick = () => {
-    navigate(-1);
-  };
 
   const handleBankAccount = () => {
     navigate("/dashboard/wallet/bank-account", { state: { amount } });
@@ -133,24 +145,34 @@ const SelectBank = () => {
     setError("");
 
     try {
-      const response = await dispatch(
-        WithdrawalFromWallet({
+      if (isCryptoWithdrawal) {
+        // Crypto withdrawal payload
+        const payload = {
+          amount: cryptoData.amountInCryptoAsset,
+          crypto: cryptoData.cryptoAsset,
+          network: cryptoData.network,
+          reference: cryptoData.reference,
+          transactionReference: cryptoData.transactionReference,
           accountNumber: selectedAccount.accountNumber,
+          accountName: selectedAccount.accountName,
           bankCode: selectedAccount.bankCode,
-          amount,
-          bankName: selectedAccount.bankName,
-          pin,
-          otp: otp || undefined,
-        }),
-      ).unwrap();
-
-      if (response.landing.message) {
-        handleSuccessfulTransaction();
+        };
+        await dispatch(CashwyreOfframpConfirm({ body: payload })).unwrap();
       } else {
-        setError(
-          response.landing.message || "Withdrawal failed. Please try again.",
-        );
+        // Naira withdrawal payload
+        const response = await dispatch(
+          WithdrawalFromWallet({
+            accountNumber: selectedAccount.accountNumber,
+            bankCode: selectedAccount.bankCode,
+            amount,
+            bankName: selectedAccount.bankName,
+            pin,
+            otp: otp || undefined,
+        }),
+        ).unwrap();
       }
+
+      handleSuccessfulTransaction();
     } catch (err: any) {
       const errorMessage = err.error || "An error occurred. Please try again.";
       setError(errorMessage);
