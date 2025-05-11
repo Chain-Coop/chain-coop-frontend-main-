@@ -137,6 +137,9 @@ export interface CryptoTransaction {
   Token: string;
   createdAt: string;
   updatedAt: string;
+  cryptoAsset: string;
+  reference: string;
+  status: string;
   __v?: number;
 }
 

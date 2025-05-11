@@ -14,9 +14,9 @@ import { toast } from "react-toastify";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
 const CRYPTOS = [
-  { label: "BTC", value: "bitcoin", img: btcImg, network: "BTC" },
-  { label: "USDC", value: "usdc", img: usdcImg, network: "USDC" },
-  { label: "USDT", value: "usdt", img: usdtImg, network: "USDT" },
+  { label: "BTC", value: "bitcoin", img: btcImg, network: "BTC", tokenId: "3" },
+  { label: "USDC", value: "usdc", img: usdcImg, network: "USDC", tokenId: "2" },
+  { label: "USDT", value: "usdt", img: usdtImg, network: "USDT", tokenId: "1" },
 ];
 
 const WithdrawToBank: React.FC = () => {
@@ -73,7 +73,6 @@ const WithdrawToBank: React.FC = () => {
         autoClose: 2000,
       });
 
-      // Navigate to preview page with withdrawal data
       navigate("/dashboard/wallet/crypto/withdraw/preview", {
         state: {
           data: {
@@ -89,6 +88,7 @@ const WithdrawToBank: React.FC = () => {
           },
           network: crypto.network,
           networkValue: crypto.network,
+          tokenId: crypto.tokenId,
         },
       });
     } catch (error: any) {

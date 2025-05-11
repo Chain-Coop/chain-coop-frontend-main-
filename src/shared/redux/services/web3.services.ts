@@ -477,6 +477,38 @@ const CashwyreOfframpConfirm = async (body: any) => {
   }
 };
 
+const getCashwyreHistory = async () => {
+  const url = `${API_URL}/web3/cashwyre/transactions`;
+  //console.log("Fetching cashwyre history from:", url);
+  
+  try {
+    const response = await axios.get(url, {
+      headers: authHeader(),
+    });
+    //console.log("Raw API response:", response);
+    //console.log("Cashwyre history data:", response.data);
+    
+    return {
+      data: response.data.data || [],
+      message: response.data.message || "Successfully fetched cashwyre transactions",
+      success: response.data.success !== false
+    };
+  } catch (error: any) {
+    //console.error("Error in getCashwyreHistory:", error);
+    if (axios.isAxiosError(error) && error.response) {
+      const backendMessage =
+        error.response.data?.msg ||
+        error.response.data?.message ||
+        "An error occurred fetching crypto history";
+      throw new Error(backendMessage);
+    } else if (axios.isCancel(error)) {
+      throw new Error("Request canceled.");
+    } else {
+      throw new Error("Network Error: Could not fetch crypto history.");
+    }
+  }
+};
+
 const web3Services = {
   ActivateCryptoWallet,
   GetTotalCryptoWalletBalance,
@@ -499,6 +531,7 @@ const web3Services = {
   CashwyreOnrampConfirm,
   CashwyreOfframpQuote,
   CashwyreOfframpConfirm,
+  getCashwyreHistory,
 };
 
 export default web3Services;

@@ -252,6 +252,34 @@ export const useCryptoTransactionHistory = () => {
   };
 };
 
+export const useCashwyreHistory = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { cashwyreHistory, cashwyreHistoryLoading, cashwyreHistoryError } =
+    useSelector(
+      (state: any) => ({
+        cashwyreHistory: state.web3.cashwyreHistory,
+        cashwyreHistoryLoading: state.web3.cashwyreHistoryLoading,
+        cashwyreHistoryError: state.web3.cashwyreHistoryError,
+      }),
+      shallowEqual,
+    );
+
+  const fetchHistory = useCallback(() => {
+    dispatch(Web3Slices.GetCashwyreHistory());
+  }, [dispatch]);
+
+  useEffect(() => {
+    fetchHistory();
+  }, [fetchHistory]);
+
+  return {
+    transactions: cashwyreHistory as CryptoTransaction[] | null,
+    loading: cashwyreHistoryLoading,
+    error: cashwyreHistoryError,
+    fetchHistory,
+  };
+};
+
 export const useTotalContributionBalanceCrypto = (refreshInterval?: number) => {
   const dispatch = useDispatch<AppDispatch>();
   const { isVisible, setIsVisible } = useVisibilityState(

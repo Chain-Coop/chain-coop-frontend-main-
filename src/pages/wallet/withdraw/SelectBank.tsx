@@ -156,6 +156,7 @@ const SelectBank = () => {
           accountNumber: selectedAccount.accountNumber,
           accountName: selectedAccount.accountName,
           bankCode: selectedAccount.bankCode,
+          tokenId: cryptoData.tokenId,
         };
         await dispatch(CashwyreOfframpConfirm({ body: payload })).unwrap();
       } else {
