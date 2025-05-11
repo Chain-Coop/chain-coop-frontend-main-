@@ -17,12 +17,15 @@ import { AppDispatch } from "../../../shared/redux/store";
 import { WithdrawIcon } from "../../../Assets/svg";
 import useUserProfile from "../../../shared/Hooks/useUserProfile";
 import { Alert } from "@mui/material";
+import { useAppSelector } from "../../../shared/redux/reduxHooks";
+import { RootState } from "../../../shared/redux/rootReducer";
+import { GetUserProfile } from "../../../shared/redux/slices/landing.slices";
 
 const VerifyAccount = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
-  const { profileDetails, fetchUserProfile } = useUserProfile();
+  const { getProfile } = useAppSelector((state: RootState) => state.landing);
 
   const [pinStep, setPinStep] = useState(0);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -35,7 +38,7 @@ const VerifyAccount = () => {
   const { accountName, accountNumber, bankName, bankCode, amount } =
     location.state || {};
 
-  const isPinCreated = profileDetails?.isPinCreated || false;
+  const isPinCreated = getProfile?.isPinCreated || false;
 
   useEffect(() => {
     if (transactionComplete) {
@@ -107,7 +110,7 @@ const VerifyAccount = () => {
 
   const handleChangePinSuccess = async () => {
     try {
-      await fetchUserProfile();
+      await GetUserProfile();
       setPinStep(4);
     } catch (error: any) {
       setError("Failed to refresh profile. Please try again.");
@@ -151,7 +154,7 @@ const VerifyAccount = () => {
 
   const handleSubmitClick = async () => {
     try {
-      await fetchUserProfile();
+      await GetUserProfile();
       if (isPinCreated) {
         setPinStep(4);
       } else {

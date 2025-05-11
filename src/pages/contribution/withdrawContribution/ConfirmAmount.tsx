@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { Alert } from "@mui/material";
 import { Button, Typography } from "@material-tailwind/react";
 import { AppDispatch } from "../../../shared/redux/store";
-import useUserProfile from "../../../shared/Hooks/useUserProfile";
 import {
   WithdrawalFromContribution,
   GeneratePinOTP,
@@ -18,12 +17,15 @@ import PinModal from "../../../components/common/PinModal";
 import ChangePin from "../../../components/dashboard/profile/security/modal/ChangePin";
 import OtpPin from "../../../components/dashboard/profile/security/modal/OtpPin";
 import GeneratePin from "../../../components/dashboard/profile/security/modal/GeneratePin";
+import { RootState } from "../../../shared/redux/rootReducer";
+import { useAppSelector } from "../../../shared/redux/reduxHooks";
+import { GetUserProfile } from "../../../shared/redux/slices/landing.slices";
 
 const ConfirmAmount = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
-  const { profileDetails, fetchUserProfile } = useUserProfile();
+  const { getProfile } = useAppSelector((state: RootState) => state.landing);
 
   const [pinStep, setPinStep] = useState(0);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -36,7 +38,7 @@ const ConfirmAmount = () => {
   const [savingsType, setSavingsType] = useState<string>("FLEXIBLE");
   const [withdrawalDate, setWithdrawalDate] = useState<string | null>(null);
 
-  const isPinCreated = profileDetails?.isPinCreated || false;
+  const isPinCreated = getProfile?.isPinCreated || false;
 
   const isBeforeWithdrawalDate = () => {
     if (!withdrawalDate) return false;
@@ -54,7 +56,7 @@ const ConfirmAmount = () => {
   const calculateFees = () => {
     let fees = 50;
 
-    if (profileDetails?.membershipStatus === "inactive") {
+    if (getProfile?.membershipStatus === "inactive") {
       fees += 1000;
     }
 
@@ -144,7 +146,7 @@ const ConfirmAmount = () => {
 
   const handleChangePinSuccess = async () => {
     try {
-      await fetchUserProfile();
+      await GetUserProfile();
       setPinStep(4);
     } catch (error: any) {
       setError("Failed to refresh profile. Please try again.");
@@ -192,8 +194,8 @@ const ConfirmAmount = () => {
 
   const handleConfirmWithdrawal = async () => {
     try {
-      await fetchUserProfile();
-      if (profileDetails?.isPinCreated) {
+      await GetUserProfile();
+      if (getProfile?.isPinCreated) {
         setPinStep(4);
       } else {
         setPinStep(1);
@@ -271,7 +273,7 @@ const ConfirmAmount = () => {
               Fees Breakdown:
             </Typography>
 
-            {profileDetails?.membershipStatus === "inactive" && (
+            {getProfile?.membershipStatus === "inactive" && (
               <div className="flex justify-between">
                 <Typography className="text-base text-amber-600">
                   Membership Fee

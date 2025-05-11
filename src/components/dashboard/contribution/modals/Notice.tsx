@@ -15,6 +15,8 @@ import {
   useWithdrawalValidation,
 } from "../../../../shared/Hooks/useBalance";
 import { IoMdClose } from "react-icons/io";
+import { useAppSelector } from "../../../../shared/redux/reduxHooks";
+import { RootState } from "../../../../shared/redux/rootReducer";
 
 interface NoticeModalProps {
   isOpen: boolean;
@@ -35,8 +37,9 @@ const NoticeModal: React.FC<NoticeModalProps> = ({
   withdrawalAmount = 0,
   balance = 0,
 }) => {
-  const { profileDetails } = useUserProfile();
-  const membershipStatus = profileDetails?.membershipStatus || "inactive";
+  const { getProfile } = useAppSelector((state: RootState) => state.landing);
+
+  const membershipStatus = getProfile?.membershipStatus || "inactive";
 
   const validation = useWithdrawalValidation({
     savingsType,

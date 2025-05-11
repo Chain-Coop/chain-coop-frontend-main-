@@ -27,8 +27,8 @@ const GeneratePin = ({
   onClose,
   onOtpGenerated,
 }: GeneratePinModalProps) => {
-  const { profileDetails } = useUserProfile();
-  const isPinCreated = profileDetails?.isPinCreated || false;
+  const { getProfile } = useAppSelector((state: RootState) => state.landing);
+  const isPinCreated = getProfile?.isPinCreated || false;
 
   const [isLoading, setIsLoading] = useState(false);
   const dispatch: AppDispatch = useDispatch();

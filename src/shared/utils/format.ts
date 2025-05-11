@@ -238,3 +238,12 @@ export const isDateValid = (dateString?: string) => {
     return "Invalid dates";
   }
 };
+
+export const formatFullDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};

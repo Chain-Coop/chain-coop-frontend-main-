@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { Alert } from "@mui/material";
-import useUserProfile, {
-  useUserCard,
-} from "../../../../shared/Hooks/useUserProfile";
+import { useUserCard } from "../../../../shared/Hooks/useUserProfile";
 import {
   addDays,
   formatDate,
@@ -14,7 +12,10 @@ import {
   validateCustomEndDate,
 } from "../../../../shared/utils/format";
 import { AppDispatch } from "../../../../shared/redux/store";
-import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../../shared/redux/reduxHooks";
 import {
   CreateContributionPlan,
   GetWalletCard,
@@ -25,6 +26,7 @@ import { Button } from "@material-tailwind/react";
 import PaymentWithCard from "../../../../components/dashboard/contribution/paymentChoice/PaymentWithCard";
 import PayWithPaystack from "../../../../components/dashboard/contribution/paymentChoice/PayWithPaystack";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { RootState } from "../../../../shared/redux/rootReducer";
 
 interface ContributionResponse {
   result: {
@@ -35,7 +37,7 @@ interface ContributionResponse {
 
 const StartDate: React.FC = () => {
   const { useWalletCards } = useUserCard();
-  const { profileDetails } = useUserProfile();
+  const { getProfile } = useAppSelector((state: RootState) => state.landing);
   const today = formatDate(new Date());
   const startDate = today;
   const [endDate, setEndDate] = useState("");
@@ -172,7 +174,7 @@ const StartDate: React.FC = () => {
       const paymentResponse = await dispatch(
         PayContributionPaystack({
           contributionId: contributionData.contributionId,
-          userId: profileDetails?._id,
+          userId: getProfile?._id,
           paymentType: "paystack",
         }),
       ).unwrap();

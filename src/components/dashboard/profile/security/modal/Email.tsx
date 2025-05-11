@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 import { ResetPassword } from "../../../../../shared/redux/slices/landing.slices";
 import { AppDispatch } from "../../../../../shared/redux/store";
 import {
@@ -14,6 +13,8 @@ import {
 } from "@material-tailwind/react";
 import FormInput from "../../../../common/FormInput";
 import { IoMdClose } from "react-icons/io";
+import { RootState } from "../../../../../shared/redux/rootReducer";
+import { useAppSelector } from "../../../../../shared/redux/reduxHooks";
 
 interface EmailStepProps {
   email: string;
@@ -31,14 +32,14 @@ const EmailStep = ({
   onClose,
 }: EmailStepProps) => {
   const dispatch: AppDispatch = useDispatch();
-  const { profileDetails } = useUserProfile();
+  const { getProfile } = useAppSelector((state: RootState) => state.landing);
   const { isLoading, error, success } = useSelector(
     (state: any) => state.landing,
   );
 
   useEffect(() => {
-    setEmail(profileDetails?.email);
-  }, [profileDetails?.email, setEmail]);
+    setEmail(getProfile?.email || "");
+  }, [getProfile?.email, setEmail]);
 
   useEffect(() => {
     if (success) {

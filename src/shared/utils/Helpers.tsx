@@ -1,5 +1,6 @@
 import { Card } from "../types/types";
 import NigerianFlag from "../../Assets/svg/dashboard/contribution/NigerianFlag.svg";
+import { handleLoggout } from "./auth";
 
 export const CardBrandLogo = ({ brand }: { brand: string }) => {
   const logoStyle =
@@ -96,3 +97,78 @@ export const ContributionFundType = [
     icon: <img src={NigerianFlag} alt="Nigerian Flag" className="h-10 w-10" />,
   },
 ];
+
+export const membershipOptions = [
+  { value: "Explorer", label: "Explorer" },
+  { value: "Pioneer", label: "Pioneer" },
+];
+
+export const getPasswordStrengthColor = (score: number) => {
+  switch (score) {
+    case 0:
+    case 1:
+      return "bg-red-500";
+    case 2:
+      return "bg-orange-500";
+    case 3:
+      return "bg-yellow-500";
+    case 4:
+      return "bg-green-500";
+    case 5:
+      return "bg-green-600";
+    default:
+      return "bg-gray-200";
+  }
+};
+
+export const checkPasswordStrength = (
+  password: string,
+): { score: number; message: string } => {
+  let score = 0;
+  let message = "";
+
+  if (password.length >= 8) score++;
+  if (password.match(/[a-z]/)) score++;
+  if (password.match(/[A-Z]/)) score++;
+  if (password.match(/[0-9]/)) score++;
+  if (password.match(/[^a-zA-Z0-9]/)) score++;
+
+  switch (score) {
+    case 0:
+    case 1:
+      message = "Very Weak";
+      break;
+    case 2:
+      message = "Weak";
+      break;
+    case 3:
+      message = "Medium";
+      break;
+    case 4:
+      message = "Strong";
+      break;
+    case 5:
+      message = "Very Strong";
+      break;
+    default:
+      message = "Very Weak";
+  }
+
+  return { score, message };
+};
+
+const checkTokenExpiration = () => {
+  const token = sessionStorage.getItem("authToken");
+
+  if (token) {
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+
+      if (payload.exp * 1000 < Date.now()) {
+        handleLoggout();
+      }
+    } catch (error) {
+      handleLoggout();
+    }
+  }
+};

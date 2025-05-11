@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AppDispatch } from "../../../../shared/redux/store";
-import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../../shared/redux/reduxHooks";
 import {
   useUserCard,
   useUserProfile,
@@ -18,6 +21,8 @@ import PaymentWithCard from "../../../../components/dashboard/contribution/payme
 import PayWithPaystack from "../../../../components/dashboard/contribution/paymentChoice/PayWithPaystack";
 import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg";
 import { getSavingsTypeTitle } from "../../../../shared/utils/Helpers";
+import { formatFullDate } from "../../../../shared/utils/format";
+import { RootState } from "../../../../shared/redux/rootReducer";
 
 interface ContributionResponse {
   result: {
@@ -31,7 +36,7 @@ const Preview = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useAppDispatch();
   const { useWalletCards } = useUserCard();
-  const { profileDetails } = useUserProfile();
+  const { getProfile } = useAppSelector((state: RootState) => state.landing);
 
   const {
     purpose,
@@ -101,7 +106,7 @@ const Preview = () => {
       const paymentResponse = await dispatch(
         PayContributionPaystack({
           contributionId: contributionData.contributionId,
-          userId: profileDetails?._id,
+          userId: getProfile?._id,
           paymentType: "paystack",
         }),
       ).unwrap();
@@ -134,20 +139,9 @@ const Preview = () => {
     setError("");
   };
 
-  const formattedStartDate = startDate
-    ? new Date(startDate).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    : "N/A";
-  const formattedEndDate = endDate
-    ? new Date(endDate).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    : "N/A";
+  const formattedStartDate = startDate ? formatFullDate(startDate) : "N/A";
+
+  const formattedEndDate = endDate ? formatFullDate(endDate) : "N/A";
 
   const previewData = [
     { label: "Amount", value: `${currency || "NGN"} ${amount || "0"}` },

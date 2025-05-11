@@ -7,14 +7,16 @@ import {
   Verified,
 } from "../../../../Assets/svg";
 import { IoIosArrowForward } from "react-icons/io";
+import { RootState } from "../../../../shared/redux/rootReducer";
+import { useAppSelector } from "../../../../shared/redux/reduxHooks";
 
 const IdVerification = () => {
-  const { profileDetails } = useUserProfile();
+  const { getProfile } = useAppSelector((state: RootState) => state.landing);
 
   const isUserVerified =
-    profileDetails?.Tier === 1 && profileDetails?.isVerified === true;
+    getProfile?.Tier === 1 && getProfile?.isVerified === true;
 
-  const isBvnVerified = profileDetails?.Tier === 2;
+  const isBvnVerified = getProfile?.Tier === 2;
 
   return (
     <main className="mt-4">
@@ -36,7 +38,7 @@ const IdVerification = () => {
               <Typography className="font-semibold">Phone Number</Typography>
             </div>
             <Typography variant="small" className="text-gray-500">
-              {profileDetails?.phoneNumber}
+              {getProfile?.phoneNumber}
             </Typography>
           </div>
           <div className="flex items-center gap-3">

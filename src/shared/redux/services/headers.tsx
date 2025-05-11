@@ -1,12 +1,9 @@
-
-import React from "react";
-
 export default function authHeader() {
-  const user = sessionStorage.getItem("userData");
+  const userToken = sessionStorage.getItem("authToken");
 
-  if (user) {
+  if (userToken) {
     return {
-      Authorization: "Bearer " + user,
+      Authorization: `Bearer ${userToken}`,
     };
   } else {
     return {};

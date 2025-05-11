@@ -6,10 +6,12 @@ import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 import { Typography } from "@material-tailwind/react";
 import Success from "../../../../common/Success";
 import UpdateBvnModal from "../kyc/teirTwo/bvn/UpdateBvnModal";
+import { RootState } from "../../../../../shared/redux/rootReducer";
+import { useAppSelector } from "../../../../../shared/redux/reduxHooks";
 
 const Details = () => {
   const navigate = useNavigate();
-  const { profileDetails } = useUserProfile();
+  const { getProfile } = useAppSelector((state: RootState) => state.landing);
   const [showTierOneModal, setShowTierOneModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
@@ -17,17 +19,17 @@ const Details = () => {
 
   const sections = [
     {
-      title: profileDetails?.isVerified ? (
+      title: getProfile?.isVerified ? (
         "Manage Limit"
       ) : (
         <div className="flex w-full items-center justify-between">
           <span>ID Verification</span>
           <button className="rounded-full bg-red-600 px-4 py-1 text-sm font-medium text-white shadow-md">
-            {profileDetails?.isVerified ? "1/2 verified" : "0/2 verified"}
+            {getProfile?.isVerified ? "1/2 verified" : "0/2 verified"}
           </button>
         </div>
       ),
-      description: profileDetails?.isVerified ? (
+      description: getProfile?.isVerified ? (
         <div className="flex items-center justify-between gap-[1em]">
           <Typography variant="small" className="font-normal text-gray-500">
             Daily Credit Limit: N20,000 Daily withdrawal Limit: N500
@@ -101,7 +103,7 @@ const Details = () => {
         isOpen={showTierOneModal}
         onClose={handleModalClose}
         onBvnStepClick={handleBvnStepClick}
-        isVerified={profileDetails?.isVerified}
+        isVerified={getProfile?.isVerified ?? false}
       />
       <UpdateBvnModal isOpen={showBvnFirstModal} onClose={handleModalClose} />
       <Success

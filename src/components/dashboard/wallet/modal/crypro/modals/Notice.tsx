@@ -8,7 +8,8 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { format, parseISO, isAfter, isToday } from "date-fns";
-import useUserProfile from "../../../../shared/Hooks/useUserProfile";
+import { RootState } from "../../../../../../shared/redux/rootReducer";
+import { useAppSelector } from "../../../../../../shared/redux/reduxHooks";
 
 interface NoticeModalProps {
   isOpen: boolean;
@@ -45,8 +46,9 @@ const NoticeModal: React.FC<NoticeModalProps> = ({
   withdrawalAmount = 0,
   balance = 0,
 }) => {
-  const { profileDetails } = useUserProfile();
-  const membershipStatus = profileDetails?.membershipStatus || "inactive";
+  const { getProfile } = useAppSelector((state: RootState) => state.landing);
+
+  const membershipStatus = getProfile?.membershipStatus || "inactive";
 
   const isBeforeWithdrawalDate = () => {
     if (!withdrawalDate) return false;

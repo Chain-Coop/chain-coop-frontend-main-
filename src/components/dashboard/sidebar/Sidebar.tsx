@@ -1,34 +1,34 @@
-import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../../Assets/svg/cooplogo.svg";
 import { sidebarLinks } from "../../../data/Data";
 import member from "../../../Assets/jpg/membership/customer.jpg";
 import investor from "../../../Assets/jpg/membership/investor.jpg";
-import useUserProfile from "../../../shared/Hooks/useUserProfile";
 import { Typography } from "@material-tailwind/react";
+import { useAppSelector } from "../../../shared/redux/reduxHooks";
+import { RootState } from "../../../shared/redux/rootReducer";
 
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { profileDetails } = useUserProfile();
+  const { getProfile } = useAppSelector((state: RootState) => state.landing);
 
   const home = () => {
     navigate("/dashboard");
   };
 
   const getMembershipImage = () => {
-    if (profileDetails?.membershipType === "Explorer") {
+    if (getProfile?.membershipType === "Explorer") {
       return member;
-    } else if (profileDetails?.membershipType === "Pioneer") {
+    } else if (getProfile?.membershipType === "Pioneer") {
       return investor;
     }
     return member;
   };
 
   const getButtonProps = () => {
-    if (profileDetails?.membershipStatus === "inactive") {
+    if (getProfile?.membershipStatus === "inactive") {
       return { text: "Inactive", bgColor: "bg-yellow-500" };
-    } else if (profileDetails?.membershipStatus === "active") {
+    } else if (getProfile?.membershipStatus === "active") {
       return { text: "Activated", bgColor: "bg-green-500" };
     }
     return { text: "Unknown", bgColor: "bg-gray-400" };

@@ -1,9 +1,5 @@
 import { useState, useCallback } from "react";
 import { IoIosArrowForward } from "react-icons/io";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../../shared/redux/store";
-import useUserProfile from "../../../../shared/Hooks/useUserProfile";
-import { resetPasswordState } from "../../../../shared/redux/slices/landing.slices";
 import GeneratePin from "./modal/GeneratePin";
 import OtpPin from "./modal/OtpPin";
 import ChangePin from "./modal/ChangePin";
@@ -14,10 +10,11 @@ import Success from "../../../common/Success";
 import ChangePhoneNumber from "./modal/changePhoneNumber";
 import PhoneNumberOtp from "./phoneNumberOtp";
 import NewPhoneNumber from "./newPhoneNumber";
+import { useAppSelector } from "../../../../shared/redux/reduxHooks";
+import { RootState } from "../../../../shared/redux/rootReducer";
 
 const Security = () => {
-  const dispatch: AppDispatch = useDispatch();
-  const { profileDetails } = useUserProfile();
+  const { getProfile } = useAppSelector((state: RootState) => state.landing);
 
   const [passwordResetStep, setPasswordResetStep] = useState(0);
   const [pinResetStep, setPinResetStep] = useState(0);
@@ -109,7 +106,7 @@ const Security = () => {
         setPasswordResetStep(1);
         setIsModalOpen(true);
         setOtp("");
-        dispatch(resetPasswordState());
+        // dispatch(resetPasswordState());
       },
     },
     {
@@ -146,13 +143,13 @@ const Security = () => {
               isOpen={isModalOpen}
               onClose={handleModalClose}
               onOtpEntered={() => setPasswordResetStep(3)}
-              email={email} 
+              email={email}
             />
           );
         case 3:
           return (
             <NewPassword
-              email={profileDetails.email}
+              email={getProfile?.email || ""}
               otp={otp}
               isOpen={isModalOpen}
               onClose={handleModalClose}

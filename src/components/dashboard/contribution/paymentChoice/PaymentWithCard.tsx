@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../../shared/redux/reduxHooks";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { AppDispatch } from "../../../../shared/redux/store";
 import {
@@ -35,6 +38,7 @@ import {
   handleCloseError,
 } from "../../../../shared/utils/Helpers";
 import { IoMdClose } from "react-icons/io";
+import { RootState } from "../../../../shared/redux/rootReducer";
 
 interface PaymentWithCardProps {
   contributionData: {
@@ -58,7 +62,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const navigate = useNavigate();
-  const { profileDetails } = useUserProfile();
+  const { getProfile } = useAppSelector((state: RootState) => state.landing);
 
   useEffect(() => {
     dispatch(GetWalletCard());
@@ -86,7 +90,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
     try {
       const basePayload = {
         contributionId,
-        userId: profileDetails._id,
+        userId: getProfile?._id,
       };
 
       if (paymentType === "card" && selectedCard) {

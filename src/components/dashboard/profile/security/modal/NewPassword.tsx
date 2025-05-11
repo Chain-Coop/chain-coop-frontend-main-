@@ -36,42 +36,42 @@ const NewPassword: React.FC<NewPasswordProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const resetPasswordFunc = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    const endpoint = `/auth/reset_password`;
+  // const resetPasswordFunc = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   const endpoint = `/auth/reset_password`;
 
-    if (newPassword.length < 8) {
-      setError("Password must be at least 8 characters long");
-      setLoading(false);
-      return;
-    }
+  //   if (newPassword.length < 8) {
+  //     setError("Password must be at least 8 characters long");
+  //     setLoading(false);
+  //     return;
+  //   }
 
-    if (newPassword !== confirmNewPassword) {
-      setError("Passwords do not match");
-      setLoading(false);
-      return;
-    }
+  //   if (newPassword !== confirmNewPassword) {
+  //     setError("Passwords do not match");
+  //     setLoading(false);
+  //     return;
+  //   }
 
-    try {
-      const response = await RESET_PASSWORD(endpoint, {
-        email,
-        otp,
-        password: newPassword,
-        confirmPassword: confirmNewPassword,
-      });
-      setLoading(false);
-      if (response?.status === 200) {
-        setError("");
-        onSuccess();
-      } else {
-        setError(response.data.msg || "Error resetting password");
-      }
-    } catch (error) {
-      setLoading(false);
-      setError("Error resetting password");
-    }
-  };
+  //   try {
+  //     const response = await RESET_PASSWORD(endpoint, {
+  //       email,
+  //       otp,
+  //       password: newPassword,
+  //       confirmPassword: confirmNewPassword,
+  //     });
+  //     setLoading(false);
+  //     if (response?.status === 200) {
+  //       setError("");
+  //       onSuccess();
+  //     } else {
+  //       setError(response.data.msg || "Error resetting password");
+  //     }
+  //   } catch (error) {
+  //     setLoading(false);
+  //     setError("Error resetting password");
+  //   }
+  // };
 
   return (
     <Dialog
@@ -81,7 +81,9 @@ const NewPassword: React.FC<NewPasswordProps> = ({
       className="bg-[#E9E9E9] p-4"
       dismiss={{ enabled: false }}
     >
-      <form onSubmit={resetPasswordFunc}>
+      <form
+      //  onSubmit={resetPasswordFunc}
+      >
         <DialogHeader className="relative justify-center">
           <IconButton
             variant="text"

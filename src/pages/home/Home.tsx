@@ -14,6 +14,8 @@ import { ROUTES } from "../../shared/routes";
 import ToggleButton from "../../shared/utils/ToggleButton";
 import { LoanModal } from "../../components/dashboard/home/modals/LoanModal";
 import { ProjectsSkeleton } from "../../components/common/Loading";
+import { RootState } from "../../shared/redux/rootReducer";
+import { useAppSelector } from "../../shared/redux/reduxHooks";
 
 interface Project {
   _id: string;
@@ -28,7 +30,7 @@ const Home = () => {
   const { isWalletVisible, setIsWalletVisible, formattedBalance } =
     useWalletBalance();
   const { totalCount } = useAllNotification();
-  const { profileDetails } = useUserProfile();
+  const { getProfile } = useAppSelector((state: RootState) => state.landing);
   const { useProjects, loading } = useAllProjects();
   const navigate = useNavigate();
 
@@ -111,7 +113,7 @@ const Home = () => {
           <div className="font-medium">
             <Typography className="font-normal">Welcome Back!</Typography>
             <Typography className="mt-1 font-semibold">
-              {profileDetails?.username || "user"}
+              {getProfile?.username || "user"}
             </Typography>
           </div>
           <Link to={ROUTES.notification}>

@@ -1,5 +1,9 @@
 import { InputHTMLAttributes } from "react";
 
+export interface ApiError {
+  msg: string;
+}
+
 export interface ModalProps {
   isOpen?: boolean;
   onClose?: () => void;

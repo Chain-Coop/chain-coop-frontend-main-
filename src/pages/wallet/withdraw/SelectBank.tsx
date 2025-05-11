@@ -17,8 +17,9 @@ import OtpPin from "../../../components/dashboard/profile/security/modal/OtpPin"
 import ChangePin from "../../../components/dashboard/profile/security/modal/ChangePin";
 import { useAppSelector } from "../../../shared/redux/reduxHooks";
 import SuccessModal from "../../../components/dashboard/wallet/modal/SuccessModal";
-import useUserProfile from "../../../shared/Hooks/useUserProfile";
 import { Alert } from "@mui/material";
+import { RootState } from "../../../shared/redux/rootReducer";
+import { GetUserProfile } from "../../../shared/redux/slices/landing.slices";
 
 interface BankAccount {
   accountNumber: string;
@@ -34,7 +35,7 @@ const SelectBank = () => {
   const location = useLocation();
   const amount = location.state?.amount;
   const dispatch: AppDispatch = useDispatch();
-  const { profileDetails, fetchUserProfile } = useUserProfile();
+  const { getProfile } = useAppSelector((state: RootState) => state.landing);
 
   const [pinStep, setPinStep] = useState(0);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -46,7 +47,7 @@ const SelectBank = () => {
     null,
   );
 
-  const isPinCreated = profileDetails?.isPinCreated || false;
+  const isPinCreated = getProfile?.isPinCreated || false;
 
   const accountData = useAppSelector(
     (state: any) => state?.transaction?.getWalletBalance,
@@ -112,7 +113,7 @@ const SelectBank = () => {
 
   const handleChangePinSuccess = async () => {
     try {
-      await fetchUserProfile();
+      await GetUserProfile();
       setPinStep(4);
     } catch (error: any) {
       setError("Failed to refresh profile. Please try again.");
@@ -162,7 +163,7 @@ const SelectBank = () => {
   const handleSelectAccount = async (account: BankAccount) => {
     try {
       setSelectedAccount(account);
-      await fetchUserProfile();
+      await GetUserProfile();
       if (isPinCreated) {
         setPinStep(4);
       } else {

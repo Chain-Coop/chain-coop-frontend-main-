@@ -47,9 +47,8 @@ const ContributionCurrencyType = () => {
 
   const handleCryptoTypeSelect = (tokenName: string) => {
     const tokenMapping: Record<string, string> = {
-      LISK: "1",
+      USDT: "1",
       USDC: "2",
-      USDT: "3",
     };
 
     setFormData((prev) => ({

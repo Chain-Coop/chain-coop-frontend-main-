@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { handleLogout } from "../../shared/utils/auth";
 import { dashboardNav } from "../../data/Data";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -13,27 +12,29 @@ import { HiOutlineBars3 } from "react-icons/hi2";
 import { HiX } from "react-icons/hi";
 import logo from "./../../Assets/svg/cooplogo.svg";
 import member from "../../Assets/jpg/membership/customer.jpg";
-import useUserProfile from "../../shared/Hooks/useUserProfile";
 import investor from "../../Assets/jpg/membership/investor.jpg";
+import { handleLoggout } from "../../shared/utils/auth";
+import { useSelector } from "react-redux";
+import { RootState } from "../../shared/redux/rootReducer";
 
 const DashboardNav = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const navigate = useNavigate();
-  const { profileDetails } = useUserProfile();
+  const { getProfile } = useSelector((state: RootState) => state.landing);
 
   const getMembershipImage = () => {
-    if (profileDetails?.membershipType === "patron") {
+    if (getProfile?.membershipType === "patron") {
       return member;
-    } else if (profileDetails?.membershipType === "investor members") {
+    } else if (getProfile?.membershipType === "investor members") {
       return investor;
     }
     return member;
   };
 
   const getButtonProps = () => {
-    if (profileDetails?.membershipStatus === "inactive") {
+    if (getProfile?.membershipStatus === "inactive") {
       return { text: "Inactive", bgColor: "bg-yellow-500" };
-    } else if (profileDetails?.membershipStatus === "active") {
+    } else if (getProfile?.membershipStatus === "active") {
       return { text: "Activated", bgColor: "bg-green-500" };
     }
     return { text: "Unknown", bgColor: "bg-gray-400" };
@@ -118,7 +119,7 @@ const DashboardNav = () => {
           <Divider />
           <div className="mb-[2em] mt-[1em] px-4">
             <button
-              onClick={() => handleLogout(navigate)}
+              onClick={() => handleLoggout}
               className="rounded-full bg-red-600 px-[3em] py-1  text-text3 shadow-md"
             >
               Logout
