@@ -96,7 +96,7 @@ export const becomeData = [
       "Build a culture of saving and join others in building communal wealth by saving in Naira.",
   },
   {
-    title: "Stay Safe from Inflation with USDT, USDC, LISK, etc.",
+    title: "Stay Safe from Inflation with USDT, USDC, BTC, etc.",
     paragraph:
       "Beat inflation by saving in stablecoins and other cryptos. Automate your savings from Naira to Crypto.",
   },

@@ -164,11 +164,11 @@ const SourceFunds = () => {
               id="initialSaveAmount"
               value={initialSaveAmount}
               onChange={(e) => setInitialSaveAmount(e.target.value)}
-              placeholder="e.g., LK 10"
+              placeholder="e.g., 10 USDC"
               className="input mb-2 h-[4em] w-full rounded-lg border-[2px] border-gray-300 px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
             />
             <p className="text-sm text-gray-500">
-              Note: Lisk token will be added to your savings based on the
+              Note: Token will be added to your savings based on the
               current rate.
             </p>
           </div>
@@ -187,11 +187,11 @@ const SourceFunds = () => {
               id="externalTokenAmount"
               value={initialSaveAmount}
               onChange={(e) => setInitialSaveAmount(e.target.value)}
-              placeholder="e.g., LK 10"
+              placeholder="e.g., 10 USDC"
               className="input mb-2 h-[4em] w-full rounded-lg border-[2px] border-gray-300 px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
             />
             <p className="text-sm text-gray-500">
-              Note: Lisk token will be added to your savings based on the
+              Note: Token will be added to your savings based on the
               current rate.
             </p>
           </div>

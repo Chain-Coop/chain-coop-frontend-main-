@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Alert } from "@mui/material";
 import etherium from "../../../../Assets/svg/dashboard/contribution/etherum.svg";
 import ether from "../../../../Assets/svg/dashboard/ethereum.svg";
+import bitcoin from "../../../../Assets/svg/dashboard/wallet/btc.svg";
 import usdc from "../../../../Assets/svg/dashboard/Group 99764.png";
 import usdt from "../../../../Assets/svg/dashboard/usdc.svg";
 import { IoIosArrowDropleft } from "react-icons/io";
@@ -49,7 +50,7 @@ const LockPlanContribution = () => {
     const tokenMapping: Record<string, string> = {
       USDT: "1",
       USDC: "2",
-      WETH: "3",
+      BTC: "3",
     };
 
     setFormData((prev) => ({
@@ -199,7 +200,7 @@ const LockPlanContribution = () => {
                 {[
                   { type: "USDT", icon: usdt },
                   { type: "USDC", icon: usdc },
-                  { type: "WETH", icon: ether },
+                  { type: "BTC", icon: bitcoin },
                 ].map(({ type, icon }) => (
                   <button
                     key={type}

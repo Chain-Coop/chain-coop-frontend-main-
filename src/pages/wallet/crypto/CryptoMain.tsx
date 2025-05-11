@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import lisk from "../../../Assets/svg/dashboard/token_lisk.svg";
 import eth from "../../../Assets/svg/dashboard/Group 99764.png";
 import usdc from "../../../Assets/svg/dashboard/usdc.svg";
+import weth from "../../../Assets/svg/dashboard/ethereum.svg"
 import { Copy, Check } from "lucide-react";
 import { Button, Typography } from "@material-tailwind/react";
 import {
@@ -39,10 +40,10 @@ interface TokenListItem {
 // Token display information mapping
 const TOKEN_IMAGES: Record<string, string> = {
   "USDT": usdc,
-  "USDC": usdc,
-  "WETH": eth,
+  "USDC": eth,
+  "WETH": weth,
   "ETH": eth,
-  "WBTC": lisk, // Using lisk as fallback for BTC-related tokens
+  "WBTC": lisk,
   "BTC": lisk,
   "LSK": lisk,
   "LUSD": eth,
@@ -94,9 +95,9 @@ const CryptoMain = () => {
       const symbol = token.tokenSymbol || "";
       
       return {
-        img: TOKEN_IMAGES[symbol] || usdc, // Default to USDC image if not found
+        img: TOKEN_IMAGES[symbol] || usdc,
         symbol: symbol,
-        title: TOKEN_NAMES[symbol] || symbol, // Use symbol as fallback
+        title: TOKEN_NAMES[symbol] || symbol,
         token: token
       };
     });
