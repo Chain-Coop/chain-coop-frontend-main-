@@ -58,7 +58,7 @@ const ResetPassword = () => {
       );
 
       if (VerifyUserAuth.fulfilled.match(resultAction)) {
-        navigate(`/new-password?otp=${otp}&email=${email}`);
+        navigate(`/new-password?email=${email}`);
         toast.success("OTP verification successful");
       } else {
         toast.error(resultAction.payload || "Invalid OTP. Please try again.");

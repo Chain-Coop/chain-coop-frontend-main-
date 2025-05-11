@@ -14,6 +14,7 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import { IoMdClose } from "react-icons/io";
+import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 
 interface ChangePinProps {
   otp: string;
@@ -29,12 +30,15 @@ const ChangePin: React.FC<ChangePinProps> = ({
   onSuccess,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { profileDetails, fetchUserProfile } = useUserProfile();
+  const isPinCreated = profileDetails?.isPinCreated || false;
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [pin, setPin] = useState("");
   const [confirmPin, setConfirmPin] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (pin !== confirmPin) {
       setError("PINs do not match");
       return;
@@ -46,27 +50,31 @@ const ChangePin: React.FC<ChangePinProps> = ({
     }
 
     setLoading(true);
+    setError("");
 
-    dispatch(
-      CreateTransactionPin({
-        otp: parseInt(otp),
-        newpin: pin,
-      }),
-    )
-      .unwrap()
-      .then(() => {
-        onSuccess();
-      })
-      .catch((error: any) => {
-        setError(error || "Failed to create PIN");
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    try {
+      await dispatch(
+        CreateTransactionPin({
+          otp: parseInt(otp),
+          newpin: pin,
+        }),
+      ).unwrap();
+      await fetchUserProfile();
+      onSuccess();
+    } catch (error: any) {
+      setError(error || `Failed to ${isPinCreated ? "change" : "create"} PIN`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <Dialog size="sm" open={isOpen} handler={onClose}>
+    <Dialog
+      size="sm"
+      open={isOpen}
+      handler={onClose}
+      dismiss={{ enabled: false }}
+    >
       <div className="relative">
         <IconButton
           variant="text"
@@ -82,7 +90,7 @@ const ChangePin: React.FC<ChangePinProps> = ({
 
         <DialogHeader className="flex justify-center pt-10 text-center">
           <Typography variant="h1" className="text-2xl font-bold">
-            Change Pin
+            {isPinCreated ? "Change PIN" : "Set PIN"}
           </Typography>
         </DialogHeader>
       </div>
@@ -92,17 +100,21 @@ const ChangePin: React.FC<ChangePinProps> = ({
           value={pin}
           onChange={setPin}
           showVisibilityToggle
-          label="Enter New PIN"
+          label={isPinCreated ? "Enter New PIN" : "Enter PIN"}
         />
 
         <OtpInput
           value={confirmPin}
           onChange={setConfirmPin}
           showVisibilityToggle
-          label="Re-enter PIN"
+          label={isPinCreated ? "Re-enter New PIN" : "Re-enter PIN"}
         />
 
-        {error && <Alert severity="error">{error}</Alert>}
+        {error && (
+          <Alert severity="error" className="mx-auto w-fit">
+            {error}
+          </Alert>
+        )}
       </DialogBody>
 
       <DialogFooter className="flex justify-center">
@@ -112,7 +124,7 @@ const ChangePin: React.FC<ChangePinProps> = ({
           loading={loading}
           className="flex w-60 items-center justify-center rounded-full bg-text2 p-3 text-sm font-medium normal-case text-white"
         >
-          {loading ? "Creating PIN..." : "Create PIN"}
+          {loading ? "Processing..." : isPinCreated ? "Change PIN" : "Set PIN"}
         </Button>
       </DialogFooter>
     </Dialog>

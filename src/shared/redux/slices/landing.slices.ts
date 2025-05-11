@@ -139,6 +139,7 @@ const initialState = {
   avatarUrl: null,
   resetUserPassword: null,
   verifyPhone: null,
+  verifyAuthData: null, // Added to initialState
   isLoading: false,
   error: null,
   success: false,
@@ -167,10 +168,16 @@ export const landingSlice = createSlice({
     builder.addCase(LoginUser.rejected, (state) => {
       state.getloginUser = null;
     });
+    builder.addCase(VerifyUserAuth.pending, (state) => {
+      state.isLoading = true;
+      state.verifyAuthData = null;
+    });
     builder.addCase(VerifyUserAuth.fulfilled, (state: any, action) => {
+      state.isLoading = false;
       state.verifyAuthData = action.payload.landing;
     });
     builder.addCase(VerifyUserAuth.rejected, (state: any) => {
+      state.isLoading = false;
       state.verifyAuthData = null;
     });
     builder.addCase(VerifyUserPhoneNumber.fulfilled, (state: any, action) => {
@@ -185,7 +192,6 @@ export const landingSlice = createSlice({
     builder.addCase(PublicContact.rejected, (state) => {
       state.getPublicContact = null;
     });
-
     builder.addCase(GetUserProfile.fulfilled, (state, action) => {
       state.getProfile = action.payload;
     });

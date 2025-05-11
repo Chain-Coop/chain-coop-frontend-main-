@@ -79,6 +79,7 @@ const NewPassword: React.FC<NewPasswordProps> = ({
       open={isOpen}
       handler={onClose}
       className="bg-[#E9E9E9] p-4"
+      dismiss={{ enabled: false }}
     >
       <form onSubmit={resetPasswordFunc}>
         <DialogHeader className="relative justify-center">
@@ -171,7 +172,7 @@ const NewPassword: React.FC<NewPasswordProps> = ({
             loading={loading}
             className="flex w-60 items-center justify-center rounded-full bg-text2 p-3 text-sm font-medium normal-case text-white"
           >
-            {loading ? "Resetting..." : "Reset"}
+            Reset
           </Button>
         </DialogFooter>
       </form>

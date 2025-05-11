@@ -5,13 +5,21 @@ import { useDispatch } from "react-redux";
 import { RxDotFilled } from "react-icons/rx";
 import { Button, Typography } from "@material-tailwind/react";
 import { AppDispatch } from "../../../shared/redux/store";
-import { WithdrawalFromWallet } from "../../../shared/redux/slices/transaction.slices";
+import {
+  WithdrawalFromWallet,
+  GeneratePinOTP,
+} from "../../../shared/redux/slices/transaction.slices";
 import { CashwyreOfframpConfirm } from "../../../shared/redux/slices/web3.slices";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import { WithdrawIcon, Xclamation } from "../../../Assets/svg";
 import PinModal from "../../../components/common/PinModal";
+import GeneratePin from "../../../components/dashboard/profile/security/modal/GeneratePin";
+import OtpPin from "../../../components/dashboard/profile/security/modal/OtpPin";
+import ChangePin from "../../../components/dashboard/profile/security/modal/ChangePin";
 import { useAppSelector } from "../../../shared/redux/reduxHooks";
 import SuccessModal from "../../../components/dashboard/wallet/modal/SuccessModal";
+import useUserProfile from "../../../shared/Hooks/useUserProfile";
+import { Alert } from "@mui/material";
 
 interface BankAccount {
   accountNumber: string;
@@ -29,9 +37,11 @@ const SelectBank = () => {
   const cryptoData = location.state?.data?.data;
   const isCryptoWithdrawal = !!cryptoData;
   const dispatch: AppDispatch = useDispatch();
+  const { profileDetails, fetchUserProfile } = useUserProfile();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pinStep, setPinStep] = useState(0);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [otp, setOtp] = useState("");
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -39,6 +49,7 @@ const SelectBank = () => {
     null,
   );
 
+  const isPinCreated = profileDetails?.isPinCreated || false;
   const handleBackClick = () => {
     navigate(-1);
   };
@@ -60,13 +71,68 @@ const SelectBank = () => {
   const hasBankAccount =
     accountData?.bankAccounts && accountData?.bankAccounts?.length > 0;
 
+  const handleBackClick = () => {
+    navigate(-1);
+  };
+
+  const handleBankAccount = () => {
+    navigate("/dashboard/wallet/bank-account", { state: { amount } });
+  };
+
   const handleSuccessfulTransaction = () => {
-    setIsModalOpen(false);
+    setPinStep(0);
     setIsSuccessModalOpen(true);
     setPin("");
+    setOtp("");
+    setSelectedAccount(null);
     setTimeout(() => {
       navigate("/dashboard/wallet", { replace: true });
     }, 3000);
+  };
+
+  const handleGeneratePinClose = () => {
+    setPinStep(0);
+    setOtp("");
+    setSelectedAccount(null);
+  };
+
+  const handleOtpGenerated = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      await dispatch(GeneratePinOTP()).unwrap();
+      setPinStep(2);
+    } catch (error: any) {
+      setError(error.message || "Failed to generate OTP");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOtpPinNext = (enteredOtp: string) => {
+    setOtp(enteredOtp);
+    setPinStep(isPinCreated ? 4 : 3);
+  };
+
+  const handleOtpPinClose = () => {
+    setPinStep(0);
+    setOtp("");
+    setSelectedAccount(null);
+  };
+
+  const handleChangePinClose = () => {
+    setPinStep(0);
+    setOtp("");
+    setSelectedAccount(null);
+  };
+
+  const handleChangePinSuccess = async () => {
+    try {
+      await fetchUserProfile();
+      setPinStep(4);
+    } catch (error: any) {
+      setError("Failed to refresh profile. Please try again.");
+    }
   };
 
   const handleSubmit = async () => {
@@ -105,7 +171,8 @@ const SelectBank = () => {
             amount,
             bankName: selectedAccount.bankName,
             pin,
-          }),
+            otp: otp || undefined,
+        }),
         ).unwrap();
       }
 
@@ -118,13 +185,18 @@ const SelectBank = () => {
     }
   };
 
-  const toggleModal = (account?: any) => {
-    if (account) {
+  const handleSelectAccount = async (account: BankAccount) => {
+    try {
       setSelectedAccount(account);
+      await fetchUserProfile();
+      if (isPinCreated) {
+        setPinStep(4);
+      } else {
+        setPinStep(1);
+      }
+    } catch (error: any) {
+      setError("Failed to fetch profile. Please try again.");
     }
-    setIsModalOpen(!isModalOpen);
-    setPin("");
-    setError("");
   };
 
   return (
@@ -160,7 +232,7 @@ const SelectBank = () => {
                 Existing Bank Accounts
               </Typography>
               <div className="mt-4 flex flex-col gap-4">
-                {accountData.bankAccounts.map((account: any, index: number) => (
+                {accountData.bankAccounts.map((account: BankAccount) => (
                   <div
                     key={account._id}
                     className="flex h-auto flex-col items-center gap-4 rounded-xl bg-[#ece6f2] px-4 py-6 text-center sm:px-6"
@@ -171,7 +243,7 @@ const SelectBank = () => {
                     <h1 className="font-bold">{account.accountName}</h1>
                     <div className="flex flex-col items-center gap-1 sm:flex-row sm:gap-2">
                       <p className="truncate font-medium text-gray-600">
-                        {account?.bankName}
+                        {account.bankName}
                       </p>
                       <RxDotFilled className="hidden text-gray-500 sm:block" />
                       <p className="font-medium text-gray-600">
@@ -180,8 +252,9 @@ const SelectBank = () => {
                     </div>
                     <Button
                       variant="text"
-                      onClick={() => toggleModal(account)}
+                      onClick={() => handleSelectAccount(account)}
                       className="flex w-[70%] justify-center bg-text2 py-3 text-white transition-colors duration-200 hover:bg-text2"
+                      disabled={loading}
                     >
                       Select Account
                     </Button>
@@ -200,9 +273,15 @@ const SelectBank = () => {
             </div>
           )}
 
+          {error && (
+            <Alert severity="error" className="mt-4">
+              {error}
+            </Alert>
+          )}
+
           <Button
             className="mb-[2em] mt-8 flex w-full justify-center gap-4 rounded-lg bg-Dh px-4 py-3 text-sm font-semibold normal-case text-text2 sm:px-6 sm:py-4"
-            onClick={BankAccount}
+            onClick={handleBankAccount}
           >
             <p>
               {hasBankAccount
@@ -213,17 +292,44 @@ const SelectBank = () => {
         </div>
       </article>
 
-      <PinModal
-        isOpen={isModalOpen}
-        onClose={toggleModal}
-        onSubmit={handleSubmit}
-        header="My Chain Co-op Pin"
-        title="Enter your transaction pin."
-        loading={loading}
-        error={error}
-        pin={pin}
-        onPinChange={setPin}
-      />
+      {pinStep === 1 && (
+        <GeneratePin
+          isOpen={pinStep === 1}
+          onClose={handleGeneratePinClose}
+          onOtpGenerated={handleOtpGenerated}
+        />
+      )}
+
+      {pinStep === 2 && (
+        <OtpPin
+          isOpen={pinStep === 2}
+          onNext={handleOtpPinNext}
+          onClose={handleOtpPinClose}
+        />
+      )}
+
+      {pinStep === 3 && (
+        <ChangePin
+          otp={otp}
+          isOpen={pinStep === 3}
+          onClose={handleChangePinClose}
+          onSuccess={handleChangePinSuccess}
+        />
+      )}
+
+      {pinStep === 4 && (
+        <PinModal
+          isOpen={pinStep === 4}
+          onClose={() => setPinStep(0)}
+          onSubmit={handleSubmit}
+          header="My Chain Co-op Pin"
+          title="Enter your transaction pin."
+          loading={loading}
+          error={error}
+          pin={pin}
+          onPinChange={setPin}
+        />
+      )}
 
       <SuccessModal
         isOpen={isSuccessModalOpen}

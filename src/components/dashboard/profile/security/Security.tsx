@@ -146,6 +146,7 @@ const Security = () => {
               isOpen={isModalOpen}
               onClose={handleModalClose}
               onOtpEntered={() => setPasswordResetStep(3)}
+              email={email} 
             />
           );
         case 3:
@@ -224,7 +225,6 @@ const Security = () => {
         case 3:
           return (
             <NewPhoneNumber
-              otp={otp}
               isOpen={isModalOpen}
               onClose={handleModalClose}
               onSuccess={handlePhoneNumberSuccess}

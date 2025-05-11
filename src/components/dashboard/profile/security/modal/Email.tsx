@@ -55,7 +55,13 @@ const EmailStep = ({
   };
 
   return (
-    <Dialog size="sm" open={isOpen} handler={onClose} className="p-4 ">
+    <Dialog
+      size="sm"
+      open={isOpen}
+      handler={onClose}
+      className="p-4 "
+      dismiss={{ enabled: false }}
+    >
       <DialogHeader className="relative justify-center pt-10">
         <IconButton
           variant="text"

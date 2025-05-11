@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Alert } from "@mui/material";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg";
+import { getSavingsTypeTitle } from "../../../../shared/utils/Helpers";
 
 const MIN_AMOUNT = 2000;
 
@@ -39,7 +40,7 @@ const SavingsAmount = () => {
       );
     } else {
       setError("");
-      navigate("/dashboard/contribution/lock/date", {
+      navigate("/dashboard/contribution/date", {
         state: {
           purpose,
           plan,
@@ -55,16 +56,23 @@ const SavingsAmount = () => {
   return (
     <main className="pb-[1.5em]">
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
-        Lock Savings
+        {getSavingsTypeTitle(savingsType)}
       </DashboardHeader>
       <div>
         <header className="mt-[1.5em] flex flex-col justify-center text-center lg:mt-[3em]">
           <h1 className="text-center text-2xl font-bold">
-            {plan} Contribution
+            {savingsType === "Strict"
+              ? "Strict Lock Contribution"
+              : `${plan} Contribution`}
           </h1>
-          <p>Enter the amount you want to save</p>
+          <p className="font-medium">
+            {savingsType === "Strict"
+              ? "Enter the amount you want to lock"
+              : "Enter the amount suitable to you"}
+          </p>
         </header>
-        <div className="mt-4 lg:mt-[2em]">
+
+        <div className="mt-6 lg:mt-[2em]">
           <label
             htmlFor="amount"
             className="mb-3 flex font-semibold text-text2"
@@ -116,4 +124,5 @@ const SavingsAmount = () => {
     </main>
   );
 };
+
 export default SavingsAmount;

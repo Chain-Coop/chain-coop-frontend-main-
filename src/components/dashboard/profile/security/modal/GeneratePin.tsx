@@ -14,17 +14,22 @@ import {
 } from "@material-tailwind/react";
 import { MoveRight } from "lucide-react";
 import { IoMdClose } from "react-icons/io";
+import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 
 interface GeneratePinModalProps {
   isOpen: boolean;
   onClose?: () => void;
   onOtpGenerated: () => void;
 }
+
 const GeneratePin = ({
   isOpen,
   onClose,
   onOtpGenerated,
 }: GeneratePinModalProps) => {
+  const { profileDetails } = useUserProfile();
+  const isPinCreated = profileDetails?.isPinCreated || false;
+
   const [isLoading, setIsLoading] = useState(false);
   const dispatch: AppDispatch = useDispatch();
 
@@ -39,7 +44,6 @@ const GeneratePin = ({
       setIsLoading(false);
     }
   };
-
   return (
     <Dialog
       animate={{
@@ -50,6 +54,7 @@ const GeneratePin = ({
       handler={onClose}
       size="sm"
       className="overflow-y-auto py-3 "
+      dismiss={{ enabled: false }}
     >
       <DialogHeader className="relative flex justify-center px-2 text-center sm:px-4">
         <div className="absolute left-2 top-2">
@@ -63,15 +68,18 @@ const GeneratePin = ({
           </IconButton>
         </div>
         <Typography variant="h1" className="text-2xl font-semibold">
-          Change Card Pin
+          {isPinCreated ? "Change Card Pin" : "Set Card Pin"}
         </Typography>
       </DialogHeader>
       <DialogBody className="overflow-y-auto text-center text-black">
-        <Typography variant="small" className="font-normal">
-          Have you forgotten or lost your pin?
+        <Typography className="font-normal">
+          {isPinCreated
+            ? "Have you forgotten or lost your PIN?"
+            : "You haven't set a PIN yet."}
         </Typography>
-        <Typography variant="small" className="font-normal">
-          Click on the link below to generate an OTP to change pin.
+        <Typography className="font-normal">
+          Click on the link below to generate an OTP to{" "}
+          {isPinCreated ? "change your PIN" : "set your PIN"}.
         </Typography>
       </DialogBody>
       <DialogFooter className="flex justify-center">
@@ -81,7 +89,7 @@ const GeneratePin = ({
           loading={isLoading}
           className="flex items-center gap-2 bg-transparent text-lg font-semibold normal-case text-text2 shadow-none"
         >
-          {isLoading ? "Generating..." : "Generate OTP"}
+          Generate OTP
           <MoveRight className="text-text2" />
         </Button>
       </DialogFooter>
