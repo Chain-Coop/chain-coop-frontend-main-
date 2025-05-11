@@ -71,10 +71,6 @@ const SelectBank = () => {
   const hasBankAccount =
     accountData?.bankAccounts && accountData?.bankAccounts?.length > 0;
 
-  const handleBackClick = () => {
-    navigate(-1);
-  };
-
   const handleBankAccount = () => {
     navigate("/dashboard/wallet/bank-account", { state: { amount } });
   };
