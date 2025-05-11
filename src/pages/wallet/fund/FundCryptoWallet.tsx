@@ -1,24 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../../../shared/redux/store";
 import { useDispatch } from "react-redux";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import { CashwyreFund } from "../../../shared/redux/slices/web3.slices";
 import btcImg from "../../../Assets/svg/dashboard/wallet/btc.svg";
-import usdcImg from "../../../Assets/svg/dashboard/wallet/btc.svg";
-import usdtImg from "../../../Assets/svg/dashboard/wallet/btc.svg";
+import usdcImg from "../../../Assets/svg/dashboard/Group 99764.png";
+import usdtImg from "../../../Assets/svg/dashboard/usdc.svg";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
+// Crypto options
 const CRYPTOS = [
   { label: "Bitcoin (BTC)", value: "bitcoin", img: btcImg },
   { label: "USDC", value: "usdc", img: usdcImg },
   { label: "USDT", value: "usdt", img: usdtImg },
 ];
-const NETWORKS = [
+
+// All available networks
+const ALL_NETWORKS = [
   { label: "BTC Lightning", value: "BTC_LN" },
   { label: "BTC", value: "btc" },
   { label: "LISK", value: "lisk" },
@@ -26,15 +29,45 @@ const NETWORKS = [
   { label: "Etherlink", value: "etherlink" },
 ];
 
+// Network options by crypto type
+const NETWORKS_BY_CRYPTO = {
+  bitcoin: ["BTC_LN", "btc"],
+  usdc: ["lisk", "bsc", "etherlink"],
+  usdt: ["lisk", "bsc", "etherlink"],
+};
+
 const FundCryptoWallet: React.FC = () => {
   const [crypto, setCrypto] = useState(CRYPTOS[0]);
   const [showCryptoModal, setShowCryptoModal] = useState(false);
-  const [network, setNetwork] = useState(NETWORKS[0]);
+  const [availableNetworks, setAvailableNetworks] = useState<typeof ALL_NETWORKS>([]);
+  const [network, setNetwork] = useState(ALL_NETWORKS[0]);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const [amount, setAmount] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+
+  // Update available networks when crypto changes
+  useEffect(() => {
+    // Get network values for the selected crypto
+    const allowedNetworkValues = NETWORKS_BY_CRYPTO[crypto.value as keyof typeof NETWORKS_BY_CRYPTO] || [];
+    
+    // Filter networks to only show those that are allowed for this crypto
+    const networks = ALL_NETWORKS.filter(n => allowedNetworkValues.includes(n.value));
+    
+    setAvailableNetworks(networks);
+    
+    // Select the first available network by default
+    if (networks.length > 0) {
+      // Check if current selected network is valid for this crypto
+      const currentNetworkIsValid = networks.some(n => n.value === network.value);
+      
+      // If not valid, set to first available network
+      if (!currentNetworkIsValid) {
+        setNetwork(networks[0]);
+      }
+    }
+  }, [crypto]);
 
   const handlePreviewOrder = async () => {
     setIsSubmitting(true);
@@ -89,9 +122,23 @@ const FundCryptoWallet: React.FC = () => {
   };
 
   const modalVariants = {
-    hidden: { opacity: 0, y: -50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-    exit: { opacity: 0, y: -50, transition: { duration: 0.2 } },
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: { 
+      opacity: 1, 
+      scale: 1,
+      transition: { 
+        type: "spring",
+        damping: 25,
+        stiffness: 300
+      } 
+    },
+    exit: { 
+      opacity: 0, 
+      scale: 0.95,
+      transition: { 
+        duration: 0.2 
+      } 
+    },
   };
 
   const backdropVariants = {
@@ -101,6 +148,11 @@ const FundCryptoWallet: React.FC = () => {
 
   const handleBackClick = () => {
     navigate(-1);
+  };
+
+  const handleCryptoChange = (selectedCrypto: typeof CRYPTOS[0]) => {
+    setCrypto(selectedCrypto);
+    setShowCryptoModal(false);
   };
 
   return (
@@ -159,7 +211,11 @@ const FundCryptoWallet: React.FC = () => {
 
                 {/* Modal container*/}
                 <motion.div
-                  className="fixed left-1/2 top-1/2 z-50 w-[90%] max-w-sm -translate-x-1/2 -translate-y-1/2 transform rounded-lg bg-white shadow-xl"
+                  className="fixed left-1/2 top-1/2 z-50 w-[90%] max-w-sm -translate-x-1/2 -translate-y-1/2 transform overflow-y-auto rounded-lg bg-white p-0 shadow-xl"
+                  style={{ 
+                    margin: 0, 
+                    maxHeight: "80vh"
+                  }}
                   initial="hidden"
                   animate="visible"
                   exit="exit"
@@ -184,10 +240,7 @@ const FundCryptoWallet: React.FC = () => {
                         <div
                           key={c.value}
                           className="flex cursor-pointer items-center justify-between rounded-lg border border-gray-200 p-3 hover:bg-gray-50"
-                          onClick={() => {
-                            setCrypto(c);
-                            setShowCryptoModal(false);
-                          }}
+                          onClick={() => handleCryptoChange(c)}
                         >
                           <div className="flex items-center space-x-3">
                             <div
@@ -196,7 +249,7 @@ const FundCryptoWallet: React.FC = () => {
                               <img
                                 src={c.img}
                                 alt={c.label}
-                                className="h-5 w-5"
+                                className="w-8 h-8"
                               />
                             </div>
                             <span className="font-medium">
@@ -249,7 +302,11 @@ const FundCryptoWallet: React.FC = () => {
 
                 {/* Modal container */}
                 <motion.div
-                  className="fixed left-1/2 top-1/2 z-50 w-[90%] max-w-sm -translate-x-1/2 -translate-y-1/2 transform rounded-lg bg-white shadow-xl"
+                  className="fixed left-1/2 top-1/2 z-50 w-[90%] max-w-sm -translate-x-1/2 -translate-y-1/2 transform overflow-y-auto rounded-lg bg-white p-0 shadow-xl"
+                  style={{ 
+                    margin: 0, 
+                    maxHeight: "80vh"
+                  }}
                   initial="hidden"
                   animate="visible"
                   exit="exit"
@@ -268,9 +325,9 @@ const FundCryptoWallet: React.FC = () => {
                       </button>
                     </div>
 
-                    {/* Network options */}
+                    {/* Network options - filtered by selected crypto */}
                     <div className="space-y-3">
-                      {NETWORKS.map((n) => (
+                      {availableNetworks.map((n) => (
                         <div
                           key={n.value}
                           className="flex cursor-pointer items-center justify-between rounded-lg border border-gray-200 p-3 hover:bg-gray-50"
@@ -324,9 +381,9 @@ const FundCryptoWallet: React.FC = () => {
               transition-all duration-300 ease-in-out hover:scale-105 hover:bg-opacity-90 hover:shadow-lg
               active:scale-95 active:transform disabled:cursor-not-allowed disabled:opacity-50"
             onClick={handlePreviewOrder}
-            disabled={!amount}
+            disabled={!amount || isSubmitting}
           >
-            Preview order
+            {isSubmitting ? "Processing..." : "Preview order"}
           </button>
         </div>
       </section>
