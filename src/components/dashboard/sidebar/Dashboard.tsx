@@ -33,6 +33,8 @@ import StrictLockSavingsAmount from "../../../pages/contribution/naira/strictLoc
 import WithdrawContribution from "../../../pages/contribution/withdrawContribution/WithdrawContribution";
 import WithdrawCryptoContribution from "../../../pages/contribution/withdrawContribution/WithdrawCryptoContribution";
 import WithdrawCryptoWallet from "../../../pages/wallet/crypto/withdraw";
+import WithdrawToBank from "../../../pages/wallet/crypto/WithdrawToBank";
+import WithdrawCryptoPreview from "../../../pages/wallet/crypto/WithdrawCryptoPreview";
 import ConfirmWithdrawal from "../../../pages/contribution/withdrawContribution/ConfirmAmount";
 import ConfirmCryptoWithdrawal from "../../../pages/contribution/withdrawContribution/ConfirmCryptoAmount";
 import ContributionCurrencyType from "../../../pages/contribution/naira/flexiblePlan/ContributionCurrencyType";
@@ -56,6 +58,8 @@ import OneTimeStrictLockCryptoStartDate from "../../../pages/contribution/crypto
 import OneTimeStrictLockCryptoSourceFunds from "../../../pages/contribution/crypto/oneTimePlan/strictLockPlan/SourceFunds";
 import OneTimeStrictLockCryptoPreviewSavings from "../../../pages/contribution/crypto/oneTimePlan/strictLockPlan/PreviewSavings";
 import FundCryptoWallet from "../../../pages/wallet/fund/FundCryptoWallet";
+import FundCryptoWalletPreview from "../../../pages/wallet/fund/FundCryptoWalletPreview";
+import FundCryptoWalletSuccess from "../../../pages/wallet/fund/FundCryptoWalletSuccess";
 
 //import CryptoMain from "../wallet/crypto/main/CryptoMain";
 
@@ -331,12 +335,22 @@ const Dashboard = () => {
           <Route path="wallet/select-account" element={<SelectAccount />} />
           <Route path="wallet/verify-account" element={<VerifyAccount />} />
 
+          <Route path="wallet/fund/fund_crypto_wallet" element={<FundCryptoWallet />} />
+          <Route path="wallet/fund/fund_crypto_wallet_preview" element={<FundCryptoWalletPreview />} />
+          <Route path="wallet/fund/success" element={<FundCryptoWalletSuccess />} />
+
           <Route
             path="wallet/crypto/withdraw"
             element={<WithdrawCryptoWallet />}
           />
-
-          <Route path="wallet/fund/fund_crypto_wallet" element={<FundCryptoWallet />} />
+          <Route
+            path="wallet/crypto/withdraw/bank"
+            element={<WithdrawToBank />}
+          />
+          <Route
+            path="wallet/crypto/withdraw/preview"
+            element={<WithdrawCryptoPreview />}
+          />
 
           <Route path="wallet/fund" element={<FundWallet />} />
           <Route

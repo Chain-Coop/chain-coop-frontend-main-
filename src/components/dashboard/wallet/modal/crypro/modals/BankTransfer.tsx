@@ -15,6 +15,7 @@ import usdt from "../../../../../../Assets/svg/dashboard/usdc.svg";
 import { IoMdClose } from "react-icons/io";
 import PaymentConfirmation from "./PaymentConfirmation";
 import Success from "../../../../../common/Success";
+import { BankTransferProps } from "../../../../../../shared/types/types";
 
 const tokenOptions = [
   { type: "Lisk", icon: lisk, label: "Lisk" },
@@ -27,12 +28,19 @@ const ACCOUNT_NAME = "Chain cooperative Limited";
 const ACCOUNT_NUMBER = "0165350081";
 const NAIRA_EQUIVALENT_RATE = 1549.43;
 
-interface BankTransferProps {
-  isOpen: boolean;
-  onClose: () => void;
+interface ExtendedBankTransferProps extends BankTransferProps {
+  onConfirm?: () => void;
 }
 
-const BankTransfer: React.FC<BankTransferProps> = ({ isOpen, onClose }) => {
+const BankTransfer: React.FC<ExtendedBankTransferProps> = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  bankName,
+  accountName,
+  accountNumber,
+  fiatAmount,
+}) => {
   const [selectedToken, setSelectedToken] = useState<string>("USDT");
   const [amount, setAmount] = useState<string>("");
   const [nairaValue, setNairaValue] = useState<string>("NGN 0.00");
@@ -71,6 +79,14 @@ const BankTransfer: React.FC<BankTransferProps> = ({ isOpen, onClose }) => {
     onClose();
   };
 
+  const handleTransferConfirm = () => {
+    if (onConfirm) {
+      onConfirm();
+    } else {
+      onClose();
+    }
+  };
+
   return (
     <Dialog open={isOpen} handler={onClose} size="sm" className="p-4">
       <DialogHeader className="flex items-center justify-between">
@@ -78,9 +94,6 @@ const BankTransfer: React.FC<BankTransferProps> = ({ isOpen, onClose }) => {
         <Typography
           variant="h1"
           className="w-full text-center text-xl font-bold text-[#4a1d7d] sm:text-2xl"
-          placeholder=""
-          onPointerEnterCapture={() => {}}
-          onPointerLeaveCapture={() => {}}
         >
           Bank Transfer
         </Typography>
@@ -100,77 +113,42 @@ const BankTransfer: React.FC<BankTransferProps> = ({ isOpen, onClose }) => {
         <div className="space-y-4">
           <div className="flex justify-between border-b py-2">
             <span className="font-medium text-gray-500">Bank</span>
-            <span className="font-semibold text-text1">{BANK_NAME}</span>
+            <span className="font-semibold text-text1">{bankName}</span>
           </div>
           <div className="flex justify-between border-b py-2">
             <span className="font-medium text-gray-500">Account Name</span>
-            <span className="font-semibold text-text1">{ACCOUNT_NAME}</span>
+            <span className="font-semibold text-text1">{accountName}</span>
           </div>
           <div className="flex justify-between border-b py-2">
             <span className="font-medium text-gray-500">Account Number</span>
-            <span className="font-semibold text-text1">{ACCOUNT_NUMBER}</span>
+            <span className="font-semibold text-text1">{accountNumber}</span>
           </div>
-          <div className="flex flex-col items-start py-2 md:flex-row md:items-center md:justify-between">
-            <span className="text-left font-medium text-gray-500 md:text-center">
-              Select token type
+          <div className="flex justify-between border-b py-2">
+            <span className="font-medium text-gray-500">Deposit Amount</span>
+            <span className="font-semibold text-text1">
+              NGN{" "}
+              {typeof fiatAmount === "number"
+                ? fiatAmount.toLocaleString()
+                : fiatAmount}
             </span>
-            <div className="mt-3 flex flex-wrap justify-center gap-3">
-              {tokenOptions.map(({ type, icon, label }) => (
-                <button
-                  key={type}
-                  onClick={() => setSelectedToken(type)}
-                  className={`flex items-center gap-2 rounded-md bg-[#ECE6F2] px-6 font-medium transition-all duration-300 lg:py-1
-                    ${
-                      selectedToken === type
-                        ? "border-2 border-text2"
-                        : "hover:bg-text2 hover:text-white"
-                    }
-                    transform uppercase hover:scale-105 active:scale-95`}
-                >
-                  <img src={icon} alt={label} className="h-5 w-5" />
-                  <span>{label}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Token Amount Input */}
-          <div className="py-2">
-            <FormInput
-              label={`Enter ${selectedToken} amount`}
-              placeholder={`0.00`}
-              className="rounded-none text-text1"
-              labelClassName="text-black text-gray-800"
-              paddingY="3"
-              value={amount}
-              onChange={handleAmountChange}
-              type="text"
-            />
-            <div className="mt-1 text-sm text-[#61C040]">
-              1 {selectedToken} equivalent rate = {NAIRA_EQUIVALENT_RATE} NGN
-            </div>
-          </div>
-
-          {/* Naira Amount Display */}
-          <div className="flex items-center justify-between border-b py-2">
-            <span className="font-medium text-gray-500">
-              Naira amount value
-            </span>
-            <span className="font-bold text-black">{nairaValue}</span>
           </div>
         </div>
       </DialogBody>
-      <DialogFooter>
+      <DialogFooter className="flex flex-col gap-2">
         <Button
           variant="text"
-          className="w-full bg-[#4a1d7d]
-           py-3 text-white hover:bg-[#3a1561]"
-          onClick={handleContinue}
-          placeholder=""
-          onPointerEnterCapture={() => {}}
-          onPointerLeaveCapture={() => {}}
+          className="w-full bg-[#4a1d7d] py-3 text-white hover:bg-[#3a1561]"
+          onClick={handleTransferConfirm}
         >
-          Click here after transfer
+          I've sent the money
+        </Button>
+        <Button
+          variant="outlined"
+          color="gray"
+          className="w-full py-3"
+          onClick={onClose}
+        >
+          Cancel
         </Button>
       </DialogFooter>
       <div className="mb-4 mt-2 text-center text-xs text-gray-500">

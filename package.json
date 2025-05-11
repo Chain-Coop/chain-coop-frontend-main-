@@ -65,6 +65,7 @@
   "devDependencies": {
     "@shadcn/ui": "^0.0.4",
     "@types/crypto-js": "^4.2.2",
+    "@types/lodash": "^4.17.16",
     "@types/node": "^20.17.17",
     "@types/react": "^18.2.66",
     "@types/react-datepicker": "^6.2.0",
