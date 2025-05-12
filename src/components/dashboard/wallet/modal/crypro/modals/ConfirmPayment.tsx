@@ -8,16 +8,12 @@ import { IoMdClose } from "react-icons/io";
 import React from "react";
 import { ConfirmingPaymentModalProps } from "../../../../../../shared/types/types";
 
-// Loader component resembling the provided image
 const ConfirmLoader = () => (
   <div className="relative flex h-24 w-24 items-center justify-center">
     {[...Array(8)].map((_, i) => {
-      const angle = (i * 45) * (Math.PI / 180); // 8 dots, 45deg apart
+      const angle = i * 45 * (Math.PI / 180);
       const size = i === 0 ? "w-5 h-5" : "w-3.5 h-3.5";
-      const color =
-        i < 4
-          ? "bg-[#6C2EB5]" // purple for first 4 dots
-          : "bg-[#D1B7F2]"; // light purple for last 4 dots
+      const color = i < 4 ? "bg-[#6C2EB5]" : "bg-[#D1B7F2]";
       const style = {
         left: `${50 + 38 * Math.cos(angle)}%`,
         top: `${50 + 38 * Math.sin(angle)}%`,
@@ -28,7 +24,7 @@ const ConfirmLoader = () => (
       return (
         <span
           key={i}
-          className={`rounded-full absolute ${size} ${color} animate-spin-dot`}
+          className={`absolute rounded-full ${size} ${color} animate-spin-dot`}
           style={style}
         />
       );
