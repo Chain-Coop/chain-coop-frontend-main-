@@ -82,7 +82,7 @@ const FundCryptoWalletPreview: React.FC = () => {
   };
 
   return (
-    <main className="mt-0 mb-8 lg:mt-8">
+    <main className="mb-8 mt-0 lg:mt-8">
       <DashboardHeader className=" relative flex items-center justify-center text-2xl tracking-wide md:text-3xl lg:text-xl">
         <IoIosArrowBack
           onClick={handleBackClick}
@@ -132,7 +132,9 @@ const FundCryptoWalletPreview: React.FC = () => {
             </span>
           </div>
           <div className="flex justify-between border-b border-[#C4C0C0] pb-2">
-            <span className="text-base font-medium md:text-xl">Total to receive</span>
+            <span className="text-base font-medium md:text-xl">
+              Total to receive
+            </span>
             <span className="text:base font-semibold md:text-lg">
               {data.amountInCryptoAsset}{" "}
               {(data.cryptoAsset || "crypto").toUpperCase()}
@@ -140,10 +142,14 @@ const FundCryptoWalletPreview: React.FC = () => {
           </div>
           <div className="flex justify-between border-b border-[#C4C0C0] pb-2">
             <span className="text-xl font-medium">Network</span>
-            <span className="text:base font-semibold md:text-lg">{network}</span>
+            <span className="text:base font-semibold md:text-lg">
+              {network}
+            </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-base font-medium md:text-xl">Convert type</span>
+            <span className="text-base font-medium md:text-xl">
+              Convert type
+            </span>
             <span className="text:base font-semibold md:text-lg">Market</span>
           </div>
         </div>

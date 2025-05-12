@@ -9,6 +9,7 @@ const FundCryptoWalletSuccess: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const data = (location.state?.data?.data || {}) as OrderData;
+  const network = location.state?.network || "BTC Lightning";
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -67,7 +68,7 @@ const FundCryptoWalletSuccess: React.FC = () => {
 
           <div className="flex justify-between border-b border-[#C4C0C0] pb-2">
             <span className="text-xl font-medium">Network</span>
-            <span className="text-lg font-semibold">{data.network}</span>
+            <span className="text-lg font-semibold">{network}</span>
           </div>
 
           <div className="flex justify-between">

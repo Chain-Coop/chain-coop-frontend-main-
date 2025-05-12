@@ -15,18 +15,18 @@ import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
 // Crypto options
 const CRYPTOS = [
-  { label: "Bitcoin (BTC)", value: "bitcoin", img: btcImg },
-  { label: "USDC", value: "usdc", img: usdcImg },
-  { label: "USDT", value: "usdt", img: usdtImg },
+  { label: "Bitcoin (BTC)", value: "bitcoin", img: btcImg, disabled: false },
+  { label: "USDC", value: "usdc", img: usdcImg, disabled: true },
+  { label: "USDT", value: "usdt", img: usdtImg, disabled: false },
 ];
 
 // All available networks
 const ALL_NETWORKS = [
-  { label: "BTC Lightning", value: "BTC_LN" },
-  { label: "BTC", value: "btc" },
-  { label: "LISK", value: "lisk" },
-  { label: "BNB Smart Chain-BEP20", value: "bsc" },
-  { label: "Etherlink", value: "etherlink" },
+  { label: "BTC Lightning", value: "BTC_LN", disabled: false },
+  { label: "BTC", value: "btc", disabled: false },
+  { label: "LISK", value: "lisk", disabled: true }, 
+  { label: "BNB Smart Chain-BEP20", value: "bsc", disabled: false },
+  { label: "Etherlink", value: "etherlink", disabled: true },
 ];
 
 // Network options by crypto type
@@ -246,8 +246,11 @@ const FundCryptoWallet: React.FC = () => {
                       {CRYPTOS.map((c) => (
                         <div
                           key={c.value}
-                          className="flex cursor-pointer items-center justify-between rounded-lg border border-gray-200 p-3 hover:bg-gray-50"
-                          onClick={() => handleCryptoChange(c)}
+                          className={`flex items-center justify-between rounded-lg border border-gray-200 p-3
+                            ${c.disabled ? "bg-gray-100 cursor-not-allowed opacity-60" : "cursor-pointer hover:bg-gray-50"}`}
+                          onClick={() => !c.disabled && handleCryptoChange(c)}
+                          tabIndex={c.disabled ? -1 : 0}
+                          aria-disabled={c.disabled}
                         >
                           <div className="flex items-center space-x-3">
                             <div
@@ -269,6 +272,7 @@ const FundCryptoWallet: React.FC = () => {
                             type="radio"
                             checked={crypto.value === c.value}
                             readOnly
+                            disabled={c.disabled}
                             className="h-5 w-5 accent-purple-600"
                           />
                         </div>
@@ -337,17 +341,23 @@ const FundCryptoWallet: React.FC = () => {
                       {availableNetworks.map((n) => (
                         <div
                           key={n.value}
-                          className="flex cursor-pointer items-center justify-between rounded-lg border border-gray-200 p-3 hover:bg-gray-50"
+                          className={`flex items-center justify-between rounded-lg border border-gray-200 p-3
+                            ${n.disabled ? "bg-gray-100 cursor-not-allowed opacity-60" : "cursor-pointer hover:bg-gray-50"}`}
                           onClick={() => {
-                            setNetwork(n);
-                            setShowNetworkModal(false);
+                            if (!n.disabled) {
+                              setNetwork(n);
+                              setShowNetworkModal(false);
+                            }
                           }}
+                          tabIndex={n.disabled ? -1 : 0}
+                          aria-disabled={n.disabled}
                         >
                           <span className="font-medium">{n.label}</span>
                           <input
                             type="radio"
                             checked={network.value === n.value}
                             readOnly
+                            disabled={n.disabled}
                             className="h-5 w-5 accent-purple-600"
                           />
                         </div>
