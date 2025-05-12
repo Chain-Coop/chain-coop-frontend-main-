@@ -39,7 +39,9 @@ const NETWORKS_BY_CRYPTO = {
 const FundCryptoWallet: React.FC = () => {
   const [crypto, setCrypto] = useState(CRYPTOS[0]);
   const [showCryptoModal, setShowCryptoModal] = useState(false);
-  const [availableNetworks, setAvailableNetworks] = useState<typeof ALL_NETWORKS>([]);
+  const [availableNetworks, setAvailableNetworks] = useState<
+    typeof ALL_NETWORKS
+  >([]);
   const [network, setNetwork] = useState(ALL_NETWORKS[0]);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const [amount, setAmount] = useState("");
@@ -50,18 +52,23 @@ const FundCryptoWallet: React.FC = () => {
   // Update available networks when crypto changes
   useEffect(() => {
     // Get network values for the selected crypto
-    const allowedNetworkValues = NETWORKS_BY_CRYPTO[crypto.value as keyof typeof NETWORKS_BY_CRYPTO] || [];
-    
+    const allowedNetworkValues =
+      NETWORKS_BY_CRYPTO[crypto.value as keyof typeof NETWORKS_BY_CRYPTO] || [];
+
     // Filter networks to only show those that are allowed for this crypto
-    const networks = ALL_NETWORKS.filter(n => allowedNetworkValues.includes(n.value));
-    
+    const networks = ALL_NETWORKS.filter((n) =>
+      allowedNetworkValues.includes(n.value),
+    );
+
     setAvailableNetworks(networks);
-    
+
     // Select the first available network by default
     if (networks.length > 0) {
       // Check if current selected network is valid for this crypto
-      const currentNetworkIsValid = networks.some(n => n.value === network.value);
-      
+      const currentNetworkIsValid = networks.some(
+        (n) => n.value === network.value,
+      );
+
       // If not valid, set to first available network
       if (!currentNetworkIsValid) {
         setNetwork(networks[0]);
@@ -123,21 +130,21 @@ const FundCryptoWallet: React.FC = () => {
 
   const modalVariants = {
     hidden: { opacity: 0, scale: 0.95 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       scale: 1,
-      transition: { 
+      transition: {
         type: "spring",
         damping: 25,
-        stiffness: 300
-      } 
+        stiffness: 300,
+      },
     },
-    exit: { 
-      opacity: 0, 
+    exit: {
+      opacity: 0,
       scale: 0.95,
-      transition: { 
-        duration: 0.2 
-      } 
+      transition: {
+        duration: 0.2,
+      },
     },
   };
 
@@ -150,7 +157,7 @@ const FundCryptoWallet: React.FC = () => {
     navigate(-1);
   };
 
-  const handleCryptoChange = (selectedCrypto: typeof CRYPTOS[0]) => {
+  const handleCryptoChange = (selectedCrypto: (typeof CRYPTOS)[0]) => {
     setCrypto(selectedCrypto);
     setShowCryptoModal(false);
   };
@@ -211,10 +218,10 @@ const FundCryptoWallet: React.FC = () => {
 
                 {/* Modal container*/}
                 <motion.div
-                  className="fixed left-1/2 top-1/2 z-50 w-[90%] max-w-sm -translate-x-1/2 -translate-y-1/2 transform overflow-y-auto rounded-lg bg-white p-0 shadow-xl"
-                  style={{ 
-                    margin: 0, 
-                    maxHeight: "80vh"
+                  className="fixed left-[5%] md:left-[25%] lg:left-1/2 top-1/2 z-50 w-[90%] max-w-sm -translate-x-1/2 -translate-y-1/2 transform overflow-y-auto rounded-lg bg-white p-0 shadow-xl"
+                  style={{
+                    margin: 0,
+                    maxHeight: "80vh",
                   }}
                   initial="hidden"
                   animate="visible"
@@ -249,7 +256,7 @@ const FundCryptoWallet: React.FC = () => {
                               <img
                                 src={c.img}
                                 alt={c.label}
-                                className="w-8 h-8"
+                                className="h-8 w-8"
                               />
                             </div>
                             <span className="font-medium">
@@ -302,10 +309,10 @@ const FundCryptoWallet: React.FC = () => {
 
                 {/* Modal container */}
                 <motion.div
-                  className="fixed left-1/2 top-1/2 z-50 w-[90%] max-w-sm -translate-x-1/2 -translate-y-1/2 transform overflow-y-auto rounded-lg bg-white p-0 shadow-xl"
-                  style={{ 
-                    margin: 0, 
-                    maxHeight: "80vh"
+                  className="fixed left-[5%] md:left-[25%] lg:left-1/2 top-1/2 z-50 w-[90%] max-w-sm -translate-x-1/2 -translate-y-1/2 transform overflow-y-auto rounded-lg bg-white p-0 shadow-xl"
+                  style={{
+                    margin: 0,
+                    maxHeight: "80vh",
                   }}
                   initial="hidden"
                   animate="visible"
