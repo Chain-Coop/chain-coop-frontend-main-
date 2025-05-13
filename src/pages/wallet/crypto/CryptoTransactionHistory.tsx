@@ -332,25 +332,25 @@ const CryptoTransactionHistory: React.FC = () => {
                   const cryptoNetwork = tx.cryptoAssetNetwork || "";
                   
                   return (
-                    <div key={tx._id} className="rounded-md border border-gray-200 p-4">
+                    <div key={tx._id} className="rounded-md border border-gray-200 p-4 flex flex-col gap-4">
                       <div className="mb-2 flex items-center justify-between">
                         <div className="text-sm text-gray-500">{formattedTime}</div>
                         <div className={`font-semibold ${amountColor}`}>{amount} {cryptoAsset}</div>
                       </div>
                       
-                      <div className="flex flex-col gap-2">
-                        <div className="flex flex-col">
+                      <div className="flex flex-col gap-4">
+                        <div className="flex items-center gap-1">
                           <span className="text-xs text-gray-500">From:</span>
                           <span className="text-sm font-medium">Chain Coop Crypto Wallet Debited</span>
                         </div>
                         
-                        <div className="flex flex-col">
+                        <div className="flex items-center gap-1">
                           <span className="text-xs text-gray-500">To:</span>
                           <span className="text-sm font-medium">{tx.accountName || 'Unknown Recipient'}</span>
                         </div>
                         
-                        <div className="flex justify-between">
-                          <div>
+                        <div className="flex flex-col md:flex-row justify-between">
+                          <div className="flex items-center">
                             <span className="text-xs text-gray-500">Crypto Type:</span>
                             <span className="ml-1 text-sm">{cryptoAsset} {cryptoNetwork}</span>
                           </div>
