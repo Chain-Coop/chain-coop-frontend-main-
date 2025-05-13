@@ -91,7 +91,6 @@ const StartDate = () => {
     setError("");
   };
 
-  // Handler for custom date input change
   const handleCustomEndDateChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -99,7 +98,7 @@ const StartDate = () => {
     setCustomEndDate(value);
     const validation = validateCustomEndDate(todayString, value, {
       type: "daily",
-      minDays: 7,
+      minDays: 1,
     });
     setError(validation.isValid ? "" : validation.error || "Invalid date");
   };
@@ -118,7 +117,7 @@ const StartDate = () => {
     }
     const validation = validateCustomEndDate(todayString, finalEndDate, {
       type: savingFrequency === "MONTHLY" ? "monthly" : "daily",
-      minDays: 7, // Strict lock might have different minimums, adjust if needed
+      minDays: 1,
     });
     if (!validation.isValid) {
       setError(validation.error || "Invalid end date selected.");
@@ -268,7 +267,7 @@ const StartDate = () => {
                   type="date"
                   value={customEndDate}
                   onChange={handleCustomEndDateChange}
-                  min={formatDate(addDays(new Date(todayString), 7))} // Adjust min days if needed for strict lock
+                  min={formatDate(addDays(new Date(todayString), 1))}
                   required
                   className="input h-[3.5em] w-full rounded-lg border-[2px] border-gray-300 bg-white px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
                 />

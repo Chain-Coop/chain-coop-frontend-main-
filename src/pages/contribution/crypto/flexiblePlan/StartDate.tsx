@@ -38,28 +38,25 @@ const StartDate: React.FC = () => {
   const location = useLocation();
   const { tokenName } = location.state || {};
 
-  // useEffect to calculate available dates based on frequency
   useEffect(() => {
     if (!savingFrequency || savingFrequency === "MANUALLY") {
       setAvailableEndDates([]);
       return;
     }
-    // Determine type for calculation: weekly needs daily calc, others are monthly/daily
-    const calculationType = savingFrequency === "WEEKLY" ? "daily" : "monthly"; // Assuming MONTHLY uses monthly intervals
+
+    const calculationType = savingFrequency === "WEEKLY" ? "daily" : "monthly";
     let config = {};
     if (savingFrequency === "WEEKLY") {
-      // Provide intervals in days for weeks
+
       config = {
         dailyIntervals: Array.from({ length: 52 }, (_, i) => (i + 1) * 7),
       };
     } else if (savingFrequency === "MONTHLY") {
-      // Provide intervals in months
       config = {
         monthlyIntervals: Array.from({ length: 24 }, (_, i) => i + 1),
       };
-    } // DAILY might need its own config if presets differ from weekly source
+    }
     else if (savingFrequency === "DAILY") {
-      // Example: Daily presets if different from weekly calculation source
       config = { dailyIntervals: [7, 14, 30, 60, 90, 180] };
     }
 
@@ -69,21 +66,18 @@ const StartDate: React.FC = () => {
       config,
     );
     setAvailableEndDates(dates);
-    setEndDate(""); // Reset selection when dates repopulate
+    setEndDate("");
     setCustomEndDate("");
     setUseCustomDate(false);
   }, [savingFrequency, todayString]);
 
   const handleFrequencySelect = (frequency: string) => {
     setSavingFrequency(frequency);
-    // Reset date states when frequency changes (handled by useEffect now)
     setError("");
   };
 
-  // Handler for dropdown change
   const handleEndDateChange = (event: any) => {
     const value = event.target.value;
-    // Allow custom option only for DAILY/MANUALLY
     if (
       value === "custom" &&
       (savingFrequency === "DAILY" || savingFrequency === "MANUALLY")
@@ -95,19 +89,19 @@ const StartDate: React.FC = () => {
       setEndDate(value);
       setCustomEndDate("");
     }
-    setError(""); // Clear error on change
+    setError("");
   };
 
-  // Handler for custom date input change
   const handleCustomEndDateChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const value = event.target.value;
     setCustomEndDate(value);
-    // Validate on change
+
     const validation = validateCustomEndDate(todayString, value, {
-      type: "daily", // Assume custom is always daily minimums
-      minDays: 7, // Example minimum days for custom
+      type: "daily",
+      minDays: 1,
+  
     });
     setError(validation.isValid ? "" : validation.error || "Invalid date");
   };
@@ -128,10 +122,9 @@ const StartDate: React.FC = () => {
       return;
     }
 
-    // Final validation before submitting
     const validation = validateCustomEndDate(todayString, finalEndDate, {
-      type: savingFrequency === "MONTHLY" ? "monthly" : "daily", // Use appropriate type for validation
-      minDays: 7,
+      type: savingFrequency === "MONTHLY" ? "monthly" : "daily",
+      minDays: 1,
     });
     if (!validation.isValid) {
       setError(validation.error || "Invalid end date selected.");
@@ -143,7 +136,7 @@ const StartDate: React.FC = () => {
     const formData = {
       ...location.state,
       startDate: todayString,
-      duration: finalEndDate, // Use the chosen/validated end date
+      duration: finalEndDate,
       savingFrequency,
       lockedType: location.state?.lockedType,
       contributionType: location.state?.contributionType,
@@ -225,7 +218,6 @@ const StartDate: React.FC = () => {
           savingFrequency !== "MANUALLY" && ( // Don't show for MANUALLY
             <section className="mt-[1em]">
               {" "}
-              {/* Adjusted margin-top */}
               <FormControl fullWidth>
                 <InputLabel
                   id="end-date-select-label"
@@ -290,7 +282,7 @@ const StartDate: React.FC = () => {
                     type="date"
                     value={customEndDate}
                     onChange={handleCustomEndDateChange}
-                    min={formatDate(addDays(new Date(todayString), 7))}
+                    min={formatDate(addDays(new Date(todayString), 1))}
                     required
                     className="input h-[3.5em] w-full rounded-lg border-[2px] border-gray-300 bg-white px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
                   />

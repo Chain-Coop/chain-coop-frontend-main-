@@ -5,8 +5,8 @@ import walletActivated from "../../../Assets/svg/dashboard/walletActivated.svg";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import lisk from "../../../Assets/svg/dashboard/token_lisk.svg";
-import eth from "../../../Assets/svg/dashboard/Group 99764.png";
-import usdc from "../../../Assets/svg/dashboard/usdc.svg";
+import usdc from "../../../Assets/svg/dashboard/usd.svg";
+import usdt from "../../../Assets/svg/dashboard/usdt.svg";
 import weth from "../../../Assets/svg/dashboard/ethereum.svg"
 import { Copy, Check } from "lucide-react";
 import { Button, Typography } from "@material-tailwind/react";
@@ -37,16 +37,15 @@ interface TokenListItem {
   token: TokenInfo;
 }
 
-// Token display information mapping
 const TOKEN_IMAGES: Record<string, string> = {
-  "USDT": usdc,
-  "USDC": eth,
+  "USDT": usdt,
+  "USDC": usdc,
   "WETH": weth,
-  "ETH": eth,
+  "ETH": weth,
   "WBTC": lisk,
   "BTC": lisk,
   "LSK": lisk,
-  "LUSD": eth,
+  "LUSD": usdc,
   "WUSDC": usdc
 };
 
@@ -72,7 +71,6 @@ const CryptoMain = () => {
   const dispatch: AppDispatch = useAppDispatch();
   const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>({});
   
-  // Fetch tokens when component mounts or wallet is activated
   useEffect(() => {
     if (profileDetails?.isWalletActivated) {
       fetchUserTokens();
@@ -87,7 +85,6 @@ const CryptoMain = () => {
     }, 2000);
   };
 
-  // Generate token list items dynamically from API data
   const tokenList: TokenListItem[] = React.useMemo(() => {
     if (!userTokens || userTokens.length === 0) return [];
     
@@ -114,7 +111,6 @@ const CryptoMain = () => {
       const response = await dispatch(ActivateCryptoWallet()).unwrap();
       toast.success(response.message);
       await fetchUserProfile();
-      // Fetch tokens after wallet activation
       await fetchUserTokens();
     } catch (error: any) {
       toast.error(error);

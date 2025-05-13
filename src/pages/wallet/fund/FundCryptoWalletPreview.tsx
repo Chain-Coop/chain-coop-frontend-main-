@@ -9,7 +9,7 @@ import BankTransfer from "../../../components/dashboard/wallet/modal/crypro/moda
 import ConfirmingPaymentModal from "../../../components/dashboard/wallet/modal/crypro/modals/ConfirmPayment";
 import { OrderData, Web3State } from "../../../shared/types/types";
 import { IoIosArrowDropleft } from "react-icons/io";
-import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowBack } from "react-icons/io";
 
 const FundCryptoWalletPreview: React.FC = () => {
   const navigate = useNavigate();
@@ -18,6 +18,7 @@ const FundCryptoWalletPreview: React.FC = () => {
   const data = (state?.data?.data || {}) as OrderData;
   const network = state?.network || "BTC Lightning";
   const networkValue = state?.networkValue || {};
+  const cryptoImg = state?.cryptoImg || btcImg;
   const [showBankModal, setShowBankModal] = React.useState(false);
   const [showLoaderModal, setShowLoaderModal] = React.useState(false);
   const [orderConfirmed, setOrderConfirmed] = React.useState(false);
@@ -96,13 +97,11 @@ const FundCryptoWalletPreview: React.FC = () => {
           <h2 className="mb-2 text-center text-lg font-semibold">
             Confirm {(data.cryptoAsset || "crypto").toUpperCase()} order
           </h2>
-          <div className="flex h-[121px] w-[121px] items-center justify-center rounded-full bg-[#F9D68A]">
-            <img
-              src={btcImg}
-              alt={data.cryptoAsset || "crypto"}
-              className="mb-2 h-16 w-16"
-            />
-          </div>
+          <img
+            src={cryptoImg}
+            alt={data.cryptoAsset || "crypto"}
+            className="mb-2 h-[121px] w-[121px]"
+          />
 
           <div className="my-3 text-3xl font-bold text-text2">
             {data.amountInCryptoAsset}{" "}
