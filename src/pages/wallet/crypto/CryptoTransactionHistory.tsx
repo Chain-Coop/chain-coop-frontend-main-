@@ -1,10 +1,17 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Typography } from "@material-tailwind/react";
-import { useCryptoTransactionHistory, useCashwyreHistory } from "../../../shared/Hooks/useBalance";
+import {
+  useCryptoTransactionHistory,
+  useCashwyreHistory,
+} from "../../../shared/Hooks/useBalance";
 import { CryptoTransaction } from "../../../shared/types/types";
 import { format, parseISO, formatDistanceToNow } from "date-fns";
-import { IoSearchOutline, IoFilterOutline, IoOptionsOutline } from "react-icons/io5";
+import {
+  IoSearchOutline,
+  IoFilterOutline,
+  IoOptionsOutline,
+} from "react-icons/io5";
 
 const SaveIcon = () => <span>+</span>;
 const WithdrawIcon = () => <span>-</span>;
@@ -20,50 +27,56 @@ const CryptoTransactionHistory: React.FC = () => {
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
   const [isSortPopupOpen, setIsSortPopupOpen] = useState(false);
   const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
-  
+
   const filterRef = useRef<HTMLDivElement>(null);
   const sortRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+      if (
+        filterRef.current &&
+        !filterRef.current.contains(event.target as Node)
+      ) {
         setIsFilterPopupOpen(false);
       }
       if (sortRef.current && !sortRef.current.contains(event.target as Node)) {
         setIsSortPopupOpen(false);
       }
     };
-    
-    document.addEventListener('mousedown', handleClickOutside);
+
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  
-  const { 
-    transactions: cryptoTransactions, 
-    loading: cryptoLoading, 
-    error: cryptoError 
+
+  const {
+    transactions: cryptoTransactions,
+    loading: cryptoLoading,
+    error: cryptoError,
   } = useCryptoTransactionHistory();
 
-  const { 
-    transactions: cashwyreTransactions, 
-    loading: cashwyreLoading, 
-    error: cashwyreError 
+  const {
+    transactions: cashwyreTransactions,
+    loading: cashwyreLoading,
+    error: cashwyreError,
   } = useCashwyreHistory();
 
   // Function to check if a transaction is a cashwyre transaction
   const isCashwyreTransaction = (tx: any): boolean => {
-    return tx.hasOwnProperty('cryptoAssetNetwork') || tx.hasOwnProperty('accountNumber');
+    return (
+      tx.hasOwnProperty("cryptoAssetNetwork") ||
+      tx.hasOwnProperty("accountNumber")
+    );
   };
 
   // Combine and filter transactions based on selected filter
   const filteredTransactions = useMemo(() => {
     const crypto = cryptoTransactions || [];
     const cashwyre = cashwyreTransactions || [];
-    
+
     let result = [];
-    
+
     // Apply type filter
     switch (filterType) {
       case "wallet":
@@ -76,27 +89,34 @@ const CryptoTransactionHistory: React.FC = () => {
         result = [...crypto, ...cashwyre];
         break;
     }
-    
+
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
-      result = result.filter(tx => 
-        tx.cryptoAsset?.toLowerCase().includes(query) || 
-        tx.transactionType?.toLowerCase().includes(query) ||
-        tx.reference?.toLowerCase().includes(query) ||
-        tx.status?.toLowerCase().includes(query)
+      result = result.filter(
+        (tx) =>
+          tx.cryptoAsset?.toLowerCase().includes(query) ||
+          tx.transactionType?.toLowerCase().includes(query) ||
+          tx.reference?.toLowerCase().includes(query) ||
+          tx.status?.toLowerCase().includes(query),
       );
     }
-    
+
     // Sort by date based on sortOrder
     return result.sort((a, b) => {
       const dateA = new Date(a.createdAt).getTime();
       const dateB = new Date(b.createdAt).getTime();
       return sortOrder === "newest" ? dateB - dateA : dateA - dateB;
     });
-  }, [cryptoTransactions, cashwyreTransactions, filterType, searchQuery, sortOrder]);
-  
+  }, [
+    cryptoTransactions,
+    cashwyreTransactions,
+    filterType,
+    searchQuery,
+    sortOrder,
+  ]);
+
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
-  
+
   // Use combined loading and error states
   const isLoading = cryptoLoading || cashwyreLoading;
   const hasError = cryptoError || cashwyreError;
@@ -145,7 +165,9 @@ const CryptoTransactionHistory: React.FC = () => {
 
   const getTimeAgo = (dateString: string): string => {
     try {
-      return formatDistanceToNow(parseISO(dateString), { addSuffix: false }) + " ago";
+      return (
+        formatDistanceToNow(parseISO(dateString), { addSuffix: false }) + " ago"
+      );
     } catch (e) {
       return "";
     }
@@ -155,12 +177,14 @@ const CryptoTransactionHistory: React.FC = () => {
     setVisibleCount((prevCount) => prevCount + ITEMS_PER_PAGE);
   };
 
-  const visibleTransactions = filteredTransactions ? filteredTransactions.slice(0, visibleCount) : [];
+  const visibleTransactions = filteredTransactions
+    ? filteredTransactions.slice(0, visibleCount)
+    : [];
 
   // Group cashwyre transactions by date for display
   const groupedTransactionsByDate = useMemo(() => {
     const groups: Record<string, any[]> = {};
-    
+
     visibleTransactions.forEach((tx) => {
       if (isCashwyreTransaction(tx)) {
         const dateKey = format(parseISO(tx.createdAt), "yyyy-MM-dd");
@@ -170,7 +194,7 @@ const CryptoTransactionHistory: React.FC = () => {
         groups[dateKey].push(tx);
       }
     });
-    
+
     return groups;
   }, [visibleTransactions]);
 
@@ -184,9 +208,9 @@ const CryptoTransactionHistory: React.FC = () => {
           Recent transactions
         </Typography>
 
-        <div className="flex flex-row w-full flex-wrap items-start lg:items-center gap-3 md:w-auto">
+        <div className="flex w-full flex-row flex-wrap items-start gap-3 md:w-auto lg:items-center">
           {/* Search bar */}
-          <div className="relative flex-grow md:flex-grow-0 md:w-64">
+          <div className="relative flex-grow md:w-64 md:flex-grow-0">
             <input
               type="text"
               placeholder="Search transactions"
@@ -200,7 +224,7 @@ const CryptoTransactionHistory: React.FC = () => {
           {/* Filter button with popup */}
           <div className="relative" ref={filterRef}>
             <button
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 transition-colors hover:bg-gray-200"
               onClick={() => {
                 setIsFilterPopupOpen(!isFilterPopupOpen);
                 setIsSortPopupOpen(false);
@@ -209,10 +233,12 @@ const CryptoTransactionHistory: React.FC = () => {
             >
               <IoFilterOutline size={18} className="text-gray-700" />
             </button>
-            
+
             {isFilterPopupOpen && (
               <div className="absolute right-0 top-12 z-10 w-48 rounded-lg border border-gray-200 bg-white p-2 shadow-lg">
-                <div className="p-2 text-sm font-medium text-gray-700">Filter by</div>
+                <div className="p-2 text-sm font-medium text-gray-700">
+                  Filter by
+                </div>
                 <div className="space-y-1">
                   <button
                     className={`w-full rounded-md p-2 text-left text-sm transition-colors ${filterType === "all" ? "bg-purple-100 text-purple-600" : "hover:bg-gray-100"}`}
@@ -249,7 +275,7 @@ const CryptoTransactionHistory: React.FC = () => {
           {/* Sort button with popup */}
           <div className="relative" ref={sortRef}>
             <button
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 transition-colors hover:bg-gray-200"
               onClick={() => {
                 setIsSortPopupOpen(!isSortPopupOpen);
                 setIsFilterPopupOpen(false);
@@ -258,10 +284,12 @@ const CryptoTransactionHistory: React.FC = () => {
             >
               <IoOptionsOutline size={18} className="text-gray-700" />
             </button>
-            
+
             {isSortPopupOpen && (
               <div className="absolute right-0 top-12 z-10 w-48 rounded-lg border border-gray-200 bg-white p-2 shadow-lg">
-                <div className="p-2 text-sm font-medium text-gray-700">Sort by</div>
+                <div className="p-2 text-sm font-medium text-gray-700">
+                  Sort by
+                </div>
                 <div className="space-y-1">
                   <button
                     className={`w-full rounded-md p-2 text-left text-sm transition-colors ${sortOrder === "newest" ? "bg-purple-100 text-purple-600" : "hover:bg-gray-100"}`}
@@ -296,139 +324,189 @@ const CryptoTransactionHistory: React.FC = () => {
 
       {hasError && (
         <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-center text-red-600">
-          <Typography>Error loading transaction history: {errorMessage}</Typography>
+          <Typography>
+            Error loading transaction history: {errorMessage}
+          </Typography>
         </div>
       )}
 
-      {!isLoading && !hasError && (!filteredTransactions || filteredTransactions.length === 0) && (
-        <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center text-gray-500">
-          <Typography>No transactions found.</Typography>
-        </div>
-      )}
+      {!isLoading &&
+        !hasError &&
+        (!filteredTransactions || filteredTransactions.length === 0) && (
+          <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center text-gray-500">
+            <Typography>No transactions found.</Typography>
+          </div>
+        )}
 
-      {!isLoading && !hasError && visibleTransactions && visibleTransactions.length > 0 && (
-        <div className="flex flex-col gap-6">
-          {/* Cashwyre Transactions with new UI */}
-          {Object.keys(groupedTransactionsByDate).map(dateKey => {
-            const transactions = groupedTransactionsByDate[dateKey];
-            if (!transactions?.length) return null;
-            
-            const dateFormatted = formatShortDate(transactions[0].createdAt);
-            const timeAgo = getTimeAgo(transactions[0].createdAt);
-            
-            return (
-              <div key={dateKey} className="flex flex-col gap-3">
-                <div className="flex items-center justify-between text-sm text-gray-500">
-                  <span>{dateFormatted}</span>
-                  <span>{timeAgo}</span>
-                </div>
-                
-                {transactions.map(tx => {
-                  const isDebit = tx.transactionType?.toUpperCase() === "OFFRAMP";
-                  const amount = isDebit ? `-${tx.cryptoAmount}` : `+${tx.cryptoAmount}`;
-                  const amountColor = isDebit ? "text-red-600" : "text-green-600";
-                  const formattedTime = formatTime(tx.createdAt);
-                  const cryptoAsset = tx.cryptoAsset?.toUpperCase() || "";
-                  const cryptoNetwork = tx.cryptoAssetNetwork || "";
-                  
-                  return (
-                    <div key={tx._id} className="rounded-md border border-gray-200 p-4 flex flex-col gap-4">
-                      <div className="mb-2 flex items-center justify-between">
-                        <div className="text-sm text-gray-500">{formattedTime}</div>
-                        <div className={`font-semibold ${amountColor}`}>{amount} {cryptoAsset}</div>
-                      </div>
-                      
-                      <div className="flex flex-col gap-4">
-                        <div className="flex items-center gap-1">
-                          <span className="text-xs text-gray-500">From:</span>
-                          <span className="text-sm font-medium">Chain Coop Crypto Wallet Debited</span>
-                        </div>
-                        
-                        <div className="flex items-center gap-1">
-                          <span className="text-xs text-gray-500">To:</span>
-                          <span className="text-sm font-medium">{tx.accountName || 'Unknown Recipient'}</span>
-                        </div>
-                        
-                        <div className="flex flex-col md:flex-row justify-between">
-                          <div className="flex items-center">
-                            <span className="text-xs text-gray-500">Crypto Type:</span>
-                            <span className="ml-1 text-sm">{cryptoAsset} {cryptoNetwork}</span>
+      {!isLoading &&
+        !hasError &&
+        visibleTransactions &&
+        visibleTransactions.length > 0 && (
+          <div className="flex flex-col gap-6">
+            {/* Cashwyre Transactions with new UI */}
+            {Object.keys(groupedTransactionsByDate).map((dateKey) => {
+              const transactions = groupedTransactionsByDate[dateKey];
+              if (!transactions?.length) return null;
+
+              const dateFormatted = formatShortDate(transactions[0].createdAt);
+              const timeAgo = getTimeAgo(transactions[0].createdAt);
+
+              return (
+                <div key={dateKey} className="flex flex-col gap-3">
+                  <div className="flex items-center justify-between text-sm text-gray-500">
+                    <span>{dateFormatted}</span>
+                    <span>{timeAgo}</span>
+                  </div>
+
+                  {transactions.map((tx) => {
+                    const isDebit =
+                      tx.transactionType?.toUpperCase() === "OFFRAMP";
+                    const amount = isDebit
+                      ? `-${tx.cryptoAmount}`
+                      : `+${tx.cryptoAmount}`;
+                    const amountColor = isDebit
+                      ? "text-red-600"
+                      : "text-green-600";
+                    const formattedTime = formatTime(tx.createdAt);
+                    const cryptoAsset = tx.cryptoAsset?.toUpperCase() || "";
+                    const cryptoNetwork = tx.cryptoAssetNetwork || "";
+                    const rate = tx.cryptoRate || tx.rate || 0;
+
+                    return (
+                      <div
+                        key={tx._id}
+                        className="flex flex-col gap-4 rounded-md border border-gray-200 p-4"
+                      >
+                        <div className="mb-2 flex items-center justify-between">
+                          <div className="text-sm text-gray-500">
+                            {formattedTime}
                           </div>
-                          
-                          <div>
-                            <span className="text-xs text-gray-500">Transaction Status:</span>
-                            <span className={`ml-1 text-sm ${tx.status === 'SUCCESS' ? 'text-green-600' : tx.status === 'FAILED' ? 'text-red-600' : 'text-yellow-600'}`}>
-                              {tx.status === 'SUCCESS' ? 'Successful' : tx.status === 'FAILED' ? 'Failed' : 'Pending'}
+                          <div className={`font-semibold ${amountColor}`}>
+                            {amount} {cryptoAsset}
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col gap-4">
+                          <div className="flex items-center gap-1">
+                            <span className="text-xs text-gray-500">From:</span>
+                            <span className="text-sm font-medium">
+                              Chain Coop Crypto Wallet Debited
+                            </span>
+                          </div>
+
+                          <div className="flex items-center gap-1">
+                            <span className="text-xs text-gray-500">To:</span>
+                            <span className="text-sm font-medium">
+                              {tx.accountName || "Unknown Recipient"}
+                            </span>
+                          </div>
+
+                          <div className="flex flex-col justify-between md:flex-row">
+                            <div className="flex items-center">
+                              <span className="text-xs text-gray-500">
+                                Crypto Type:
+                              </span>
+                              <span className="ml-1 text-sm">
+                                {cryptoAsset} {cryptoNetwork}
+                              </span>
+                            </div>
+
+                            <div>
+                              <span className="text-xs text-gray-500">
+                                Transaction Status:
+                              </span>
+                              <span
+                                className={`ml-1 text-sm ${tx.status === "SUCCESS" ? "text-green-600" : tx.status === "FAILED" ? "text-red-600" : "text-yellow-600"}`}
+                              >
+                                {tx.status === "SUCCESS"
+                                  ? "Successful"
+                                  : tx.status === "FAILED"
+                                    ? "Failed"
+                                    : "Pending"}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <span className="text-xs text-gray-500">
+                              Crypto Rate:
+                            </span>
+                            <span className="text-sm font-medium">
+                              $ {rate}
                             </span>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })}
-          
-          {/* Original UI for crypto contribution transactions */}
-          {visibleTransactions.filter(tx => !isCashwyreTransaction(tx)).map((tx: CryptoTransaction) => {
-            let amountColor = "text-gray-700";
-            let signPrefix = "";
-            const typeUpper = tx.transactionType?.toUpperCase();
-
-            if (typeUpper === "WITHDRAW") {
-              amountColor = "text-green-600";
-              signPrefix = "+";
-            } else if (
-              typeUpper === "SAVE" ||
-              typeUpper === "DEPOSIT" ||
-              typeUpper === "UPDATE"
-            ) {
-              amountColor = "text-red-600";
-            }
-
-            return (
-              <motion.div
-                key={tx._id}
-                whileHover={{ backgroundColor: "#f9fafb" }}
-                className="flex items-center justify-between rounded-lg border border-gray-200 p-3 transition-colors"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100">
-                    {getTransactionIcon(tx.transactionType)}
-                  </div>
-                  <div>
-                    <Typography className="text-sm font-medium text-gray-700">
-                      {tx.transactionType
-                        ? tx.transactionType.charAt(0).toUpperCase() +
-                          tx.transactionType.slice(1).toLowerCase()
-                        : "Transaction"}
-                    </Typography>
-                    <Typography className="text-xs text-gray-500">
-                      {formatTxDate(tx.createdAt)}
-                    </Typography>
-                  </div>
+                    );
+                  })}
                 </div>
-                <Typography className={`text-sm font-semibold ${amountColor}`}>
-                  {signPrefix}
-                  {Math.abs(tx.amount)} {tx.Token}
-                </Typography>
-              </motion.div>
-            );
-          })}
-        </div>
-      )}
+              );
+            })}
 
-      {!isLoading && filteredTransactions && filteredTransactions.length > visibleCount && (
-        <div className="mt-4 flex justify-center">
-          <button
-            onClick={handleSeeMore}
-            className="rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200"
-          >
-            See More
-          </button>
-        </div>
-      )}
+            {/* Original UI for crypto contribution transactions */}
+            {visibleTransactions
+              .filter((tx) => !isCashwyreTransaction(tx))
+              .map((tx: CryptoTransaction) => {
+                let amountColor = "text-gray-700";
+                let signPrefix = "";
+                const typeUpper = tx.transactionType?.toUpperCase();
+
+                if (typeUpper === "WITHDRAW") {
+                  amountColor = "text-green-600";
+                  signPrefix = "+";
+                } else if (
+                  typeUpper === "SAVE" ||
+                  typeUpper === "DEPOSIT" ||
+                  typeUpper === "UPDATE"
+                ) {
+                  amountColor = "text-red-600";
+                }
+
+                return (
+                  <motion.div
+                    key={tx._id}
+                    whileHover={{ backgroundColor: "#f9fafb" }}
+                    className="flex items-center justify-between rounded-lg border border-gray-200 p-3 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100">
+                        {getTransactionIcon(tx.transactionType)}
+                      </div>
+                      <div>
+                        <Typography className="text-sm font-medium text-gray-700">
+                          {tx.transactionType
+                            ? tx.transactionType.charAt(0).toUpperCase() +
+                              tx.transactionType.slice(1).toLowerCase()
+                            : "Transaction"}
+                        </Typography>
+                        <Typography className="text-xs text-gray-500">
+                          {formatTxDate(tx.createdAt)}
+                        </Typography>
+                      </div>
+                    </div>
+                    <Typography
+                      className={`text-sm font-semibold ${amountColor}`}
+                    >
+                      {signPrefix}
+                      {Math.abs(tx.amount)} {tx.Token}
+                    </Typography>
+                  </motion.div>
+                );
+              })}
+          </div>
+        )}
+
+      {!isLoading &&
+        filteredTransactions &&
+        filteredTransactions.length > visibleCount && (
+          <div className="mt-4 flex justify-center">
+            <button
+              onClick={handleSeeMore}
+              className="rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200"
+            >
+              See More
+            </button>
+          </div>
+        )}
     </section>
   );
 };

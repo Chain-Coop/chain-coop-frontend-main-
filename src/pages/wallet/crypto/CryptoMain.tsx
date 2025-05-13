@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import lisk from "../../../Assets/svg/dashboard/token_lisk.svg";
 import usdc from "../../../Assets/svg/dashboard/usd.svg";
 import usdt from "../../../Assets/svg/dashboard/usdt.svg";
-import weth from "../../../Assets/svg/dashboard/ethereum.svg"
+import weth from "../../../Assets/svg/dashboard/ethereum.svg";
 import { Copy, Check } from "lucide-react";
 import { Button, Typography } from "@material-tailwind/react";
 import {
@@ -38,27 +38,27 @@ interface TokenListItem {
 }
 
 const TOKEN_IMAGES: Record<string, string> = {
-  "USDT": usdt,
-  "USDC": usdc,
-  "WETH": weth,
-  "ETH": weth,
-  "WBTC": lisk,
-  "BTC": lisk,
-  "LSK": lisk,
-  "LUSD": usdc,
-  "WUSDC": usdc
+  USDT: usdt,
+  USDC: usdc,
+  WETH: weth,
+  ETH: weth,
+  WBTC: lisk,
+  BTC: lisk,
+  LSK: lisk,
+  LUSD: usdc,
+  WUSDC: usdc,
 };
 
 const TOKEN_NAMES: Record<string, string> = {
-  "USDT": "Tether",
-  "USDC": "USD Coin",
-  "WETH": "Wrapped Ethereum",
-  "ETH": "Ethereum",
-  "WBTC": "Wrapped Bitcoin",
-  "BTC": "Bitcoin",
-  "LSK": "Lisk",
-  "LUSD": "Lisk USD",
-  "WUSDC": "Wrapped USD Coin"
+  USDT: "Tether",
+  USDC: "USD Coin",
+  WETH: "Wrapped Ethereum",
+  ETH: "Ethereum",
+  WBTC: "Wrapped Bitcoin",
+  BTC: "Bitcoin",
+  LSK: "Lisk",
+  LUSD: "Lisk USD",
+  WUSDC: "Wrapped USD Coin",
 };
 
 const CryptoMain = () => {
@@ -69,8 +69,10 @@ const CryptoMain = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const dispatch: AppDispatch = useAppDispatch();
-  const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>({});
-  
+  const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>(
+    {},
+  );
+
   useEffect(() => {
     if (profileDetails?.isWalletActivated) {
       fetchUserTokens();
@@ -87,15 +89,15 @@ const CryptoMain = () => {
 
   const tokenList: TokenListItem[] = React.useMemo(() => {
     if (!userTokens || userTokens.length === 0) return [];
-    
+
     return userTokens.map((token: TokenInfo) => {
       const symbol = token.tokenSymbol || "";
-      
+
       return {
         img: TOKEN_IMAGES[symbol] || usdc,
         symbol: symbol,
         title: TOKEN_NAMES[symbol] || symbol,
-        token: token
+        token: token,
       };
     });
   }, [userTokens]);
@@ -130,7 +132,7 @@ const CryptoMain = () => {
         <section className="text-center text-text4">
           <div className="flex flex-col gap-3 py-[1.5em] sm:flex-row sm:justify-between sm:gap-4">
             {profileDetails?.isWalletActivated === true && (
-              <div className="flex w-fit transform items-center justify-center gap-2 rounded-lg border-2 border-text2 bg-[#ECE6F2] px-3 py-2 font-medium text-text2 transition-all duration-300 hover:scale-105 active:scale-95 sm:w-auto sm:justify-start lg:py-2">
+              <div className="hidden w-fit transform items-center justify-center gap-2 rounded-lg border-2 border-text2 bg-[#ECE6F2] px-3 py-2 font-medium text-text2 transition-all duration-300 hover:scale-105 active:scale-95 sm:w-auto sm:justify-start lg:py-2">
                 Wallet Activated
                 <img src={walletActivated} alt="walletActivated" />
               </div>
@@ -182,7 +184,7 @@ const CryptoMain = () => {
                       type="text"
                       value={cryptoWalletDetails?.address || ""}
                       readOnly
-                      className="h-8 w-[280px] overflow-hidden text-ellipsis whitespace-nowrap rounded-lg border-2 border-gray-400 pl-3 pr-10 text-sm font-mono"
+                      className="font-mono h-8 w-[280px] overflow-hidden text-ellipsis whitespace-nowrap rounded-lg border-2 border-gray-400 pl-3 pr-10 text-sm"
                     />
                     <button
                       onClick={() =>
@@ -227,21 +229,23 @@ const CryptoMain = () => {
           <>
             <section className="mt-6">
               <h1 className="text-lg font-semibold">Token Balance</h1>
-              
+
               {/* Show loading state when no user tokens are available yet */}
               {!userTokens && (
                 <div className="mt-4 flex items-center justify-center py-8">
                   <p className="text-center text-gray-500">Loading tokens...</p>
                 </div>
               )}
-              
+
               {/* Show message when no tokens are found */}
               {userTokens && userTokens.length === 0 && (
                 <div className="mt-4 flex items-center justify-center py-8">
-                  <p className="text-center text-gray-500">No tokens found in your wallet</p>
+                  <p className="text-center text-gray-500">
+                    No tokens found in your wallet
+                  </p>
                 </div>
               )}
-              
+
               {/* Display token list items */}
               <div className="mt-[1em] flex flex-col gap-[1em]">
                 {tokenList.map((list, index) => (
@@ -277,9 +281,7 @@ const CryptoMain = () => {
                             {`${list.token.tokenAddress.slice(0, 6)}...${list.token.tokenAddress.slice(-4)}`}
                           </span>
                           <button
-                            onClick={() =>
-                              handleCopy(list.token.tokenAddress)
-                            }
+                            onClick={() => handleCopy(list.token.tokenAddress)}
                             className="ml-2 text-gray-500 hover:text-gray-700"
                             title={
                               copiedStates[list.token.tokenAddress]
@@ -327,7 +329,9 @@ const CryptoMain = () => {
                       className="flex flex-col items-center bg-inherit text-center"
                     >
                       <TransferIcon />
-                      <span className="block text-memt1 lg:text-lg">Fund Wallet</span>
+                      <span className="block text-memt1 lg:text-lg">
+                        Fund Wallet
+                      </span>
                     </motion.button>
                   </Link>
                 </div>

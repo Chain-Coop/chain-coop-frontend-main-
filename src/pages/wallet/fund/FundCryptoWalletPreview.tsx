@@ -10,6 +10,8 @@ import ConfirmingPaymentModal from "../../../components/dashboard/wallet/modal/c
 import { OrderData, Web3State } from "../../../shared/types/types";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
+import { toast } from "react-toastify";
+import FundProgressBar from "../../../components/dashboard/wallet/modal/crypro/ProgressBar";
 
 const FundCryptoWalletPreview: React.FC = () => {
   const navigate = useNavigate();
@@ -22,6 +24,21 @@ const FundCryptoWalletPreview: React.FC = () => {
   const [showBankModal, setShowBankModal] = React.useState(false);
   const [showLoaderModal, setShowLoaderModal] = React.useState(false);
   const [orderConfirmed, setOrderConfirmed] = React.useState(false);
+
+  React.useEffect(() => {
+    toast.info(
+      "Avoid refreshing or leaving this page while transaction is ongoing",
+      {
+        position: "top-right",
+        autoClose: 7000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        toastId: "avoid-refresh-warning",
+      },
+    );
+  }, []);
 
   const onrampConfirmLoading = useSelector(
     (s: { web3: Web3State }) => s.web3.onrampConfirmLoading,
@@ -92,6 +109,7 @@ const FundCryptoWalletPreview: React.FC = () => {
         />
         Fund Wallet
       </DashboardHeader>
+      <FundProgressBar step={2} />
       <section className="relative mx-auto mt-6 w-full px-2">
         <div className="mt-4 flex flex-col items-center">
           <h2 className="mb-2 text-center text-lg font-semibold">
