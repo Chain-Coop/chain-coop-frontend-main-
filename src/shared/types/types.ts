@@ -140,6 +140,7 @@ export interface CryptoTransaction {
   cryptoAsset: string;
   reference: string;
   status: string;
+  rate: number;
   __v?: number;
 }
 

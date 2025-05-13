@@ -20,11 +20,11 @@ const BtcCoreNoticeModal: React.FC<BtcCoreNoticeModalProps> = ({
   onClose,
   onSwitchToLightning,
 }) => (
-  <Dialog open={open} handler={onClose} size="sm" className="p-10">
+  <Dialog open={open} handler={onClose} size="sm" className="p-2 md:p-10">
     <div className="relative">
       <button
         onClick={onClose}
-        className="absolute left-0 -top-5 rounded-full p-1.5 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+        className="absolute left-0 top-1.5 md:-top-5 rounded-full p-1.5 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
         aria-label="Close modal"
       >
         <IoClose size={22} />
@@ -34,19 +34,19 @@ const BtcCoreNoticeModal: React.FC<BtcCoreNoticeModalProps> = ({
         <img className="w-5 h-5" src={bell} alt="notificationBell" />
       </DialogHeader>
       <DialogBody className="px-6 pb-2 pt-0 text-center">
-        <div className="mb-4 text-lg text-center text-[#31005C]">
+        <div className="mb-4 text-sm md:text-lg text-center text-[#31005C]">
           BTC Core is slow and has high fees. We recommend you use BTC Lightning
           for faster and cheaper payment
         </div>
       </DialogBody>
-      <DialogFooter className="flex gap-2 px-6 pb-6">
-        <Button className="flex-1 bg-text2" onClick={onClose}>
+      <DialogFooter className="flex flex-col gap-2 px-6 pb-6">
+        <Button className="flex-1 w-full bg-text2" onClick={onClose}>
           Continue
         </Button>
         <Button
           variant="outlined"
           color="deep-purple"
-          className="flex-1 text-text1"
+          className="flex-1 w-full text-text1"
           onClick={() => {
             onSwitchToLightning();
             onClose();

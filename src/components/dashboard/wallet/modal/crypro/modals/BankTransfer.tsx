@@ -88,7 +88,12 @@ const BankTransfer: React.FC<ExtendedBankTransferProps> = ({
   };
 
   return (
-    <Dialog open={isOpen} handler={onClose} size="sm" className="p-10 relative">
+    <Dialog
+      open={isOpen}
+      handler={onClose}
+      size="sm"
+      className="relative p-1 md:p-10"
+    >
       <DialogHeader className="flex items-center justify-between">
         <div />
         <Typography
@@ -100,7 +105,7 @@ const BankTransfer: React.FC<ExtendedBankTransferProps> = ({
         <IconButton
           variant="text"
           onClick={onClose}
-          className="p-2 absolute top-4 left-4 text-text2 hover:rounded-full"
+          className="absolute left-2 md:left-4 top-1.5 md:top-4 p-2 text-text2 hover:rounded-full"
           placeholder=""
           onPointerEnterCapture={() => {}}
           onPointerLeaveCapture={() => {}}
@@ -108,8 +113,11 @@ const BankTransfer: React.FC<ExtendedBankTransferProps> = ({
           <IoMdClose size={24} />
         </IconButton>
       </DialogHeader>
-      <DialogBody className="text-base text-[#6E6C6C] text-center">
-        <p>Transfer exact money to the account details below and once has be done click the button to confirm payment.</p>
+      <DialogBody className="text-center text-base text-[#6E6C6C]">
+        <p>
+          Transfer exact money to the account details below and once has be done
+          click the button to confirm payment.
+        </p>
       </DialogBody>
       <DialogBody>
         <div className="space-y-4">
@@ -139,13 +147,13 @@ const BankTransfer: React.FC<ExtendedBankTransferProps> = ({
       <DialogFooter className="flex flex-col gap-2">
         <Button
           variant="text"
-          className="w-full bg-text2 font-medium md:h-[52px] py-3 text-white hover:bg-[#3a1561]"
+          className="w-full bg-text2 py-3 font-medium text-white hover:bg-[#3a1561] md:h-[52px]"
           onClick={handleTransferConfirm}
         >
           I've sent the money
         </Button>
       </DialogFooter>
-      <div className="mb-4 mt-2 text-center text-[#6E6C6C] text-base">
+      <div className="mb-4 mt-2 text-center text-base text-[#6E6C6C]">
         Note: Transfer exact money to the account details above.
       </div>
 
