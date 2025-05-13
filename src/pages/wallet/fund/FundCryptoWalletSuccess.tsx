@@ -77,6 +77,13 @@ const FundCryptoWalletSuccess: React.FC = () => {
               {data.reference}
             </span>
           </div>
+
+          <div className="flex justify-between">
+            <span className="text-xl font-medium">Txt Reference</span>
+            <span className="max-w-[200px] truncate text-lg font-semibold text-text2">
+              {data.transactionReference}
+            </span>
+          </div>
         </div>
 
         <div className="mt-10 flex items-center justify-center">

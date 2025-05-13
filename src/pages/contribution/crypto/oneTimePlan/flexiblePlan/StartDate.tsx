@@ -38,19 +38,15 @@ const StartDate: React.FC = () => {
   const location = useLocation();
   const { tokenName } = location.state || {};
 
-  // useEffect to calculate available dates (run once)
   useEffect(() => {
-    // Calculate presets assuming a 'daily' type for interval variety
-    const config = { dailyIntervals: [7, 14, 30, 60, 90, 180] }; // Example presets
+    const config = { dailyIntervals: [7, 14, 30, 60, 90, 180] };
     const dates = calculateAvailableEndDates(todayString, "daily", config);
     setAvailableEndDates(dates);
-  }, [todayString]); // Run only when todayString changes (effectively once on mount)
+  }, [todayString]);
 
-  // Handler for dropdown change
   const handleEndDateChange = (event: any) => {
     const value = event.target.value;
     if (value === "custom") {
-      // Allow custom
       setUseCustomDate(true);
       setEndDate("");
     } else {
@@ -58,19 +54,17 @@ const StartDate: React.FC = () => {
       setEndDate(value);
       setCustomEndDate("");
     }
-    setError(""); // Clear error on change
+    setError("");
   };
 
-  // Handler for custom date input change
   const handleCustomEndDateChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const value = event.target.value;
     setCustomEndDate(value);
-    // Validate on change
     const validation = validateCustomEndDate(todayString, value, {
       type: "daily",
-      minDays: 7,
+      minDays: 1,
     });
     setError(validation.isValid ? "" : validation.error || "Invalid date");
   };
@@ -81,17 +75,14 @@ const StartDate: React.FC = () => {
 
     const finalEndDate = useCustomDate ? customEndDate : endDate;
 
-    // No frequency check needed for one-time
-
     if (!finalEndDate) {
       setError("Please select or enter an end date.");
       return;
     }
 
-    // Final validation before submitting
     const validation = validateCustomEndDate(todayString, finalEndDate, {
-      type: "daily", // Use 'daily' type validation for one-time
-      minDays: 7, // Keep a minimum duration
+      type: "daily",
+      minDays: 1,
     });
     if (!validation.isValid) {
       setError(validation.error || "Invalid end date selected.");
@@ -103,7 +94,7 @@ const StartDate: React.FC = () => {
     const formData = {
       ...location.state,
       startDate: todayString,
-      duration: finalEndDate, // Use the chosen/validated end date
+      duration: finalEndDate,
       // No savingFrequency needed
       lockedType: location.state?.lockedType,
       contributionType: location.state?.contributionType,
@@ -215,7 +206,7 @@ const StartDate: React.FC = () => {
                 type="date"
                 value={customEndDate}
                 onChange={handleCustomEndDateChange}
-                min={formatDate(addDays(new Date(todayString), 7))} // Min 7 days
+                min={formatDate(addDays(new Date(todayString), 1))}
                 required
                 className="input h-[3.5em] w-full rounded-lg border-[2px] border-gray-300 bg-white px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
               />

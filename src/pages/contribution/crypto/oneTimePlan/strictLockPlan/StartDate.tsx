@@ -38,7 +38,7 @@ const StartDate = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const config = { dailyIntervals: [7, 14, 30, 60, 90, 180] }; // Example presets
+    const config = { dailyIntervals: [7, 14, 30, 60, 90, 180] };
     const dates = calculateAvailableEndDates(todayString, "daily", config);
     setAvailableEndDates(dates);
   }, [todayString]);
@@ -63,7 +63,7 @@ const StartDate = () => {
     setCustomEndDate(value);
     const validation = validateCustomEndDate(todayString, value, {
       type: "daily",
-      minDays: 7,
+      minDays: 1,
     });
     setError(validation.isValid ? "" : validation.error || "Invalid date");
   };
@@ -78,7 +78,7 @@ const StartDate = () => {
     }
     const validation = validateCustomEndDate(todayString, finalEndDate, {
       type: "daily",
-      minDays: 7, // Strict lock one-time might have different minimums?
+      minDays: 1,
     });
     if (!validation.isValid) {
       setError(validation.error || "Invalid end date selected.");
@@ -192,7 +192,7 @@ const StartDate = () => {
                 type="date"
                 value={customEndDate}
                 onChange={handleCustomEndDateChange}
-                min={formatDate(addDays(new Date(todayString), 7))} // Min 7 days
+                min={formatDate(addDays(new Date(todayString), 1))}
                 required
                 className="input h-[3.5em] w-full rounded-lg border-[2px] border-gray-300 bg-white px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
               />

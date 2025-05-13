@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Alert } from "@mui/material";
 import etherium from "../../../../Assets/svg/dashboard/contribution/etherum.svg";
-import ether from "../../../../Assets/svg/dashboard/ethereum.svg";
-import bitcoin from "../../../../Assets/svg/dashboard/wallet/btc.svg";
-import usdc from "../../../../Assets/svg/dashboard/Group 99764.png";
-import usdt from "../../../../Assets/svg/dashboard/usdc.svg";
+import bitcoin from "../../../../Assets/svg/dashboard/bitcoin.svg";
+import usdc from "../../../../Assets/svg/dashboard/usd.svg";
+import usdt from "../../../../Assets/svg/dashboard/usdt.svg";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 
