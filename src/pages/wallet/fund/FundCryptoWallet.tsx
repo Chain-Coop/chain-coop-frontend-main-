@@ -13,6 +13,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 import { IoIosArrowBack } from "react-icons/io";
 import BtcCoreNoticeModal from "../../../components/dashboard/wallet/modal/crypro/modals/NoticeModal";
+import FundProgressBar from "../../../components/dashboard/wallet/modal/crypro/ProgressBar";
 
 const CRYPTOS = [
   { label: "Bitcoin (BTC)", value: "bitcoin", img: btcImg, disabled: false },
@@ -171,6 +172,7 @@ const FundCryptoWallet: React.FC = () => {
         />
         Fund Wallet
       </DashboardHeader>
+      <FundProgressBar step={1} />
       <section className="relative mx-auto my-10 w-full px-2">
         {/* Crypto image and title */}
         <div className="flex flex-col items-center">
