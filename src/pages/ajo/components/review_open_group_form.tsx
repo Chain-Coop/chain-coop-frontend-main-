@@ -10,7 +10,7 @@ const ReviewOpenGroupForm = (data: openGroupFormType) => {
         group_title: data.firstForm.savings_title,
         savings_desc: data.firstForm.savings_description,
         savings_currency: data.firstForm.savings_currency,
-        daily_deposit: data.thirdForm.daily_deposit,
+        daily_deposit: data.thirdForm.depositAmount,
         total_saving_amount: data.secondForm.total_saving_amount,
         saving_frequency: data.secondForm.savings_frequency,
         start_date: data.secondForm.start_date,
@@ -24,7 +24,7 @@ const ReviewOpenGroupForm = (data: openGroupFormType) => {
     const secondReviewData = [
         {
             key: "Daily Deposit",
-            value: data.thirdForm.daily_deposit
+            value: data.thirdForm.depositAmount
         },
         {
             key: "Total Saving Amount",

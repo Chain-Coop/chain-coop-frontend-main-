@@ -15,7 +15,7 @@ const validateSecondForm = (data: secondOpenGroupType): boolean => {
 };
 
 const validateThirdForm = (data: thirdOpenGroupType): boolean => {
-    return !(data.daily_deposit > 0  && (data.agree === true));
+    return !(data.depositAmount > 0  && (data.agree === true));
 };
 
 // const validateFormData = (firstFormData: firstOpenGroupType, secondFormData: secondOpenGroupType, thirdFormData: thirdOpenGroupType) => {

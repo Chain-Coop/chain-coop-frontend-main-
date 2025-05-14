@@ -37,7 +37,7 @@ const FirstOpenGroupForm = ({ data, setData }: Props) => {
         <FormInput
           label="Group Title"
           type="text"
-          onChange={handleTextChange}
+          onChange={e => setData({ ...data, savings_title: e.target.value })}
           value={data.savings_title}
           className="rounded-lg border-2 border-[#95949480] shadow-lg focus:shadow-xl"
           labelClassName="text-lg"
