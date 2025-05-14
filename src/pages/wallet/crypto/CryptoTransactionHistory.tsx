@@ -80,13 +80,13 @@ const CryptoTransactionHistory: React.FC = () => {
     // Apply type filter
     switch (filterType) {
       case "wallet":
-        result = cashwyre;
+        result = cashwyre || [];
         break;
       case "contribution":
-        result = crypto;
+        result = crypto || [];
         break;
       default:
-        result = [...crypto, ...cashwyre];
+        result = [...(crypto || []), ...(cashwyre || [])];
         break;
     }
 
@@ -94,17 +94,17 @@ const CryptoTransactionHistory: React.FC = () => {
       const query = searchQuery.toLowerCase();
       result = result.filter(
         (tx) =>
-          tx.cryptoAsset?.toLowerCase().includes(query) ||
-          tx.transactionType?.toLowerCase().includes(query) ||
-          tx.reference?.toLowerCase().includes(query) ||
-          tx.status?.toLowerCase().includes(query),
+          tx?.cryptoAsset?.toLowerCase().includes(query) ||
+          tx?.transactionType?.toLowerCase().includes(query) ||
+          tx?.reference?.toLowerCase().includes(query) ||
+          tx?.status?.toLowerCase().includes(query),
       );
     }
 
     // Sort by date based on sortOrder
-    return result.sort((a, b) => {
-      const dateA = new Date(a.createdAt).getTime();
-      const dateB = new Date(b.createdAt).getTime();
+    return [...result].sort((a, b) => {
+      const dateA = new Date(a?.createdAt || 0).getTime();
+      const dateB = new Date(b?.createdAt || 0).getTime();
       return sortOrder === "newest" ? dateB - dateA : dateA - dateB;
     });
   }, [
@@ -200,7 +200,7 @@ const CryptoTransactionHistory: React.FC = () => {
 
   return (
     <section className="my-8">
-      <div className="mb-6 flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="mb-6 flex flex-col items-start gap-4">
         <Typography
           variant="h3"
           className="text-lg font-semibold text-gray-800"
@@ -407,7 +407,7 @@ const CryptoTransactionHistory: React.FC = () => {
                                 Crypto Type:
                               </span>
                               <span className="ml-1 text-sm">
-                                {cryptoAsset} {cryptoNetwork}
+                                {cryptoNetwork}
                               </span>
                             </div>
 
