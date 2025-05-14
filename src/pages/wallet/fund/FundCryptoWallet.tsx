@@ -184,7 +184,7 @@ const FundCryptoWallet: React.FC = () => {
           />
         </div>
         {/* Info banner */}
-        <div className="my-4 px-5 text-center text-lg">
+        <div className="mt-4 mb-6 text-base px-0 md:px-5 text-center md:text-lg">
           Cryptocurrency prices fluctuate based on market conditions, so there
           is no fixed rate. However, your account will be credited with the
           equivalent amount of crypto based on the market price at the time of

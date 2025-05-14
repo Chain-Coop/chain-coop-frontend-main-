@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import btcImg from "../../../Assets/svg/dashboard/wallet/btc.svg";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
@@ -25,7 +25,25 @@ const FundCryptoWalletPreview: React.FC = () => {
   const [showLoaderModal, setShowLoaderModal] = React.useState(false);
   const [orderConfirmed, setOrderConfirmed] = React.useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    // Check if required data is missing
+    if (!data || !data.amountInCryptoAsset || !data.cryptoAsset) {
+      toast.error("Missing required data. Please try again.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        toastId: "missing-data-error",
+      });
+      setTimeout(() => {
+        navigate(-1);
+      }, 3000);
+      return;
+    }
+
+    // Show warning about page refresh
     toast.info(
       "Avoid refreshing or leaving this page while transaction is ongoing",
       {
@@ -38,7 +56,7 @@ const FundCryptoWalletPreview: React.FC = () => {
         toastId: "avoid-refresh-warning",
       },
     );
-  }, []);
+  }, [data, navigate]);
 
   const onrampConfirmLoading = useSelector(
     (s: { web3: Web3State }) => s.web3.onrampConfirmLoading,
@@ -58,6 +76,22 @@ const FundCryptoWalletPreview: React.FC = () => {
     });
 
   const handleBuy = async () => {
+    if (!data.reference || !data.transactionReference) {
+      toast.error("Transaction reference is missing. Please try again.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        toastId: "missing-reference-error",
+      });
+      setTimeout(() => {
+        navigate(-1);
+      }, 3000);
+      return;
+    }
+
     const payload = {
       amount: data.amountInLocalCurrency,
       crypto: data.cryptoAsset,
@@ -71,13 +105,38 @@ const FundCryptoWalletPreview: React.FC = () => {
       setOrderConfirmed(true);
     } catch (error) {
       console.error("Error confirming order:", error);
+      toast.error("Failed to confirm order. Please try again.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        toastId: "confirm-order-error",
+      });
+      setTimeout(() => {
+        navigate(-1);
+      }, 3000);
     }
   };
 
   const handleViewBankDetails = () => {
-    if (onrampConfirmResult && onrampConfirmResult.bankName) {
-      setShowBankModal(true);
+    if (!onrampConfirmResult?.bankName) {
+      toast.error("Bank details not available. Please try again.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        toastId: "missing-bank-details-error",
+      });
+      setTimeout(() => {
+        navigate(-1);
+      }, 3000);
+      return;
     }
+    setShowBankModal(true);
   };
 
   const handleCloseBankModal = () => {
@@ -85,6 +144,22 @@ const FundCryptoWalletPreview: React.FC = () => {
   };
 
   const handleConfirmTransfer = () => {
+    if (!data) {
+      toast.error("Transaction data is missing. Please try again.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        toastId: "missing-transaction-data-error",
+      });
+      setTimeout(() => {
+        navigate(-1);
+      }, 3000);
+      return;
+    }
+
     setShowBankModal(false);
     setShowLoaderModal(true);
     setTimeout(() => {
@@ -98,6 +173,11 @@ const FundCryptoWalletPreview: React.FC = () => {
   const handleBackClick = () => {
     navigate(-1);
   };
+
+  // If data is missing, don't render the component
+  if (!data || !data.amountInCryptoAsset || !data.cryptoAsset) {
+    return null;
+  }
 
   return (
     <main className="mb-8 mt-0 lg:mt-8">

@@ -210,7 +210,7 @@ export const GetAllUserTokens = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const data = await web3Services.GetAllUserTokens();
-      console.log(data);
+      //console.log(data);
       return data;
     } catch (error: any) {
       const message = error.message;
