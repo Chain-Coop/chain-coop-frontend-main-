@@ -108,19 +108,19 @@ export interface openGroupFormType {
 }
 
 export interface PrepareDataType {
-  "name": string,
-  "description"?: string,
-  "depositAmount": number,
-  "currency": string,
-  "savingFrequency": string,
-  "goalAmount": number,
-  "groupType": string,
-  "startDate": string,
-  "endDate": string,
-  "userId": string,
-  "image"?: Blob,
+  name: string;
+  description?: string;
+  depositAmount: number;
+  currency: string;
+  savingFrequency: string;
+  goalAmount: number;
+  groupType: string;
+  startDate: string;
+  endDate: string;
+  userId: string;
+  image?: Blob;
 }
-  
+
 export interface WithdrawUserPoolPayload {
   poolId_bytes: string;
   pin: string;
