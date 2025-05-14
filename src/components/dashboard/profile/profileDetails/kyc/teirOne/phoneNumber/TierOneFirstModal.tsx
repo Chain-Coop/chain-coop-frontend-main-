@@ -6,12 +6,13 @@ import {
   Dialog,
   DialogHeader,
   DialogBody,
+  IconButton,
 } from "@material-tailwind/react";
+import { IoMdClose } from "react-icons/io";
 
 interface TierOneFirstModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onStepOneClick: () => void;
   onBvnStepClick: () => void;
   isVerified: boolean;
 }
@@ -19,13 +20,24 @@ interface TierOneFirstModalProps {
 const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
   isOpen,
   onClose,
-  onStepOneClick,
   onBvnStepClick,
   isVerified,
 }) => {
   return (
     <Dialog size="sm" open={isOpen} handler={onClose} className="bg-white">
-      <DialogHeader className="justify-center">
+      <DialogHeader className="relative justify-center pt-10">
+        <IconButton
+          variant="text"
+          color="gray"
+          onClick={onClose}
+          className="absolute left-2 top-2 h-10 w-10 min-w-[40px] p-0 hover:bg-gray-100"
+          ripple={false}
+          placeholder=""
+          onPointerEnterCapture={() => {}}
+          onPointerLeaveCapture={() => {}}
+        >
+          <IoMdClose size={24} className="m-auto text-gray-700" />
+        </IconButton>
         <div className="flex w-full justify-center">
           <img
             src={kyc}
@@ -77,7 +89,6 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
             className={`flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-sm ${
               !isVerified ? "cursor-pointer" : ""
             }`}
-            onClick={!isVerified ? onStepOneClick : undefined}
           >
             <div className="flex flex-col gap-1">
               <Typography

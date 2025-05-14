@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message.slices";
 import LandingServices from "../services/landing.services";
 
-
 export const RegisterUser = createAsyncThunk(
   "landing/registerUser",
   async (body: any, thunkAPI) => {
@@ -50,6 +49,20 @@ export const VerifyUserAuth = createAsyncThunk(
   async (body: any, thunkAPI) => {
     try {
       const data = await LandingServices.VerifyUserAuth(body);
+      return { landing: data };
+    } catch (error: any) {
+      const message = error.msg;
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
+export const VerifyUserPhoneNumber = createAsyncThunk(
+  "landing/verifyPhoneNumber",
+  async (body: any, thunkAPI) => {
+    try {
+      const data = await LandingServices.VerifyUserPhoneNumber(body);
       return { landing: data };
     } catch (error: any) {
       const message = error.msg;
@@ -125,6 +138,8 @@ const initialState = {
   getProfile: null,
   avatarUrl: null,
   resetUserPassword: null,
+  verifyPhone: null,
+  verifyAuthData: null, // Added to initialState
   isLoading: false,
   error: null,
   success: false,
@@ -153,11 +168,23 @@ export const landingSlice = createSlice({
     builder.addCase(LoginUser.rejected, (state) => {
       state.getloginUser = null;
     });
+    builder.addCase(VerifyUserAuth.pending, (state) => {
+      state.isLoading = true;
+      state.verifyAuthData = null;
+    });
     builder.addCase(VerifyUserAuth.fulfilled, (state: any, action) => {
+      state.isLoading = false;
       state.verifyAuthData = action.payload.landing;
     });
     builder.addCase(VerifyUserAuth.rejected, (state: any) => {
+      state.isLoading = false;
       state.verifyAuthData = null;
+    });
+    builder.addCase(VerifyUserPhoneNumber.fulfilled, (state: any, action) => {
+      state.verifyPhone = action.payload.landing;
+    });
+    builder.addCase(VerifyUserPhoneNumber.rejected, (state: any) => {
+      state.verifyPhone = null;
     });
     builder.addCase(PublicContact.fulfilled, (state, action) => {
       state.getPublicContact = action.payload.landing;
@@ -165,7 +192,6 @@ export const landingSlice = createSlice({
     builder.addCase(PublicContact.rejected, (state) => {
       state.getPublicContact = null;
     });
-
     builder.addCase(GetUserProfile.fulfilled, (state, action) => {
       state.getProfile = action.payload;
     });

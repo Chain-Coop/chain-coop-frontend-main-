@@ -2,10 +2,6 @@ import { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import TierOneFirstModal from "../kyc/teirOne/phoneNumber/TierOneFirstModal";
-import TierOneSecondModal from "../kyc/teirOne/phoneNumber/TeirOneSecondModal";
-import TierOneThirdModal from "../kyc/teirOne/phoneNumber/TeirOneThirdModal";
-import WhatsappOtpModal from "../kyc/teirOne/whatsapp/WhatsappOtpModal";
-import WhatsappVerificationModal from "../kyc/teirOne/whatsapp/WhatsappVerificationModal";
 import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 import { Typography } from "@material-tailwind/react";
 import Success from "../../../../common/Success";
@@ -15,14 +11,7 @@ const Details = () => {
   const navigate = useNavigate();
   const { profileDetails } = useUserProfile();
   const [showTierOneModal, setShowTierOneModal] = useState(false);
-  const [showSecondModal, setShowSecondModal] = useState(false);
-  const [showThirdModal, setShowThirdModal] = useState(false);
-  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [otpReference, setOtpReference] = useState<string>("");
-  const [showWhatsAppVerificationModal, setShowWhatsAppVerificationModal] =
-    useState(false);
-  const [whatsAppReference, setWhatsAppReference] = useState<string>("");
 
   const [showBvnFirstModal, setShowBvnFirstModal] = useState(false);
 
@@ -60,34 +49,8 @@ const Details = () => {
 
   const handleModalClose = () => {
     setShowTierOneModal(false);
-    setShowSecondModal(false);
-    setShowThirdModal(false);
-    setShowWhatsAppModal(false);
-    setShowWhatsAppVerificationModal(false);
     setShowSuccessModal(false);
     setShowBvnFirstModal(false);
-  };
-
-  const handleVerificationSuccess = () => {
-    setShowThirdModal(false);
-    setShowWhatsAppVerificationModal(false);
-    setShowSuccessModal(true);
-  };
-
-  const handleStepOneClick = () => {
-    setShowSecondModal(true);
-    setShowTierOneModal(false);
-  };
-
-  const handleStepTwoSuccess = (reference: string) => {
-    setOtpReference(reference);
-    setShowSecondModal(false);
-    setShowThirdModal(true);
-  };
-
-  const handleSwitchToWhatsapp = () => {
-    setShowThirdModal(false);
-    setShowWhatsAppModal(true);
   };
 
   const handleBvnStepClick = () => {
@@ -101,12 +64,6 @@ const Details = () => {
     } else if (section.onClick) {
       section.onClick();
     }
-  };
-
-  const handleWhatsAppOtpSuccess = (reference: string) => {
-    setWhatsAppReference(reference);
-    setShowWhatsAppModal(false);
-    setShowWhatsAppVerificationModal(true);
   };
 
   return (
@@ -143,40 +100,8 @@ const Details = () => {
       <TierOneFirstModal
         isOpen={showTierOneModal}
         onClose={handleModalClose}
-        onStepOneClick={handleStepOneClick}
         onBvnStepClick={handleBvnStepClick}
         isVerified={profileDetails?.isVerified}
-      />
-      <TierOneSecondModal
-        open={showSecondModal}
-        onClose={handleModalClose}
-        onSuccess={handleStepTwoSuccess}
-      />
-      <TierOneThirdModal
-        open={showThirdModal}
-        reference={otpReference}
-        onClose={handleModalClose}
-        onSwitchToWhatsapp={handleSwitchToWhatsapp}
-        onVerificationSuccess={handleVerificationSuccess}
-      />
-      <WhatsappOtpModal
-        open={showWhatsAppModal}
-        onClose={handleModalClose}
-        onBack={() => {
-          setShowWhatsAppModal(false);
-          setShowThirdModal(true);
-        }}
-        onOtpSuccess={handleWhatsAppOtpSuccess}
-      />
-      <WhatsappVerificationModal
-        open={showWhatsAppVerificationModal}
-        reference={whatsAppReference}
-        onClose={handleModalClose}
-        onBack={() => {
-          setShowWhatsAppVerificationModal(false);
-          setShowWhatsAppModal(true);
-        }}
-        onVerificationSuccess={handleVerificationSuccess}
       />
       <UpdateBvnModal isOpen={showBvnFirstModal} onClose={handleModalClose} />
       <Success

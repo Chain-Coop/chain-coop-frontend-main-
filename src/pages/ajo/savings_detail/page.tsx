@@ -24,7 +24,7 @@ import FundModal from "./fund_modal";
 const SavingsDetail = () => {
   const { name } = useParams();
 
-  const progress = 50
+  const progress = 50;
 
   const firstSavingsData = [
     {
@@ -51,7 +51,7 @@ const SavingsDetail = () => {
 
   const lastSavingsData = [
     {
-      key: "Savings Frequency",
+      key: "Contribution Schedule",
       value: "Daily",
     },
     {
@@ -72,7 +72,7 @@ const SavingsDetail = () => {
   };
 
   return (
-    <main className="mb-[20px] flex  font-asap  flex-col">
+    <main className="mb-[20px] flex  flex-col  font-asap">
       <DashboardHeader
         className="relative cursor-pointer items-center lg:mt-[2em]"
         onClick={handleBackClick}
@@ -128,24 +128,24 @@ const SavingsDetail = () => {
         </section>
 
         <section className="flex w-[100%] flex-col items-center justify-center bg-[#FFF7FC] p-4">
-        <Typography className="font-asap text-[14px] font-[400] leading-tight tracking-wide opacity-60">
+          <Typography className="font-asap text-[14px] font-[400] leading-tight tracking-wide opacity-60">
             My savings
           </Typography>
           <h2 className="text-[34px] font-[600] tracking-tight text-[#1E1E1E] lg:text-[36px]">
             $200
           </h2>
-          <div className="my-4 py-2 border-y border-[#C4C0C080] w-[100%] flex items-center justify-center gap-1">
-            <Typography className="font-asap text-[14px] text-[#302B2B] font-[400] leading-tight tracking-wide">
+          <div className="my-4 flex w-[100%] items-center justify-center gap-1 border-y border-[#C4C0C080] py-2">
+            <Typography className="font-asap text-[14px] font-[400] leading-tight tracking-wide text-[#302B2B]">
               Savings progress
             </Typography>
-            {
-              progress > 0 ? (
-                <FiArrowUpRight className="text-[14px] text-[#2EC046]" />
-              ) : (
-                <LuArrowDownRight className="text-[14px] text-red-500" />
-              )
-            }
-            <Typography className={`font-asap text-[14px] text-[#302B2B] font-[700] leading-tight tracking-wide ${progress > 0 ? 'text-[#2EC046]' : 'text-red-500'}`}>
+            {progress > 0 ? (
+              <FiArrowUpRight className="text-[14px] text-[#2EC046]" />
+            ) : (
+              <LuArrowDownRight className="text-[14px] text-red-500" />
+            )}
+            <Typography
+              className={`font-asap text-[14px] font-[700] leading-tight tracking-wide text-[#302B2B] ${progress > 0 ? "text-[#2EC046]" : "text-red-500"}`}
+            >
               {progress}%
             </Typography>
           </div>
@@ -155,13 +155,14 @@ const SavingsDetail = () => {
           <h2 className="text-[34px] font-[600] tracking-tight text-[#1E1E1E] lg:text-[36px]">
             $29,000.67
           </h2>
-          <div className="flex w-[100%] justify-between items-center gap-y-4 flex-wrap mt-8">
-            <Button 
-              onClick={() => setIsFundModalOpen(true)} 
-              className="flex h-[45px] w-[100%] items-center justify-center self-start rounded-md bg-[#440080] px-6 text-[16px] font-medium text-white normal-case font-asap hover:bg-white border-2 border-[#3D0073] hover:text-[#3D0073] sm:w-[190px] lg:text-[18px]">
+          <div className="mt-8 flex w-[100%] flex-wrap items-center justify-between gap-y-4">
+            <Button
+              onClick={() => setIsFundModalOpen(true)}
+              className="flex h-[45px] w-[100%] items-center justify-center self-start rounded-md border-2 border-[#3D0073] bg-[#440080] px-6 font-asap text-[16px] font-medium normal-case text-white hover:bg-white hover:text-[#3D0073] sm:w-[190px] lg:text-[18px]"
+            >
               Fund
             </Button>
-            <Button className="flex h-[45px] w-[100%] items-center justify-center self-start rounded-md bg-white px-6 text-[16px] font-medium text-black normal-case font-asap hover:text-white hover:bg-[#3D0073] border-2 border-[#3D0073] sm:w-[190px] lg:text-[18px]">
+            <Button className="flex h-[45px] w-[100%] items-center justify-center self-start rounded-md border-2 border-[#3D0073] bg-white px-6 font-asap text-[16px] font-medium normal-case text-black hover:bg-[#3D0073] hover:text-white sm:w-[190px] lg:text-[18px]">
               Withdraw
             </Button>
           </div>
@@ -198,7 +199,7 @@ const SavingsDetail = () => {
                     className="h-[24px] w-[24px]"
                   />
                 )}
-                <Typography className="font-asap pr-6 text-[14px] font-[500] text-[#302B2B] lg:text-[16px]">
+                <Typography className="pr-6 font-asap text-[14px] font-[500] text-[#302B2B] lg:text-[16px]">
                   {data.value}
                 </Typography>
                 <BsPatchCheck className="text-[24px] text-[#440080]" />
@@ -217,8 +218,11 @@ const SavingsDetail = () => {
         </ul>
 
         {/* TRANSACTION BOX */}
-        <Link to={`/dashboard/ajo/${name}/transactions`} className="w-[100%] flex justify-between rounded-md bg-[#ECE6F25E] border border-[#DDD8D84D] px-3 items-center py-6 mt-6">
-          <div className="flex flex-col gap-4  w-[80%]">
+        <Link
+          to={`/dashboard/ajo/${name}/transactions`}
+          className="mt-6 flex w-[100%] items-center justify-between rounded-md border border-[#DDD8D84D] bg-[#ECE6F25E] px-3 py-6"
+        >
+          <div className="flex w-[80%] flex-col  gap-4">
             <h3 className="text-[18px] font-[500] tracking-tight text-[#1E1E1E]">
               Transaction history
             </h3>
@@ -227,7 +231,7 @@ const SavingsDetail = () => {
             </Typography>
           </div>
           <button>
-            <FaChevronRight className="text-[#1E1E1E] text-[16px]" />
+            <FaChevronRight className="text-[16px] text-[#1E1E1E]" />
           </button>
         </Link>
 
@@ -237,10 +241,13 @@ const SavingsDetail = () => {
             <h3 className="text-[18px] font-[600] tracking-tight text-[#1E1E1E]">
               Members ({membersBriefData.length})
             </h3>
-            <Link to={'/dashboard/ajo/open-group/members'} className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-[#ECE6F25E] rounded-full flex items-center justify-center">
-                <FaPlus className="text-[8px] -translate-y-[1px] translate-x-[2px] text-[#3D0073]" />
-                <MdOutlinePeopleOutline className="text-[20px] -translate-x-[2px] text-[#3D0073]" />
+            <Link
+              to={"/dashboard/ajo/open-group/members"}
+              className="flex items-center gap-2"
+            >
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#ECE6F25E]">
+                <FaPlus className="-translate-y-[1px] translate-x-[2px] text-[8px] text-[#3D0073]" />
+                <MdOutlinePeopleOutline className="-translate-x-[2px] text-[20px] text-[#3D0073]" />
               </div>
               <Typography className="font-asap text-[16px] font-[500] text-[#1E1E1E]">
                 Invite users
@@ -249,12 +256,22 @@ const SavingsDetail = () => {
           </div>
           <ul className="mt-[10px] flex flex-col gap-4">
             {membersBriefData.map((data, index) => (
-              <Members_Template amount={data.amount} index={index} name={data.name} userType={data.userType} key={`${index}-${data.name}`} progress={data.progress} />
+              <Members_Template
+                amount={data.amount}
+                index={index}
+                name={data.name}
+                userType={data.userType}
+                key={`${index}-${data.name}`}
+                progress={data.progress}
+              />
             ))}
           </ul>
         </section>
-        <Link to={"/dashboard/ajo/${name}/members"} className="bg-white border-2 border-[#440080] text-[#440080] font-[600] mt-8 text-[16px] w-[200px] h-[45px] rounded-md font-asap text-center flex items-center justify-center self-center">
-            See all
+        <Link
+          to={"/dashboard/ajo/${name}/members"}
+          className="mt-8 flex h-[45px] w-[200px] items-center justify-center self-center rounded-md border-2 border-[#440080] bg-white text-center font-asap text-[16px] font-[600] text-[#440080]"
+        >
+          See all
         </Link>
       </section>
       <FundModal isOpen={isFundModalOpen} setIsOpen={setIsFundModalOpen} />

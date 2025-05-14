@@ -376,7 +376,7 @@ export const Lock = () => (
   </svg>
 );
 
-export const StrictLocak = () => (
+export const Strict = () => (
   <svg
     width="30"
     height="30"
@@ -455,6 +455,54 @@ export const StrictLocak = () => (
       clip-rule="evenodd"
       d="M14.9326 15.9421C14.9326 16.2114 15.101 16.3125 15.2525 16.4471C15.606 16.8007 15.4713 16.8175 15.9259 16.8175C16.1111 16.8175 16.3468 16.5313 16.3468 16.3461C16.3468 16.1104 15.909 15.4707 15.3535 15.4707C15.1683 15.4707 14.9326 15.7569 14.9326 15.9421Z"
       fill="#430280"
+    />
+  </svg>
+);
+
+export const TrashIcon = () => (
+  <svg
+    className="h-4 w-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+    />
+  </svg>
+);
+
+export const Filter = () => (
+  <svg
+    width="22"
+    height="22"
+    viewBox="0 0 16 17"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M1 4.5H15"
+      stroke="#51526C"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M4 8.5H12"
+      stroke="#51526C"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M6 12.5H10"
+      stroke="#51526C"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
     />
   </svg>
 );

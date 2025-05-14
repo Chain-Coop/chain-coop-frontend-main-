@@ -1,12 +1,4 @@
 import React, { useState } from "react";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Button,
-} from "@mui/material";
 import { IoIosArrowBack } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -20,38 +12,11 @@ import {
   deleteCard,
   GetWalletCard,
 } from "../../shared/redux/slices/transaction.slices";
-import { CardBrandLogo } from "../../shared/utils/Helpers";
-
-interface Card {
-  authorization_code: string;
-  last4: string;
-  exp_month: string;
-  exp_year: string;
-  card_type: string;
-  bank: string;
-  brand: string;
-}
-
-const cardDesigns = {
-  visa: "from-blue-600 to-blue-800",
-  mastercard: "from-red-600 to-orange-600",
-  verve: "from-green-600 to-emerald-800",
-  default: "from-purple-600 to-purple-800",
-};
-
-const Chip = () => (
-  <div className="relative h-10 w-14">
-    <div className="absolute h-full w-full rounded-md bg-gradient-to-br from-yellow-600 to-yellow-700">
-      <div className="absolute left-1 top-1 h-8 w-12 rounded-md border-2 border-yellow-800/30">
-        <div className="grid h-full w-full grid-cols-4 grid-rows-4 gap-[1px]">
-          {[...Array(16)].map((_, i) => (
-            <div key={i} className="bg-yellow-800/20" />
-          ))}
-        </div>
-      </div>
-    </div>
-  </div>
-);
+import { CardBrandLogo, cardDesigns, Chip } from "../../shared/utils/Helpers";
+import DeleteCard from "../../components/dashboard/profile/security/modal/deleteCard";
+import { Button } from "@material-tailwind/react";
+import { TrashIcon } from "../../Assets/svg";
+import { Card } from "../../shared/types/types";
 
 const ManageCards = () => {
   const { useWalletCards } = useUserCard();
@@ -161,41 +126,13 @@ const ManageCards = () => {
                 </div>
 
                 <div className="flex flex-col gap-2 lg:flex-row">
-                  <button
+                  <Button
                     onClick={() => openDeleteConfirmation(card)}
                     className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-red-500 bg-red-50 px-4 py-2 text-sm text-red-500 transition-colors hover:bg-red-100 sm:flex-none"
                   >
-                    <svg
-                      className="h-4 w-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
+                    <TrashIcon />
                     Delete Card
-                  </button>
-                  {/* <button className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-blue-500 bg-blue-50 px-4 py-2 text-sm text-blue-500 transition-colors hover:bg-blue-100 sm:flex-none">
-                    <svg
-                      className="h-4 w-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    Set Default
-                  </button> */}
+                  </Button>
                 </div>
               </div>
             ))
@@ -224,31 +161,13 @@ const ManageCards = () => {
         </div>
       </section>
 
-      <Dialog
-        open={isDeleteModalOpen}
+      <DeleteCard
+        isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
-        aria-labelledby="delete-card-dialog-title"
-      >
-        <DialogTitle id="delete-card-dialog-title">Delete Card</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete the card ending in{" "}
-            {selectedCard?.last4}? This action cannot be undone.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setIsDeleteModalOpen(false)} color="primary">
-            Cancel
-          </Button>
-          <Button
-            onClick={handleDeleteCard}
-            color="error"
-            disabled={isDeleting}
-          >
-            {isDeleting ? "Deleting..." : "Delete"}
-          </Button>
-        </DialogActions>
-      </Dialog>
+        onConfirm={handleDeleteCard}
+        isDeleting={isDeleting}
+        selectedCard={selectedCard}
+      />
     </main>
   );
 };

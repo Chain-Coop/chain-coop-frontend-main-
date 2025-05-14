@@ -46,9 +46,13 @@ const Sidebar = () => {
         <nav className="mb-[3em] ml-5 flex flex-col">
           {sidebarLinks.map((link, index) => {
             const isActive =
-              link.pathsToCheck?.some((path) =>
-                location.pathname.startsWith(path),
-              ) || location.pathname === link.to;
+              (link.pathsToCheck
+                ? link.pathsToCheck.some((path) =>
+                    path === location.pathname
+                      ? true
+                      : path !== link.to && location.pathname.startsWith(path),
+                  )
+                : false) || location.pathname === link.to;
 
             return (
               <Link

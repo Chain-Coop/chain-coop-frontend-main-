@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import walletActivated from "../../../Assets/svg/dashboard/walletActivated.svg";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import lisk from "../../../Assets/svg/dashboard/token_lisk.svg";
-import eth from "../../../Assets/svg/dashboard/Group 99764.png";
-import usdc from "../../../Assets/svg/dashboard/usdc.svg";
+import usdc from "../../../Assets/svg/dashboard/usd.svg";
+import usdt from "../../../Assets/svg/dashboard/usdt.svg";
+import weth from "../../../Assets/svg/dashboard/ethereum.svg";
 import { Copy, Check } from "lucide-react";
 import { Button, Typography } from "@material-tailwind/react";
 import {
@@ -21,6 +22,7 @@ import { ActivateCryptoWallet } from "../../../shared/redux/slices/web3.slices";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import ToggleButton from "../../../shared/utils/ToggleButton";
 import { TransferIcon, WithdrawIcon } from "../../../Assets/svg";
+import CryptoTransactionHistory from "./CryptoTransactionHistory";
 
 interface TokenInfo {
   tokenAddress: string;
@@ -35,9 +37,33 @@ interface TokenListItem {
   token: TokenInfo;
 }
 
+const TOKEN_IMAGES: Record<string, string> = {
+  USDT: usdt,
+  USDC: usdc,
+  WETH: weth,
+  ETH: weth,
+  WBTC: lisk,
+  BTC: lisk,
+  LSK: lisk,
+  LUSD: usdc,
+  WUSDC: usdc,
+};
+
+const TOKEN_NAMES: Record<string, string> = {
+  USDT: "Tether",
+  USDC: "USD Coin",
+  WETH: "Wrapped Ethereum",
+  ETH: "Ethereum",
+  WBTC: "Wrapped Bitcoin",
+  BTC: "Bitcoin",
+  LSK: "Lisk",
+  LUSD: "Lisk USD",
+  WUSDC: "Wrapped USD Coin",
+};
+
 const CryptoMain = () => {
   const { Balance, isWalletVisible, setIsWalletVisible } = useCryptoWallet();
-  const { userTokens } = useAllUserTokens();
+  const { userTokens, fetchUserTokens } = useAllUserTokens();
   const { profileDetails, fetchUserProfile } = useUserProfile();
   const { cryptoWalletDetails } = useCryptoWalletDetails();
   const navigate = useNavigate();
@@ -47,6 +73,12 @@ const CryptoMain = () => {
     {},
   );
 
+  useEffect(() => {
+    if (profileDetails?.isWalletActivated) {
+      fetchUserTokens();
+    }
+  }, [fetchUserTokens, profileDetails?.isWalletActivated]);
+
   const handleCopy = (address: string) => {
     navigator?.clipboard.writeText(address);
     setCopiedStates((prev) => ({ ...prev, [address]: true }));
@@ -55,38 +87,20 @@ const CryptoMain = () => {
     }, 2000);
   };
 
-  const getDefaultToken = (): TokenInfo => ({
-    tokenAddress: "",
-    balance: 0,
-    tokenSymbol: "",
-  });
+  const tokenList: TokenListItem[] = React.useMemo(() => {
+    if (!userTokens || userTokens.length === 0) return [];
 
-  const tokenList: TokenListItem[] = [
-    {
-      img: lisk,
-      symbol: "LSK",
-      title: "Lisk",
-      token:
-        userTokens?.find((t: any) => t?.tokenSymbol === "LSK") ||
-        getDefaultToken(),
-    },
-    {
-      img: eth,
-      symbol: "LUSD",
-      title: "Ethereum",
-      token:
-        userTokens?.find((t: any) => t?.tokenSymbol === "LUSD") ||
-        getDefaultToken(),
-    },
-    {
-      img: usdc,
-      symbol: "WUSDC",
-      title: "Dollar",
-      token:
-        userTokens?.find((t: any) => t.tokenSymbol === "WUSDC") ||
-        getDefaultToken(),
-    },
-  ];
+    return userTokens.map((token: TokenInfo) => {
+      const symbol = token.tokenSymbol || "";
+
+      return {
+        img: TOKEN_IMAGES[symbol] || usdc,
+        symbol: symbol,
+        title: TOKEN_NAMES[symbol] || symbol,
+        token: token,
+      };
+    });
+  }, [userTokens]);
 
   const switchToNaira = () => {
     navigate("/dashboard/wallet");
@@ -99,6 +113,7 @@ const CryptoMain = () => {
       const response = await dispatch(ActivateCryptoWallet()).unwrap();
       toast.success(response.message);
       await fetchUserProfile();
+      await fetchUserTokens();
     } catch (error: any) {
       toast.error(error);
     } finally {
@@ -117,13 +132,12 @@ const CryptoMain = () => {
         <section className="text-center text-text4">
           <div className="flex flex-col gap-3 py-[1.5em] sm:flex-row sm:justify-between sm:gap-4">
             {profileDetails?.isWalletActivated === true && (
-              <div className="flex w-fit transform items-center justify-center gap-2 rounded-lg border-2 border-text2 bg-[#ECE6F2] px-3 py-2 font-medium text-text2 transition-all duration-300 hover:scale-105 active:scale-95 sm:w-auto sm:justify-start lg:py-2">
+              <div className="hidden w-fit transform items-center justify-center gap-2 rounded-lg border-2 border-text2 bg-[#ECE6F2] px-3 py-2 font-medium text-text2 transition-all duration-300 hover:scale-105 active:scale-95 sm:w-auto sm:justify-start lg:py-2">
                 Wallet Activated
                 <img src={walletActivated} alt="walletActivated" />
               </div>
             )}
             <div className="ml-auto flex">
-              {" "}
               <Button
                 onClick={switchToNaira}
                 variant="outlined"
@@ -211,91 +225,122 @@ const CryptoMain = () => {
           )}
         </section>
 
-        <section className="mt-6">
-          <h1 className="text-lg font-semibold">Token Balance</h1>
-          <div className="mt-[1em] flex flex-col gap-[1em]">
-            {tokenList?.map((list, index) => (
-              <div
-                key={index}
-                className="flex flex-col rounded-lg border-2 border-gray-300 p-4"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div>
-                      <img
-                        src={list?.img}
-                        alt={list?.symbol}
-                        className="h-8 w-8"
-                      />
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <p className="font-medium text-gray-400">
-                        {list?.symbol}
-                      </p>
-                      <p className="font-bold">{list?.title}</p>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="font-bold">${list?.token?.balance}</p>
-                  </div>
+        {profileDetails?.isWalletActivated === true && (
+          <>
+            <section className="mt-6">
+              <h1 className="text-lg font-semibold">Token Balance</h1>
+
+              {/* Show loading state when no user tokens are available yet */}
+              {!userTokens && (
+                <div className="mt-4 flex items-center justify-center py-8">
+                  <p className="text-center text-gray-500">Loading tokens...</p>
                 </div>
+              )}
 
-                {list?.token?.tokenAddress && (
-                  <div className="flex">
-                    <div className="mt-2 flex w-[200px] items-center justify-between rounded-md border border-gray-200 bg-gray-50 px-3 py-1.5">
-                      <span className="font-mono text-sm text-gray-600">
-                        {`${list?.token?.tokenAddress?.slice(0, 6)}...${list?.token?.tokenAddress?.slice(-4)}`}
-                      </span>
-                      <button
-                        onClick={() => handleCopy(list?.token?.tokenAddress)}
-                        className="ml-2 text-gray-500 hover:text-gray-700"
-                        title={
-                          copiedStates[list?.token?.tokenAddress]
-                            ? "Copied!"
-                            : "Copy address"
-                        }
-                      >
-                        {copiedStates[list?.token?.tokenAddress] ? (
-                          <Check className="h-4 w-4 text-green-500" />
-                        ) : (
-                          <Copy className="h-4 w-4" />
-                        )}
-                      </button>
+              {/* Show message when no tokens are found */}
+              {userTokens && userTokens.length === 0 && (
+                <div className="mt-4 flex items-center justify-center py-8">
+                  <p className="text-center text-gray-500">
+                    No tokens found in your wallet
+                  </p>
+                </div>
+              )}
+
+              {/* Display token list items */}
+              <div className="mt-[1em] flex flex-col gap-[1em]">
+                {tokenList.map((list, index) => (
+                  <div
+                    key={index}
+                    className="flex flex-col rounded-lg border-2 border-gray-300 p-4"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div>
+                          <img
+                            src={list.img}
+                            alt={list.symbol}
+                            className="h-8 w-8"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <p className="font-medium text-gray-400">
+                            {list.symbol}
+                          </p>
+                          <p className="font-bold">{list.title}</p>
+                        </div>
+                      </div>
+                      <div>
+                        <p className="font-bold">${list.token?.balance || 0}</p>
+                      </div>
                     </div>
+
+                    {list.token?.tokenAddress && (
+                      <div className="flex">
+                        <div className="mt-2 flex w-[200px] items-center justify-between rounded-md border border-gray-200 bg-gray-50 px-3 py-1.5">
+                          <span className="font-mono text-sm text-gray-600">
+                            {`${list.token.tokenAddress.slice(0, 6)}...${list.token.tokenAddress.slice(-4)}`}
+                          </span>
+                          <button
+                            onClick={() => handleCopy(list.token.tokenAddress)}
+                            className="ml-2 text-gray-500 hover:text-gray-700"
+                            title={
+                              copiedStates[list.token.tokenAddress]
+                                ? "Copied!"
+                                : "Copy address"
+                            }
+                          >
+                            {copiedStates[list.token.tokenAddress] ? (
+                              <Check className="h-4 w-4 text-green-500" />
+                            ) : (
+                              <Copy className="h-4 w-4" />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                )}
+                ))}
               </div>
-            ))}
-          </div>
-        </section>
+            </section>
 
-        <section className="flex w-full items-center justify-center">
-          <div className="my-8 w-full rounded-3xl border-[2px] border-gray-300 px-4 shadow-md lg:w-[25em]">
-            <div className="flex items-center justify-between px-4 py-8 font-semibold text-howtext lg:px-10">
-              <Link to="/dashboard/wallet/crypto/withdraw">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="flex flex-col items-center bg-inherit text-center"
-                >
-                  <WithdrawIcon />
-                  <span className="block text-memt1 lg:text-lg">Withdraw</span>
-                </motion.button>
-              </Link>
+            <section className="flex w-full items-center justify-center">
+              <div className="my-8 w-full rounded-3xl border-[2px] border-gray-300 px-4 shadow-md lg:w-[25em]">
+                <div className="flex items-center justify-between px-4 py-8 font-semibold text-howtext lg:px-10">
+                  <Link
+                    to="/dashboard/wallet/crypto/withdraw"
+                    state={{ walletType: "crypto" }}
+                  >
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex flex-col items-center bg-inherit text-center"
+                    >
+                      <WithdrawIcon />
+                      <span className="block text-memt1 lg:text-lg">
+                        Withdraw
+                      </span>
+                    </motion.button>
+                  </Link>
 
-              <Link to="">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="flex flex-col items-center bg-inherit text-center"
-                >
-                  <TransferIcon />
-                  <span className="block text-memt1 lg:text-lg">Transfer</span>
-                </motion.button>
-              </Link>
-            </div>
-          </div>
-        </section>
+                  <Link to="/dashboard/wallet/fund/fund_crypto_wallet">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex flex-col items-center bg-inherit text-center"
+                    >
+                      <TransferIcon />
+                      <span className="block text-memt1 lg:text-lg">
+                        Fund Wallet
+                      </span>
+                    </motion.button>
+                  </Link>
+                </div>
+              </div>
+            </section>
+
+            <CryptoTransactionHistory />
+          </>
+        )}
       </div>
     </main>
   );

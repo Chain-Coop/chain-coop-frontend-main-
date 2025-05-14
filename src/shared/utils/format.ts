@@ -101,7 +101,7 @@ export function getDateDifference(
 
   if (type === "daily") {
     const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
     return diffDays === 1 ? "1 day" : `${diffDays} days`;
   } else {
     const diffMonths =
@@ -133,7 +133,7 @@ export function calculateAvailableEndDates(
 
   if (type === "daily") {
     PRESET_DAILY_INTERVALS.forEach((days) => {
-      dates.push(formatDate(addDays(startDate, days)));
+      dates.push(formatDate(addDays(startDate, days - 1)));
     });
   } else if (type === "monthly") {
     PRESET_MONTHLY_INTERVALS.forEach((months) => {
@@ -170,7 +170,7 @@ export function validateCustomEndDate(
   const diffTime = Math.abs(end.getTime() - start.getTime());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-  if (type === "daily" && diffDays < MIN_DAILY_DAYS) {
+  if (type === "daily" && diffDays < MIN_DAILY_DAYS - 1) {
     return {
       isValid: false,
       error: `Minimum duration is ${MIN_DAILY_DAYS} days`,
@@ -187,7 +187,6 @@ export function validateCustomEndDate(
 
   return { isValid: true };
 }
-
 export const formatDayAndDate = (dateString: any) => {
   const date = new Date(dateString);
   const options: any = {
@@ -215,8 +214,7 @@ export const isDateValid = (dateString?: string) => {
  * @param startDate - ISO date string for the starting date
  * @param endDate - ISO date string for the ending date
  * @returns A formatted string representing the duration
- */
-export const calculateSavingsDuration = (
+ */ export const calculateSavingsDuration = (
   startDate?: string,
   endDate?: string,
 ): string => {

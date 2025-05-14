@@ -50,11 +50,21 @@ const JoinNewsLetter = async (body: any) => {
 
 const VerifyUserAuth = async (body: any) => {
   const url = `${API_URL}/auth/verify_otp`;
-
   try {
     const response = await axios.post(url, body, {
       headers: authHeader(),
     });
+    return response.data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
+const VerifyUserPhoneNumber = async (body: any) => {
+  const url = `${API_URL}/auth/verify_whatsapp_otp`;
+
+  try {
+    const response = await axios.post(url, body);
     return response.data;
   } catch (error: any) {
     throw error.response.data;
@@ -89,6 +99,24 @@ export async function RESEND_LOGIN_OTP(endpoint: string, data: any) {
   const url = API_URL + endpoint;
   try {
     return await axios.post(url, data);
+  } catch (error: any) {
+    return error.response.data;
+  }
+}
+
+export async function RESEND_VERIFY_OTP(endpoint: string, data: any) {
+  const url = API_URL + endpoint;
+  try {
+    return await axios.post(url, data);
+  } catch (error: any) {
+    return error.response.data;
+  }
+}
+
+export async function UPDATE_PHONE_NUMBER(endpoint: string, data: any) {
+  const url = API_URL + endpoint;
+  try {
+    return await axios.put(url, data);
   } catch (error: any) {
     return error.response.data;
   }
@@ -171,6 +199,8 @@ const LandingServices = {
   UploadAvatar,
   JoinNewsLetter,
   ResetPassword,
+  VerifyUserPhoneNumber,
+  UPDATE_PHONE_NUMBER,
 };
 
 export default LandingServices;

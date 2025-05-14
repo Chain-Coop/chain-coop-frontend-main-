@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+
 import { Button } from "@material-tailwind/react";
 
 import createImage from "../../../Assets/png/dashboard/ajo/open_group_image.png";
@@ -61,12 +62,10 @@ const CreateOpenGroup = () => {
   // state to toggle whether the next button is disabled or not
   const [isNextDisabled, setIsNextDisabled] = useState<boolean>(true);
 
-  // state to open modal
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
-  // list of the various forms
   const formSteps = [
     <FirstOpenGroupForm
       data={firstFormData}
@@ -94,11 +93,9 @@ const CreateOpenGroup = () => {
     />,
   ];
 
-  // this state controls which form is rendered
   const [formStepsIndex, setFormStepsIndex] = useState<number>(0);
 
   const validateInputs = () => {
-    // perform different validation checks based on the current form step
     if (formStepsIndex === 0) {
       setIsNextDisabled(validateFirstForm(firstFormData));
     } else if (formStepsIndex === 1) {
@@ -171,7 +168,6 @@ const CreateOpenGroup = () => {
       });
   };
 
-  // function to navigate back to ajo page
   const handleBackClick = () => {
     navigate(-1);
   };
@@ -189,7 +185,6 @@ const CreateOpenGroup = () => {
       </DashboardHeader>
 
       <section className="mb-[20px] flex  flex-col gap-10">
-        {/* OPEN SAVINGS INTRO IMAGE */}
         <section className="mt-12 flex w-[100%] items-center justify-center">
           <img
             src={rightArrow}
@@ -208,7 +203,6 @@ const CreateOpenGroup = () => {
           />
         </section>
 
-        {/* ACTIVE FORM */}
         {formSteps[formStepsIndex]}
 
         <div
@@ -243,12 +237,12 @@ const CreateOpenGroup = () => {
               onClick={nextForm}
               disabled={isNextDisabled}
             >
-              Next
+              <Typography className="text-white">Next</Typography>
             </Button>
           )}
         </div>
       </section>
-      {isModalOpen && <SuccessModal />}
+      <SuccessModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </main>
   );
 };

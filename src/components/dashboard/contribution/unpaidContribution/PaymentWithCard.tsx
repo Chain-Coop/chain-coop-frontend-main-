@@ -273,7 +273,7 @@ const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
                       disabled={isLoading}
                       className="flex w-full items-center justify-center rounded-lg bg-text2 px-4 py-2.5 text-sm font-bold normal-case text-white transition-colors disabled:opacity-50 sm:w-auto"
                     >
-                      {isLoading ? "Loading..." : "Pay Direct"}
+                      Pay Direct
                     </Button>
                   </div>
                 )}

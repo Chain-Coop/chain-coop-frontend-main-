@@ -223,14 +223,31 @@ export const WithdrawalFromContribution = createAsyncThunk(
 
 export const GetUsersContributionHistory = createAsyncThunk(
   "transaction/getUsersContributionHistory",
-  async ({ page, limit }: { page: number; limit: number }, thunkAPI) => {
+  async (
+    {
+      page,
+      limit,
+      search = "",
+      // sort = "desc",
+      filter = "",
+    }: {
+      page: number;
+      limit: number;
+      search: string;
+      sort?: string;
+      filter?: string;
+    },
+    thunkAPI,
+  ) => {
     try {
       const data = await TransactionServices.GetUsersContributionHistory(
         page,
         limit,
+        // sort,
+        search,
+        filter,
       );
       return { transaction: data };
-      console.log("data", data);
     } catch (error: any) {
       return handleAsyncError(error, thunkAPI);
     }
@@ -644,6 +661,7 @@ export const transactionSlice = createSlice({
       })
       .addCase(PayUnPaidContribution.rejected, (state) => {
         state.fundUnPaidContribution = null;
+        state.loading = false;
       })
 
       .addCase(deleteCard.pending, (state) => {

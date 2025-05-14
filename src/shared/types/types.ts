@@ -22,6 +22,7 @@ export interface WithdrawAmountModalProps {
   handleAmountChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleContinue?: () => void;
   withdrawalLimit?: number;
+  walletType?: "naira" | "crypto";
 }
 
 export interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -118,4 +119,80 @@ export interface PrepareDataType {
   "endDate": string,
   "userId": string,
   "image"?: Blob,
+  
+export interface WithdrawUserPoolPayload {
+  poolId_bytes: string;
+  pin: string;
+}
+
+export interface Pool {
+  _id: string;
+  poolId: string;
+  tokenSymbol: string;
+  poolType: "periodic" | "oneTime";
+  reason: string;
+  initialAmount: string;
+  duration: number;
+  totalAmount: string;
+  tokenAddress: string;
+  lockType: 0 | 1 | 2;
+  isActive: boolean;
+  interval?: string;
+  periodicAmount?: number | string;
+  createdAt?: string;
+}
+
+export interface CryptoTransaction {
+  _id: string;
+  user: string;
+  transactionType: "SAVE" | "WITHDRAW" | "TRANSFER" | string;
+  amount: number;
+  Token: string;
+  createdAt: string;
+  updatedAt: string;
+  cryptoAsset: string;
+  reference: string;
+  status: string;
+  rate: number;
+  __v?: number;
+}
+
+export interface OrderData {
+  amountInLocalCurrency: number;
+  cryptoAsset: string;
+  reference: string;
+  transactionReference: string;
+  currency: string;
+  amountInCryptoAsset: number;
+  cryptoRate: number;
+  network?: string;
+}
+
+export interface OnrampConfirmResult {
+  bankName: string;
+  accountName: string;
+  accountNumber: string;
+  fiatAmount: number;
+  message?: string;
+}
+
+export interface Web3State {
+  onrampConfirmLoading: boolean;
+  onrampConfirmError: string | null;
+  onrampConfirmResult: OnrampConfirmResult | null;
+}
+
+export interface BankTransferProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm?: () => void;
+  bankName: string;
+  accountName: string;
+  accountNumber: string;
+  fiatAmount: number | string;
+}
+
+export interface ConfirmingPaymentModalProps {
+  isOpen: boolean;
+  onClose: () => void;
 }

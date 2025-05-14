@@ -27,17 +27,6 @@ const Team = () => {
     },
   };
 
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
   const TeamMemberCard = ({ member }: any) => (
     <div className="flex flex-col items-center p-4 text-center">
       <div className="h-32 w-32 overflow-hidden rounded-full sm:h-40 sm:w-40 md:h-48 md:w-48">
@@ -50,23 +39,27 @@ const Team = () => {
       <Typography variant="h1" className="mt-4 text-xl font-bold sm:text-2xl">
         {member.name}
       </Typography>
-      <Typography className="mt-1 text-base font-medium text-text2 sm:text-lg">
+      <Typography className="mt-1 text-2xl font-semibold text-text2 sm:text-lg">
         {member.role}
       </Typography>
       <Typography className="max-w-sm py-3 text-xs font-normal sm:text-sm">
         {member.description}
       </Typography>
       <div className="flex justify-center gap-3">
-        <button>
-          <Link to={member.social.twitter}>
-            <X />
-          </Link>
-        </button>
-        <button>
-          <Link to={member.social.linkedin}>
-            <Linkedin />
-          </Link>
-        </button>
+        {member.social.twitter && (
+          <button>
+            <Link to={member.social.twitter}>
+              <X />
+            </Link>
+          </button>
+        )}
+        {member.social.linkedin && (
+          <button>
+            <Link to={member.social.linkedin}>
+              <Linkedin />
+            </Link>
+          </button>
+        )}
       </div>
     </div>
   );

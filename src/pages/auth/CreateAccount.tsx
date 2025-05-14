@@ -13,8 +13,8 @@ import usePasswordToggle from "../../shared/utils/usePasswordToggle";
 import { AppDispatch } from "../../shared/redux/store";
 import FormInput from "../../components/common/FormInput";
 import { ROUTES } from "../../shared/routes";
-import { PhoneNumberInput } from "../../shared/utils/Helpers";
 import { RegisterUser } from "../../shared/redux/slices/landing.slices";
+import { PhoneNumberInput } from "../../components/common/phoneNumberInput";
 
 const checkPasswordStrength = (
   password: string,
@@ -139,6 +139,7 @@ const CreateAccount = () => {
   const registerUser = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isPhoneValid) {
+      toast.error("Please enter a valid phone number");
       return;
     }
 
@@ -166,7 +167,8 @@ const CreateAccount = () => {
 
     dispatch(RegisterUser(body))
       .unwrap()
-      .then(() => {
+      .then((response: any) => {
+        const userId = response?.landing?.user?._id;
         setFirstName("");
         setLastName("");
         setEmail("");
@@ -176,7 +178,10 @@ const CreateAccount = () => {
         setPassword("");
         setConfirmPassword("");
         setLoading(false);
-        navigate(`/verify-email?email=${email}`);
+
+        navigate(
+          `/verify-email?email=${email}&phoneNumber=${encodeURIComponent(phoneNumber)}&userId=${userId}`,
+        );
       })
       .catch((error: any) => {
         setLoading(false);
@@ -253,8 +258,7 @@ const CreateAccount = () => {
           <div>
             <label
               htmlFor="phoneNumber-input"
-              className="text- textPrimary mb-2 flex  font-semibold
-"
+              className="text- textPrimary mb-2 flex font-semibold"
             >
               Phone Number
             </label>
@@ -264,8 +268,12 @@ const CreateAccount = () => {
               disabled={loading}
               onValidityChange={setIsPhoneValid}
             />
+            {phoneNumber && !isPhoneValid && (
+              <p className="mt-1 text-sm text-red-500">
+                Please enter a valid whatsapp phone number
+              </p>
+            )}
           </div>
-
           <FormInput
             label="Membership Type"
             customInput={
@@ -361,7 +369,8 @@ const CreateAccount = () => {
               loading ||
               !isPhoneValid ||
               !passwordsMatch ||
-              passwordStrength.score < 3
+              passwordStrength.score < 3 ||
+              !membershipType
             }
             loading={loading}
           >

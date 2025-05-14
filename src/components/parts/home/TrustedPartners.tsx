@@ -10,7 +10,7 @@ interface TrustedPartner {
 const TrustedPartners: React.FC = () => {
   return (
     <main className="shadow-md">
-      <div className="container mx-auto py-8 lg:max-w-[95%]">
+      <div className="container mx-auto py-8 lg:max-w-[81%]">
         <Typography className="mb-6 px-8 text-lg font-semibold text-[#440080]">
           Meet our Partners
         </Typography>

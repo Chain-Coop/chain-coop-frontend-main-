@@ -10,8 +10,10 @@ import {
   DialogBody,
   DialogFooter,
   Typography,
+  IconButton,
 } from "@material-tailwind/react";
 import FormInput from "../../../../common/FormInput";
+import { IoMdClose } from "react-icons/io";
 
 interface EmailStepProps {
   email: string;
@@ -53,8 +55,27 @@ const EmailStep = ({
   };
 
   return (
-    <Dialog size="sm" open={isOpen} handler={onClose} className="p-4 ">
-      <DialogHeader className="justify-center">
+    <Dialog
+      size="sm"
+      open={isOpen}
+      handler={onClose}
+      className="p-4 "
+      dismiss={{ enabled: false }}
+    >
+      <DialogHeader className="relative justify-center pt-10">
+        <IconButton
+          variant="text"
+          color="gray"
+          onClick={onClose}
+          className="absolute left-2 top-2 h-10 w-10 p-2"
+          ripple={false}
+          placeholder=""
+          onPointerEnterCapture={() => {}}
+          onPointerLeaveCapture={() => {}}
+        >
+          <IoMdClose size={24} className="m-auto text-gray-700" />
+        </IconButton>
+
         <Typography variant="h4" className="font-semibold">
           Reset Password
         </Typography>

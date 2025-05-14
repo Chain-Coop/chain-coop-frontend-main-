@@ -111,7 +111,7 @@ const SelectAccount = () => {
           disabled={!selectedBank}
           loading={loading}
         >
-          {loading ? "Verifying..." : "Verify Account"}
+          Verify Account
         </Button>
       </section>
     </main>

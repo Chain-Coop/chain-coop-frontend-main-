@@ -14,20 +14,15 @@ const NewPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordType, setConfirmPasswordType] = useState("password");
   const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const email = queryParams.get("email");
-    const otp = queryParams.get("otp");
 
     if (email !== null) {
       setEmail(email);
-    }
-    if (otp !== null) {
-      setOtp(otp);
     }
   }, [location]);
 
@@ -41,6 +36,10 @@ const NewPassword = () => {
     );
   };
 
+  const handleClose = () => {
+    navigate("/login");
+  };
+
   const resetPasswordFunc = async (e: any) => {
     e.preventDefault();
     setLoading(true);
@@ -48,7 +47,6 @@ const NewPassword = () => {
     try {
       const response = await RESET_PASSWORD(endpoint, {
         email: email,
-        otp: otp,
         password: password,
         confirmPassword: confirmPassword,
       });
@@ -67,11 +65,9 @@ const NewPassword = () => {
 
   return (
     <main className="flex h-screen items-center justify-center bg-log px-[1em] ">
-      <section className="w-full text-center lg:w-[45%]">
+      <section className="relative w-full text-center lg:w-[45%]">
         <header className="px-[2em]">
-          <h1 className="mb-4  text-3xl font-bold text-text2">
-            Reset Password
-          </h1>
+          <h1 className="mb-4 text-3xl font-bold text-text2">Reset Password</h1>
         </header>
         <form
           onSubmit={resetPasswordFunc}

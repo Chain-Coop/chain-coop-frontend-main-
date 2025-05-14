@@ -43,10 +43,17 @@ const UserLogin = () => {
       .unwrap()
       .then((response) => {
         setLoading(false);
-        if (response.landing.role === "user") {
-          navigate("/dashboard");
+        if (response.landing.isVerified) {
+          if (response.landing.role === "user") {
+            navigate("/dashboard");
+          } else {
+            toast.error("You do not have access to this dashboard.");
+          }
         } else {
-          toast.error("You do not have access to this dashboard.");
+          const { _id: userId, phoneNumber } = response.landing;
+          navigate(
+            `/verify-phone-number?userId=${userId}&phoneNumber=${phoneNumber}`,
+          );
         }
       })
       .catch((error: any) => {
@@ -117,7 +124,7 @@ const UserLogin = () => {
             disabled={loading}
             loading={loading}
           >
-            {loading ? "Logging in..." : "Log in"}
+            Log in
           </Button>
 
           <div className="mt-4 flex justify-center">
