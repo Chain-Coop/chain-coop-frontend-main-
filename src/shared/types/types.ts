@@ -119,6 +119,7 @@ export interface PrepareDataType {
   "endDate": string,
   "userId": string,
   "image"?: Blob,
+}
   
 export interface WithdrawUserPoolPayload {
   poolId_bytes: string;
