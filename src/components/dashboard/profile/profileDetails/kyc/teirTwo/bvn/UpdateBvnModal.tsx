@@ -7,6 +7,7 @@ import {
   DialogFooter,
   Button,
 } from "@material-tailwind/react";
+import { IoClose } from "react-icons/io5";
 import FormInput from "../../../../../../common/FormInput";
 import { useDispatch, useSelector } from "react-redux";
 import { UpdateBvn } from "../../../../../../../shared/redux/slices/kyc.slices";
@@ -53,8 +54,17 @@ const UpdateBvnModal = ({ isOpen, onClose }: BvnModalProps) => {
         open={isOpen && !showVerifyModal}
         handler={onClose}
         className="py-14"
+        dismiss={{ enabled: false }}
       >
         <form onSubmit={handleSubmit}>
+          <button
+            type="button"
+            onClick={onClose}
+            className="absolute left-4 top-4 rounded-full p-1.5 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
+            aria-label="Close modal"
+          >
+            <IoClose size={24} />
+          </button>
           <DialogHeader className="flex flex-col justify-center text-center">
             <Typography className="text-lg font-semibold leading-tight text-black lg:text-2xl">
               Update Your BVN
@@ -94,7 +104,11 @@ const UpdateBvnModal = ({ isOpen, onClose }: BvnModalProps) => {
         </form>
       </Dialog>
 
-      <VerifyBvn bvn={bvn} isOpen={showVerifyModal} onClose={handleVerifyClose} />
+      <VerifyBvn
+        bvn={bvn}
+        isOpen={showVerifyModal}
+        onClose={handleVerifyClose}
+      />
     </>
   );
 };

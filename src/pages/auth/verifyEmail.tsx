@@ -22,6 +22,8 @@ const VerifyEmail = () => {
 
   const queryParams = new URLSearchParams(location.search);
   const email = queryParams.get("email");
+  const phoneNumber = queryParams.get("phoneNumber");
+  const userId = queryParams.get("userId");
 
   const handleOtpChange = (otpValue: string) => {
     setOtp(otpValue);
@@ -36,8 +38,10 @@ const VerifyEmail = () => {
       .unwrap()
       .then(() => {
         setIsVerifying(false);
-        toast.success("e-mail verified successfully");
-        navigate("/verify-phone-number");
+        toast.success("Email verified successfully");
+        navigate(
+          `/verify-phone-number?phoneNumber=${phoneNumber}&userId=${userId}`,
+        );
       })
       .catch((error) => {
         setIsVerifying(false);

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../../../../shared/redux/store";
 import OtpPin from "../../../../../shared/utils/OtpInput";
 import {
   Button,
@@ -7,7 +9,11 @@ import {
   DialogBody,
   DialogFooter,
   Typography,
+  IconButton,
 } from "@material-tailwind/react";
+import { IoMdClose } from "react-icons/io";
+import { VerifyUserAuth } from "../../../../../shared/redux/slices/landing.slices";
+import { toast } from "react-toastify";
 
 interface OtpInputProps {
   otp: string;
@@ -15,6 +21,7 @@ interface OtpInputProps {
   onClose: () => void;
   onOtpEntered: () => void;
   isOpen: boolean;
+  email: string;
 }
 
 const OtpInput: React.FC<OtpInputProps> = ({
@@ -23,17 +30,37 @@ const OtpInput: React.FC<OtpInputProps> = ({
   onClose,
   onOtpEntered,
   isOpen,
+  email,
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const dispatch: AppDispatch = useDispatch();
+  const { isLoading } = useSelector((state: any) => state.landing);
   const [error, setError] = useState("");
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (otp.length !== 6) {
       setError("Please enter a 6-digit OTP");
       return;
     }
-    setIsLoading(true);
-    onOtpEntered();
+
+    setError("");
+
+    try {
+      const response = await dispatch(VerifyUserAuth({ otp, email })).unwrap();
+      if (response.landing.msg === "Your account has been activated") {
+        onOtpEntered();
+      } else {
+        const errorMsg =
+          response.landing.msg || "Invalid OTP. Please try again.";
+        setError(errorMsg);
+        setOtp("");
+        toast.error(errorMsg);
+      }
+    } catch (error: any) {
+      const errorMsg = error?.msg || "Failed to verify OTP. Please try again.";
+      setError(errorMsg);
+      setOtp("");
+      toast.error(errorMsg);
+    }
   };
 
   return (
@@ -42,8 +69,22 @@ const OtpInput: React.FC<OtpInputProps> = ({
       open={isOpen}
       handler={onClose}
       className="bg-[#E9E9E9] p-4 sm:p-6"
+      dismiss={{ enabled: false }}
     >
-      <DialogHeader className="flex flex-col justify-center text-center">
+      <DialogHeader className="relative flex flex-col justify-center text-center">
+        <IconButton
+          variant="text"
+          color="gray"
+          onClick={onClose}
+          className="absolute left-2 top-2 h-10 w-10 p-2"
+          ripple={false}
+          placeholder=""
+          onPointerEnterCapture={() => {}}
+          onPointerLeaveCapture={() => {}}
+        >
+          <IoMdClose size={24} className="m-auto text-gray-700" />
+        </IconButton>
+
         <Typography variant="h4" className="text-xl font-semibold sm:text-2xl">
           Reset Password
         </Typography>
@@ -79,9 +120,9 @@ const OtpInput: React.FC<OtpInputProps> = ({
           onClick={handleContinue}
           disabled={isLoading}
           loading={isLoading}
-          className="w-full rounded-full bg-text2 text-sm font-normal normal-case sm:w-[60%] sm:py-3 lg:py-2"
+          className="flex w-full justify-center rounded-full bg-text2 text-sm font-normal normal-case sm:w-[60%] sm:py-3 lg:py-2"
         >
-          {isLoading ? "Processing..." : "Continue"}
+          Continue
         </Button>
       </DialogFooter>
     </Dialog>

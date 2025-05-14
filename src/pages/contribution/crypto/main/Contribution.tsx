@@ -1,52 +1,92 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { IoIosArrowDown } from "react-icons/io";
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
-import { Typography } from "@material-tailwind/react";
-import { useCryptoWallet } from "../../../../shared/Hooks/useBalance";
-import { useAllUserPools } from "../../../../shared/Hooks/useUserProfile";
-import { UpdateUserPool } from "../../../../shared/redux/slices/web3.slices";
-import { DashboardHeader } from "../../../../components/common/DashboardHeader";
-import ToggleButton from "../../../../shared/utils/ToggleButton";
-import { ContributionListSkeleton } from "../../../../components/common/Loading";
 import { AppDispatch } from "../../../../shared/redux/store";
+import { useTotalContributionBalanceCrypto } from "../../../../shared/Hooks/useBalance";
+import { useAllUserPools } from "../../../../shared/Hooks/useUserProfile";
+import {
+  GetAllUserPools,
+  SearchUserPools,
+} from "../../../../shared/redux/slices/web3.slices";
+import ToggleButton from "../../../../shared/utils/ToggleButton";
+import { motion } from "framer-motion";
+import { Typography, Button } from "@material-tailwind/react";
+import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import { SavingsPlan } from "../../../../components/dashboard/contribution/modals/SavingsPlan";
+import { Flexibile, Lock, Strict } from "../../../../Assets/svg";
+import FundSavingsModal from "../../../../components/dashboard/contribution/modals/FundContribution";
+import UpdateSavingsModal from "../../../../components/dashboard/contribution/modals/UpdateContribution";
+import MySavingsList from "../../../../components/dashboard/contribution/MySavingsList";
+import FilterSavings, {
+  SavingsFilters,
+} from "../../../../components/dashboard/contribution/modals/FilterSavings";
+import { Pool } from "../../../../shared/types/types";
+import { IoIosArrowDown } from "react-icons/io";
 
 const CryptoSavings: React.FC = () => {
   const navigate = useNavigate();
-  const {
-    Balance,
-    loading: cryptoBalanceLoading,
-    isWalletVisible,
-    setIsWalletVisible,
-  } = useCryptoWallet();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [updatePayment, setUpdatePayment] = useState(false);
-  const [savingsType, setSavingsType] = useState<"naira" | "crypto">("crypto");
-  const [amount, setAmount] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { userPools = [], loading: poolsLoading } = useAllUserPools() || {};
-  const [selectedPool, setSelectedPool] = useState<{
-    poolId_bytes: string;
-    tokenAddressToSaveWith: string;
-  } | null>(null);
-  const dispatch: AppDispatch = useDispatch();
 
-  const [isContributionVisible, setIsContributionVisible] = useState(() => {
-    const storedVisibility = sessionStorage.getItem(
-      "contributionBalanceVisible",
-    );
-    return storedVisibility !== null ? storedVisibility === "true" : true;
+  const {
+    balance: totalContributionCrypto,
+    formattedBalance: formattedTotalContributionCrypto,
+    loading: totalContributionLoading,
+    isContributionVisible,
+    setIsContributionVisible,
+  } = useTotalContributionBalanceCrypto(30000);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [savingsType, setSavingsType] = useState<"naira" | "crypto">("crypto");
+  const [isFundModalOpen, setIsFundModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
+
+  const [activeFilters, setActiveFilters] = useState<SavingsFilters>({
+    contributionType: "all",
+    lockType: "all",
+    status: "active",
   });
 
-  const formatDuration = (durationInSeconds: any) => {
-    const daysRemaining = Math.ceil(
-      parseInt(durationInSeconds) / (24 * 60 * 60),
-    );
-    return `Ends in ${daysRemaining} Days`;
-  };
+  const { userPools: rawUserPoolsData, loading: rawPoolsLoading } =
+    useAllUserPools() || {};
+
+  const poolsToDisplay = Array.isArray(rawUserPoolsData)
+    ? rawUserPoolsData
+    : rawUserPoolsData &&
+        typeof rawUserPoolsData === "object" &&
+        Array.isArray(rawUserPoolsData.data)
+      ? rawUserPoolsData.data
+      : [];
+
+  const [selectedContribution, setSelectedContribution] = useState<{
+    poolIndex: string;
+    tokenToSaveWith: string;
+    poolType?: "oneTime" | "periodic";
+  } | null>(null);
+
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+
+  const handleOpenModalBasedOnType = useCallback((pool: Pool) => {
+    setSelectedContribution({
+      poolIndex: pool.poolId,
+      tokenToSaveWith: pool.tokenAddress,
+      poolType: pool.poolType,
+    });
+
+    if (pool.poolType === "periodic") {
+      setIsUpdateModalOpen(true);
+    } else {
+      setIsFundModalOpen(true);
+    }
+  }, []);
+
+  const [contributionType, setContributionType] = useState<
+    "auto" | "one-time" | null
+  >(null);
+
+  const [hoveredSavingsType, setHoveredSavingsType] = useState<string | null>(
+    null,
+  );
 
   const handleSavingsTypeChange = (type: "naira" | "crypto") => {
     setSavingsType(type);
@@ -56,57 +96,120 @@ const CryptoSavings: React.FC = () => {
     setIsModalOpen(false);
   };
 
+  const handleContributionTypeChange = (type: "auto" | "one-time") => {
+    setContributionType(type);
+  };
+
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const toggleUpdatePaymentModal = (pool?: any) => {
-    if (pool) {
-      setSelectedPool({
-        poolId_bytes: pool.poolIndex,
-        tokenAddressToSaveWith: pool.tokenToSaveWith,
-      });
-    } else {
-      setSelectedPool(null);
+  const handleApplyFilters = useCallback((newFilters: SavingsFilters) => {
+    setActiveFilters(newFilters);
+    setCurrentPage(1);
+  }, []);
+
+  const filteredPools = useMemo(() => {
+    return poolsToDisplay.filter((pool: Pool) => {
+      if (
+        !pool ||
+        typeof pool !== "object" ||
+        typeof pool.isActive === "undefined"
+      ) {
+        return false;
+      }
+
+      const contributionMatch =
+        activeFilters.contributionType === "all" ||
+        pool.poolType === activeFilters.contributionType;
+
+      const lockMatch =
+        activeFilters.lockType === "all" ||
+        pool.lockType === activeFilters.lockType;
+
+      const statusMatch =
+        activeFilters.status === "all" ||
+        (activeFilters.status === "active" && pool.isActive === true) ||
+        (activeFilters.status === "inactive" && pool.isActive === false);
+
+      return contributionMatch && lockMatch && statusMatch;
+    });
+  }, [poolsToDisplay, activeFilters]);
+
+  const { currentItems, totalPages } = useMemo(() => {
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+    const items = Array.isArray(filteredPools)
+      ? filteredPools.slice(indexOfFirstItem, indexOfLastItem)
+      : [];
+    const pages =
+      Array.isArray(filteredPools) && filteredPools.length > 0
+        ? Math.ceil(filteredPools.length / itemsPerPage)
+        : 1;
+    return { currentItems: items, totalPages: pages };
+  }, [filteredPools, currentPage, itemsPerPage]);
+
+  const goToNextPage = useCallback(() => {
+    setCurrentPage((prevPage) =>
+      prevPage < totalPages ? prevPage + 1 : prevPage,
+    );
+  }, [totalPages]);
+
+  const goToPrevPage = useCallback(() => {
+    setCurrentPage((prevPage) => (prevPage > 1 ? prevPage - 1 : prevPage));
+  }, []);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const {
+    userPools = [],
+    loading: userPoolsLoading,
+    isWalletActivated,
+  } = useAllUserPools() || {};
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const hasFetchedInitialPools = React.useRef(false);
+  useEffect(() => {
+    if (isWalletActivated && !hasFetchedInitialPools.current) {
+      //console.log("CryptoSavings: Wallet active, fetching initial pools.");
+      dispatch(GetAllUserPools());
+      hasFetchedInitialPools.current = true;
     }
-    setUpdatePayment(!updatePayment);
+  }, [dispatch, isWalletActivated]);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newSearchTerm = event.target.value;
+    setSearchTerm(newSearchTerm);
+    if (newSearchTerm.trim() === "" && searchTerm.trim() !== "") {
+      //console.log("Search cleared, fetching all pools.");
+      dispatch(GetAllUserPools());
+    }
   };
 
-  const fundContribution = () => {
-    navigate("/dashboard/contribution/contribution_curency_type");
-  };
-
-  const SubmitPayment = (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSearchSubmit = (
+    event?: React.FormEvent | React.KeyboardEvent,
+  ) => {
     if (
-      !selectedPool ||
-      !amount ||
-      isNaN(Number(amount)) ||
-      Number(amount) <= 0
+      event &&
+      typeof (event as React.FormEvent).preventDefault === "function"
     ) {
-      toast.error("Please enter a valid amount");
-      return;
+      (event as React.FormEvent).preventDefault();
     }
+    const termToSearch = searchTerm.trim();
+    if (termToSearch) {
+      //console.log(`Searching for: ${termToSearch}`);
+      dispatch(SearchUserPools(termToSearch));
+    } else {
+      //console.log("Empty search submitted, ensuring all pools are fetched.");
+      dispatch(GetAllUserPools());
+    }
+  };
 
-    setLoading(true);
-    const body = {
-      amount,
-      poolId_bytes: selectedPool.poolId_bytes,
-      tokenAddressToSaveWith: selectedPool.tokenAddressToSaveWith,
-    };
-
-    dispatch(UpdateUserPool(body))
-      .unwrap()
-      .then(() => {
-        setLoading(false);
-        toast.success("Payment Updated Successfully");
-        toggleUpdatePaymentModal();
-      })
-      .catch((error: any) => {
-        setLoading(false);
-        toast.error(error?.message || "Failed to update payment");
-      });
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleSearchSubmit(event);
+    }
   };
 
   return (
@@ -115,13 +218,14 @@ const CryptoSavings: React.FC = () => {
       animate={{ opacity: 1 }}
       className="min-h-screen w-full "
     >
-      <DashboardHeader className="flex items-center justify-center text-2xl md:text-3xl lg:text-xl">
+      <DashboardHeader className="flex items-center justify-center text-2xl md:text-3xl lg:mt-[2em] lg:text-xl">
         Contribution Plan
       </DashboardHeader>
 
       <main>
         <section>
           <article className="text-center text-gray-700">
+            {/* Top Balance Section */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -143,22 +247,20 @@ const CryptoSavings: React.FC = () => {
                   Total Contribution Balance
                 </p>
                 <ToggleButton
-                  isVisible={isWalletVisible}
+                  isVisible={isContributionVisible}
                   onToggle={(newVisibility) => {
-                    setIsWalletVisible(newVisibility);
-                    sessionStorage.setItem(
-                      "walletBalanceVisible",
-                      newVisibility.toString(),
-                    );
+                    setIsContributionVisible(newVisibility);
                   }}
                 />
               </div>
 
               <div className="mt-4 w-full rounded-md sm:mt-6">
-                {cryptoBalanceLoading ? (
+                {totalContributionLoading ? (
                   <div className="h-6 animate-pulse rounded bg-gray-200 sm:h-8"></div>
                 ) : isContributionVisible ? (
-                  <p className="text-xl font-bold lg:text-2xl">${Balance}</p>
+                  <p className="text-xl font-bold lg:text-2xl">
+                    ${formattedTotalContributionCrypto}
+                  </p>
                 ) : (
                   <p className="text-lg font-bold sm:text-xl">*********</p>
                 )}
@@ -166,210 +268,221 @@ const CryptoSavings: React.FC = () => {
               </div>
             </motion.div>
 
-            <section className="mt-6 lg:mt-8">
-              <div className="flex w-[80%] flex-col gap-4">
-                <Link to="/dashboard/contribution/flexible/crypto_purpose">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 md:py-3 md:text-lg"
+            {/* Contribution Type Selection */}
+            <section className="py-8">
+              <div className="flex justify-between">
+                <Button
+                  variant="text"
+                  onClick={() => handleContributionTypeChange("auto")}
+                  className={`flex w-fit items-center px-2 py-3 text-center normal-case transition-all duration-300 ${
+                    contributionType === "auto"
+                      ? "bg-text2 text-white hover:bg-text2"
+                      : "border border-gray-500 bg-inherit text-black hover:shadow-lg"
+                  }`}
+                >
+                  <Typography
+                    className={`text-sm font-semibold ${
+                      contributionType === "auto" ? "text-white" : "text-black"
+                    }`}
                   >
-                    Flexible Savings
-                  </motion.button>
-                </Link>
+                    Auto Savings
+                  </Typography>
+                </Button>
 
-                <Link to="/dashboard/contribution/lock/crypto_purpose">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 md:py-3 md:text-lg"
+                <Button
+                  variant="text"
+                  onClick={() => handleContributionTypeChange("one-time")}
+                  className={`relative flex w-fit items-center px-2 py-3 text-center normal-case transition-all duration-300 hover:shadow-lg sm:px-3 md:px-3.5 lg:px-4 xl:px-5 ${
+                    contributionType === "one-time"
+                      ? "bg-text2 text-white"
+                      : "border border-gray-500 bg-inherit text-black"
+                  }`}
+                >
+                  <Typography
+                    className={`text-sm font-semibold ${
+                      contributionType === "one-time"
+                        ? "text-white"
+                        : "text-black"
+                    }`}
                   >
-                    Lock Savings
-                  </motion.button>
-                </Link>
-
-                <Link to="/dashboard/contribution/strict_lock/crypto_purpose">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-full border-[3px] border-gray-300 bg-inherit px-2 py-2 text-base font-semibold text-memt1 shadow-lg transition-all hover:bg-gray-50 md:px-4 md:py-3 md:text-lg"
-                  >
-                    Strict Lock Savings
-                  </motion.button>
-                </Link>
+                    One-Time Savings
+                  </Typography>
+                </Button>
               </div>
-
-              <hr className="mx-auto mt-8 w-full max-w-2xl" />
             </section>
+
+            {/* Savings Options Links */}
+            {(contributionType === "auto" ||
+              contributionType === "one-time") && (
+              <section className="mb-8">
+                <Typography className="mb-4 text-left font-medium">
+                  Choose savings type
+                </Typography>
+
+                <div className="flex flex-col gap-4">
+                  <Link
+                    to={
+                      contributionType === "auto"
+                        ? "/dashboard/contribution/flexible/crypto_purpose"
+                        : "/dashboard/contribution/one_time_plan/flexible/crypto_purpose"
+                    }
+                    state={{
+                      lockedType: 0,
+                      contributionType: contributionType,
+                    }}
+                    className="w-full"
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex items-center justify-between rounded-lg border border-gray-400 bg-white p-4 shadow-md transition-all"
+                      onMouseEnter={() => setHoveredSavingsType("Flexible")}
+                      onMouseLeave={() => setHoveredSavingsType(null)}
+                    >
+                      <Flexibile />
+                      <Typography className="text-lg font-medium text-gray-800">
+                        Flexible Savings
+                      </Typography>
+                      <div
+                        className={`rounded border border-text2 px-8 py-2 text-sm font-medium
+              transition-all duration-300 ease-in-out
+              ${hoveredSavingsType === "Flexible" ? "scale-105 transform bg-text2 text-white shadow-md" : ""}
+            `}
+                      >
+                        Select
+                      </div>
+                    </motion.div>
+                  </Link>
+
+                  <Link
+                    to={
+                      contributionType === "auto"
+                        ? "/dashboard/contribution/lock/crypto_purpose"
+                        : "/dashboard/contribution/one_time_plan/lock/crypto_purpose"
+                    }
+                    state={{
+                      lockedType: 1,
+                      contributionType: contributionType,
+                    }}
+                    className="w-full"
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex items-center justify-between rounded-lg border border-gray-400 bg-white p-4 shadow-md transition-all"
+                      onMouseEnter={() => setHoveredSavingsType("Lock")}
+                      onMouseLeave={() => setHoveredSavingsType(null)}
+                    >
+                      <Lock />
+                      <Typography className="text-lg font-medium text-gray-800">
+                        Lock Savings
+                      </Typography>
+                      <div
+                        className={`rounded border border-text2 px-8 py-2 text-sm font-medium
+                transition-all duration-300 ease-in-out
+                ${hoveredSavingsType === "Lock" ? "scale-105 transform bg-text2 text-white shadow-md" : ""}
+              `}
+                      >
+                        Select
+                      </div>
+                    </motion.div>
+                  </Link>
+
+                  <Link
+                    to={
+                      contributionType === "auto"
+                        ? "/dashboard/contribution/strict_lock/crypto_purpose"
+                        : "/dashboard/contribution/one_time_plan/strict_lock/crypto_purpose"
+                    }
+                    state={{
+                      lockedType: 2,
+                      contributionType: contributionType,
+                    }}
+                    className="w-full"
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex items-center justify-between rounded-lg border border-gray-400 bg-white p-4 shadow-md transition-all"
+                      onMouseEnter={() => setHoveredSavingsType("Strict")}
+                      onMouseLeave={() => setHoveredSavingsType(null)}
+                    >
+                      <Strict />
+                      <Typography className="text-lg font-medium text-gray-800">
+                        Strict Lock Savings
+                      </Typography>
+                      <div
+                        className={`rounded border border-text2 px-8 py-2 text-sm font-medium
+              transition-all duration-300 ease-in-out
+              ${hoveredSavingsType === "Strict" ? "scale-105 transform bg-text2 text-white shadow-md" : ""}
+            `}
+                      >
+                        Select
+                      </div>
+                    </motion.div>
+                  </Link>
+                </div>
+
+                <hr className="mx-auto mt-8 w-full max-w-2xl" />
+              </section>
+            )}
           </article>
         </section>
 
-        <section className="mt-6 w-full sm:mt-8 lg:mt-10">
-          <header>
-            <h1 className="text-lg font-bold sm:text-xl lg:text-2xl">
-              My Savings
-            </h1>
-          </header>
-
-          {poolsLoading ? (
-            <ContributionListSkeleton />
-          ) : userPools?.length > 0 ? (
-            <div className="p3 mt-4 flex h-auto flex-col gap-3 rounded-lg bg-text2 text-center sm:mt-6 sm:gap-4">
-              {userPools?.map((pools: any) => (
-                <motion.div
-                  key={pools.poolIndex}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  whileHover={{ scale: 1.01 }}
-                  className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-2xl border border-gray-300 bg-white p-3 transition-all hover:bg-gray-50 sm:gap-3 sm:p-4"
-                >
-                  <div className="flex justify-between text-xs font-medium text-gray-500 sm:text-sm">
-                    <p>Savings Token: {pools?.symbol}</p>
-                    <p>Target Amount: ${pools?.goalAmount}</p>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-bold sm:text-base">
-                      {pools?.Reason}
-                    </p>
-                    <p className="text-sm font-semibold sm:text-base">
-                      Deposited Amount:{" "}
-                      <span className="font-bold text-text2">
-                        ${pools?.amountSaved}
-                      </span>
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-semibold">
-                      Duration:{" "}
-                      <span className="text-gray-500">
-                        {formatDuration(pools?.Duration)}
-                      </span>
-                    </p>
-                    <p className="text-xs font-semibold sm:text-sm">
-                      Current Balance:{" "}
-                      <span className="text-gray-800">
-                        ${pools?.amountSaved}
-                      </span>
-                    </p>
-                  </div>
-
-                  <hr className="my-1" />
-
-                  <div className="flex justify-between">
-                    <div className="flex gap-2 sm:gap-3">
-                      <button className="rounded-lg border border-text2 px-2 py-1 text-xs font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:px-3 sm:text-sm">
-                        Withdraw
-                      </button>
-                      <button
-                        onClick={() => toggleUpdatePaymentModal(pools)}
-                        className="rounded-lg bg-[#ECE6F2] px-2 py-1 text-xs font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:px-3 sm:text-sm"
-                      >
-                        Update
-                      </button>
-                    </div>
-                    <button className="rounded-lg bg-[#ECE6F2] px-2 py-1 text-xs font-semibold text-text2 transition-all hover:scale-105 active:scale-95 sm:px-3 sm:text-sm">
-                      Details
-                    </button>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mb-3 mt-4 flex h-[12em] w-full flex-col items-center justify-center gap-4 rounded-lg bg-text2 p-6 text-center md:mt-6 md:p-8"
-            >
-              <Typography
-                variant="h2"
-                className="text-xl font-bold text-how1 md:text-2xl"
-              >
-                No Savings Yet
-              </Typography>
-            </motion.div>
-          )}
-        </section>
+        {/* MySavingsList */}
+        <MySavingsList
+          userPools={poolsToDisplay}
+          poolsLoading={rawPoolsLoading}
+          filteredPools={filteredPools}
+          currentItems={currentItems}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          itemsPerPage={itemsPerPage}
+          handleOpenModalBasedOnType={handleOpenModalBasedOnType}
+          goToPrevPage={goToPrevPage}
+          goToNextPage={goToNextPage}
+          navigate={navigate}
+          setIsFilterModalOpen={setIsFilterModalOpen}
+          handleApplyFilters={handleApplyFilters}
+          searchTerm={searchTerm}
+          onSearchChange={handleSearchChange}
+          onSearchSubmit={handleSearchSubmit}
+          onSearchKeyDown={handleKeyDown}
+        />
       </main>
 
+      {/* Filter Modal */}
+      <FilterSavings
+        isOpen={isFilterModalOpen}
+        onClose={() => setIsFilterModalOpen(false)}
+        currentFilters={activeFilters}
+        onApplyFilters={handleApplyFilters}
+      />
+
+      {/* SavingsPlan Modal */}
       <SavingsPlan
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         savingsType={savingsType}
         onSavingsTypeChange={handleSavingsTypeChange}
       />
+      {/* FundSavingsModal */}
+      {selectedContribution && (
+        <FundSavingsModal
+          isOpen={isFundModalOpen}
+          onClose={() => setIsFundModalOpen(false)}
+          contribution={selectedContribution}
+        />
+      )}
 
-      {/* 
-      <Modal
-        isOpen={updatePayment}
-        onClose={toggleUpdatePaymentModal}
-        className="bg-white"
-      >
-        <div className="max-w-[28em] px-4 py-5 sm:px-6">
-          <header>
-            <h1 className="text-center text-2xl font-bold text-text2 sm:text-lg">
-              Update Payment
-            </h1>
-          </header>
-          <article>
-            <p className="text-center font-medium">
-              The deposit amount will be credited manually from your crypto
-              wallet.
-            </p>
-          </article>
-          <form action="">
-            <div className="mt-[1.5em]">
-              <label htmlFor="email" className="mb-3 flex text-text2">
-                Enter Amount
-              </label>
-              <input
-                type="amount"
-                id="amount"
-                disabled={loading}
-                required
-                placeholder="enter your amount"
-                onChange={(e) => setAmount(e.target.value)}
-                className="input mb-5 h-[4em] w-full rounded-2xl border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-              />
-            </div>
-
-            <div className="mt-[1.5em] flex justify-center">
-              <button
-                onClick={SubmitPayment}
-                disabled={loading}
-                className="flex w-full transform items-center justify-center gap-2 rounded-lg bg-text2 px-9 py-2 text-center font-semibold text-white transition-all duration-300 hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-70"
-              >
-                {loading ? (
-                  <div className="flex items-center justify-center text-center">
-                    <svg
-                      className="mr-3 h-5 w-5 animate-spin"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                    Updating Payment...
-                  </div>
-                ) : (
-                  "Submmit"
-                )}
-              </button>
-            </div>
-          </form>
-        </div>
-      </Modal> */}
+      {/* UpdateSavingsModal */}
+      {selectedContribution && (
+        <UpdateSavingsModal
+          isOpen={isUpdateModalOpen}
+          onClose={() => setIsUpdateModalOpen(false)}
+          contribution={selectedContribution}
+        />
+      )}
     </motion.main>
   );
 };

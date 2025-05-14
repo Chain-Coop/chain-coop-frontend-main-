@@ -16,15 +16,15 @@ const container = (delay: any) => ({
 
 const HeroSection = () => {
   return (
-    <main className="relative flex w-full flex-col  lg:min-h-screen lg:flex-row">
-      <div className="flex items-center  py-8 lg:w-1/2 lg:py-24">
-        <div className="container mx-auto max-w-[90%]">
+    <main className="relative mt-3 flex w-full flex-col md:mt-0 lg:flex-row">
+      <div className="flex items-center px-4 md:px-6 lg:w-1/2 lg:px-8">
+        <div className="mx-auto w-full max-w-xl">
           <MotionTypography
             variant="h1"
             variants={container(0.5)}
             initial="hidden"
             animate="visible"
-            className="mb-2 text-2xl font-bold tracking-tight lg:mb-8 lg:text-4xl"
+            className="mb-2 text-2xl font-bold tracking-tight lg:mb-8 lg:text-5xl"
           >
             Save Smarter, Grow <br /> Faster{" "}
             <span className="text-text2">with Chain Co-op</span>
@@ -70,7 +70,7 @@ const HeroSection = () => {
       <div className="hidden lg:block lg:h-full lg:w-1/2">
         <div
           className="h-full w-full bg-heroBackground bg-cover bg-center bg-no-repeat"
-          style={{ minHeight: "94vh" }}
+          style={{ minHeight: "92vh" }}
         ></div>
       </div>
     </main>

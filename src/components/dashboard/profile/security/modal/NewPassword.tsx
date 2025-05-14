@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import usePasswordToggle from "../../../../../shared/utils/usePasswordToggle";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import { RESET_PASSWORD } from "../../../../../shared/redux/services/landing.services";
-import ReactLoading from "react-loading";
 import {
   Button,
   Dialog,
@@ -10,8 +9,9 @@ import {
   DialogBody,
   DialogFooter,
   Typography,
-  Input,
+  IconButton,
 } from "@material-tailwind/react";
+import { IoMdClose } from "react-icons/io";
 import FormInput from "../../../../common/FormInput";
 
 interface NewPasswordProps {
@@ -79,9 +79,23 @@ const NewPassword: React.FC<NewPasswordProps> = ({
       open={isOpen}
       handler={onClose}
       className="bg-[#E9E9E9] p-4"
+      dismiss={{ enabled: false }}
     >
       <form onSubmit={resetPasswordFunc}>
-        <DialogHeader className="justify-center">
+        <DialogHeader className="relative justify-center">
+          <IconButton
+            variant="text"
+            color="gray"
+            onClick={onClose}
+            className="absolute left-2 top-2 h-10 w-10 p-2"
+            ripple={false}
+            placeholder=""
+            onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
+          >
+            <IoMdClose size={24} className="m-auto text-gray-700" />
+          </IconButton>
+
           <Typography variant="h4" className="font-semibold">
             Reset Password
           </Typography>
@@ -158,7 +172,7 @@ const NewPassword: React.FC<NewPasswordProps> = ({
             loading={loading}
             className="flex w-60 items-center justify-center rounded-full bg-text2 p-3 text-sm font-medium normal-case text-white"
           >
-            {loading ? "Resetting..." : "Reset"}
+            Reset
           </Button>
         </DialogFooter>
       </form>

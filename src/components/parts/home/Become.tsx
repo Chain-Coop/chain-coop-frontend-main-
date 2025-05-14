@@ -30,7 +30,7 @@ const Become = () => {
   };
 
   return (
-    <main className="mt-10 lg:mt-16">
+    <main className="mt-10 px-2 md:px-0 lg:mt-16">
       <div>
         <header className="flex flex-col items-center text-center text-text4">
           <MotionTypography
@@ -38,7 +38,7 @@ const Become = () => {
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: -100 }}
             transition={{ duration: 0.5 }}
-            className="text-2xl font-bold md:text-3xl lg:text-4xl"
+            className="text-2xl font-bold md:text-3xl"
           >
             Build your digital wealth through{" "}
             <span className="text-text2">savings</span>
@@ -79,11 +79,11 @@ const Become = () => {
                     <div className="flex-grow">
                       <Typography
                         variant="h2"
-                        className="mb-4 text-xl font-bold tracking-tight lg:text-xl"
+                        className="mb-4 text-xl font-bold tracking-tight"
                       >
                         {item.title}
                       </Typography>
-                      <Typography className="text-sm font-normal leading-normal">
+                      <Typography className="text-lg font-normal leading-normal">
                         {item.paragraph}
                       </Typography>
                     </div>

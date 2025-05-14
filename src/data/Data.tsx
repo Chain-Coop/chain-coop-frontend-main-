@@ -7,9 +7,10 @@ import person1 from "../Assets/png/home/Co-op-PX1.png";
 import person2 from "../Assets/png/home/Co-op-PX2.png";
 import person3 from "../Assets/png/home/Co-op-PX3.png";
 import wallet from "../Assets/svg/dashboard/wallet.svg";
+import buy from "../Assets/svg/dashboard/wallet/buy.svg";
 import home from "../Assets/svg/dashboard/home.svg";
 import contribution from "../Assets/svg/dashboard/contribution.svg";
-import ajo from "../Assets/svg/dashboard/ajo.svg"
+import ajo from "../Assets/svg/dashboard/ajo.svg";
 import profile from "../Assets/svg/dashboard/Profile.svg";
 import temi from "../Assets/png/footer/team/png/temi.png";
 import heather from "../Assets/png/footer/team/png/Heather.png";
@@ -18,9 +19,9 @@ import samad from "../Assets/png/home/abdulSamad.png";
 import rebecca from "../Assets/png/home/rebecca.png";
 import awoyinfa from "../Assets/png/footer/team/png/awoyinfa.png";
 import seane from "../Assets/png/footer/team/png/tshegofatso.png";
-import open_group from "../Assets/svg/dashboard/ajo/open_group.svg"
-import closed_group from "../Assets/svg/dashboard/ajo/closed_group.svg"
-
+import taiwo from "../Assets/png/footer/team/png/taiwo.png";
+import open_group from "../Assets/svg/dashboard/ajo/open_group.svg";
+import closed_group from "../Assets/svg/dashboard/ajo/closed_group.svg";
 
 export const navBarLinks = [
   { to: "/why-chain-co-op", text: "Why Chain Co-op" },
@@ -54,6 +55,12 @@ export const sidebarLinks = [
     pathsToCheck: ["/dashboard/wallet"],
   },
   {
+    img: buy,
+    text: "Buy Crypto",
+    to: "/dashboard/wallet/fund/fund_crypto_wallet",
+    pathsToCheck: ["/dashboard/wallet/fund/fund_crypto_wallet"],
+  },
+  {
     img: profile,
     text: "Profile",
     to: "/dashboard/profile",
@@ -83,6 +90,11 @@ export const dashboardNav = [
     to: "/dashboard/wallet",
   },
   {
+    img: buy,
+    text: "Buy Crypto",
+    to: "/dashboard/wallet/fund/fund_crypto_wallet",
+  },
+  {
     img: profile,
     text: "Profile",
     to: "/dashboard/profile",
@@ -96,7 +108,7 @@ export const becomeData = [
       "Build a culture of saving and join others in building communal wealth by saving in Naira.",
   },
   {
-    title: "Stay Safe from Inflation with USDT, USDC, LISK, etc.",
+    title: "Stay Safe from Inflation with USDT, USDC, BTC, etc.",
     paragraph:
       "Beat inflation by saving in stablecoins and other cryptos. Automate your savings from Naira to Crypto.",
   },
@@ -126,33 +138,33 @@ export const groupSavingsOptions = [
     text: "This group entry requires an invitation privately",
     backgroundColor: "#F5F0F0D4",
     link: "/dashboard/ajo/create/closed-group",
-  }
-]
+  },
+];
 
 export const membersBriefData = [
-    {
-      name: "John Doe",
-      amount: "$20",
-      userType: "member",
-      status: "Joined",
-      funded: '$20',
-      time: "4 minutes ago",
-      progress: 10
-    },
-    {
-      name: "Jane Doe",
-      amount: "$30",
-      userType: "member",
-      status: "Joined",
-      progress: 0
-    },
-    {
-      name: "Mark Doe",
-      amount: "$0",
-      userType: "member",
-      status: "Joined",
-      progress: 30
-    },
+  {
+    name: "John Doe",
+    amount: "$20",
+    userType: "member",
+    status: "Joined",
+    funded: "$20",
+    time: "4 minutes ago",
+    progress: 10,
+  },
+  {
+    name: "Jane Doe",
+    amount: "$30",
+    userType: "member",
+    status: "Joined",
+    progress: 0,
+  },
+  {
+    name: "Mark Doe",
+    amount: "$0",
+    userType: "member",
+    status: "Joined",
+    progress: 30,
+  },
 ];
 
 export const membersData = [
@@ -163,7 +175,7 @@ export const membersData = [
     joined: "2023-12-01T09:15:00",
     next_deposit: "2025-04-15T18:30:00",
     last_deposit: "2025-03-10T17:00:00",
-    progress: 20
+    progress: 20,
   },
   {
     name: "Michael Chen",
@@ -172,7 +184,7 @@ export const membersData = [
     joined: "2023-11-20T10:45:00",
     next_deposit: "2025-04-18T14:00:00",
     last_deposit: "2025-03-18T13:45:00",
-    progress: 45
+    progress: 45,
   },
   {
     name: "Sarah Johnson",
@@ -181,7 +193,7 @@ export const membersData = [
     joined: "2024-01-05T08:30:00",
     next_deposit: "2025-04-20T11:15:00",
     last_deposit: "2025-03-20T10:30:00",
-    progress: 35
+    progress: 35,
   },
   {
     name: "David Kim",
@@ -190,7 +202,7 @@ export const membersData = [
     joined: "2023-10-12T12:00:00",
     next_deposit: "2025-04-22T09:00:00",
     last_deposit: "2025-03-22T08:45:00",
-    progress: 60
+    progress: 60,
   },
   {
     name: "Angela White",
@@ -199,7 +211,7 @@ export const membersData = [
     joined: "2023-09-28T14:20:00",
     next_deposit: "2025-04-25T17:30:00",
     last_deposit: "2025-03-25T17:00:00",
-    progress: 50
+    progress: 50,
   },
   {
     name: "Chris Evans",
@@ -208,7 +220,7 @@ export const membersData = [
     joined: "2024-02-01T16:00:00",
     next_deposit: "2025-04-28T19:00:00",
     last_deposit: "2025-03-28T18:30:00",
-    progress: 25
+    progress: 25,
   },
   {
     name: "Emily Davis",
@@ -217,7 +229,7 @@ export const membersData = [
     joined: "2023-08-15T11:45:00",
     next_deposit: "2025-05-01T08:00:00",
     last_deposit: "2025-04-01T07:30:00",
-    progress: 80
+    progress: 80,
   },
   {
     name: "Samuel Lee",
@@ -226,7 +238,7 @@ export const membersData = [
     joined: "2023-10-10T13:15:00",
     next_deposit: "2025-05-03T15:00:00",
     last_deposit: "2025-04-03T14:30:00",
-    progress: 40
+    progress: 40,
   },
   {
     name: "Patricia Brown",
@@ -235,7 +247,7 @@ export const membersData = [
     joined: "2024-01-20T07:30:00",
     next_deposit: "2025-05-06T10:00:00",
     last_deposit: "2025-04-06T09:15:00",
-    progress: 15
+    progress: 15,
   },
   {
     name: "Daniel Lee",
@@ -244,10 +256,9 @@ export const membersData = [
     joined: "2023-11-05T17:45:00",
     next_deposit: "2025-05-10T13:45:00",
     last_deposit: "2025-04-10T13:00:00",
-    progress: 70
-  }
+    progress: 70,
+  },
 ];
-
 
 export const transactionData = [
   {
@@ -319,7 +330,7 @@ export const transactionData = [
     deposit: "$55",
     total: "$550",
     date: "2023-10-30T13:00:00",
-  }
+  },
 ];
 
 export const meetImage = [
@@ -947,6 +958,17 @@ export const teamMembers = [
   },
   {
     id: 4,
+    name: "Taiwo Odunowo",
+    role: "Financial Analyst",
+    image: taiwo,
+    description:
+      "Taiwo Odunowo is currently the Head of Programs & Strategy at Bridging Horizons, leading high-impact initiatives and partnerships that engage the African diaspora in transformative development. At WTI, he serves as an Investment Analyst, working with the investment team on due diligence, deal analysis, investment calculations, data analysis, market research, and contributing to investment decisions. An alum of Stanford University, he combines a strong foundation in finance and strategy with a passion for global impact.",
+    social: {
+      linkedin: "http://www.linkedin.com/in/taiwo-o-odunowo",
+    },
+  },
+  {
+    id: 5,
     name: "Oluwasegun Awoyinfa",
     role: "Lawyer",
     image: awoyinfa,
@@ -958,7 +980,7 @@ export const teamMembers = [
     },
   },
   {
-    id: 5,
+    id: 6,
     name: "Rebecca Asseh",
     role: "Content Marketer",
     image: rebecca,
@@ -970,7 +992,7 @@ export const teamMembers = [
     },
   },
   {
-    id: 6,
+    id: 7,
     name: "Tshegofatso Seane",
     role: "Backend Developer",
     image: seane,
@@ -982,18 +1004,15 @@ export const teamMembers = [
     },
   },
   {
-    id: 7,
+    id: 8,
     name: "Kalu Iwere Eyitemi",
     role: "UI/UX Designer",
     image: temi,
     description:
-      "Eyitemi is a skilled product designer with over 3 years of experience. She has also volunteered as a designer for JustProject. Holding a UX design degree from Coursera and Ingressive for Good, her expertise spans user research, visual design, interaction design, Figma, prototyping, and motion design. Eyitemi is a strong communicator and collaborator, dedicated to creating innovative and impactful products that improve people's lives.",
+      "Eyitemi is a  skilled product designer with over 3+years experience. She has also volunteered as a designer for Justproject. Holding a UX design degree from Coursera and Ingressive for Good, her expertise spans user research, visual design, interaction design, Figma, prototyping, and motion design Eyitemi is a strong communicator and collaborator, dedicated to creating innovative and impactful products that improve people's lives.",
     social: {
-      twitter: "https://x.com/IEyitemi?t=bY1T63NaxbAtd0nJbLRLIQ&s=08",
       linkedin:
         "https://www.linkedin.com/in/eyitemi-onorume-849a50211?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
     },
   },
 ];
-
-

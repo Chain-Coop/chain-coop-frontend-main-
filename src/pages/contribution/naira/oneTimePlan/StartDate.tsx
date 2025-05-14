@@ -5,7 +5,14 @@ import { Alert } from "@mui/material";
 import useUserProfile, {
   useUserCard,
 } from "../../../../shared/Hooks/useUserProfile";
-import { addDays, formatDate } from "../../../../shared/utils/format";
+import {
+  addDays,
+  formatDate,
+  addMonths,
+  calculateAvailableEndDates,
+  getDateDifference,
+  validateCustomEndDate,
+} from "../../../../shared/utils/format";
 import { AppDispatch } from "../../../../shared/redux/store";
 import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
 import {
@@ -17,6 +24,7 @@ import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import { Button } from "@material-tailwind/react";
 import PaymentWithCard from "../../../../components/dashboard/contribution/paymentChoice/PaymentWithCard";
 import PayWithPaystack from "../../../../components/dashboard/contribution/paymentChoice/PayWithPaystack";
+import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
 interface ContributionResponse {
   result: {
@@ -29,7 +37,11 @@ const StartDate: React.FC = () => {
   const { useWalletCards } = useUserCard();
   const { profileDetails } = useUserProfile();
   const today = formatDate(new Date());
+  const startDate = today;
   const [endDate, setEndDate] = useState("");
+  const [availableEndDates, setAvailableEndDates] = useState<string[]>([]);
+  const [customEndDate, setCustomEndDate] = useState("");
+  const [useCustomDate, setUseCustomDate] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,17 +52,58 @@ const StartDate: React.FC = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  console.log("location", location);
   const dispatch: AppDispatch = useAppDispatch();
 
   const { purpose, amount, currency, savingsType, contributionType } =
     location.state || {};
+
+  const MAX_YEARS = 2;
 
   const hasCards = (useWalletCards?.cards ?? []).length > 0;
 
   useEffect(() => {
     dispatch(GetWalletCard());
   }, [dispatch]);
+
+  useEffect(() => {
+    const dateType =
+      savingsType?.toLowerCase() === "daily" ? "daily" : "monthly";
+    const dates = calculateAvailableEndDates(startDate, dateType);
+    setAvailableEndDates(dates);
+    setEndDate("");
+    setCustomEndDate("");
+    setUseCustomDate(false);
+  }, [startDate, savingsType]);
+
+  const handleEndDateChange = (event: any) => {
+    const value = event.target.value;
+    if (value === "custom") {
+      setUseCustomDate(true);
+      setEndDate("");
+    } else {
+      setUseCustomDate(false);
+      setEndDate(value);
+      setCustomEndDate("");
+    }
+    setError("");
+  };
+
+  const handleCustomEndDateChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const value = event.target.value;
+    setCustomEndDate(value);
+    const dateType =
+      savingsType?.toLowerCase() === "daily" ? "daily" : "monthly";
+    const validation = validateCustomEndDate(startDate, value, {
+      type: dateType,
+    });
+    if (validation.isValid) {
+      setError("");
+    } else {
+      setError(validation.error || "");
+    }
+  };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
@@ -61,17 +114,20 @@ const StartDate: React.FC = () => {
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
 
-    if (!endDate) {
-      setError("Please select an end date.");
+    const finalEndDate = useCustomDate ? customEndDate : endDate;
+
+    if (!finalEndDate) {
+      setError("Please select or enter an end date.");
       return;
     }
 
-    const startDate = new Date(today);
-    const selectedEndDate = new Date(endDate);
-
-    const minEndDate = addDays(startDate, 7);
-    if (selectedEndDate < minEndDate) {
-      setError("End date must be at least 7 days after the start date.");
+    const dateType =
+      savingsType?.toLowerCase() === "daily" ? "daily" : "monthly";
+    const validation = validateCustomEndDate(startDate, finalEndDate, {
+      type: dateType,
+    });
+    if (!validation.isValid) {
+      setError(validation.error || "");
       return;
     }
 
@@ -82,11 +138,10 @@ const StartDate: React.FC = () => {
       savingsCategory: purpose,
       amount,
       startDate: today,
-      endDate,
+      endDate: finalEndDate,
       currency: currency,
-      // savingsType: savingsType,
       contributionType: contributionType,
-      savingsType: "Strict",
+      savingsType: "One-time",
     };
 
     try {
@@ -177,16 +232,76 @@ const StartDate: React.FC = () => {
         </div>
 
         <div className="mt-[2em]">
-          <label className="mb-2 block text-sm font-medium">
-            Select End Date
-          </label>
-          <input
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            min={formatDate(addDays(new Date(today), 7))} // Minimum 7 days after start date
-            className="input mb-2 h-[4em] w-full rounded-lg border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
-          />
+          <FormControl fullWidth>
+            <InputLabel id="end-date-label" style={{ color: "#440080" }}>
+              Choose End Date
+            </InputLabel>
+            <Select
+              labelId="end-date-label"
+              id="end-date-select"
+              value={useCustomDate ? "custom" : endDate}
+              label="Choose End Date"
+              onChange={handleEndDateChange}
+              className="mb-5"
+              sx={{
+                height: "3.4em",
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderRadius: "0.5rem",
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#440080",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#440080",
+                },
+              }}
+            >
+              <MenuItem value="">
+                <em>Select end date</em>
+              </MenuItem>
+              {availableEndDates.map((date) => (
+                <MenuItem key={date} value={date}>
+                  {new Date(date)?.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}{" "}
+                  ({getDateDifference(startDate, date, "monthly")})
+                </MenuItem>
+              ))}
+              <MenuItem value="custom">
+                <em>Set custom end date</em>
+              </MenuItem>
+            </Select>
+          </FormControl>
+
+          {useCustomDate && (
+            <div className="mt-4">
+              <label className="mb-2 block text-sm font-medium">
+                Custom End Date
+              </label>
+              <input
+                type="date"
+                value={customEndDate}
+                onChange={handleCustomEndDateChange}
+                min={formatDate(addDays(new Date(startDate), 1))}
+                max={formatDate(addMonths(new Date(startDate), MAX_YEARS * 12))}
+                className="input mb-2 h-[4em] w-full rounded-lg border-[1px] px-4 text-sm shadow-md focus:border-text2 focus:outline-none focus:ring-text2"
+              />
+              {customEndDate && (
+                <p className="text-sm text-gray-600">
+                  Duration:{" "}
+                  {getDateDifference(
+                    startDate,
+                    customEndDate,
+                    savingsType?.toLowerCase() === "daily"
+                      ? "daily"
+                      : "monthly",
+                  )}
+                </p>
+              )}
+            </div>
+          )}
         </div>
 
         {error && (
@@ -198,7 +313,7 @@ const StartDate: React.FC = () => {
         <div className="mt-4 lg:mt-[3em]">
           <Button
             onClick={handleSubmit}
-            disabled={loading || !endDate}
+            disabled={loading || (!endDate && !customEndDate)}
             loading={loading}
             className="m-auto flex w-[80%] justify-center rounded-md bg-text2 px-8 py-[1em] text-sm font-semibold normal-case text-white transition-all duration-300 ease-in-out hover:scale-105 hover:bg-opacity-90 hover:shadow-lg active:scale-95 active:transform"
           >

@@ -144,10 +144,10 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({
             type="submit"
             disabled={!amount || loading}
             fullWidth
-            className="mt-6 flex place-items-center  justify-center bg-text2 text-center text-sm normal-case"
+            className="mt-6 flex place-items-center justify-center bg-text2 text-center text-sm normal-case"
             loading={loading}
           >
-            {loading ? "Processing..." : `Pay ₦${amount || "0.00"}`}
+            {`Pay ₦${amount || "0.00"}`}
           </Button>
         </form>
       </DialogBody>

@@ -6,25 +6,37 @@ import { Alert } from "@mui/material";
 import { Button, Typography } from "@material-tailwind/react";
 import { AppDispatch } from "../../../shared/redux/store";
 import useUserProfile from "../../../shared/Hooks/useUserProfile";
-import { WithdrawalFromContribution } from "../../../shared/redux/slices/transaction.slices";
+import {
+  WithdrawalFromContribution,
+  GeneratePinOTP,
+} from "../../../shared/redux/slices/transaction.slices";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import { formatBalance } from "../../../shared/utils/format";
 import Success from "../../../components/common/Success";
 import { parseISO, isAfter, isToday } from "date-fns";
+import PinModal from "../../../components/common/PinModal";
+import ChangePin from "../../../components/dashboard/profile/security/modal/ChangePin";
+import OtpPin from "../../../components/dashboard/profile/security/modal/OtpPin";
+import GeneratePin from "../../../components/dashboard/profile/security/modal/GeneratePin";
 
 const ConfirmAmount = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
-  const { profileDetails } = useUserProfile();
+  const { profileDetails, fetchUserProfile } = useUserProfile();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pinStep, setPinStep] = useState(0);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [pin, setPin] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [amountInNaira, setAmountInNaira] = useState<number | null>(null);
   const [contributionId, setContributionId] = useState<string | null>(null);
   const [savingsType, setSavingsType] = useState<string>("FLEXIBLE");
   const [withdrawalDate, setWithdrawalDate] = useState<string | null>(null);
+
+  const isPinCreated = profileDetails?.isPinCreated || false;
 
   const isBeforeWithdrawalDate = () => {
     if (!withdrawalDate) return false;
@@ -40,7 +52,7 @@ const ConfirmAmount = () => {
   };
 
   const calculateFees = () => {
-    let fees = 50; 
+    let fees = 50;
 
     if (profileDetails?.membershipStatus === "inactive") {
       fees += 1000;
@@ -48,15 +60,16 @@ const ConfirmAmount = () => {
 
     const isLockSavings = savingsType === "Lock";
 
-    if (isLockSavings && isBeforeWithdrawalDate()) {
-      fees += 2000;
+    if (isLockSavings && isBeforeWithdrawalDate() && amountInNaira) {
+      fees += amountInNaira * 0.03;
     }
 
     return fees;
   };
 
   const totalFees = calculateFees();
-  const totalDeduction = amountInNaira ? amountInNaira + totalFees : 0;
+  const netAmount = amountInNaira ? amountInNaira - totalFees : 0;
+  const totalDeduction = amountInNaira || 0;
 
   useEffect(() => {
     if (!location.state) {
@@ -91,14 +104,63 @@ const ConfirmAmount = () => {
     navigate(-1);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  const handleCloseSuccessModal = () => {
+    setIsSuccessModalOpen(false);
     navigate("/dashboard");
   };
 
-  const handleFund = async () => {
+  const handleGeneratePinClose = () => {
+    setPinStep(0);
+    setOtp("");
+  };
+
+  const handleOtpGenerated = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      await dispatch(GeneratePinOTP()).unwrap();
+      setPinStep(2);
+    } catch (error: any) {
+      setError(error.message || "Failed to generate OTP");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOtpPinNext = (enteredOtp: string) => {
+    setOtp(enteredOtp);
+    setPinStep(isPinCreated ? 4 : 3);
+  };
+
+  const handleOtpPinClose = () => {
+    setPinStep(0);
+    setOtp("");
+  };
+
+  const handleChangePinClose = () => {
+    setPinStep(0);
+    setOtp("");
+  };
+
+  const handleChangePinSuccess = async () => {
+    try {
+      await fetchUserProfile();
+      setPinStep(4);
+    } catch (error: any) {
+      setError("Failed to refresh profile. Please try again.");
+    }
+  };
+
+  const handlePinSubmit = async (submittedPin: string) => {
     if (!amountInNaira || !contributionId) {
       setError("Missing required information. Please try again.");
+      return;
+    }
+
+    if (netAmount <= 0) {
+      setError(
+        `Fees (₦${totalFees.toLocaleString()}) exceed the requested amount. Please increase the withdrawal amount.`,
+      );
       return;
     }
 
@@ -109,18 +171,35 @@ const ConfirmAmount = () => {
       const body = {
         amount: totalDeduction,
         contributionId: contributionId,
+        pin: submittedPin,
       };
 
       const result = await dispatch(WithdrawalFromContribution(body)).unwrap();
       if (result?.landing?.statusCode === 200) {
-        setLoading(false);
-        setIsModalOpen(true);
+        setPinStep(0);
+        setIsSuccessModalOpen(true);
+        setPin("");
+        setOtp("");
       } else {
         throw new Error("Transaction failed");
       }
     } catch (error: any) {
+      setError(error.message || "Invalid PIN or OTP. Please try again.");
+    } finally {
       setLoading(false);
-      setError(error.message || "An error occurred. Please try again.");
+    }
+  };
+
+  const handleConfirmWithdrawal = async () => {
+    try {
+      await fetchUserProfile();
+      if (profileDetails?.isPinCreated) {
+        setPinStep(4);
+      } else {
+        setPinStep(1);
+      }
+    } catch (error: any) {
+      setError("Failed to fetch profile. Please try again.");
     }
   };
 
@@ -156,7 +235,6 @@ const ConfirmAmount = () => {
   }
 
   const isLockSavings = savingsType === "Lock";
-
   const showEarlyWithdrawalFee = isLockSavings && isBeforeWithdrawalDate();
 
   return (
@@ -174,7 +252,7 @@ const ConfirmAmount = () => {
       <section className="px-4">
         <div className="mt-[2.5em] flex justify-center">
           <h1 className="text-xl font-bold">
-            {amountInNaira ? formatBalance(amountInNaira) : "---"}
+            {netAmount > 0 ? formatBalance(netAmount) : "---"}
           </h1>
         </div>
 
@@ -184,7 +262,7 @@ const ConfirmAmount = () => {
               Amount to Receive
             </Typography>
             <span className="font-medium">
-              {amountInNaira ? formatBalance(amountInNaira) : "---"}
+              {netAmount > 0 ? formatBalance(netAmount) : "---"}
             </span>
           </div>
 
@@ -201,12 +279,18 @@ const ConfirmAmount = () => {
                 <span className="text-amber-600">₦1,000.00</span>
               </div>
             )}
-            {showEarlyWithdrawalFee && (
+            {showEarlyWithdrawalFee && amountInNaira && (
               <div className="flex justify-between">
                 <Typography className="text-base text-amber-600">
-                  Early Withdrawal Fee
+                  Early Withdrawal Fee (3%)
                 </Typography>
-                <span className="text-amber-600">₦2,000.00</span>
+                <span className="text-amber-600">
+                  ₦
+                  {(amountInNaira * 0.03).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                </span>
               </div>
             )}
 
@@ -244,19 +328,59 @@ const ConfirmAmount = () => {
           <Button
             variant="text"
             className="w-[70%] bg-text2 py-3 text-sm normal-case text-white hover:bg-text2 disabled:bg-gray-300"
-            onClick={handleFund}
-            disabled={loading || !amountInNaira || !contributionId}
+            onClick={handleConfirmWithdrawal}
+            disabled={
+              loading || !amountInNaira || !contributionId || netAmount <= 0
+            }
           >
-            {loading
-              ? "Processing..."
-              : `Confirm Withdrawal (${formatBalance(totalDeduction)})`}
+            Confirm Withdrawal (
+            {netAmount > 0 ? formatBalance(netAmount) : "---"})
           </Button>
         </div>
       </section>
 
+      {pinStep === 1 && (
+        <GeneratePin
+          isOpen={pinStep === 1}
+          onClose={handleGeneratePinClose}
+          onOtpGenerated={handleOtpGenerated}
+        />
+      )}
+
+      {pinStep === 2 && (
+        <OtpPin
+          isOpen={pinStep === 2}
+          onNext={handleOtpPinNext}
+          onClose={handleOtpPinClose}
+        />
+      )}
+
+      {pinStep === 3 && (
+        <ChangePin
+          otp={otp}
+          isOpen={pinStep === 3}
+          onClose={handleChangePinClose}
+          onSuccess={handleChangePinSuccess}
+        />
+      )}
+
+      {pinStep === 4 && (
+        <PinModal
+          isOpen={pinStep === 4}
+          onClose={() => setPinStep(0)}
+          onSubmit={handlePinSubmit}
+          header="My Chain Co-op Pin"
+          title="Enter your transaction PIN."
+          loading={loading}
+          error={error}
+          pin={pin}
+          onPinChange={setPin}
+        />
+      )}
+
       <Success
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
+        isOpen={isSuccessModalOpen}
+        onClose={handleCloseSuccessModal}
         title="Withdrawal Successful"
       />
     </main>

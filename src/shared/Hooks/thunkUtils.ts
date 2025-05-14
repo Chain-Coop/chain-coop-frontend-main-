@@ -9,6 +9,7 @@ import { setMessage } from "../redux/slices/message.slices";
  * @param options Additional options
  * @returns Async thunk with standardized error handling
  */
+
 export function createAppThunk<Returned, ThunkArg = void>(
   typePrefix: string,
   payloadCreator: (arg: ThunkArg) => Promise<Returned>,

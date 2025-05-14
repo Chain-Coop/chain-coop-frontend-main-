@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
 
 import createImage from "../../../Assets/png/dashboard/ajo/open_group_image.png";
@@ -53,20 +53,12 @@ const CreateOpenGroup = () => {
     agree: false,
   });
 
-  const dispatch: AppDispatch = useDispatch();
-
-  // state to manage loading
-  const [loading, setLoading] = useState<boolean>(false);
-
-  // state to toggle whether the next button is disabled or not
   const [isNextDisabled, setIsNextDisabled] = useState<boolean>(true);
 
-  // state to open modal
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
-  // list of the various forms
   const formSteps = [
     <FirstOpenGroupForm
       data={firstFormData}
@@ -94,11 +86,9 @@ const CreateOpenGroup = () => {
     />,
   ];
 
-  // this state controls which form is rendered
   const [formStepsIndex, setFormStepsIndex] = useState<number>(0);
 
   const validateInputs = () => {
-    // perform different validation checks based on the current form step
     if (formStepsIndex === 0) {
       setIsNextDisabled(validateFirstForm(firstFormData));
     } else if (formStepsIndex === 1) {
@@ -114,70 +104,19 @@ const CreateOpenGroup = () => {
 
   const nextForm = () => {
     setFormStepsIndex((prev) => prev + 1);
-    validateInputs();
+    validateInputs(); // validate inputs
   };
 
-  const createCircle = () => {
-    setLoading(true);
-
-    const formData = PrepareData({
-      first: firstFormData,
-      second: secondFormData,
-      third: thirdFormData,
-      groupType: "open",
-      userId: profileDetails?._id,
-    });
-
-    // --- Add console.log to inspect formData ---
-    console.log("--- Preparing to send data to backend ---");
-    if (formData instanceof FormData) {
-      console.log("Data is FormData instance. Entries:");
-      for (let [key, value] of formData.entries()) {
-        // For File objects, log the name and type, not the whole object
-        if (value instanceof File) {
-          console.log(key + ":", {
-            name: value.name,
-            size: value.size,
-            type: value.type,
-            lastModified: value.lastModified,
-          });
-        } else {
-          console.log(key + ":", value);
-        }
-      }
-    } else {
-      // If it's a plain JavaScript object
-      console.log("Data is a plain object:", JSON.stringify(formData, null, 2));
-    }
-    console.log("--- End of data to be sent ---");
-    // --- End console.log ---
-
-    dispatch(WebGroupSavings.CreateSavingsCircle(formData))
-      .unwrap()
-      .then((response: any) => {
-        setLoading(false);
-        if (response?.status === 200) {
-          console.log(response?.data);
-          toast.success(response?.data?.msg);
-          setIsModalOpen(true);
-        } else if (response?.status === 400) {
-          console.log(response?.data);
-        }
-      })
-      .catch((error: any) => {
-        setLoading(false);
-        const errorMessage = error;
-        toast.error(errorMessage);
-      });
+  const openModal = () => {
+    setIsModalOpen(true);
   };
 
-  // function to navigate back to ajo page
   const handleBackClick = () => {
     navigate(-1);
   };
 
   return (
-    <main className="mb-[20px] flex  flex-col  gap-10 font-asap">
+    <main className="mb-[20px] flex  font-asap  flex-col gap-10">
       <DashboardHeader
         className="relative cursor-pointer items-center lg:mt-[2em]"
         onClick={handleBackClick}
@@ -189,12 +128,11 @@ const CreateOpenGroup = () => {
       </DashboardHeader>
 
       <section className="mb-[20px] flex  flex-col gap-10">
-        {/* OPEN SAVINGS INTRO IMAGE */}
         <section className="mt-12 flex w-[100%] items-center justify-center">
           <img
             src={rightArrow}
             alt="create new savings group"
-            className="hidden  h-[80px] w-[100px] translate-x-10 self-end sm:block"
+            className="h-[80px]  hidden sm:block w-[100px] translate-x-10 self-end"
           />
           <img
             src={createImage}
@@ -204,15 +142,14 @@ const CreateOpenGroup = () => {
           <img
             src={rightArrow}
             alt="create new savings group"
-            className="hidden  h-[80px] w-[100px] -translate-x-10 self-start sm:block"
+            className="h-[80px]  hidden sm:block w-[100px] -translate-x-10 self-start"
           />
         </section>
 
-        {/* ACTIVE FORM */}
         {formSteps[formStepsIndex]}
 
         <div
-          className={`flex w-[100%] self-center 2xl:w-[80%] ${formStepsIndex > 0 ? "justify-between" : "justify-end"} mt-[20px] items-center`}
+          className={`flex w-[100%] 2xl:w-[80%] self-center ${formStepsIndex > 0 ? "justify-between" : "justify-end"} mt-[20px] items-center`}
         >
           {formStepsIndex > 0 && (
             <Button
@@ -230,25 +167,23 @@ const CreateOpenGroup = () => {
           )}
           {formStepsIndex > 2 ? (
             <Button
-              className={`h-[47px] w-fit rounded-lg bg-[#440080] font-asap text-[18px] font-[500] capitalize tracking-tighter text-white `}
-              onClick={createCircle}
-              loading={loading}
-              disabled={!profileDetails?._id || loading} 
+              className={`h-[47px] w-fit rounded-lg bg-[#440080] text-[18px] font-[500] capitalize tracking-tighter font-asap text-white `}
+              onClick={openModal}
             >
               Create group
             </Button>
           ) : (
             <Button
-              className={`h-[47px] w-[121px] rounded-lg bg-[#440080] font-asap text-[20px] font-[500] capitalize tracking-tighter text-white ${isNextDisabled ? "cursor-not-allowed opacity-70" : ""}`}
+              className={`h-[47px] w-[121px] rounded-lg bg-[#440080] text-[20px] font-[500] capitalize tracking-tighter text-white font-asap ${isNextDisabled ? "cursor-not-allowed opacity-70" : ""}`}
               onClick={nextForm}
               disabled={isNextDisabled}
             >
-              Next
+              <Typography className="text-white">Next</Typography>
             </Button>
           )}
         </div>
       </section>
-      {isModalOpen && <SuccessModal />}
+      <SuccessModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </main>
   );
 };

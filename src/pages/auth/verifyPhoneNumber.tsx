@@ -6,20 +6,54 @@ import "react-toastify/dist/ReactToastify.css";
 import { Button } from "@material-tailwind/react";
 import { AppDispatch } from "../../shared/redux/store";
 import OtpInput from "../../shared/utils/OtpInput";
-import { kycWhatsAppOtp, VerifykycWhatsAppOtp } from "../../shared/redux/slices/kyc.slices";
+import { VerifyUserPhoneNumber } from "../../shared/redux/slices/landing.slices";
+import { RESEND_VERIFY_OTP } from "../../shared/redux/services/landing.services";
 
 const VerifyPhoneNumber = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isVerifying, setIsVerifying] = useState(false);
-  const [isResending, setIsResending] = useState(false);
-  const [code, setCode] = useState("");
   const [resendDisabled, setResendDisabled] = useState(false);
   const [resendTimer, setResendTimer] = useState(0);
-
+  const [isResending, setIsResending] = useState(false);
+  const [code, setCode] = useState("");
+  const [timeLeft, setTimeLeft] = useState(10);
   const dispatch: AppDispatch = useDispatch();
 
+  const startResendTimer = () => {
+    setResendDisabled(true);
+    setResendTimer(30);
+    const interval = setInterval(() => {
+      setResendTimer((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          setResendDisabled(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
   const queryParams = new URLSearchParams(location.search);
+  const rawPhoneNumber = queryParams.get("phoneNumber") || "";
+  const userId = queryParams.get("userId");
+
+  const formatPhoneNumber = (phone: string) => {
+    const trimmedPhone = phone.trim();
+
+    if (trimmedPhone.startsWith("+")) {
+      return trimmedPhone;
+    }
+
+    if (/^\d{1,3}\d+$/.test(trimmedPhone)) {
+      return `+${trimmedPhone}`;
+    }
+
+    return trimmedPhone;
+  };
+
+  const phoneNumber = formatPhoneNumber(rawPhoneNumber);
 
   const handleOtpChange = (otpValue: string) => {
     setCode(otpValue);
@@ -30,11 +64,17 @@ const VerifyPhoneNumber = () => {
 
   const verifyUserData = (otpValue: string) => {
     setIsVerifying(true);
-    dispatch(VerifykycWhatsAppOtp({ code: otpValue }))
+    dispatch(
+      VerifyUserPhoneNumber({
+        otp: otpValue,
+        userId,
+        phoneNumber,
+      }),
+    )
       .unwrap()
       .then(() => {
         setIsVerifying(false);
-        toast.success("phone number verified successfully");
+        toast.success("Phone number verified successfully");
         navigate("/login");
       })
       .catch((error) => {
@@ -43,8 +83,6 @@ const VerifyPhoneNumber = () => {
         toast.error(error);
       });
   };
-
-  const [timeLeft, setTimeLeft] = useState(360);
 
   useEffect(() => {
     if (timeLeft <= 0) return;
@@ -56,15 +94,20 @@ const VerifyPhoneNumber = () => {
     return () => clearInterval(timer);
   }, [timeLeft]);
 
-  const ResendOtp = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (timeLeft > 0) return;
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
 
+  const ResendOtp = async () => {
     setIsResending(true);
     try {
-      const response = await dispatch(kycWhatsAppOtp()).unwrap();
-      toast.success(response.message);
-      setTimeLeft(360);
+      const response = await RESEND_VERIFY_OTP("/auth/resend_whatsapp_otp", {
+        phoneNumber,
+      });
+      toast.success(response.data.msg);
+      startResendTimer();
     } catch (error: any) {
       toast.error(error);
     } finally {
@@ -73,7 +116,7 @@ const VerifyPhoneNumber = () => {
   };
 
   return (
-    <main className="flex h-screen items-center justify-center bg-log ">
+    <main className="flex h-screen items-center justify-center bg-log">
       <section className="text-center md:w-[55%]">
         <div className="px-[2em]">
           <p className="font-medium text-howtext md:text-lg lg:text-base">
@@ -91,6 +134,12 @@ const VerifyPhoneNumber = () => {
               />
             </div>
           </div>
+
+          {timeLeft > 0 && (
+            <p className="mt-3 text-gray-600">
+              Resend available in {formatTime(timeLeft)}
+            </p>
+          )}
 
           <Button
             onClick={ResendOtp}

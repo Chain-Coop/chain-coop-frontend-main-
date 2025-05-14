@@ -55,7 +55,7 @@ export const TrackerSkeleton: React.FC = () => (
 );
 
 export const ContributionListSkeleton: React.FC = () => (
-  <div className="mt-[1em] flex h-auto w-full flex-col gap-[1em] rounded-lg bg-text2 px-2 py-[3em] text-center">
+  <div className="mt-[1em] flex h-auto w-full flex-col items-center justify-center gap-[1em] rounded-lg bg-text2 px-2 py-[3em] text-center">
     {Array.from({ length: 3 }).map((_, index) => (
       <motion.div
         key={index}
