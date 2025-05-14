@@ -53,6 +53,13 @@ const CreateOpenGroup = () => {
     agree: false,
   });
 
+  const dispatch: AppDispatch = useDispatch();
+
+  // state to manage loading
+  const [loading, setLoading] = useState<boolean>(false);
+
+  // state to toggle whether the next button is disabled or not
+
   const [isNextDisabled, setIsNextDisabled] = useState<boolean>(true);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

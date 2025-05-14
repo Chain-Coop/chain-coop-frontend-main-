@@ -107,6 +107,19 @@ export interface openGroupFormType {
   thirdForm: thirdOpenGroupType;
 }
 
+export interface PrepareDataType {
+  "name": string,
+  "description"?: string,
+  "depositAmount": number,
+  "currency": string,
+  "savingFrequency": string,
+  "goalAmount": number,
+  "groupType": string,
+  "startDate": string,
+  "endDate": string,
+  "userId": string,
+  "image"?: Blob,
+  
 export interface WithdrawUserPoolPayload {
   poolId_bytes: string;
   pin: string;
@@ -182,18 +195,4 @@ export interface BankTransferProps {
 export interface ConfirmingPaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
-}
-
-export interface PrepareDataType {
-  "name": string,
-  "description"?: string,
-  "depositAmount": number,
-  "currency": string,
-  "savingFrequency": string,
-  "goalAmount": number,
-  "groupType": string,
-  "startDate": string,
-  "endDate": string,
-  "userId": string,
-  "image"?: Blob,
 }
