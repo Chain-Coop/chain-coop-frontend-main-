@@ -276,7 +276,7 @@ const Dashboard = () => {
 
           <Route path="ajo" element={<AjoPage />} />
           <Route path="ajo/create/open-group" element={<CreateOpenGroup />} />
-          {/* <Route path="ajo/create/closed-group" element={<CreateClosedGroup />} /> */}
+          <Route path="ajo/create/closed-group" element={<CreateOpenGroup />} />
           <Route path="ajo/history" element={<GroupHistoryPage />} />
           <Route
             path="ajo/open-group/members"
@@ -289,24 +289,30 @@ const Dashboard = () => {
           <Route path="ajo/:name/members" element={<MembersPage />} />
           <Route path="ajo/:name" element={<SavingsDetail />} />
 
-          <Route path="wallet/fund/fund_crypto_wallet" element={<FundCryptoWallet />} />
-          <Route path="wallet/fund/fund_crypto_wallet_preview" element={<FundCryptoWalletPreview />} />
-          <Route path="wallet/fund/success" element={<FundCryptoWalletSuccess />} />
+          <Route
+            path="wallet/fund/fund_crypto_wallet"
+            element={<FundCryptoWallet />}
+          />
+          <Route
+            path="wallet/fund/fund_crypto_wallet_preview"
+            element={<FundCryptoWalletPreview />}
+          />
+          <Route
+            path="wallet/fund/success"
+            element={<FundCryptoWalletSuccess />}
+          />
 
           <Route
             path="wallet/crypto/withdraw"
             element={<WithdrawCryptoWallet />}
           />
           <Route
-           
             path="wallet/crypto/withdraw/bank"
             element={<WithdrawToBank />}
           />
           <Route
             path="wallet/crypto/withdraw/preview"
-           
             element={<WithdrawCryptoPreview />}
-         
           />
 
           <Route path="wallet/fund" element={<FundWallet />} />

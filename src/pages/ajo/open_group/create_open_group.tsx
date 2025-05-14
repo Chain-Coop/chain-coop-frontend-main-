@@ -1,6 +1,6 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
-
+import { Typography } from "@material-tailwind/react";
 import createImage from "../../../Assets/png/dashboard/ajo/open_group_image.png";
 import rightArrow from "../../../Assets/svg/dashboard/ajo/right_arrow.svg";
 import FirstOpenGroupForm from "../components/first_open_group_form";
@@ -26,9 +26,14 @@ import PrepareData from "./prepare_data";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../shared/redux/store";
 import { toast } from "react-toastify";
-import WebGroupSavings from "../../../shared/redux/services/web_savings_group.services";
+import { CreateSavingsCircle } from "../../../shared/redux/slices/web_savings_groups.slices";
 
 const CreateOpenGroup = () => {
+  const location = useLocation();
+  const groupType = location.pathname.includes("closed-group")
+    ? "closed"
+    : "open";
+
   const profileDetails = useSelector(
     (state: any) => state?.landing?.getProfile,
   );
@@ -43,8 +48,8 @@ const CreateOpenGroup = () => {
   const [secondFormData, setSecondFormData] = useState<secondOpenGroupType>({
     total_saving_amount: "",
     savings_frequency: "",
-    start_date: "Start date",
-    end_date: "End date",
+    start_date: "",
+    end_date: "",
   });
 
   const [thirdFormData, setThirdFormData] = useState<thirdOpenGroupType>({
@@ -55,10 +60,7 @@ const CreateOpenGroup = () => {
 
   const dispatch: AppDispatch = useDispatch();
 
-  // state to manage loading
   const [loading, setLoading] = useState<boolean>(false);
-
-  // state to toggle whether the next button is disabled or not
 
   const [isNextDisabled, setIsNextDisabled] = useState<boolean>(true);
 
@@ -111,11 +113,36 @@ const CreateOpenGroup = () => {
 
   const nextForm = () => {
     setFormStepsIndex((prev) => prev + 1);
-    validateInputs(); // validate inputs
+    validateInputs();
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const openModal = async () => {
+    setLoading(true);
+    try {
+      const payload = PrepareData({
+        first: firstFormData,
+        second: secondFormData,
+        third: thirdFormData,
+        groupType,
+        userId: profileDetails?._id,
+      });
+
+      //console.log('Data being sent to CreateSavingsCircle:', payload);
+
+      const response = await dispatch(CreateSavingsCircle(payload)).unwrap();
+      //console.log("CreateSavingsCircle Response:", response);
+
+      toast.success("Group created successfully!");
+      setIsModalOpen(true);
+
+      setTimeout(() => {
+        navigate("/dashboard/ajo");
+      }, 2000);
+    } catch (error: any) {
+      toast.error(error?.message || "Failed to create group");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleBackClick = () => {
@@ -123,14 +150,16 @@ const CreateOpenGroup = () => {
   };
 
   return (
-    <main className="mb-[20px] flex  font-asap  flex-col gap-10">
+    <main className="mb-[20px] flex  flex-col  gap-10 font-asap">
       <DashboardHeader
         className="relative cursor-pointer items-center lg:mt-[2em]"
         onClick={handleBackClick}
       >
         <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
         <div className="flex flex-grow items-center justify-center">
-          <div className="tracking-wide">Create Open Group</div>
+          <div className="tracking-wide">
+            Create {groupType === "closed" ? "Closed" : "Open"} Group
+          </div>
         </div>
       </DashboardHeader>
 
@@ -139,7 +168,7 @@ const CreateOpenGroup = () => {
           <img
             src={rightArrow}
             alt="create new savings group"
-            className="h-[80px]  hidden sm:block w-[100px] translate-x-10 self-end"
+            className="hidden  h-[80px] w-[100px] translate-x-10 self-end sm:block"
           />
           <img
             src={createImage}
@@ -149,14 +178,14 @@ const CreateOpenGroup = () => {
           <img
             src={rightArrow}
             alt="create new savings group"
-            className="h-[80px]  hidden sm:block w-[100px] -translate-x-10 self-start"
+            className="hidden  h-[80px] w-[100px] -translate-x-10 self-start sm:block"
           />
         </section>
 
         {formSteps[formStepsIndex]}
 
         <div
-          className={`flex w-[100%] 2xl:w-[80%] self-center ${formStepsIndex > 0 ? "justify-between" : "justify-end"} mt-[20px] items-center`}
+          className={`flex w-[100%] self-center 2xl:w-[80%] ${formStepsIndex > 0 ? "justify-between" : "justify-end"} mt-[20px] items-center`}
         >
           {formStepsIndex > 0 && (
             <Button
@@ -174,14 +203,14 @@ const CreateOpenGroup = () => {
           )}
           {formStepsIndex > 2 ? (
             <Button
-              className={`h-[47px] w-fit rounded-lg bg-[#440080] text-[18px] font-[500] capitalize tracking-tighter font-asap text-white `}
+              className={`h-[47px] w-fit rounded-lg bg-[#440080] font-asap text-[18px] font-[500] capitalize tracking-tighter text-white `}
               onClick={openModal}
             >
               Create group
             </Button>
           ) : (
             <Button
-              className={`h-[47px] w-[121px] rounded-lg bg-[#440080] text-[20px] font-[500] capitalize tracking-tighter text-white font-asap ${isNextDisabled ? "cursor-not-allowed opacity-70" : ""}`}
+              className={`h-[47px] w-[121px] rounded-lg bg-[#440080] font-asap text-[20px] font-[500] capitalize tracking-tighter text-white ${isNextDisabled ? "cursor-not-allowed opacity-70" : ""}`}
               onClick={nextForm}
               disabled={isNextDisabled}
             >

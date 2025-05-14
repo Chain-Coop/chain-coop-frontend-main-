@@ -43,11 +43,6 @@ export const useUserProfile = () => {
           GetSavingCircleByUser(profileDetails._id),
         ).unwrap();
 
-        console.log(
-          "USEUSERPROFILE HOOK - Raw result from GetSavingCircleByUser:",
-          result,
-        );
-
         setUserCircles(result?.web_group_savings?.data || []);
       } catch (error: any) {
         const errorMessage =

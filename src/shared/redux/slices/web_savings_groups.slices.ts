@@ -49,14 +49,28 @@ export const GetSavingCircleByID = createAsyncThunk(
   },
 );
 
+export const CreateSavingsCircle = createAsyncThunk(
+  "savingcircle/create",
+  async (formData: any, thunkAPI) => {
+    try {
+      const response = await WebGroupSavings.CreateSavingsCircle(formData);
+      return response;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  },
+);
+
 interface WebGroupSavingsType {
   loading: boolean;
   error: string;
+  web_group_savings: any;
 }
 
 const initialState: WebGroupSavingsType = {
   loading: false,
   error: "",
+  web_group_savings: null,
 };
 
 export const WebGroupSavingsSlice = createSlice({
@@ -126,6 +140,21 @@ export const WebGroupSavingsSlice = createSlice({
             (action.payload as string) ||
             "Failed to fetch savings details by it's ID!",
         };
+      })
+
+      .addCase(CreateSavingsCircle.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(CreateSavingsCircle.fulfilled, (state, action) => {
+        state.loading = false;
+        state.web_group_savings = action.payload;
+        return state;
+      })
+      .addCase(CreateSavingsCircle.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          (action.payload as string) || "Failed to create savings circle!";
+        return state;
       });
   },
 });
