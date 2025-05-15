@@ -23,6 +23,9 @@ import FilterSavings, {
 import { Pool } from "../../../../shared/types/types";
 import { IoIosArrowDown } from "react-icons/io";
 
+const UNIFIED_CRYPTO_PURPOSE_PATH =
+  "/dashboard/contribution/crypto/unified-crypto-purpose";
+
 const CryptoSavings: React.FC = () => {
   const navigate = useNavigate();
 
@@ -321,13 +324,9 @@ const CryptoSavings: React.FC = () => {
 
                 <div className="flex flex-col gap-4">
                   <Link
-                    to={
-                      contributionType === "auto"
-                        ? "/dashboard/contribution/flexible/crypto_purpose"
-                        : "/dashboard/contribution/one_time_plan/flexible/crypto_purpose"
-                    }
+                    to={UNIFIED_CRYPTO_PURPOSE_PATH}
                     state={{
-                      lockedType: 0,
+                      lockedType: 0, // Flexible
                       contributionType: contributionType,
                     }}
                     className="w-full"
@@ -355,13 +354,9 @@ const CryptoSavings: React.FC = () => {
                   </Link>
 
                   <Link
-                    to={
-                      contributionType === "auto"
-                        ? "/dashboard/contribution/lock/crypto_purpose"
-                        : "/dashboard/contribution/one_time_plan/lock/crypto_purpose"
-                    }
+                    to={UNIFIED_CRYPTO_PURPOSE_PATH}
                     state={{
-                      lockedType: 1,
+                      lockedType: 1, // Lock
                       contributionType: contributionType,
                     }}
                     className="w-full"
@@ -389,13 +384,9 @@ const CryptoSavings: React.FC = () => {
                   </Link>
 
                   <Link
-                    to={
-                      contributionType === "auto"
-                        ? "/dashboard/contribution/strict_lock/crypto_purpose"
-                        : "/dashboard/contribution/one_time_plan/strict_lock/crypto_purpose"
-                    }
+                    to={UNIFIED_CRYPTO_PURPOSE_PATH}
                     state={{
-                      lockedType: 2,
+                      lockedType: 2, // Strict Lock
                       contributionType: contributionType,
                     }}
                     className="w-full"
