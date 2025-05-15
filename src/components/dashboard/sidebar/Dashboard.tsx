@@ -8,20 +8,8 @@ import CryptoContributionDetails from "../../../pages/contribution/crypto/ViewCo
 import CryptoContribution from "../../../pages/contribution/crypto/main/Contribution";
 import Right from "../rightbar/Right";
 import Purpose from "../../../pages/contribution/naira/auto/Purpose";
-import CryptoPurpose from "../../../pages/contribution/crypto/flexiblePlan/ContributionCurrencyType";
-import LockCryptoPurpose from "../../../pages/contribution/crypto/lockPlan/ContributionCurrencyType";
-import LockCryptoStartDate from "../../../pages/contribution/crypto/lockPlan/StartDate";
-import LockCryptoPreviewSavings from "../../../pages/contribution/crypto/lockPlan/PreviewSavings";
-import StrictLockCryptoPurpose from "../../../pages/contribution/crypto/strictLockPlan/ContributionCurrencyType";
-import LockCryptoSourceFunds from "../../../pages/contribution/crypto/lockPlan/SourceFunds";
 import SavingsPlan from "../../../pages/contribution/naira/auto/SavingsPlan";
 import StartDate from "../../../pages/contribution/naira/auto/StartDate";
-import FlexibleCryptoStartDate from "../../../pages/contribution/crypto/flexiblePlan/StartDate";
-import FlexibleCryptoSourceFunds from "../../../pages/contribution/crypto/flexiblePlan/SourceFunds";
-import FlexibleCryptoPreviewSavings from "../../../pages/contribution/crypto/flexiblePlan/PreviewSavings";
-import StrictLockCryptoStartDate from "../../../pages/contribution/crypto/strictLockPlan/StartDate";
-import StrictLockCryptoSourceFunds from "../../../pages/contribution/crypto/strictLockPlan/SourceFunds";
-import StrictLockCryptoPreviewSavings from "../../../pages/contribution/crypto/strictLockPlan/PreviewSavings";
 import SavingsAmount from "../../../pages/contribution/naira/auto/SavingsAmount";
 import WithdrawContribution from "../../../pages/contribution/withdrawContribution/WithdrawContribution";
 import WithdrawCryptoContribution from "../../../pages/contribution/withdrawContribution/WithdrawCryptoContribution";
@@ -35,18 +23,6 @@ import OneTimeCurrencyType from "../../../pages/contribution/naira/oneTimePlan/C
 import OneTimePurpose from "../../../pages/contribution/naira/oneTimePlan/Purpose";
 import OneTimeAmount from "../../../pages/contribution/naira/oneTimePlan/SavingsAmount";
 import OneTimeStartDate from "../../../pages/contribution/naira/oneTimePlan/StartDate";
-import OneTimeFlexibleCryptoPurpose from "../../../pages/contribution/crypto/oneTimePlan/flexiblePlan/ContributionCurrencyType";
-import OneTimeFlexibleCryptoStartDate from "../../../pages/contribution/crypto/oneTimePlan/flexiblePlan/StartDate";
-import OneTimeFlexibleCryptoSourceFunds from "../../../pages/contribution/crypto/oneTimePlan/flexiblePlan/SourceFunds";
-import OneTimeFlexibleCryptoPreviewSavings from "../../../pages/contribution/crypto/oneTimePlan/flexiblePlan/PreviewSavings";
-import OneTimeLockCryptoPurpose from "../../../pages/contribution/crypto/oneTimePlan/lockPlan/ContributionCurrencyType";
-import OneTimeLockCryptoStartDate from "../../../pages/contribution/crypto/oneTimePlan/lockPlan/StartDate";
-import OneTimeLockCryptoSourceFunds from "../../../pages/contribution/crypto/oneTimePlan/lockPlan/SourceFunds";
-import OneTimeLockCryptoPreviewSavings from "../../../pages/contribution/crypto/oneTimePlan/lockPlan/PreviewSavings";
-import OneTimeStrictLockCryptoPurpose from "../../../pages/contribution/crypto/oneTimePlan/strictLockPlan/ContributionCurrencyType";
-import OneTimeStrictLockCryptoStartDate from "../../../pages/contribution/crypto/oneTimePlan/strictLockPlan/StartDate";
-import OneTimeStrictLockCryptoSourceFunds from "../../../pages/contribution/crypto/oneTimePlan/strictLockPlan/SourceFunds";
-import OneTimeStrictLockCryptoPreviewSavings from "../../../pages/contribution/crypto/oneTimePlan/strictLockPlan/PreviewSavings";
 import FundCryptoWallet from "../../../pages/wallet/fund/FundCryptoWallet";
 import FundCryptoWalletPreview from "../../../pages/wallet/fund/FundCryptoWalletPreview";
 import FundCryptoWalletSuccess from "../../../pages/wallet/fund/FundCryptoWalletSuccess";
@@ -74,6 +50,20 @@ import GroupHistoryPage from "../../../pages/ajo/group_history/page";
 import InviteMembersPage from "../../../pages/ajo/invite_members/page";
 import TransactionHistoryPage from "../../../pages/ajo/transaction_history/page";
 import MembersPage from "../../../pages/ajo/members/page";
+
+// Imported Unified Crypto Components
+import UnifiedContributionCurrencyType from "../../../pages/contribution/crypto/auto/ContributionCurrencyType";
+import UnifiedStartDate from "../../../pages/contribution/crypto/auto/StartDate";
+import UnifiedSourceFunds from "../../../pages/contribution/crypto/auto/SourceFunds";
+import UnifiedPreviewSavings from "../../../pages/contribution/crypto/auto/PreviewSavings";
+
+// Unified components' configurations
+const UNIFIED_CRYPTO_PURPOSE_PATH =
+  "/contribution/crypto/unified-crypto-purpose";
+const UNIFIED_START_DATE_PATH = "/contribution/crypto/unified-start-date";
+const UNIFIED_SOURCE_FUNDS_PATH = "/contribution/crypto/unified-source-funds";
+const UNIFIED_PREVIEW_SAVINGS_PATH =
+  "/contribution/crypto/unified-preview-savings";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -140,57 +130,23 @@ const Dashboard = () => {
             path="contribution/crypto_contribution_details"
             element={<CryptoContributionDetails />}
           />
-          <Route
-            path="contribution/flexible/crypto_purpose"
-            element={<CryptoPurpose />}
-          />
-          <Route
-            path="contribution/lock/crypto_purpose"
-            element={<LockCryptoPurpose />}
-          />
-          <Route
-            path="contribution/lock/cryoto_date"
-            element={<LockCryptoStartDate />}
-          />
-          <Route
-            path="contribution/lock/source_funds"
-            element={<LockCryptoSourceFunds />}
-          />
-          <Route
-            path="contribution/lock/preview_savings"
-            element={<LockCryptoPreviewSavings />}
-          />
-          <Route
-            path="contribution/strict_lock/crypto_purpose"
-            element={<StrictLockCryptoPurpose />}
-          />
-          <Route
-            path="contribution/flexible_crypto/date"
-            element={<FlexibleCryptoStartDate />}
-          />
-          <Route
-            path="contribution/flexible/source_funds"
-            element={<FlexibleCryptoSourceFunds />}
-          />
 
+          {/* Unified Crypto Contribution Routes */}
           <Route
-            path="contribution/flexible/preview_savings"
-            element={<FlexibleCryptoPreviewSavings />}
+            path={UNIFIED_CRYPTO_PURPOSE_PATH}
+            element={<UnifiedContributionCurrencyType />}
           />
-
           <Route
-            path="contribution/strict_lock/date"
-            element={<StrictLockCryptoStartDate />}
+            path={UNIFIED_START_DATE_PATH}
+            element={<UnifiedStartDate />}
           />
-
           <Route
-            path="contribution/strict_lock/source_funds"
-            element={<StrictLockCryptoSourceFunds />}
+            path={UNIFIED_SOURCE_FUNDS_PATH}
+            element={<UnifiedSourceFunds />}
           />
-
           <Route
-            path="/dashboard/contribution/strict_lock/preview"
-            element={<StrictLockCryptoPreviewSavings />}
+            path={UNIFIED_PREVIEW_SAVINGS_PATH}
+            element={<UnifiedPreviewSavings />}
           />
 
           <Route path="/contribution/preview" element={<Preview />} />
@@ -206,11 +162,6 @@ const Dashboard = () => {
           />
 
           <Route
-            path="contribution/strict_lock/preview_savings"
-            element={<StrictLockCryptoPreviewSavings />}
-          />
-
-          <Route
             path="/contribution/withdraw_crypto_contribution"
             element={<WithdrawCryptoContribution />}
           />
@@ -218,60 +169,6 @@ const Dashboard = () => {
           <Route
             path="/contribution/withdraw_contribution/confirm_crypto_amount"
             element={<ConfirmCryptoWithdrawal />}
-          />
-
-          {/* One-Time Flexible Plan Routes */}
-          <Route
-            path="contribution/one_time_plan/flexible/crypto_purpose"
-            element={<OneTimeFlexibleCryptoPurpose />}
-          />
-          <Route
-            path="contribution/one_time_plan/flexible/date"
-            element={<OneTimeFlexibleCryptoStartDate />}
-          />
-          <Route
-            path="contribution/one_time_plan/flexible/source_funds"
-            element={<OneTimeFlexibleCryptoSourceFunds />}
-          />
-          <Route
-            path="contribution/one_time_plan/flexible/preview_savings"
-            element={<OneTimeFlexibleCryptoPreviewSavings />}
-          />
-
-          {/* One-Time Lock Plan Routes */}
-          <Route
-            path="contribution/one_time_plan/lock/crypto_purpose"
-            element={<OneTimeLockCryptoPurpose />}
-          />
-          <Route
-            path="contribution/one_time_plan/lock/date"
-            element={<OneTimeLockCryptoStartDate />}
-          />
-          <Route
-            path="contribution/one_time_plan/lock/source_funds"
-            element={<OneTimeLockCryptoSourceFunds />}
-          />
-          <Route
-            path="contribution/one_time_plan/lock/preview_savings"
-            element={<OneTimeLockCryptoPreviewSavings />}
-          />
-
-          {/* One-Time Strict Lock Plan Routes */}
-          <Route
-            path="contribution/one_time_plan/strict_lock/crypto_purpose"
-            element={<OneTimeStrictLockCryptoPurpose />}
-          />
-          <Route
-            path="contribution/one_time_plan/strict_lock/date"
-            element={<OneTimeStrictLockCryptoStartDate />}
-          />
-          <Route
-            path="contribution/one_time_plan/strict_lock/source_funds"
-            element={<OneTimeStrictLockCryptoSourceFunds />}
-          />
-          <Route
-            path="contribution/one_time_plan/strict_lock/preview_savings"
-            element={<OneTimeStrictLockCryptoPreviewSavings />}
           />
 
           <Route path="ajo" element={<AjoPage />} />
