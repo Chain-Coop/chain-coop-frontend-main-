@@ -141,6 +141,19 @@ const UnifiedPreviewSavings: React.FC = () => {
       );
     }
 
+        toast.info(
+      "Don't refresh or close this tab. Real power takes a minute. You're not just saving... you're making history",
+      {
+        position: "top-right",
+        autoClose: 7000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        toastId: "avoid-refresh-warning-on-pin-submit",
+      },
+    );
+
     let finalPayload: any = {
       ...restOfFormData,
       tokenId: tokenId,
@@ -248,7 +261,7 @@ const UnifiedPreviewSavings: React.FC = () => {
           </div>
 
           <section className="flex w-full flex-col gap-2 md:flex-row md:gap-5">
-            <div className="flex items-center gap-1 md:gap-2">
+            <div className="hidden items-center gap-1 md:gap-2">
               <h2 className="text-sm font-semibold text-gray-500">
                 Interest Rate:
               </h2>
