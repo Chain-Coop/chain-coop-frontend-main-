@@ -58,7 +58,7 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({
       .unwrap()
       .then((response) => {
         setLoading(false);
-        const paymentUrl = response?.transaction?.paymentUrl;
+        const paymentUrl = response?.paymentUrl;
         if (paymentUrl) {
           window.location.href = paymentUrl;
         } else {
@@ -67,7 +67,7 @@ const EmailAmountModal: React.FC<EmailAmountModalProps> = ({
       })
       .catch((error: any) => {
         setLoading(false);
-        toast.error(error?.message || "An error occurred, please try again");
+        toast.error(error || "An error occurred, please try again");
       });
   };
 

@@ -1,28 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../../shared/redux/store";
 import user from "../../../../Assets/png/dashboard/avatar.png";
 import tier from "../../../../Assets/svg/dashboard/tier.svg";
 import { RootState } from "../../../../shared/redux/rootReducer";
-import {
-  GetUserProfile,
-  uploadAvatar,
-} from "../../../../shared/redux/slices/landing.slices";
+import { uploadAvatar } from "../../../../shared/redux/slices/landing.slices";
 
 const Avatar = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { getProfile, avatarUrl, isLoading } = useSelector(
+  const { getProfile, avatarUrl } = useSelector(
     (state: RootState) => state.landing,
   );
   const [avatarLoading, setAvatarLoading] = useState(false);
-
-  useEffect(() => {
-    dispatch(GetUserProfile());
-  }, [dispatch]);
-
-  useEffect(() => {
-    setAvatarLoading(isLoading);
-  }, [isLoading]);
 
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -32,11 +21,17 @@ const Avatar = () => {
       setAvatarLoading(true);
       const formData = new FormData();
       formData.append("profilePicture", selectedFile);
-      await dispatch(uploadAvatar(formData)).unwrap();
-      await dispatch(GetUserProfile()).unwrap();
-      setAvatarLoading(false);
+      try {
+        await dispatch(uploadAvatar(formData)).unwrap();
+      } catch (error) {
+        console.error("Failed to upload avatar:", error);
+      } finally {
+        setAvatarLoading(false);
+      }
     }
   };
+
+  const avatarSource = avatarUrl || getProfile?.profilePhoto?.url || user;
 
   return (
     <main>
@@ -51,7 +46,7 @@ const Avatar = () => {
                   </div>
                 ) : (
                   <img
-                    src={avatarUrl || getProfile?.profilePhoto?.url || user}
+                    src={avatarSource}
                     alt="profile"
                     className="h-full w-full object-cover"
                   />
@@ -69,7 +64,7 @@ const Avatar = () => {
           </div>
           <div className="flex flex-col items-center gap-2 sm:items-start sm:gap-4">
             <span className="text-lg font-bold">
-              {getProfile?.username || "user"}
+              {getProfile?.username || "User"}
             </span>
             <div className="flex items-center gap-1">
               <div>

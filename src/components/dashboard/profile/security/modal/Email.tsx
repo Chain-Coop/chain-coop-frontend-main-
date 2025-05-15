@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { ResetPassword } from "../../../../../shared/redux/slices/landing.slices";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { ResendEmailOtp } from "../../../../../shared/redux/slices/landing.slices";
 import { AppDispatch } from "../../../../../shared/redux/store";
 import {
   Button,
@@ -15,6 +15,7 @@ import FormInput from "../../../../common/FormInput";
 import { IoMdClose } from "react-icons/io";
 import { RootState } from "../../../../../shared/redux/rootReducer";
 import { useAppSelector } from "../../../../../shared/redux/reduxHooks";
+import { useUserProfile } from "../../../../../shared/Hooks/useUserProfile";
 
 interface EmailStepProps {
   email: string;
@@ -32,26 +33,28 @@ const EmailStep = ({
   onClose,
 }: EmailStepProps) => {
   const dispatch: AppDispatch = useDispatch();
-  const { getProfile } = useAppSelector((state: RootState) => state.landing);
-  const { isLoading, error, success } = useSelector(
-    (state: any) => state.landing,
+  const { isLoading, error } = useAppSelector(
+    (state: RootState) => state.landing,
   );
+  const { profileDetails } = useUserProfile();
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    setEmail(getProfile?.email || "");
-  }, [getProfile?.email, setEmail]);
-
-  useEffect(() => {
-    if (success) {
-      onEmailSent();
-    }
-  }, [success, onEmailSent]);
+    setEmail(profileDetails?.email || "");
+  }, [profileDetails?.email, setEmail]);
 
   const handleOtpMail = async () => {
     try {
-      await dispatch(ResetPassword({ email }));
+      setSubmitting(true);
+      const resultAction = await dispatch(ResendEmailOtp({ email }));
+
+      if (ResendEmailOtp.fulfilled.match(resultAction)) {
+        onEmailSent();
+      }
     } catch (error) {
       console.error("Failed to send OTP:", error);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -105,11 +108,11 @@ const EmailStep = ({
         <Button
           variant="filled"
           onClick={handleOtpMail}
-          disabled={isLoading}
-          loading={isLoading}
+          disabled={isLoading || submitting}
+          loading={isLoading || submitting}
           className="flex w-[70%] items-center justify-center rounded-full bg-text2 p-3 text-sm font-normal normal-case"
         >
-          {isLoading ? "Please Wait..." : "Reset"}
+          Reset
         </Button>
       </DialogFooter>
     </Dialog>

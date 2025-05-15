@@ -1,6 +1,5 @@
 export default function authHeader() {
   const userToken = sessionStorage.getItem("authToken");
-
   if (userToken) {
     return {
       Authorization: `Bearer ${userToken}`,
@@ -9,3 +8,5 @@ export default function authHeader() {
     return {};
   }
 }
+
+

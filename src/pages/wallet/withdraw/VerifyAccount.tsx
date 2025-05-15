@@ -1,31 +1,30 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Typography } from "@material-tailwind/react";
 import {
   WithdrawalFromWallet,
   GeneratePinOTP,
 } from "../../../shared/redux/slices/transaction.slices";
-import Success from "../../../components/common/Success";
+import { DashboardHeader } from "../../../components/common/DashboardHeader";
+import { WithdrawIcon } from "../../../Assets/svg";
+import { Alert } from "@mui/material";
+import { AppDispatch } from "../../../shared/redux/store";
+import { RootState } from "../../../shared/redux/rootReducer";
+import { GetUserProfile } from "../../../shared/redux/slices/landing.slices";
 import PinModal from "../../../components/common/PinModal";
 import GeneratePin from "../../../components/dashboard/profile/security/modal/GeneratePin";
 import OtpPin from "../../../components/dashboard/profile/security/modal/OtpPin";
 import ChangePin from "../../../components/dashboard/profile/security/modal/ChangePin";
-import { DashboardHeader } from "../../../components/common/DashboardHeader";
-import { AppDispatch } from "../../../shared/redux/store";
-import { WithdrawIcon } from "../../../Assets/svg";
-import useUserProfile from "../../../shared/Hooks/useUserProfile";
-import { Alert } from "@mui/material";
-import { useAppSelector } from "../../../shared/redux/reduxHooks";
-import { RootState } from "../../../shared/redux/rootReducer";
-import { GetUserProfile } from "../../../shared/redux/slices/landing.slices";
+import SuccessModal from "../../../components/dashboard/wallet/modal/SuccessModal";
+import { useUserProfile } from "../../../shared/Hooks/useUserProfile";
 
 const VerifyAccount = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
-  const { getProfile } = useAppSelector((state: RootState) => state.landing);
+  const { profileDetails } = useUserProfile();
 
   const [pinStep, setPinStep] = useState(0);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -38,7 +37,7 @@ const VerifyAccount = () => {
   const { accountName, accountNumber, bankName, bankCode, amount } =
     location.state || {};
 
-  const isPinCreated = getProfile?.isPinCreated || false;
+  const isPinCreated = profileDetails?.isPinCreated || false;
 
   useEffect(() => {
     if (transactionComplete) {
@@ -54,9 +53,10 @@ const VerifyAccount = () => {
 
   useEffect(() => {
     if (!location.state) {
-      navigate("/wallet", { replace: true });
+      navigate("/dashboard/wallet", { replace: true });
     }
-  }, [location.state, navigate]);
+    dispatch(GetUserProfile());
+  }, [location.state, navigate, dispatch]);
 
   const handleBackClick = () => {
     if (!transactionComplete) {
@@ -110,15 +110,15 @@ const VerifyAccount = () => {
 
   const handleChangePinSuccess = async () => {
     try {
-      await GetUserProfile();
+      await dispatch(GetUserProfile()).unwrap();
       setPinStep(4);
     } catch (error: any) {
       setError("Failed to refresh profile. Please try again.");
     }
   };
 
-  const handleSubmit = async (submittedPin: string) => {
-    if (submittedPin.length !== 4) {
+  const handleSubmit = async () => {
+    if (pin.length !== 4) {
       setError("Please enter a 4-digit PIN.");
       return;
     }
@@ -127,25 +127,19 @@ const VerifyAccount = () => {
     setError("");
 
     try {
-      const body = {
-        accountNumber,
-        bankCode,
-        amount,
-        pin: submittedPin,
-        bankName,
-      };
+      await dispatch(
+        WithdrawalFromWallet({
+          accountNumber,
+          bankCode,
+          amount,
+          bankName,
+          pin,
+        }),
+      ).unwrap();
 
-      const response = await dispatch(WithdrawalFromWallet(body)).unwrap();
-
-      if (response.landing.message) {
-        handleSuccessfulTransaction();
-      } else {
-        setError(
-          response.landing.message || "Withdrawal failed. Please try again.",
-        );
-      }
+      handleSuccessfulTransaction();
     } catch (err: any) {
-      const errorMessage = err.error || "An error occurred. Please try again.";
+      const errorMessage = err || "An error occurred. Please try again.";
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -154,7 +148,7 @@ const VerifyAccount = () => {
 
   const handleSubmitClick = async () => {
     try {
-      await GetUserProfile();
+      await dispatch(GetUserProfile()).unwrap();
       if (isPinCreated) {
         setPinStep(4);
       } else {
@@ -167,7 +161,7 @@ const VerifyAccount = () => {
 
   return (
     <main>
-      <header className="lg:mt-[2em]">
+      <header className="lg:mt-8">
         <DashboardHeader
           className="relative cursor-pointer items-center"
           onClick={handleBackClick}
@@ -181,9 +175,9 @@ const VerifyAccount = () => {
           </div>
         </DashboardHeader>
       </header>
-      <section className="gap- mt-[2.5em] flex flex-col items-center justify-center text-center">
+      <section className="mt-8 flex flex-col items-center justify-center gap-4 text-center">
         <WithdrawIcon />
-        <div className="mt-[2em]">
+        <div className="mt-4">
           <Typography variant="h5" className="font-bold">
             {accountName}
           </Typography>
@@ -191,11 +185,7 @@ const VerifyAccount = () => {
             <span>{bankName}</span>.<span>{accountNumber}</span>
           </Typography>
         </div>
-        {error && (
-          <Alert severity="error" className="mt-4">
-            {error}
-          </Alert>
-        )}
+
         <Button
           variant="text"
           onClick={handleSubmitClick}
@@ -245,12 +235,11 @@ const VerifyAccount = () => {
         />
       )}
 
-      <Success
+      <SuccessModal
         isOpen={isSuccessModalOpen}
         onClose={() => {
           navigate("/dashboard/wallet", { replace: true });
         }}
-        title="Successfully Submitted"
       />
     </main>
   );

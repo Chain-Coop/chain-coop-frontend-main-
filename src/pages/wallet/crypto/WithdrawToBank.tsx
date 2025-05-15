@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../../../shared/redux/store";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
-import { CashwyreFund } from "../../../shared/redux/slices/web3.slices";
+import { CashwyreOfframpQuote } from "../../../shared/redux/slices/web3.slices";
 import btcImg from "../../../Assets/svg/dashboard/wallet/btc.svg";
 import usdcImg from "../../../Assets/svg/dashboard/wallet/btc.svg";
 import usdtImg from "../../../Assets/svg/dashboard/wallet/btc.svg";
@@ -14,29 +14,36 @@ import { toast } from "react-toastify";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
 const CRYPTOS = [
-  { label: "Bitcoin (BTC)", value: "bitcoin", img: btcImg },
-  { label: "USDC", value: "usdc", img: usdcImg },
-  { label: "USDT", value: "usdt", img: usdtImg },
-];
-const NETWORKS = [
-  { label: "BTC Lightning", value: "BTC_LN" },
-  { label: "BTC", value: "btc" },
-  { label: "LISK", value: "lisk" },
-  { label: "BNB Smart Chain-BEP20", value: "bsc" },
-  { label: "Etherlink", value: "etherlink" },
+  { label: "BTC", value: "bitcoin", img: btcImg, network: "BTC" },
+  { label: "USDC", value: "usdc", img: usdcImg, network: "USDC" },
+  { label: "USDT", value: "usdt", img: usdtImg, network: "USDT" },
 ];
 
-const FundCryptoWallet: React.FC = () => {
+const WithdrawToBank: React.FC = () => {
   const [crypto, setCrypto] = useState(CRYPTOS[0]);
   const [showCryptoModal, setShowCryptoModal] = useState(false);
-  const [network, setNetwork] = useState(NETWORKS[0]);
-  const [showNetworkModal, setShowNetworkModal] = useState(false);
   const [amount, setAmount] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const { offrampQuoteError, offrampQuoteResult } = useSelector(
+    (state: any) => state.web3,
+  );
 
-  const handlePreviewOrder = async () => {
+  // Modal animation variants
+  const modalVariants = {
+    hidden: { opacity: 0, y: -50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+    exit: { opacity: 0, y: -50, transition: { duration: 0.2 } },
+  };
+
+  // Backdrop for modal
+  const backdropVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+  };
+
+  const handlePreviewWithdrawal = async () => {
     setIsSubmitting(true);
 
     const toastId = toast.loading("Processing your request...", {
@@ -49,17 +56,15 @@ const FundCryptoWallet: React.FC = () => {
     });
 
     try {
-      const payload = {
-        amount: Number(amount),
-        crypto: crypto.value,
-        network: network.value,
-      };
-
-      const cashwyrePayload = {
-        body: payload,
-      };
-
-      const response = await dispatch(CashwyreFund(cashwyrePayload));
+      const response = await dispatch(
+        CashwyreOfframpQuote({
+          body: {
+            amount: Number(amount),
+            crypto: crypto.value,
+            network: crypto.network,
+          },
+        }),
+      ).unwrap();
 
       toast.update(toastId, {
         render: "Request processed successfully!",
@@ -68,35 +73,35 @@ const FundCryptoWallet: React.FC = () => {
         autoClose: 2000,
       });
 
-      navigate("/dashboard/wallet/fund/fund_crypto_wallet_preview", {
+      // Navigate to preview page with withdrawal data
+      navigate("/dashboard/wallet/crypto/withdraw/preview", {
         state: {
-          ...response.payload,
-          network: network.label,
-          networkValue: network.value,
+          data: {
+            data: {
+              amountInCryptoAsset: Number(amount),
+              cryptoAsset: crypto.value,
+              currency: "NGN",
+              amountInLocalCurrency: response.data.data.amountInLocalCurrency,
+              cryptoRate: response.data.data.cryptoRate,
+              reference: response.data.data.reference,
+              transactionReference: response.data.data.transactionReference,
+            },
+          },
+          network: crypto.network,
+          networkValue: crypto.network,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       toast.update(toastId, {
         render: "Failed to process request. Please try again.",
         type: "error",
         isLoading: false,
         autoClose: 4000,
       });
-      console.error("Error processing fund request:", error);
+      console.error("Failed to get withdrawal quote:", error);
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const modalVariants = {
-    hidden: { opacity: 0, y: -50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-    exit: { opacity: 0, y: -50, transition: { duration: 0.2 } },
-  };
-
-  const backdropVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
   };
 
   const handleBackClick = () => {
@@ -111,7 +116,7 @@ const FundCryptoWallet: React.FC = () => {
           size={25}
           className="absolute left-2 top-1/2 -translate-y-1/2 transform cursor-pointer lg:left-7"
         />
-        Fund Wallet
+        Withdraw to Bank
       </DashboardHeader>
       <section className="relative mx-auto my-10 w-full px-2">
         {/* Crypto image and title */}
@@ -127,9 +132,9 @@ const FundCryptoWallet: React.FC = () => {
         </div>
         {/* Info banner */}
         <div className="my-4 px-5 text-center text-lg">
-          The cryptocurrency the market prices varies, so there is no fixed
-          crypto price. However, crypto will be credited based on the amount
-          deposited with the current market price
+          When withdrawing crypto, the amount will be converted to Naira based
+          on current market rates. The final amount you receive may vary
+          slightly due to market fluctuations.
         </div>
 
         {/* Crypto type dropdown */}
@@ -148,6 +153,7 @@ const FundCryptoWallet: React.FC = () => {
           <AnimatePresence>
             {showCryptoModal && (
               <>
+                {/* Backdrop with click handler to close */}
                 <motion.div
                   className="fixed inset-0 z-40 bg-black bg-opacity-30"
                   initial="hidden"
@@ -157,7 +163,7 @@ const FundCryptoWallet: React.FC = () => {
                   onClick={() => setShowCryptoModal(false)}
                 />
 
-                {/* Modal container*/}
+                {/* Modal container */}
                 <motion.div
                   className="fixed left-1/2 top-1/2 z-50 w-[90%] max-w-sm -translate-x-1/2 -translate-y-1/2 transform rounded-lg bg-white shadow-xl"
                   initial="hidden"
@@ -199,90 +205,11 @@ const FundCryptoWallet: React.FC = () => {
                                 className="h-5 w-5"
                               />
                             </div>
-                            <span className="font-medium">
-                              {c.value === "bitcoin"
-                                ? "BTC"
-                                : c.value.toUpperCase()}
-                            </span>
+                            <span className="font-medium">{c.label}</span>
                           </div>
                           <input
                             type="radio"
                             checked={crypto.value === c.value}
-                            readOnly
-                            className="h-5 w-5 accent-purple-600"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              </>
-            )}
-          </AnimatePresence>
-        </div>
-
-        {/* Token network dropdown */}
-        <div className="relative mb-4">
-          <label className="mb-1 block text-lg font-medium">
-            Token network
-          </label>
-          <button
-            className="flex w-full items-center justify-between rounded border px-3 py-2"
-            onClick={() => setShowNetworkModal(true)}
-            type="button"
-          >
-            {network.label}
-            <span className="ml-2">▼</span>
-          </button>
-
-          <AnimatePresence>
-            {showNetworkModal && (
-              <>
-                <motion.div
-                  className="fixed inset-0 z-40 bg-black bg-opacity-30"
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                  variants={backdropVariants}
-                  onClick={() => setShowNetworkModal(false)}
-                />
-
-                {/* Modal container */}
-                <motion.div
-                  className="fixed left-1/2 top-1/2 z-50 w-[90%] max-w-sm -translate-x-1/2 -translate-y-1/2 transform rounded-lg bg-white shadow-xl"
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  variants={modalVariants}
-                >
-                  <div className="p-5">
-                    <div className="mb-4 flex items-center justify-between">
-                      <h3 className="text-lg font-medium">
-                        Select Token Network
-                      </h3>
-                      <button
-                        onClick={() => setShowNetworkModal(false)}
-                        className="text-gray-500 hover:text-gray-700"
-                      >
-                        <IoClose size={24} />
-                      </button>
-                    </div>
-
-                    {/* Network options */}
-                    <div className="space-y-3">
-                      {NETWORKS.map((n) => (
-                        <div
-                          key={n.value}
-                          className="flex cursor-pointer items-center justify-between rounded-lg border border-gray-200 p-3 hover:bg-gray-50"
-                          onClick={() => {
-                            setNetwork(n);
-                            setShowNetworkModal(false);
-                          }}
-                        >
-                          <span className="font-medium">{n.label}</span>
-                          <input
-                            type="radio"
-                            checked={network.value === n.value}
                             readOnly
                             className="h-5 w-5 accent-purple-600"
                           />
@@ -303,19 +230,31 @@ const FundCryptoWallet: React.FC = () => {
             <input
               type="number"
               className="flex-1 bg-transparent outline-none"
-              placeholder="₦ 100,000"
+              placeholder={`0.00 ${crypto.label}`}
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               min={0}
+              step="any"
             />
-            <span className="ml-2 font-bold text-green-600">NGN</span>
+            <span className="ml-2 font-bold text-green-600">
+              {crypto.label}
+            </span>
           </div>
         </div>
-        {/* Preview Order Button */}
+
+        {/* Error message */}
+        {offrampQuoteError && (
+          <div className="mt-4 text-center text-sm text-red-600">
+            {offrampQuoteError}
+          </div>
+        )}
+
+        {/* Preview Withdrawal Button */}
         <div className="mt-10 flex items-center justify-between">
           <button
             onClick={() => navigate(-1)}
             className="flex items-center transition-all duration-300 ease-in-out hover:scale-110 hover:text-text2"
+            disabled={isSubmitting}
           >
             <IoIosArrowDropleft size={25} />
           </button>
@@ -323,10 +262,10 @@ const FundCryptoWallet: React.FC = () => {
             className="rounded-md bg-text2 px-8 py-2 font-semibold text-white
               transition-all duration-300 ease-in-out hover:scale-105 hover:bg-opacity-90 hover:shadow-lg
               active:scale-95 active:transform disabled:cursor-not-allowed disabled:opacity-50"
-            onClick={handlePreviewOrder}
-            disabled={!amount}
+            onClick={handlePreviewWithdrawal}
+            disabled={!amount || isSubmitting}
           >
-            Preview order
+            {isSubmitting ? "Processing..." : "Preview withdrawal"}
           </button>
         </div>
       </section>
@@ -334,4 +273,4 @@ const FundCryptoWallet: React.FC = () => {
   );
 };
 
-export default FundCryptoWallet;
+export default WithdrawToBank;

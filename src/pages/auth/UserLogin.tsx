@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
-import { FaArrowLeft } from "react-icons/fa6";
 import { Button, Typography } from "@material-tailwind/react";
 import logo from "../../Assets/svg/auth/logo.svg";
 import { LoginRequest } from "../../shared/types";
@@ -15,6 +14,7 @@ import FormInput from "../../components/common/FormInput";
 import { ROUTES } from "../../shared/routes";
 import { RootState } from "../../shared/redux/rootReducer";
 import {
+  GetUserProfile,
   LoginUser,
   resetAuthState,
 } from "../../shared/redux/slices/landing.slices";
@@ -49,7 +49,7 @@ const UserLogin = () => {
           isVerified: loginData.isVerified,
         }),
       );
-
+      dispatch(GetUserProfile());
       toast.success("Login successful!");
 
       if (loginData.isVerified) {
@@ -93,25 +93,19 @@ const UserLogin = () => {
     }
   };
 
+  const handleHomeClick = () => {
+    navigate("/");
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleHomeClick = () => {
-    navigate("/");
-  };
-
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-100 py-8">
-      <section className="w-full px-4 text-center lg:w-2/5">
-        <div
-          className="absolute left-4 top-4 cursor-pointer lg:left-8 lg:top-8"
-          onClick={handleHomeClick}
-        >
-          <FaArrowLeft size={24} className="text-blue-600" />
-        </div>
-        <header className="mx-auto text-center">
+    <main className="flex min-h-screen items-center justify-center bg-log py-8">
+      <section className="w-full px-[12px] text-center lg:w-[45%]">
+        <header className="m-auto text-center">
           <img
             src={logo}
             alt="chain_co-op_logo"
@@ -126,11 +120,7 @@ const UserLogin = () => {
             </Typography>
           </div>
         </header>
-        <form
-          onSubmit={handleSubmit}
-          className="mt-6 flex flex-col gap-4"
-          noValidate
-        >
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <FormInput
             label="Email"
             type="email"
@@ -141,6 +131,7 @@ const UserLogin = () => {
             disabled={isLoading}
             required
           />
+
           <FormInput
             label="Password"
             type={passwordType}
@@ -165,28 +156,31 @@ const UserLogin = () => {
               </button>
             }
           />
+
           <div className="flex justify-end">
             <Link
               to={ROUTES.forget_password}
-              className="pointer font-normal italic text-text2"
+              className="pointer font-normal italic"
             >
-              Forgot Password?
+              Forgot Password ?
             </Link>
           </div>
+
           <Button
             type="submit"
             className="relative mt-[2em] flex w-full items-center justify-center rounded-full bg-text2 p-4 text-center text-sm font-semibold normal-case text-text5"
-            disabled={isLoading || !formData.email || !formData.password}
+            disabled={isLoading}
             loading={isLoading}
           >
             Log in
           </Button>
-          <div className="mt-4 flex justify-center text-sm">
-            <p className="text-gray-600">
-              Don't have an account?{" "}
+
+          <div className="mt-4 flex justify-center">
+            <p>
+              {`Don't have an account?`}
               <Link
                 to={ROUTES.sign_up}
-                className="font-medium text-text2 hover:underline"
+                className="ml-2 cursor-pointer font-medium text-text2"
               >
                 Sign Up Now
               </Link>

@@ -22,25 +22,45 @@ import {
   ContactResponse,
   UserProfileResponse,
   UploadAvatarResponse,
+  ForgotPasswordRequest,
+  ForgotPasswordResponse,
+  UpdatePhoneNumberRequest,
+  UpdatePhoneNumberResponse,
 } from "../../types";
+import { API_ENDPOINTS } from "../../utils/apiEndpoints";
 
 const API_URL = (import.meta as any).env.VITE_REACT_APP_API_URL;
 
 const handleAxiosError = (error: unknown): ApiError => {
   if (axios.isAxiosError(error)) {
     const axiosError = error as AxiosError<ApiError>;
-    return (
-      axiosError.response?.data || { msg: "Network Error: Please try again." }
-    );
+    const response = axiosError.response;
+    const status = response?.status;
+    const data = response?.data;
+
+    if (status === 400) {
+      return { msg: data?.msg || "Invalid request data." };
+    } else if (status === 401) {
+      return { msg: data?.msg || "Unauthorized. Please log in." };
+    } else if (status === 429) {
+      return {
+        msg: data?.msg || "Too many requests. Try again later.",
+      };
+    } else if (status === 500) {
+      return {
+        msg: data?.msg || "Server error. Please try again later.",
+      };
+    }
+
+    return data || { msg: "Network Error: Please try again." };
   }
   return { msg: "An unexpected error occurred." };
 };
 
 export async function RegisterUser(
-  endpoint: string,
   data: RegisterUserRequest,
 ): Promise<RegisterResponse> {
-  const url = `${API_URL}${endpoint}`;
+  const url = `${API_URL}${API_ENDPOINTS.AUTH.REGISTER}`;
   try {
     const response = await axios.post<RegisterResponse>(url, data);
     return response.data;
@@ -50,10 +70,9 @@ export async function RegisterUser(
 }
 
 export async function VerifyUserAuth(
-  endpoint: string,
   data: VerifyEmailRequest,
 ): Promise<VerifyEmailResponse> {
-  const url = `${API_URL}${endpoint}`;
+  const url = `${API_URL}${API_ENDPOINTS.AUTH.VERIFY_OTP}`;
   try {
     const response = await axios.post<VerifyEmailResponse>(url, data, {
       headers: authHeader(),
@@ -65,10 +84,9 @@ export async function VerifyUserAuth(
 }
 
 export async function VerifyUserPhoneNumber(
-  endpoint: string,
   data: VerifyPhoneRequest,
 ): Promise<VerifyPhoneResponse> {
-  const url = `${API_URL}${endpoint}`;
+  const url = `${API_URL}${API_ENDPOINTS.AUTH.VERIFY_WHATSAPP_OTP}`;
   try {
     const response = await axios.post<VerifyPhoneResponse>(url, data, {
       headers: authHeader(),
@@ -80,10 +98,9 @@ export async function VerifyUserPhoneNumber(
 }
 
 export async function RESEND_LOGIN_OTP(
-  endpoint: string,
   data: ResendEmailOtpRequest,
 ): Promise<ResendEmailOtpResponse> {
-  const url = `${API_URL}${endpoint}`;
+  const url = `${API_URL}${API_ENDPOINTS.AUTH.RESEND_OTP}`;
   try {
     const response = await axios.post<ResendEmailOtpResponse>(url, data);
     return response.data;
@@ -93,10 +110,9 @@ export async function RESEND_LOGIN_OTP(
 }
 
 export async function RESEND_VERIFY_OTP(
-  endpoint: string,
   data: ResendVerifyOtpRequest,
 ): Promise<ResendVerifyOtpResponse> {
-  const url = `${API_URL}${endpoint}`;
+  const url = `${API_URL}${API_ENDPOINTS.AUTH.RESEND_WHATSAPP_OTP}`;
   try {
     const response = await axios.post<ResendVerifyOtpResponse>(url, data);
     return response.data;
@@ -105,11 +121,8 @@ export async function RESEND_VERIFY_OTP(
   }
 }
 
-export async function LoginUser(
-  endpoint: string,
-  data: LoginRequest,
-): Promise<LoginResponse> {
-  const url = `${API_URL}${endpoint}`;
+export async function LoginUser(data: LoginRequest): Promise<LoginResponse> {
+  const url = `${API_URL}${API_ENDPOINTS.AUTH.LOGIN}`;
   try {
     const response = await axios.post<LoginResponse>(url, data);
     return response.data;
@@ -119,10 +132,9 @@ export async function LoginUser(
 }
 
 export async function JoinNewsLetter(
-  endpoint: string,
   data: JoinNewsLetterRequest,
 ): Promise<JoinNewsLetterResponse> {
-  const url = `${API_URL}${endpoint}`;
+  const url = `${API_URL}${API_ENDPOINTS.PUBLIC.JOIN_NEWSLETTER}`;
   try {
     const response = await axios.post<JoinNewsLetterResponse>(url, data);
     return response.data;
@@ -132,10 +144,9 @@ export async function JoinNewsLetter(
 }
 
 export async function PublicContact(
-  endpoint: string,
   data: ContactRequest,
 ): Promise<ContactResponse> {
-  const url = `${API_URL}${endpoint}`;
+  const url = `${API_URL}${API_ENDPOINTS.PUBLIC.CONTACT_US}`;
   try {
     const response = await axios.post<ContactResponse>(url, data, {
       headers: authHeader(),
@@ -146,10 +157,8 @@ export async function PublicContact(
   }
 }
 
-export async function GetUserProfile(
-  endpoint: string,
-): Promise<UserProfileResponse> {
-  const url = `${API_URL}${endpoint}`;
+export async function GetUserProfile(): Promise<UserProfileResponse> {
+  const url = `${API_URL}${API_ENDPOINTS.USER.GET_PROFILE}`;
   try {
     const response = await axios.get<UserProfileResponse>(url, {
       headers: authHeader(),
@@ -161,10 +170,9 @@ export async function GetUserProfile(
 }
 
 export async function UploadAvatar(
-  endpoint: string,
   formData: FormData,
 ): Promise<UploadAvatarResponse> {
-  const url = `${API_URL}${endpoint}`;
+  const url = `${API_URL}${API_ENDPOINTS.USER.UPLOAD_AVATAR}`;
   try {
     const response = await axios.post<UploadAvatarResponse>(url, formData, {
       headers: {
@@ -179,10 +187,9 @@ export async function UploadAvatar(
 }
 
 export async function ResetPassword(
-  endpoint: string,
   data: ResetPasswordRequest,
 ): Promise<ResetPasswordResponse> {
-  const url = `${API_URL}${endpoint}`;
+  const url = `${API_URL}${API_ENDPOINTS.AUTH.RESET_PASSWORD}`;
   try {
     const response = await axios.post<ResetPasswordResponse>(url, data, {
       headers: authHeader(),
@@ -194,12 +201,11 @@ export async function ResetPassword(
 }
 
 export async function FORGOT_PASSWORD(
-  endpoint: string,
-  data: { email: string },
-): Promise<{ msg: string }> {
-  const url = `${API_URL}${endpoint}`;
+  data: ForgotPasswordRequest,
+): Promise<ForgotPasswordResponse> {
+  const url = `${API_URL}${API_ENDPOINTS.AUTH.FORGOT_PASSWORD}`;
   try {
-    const response = await axios.post<{ msg: string }>(url, data);
+    const response = await axios.post<ForgotPasswordResponse>(url, data);
     return response.data;
   } catch (error) {
     throw handleAxiosError(error);
@@ -207,25 +213,11 @@ export async function FORGOT_PASSWORD(
 }
 
 export async function UPDATE_PHONE_NUMBER(
-  endpoint: string,
-  data: { phoneNumber: string },
-): Promise<{ msg: string }> {
-  const url = `${API_URL}${endpoint}`;
+  data: UpdatePhoneNumberRequest,
+): Promise<UpdatePhoneNumberResponse> {
+  const url = `${API_URL}${API_ENDPOINTS.AUTH.UPDATE_PHONE_NUMBER}`;
   try {
-    const response = await axios.post<{ msg: string }>(url, data);
-    return response.data;
-  } catch (error) {
-    throw handleAxiosError(error);
-  }
-}
-
-export async function RESET_PASSWORD(
-  endpoint: string,
-  data: ResetPasswordRequest,
-): Promise<ResetPasswordResponse> {
-  const url = `${API_URL}${endpoint}`;
-  try {
-    const response = await axios.post<ResetPasswordResponse>(url, data);
+    const response = await axios.post<UpdatePhoneNumberResponse>(url, data);
     return response.data;
   } catch (error) {
     throw handleAxiosError(error);
@@ -246,7 +238,7 @@ const Services = {
     FORGOT_PASSWORD,
     RESEND_LOGIN_OTP,
     UPDATE_PHONE_NUMBER,
-    RESET_PASSWORD,
+    RESET_PASSWORD: ResetPassword,
   },
   user: {
     GetUserProfile,

@@ -132,10 +132,6 @@ const CreateAccount = () => {
     setFormData((prev: RegisterUserRequest) => ({ ...prev, [name]: value }));
   };
 
-  const handleHomeClick = () => {
-    navigate("/");
-  };
-
   const customSelectStyles = {
     control: (base: any) => ({
       ...base,
@@ -157,33 +153,27 @@ const CreateAccount = () => {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-100 py-8">
-      <section className="w-full px-4 text-center lg:w-2/5">
-        <div
-          className="absolute left-4 top-4 cursor-pointer lg:left-8 lg:top-8"
-          onClick={handleHomeClick}
-        >
-          <FaArrowLeft size={24} className="text-blue-600" />
-        </div>
-        <header className="mx-auto text-center">
+    <main className="h-vh flex items-center justify-center bg-log pt-[1em] ">
+      <section className="px-[1em] text-center lg:w-[48%]">
+        <div>
           <img
             src={logo}
-            alt="Chain Co-op Logo"
-            className="mx-auto mb-4 w-20 cursor-pointer"
-            onClick={handleHomeClick}
+            alt="Logo"
+            className="mx-auto mb-4 h-[5em] cursor-pointer"
+            onClick={() => navigate(-1)}
           />
-          <h1 className="mb-4 text-3xl font-bold text-gray-800">
+          <Typography
+            variant="h1"
+            className="mb-4 text-3xl font-bold text-text2"
+          >
             Create Your Account
-          </h1>
-          <Typography className="text-center font-medium text-gray-600">
-            Start building your investment portfolio and track your growth.
           </Typography>
-        </header>
-        <form
-          onSubmit={handleSubmit}
-          className="mt-6 flex flex-col gap-4"
-          noValidate
-        >
+          <Typography className="font-medium text-howtext">
+            Start building your investment portfolio and track your growth
+          </Typography>
+        </div>
+
+        <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
           <FormInput
             label="First Name"
             type="text"
@@ -224,10 +214,11 @@ const CreateAccount = () => {
             disabled={isLoading}
             required
           />
+
           <div>
             <label
               htmlFor="phoneNumber-input"
-              className="mb-2 block text-start text-sm font-semibold text-gray-700"
+              className="text- textPrimary mb-2 flex font-semibold"
             >
               Phone Number
             </label>
@@ -242,36 +233,30 @@ const CreateAccount = () => {
               disabled={isLoading}
               onValidityChange={setIsPhoneValid}
             />
+
             {formData.phoneNumber && !isPhoneValid && (
               <p className="mt-1 text-sm text-red-500">
                 Please enter a valid WhatsApp phone number
               </p>
             )}
           </div>
-          <div>
-            <label
-              htmlFor="membershipType-input"
-              className="mb-2 block text-start text-sm font-semibold text-gray-700"
-            >
-              Membership Type
-            </label>
-            <Select
-              id="membershipType-input"
-              value={membershipOptions.find(
-                (option) => option.value === formData.membershipType,
-              )}
-              onChange={(option: any | null) =>
-                setFormData((prev: RegisterUserRequest) => ({
-                  ...prev,
-                  membershipType: option?.value || "",
-                }))
-              }
-              options={membershipOptions}
-              styles={customSelectStyles}
-              isDisabled={isLoading}
-              placeholder="Select membership type"
-            />
-          </div>
+          <Select
+            id="membershipType-input"
+            value={membershipOptions.find(
+              (option) => option.value === formData.membershipType,
+            )}
+            onChange={(option: any | null) =>
+              setFormData((prev: RegisterUserRequest) => ({
+                ...prev,
+                membershipType: option?.value || "",
+              }))
+            }
+            options={membershipOptions}
+            styles={customSelectStyles}
+            isDisabled={isLoading}
+            placeholder="Select membership type"
+          />
+
           <FormInput
             label="Password"
             type={passwordType}
@@ -325,6 +310,7 @@ const CreateAccount = () => {
               )
             }
           />
+
           <FormInput
             label="Confirm Password"
             type={confirmPasswordType}
@@ -351,6 +337,7 @@ const CreateAccount = () => {
               </button>
             }
           />
+
           <Button
             type="submit"
             className="relative mt-[2em] flex w-full items-center justify-center rounded-full bg-text2 p-4 text-center text-sm font-semibold normal-case text-text5"
@@ -371,15 +358,25 @@ const CreateAccount = () => {
           >
             Sign Up
           </Button>
-          <div className="mt-4 flex justify-center text-sm">
-            <p className="text-textPrimary font-semibold">
-              Have an account?
-              <span className="ml-2 font-medium text-text2">
-                <Link to={ROUTES.sign_in}>Sign in</Link>
-              </span>
-            </p>
-          </div>
         </form>
+        <div
+          className="absolute left-0 top-0 ml-[4em] mt-[4em] cursor-pointer sm:hidden lg:block"
+          onClick={() => navigate("/")}
+        >
+          <FaArrowLeft size={35} fill="#440080" />
+        </div>
+
+        <div className="flex justify-center py-5">
+          <p
+            className="text- textPrimary  font-semibold
+"
+          >
+            Have an account?
+            <span className="ml-2  font-medium text-text2">
+              <Link to={ROUTES.sign_in}>Sign in</Link>
+            </span>
+          </p>
+        </div>
       </section>
     </main>
   );

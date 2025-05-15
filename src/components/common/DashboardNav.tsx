@@ -14,27 +14,24 @@ import logo from "./../../Assets/svg/cooplogo.svg";
 import member from "../../Assets/jpg/membership/customer.jpg";
 import investor from "../../Assets/jpg/membership/investor.jpg";
 import { handleLoggout } from "../../shared/utils/auth";
-import { useSelector } from "react-redux";
-import { RootState } from "../../shared/redux/rootReducer";
+import { useUserProfile } from "../../shared/Hooks/useUserProfile";
 
 const DashboardNav = () => {
   const [openMenu, setOpenMenu] = useState(false);
-  const navigate = useNavigate();
-  const { getProfile } = useSelector((state: RootState) => state.landing);
-
+  const { profileDetails } = useUserProfile();
   const getMembershipImage = () => {
-    if (getProfile?.membershipType === "patron") {
+    if (profileDetails?.membershipType === "patron") {
       return member;
-    } else if (getProfile?.membershipType === "investor members") {
+    } else if (profileDetails?.membershipType === "investor members") {
       return investor;
     }
     return member;
   };
 
   const getButtonProps = () => {
-    if (getProfile?.membershipStatus === "inactive") {
+    if (profileDetails?.membershipStatus === "inactive") {
       return { text: "Inactive", bgColor: "bg-yellow-500" };
-    } else if (getProfile?.membershipStatus === "active") {
+    } else if (profileDetails?.membershipStatus === "active") {
       return { text: "Activated", bgColor: "bg-green-500" };
     }
     return { text: "Unknown", bgColor: "bg-gray-400" };

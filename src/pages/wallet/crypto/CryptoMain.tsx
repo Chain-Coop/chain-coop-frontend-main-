@@ -14,7 +14,6 @@ import {
   useCryptoWallet,
   useCryptoWalletDetails,
 } from "../../../shared/Hooks/useBalance";
-import useUserProfile from "../../../shared/Hooks/useUserProfile";
 import {
   useAppDispatch,
   useAppSelector,
@@ -27,6 +26,7 @@ import { TransferIcon, WithdrawIcon } from "../../../Assets/svg";
 import CryptoTransactionHistory from "./CryptoTransactionHistory";
 import { RootState } from "../../../shared/redux/rootReducer";
 import { GetUserProfile } from "../../../shared/redux/slices/landing.slices";
+import { useUserProfile } from "../../../shared/Hooks/useUserProfile";
 
 interface TokenInfo {
   tokenAddress: string;
@@ -44,7 +44,7 @@ interface TokenListItem {
 const CryptoMain = () => {
   const { Balance, isWalletVisible, setIsWalletVisible } = useCryptoWallet();
   const { userTokens } = useAllUserTokens();
-  const { getProfile } = useAppSelector((state: RootState) => state.landing);
+  const { profileDetails } = useUserProfile();
   const { cryptoWalletDetails } = useCryptoWalletDetails();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -122,7 +122,7 @@ const CryptoMain = () => {
       <div>
         <section className="text-center text-text4">
           <div className="flex flex-col gap-3 py-[1.5em] sm:flex-row sm:justify-between sm:gap-4">
-            {getProfile?.isWalletActivated === true && (
+            {profileDetails?.isWalletActivated === true && (
               <div className="flex w-fit transform items-center justify-center gap-2 rounded-lg border-2 border-text2 bg-[#ECE6F2] px-3 py-2 font-medium text-text2 transition-all duration-300 hover:scale-105 active:scale-95 sm:w-auto sm:justify-start lg:py-2">
                 Wallet Activated
                 <img src={walletActivated} alt="walletActivated" />
@@ -141,7 +141,7 @@ const CryptoMain = () => {
             </div>
           </div>
 
-          {getProfile?.isWalletActivated === true ? (
+          {profileDetails?.isWalletActivated === true ? (
             <div className="rounded-3xl border-2 border-gray-300 py-[2em] shadow-lg">
               <div className="flex flex-col items-center justify-center gap-4">
                 <div className="flex items-center gap-4">
@@ -216,7 +216,7 @@ const CryptoMain = () => {
           )}
         </section>
 
-        {getProfile?.isWalletActivated === true && (
+        {profileDetails?.isWalletActivated === true && (
           <>
             <section className="mt-6">
               <h1 className="text-lg font-semibold">Token Balance</h1>
@@ -304,7 +304,9 @@ const CryptoMain = () => {
                       className="flex flex-col items-center bg-inherit text-center"
                     >
                       <TransferIcon />
-                      <span className="block text-memt1 lg:text-lg">Fund</span>
+                      <span className="block text-memt1 lg:text-lg">
+                        Fund Wallet
+                      </span>
                     </motion.button>
                   </Link>
                 </div>

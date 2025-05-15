@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import Services from "../services/landing.services";
 import {
-  ApiError,
   LoginRequest,
   LoginResponse,
   RegisterUserRequest,
@@ -22,6 +21,8 @@ import {
   UploadAvatarResponse,
   ResetPasswordRequest,
   ResetPasswordResponse,
+  ForgotPasswordResponse,
+  ForgotPasswordRequest,
 } from "../../types";
 import { setMessage } from "./message.slices";
 
@@ -40,6 +41,7 @@ interface LandingState {
   verifyEmailSuccess: boolean;
   verifyPhoneSuccess: boolean;
   loginSuccess: boolean;
+  forgotPasswordSuccess: boolean;
 }
 
 const initialState: LandingState = {
@@ -56,7 +58,8 @@ const initialState: LandingState = {
   registerSuccess: false,
   verifyEmailSuccess: false,
   verifyPhoneSuccess: false,
-  loginSuccess: false, 
+  loginSuccess: false,
+  forgotPasswordSuccess: false,
 };
 
 export const RegisterUser = createAsyncThunk<
@@ -65,10 +68,10 @@ export const RegisterUser = createAsyncThunk<
   { rejectValue: string }
 >("landing/register", async (body, { dispatch, rejectWithValue }) => {
   try {
-    const data = await Services.auth.RegisterUser("/auth/register", body);
+    const data = await Services.auth.RegisterUser(body);
     return data;
-  } catch (error) {
-    const message = (error as ApiError).msg || "Registration failed";
+  } catch (error: any) {
+    const message = error.msg || "Registration failed";
     dispatch(setMessage(message));
     return rejectWithValue(message);
   }
@@ -80,10 +83,10 @@ export const VerifyUserAuth = createAsyncThunk<
   { rejectValue: string }
 >("landing/verifyEmail", async (body, { dispatch, rejectWithValue }) => {
   try {
-    const data = await Services.auth.VerifyUserAuth("/auth/verify_otp", body);
+    const data = await Services.auth.VerifyUserAuth(body);
     return data;
-  } catch (error) {
-    const message = (error as ApiError).msg || "Email verification failed";
+  } catch (error: any) {
+    const message = error.msg || "Email verification failed";
     dispatch(setMessage(message));
     return rejectWithValue(message);
   }
@@ -95,13 +98,10 @@ export const VerifyUserPhoneNumber = createAsyncThunk<
   { rejectValue: string }
 >("landing/verifyPhone", async (body, { dispatch, rejectWithValue }) => {
   try {
-    const data = await Services.auth.VerifyUserPhoneNumber(
-      "/auth/verify_whatsapp_otp",
-      body,
-    );
+    const data = await Services.auth.VerifyUserPhoneNumber(body);
     return data;
-  } catch (error) {
-    const message = (error as ApiError).msg || "Phone verification failed";
+  } catch (error: any) {
+    const message = error.msg || "Phone verification failed";
     dispatch(setMessage(message));
     return rejectWithValue(message);
   }
@@ -113,13 +113,10 @@ export const ResendEmailOtp = createAsyncThunk<
   { rejectValue: string }
 >("landing/resendEmailOtp", async (body, { dispatch, rejectWithValue }) => {
   try {
-    const data = await Services.public.RESEND_LOGIN_OTP(
-      "/auth/resend_otp",
-      body,
-    );
+    const data = await Services.public.RESEND_LOGIN_OTP(body);
     return data;
-  } catch (error) {
-    const message = (error as ApiError).msg || "Failed to resend OTP";
+  } catch (error: any) {
+    const message = error.msg || "Failed to resend OTP";
     dispatch(setMessage(message));
     return rejectWithValue(message);
   }
@@ -131,13 +128,10 @@ export const ResendVerifyOtp = createAsyncThunk<
   { rejectValue: string }
 >("landing/resendVerifyOtp", async (body, { dispatch, rejectWithValue }) => {
   try {
-    const data = await Services.auth.RESEND_VERIFY_OTP(
-      "/auth/resend_whatsapp_otp",
-      body,
-    );
+    const data = await Services.auth.RESEND_VERIFY_OTP(body);
     return data;
-  } catch (error) {
-    const message = (error as ApiError).msg || "Failed to resend OTP";
+  } catch (error: any) {
+    const message = error.msg || "Failed to resend OTP";
     dispatch(setMessage(message));
     return rejectWithValue(message);
   }
@@ -149,10 +143,10 @@ export const LoginUser = createAsyncThunk<
   { rejectValue: string }
 >("landing/login", async (body, { dispatch, rejectWithValue }) => {
   try {
-    const data = await Services.auth.LoginUser("/auth/login", body);
+    const data = await Services.auth.LoginUser(body);
     return data;
-  } catch (error) {
-    const message = (error as ApiError).msg || "Login failed";
+  } catch (error: any) {
+    const message = error.msg || "Login failed";
     dispatch(setMessage(message));
     return rejectWithValue(message);
   }
@@ -164,13 +158,10 @@ export const JoinNewsLetter = createAsyncThunk<
   { rejectValue: string }
 >("landing/newsLetter", async (body, { dispatch, rejectWithValue }) => {
   try {
-    const data = await Services.public.JoinNewsLetter(
-      "/news-letter/join",
-      body,
-    );
+    const data = await Services.public.JoinNewsLetter(body);
     return data;
-  } catch (error) {
-    const message = (error as ApiError).msg || "Failed to join newsletter";
+  } catch (error: any) {
+    const message = error.msg || "Failed to join newsletter";
     dispatch(setMessage(message));
     return rejectWithValue(message);
   }
@@ -182,10 +173,10 @@ export const PublicContact = createAsyncThunk<
   { rejectValue: string }
 >("landing/publicContact", async (body, { dispatch, rejectWithValue }) => {
   try {
-    const data = await Services.public.PublicContact("/contact-us", body);
+    const data = await Services.public.PublicContact(body);
     return data;
-  } catch (error) {
-    const message = (error as ApiError).msg || "Failed to send message";
+  } catch (error: any) {
+    const message = error.msg || "Failed to send message";
     dispatch(setMessage(message));
     return rejectWithValue(message);
   }
@@ -197,10 +188,10 @@ export const GetUserProfile = createAsyncThunk<
   { rejectValue: string }
 >("landing/getProfile", async (_, { dispatch, rejectWithValue }) => {
   try {
-    const data = await Services.user.GetUserProfile("/auth/user");
+    const data = await Services.user.GetUserProfile();
     return data;
-  } catch (error) {
-    const message = (error as ApiError).msg || "Failed to fetch profile";
+  } catch (error: any) {
+    const message = error.msg || "Failed to fetch profile";
     dispatch(setMessage(message));
     return rejectWithValue(message);
   }
@@ -212,13 +203,10 @@ export const uploadAvatar = createAsyncThunk<
   { rejectValue: string }
 >("landing/uploadAvatar", async (formData, { dispatch, rejectWithValue }) => {
   try {
-    const data = await Services.user.UploadAvatar(
-      "/profile/upload_profile_picture",
-      formData,
-    );
+    const data = await Services.user.UploadAvatar(formData);
     return data;
-  } catch (error) {
-    const message = (error as ApiError).msg || "Failed to upload avatar";
+  } catch (error: any) {
+    const message = error.msg || "Failed to upload avatar";
     dispatch(setMessage(message));
     return rejectWithValue(message);
   }
@@ -230,13 +218,25 @@ export const ResetPassword = createAsyncThunk<
   { rejectValue: string }
 >("landing/resetPassword", async (body, { dispatch, rejectWithValue }) => {
   try {
-    const data = await Services.user.ResetPassword(
-      "/auth/reset_password",
-      body,
-    );
+    const data = await Services.user.ResetPassword(body);
     return data;
-  } catch (error) {
-    const message = (error as ApiError).msg || "Failed to reset password";
+  } catch (error: any) {
+    const message = error.msg || "Failed to reset password";
+    dispatch(setMessage(message));
+    return rejectWithValue(message);
+  }
+});
+
+export const ForgotPassword = createAsyncThunk<
+  ForgotPasswordResponse,
+  ForgotPasswordRequest,
+  { rejectValue: string }
+>("landing/forgotPassword", async (body, { dispatch, rejectWithValue }) => {
+  try {
+    const data = await Services.public.FORGOT_PASSWORD(body);
+    return data;
+  } catch (error: any) {
+    const message = error.msg || "Failed to send password reset request";
     dispatch(setMessage(message));
     return rejectWithValue(message);
   }
@@ -250,8 +250,6 @@ const landingSlice = createSlice({
       state.loginData = null;
       state.registerUserData = null;
       state.verifyPhone = null;
-      state.getProfile = null;
-      state.avatarUrl = null;
       state.newsLetter = null;
       state.getPublicContact = null;
       state.resetUserPassword = null;
@@ -260,7 +258,9 @@ const landingSlice = createSlice({
       state.registerSuccess = false;
       state.verifyEmailSuccess = false;
       state.verifyPhoneSuccess = false;
-      state.loginSuccess = false; // Added
+      state.loginSuccess = false;
+      state.forgotPasswordSuccess = false;
+      // Preserve getProfile and avatarUrl
     },
   },
   extraReducers: (builder) => {
@@ -269,9 +269,6 @@ const landingSlice = createSlice({
       state.isLoading = true;
       state.error = null;
       state.registerSuccess = false;
-      state.verifyEmailSuccess = false;
-      state.verifyPhoneSuccess = false;
-      state.loginSuccess = false; // Added
     });
     builder.addCase(RegisterUser.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -289,8 +286,6 @@ const landingSlice = createSlice({
       state.isLoading = true;
       state.error = null;
       state.verifyEmailSuccess = false;
-      state.verifyPhoneSuccess = false;
-      state.loginSuccess = false; // Added
     });
     builder.addCase(VerifyUserAuth.fulfilled, (state) => {
       state.isLoading = false;
@@ -307,7 +302,6 @@ const landingSlice = createSlice({
       state.isLoading = true;
       state.error = null;
       state.verifyPhoneSuccess = false;
-      state.loginSuccess = false; // Added
     });
     builder.addCase(VerifyUserPhoneNumber.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -350,17 +344,17 @@ const landingSlice = createSlice({
     builder.addCase(LoginUser.pending, (state) => {
       state.isLoading = true;
       state.error = null;
-      state.loginSuccess = false; // Added
+      state.loginSuccess = false;
     });
     builder.addCase(LoginUser.fulfilled, (state, action) => {
       state.isLoading = false;
       state.loginData = action.payload;
-      state.loginSuccess = true; // Added
+      state.loginSuccess = true;
     });
     builder.addCase(LoginUser.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload || "Login failed";
-      state.loginSuccess = false; // Added
+      state.loginSuccess = false;
     });
 
     // JoinNewsLetter
@@ -412,7 +406,7 @@ const landingSlice = createSlice({
     });
     builder.addCase(uploadAvatar.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.avatarUrl = action.payload.publicURL;
+      state.avatarUrl = action.payload.profilePhoto.url;
     });
     builder.addCase(uploadAvatar.rejected, (state, action) => {
       state.isLoading = false;
@@ -431,6 +425,22 @@ const landingSlice = createSlice({
     builder.addCase(ResetPassword.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload || "Failed to reset password";
+    });
+
+    // ForgotPassword
+    builder.addCase(ForgotPassword.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+      state.forgotPasswordSuccess = false;
+    });
+    builder.addCase(ForgotPassword.fulfilled, (state) => {
+      state.isLoading = false;
+      state.forgotPasswordSuccess = true;
+    });
+    builder.addCase(ForgotPassword.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to send password reset request";
+      state.forgotPasswordSuccess = false;
     });
   },
 });

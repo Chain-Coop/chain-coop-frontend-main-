@@ -182,7 +182,7 @@ const CryptoSavings: React.FC = () => {
     const newSearchTerm = event.target.value;
     setSearchTerm(newSearchTerm);
     if (newSearchTerm.trim() === "" && searchTerm.trim() !== "") {
-      //console.log("Search cleared, fetching all pools.");
+      //("Search cleared, fetching all pools.");
       dispatch(GetAllUserPools());
     }
   };
@@ -198,7 +198,6 @@ const CryptoSavings: React.FC = () => {
     }
     const termToSearch = searchTerm.trim();
     if (termToSearch) {
-      //console.log(`Searching for: ${termToSearch}`);
       dispatch(SearchUserPools(termToSearch));
     } else {
       //console.log("Empty search submitted, ensuring all pools are fetched.");

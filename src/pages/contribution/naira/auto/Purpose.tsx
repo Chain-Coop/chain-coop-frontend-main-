@@ -7,13 +7,24 @@ import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg";
 import { Typography } from "@material-tailwind/react";
 import { getSavingsTypeTitle } from "../../../../shared/utils/Helpers";
 
-const Purpose = () => {
+interface PurposeState {
+  currency: string;
+  savingsType: string;
+  contributionType: string;
+}
+
+interface SavingPurpose {
+  text: string;
+}
+
+const Purpose: React.FC = () => {
   const [savingsCategory, setSavingsCategory] = useState("");
   const [otherCategory, setOtherCategory] = useState("");
   const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const { currency, savingsType, contributionType } = location.state || {};
+  const { currency, savingsType, contributionType } =
+    location.state as PurposeState;
   const [error, setError] = useState("");
 
   const handleNext = () => {
@@ -36,7 +47,7 @@ const Purpose = () => {
     }
   };
 
-  const handleCategorySelect = (category: any) => {
+  const handleCategorySelect = (category: string) => {
     setSavingsCategory(category);
     if (category !== "Others") {
       setOtherCategory("");
@@ -44,7 +55,7 @@ const Purpose = () => {
   };
 
   return (
-    <main className="pb-[1.5em] ">
+    <main className="pb-[1.5em]">
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
         {getSavingsTypeTitle(savingsType)}
       </DashboardHeader>
@@ -62,7 +73,7 @@ const Purpose = () => {
           </Typography>
         </header>
 
-        {SavingOn?.map((purpose, index) => (
+        {SavingOn?.map((purpose: SavingPurpose, index: number) => (
           <div
             key={index}
             className={`mt-8 flex w-full items-center justify-between rounded-lg px-4 py-[9px] 

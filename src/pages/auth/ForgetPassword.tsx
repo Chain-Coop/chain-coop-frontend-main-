@@ -1,34 +1,50 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../Assets/svg/auth/logo.svg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Button, Typography } from "@material-tailwind/react";
-import { FORGOT_PASSWORD } from "../../shared/redux/services/landing.services";
 import FormInput from "../../components/common/FormInput";
 import { ROUTES } from "../../shared/routes";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  ForgotPassword,
+  resetAuthState,
+} from "../../shared/redux/slices/landing.slices";
+import { AppDispatch } from "../../shared/redux/store";
+import { RootState } from "../../shared/redux/rootReducer";
 
 const ForgetPassword = () => {
-  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const home = (e: any) => {
+  const { isLoading, forgotPasswordSuccess, error } = useSelector(
+    (state: RootState) => state.landing,
+  );
+
+  useEffect(() => {
+    if (forgotPasswordSuccess) {
+      navigate(`/verification-successfull?email=${email}`);
+      dispatch(resetAuthState());
+    }
+  }, [forgotPasswordSuccess, email, navigate, dispatch]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
+
+  const home = (e: React.MouseEvent) => {
     e.preventDefault();
     navigate("/login");
   };
 
-  const forgotPassword = async (e: any) => {
+  const forgotPassword = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    const endpoint = `/auth/forget_password`;
-    const response = await FORGOT_PASSWORD(endpoint, { email });
-    setLoading(false);
-    if (response.status === 200) {
-      navigate(`/verification-successfull?email=${email}`);
-    } else {
-      toast.error(response.data.msg);
-    }
+    dispatch(resetAuthState());
+    dispatch(ForgotPassword({ email }));
   };
 
   return (
@@ -61,17 +77,17 @@ const ForgetPassword = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="e-mail address"
-            disabled={loading}
+            disabled={isLoading}
             required
           />
 
           <Button
             type="submit"
             className="relative mt-[2em] flex w-full items-center justify-center rounded-full bg-text2 p-4 text-center text-sm font-semibold normal-case text-text5"
-            disabled={loading}
-            loading={loading}
+            disabled={isLoading}
+            loading={isLoading}
           >
-            {loading ? "Submitting..." : "Submit"}
+            Submit
           </Button>
         </form>
         <section className="flex justify-center py-4">

@@ -66,6 +66,7 @@ export interface PINInputProps {
 }
 
 export interface Card {
+  id: string;
   authorization_code: string;
   last4: string;
   exp_month: string;
@@ -142,4 +143,44 @@ export interface CryptoTransaction {
   createdAt: string;
   updatedAt: string;
   __v?: number;
+}
+
+export interface OrderData {
+  amountInLocalCurrency: number;
+  cryptoAsset: string;
+  reference: string;
+  transactionReference: string;
+  currency: string;
+  amountInCryptoAsset: number;
+  cryptoRate: number;
+  network?: string;
+}
+
+export interface OnrampConfirmResult {
+  bankName: string;
+  accountName: string;
+  accountNumber: string;
+  fiatAmount: number;
+  message?: string;
+}
+
+export interface Web3State {
+  onrampConfirmLoading: boolean;
+  onrampConfirmError: string | null;
+  onrampConfirmResult: OnrampConfirmResult | null;
+}
+
+export interface BankTransferProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm?: () => void;
+  bankName: string;
+  accountName: string;
+  accountNumber: string;
+  fiatAmount: number | string;
+}
+
+export interface ConfirmingPaymentModalProps {
+  isOpen: boolean;
+  onClose: () => void;
 }

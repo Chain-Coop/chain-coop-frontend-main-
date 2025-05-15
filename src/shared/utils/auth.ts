@@ -1,10 +1,10 @@
-import { useNavigate } from "react-router";
 import { resetAuthState } from "../redux/slices/landing.slices";
-import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/store";
 
-export const handleLoggout = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+export const handleLoggout = (
+  dispatch: AppDispatch,
+  navigate: (path: string) => void,
+) => {
   sessionStorage.removeItem("authToken");
   sessionStorage.removeItem("userData");
   dispatch(resetAuthState());

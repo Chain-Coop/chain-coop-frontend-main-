@@ -9,7 +9,6 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import { format, parseISO } from "date-fns";
-import useUserProfile from "../../../../shared/Hooks/useUserProfile";
 import {
   isBeforeWithdrawalDate,
   useWithdrawalValidation,
@@ -17,6 +16,7 @@ import {
 import { IoMdClose } from "react-icons/io";
 import { useAppSelector } from "../../../../shared/redux/reduxHooks";
 import { RootState } from "../../../../shared/redux/rootReducer";
+import { useUserProfile } from "../../../../shared/Hooks/useUserProfile";
 
 interface NoticeModalProps {
   isOpen: boolean;
@@ -37,9 +37,9 @@ const NoticeModal: React.FC<NoticeModalProps> = ({
   withdrawalAmount = 0,
   balance = 0,
 }) => {
-  const { getProfile } = useAppSelector((state: RootState) => state.landing);
+  const { profileDetails } = useUserProfile();
 
-  const membershipStatus = getProfile?.membershipStatus || "inactive";
+  const membershipStatus = profileDetails?.membershipStatus || "inactive";
 
   const validation = useWithdrawalValidation({
     savingsType,

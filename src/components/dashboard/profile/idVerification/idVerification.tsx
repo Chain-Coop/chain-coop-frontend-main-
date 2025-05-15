@@ -1,5 +1,4 @@
 import { Typography } from "@material-tailwind/react";
-import useUserProfile from "../../../../shared/Hooks/useUserProfile";
 import {
   BvnVerified,
   NotVerified,
@@ -7,16 +6,15 @@ import {
   Verified,
 } from "../../../../Assets/svg";
 import { IoIosArrowForward } from "react-icons/io";
-import { RootState } from "../../../../shared/redux/rootReducer";
-import { useAppSelector } from "../../../../shared/redux/reduxHooks";
+import { useUserProfile } from "../../../../shared/Hooks/useUserProfile";
 
 const IdVerification = () => {
-  const { getProfile } = useAppSelector((state: RootState) => state.landing);
+  const { profileDetails } = useUserProfile();
 
   const isUserVerified =
-    getProfile?.Tier === 1 && getProfile?.isVerified === true;
+    profileDetails?.Tier === 1 && profileDetails?.isVerified === true;
 
-  const isBvnVerified = getProfile?.Tier === 2;
+  const isBvnVerified = profileDetails?.Tier === 2;
 
   return (
     <main className="mt-4">
@@ -38,7 +36,7 @@ const IdVerification = () => {
               <Typography className="font-semibold">Phone Number</Typography>
             </div>
             <Typography variant="small" className="text-gray-500">
-              {getProfile?.phoneNumber}
+              {profileDetails?.phoneNumber}
             </Typography>
           </div>
           <div className="flex items-center gap-3">

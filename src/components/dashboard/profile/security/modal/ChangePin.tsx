@@ -14,9 +14,8 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import { IoMdClose } from "react-icons/io";
-import { useAppSelector } from "../../../../../shared/redux/reduxHooks";
-import { RootState } from "../../../../../shared/redux/rootReducer";
 import { GetUserProfile } from "../../../../../shared/redux/slices/landing.slices";
+import { useUserProfile } from "../../../../../shared/Hooks/useUserProfile";
 
 interface ChangePinProps {
   otp: string;
@@ -32,8 +31,8 @@ const ChangePin: React.FC<ChangePinProps> = ({
   onSuccess,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { getProfile } = useAppSelector((state: RootState) => state.landing);
-  const isPinCreated = getProfile?.isPinCreated || false;
+  const { profileDetails } = useUserProfile();
+  const isPinCreated = profileDetails?.isPinCreated || false;
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -57,11 +56,11 @@ const ChangePin: React.FC<ChangePinProps> = ({
     try {
       await dispatch(
         CreateTransactionPin({
-          otp: parseInt(otp),
+          otp: otp,
           newpin: pin,
         }),
       ).unwrap();
-      await GetUserProfile();
+      await dispatch(GetUserProfile()).unwrap();
       onSuccess();
     } catch (error: any) {
       setError(error || `Failed to ${isPinCreated ? "change" : "create"} PIN`);

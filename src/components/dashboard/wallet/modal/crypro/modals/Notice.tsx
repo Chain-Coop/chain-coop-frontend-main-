@@ -10,6 +10,8 @@ import {
 import { format, parseISO, isAfter, isToday } from "date-fns";
 import { RootState } from "../../../../../../shared/redux/rootReducer";
 import { useAppSelector } from "../../../../../../shared/redux/reduxHooks";
+import { useUserProfile } from "../../../../../../shared/Hooks/useUserProfile";
+import { profile } from "console";
 
 interface NoticeModalProps {
   isOpen: boolean;
@@ -46,9 +48,8 @@ const NoticeModal: React.FC<NoticeModalProps> = ({
   withdrawalAmount = 0,
   balance = 0,
 }) => {
-  const { getProfile } = useAppSelector((state: RootState) => state.landing);
-
-  const membershipStatus = getProfile?.membershipStatus || "inactive";
+  const { profileDetails } = useUserProfile();
+  const membershipStatus = profileDetails?.membershipStatus || "inactive";
 
   const isBeforeWithdrawalDate = () => {
     if (!withdrawalDate) return false;

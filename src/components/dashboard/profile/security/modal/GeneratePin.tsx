@@ -14,7 +14,8 @@ import {
 } from "@material-tailwind/react";
 import { MoveRight } from "lucide-react";
 import { IoMdClose } from "react-icons/io";
-import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
+import { useAppSelector } from "../../../../../shared/redux/reduxHooks";
+import { useUserProfile } from "../../../../../shared/Hooks/useUserProfile";
 
 interface GeneratePinModalProps {
   isOpen: boolean;
@@ -27,8 +28,8 @@ const GeneratePin = ({
   onClose,
   onOtpGenerated,
 }: GeneratePinModalProps) => {
-  const { getProfile } = useAppSelector((state: RootState) => state.landing);
-  const isPinCreated = getProfile?.isPinCreated || false;
+  const { profileDetails } = useUserProfile();
+  const isPinCreated = profileDetails?.isPinCreated || false;
 
   const [isLoading, setIsLoading] = useState(false);
   const dispatch: AppDispatch = useDispatch();

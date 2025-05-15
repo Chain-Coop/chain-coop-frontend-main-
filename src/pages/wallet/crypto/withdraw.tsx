@@ -14,7 +14,7 @@ const Withdraw = () => {
   const [isCryptoModalOpen, setIsCryptoModalOpen] = useState(false);
 
   const toggleModal = () => {
-    setIsBankAccountModalOpen((prev) => !prev);
+    navigate("/dashboard/wallet/crypto/withdraw/bank");
   };
 
   const handleCryptoModalSubmit = (data: { walletAddress: string }) => {
@@ -28,7 +28,7 @@ const Withdraw = () => {
 
   return (
     <main>
-       <div className="mt-0 lg:mt-8">
+      <div className="mt-0 lg:mt-8">
         <DashboardHeader className="relative flex items-center justify-center text-2xl tracking-wide md:text-3xl lg:text-xl">
           <IoIosArrowBack
             onClick={handleBackClick}

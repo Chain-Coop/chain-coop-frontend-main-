@@ -73,9 +73,6 @@ const PreviewSavings = () => {
       periodicAmount: debitAmount,
     };
 
-    //console.log("Payload being sent to the backend:", finalPayload);
-    //console.log("Final Payload:", JSON.stringify(finalPayload));
-
     setLoading(true);
 
     dispatch(CreatePeriodicPool(finalPayload))

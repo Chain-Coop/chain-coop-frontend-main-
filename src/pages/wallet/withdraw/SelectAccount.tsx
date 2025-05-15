@@ -15,7 +15,6 @@ const SelectAccount = () => {
   const location = useLocation();
   const dispatch: AppDispatch = useDispatch();
   const { useBanks } = useAllBanks();
-
   const [selectedBank, setSelectedBank] = useState<Bank | null>(null);
   const { amount, accountNumber } = location.state || {};
   const [loading, setLoading] = useState(false);
@@ -31,43 +30,42 @@ const SelectAccount = () => {
   };
 
   const verifyAccount = async () => {
-    if (selectedBank) {
-      setLoading(true);
-      setError("");
-      try {
-        const response = await dispatch(
-          GetAccountName({
-            accountNumber,
-            bankCode: selectedBank.code,
-            bankName: selectedBank.name,
-          }),
-        ).unwrap();
-
-        if (response.transaction.result.status) {
-          navigate("/dashboard/wallet/verify-account", {
-            state: {
-              accountName: response.transaction.result.data.account_name,
-              accountNumber: response.transaction.result.data.account_number,
-              bankName: selectedBank.name,
-              bankCode: selectedBank.code,
-              amount: amount,
-            },
-          });
-        } else {
-          setError(
-            "Unable to verify account. Please check the details and try again.",
-          );
-        }
-      } catch (error: any) {
-        setError(
-          error ||
-            "An error occurred while verifying the account. Please try again.",
-        );
-      } finally {
-        setLoading(false);
-      }
-    } else {
+    if (!selectedBank) {
       setError("Please select a bank");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await dispatch(
+        GetAccountName({
+          accountNumber,
+          bankCode: selectedBank.code,
+        }),
+      ).unwrap();
+
+      if (response.result.status) {
+        navigate("/dashboard/wallet/verify-account", {
+          state: {
+            accountName: response.result.data.account_name,
+            accountNumber: response.result.data.account_number,
+            bankName: selectedBank.name,
+            bankCode: selectedBank.code,
+            amount,
+          },
+        });
+      } else {
+        setError(
+          response.result.message ||
+            "Unable to verify account. Please check the details and try again.",
+        );
+      }
+    } catch (error: any) {
+      setError(error || "An error occurred while verifying the account.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -108,7 +106,7 @@ const SelectAccount = () => {
           variant="text"
           className="mt-8 flex w-full items-center justify-center bg-text2 py-4 text-sm normal-case text-white hover:bg-text2"
           onClick={verifyAccount}
-          disabled={!selectedBank}
+          disabled={!selectedBank || loading}
           loading={loading}
         >
           Verify Account

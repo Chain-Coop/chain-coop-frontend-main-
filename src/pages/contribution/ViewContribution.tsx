@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router";
-import { Link } from "react-router-dom";
-
+import React, { useEffect, useState, useMemo } from "react";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { format, parseISO } from "date-fns";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { IoIosArrowBack } from "react-icons/io";
 import { motion } from "framer-motion";
-import { useUserCard } from "../../shared/Hooks/useUserProfile";
-import { useUnPaidContribution } from "../../shared/Hooks/useBalance";
 import { AppDispatch } from "../../shared/redux/store";
 import {
   clearContributionDetails,
@@ -26,49 +22,116 @@ import {
   StatsSkeleton,
   TrackerSkeleton,
 } from "../../components/common/Loading";
-import ToggleButton from "../../shared/utils/ToggleButton";
 import { ContributionTracker } from "../../components/dashboard/contribution/contributionTracker/ContributionTracker";
-import { useAppDispatch } from "../../shared/redux/reduxHooks";
 import PaymentWithCard from "../../components/dashboard/contribution/unpaidContribution/PaymentWithCard";
 import PayWithPaystack from "../../components/dashboard/contribution/unpaidContribution/PayWithPaystack";
-import { Typography } from "@material-tailwind/react";
+import { Button, Typography } from "@material-tailwind/react";
+import { RootState } from "../../shared/redux/rootReducer";
+import BalanceDisplay from "../../components/dashboard/contribution/balanceDisplay/balanceDisplay";
+import { Alert } from "@mui/material";
+import { GetContributionDetailsByIdResponse } from "../../shared/types";
+import { useContribution } from "../../shared/Hooks/useUserProfile";
+
+interface WalletCard {
+  cards: Array<unknown>;
+}
 
 const ViewContribution = () => {
   const location = useLocation();
-  const contributionId = location?.state?.contributionId;
-  const { useWalletCards } = useUserCard();
-  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const { contributionDetails, walletCard, isLoading, error } = useSelector(
+    (state: RootState) => state.transaction,
+  ) as {
+    contributionDetails: GetContributionDetailsByIdResponse | null;
+    walletCard: WalletCard | null;
+    isLoading: boolean;
+    error: string | null;
+  };
+
+  const contributionId = useMemo(
+    () => location?.state?.contributionId,
+    [location],
+  );
+
+  const { unpaidBalance } = useContribution({
+    page: 1,
+    limit: 10,
+    search: "",
+    filter: "",
+    contributionId,
+  });
+
   const [isContributionVisible, setIsContributionVisible] = useState(() => {
     const storedVisibility = sessionStorage.getItem(
       "contributionBalanceVisible",
     );
     return storedVisibility !== null ? storedVisibility === "true" : true;
   });
-  const { formattedBalance: realBalance } = useUnPaidContribution();
-  const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [localError, setLocalError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const ITEMS_PER_PAGE = 12;
-  const dispatch: AppDispatch = useAppDispatch();
+
+  const realBalance = unpaidBalance
+    ? formatBalance(unpaidBalance.totalAmount)
+    : "₦0.00";
 
   useEffect(() => {
-    dispatch(GetWalletCard());
-  }, [dispatch]);
+    if (!contributionId) {
+      navigate("/dashboard/contribution");
+      return;
+    }
 
-  const hasCards = useWalletCards?.cards ?? [];
+    const fetchInitialData = async () => {
+      if (!walletCard?.cards?.length) {
+        dispatch(GetWalletCard());
+      }
 
-  const navigate = useNavigate();
+      const response: any = await dispatch(
+        GetContributionDetailsById({
+          contributionId,
+          page: currentPage,
+          limit: ITEMS_PER_PAGE,
+        }),
+      );
+      const historyLength = response.payload?.history?.length || 0;
+      setHasMore(historyLength === ITEMS_PER_PAGE);
+    };
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-    setError("");
+    fetchInitialData();
+
+    return () => {
+      dispatch(clearContributionDetails());
+    };
+  }, [dispatch, contributionId, currentPage, navigate]);
+
+  const formatCurrency = (amount: number | undefined) => {
+    return amount ? formatBalance(amount) : "₦0.00";
+  };
+
+  const getFirstDepositAmount = () => {
+    if (contributionDetails?.history?.length) {
+      const firstDeposit = contributionDetails.history[0];
+      return `${contributionDetails.currency === "NGN" ? "₦" : ""}${firstDeposit.amount.toLocaleString()}`;
+    }
+    return "N/A";
+  };
+
+  const formatContributionDate = (dateString?: string) => {
+    if (!dateString) return "Date not available";
+    try {
+      return format(parseISO(dateString), "dd/MM/yyyy");
+    } catch {
+      return "Invalid date";
+    }
   };
 
   const handleDirectPayment = async (paymentType: "paystack") => {
     setIsProcessing(true);
-    setError(null);
+    setLocalError(null);
 
     try {
       const paymentResponse = await dispatch(
@@ -77,86 +140,41 @@ const ViewContribution = () => {
           paymentType,
         }),
       ).unwrap();
-
-      if (paymentResponse?.landing?.charge?.info?.data) {
+      if (paymentResponse?.charge?.info?.data?.authorization_url) {
         window.location.href =
-          paymentResponse.landing?.charge?.info?.data?.authorization_url;
+          paymentResponse.charge.info.data.authorization_url;
       } else {
-        setError("Failed to initiate payment. Please try again.");
+        setLocalError("Failed to initiate payment. Please try again.");
       }
-    } catch (error: any) {
-      setError(error || "An error occurred during payment. Please try again.");
+    } catch (err: any) {
+      setLocalError(
+        err.message || "An error occurred during payment. Please try again.",
+      );
     } finally {
       setIsProcessing(false);
     }
   };
 
-  useEffect(() => {
-    if (contributionId) {
-      setIsLoading(true);
-      dispatch(
-        GetContributionDetailsById({
-          contributionId,
-          page: currentPage,
-          limit: ITEMS_PER_PAGE,
-        }),
-      )
-        .then((response) => {
-          const historyLength = response.payload?.history?.length || 0;
-          setHasMore(historyLength === ITEMS_PER_PAGE);
-        })
-        .finally(() => setIsLoading(false));
-    }
-    return () => {
-      dispatch(clearContributionDetails());
-    };
-  }, [dispatch, contributionId, currentPage]);
-
-  const { contributionDetails } = useSelector(
-    (state: any) => state?.transaction,
-  );
-
-  const balanceInNaira = contributionDetails?.balance || 0;
-  const formattedBalance = formatBalance(balanceInNaira);
-
-  const getFirstDepositAmount = () => {
-    if (
-      contributionDetails?.history &&
-      contributionDetails?.history.length > 0
-    ) {
-      const firstDeposit = contributionDetails.history[0];
-      return `${contributionDetails?.currency === "NGN" ? "N" : ""}${firstDeposit.amount?.toLocaleString() || 0}`;
-    }
-    return "N/A";
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setLocalError(null);
   };
 
   const handleBackClick = () => {
     navigate(-1);
   };
 
-  const formatContributionDate = (dateString?: string) => {
-    if (!dateString)
-      return <p className="whitespace-nowrap text-sm">Date not available</p>;
-    try {
-      return format(parseISO(dateString), "dd/MM/yyyy");
-    } catch {
-      return "Invalid date";
-    }
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
   };
 
-  const handleCloseError = () => {
-    setError(null);
-  };
-
-  if (isLoading) {
+  if (isLoading && !contributionDetails) {
     return (
-      <main className="pb-[1.5em] ">
-        <header className="sm:mt-[0] lg:mt-[2em]">
-          <DashboardHeader className="flex items-center justify-center">
-            Loading Contribution Details...
-          </DashboardHeader>
-        </header>
-        <section className="sm:px-[1.5em] lg:mx-auto lg:w-[33em] lg:px-[0]">
+      <main className="pb-6">
+        <DashboardHeader className="mt-0 flex items-center justify-center lg:mt-8">
+          Loading Contribution Details...
+        </DashboardHeader>
+        <section className="px-6 lg:mx-auto lg:max-w-2xl">
           <DetailsSkeleton />
           <StatsSkeleton />
           <TrackerSkeleton />
@@ -165,203 +183,197 @@ const ViewContribution = () => {
     );
   }
 
+  if (error && !contributionDetails) {
+    return (
+      <main className="pb-6">
+        <DashboardHeader className="mt-0 flex items-center justify-center lg:mt-8">
+          Contribution Details
+        </DashboardHeader>
+        <section className="px-6">
+          <div className="mt-6">
+            <Alert severity="error">{error}</Alert>
+            <Button
+              variant="text"
+              onClick={handleBackClick}
+              className="mt-4 w-full bg-text2 py-3 text-white"
+            >
+              Go Back
+            </Button>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
   return (
-    <main className="pb-[1.5em] ">
-      <header className="sm:mt-[0] lg:mt-[2em]">
+    <main className="pb-6">
+      <header className="mt-0 lg:mt-8">
         <DashboardHeader className="flex items-center justify-center">
-          {contributionDetails?.history[0]?.savingsType} Savings ({""}
-          {contributionDetails?.contributionPlan}
-          {""})
+          {contributionDetails?.history[0]?.savingsType || "Savings"} Savings (
+          {contributionDetails?.contributionPlan || "Plan"})
         </DashboardHeader>
       </header>
 
-      <section>
-        <header className="flex w-full items-center justify-between p-4">
-          <div className="flex-shrink-0">
-            <IoIosArrowBack
-              onClick={handleBackClick}
-              className="cursor-pointer"
-              size={30}
-            />
-          </div>
-          <div className="flex-1 text-center">
-            <h1 className="truncate text-xl font-bold">
-              {contributionDetails?.savingsCategory}
-              <span className="ml-2 font-medium text-gray-500">
-                {contributionDetails?.currency === "NGN"
-                  ? "(Naira)"
-                  : contributionDetails?.currency || "Savings"}
-              </span>{" "}
-            </h1>
-          </div>
-          <div className="w-8 flex-shrink-0"></div>{" "}
+      <section className="px-6 lg:mx-auto lg:max-w-2xl">
+        <header className="flex items-center justify-between py-4">
+          <IoIosArrowBack
+            onClick={handleBackClick}
+            className="cursor-pointer"
+            size={30}
+          />
+          <h1 className="flex-1 truncate text-center text-xl font-bold">
+            {contributionDetails?.savingsCategory || "Contribution"}{" "}
+            <span className="ml-2 font-medium text-gray-500">
+              {contributionDetails?.currency === "NGN"
+                ? "(Naira)"
+                : contributionDetails?.currency || "Savings"}
+            </span>
+          </h1>
+          <div className="w-8" />
         </header>
 
-        <section className="">
-          <article className="text-center text-text4">
-            <div className="rounded-3xl border-[2px] border-gray-200 bg-white p-12 shadow-md">
-              <div className="flex justify-center gap-4 ">
-                <p className="font-medium">Contribution Balance</p>
-                <div>
-                  <ToggleButton
-                    isVisible={isContributionVisible}
-                    onToggle={(newVisibility) => {
-                      setIsContributionVisible(newVisibility);
-                      sessionStorage.setItem(
-                        "contributionBalanceVisible",
-                        newVisibility.toString(),
-                      );
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="mx-auto mt-[1.5em] w-[15em] rounded-md">
-                {isContributionVisible ? (
-                  <p className="text-xl font-bold md:text-xl">
-                    {formattedBalance}
-                  </p>
-                ) : (
-                  <p className="text-2xl font-bold">*********</p>
-                )}
-                <hr className="mt-[1em] h-[1px] rounded-md bg-howtext" />
-              </div>
+        <article className="text-center">
+          <div className="rounded-3xl border-2 border-gray-200 bg-white p-12 shadow-md">
+            <BalanceDisplay
+              title="Contribution Balance"
+              balance={contributionDetails?.balance}
+              isLoading={isLoading}
+              isVisible={isContributionVisible}
+              onToggle={(newVisibility) => {
+                setIsContributionVisible(newVisibility);
+                sessionStorage.setItem(
+                  "contributionBalanceVisible",
+                  newVisibility.toString(),
+                );
+              }}
+              formatCurrency={formatCurrency}
+            />
+          </div>
+
+          <div className="mt-6 flex flex-col gap-4 rounded-2xl bg-text2 p-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex w-full flex-col items-center justify-center rounded-full border-2 border-gray-500 bg-white px-6 py-3 lg:w-[35%]">
+              <p className="w-full text-center font-semibold text-gray-600">
+                {contributionDetails?.history[0]?.savingsType === "Strict"
+                  ? "Fund Lock"
+                  : "Unpaid Balance"}
+              </p>
+              <p
+                className={`w-full text-center font-medium text-gray-400 ${
+                  contributionDetails?.history[0]?.savingsType === "Strict"
+                    ? "invisible"
+                    : ""
+                }`}
+              >
+                {realBalance}
+              </p>
             </div>
-
-            <section>
-              <div className="mt-6 flex flex-col gap-4 rounded-2xl bg-text2 p-4 lg:flex-row lg:items-center lg:justify-between">
-                <div className="flex w-full flex-col items-center justify-center rounded-full border-2 border-gray-500 bg-white px-[1.5em] py-3 lg:w-[35%]">
-                  <p className="w-full text-center font-semibold text-gray-600">
-                    {contributionDetails?.history[0]?.savingsType === "Strict"
-                      ? "Fund Lock"
-                      : "Unpaid Balance"}
-                  </p>
-
-                  <p
-                    className={`w-full text-center font-medium text-gray-400 ${
-                      contributionDetails?.history[0]?.savingsType === "Strict"
-                        ? "invisible"
-                        : ""
-                    }`}
-                  >
-                    {realBalance}
-                  </p>
-                </div>
-
-                <div className="flex w-full flex-col items-center rounded-full border-2 border-gray-500 bg-white px-[1.5em] py-3  lg:w-[35%]">
-                  <p className="font-semibold">
-                    {formatContributionDate(
-                      contributionDetails?.withdrawalDate,
-                    )}
-                  </p>
-                  <p className="font-medium">Withdrawal Day</p>
-                </div>
-              </div>
-            </section>
-            <hr className="mt-[2em]" />
-            <section className="mb-[2em] mt-[2em]">
-              <div className="flex justify-between">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setIsModalOpen(true)}
-                  className="whitespace-nowrap rounded-full border-2 border-gray-200 bg-inherit px-[1.5em] py-[5px] text-lg font-semibold shadow-lg lg:px-[3em] lg:py-[13px]"
-                >
-                  Add Money
-                </motion.button>
-
-                <Link
-                  to="/dashboard/contribution/withdraw_contribution"
-                  state={{ contributionId: contributionId }}
-                >
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="whitespace-nowrap rounded-full border-2 border-gray-200 bg-inherit px-[1.5em] py-[5px] text-lg font-semibold shadow-lg lg:px-[3em] lg:py-[13px]"
-                  >
-                    Withdraw
-                  </motion.button>
-                </Link>
-              </div>
-            </section>
-            <span className="mt-[1em] font-semibold text-gray-500">
-              {isDateValid(contributionDetails?.nextContributionDate) && (
-                <span className="mt-[1em] font-semibold text-[#626262]">
-                  Next Contribution is:{" "}
-                  {formatContributionDate(
-                    contributionDetails?.nextContributionDate,
-                  )}
-                </span>
-              )}
-            </span>
-            <hr className="mt-[2em] w-full" />
-          </article>
-
-          <section className="my-8 grid grid-cols-2 gap-4">
-            <div className="w-full rounded-xl bg-Dh p-5">
-              <Typography className="text-lg font-semibold text-gray-600">
-                Deposit Amount
-              </Typography>
-              <Typography className="mt-2 text-lg font-semibold">
-                {getFirstDepositAmount()}
-              </Typography>
-            </div>
-
-            <div className="w-full rounded-xl bg-Dh p-5">
-              <Typography className="text-lg font-semibold text-gray-600">
-                Savings Duration
-              </Typography>
-              <Typography className="mt-2 text-lg font-semibold">
-                {calculateSavingsDuration(
-                  contributionDetails?.startDate,
-                  contributionDetails?.withdrawalDate,
-                )}
-              </Typography>
-            </div>
-
-            <div className="w-full rounded-xl bg-Dh p-5">
-              <Typography className="text-lg font-semibold text-gray-600">
-                Start Date
-              </Typography>
-              <Typography className="mt-2 text-lg font-semibold">
-                {formatContributionDate(contributionDetails?.startDate)}
-              </Typography>
-            </div>
-
-            <div className="w-full rounded-xl bg-Dh p-5">
-              <Typography className="text-lg font-semibold text-gray-600">
-                End Date
-              </Typography>
-              <Typography className="mt-2 text-lg font-semibold">
+            <div className="flex w-full flex-col items-center rounded-full border-2 border-gray-500 bg-white px-6 py-3 lg:w-[35%]">
+              <p className="font-semibold">
                 {formatContributionDate(contributionDetails?.withdrawalDate)}
-              </Typography>
+              </p>
+              <p className="font-medium">Withdrawal Day</p>
             </div>
-          </section>
+          </div>
 
-          <ContributionTracker
-            isLoading={isLoading}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            hasMore={hasMore}
-          />
+          <hr className="my-8" />
+
+          <div className="flex justify-between">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleOpenModal}
+              className="rounded-full border-2 border-gray-200 bg-inherit px-6 py-2 text-lg font-semibold shadow-lg"
+            >
+              Add Money
+            </motion.button>
+            <Link
+              to="/dashboard/contribution/withdraw_contribution"
+              state={{ contributionId }}
+            >
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="rounded-full border-2 border-gray-200 bg-inherit px-6 py-2 text-lg font-semibold shadow-lg"
+              >
+                Withdraw
+              </motion.button>
+            </Link>
+          </div>
+
+          {isDateValid(contributionDetails?.nextContributionDate) && (
+            <Typography className="mt-4 font-semibold text-gray-600">
+              Next Contribution:{" "}
+              {formatContributionDate(
+                contributionDetails?.nextContributionDate,
+              )}
+            </Typography>
+          )}
+
+          <hr className="my-8" />
+        </article>
+
+        <section className="my-8 grid grid-cols-2 gap-4">
+          <div className="rounded-xl bg-Dh p-5">
+            <Typography className="text-lg font-semibold text-gray-600">
+              Deposit Amount
+            </Typography>
+            <Typography className="mt-2 text-lg font-semibold">
+              {getFirstDepositAmount()}
+            </Typography>
+          </div>
+          <div className="rounded-xl bg-Dh p-5">
+            <Typography className="text-lg font-semibold text-gray-600">
+              Savings Duration
+            </Typography>
+            <Typography className="mt-2 text-lg font-semibold">
+              {calculateSavingsDuration(
+                contributionDetails?.startDate,
+                contributionDetails?.withdrawalDate,
+              )}
+            </Typography>
+          </div>
+          <div className="rounded-xl bg-Dh p-5">
+            <Typography className="text-lg font-semibold text-gray-600">
+              Start Date
+            </Typography>
+            <Typography className="mt-2 text-lg font-semibold">
+              {formatContributionDate(contributionDetails?.startDate)}
+            </Typography>
+          </div>
+          <div className="rounded-xl bg-Dh p-5">
+            <Typography className="text-lg font-semibold text-gray-600">
+              End Date
+            </Typography>
+            <Typography className="mt-2 text-lg font-semibold">
+              {formatContributionDate(contributionDetails?.withdrawalDate)}
+            </Typography>
+          </div>
         </section>
+
+        <ContributionTracker
+          isLoading={isLoading}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          hasMore={hasMore}
+        />
       </section>
 
       {isModalOpen &&
-        (hasCards.length > 0 ? (
+        (walletCard?.cards?.length ? (
           <PaymentWithCard
             onClose={handleModalClose}
             contributionData={contributionId}
             isOpen={isModalOpen}
-            handler={() => setIsModalOpen(!isModalOpen)}
+            handler={handleModalClose}
           />
         ) : (
           <PayWithPaystack
             onSelect={handleDirectPayment}
             isProcessing={isProcessing}
             isOpen={isModalOpen}
-            handler={() => setIsModalOpen(!isModalOpen)}
-            error={error ?? undefined}
-            handleCloseError={handleCloseError}
+            handler={handleModalClose}
+            error={localError || ""}
+            handleCloseError={() => setLocalError(null)}
           />
         ))}
     </main>

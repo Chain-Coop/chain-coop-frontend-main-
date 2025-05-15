@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Alert } from "@mui/material";
 import etherium from "../../../../Assets/svg/dashboard/contribution/etherum.svg";
 import usdc from "../../../../Assets/svg/dashboard/Group 99764.png";
-import lisk from "../../../../Assets/svg/dashboard/token_lisk.svg";
 import usdt from "../../../../Assets/svg/dashboard/usdc.svg";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
@@ -196,7 +195,6 @@ const LockPlanContribution = () => {
               <hr />
               <div className="mt-[1em] flex flex-col items-center justify-center gap-[2em] px-[1em] md:flex-row md:items-start md:justify-start">
                 {[
-                  { type: "LISK", icon: lisk },
                   { type: "USDC", icon: usdc },
                   { type: "USDT", icon: usdt },
                 ].map(({ type, icon }) => (

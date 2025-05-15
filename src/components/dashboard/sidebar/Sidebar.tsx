@@ -4,31 +4,29 @@ import { sidebarLinks } from "../../../data/Data";
 import member from "../../../Assets/jpg/membership/customer.jpg";
 import investor from "../../../Assets/jpg/membership/investor.jpg";
 import { Typography } from "@material-tailwind/react";
-import { useAppSelector } from "../../../shared/redux/reduxHooks";
-import { RootState } from "../../../shared/redux/rootReducer";
+import { useUserProfile } from "../../../shared/Hooks/useUserProfile";
 
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { getProfile } = useAppSelector((state: RootState) => state.landing);
-
+  const { profileDetails } = useUserProfile();
   const home = () => {
     navigate("/dashboard");
   };
 
   const getMembershipImage = () => {
-    if (getProfile?.membershipType === "Explorer") {
+    if (profileDetails?.membershipType === "Explorer") {
       return member;
-    } else if (getProfile?.membershipType === "Pioneer") {
+    } else if (profileDetails?.membershipType === "Pioneer") {
       return investor;
     }
     return member;
   };
 
   const getButtonProps = () => {
-    if (getProfile?.membershipStatus === "inactive") {
+    if (profileDetails?.membershipStatus === "inactive") {
       return { text: "Inactive", bgColor: "bg-yellow-500" };
-    } else if (getProfile?.membershipStatus === "active") {
+    } else if (profileDetails?.membershipStatus === "active") {
       return { text: "Activated", bgColor: "bg-green-500" };
     }
     return { text: "Unknown", bgColor: "bg-gray-400" };

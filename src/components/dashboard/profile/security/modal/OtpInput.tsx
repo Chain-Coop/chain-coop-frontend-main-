@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../shared/redux/store";
 import OtpPin from "../../../../../shared/utils/OtpInput";
 import {
@@ -12,8 +12,15 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import { IoMdClose } from "react-icons/io";
-import { VerifyUserAuth } from "../../../../../shared/redux/slices/landing.slices";
+import {
+  VerifyUserAuth,
+  ResendEmailOtp,
+  resetAuthState,
+} from "../../../../../shared/redux/slices/landing.slices";
 import { toast } from "react-toastify";
+import { useAppSelector } from "../../../../../shared/redux/reduxHooks";
+import { RootState } from "../../../../../shared/redux/rootReducer";
+import { Alert } from "@mui/material";
 
 interface OtpInputProps {
   otp: string;
@@ -33,34 +40,88 @@ const OtpInput: React.FC<OtpInputProps> = ({
   email,
 }) => {
   const dispatch: AppDispatch = useDispatch();
-  const { isLoading } = useSelector((state: any) => state.landing);
-  const [error, setError] = useState("");
+  const { isLoading, error, verifyEmailSuccess } = useAppSelector(
+    (state: RootState) => state.landing,
+  );
+  const [localError, setLocalError] = useState("");
+  const [submittedOtp, setSubmittedOtp] = useState(false);
+  const [resendTimer, setResendTimer] = useState<number>(0);
 
-  const handleContinue = async () => {
+  useEffect(() => {
+    dispatch(resetAuthState());
+
+    return () => {
+      dispatch(resetAuthState());
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (otp.length === 6 && !submittedOtp) {
+      handleVerify();
+    }
+  }, [otp]);
+
+  useEffect(() => {
+    if (verifyEmailSuccess && submittedOtp) {
+      toast.success("OTP verified successfully");
+      onOtpEntered();
+      dispatch(resetAuthState());
+    }
+
+    if (error && submittedOtp) {
+      toast.error(error);
+      setLocalError(error);
+      setOtp("");
+      setSubmittedOtp(false);
+    }
+  }, [verifyEmailSuccess, error, onOtpEntered, submittedOtp, dispatch]);
+
+  useEffect(() => {
+    const countdown =
+      resendTimer > 0 &&
+      setInterval(() => setResendTimer(resendTimer - 1), 1000);
+    return () => {
+      if (countdown) clearInterval(countdown);
+    };
+  }, [resendTimer]);
+
+  const handleVerify = async () => {
     if (otp.length !== 6) {
-      setError("Please enter a 6-digit OTP");
+      setLocalError("Please enter a 6-digit OTP");
       return;
     }
 
-    setError("");
+    setLocalError("");
+    setSubmittedOtp(true);
+    dispatch(resetAuthState());
+    dispatch(VerifyUserAuth({ otp, email }));
+  };
 
-    try {
-      const response = await dispatch(VerifyUserAuth({ otp, email })).unwrap();
-      if (response.landing.msg === "Your account has been activated") {
-        onOtpEntered();
-      } else {
-        const errorMsg =
-          response.landing.msg || "Invalid OTP. Please try again.";
-        setError(errorMsg);
-        setOtp("");
-        toast.error(errorMsg);
-      }
-    } catch (error: any) {
-      const errorMsg = error?.msg || "Failed to verify OTP. Please try again.";
-      setError(errorMsg);
-      setOtp("");
-      toast.error(errorMsg);
+  const handleResendOtp = () => {
+    if (!email) {
+      toast.error("Email is missing. Please try again.");
+      return;
     }
+
+    dispatch(resetAuthState());
+    setSubmittedOtp(false);
+
+    dispatch(ResendEmailOtp({ email }))
+      .unwrap()
+      .then((response) => {
+        toast.success(response.msg || "OTP sent successfully");
+        setResendTimer(30);
+        setOtp("");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getResendButtonText = () => {
+    if (isLoading && !submittedOtp) return "Sending OTP...";
+    if (resendTimer > 0) return `Resend OTP (${resendTimer}s)`;
+    return "Resend OTP";
   };
 
   return (
@@ -107,22 +168,37 @@ const OtpInput: React.FC<OtpInputProps> = ({
           />
         </div>
 
-        {error && (
-          <Typography color="red" className="text-center text-xs sm:text-sm">
-            {error}
+        {(localError || error) && (
+          <Alert severity="error" className="mx-auto my-2 w-fit">
+            {localError || error}
+          </Alert>
+        )}
+
+        {isLoading && submittedOtp && (
+          <Typography className="text-center text-xs text-gray-600 sm:text-sm">
+            Verifying OTP...
           </Typography>
         )}
       </DialogBody>
 
-      <DialogFooter className="flex justify-center">
+      <DialogFooter className="flex flex-col items-center justify-center gap-3">
         <Button
           variant="filled"
-          onClick={handleContinue}
-          disabled={isLoading}
-          loading={isLoading}
+          onClick={handleVerify}
+          disabled={isLoading || otp.length !== 6}
+          loading={isLoading && submittedOtp}
           className="flex w-full justify-center rounded-full bg-text2 text-sm font-normal normal-case sm:w-[60%] sm:py-3 lg:py-2"
         >
-          Continue
+          Verify
+        </Button>
+
+        <Button
+          variant="text"
+          onClick={handleResendOtp}
+          disabled={isLoading || resendTimer > 0}
+          className="flex justify-center text-sm font-normal normal-case text-gray-700"
+        >
+          {getResendButtonText()}
         </Button>
       </DialogFooter>
     </Dialog>

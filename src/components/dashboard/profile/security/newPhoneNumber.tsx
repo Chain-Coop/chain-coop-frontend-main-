@@ -10,7 +10,6 @@ import {
 } from "@material-tailwind/react";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
-import useUserProfile from "../../../../shared/Hooks/useUserProfile";
 import { PhoneNumberInput } from "../../../common/phoneNumberInput";
 import { UPDATE_PHONE_NUMBER } from "../../../../shared/redux/services/landing.services";
 import { useAppSelector } from "../../../../shared/redux/reduxHooks";
@@ -32,7 +31,7 @@ const NewPhoneNumber = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const { getProfile } = useAppSelector((state: RootState) => state.landing);
+  const { profileDetails } = useUserProfile();
 
   // const handleSubmit = async () => {
   //   setIsLoading(true);

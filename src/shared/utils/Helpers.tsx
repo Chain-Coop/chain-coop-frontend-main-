@@ -1,12 +1,11 @@
 import { Card } from "../types/types";
 import NigerianFlag from "../../Assets/svg/dashboard/contribution/NigerianFlag.svg";
-import { handleLoggout } from "./auth";
 
 export const CardBrandLogo = ({ brand }: { brand: string }) => {
   const logoStyle =
     "absolute right-4 bottom-4 h-6 w-10 rounded bg-white/90 flex items-center justify-center font-bold";
 
-  switch (brand.toLowerCase()) {
+  switch (brand?.toLowerCase()) {
     case "visa":
       return <div className={logoStyle + " text-blue-600"}>VISA</div>;
     case "mastercard":
@@ -14,10 +13,11 @@ export const CardBrandLogo = ({ brand }: { brand: string }) => {
     case "verve":
       return <div className={logoStyle + " text-green-600"}>VERVE</div>;
     default:
-      return <div className={logoStyle + " text-gray-600"}>{brand}</div>;
+      return (
+        <div className={logoStyle + " text-gray-600"}>{brand || "CARD"}</div>
+      );
   }
 };
-
 export const cardDesigns = {
   visa: "from-blue-600 to-blue-800",
   mastercard: "from-red-600 to-orange-600",
@@ -43,16 +43,23 @@ export const formatCardNumber = (last4: string) => {
   return `**** **** **** ${last4}`;
 };
 
-export const formatExpiryDate = (month: string, year: string) => {
-  return `${month.padStart(2, "0")}/${year.slice(-2)}`;
+export const formatExpiryDate = (exp_month: string, exp_year: string) => {
+  // Format as MM/YY
+  if (
+    !exp_month ||
+    !exp_year ||
+    !/^\d{2}$/.test(exp_month) ||
+    !/^\d{4}$/.test(exp_year)
+  ) {
+    return "--/--";
+  }
+  return `${exp_month}/${exp_year.slice(-2)}`;
 };
 
 export const handleCardSelect = (
   card: Card,
   setSelectedCard: (card: Card | null) => void,
-  setError: (error: string | null) => void,
 ) => {
-  setError(null);
   setSelectedCard(card);
 };
 
@@ -75,8 +82,8 @@ export const handlePrev = (
   }
 };
 
-export const handleCloseError = (setError: (error: string | null) => void) => {
-  setError(null);
+export const handleCloseError = () => {
+  // Handled by Redux clearTransactionError
 };
 
 export const getSavingsTypeTitle = (savingsType?: string) => {
@@ -155,20 +162,4 @@ export const checkPasswordStrength = (
   }
 
   return { score, message };
-};
-
-const checkTokenExpiration = () => {
-  const token = sessionStorage.getItem("authToken");
-
-  if (token) {
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
-
-      if (payload.exp * 1000 < Date.now()) {
-        handleLoggout();
-      }
-    } catch (error) {
-      handleLoggout();
-    }
-  }
 };

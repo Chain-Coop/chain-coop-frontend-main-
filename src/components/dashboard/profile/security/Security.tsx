@@ -12,10 +12,11 @@ import PhoneNumberOtp from "./phoneNumberOtp";
 import NewPhoneNumber from "./newPhoneNumber";
 import { useAppSelector } from "../../../../shared/redux/reduxHooks";
 import { RootState } from "../../../../shared/redux/rootReducer";
+import { useUserProfile } from "../../../../shared/Hooks/useUserProfile";
+import { profile } from "console";
 
 const Security = () => {
-  const { getProfile } = useAppSelector((state: RootState) => state.landing);
-
+  const { profileDetails } = useUserProfile();
   const [passwordResetStep, setPasswordResetStep] = useState(0);
   const [pinResetStep, setPinResetStep] = useState(0);
   const [email, setEmail] = useState("");
@@ -149,7 +150,7 @@ const Security = () => {
         case 3:
           return (
             <NewPassword
-              email={getProfile?.email || ""}
+              email={profileDetails?.email || ""}
               otp={otp}
               isOpen={isModalOpen}
               onClose={handleModalClose}

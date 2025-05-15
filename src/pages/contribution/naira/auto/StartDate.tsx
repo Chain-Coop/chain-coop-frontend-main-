@@ -7,6 +7,7 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  SelectChangeEvent,
 } from "@mui/material";
 import { Button, Typography } from "@material-tailwind/react";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
@@ -19,16 +20,28 @@ import {
   validateCustomEndDate,
 } from "../../../../shared/utils/format";
 
-const StartDate = () => {
+interface StartDateState {
+  purpose: string;
+  plan: string;
+  amount: number;
+  currency: string;
+  savingsType: string;
+  contributionType: string;
+}
+
+const StartDate: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const { purpose, plan, amount, currency, savingsType, contributionType } =
-    location.state || {};
+    location.state as StartDateState;
   const isDaily = plan?.toLowerCase() === "daily";
 
   const now = new Date();
-  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(
+    2,
+    "0",
+  )}-${String(now.getDate()).padStart(2, "0")}`;
   const [endDate, setEndDate] = useState("");
   const [availableEndDates, setAvailableEndDates] = useState<string[]>([]);
   const [customEndDate, setCustomEndDate] = useState("");
@@ -46,7 +59,7 @@ const StartDate = () => {
     setUseCustomDate(false);
   }, [today, isDaily]);
 
-  const handleEndDateChange = (event: any) => {
+  const handleEndDateChange = (event: SelectChangeEvent<string>) => {
     const value = event.target.value;
     if (value === "custom" && isDaily) {
       setUseCustomDate(true);
@@ -87,6 +100,17 @@ const StartDate = () => {
       setError(validation.error || "Invalid end date");
       return;
     }
+
+    console.log("Navigating to Preview with state:", {
+      purpose,
+      plan,
+      amount,
+      currency,
+      savingsType,
+      contributionType,
+      startDate: today,
+      endDate: finalEndDate,
+    });
 
     navigate("/dashboard/contribution/preview", {
       state: {

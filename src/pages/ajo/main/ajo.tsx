@@ -1,17 +1,16 @@
 import ToggleButton from "../../../shared/utils/ToggleButton";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
-import useWalletBalance from "../../../shared/Hooks/useBalance";
 import { HiOutlinePlus } from "react-icons/hi";
 import { groupSavingsOptions } from "../../../data/Data";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Typography } from "@material-tailwind/react";
 
-
 import otherIcon from "../../../Assets/svg/dashboard/ajo/other_group_saving_icon.svg";
 import otherImage from "../../../Assets/png/dashboard/ajo/other_group_saving_image.png";
 import GroupCard from "../components/group_card";
 import GroupHistoryTemplate from "../components/group_history_template";
+import { useWalletBalance } from "../../../shared/Hooks/useBalance";
 
 const AjoPage = () => {
   const { isWalletVisible, setIsWalletVisible, formattedBalance } =
@@ -97,128 +96,155 @@ const AjoPage = () => {
     },
   ];
 
-    return (
-      <main className="flex flex-col font-asap  gap-8 mb-[40px]">
-        <DashboardHeader className="flex items-center justify-center text-2xl  md:text-3xl lg:mt-[2em] lg:text-xl">
-          Group Savings
-        </DashboardHeader>
+  return (
+    <main className="mb-[40px] flex flex-col  gap-8 font-asap">
+      <DashboardHeader className="flex items-center justify-center text-2xl  md:text-3xl lg:mt-[2em] lg:text-xl">
+        Group Savings
+      </DashboardHeader>
 
-        <section  className="flex flex-col  font-asap   gap-8 mb-[20px]">
-          <section className="rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md sm:p-16 w-[95%] self-center lg:w-[100%]">
-              <div className="flex justify-center gap-4  font-asap ">
-              <p className="font-medium">Total group fund</p>
-              <div>
-                  <ToggleButton
-                  isVisible={isWalletVisible}
-                  onToggle={(newVisibility) => {
-                      setIsWalletVisible(newVisibility);
-                      sessionStorage.setItem(
-                      "totalGroupFund",
-                      newVisibility.toString(),
-                      );
-                  }}
-                  />
-              </div>
-              </div>
-              <div className="mx-auto mt-6 w-60 rounded-md flex flex-col">
-              {isWalletVisible ? (
-                  <p className="text-xl font-bold lg:text-xl self-center">
-                  {formattedBalance}
-                  </p>
-              ) : (
-                  <p className="text-2xl font-bold self-center">*********</p>
-              )}
-              <hr className="mt-4 h-px rounded-md bg-howtext" />
-              </div>
-          </section>
+      <section className="mb-[20px] flex  flex-col   gap-8 font-asap">
+        <section className="w-[95%] self-center rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md sm:p-16 lg:w-[100%]">
+          <div className="flex justify-center gap-4  font-asap ">
+            <p className="font-medium">Total group fund</p>
+            <div>
+              <ToggleButton
+                isVisible={isWalletVisible}
+                onToggle={(newVisibility) => {
+                  setIsWalletVisible(newVisibility);
+                  sessionStorage.setItem(
+                    "totalGroupFund",
+                    newVisibility.toString(),
+                  );
+                }}
+              />
+            </div>
+          </div>
+          <div className="mx-auto mt-6 flex w-60 flex-col rounded-md">
+            {isWalletVisible ? (
+              <p className="self-center text-xl font-bold lg:text-xl">
+                {formattedBalance}
+              </p>
+            ) : (
+              <p className="self-center text-2xl font-bold">*********</p>
+            )}
+            <hr className="mt-4 h-px rounded-md bg-howtext" />
+          </div>
+        </section>
 
-          {/* START GROUP SAVING */}
-          <section className="flex w-[100%] flex-col gap-4">
-              <div className="w-[100%] flex items-center gap-4">
-                  <div className="bg-[#ECE6F2] w-[24px] h-[24px] flex items-center justify-center rounded-full">
-                      <HiOutlinePlus className="text-[#3D0073] w-[16px] h-[16px]" />
-                  </div>
-                  <h2 className="font-[600] text-[16px] lg:text-[18px] xl:text-[20px] tracking-tight">
-                      Start Group Saving
-                  </h2>
-              </div>
-              <Typography className="font-asap text-[#302B2BC7] text-[14px] xl:text-[16px] font-[400] tracking-medium">
-                  Select any of the saving option to begin your contribution with others
-              </Typography>
-              <div className="flex w-[100%] justify-between 2xl:justify-center 2xl:gap-6 flex-wrap gap-y-4 xl:flex-nowrap">
-                  {
-                      groupSavingsOptions.map((group, index) => (
-                          <Link 
-                              className={`flex flex-col gap-2 items-center w-[100%] h-[150px] md:h-fit md:w-[49%] lg:w-[100%]  xl:w-[49%] xxl:w-[240px] p-2 rounded-lg hover:ring-2 hover:ring-[#440080] ${groupOption === index && 'ring-2 ring-[#440080]'}`}
-                              style={{ backgroundColor: group.backgroundColor }}
-                              key={group.header}
-                              to={group.link}>
-                              <img src={group.icon} alt={group.header} className="w-[40px] h-[40px]" />
-                              <h3 className="md:text-[16px] lg:text-[20px] font-[600] text-[#1E1E1E]">
-                                  {group.header}
-                              </h3>
-                              <Typography className="font-asap text-[13px] md:text-[14px] lg:text-[15px] text-[#565454] font-[400] w-[100%] text-center">
-                                  {group.text}
-                              </Typography>
-                          </Link>
-                      ))
-                  }
-              </div>
-          </section>
-
-          {/* OTHER SAVING DATA */}
-          <section className="flex flex-col gap-3 ">
-            <h3 className="w-[100%] border-b-[1.5px] border-b-[#DDD8D8B2] pb-3 text-[20px] font-[600] lg:text-[22px]">
-              Other Saving Groups
-            </h3>
-            <section className="scrollbar-hide flex w-[100%] gap-4 overflow-x-auto py-2">
-              {otherGroupSavings.map((group, index) => (
-                <GroupCard
-                  key={index}
-                  amount={group.amount}
-                  goal={group.goal}
-                  icon={group.icon}
-                  image={group.image}
-                  members={group.members}
-                  name={group.name}
-                  progress={group.progress}
-                  totalSaved={group.totalSaved}
-                  buttonText="Join"
-                  onClick={() => {}}
+        {/* START GROUP SAVING */}
+        <section className="flex w-[100%] flex-col gap-4">
+          <div className="flex w-[100%] items-center gap-4">
+            <div className="flex h-[24px] w-[24px] items-center justify-center rounded-full bg-[#ECE6F2]">
+              <HiOutlinePlus className="h-[16px] w-[16px] text-[#3D0073]" />
+            </div>
+            <h2 className="text-[16px] font-[600] tracking-tight lg:text-[18px] xl:text-[20px]">
+              Start Group Saving
+            </h2>
+          </div>
+          <Typography className="tracking-medium font-asap text-[14px] font-[400] text-[#302B2BC7] xl:text-[16px]">
+            Select any of the saving option to begin your contribution with
+            others
+          </Typography>
+          <div className="flex w-[100%] flex-wrap justify-between gap-y-4 xl:flex-nowrap 2xl:justify-center 2xl:gap-6">
+            {groupSavingsOptions.map((group, index) => (
+              <Link
+                className={`flex h-[150px] w-[100%] flex-col items-center gap-2 rounded-lg p-2 hover:ring-2  hover:ring-[#440080] md:h-fit md:w-[49%] lg:w-[100%] xl:w-[49%] xxl:w-[240px] ${groupOption === index && "ring-2 ring-[#440080]"}`}
+                style={{ backgroundColor: group.backgroundColor }}
+                key={group.header}
+                to={group.link}
+              >
+                <img
+                  src={group.icon}
+                  alt={group.header}
+                  className="h-[40px] w-[40px]"
                 />
-              ))}
-            </section>
-          </section>
+                <h3 className="font-[600] text-[#1E1E1E] md:text-[16px] lg:text-[20px]">
+                  {group.header}
+                </h3>
+                <Typography className="w-[100%] text-center font-asap text-[13px] font-[400] text-[#565454] md:text-[14px] lg:text-[15px]">
+                  {group.text}
+                </Typography>
+              </Link>
+            ))}
+          </div>
+        </section>
 
-
-          {/* GROUP HISTORY */}
-          <section className="w-[100%] flex flex-col gap-5 overflow-x-auto">
-              <h4 className="text-[20px] lg:text-[22px] font-[600] w-[100%] ">
-                  Group History
-              </h4>
-              <div className="px-4 lg:px-6">
-                <div className="flex w-[100%] justify-between border-b-[1.5px] border-b-[#DDD8D8B2]">
-                    <button className={`font-[500] text-[#1E1E1E] text-[16px] lg:text-[18px]  font-asap  pb-5 ${groupHistory === 'ongoing' ? 'opacity-100 font-[600] border-b-[2.5px] border-b-[#440080]' : 'opacity-50'}`} onClick={() => setGroupHistory('ongoing')}>
-                        Ongoing
-                    </button>
-                    <button className={`font-[500] text-[#1E1E1E] text-[16px] lg:text-[18px]  font-asap  pb-5 ${groupHistory === 'completed' ? 'opacity-100 font-[600] border-b-[2.5px] border-b-[#440080]' : 'opacity-50'}`} onClick={() => setGroupHistory('completed')}>
-                        Completed
-                    </button>
-                </div>
-              </div>
-              <section className="w-[100%] bg-[#C5B0D833] pt-3 px-2 rounded-xl flex-shrink-0">
-                  {
-                      groupHistory === 'ongoing' 
-                          ? 
-                      <GroupHistoryTemplate description="This are the list of active groups you created" historyList={otherGroupSavings.filter(item => item.progress < 100)} length={`My groups (${otherGroupSavings.filter(item => item.progress < 100).length})`} title="Active groups" key={1} buttonText="Withdraw" onClick={() => {}} /> 
-                          : 
-                      <GroupHistoryTemplate description="This are the list of past groups you created or joined." historyList={otherGroupSavings.filter(item => item.progress === 100)} length={`My previous groups (${otherGroupSavings.filter(item => item.progress === 100).length})`} title="Previous Groups" key={2} buttonText="Withdraw" onClick={() => {}} />
-                  }
-              </section>
+        {/* OTHER SAVING DATA */}
+        <section className="flex flex-col gap-3 ">
+          <h3 className="w-[100%] border-b-[1.5px] border-b-[#DDD8D8B2] pb-3 text-[20px] font-[600] lg:text-[22px]">
+            Other Saving Groups
+          </h3>
+          <section className="scrollbar-hide flex w-[100%] gap-4 overflow-x-auto py-2">
+            {otherGroupSavings.map((group, index) => (
+              <GroupCard
+                key={index}
+                amount={group.amount}
+                goal={group.goal}
+                icon={group.icon}
+                image={group.image}
+                members={group.members}
+                name={group.name}
+                progress={group.progress}
+                totalSaved={group.totalSaved}
+                buttonText="Join"
+                onClick={() => {}}
+              />
+            ))}
           </section>
         </section>
-      </main>
-    )
-}
+
+        {/* GROUP HISTORY */}
+        <section className="flex w-[100%] flex-col gap-5 overflow-x-auto">
+          <h4 className="w-[100%] text-[20px] font-[600] lg:text-[22px] ">
+            Group History
+          </h4>
+          <div className="px-4 lg:px-6">
+            <div className="flex w-[100%] justify-between border-b-[1.5px] border-b-[#DDD8D8B2]">
+              <button
+                className={`pb-5 font-asap text-[16px] font-[500]  text-[#1E1E1E]  lg:text-[18px] ${groupHistory === "ongoing" ? "border-b-[2.5px] border-b-[#440080] font-[600] opacity-100" : "opacity-50"}`}
+                onClick={() => setGroupHistory("ongoing")}
+              >
+                Ongoing
+              </button>
+              <button
+                className={`pb-5 font-asap text-[16px] font-[500]  text-[#1E1E1E]  lg:text-[18px] ${groupHistory === "completed" ? "border-b-[2.5px] border-b-[#440080] font-[600] opacity-100" : "opacity-50"}`}
+                onClick={() => setGroupHistory("completed")}
+              >
+                Completed
+              </button>
+            </div>
+          </div>
+          <section className="w-[100%] flex-shrink-0 rounded-xl bg-[#C5B0D833] px-2 pt-3">
+            {groupHistory === "ongoing" ? (
+              <GroupHistoryTemplate
+                description="This are the list of active groups you created"
+                historyList={otherGroupSavings.filter(
+                  (item) => item.progress < 100,
+                )}
+                length={`My groups (${otherGroupSavings.filter((item) => item.progress < 100).length})`}
+                title="Active groups"
+                key={1}
+                buttonText="Withdraw"
+                onClick={() => {}}
+              />
+            ) : (
+              <GroupHistoryTemplate
+                description="This are the list of past groups you created or joined."
+                historyList={otherGroupSavings.filter(
+                  (item) => item.progress === 100,
+                )}
+                length={`My previous groups (${otherGroupSavings.filter((item) => item.progress === 100).length})`}
+                title="Previous Groups"
+                key={2}
+                buttonText="Withdraw"
+                onClick={() => {}}
+              />
+            )}
+          </section>
+        </section>
+      </section>
+    </main>
+  );
+};
 
 export default AjoPage;
