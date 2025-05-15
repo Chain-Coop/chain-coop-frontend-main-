@@ -48,7 +48,7 @@ export const useUserProfile = () => {
         const errorMessage =
           error?.message || error?.error || "Failed to fetch user circles";
         setCirclesError(errorMessage);
-        dispatch(setMessage(errorMessage)); // Might remove this
+        dispatch(setMessage(errorMessage));
       } finally {
         setCirclesLoading(false);
       }
