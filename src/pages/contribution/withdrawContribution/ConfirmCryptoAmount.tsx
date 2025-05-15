@@ -51,7 +51,6 @@ const ConfirmCryptoAmount: React.FC = () => {
 
       setIsPinModalOpen(false);
       setIsSuccessModalOpen(true);
-      console.log("Withdrawal successful!");
       toast.success("Withdrawal successful!");
     } catch (error: any) {
       console.error("Withdrawal error:", error);

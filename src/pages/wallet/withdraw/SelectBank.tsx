@@ -20,7 +20,10 @@ import ChangePin from "../../../components/dashboard/profile/security/modal/Chan
 import SuccessModal from "../../../components/dashboard/wallet/modal/SuccessModal";
 import { RootState } from "../../../shared/redux/rootReducer";
 import { GetUserProfile } from "../../../shared/redux/slices/landing.slices";
-import { useWallet } from "../../../shared/Hooks/useUserProfile";
+import {
+  useUserProfile,
+  useWallet,
+} from "../../../shared/Hooks/useUserProfile";
 
 interface BankAccount {
   accountNumber: string;
@@ -37,7 +40,8 @@ const SelectBank = () => {
   const amount = location.state?.amount;
   const cryptoData = location.state?.data?.data;
   const isCryptoWithdrawal = !!cryptoData;
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch: AppDispatch = useDispatch();
+  const { profileDetails } = useUserProfile();
   const { walletBalance } = useWallet();
 
   const [pinStep, setPinStep] = useState(0);
@@ -50,7 +54,22 @@ const SelectBank = () => {
     null,
   );
 
-  const isPinCreated = walletBalance?.isPinCreated || false;
+  const isPinCreated = profileDetails?.isPinCreated || false;
+
+  const handleBackClick = () => {
+    navigate(-1);
+  };
+
+  const BankAccount = () => {
+    navigate("/dashboard/wallet/bank-account", {
+      state: {
+        amount,
+        isCryptoWithdrawal,
+        cryptoData,
+      },
+    });
+  };
+
   const hasBankAccount =
     walletBalance?.bankAccounts && walletBalance.bankAccounts.length > 0;
   useEffect(() => {
@@ -133,6 +152,7 @@ const SelectBank = () => {
 
     try {
       if (isCryptoWithdrawal) {
+        // Crypto withdrawal payload
         const payload = {
           amount: cryptoData.amountInCryptoAsset,
           crypto: cryptoData.cryptoAsset,
@@ -142,10 +162,11 @@ const SelectBank = () => {
           accountNumber: selectedAccount.accountNumber,
           accountName: selectedAccount.accountName,
           bankCode: selectedAccount.bankCode,
+          tokenId: cryptoData.tokenId,
         };
         await dispatch(CashwyreOfframpConfirm({ body: payload })).unwrap();
       } else {
-        await dispatch(
+        const response = await dispatch(
           WithdrawalFromWallet({
             accountNumber: selectedAccount.accountNumber,
             bankCode: selectedAccount.bankCode,

@@ -618,7 +618,6 @@ const transactionSlice = createSlice({
       state.error = null;
     });
     builder.addCase(GetAllProject.fulfilled, (state, action) => {
-      console.log("Actio", action.payload);
       state.isLoading = false;
       state.allProjects = action.payload;
     });

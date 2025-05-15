@@ -2,9 +2,10 @@ import ToggleButton from "../../../shared/utils/ToggleButton";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import { HiOutlinePlus } from "react-icons/hi";
 import { groupSavingsOptions } from "../../../data/Data";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Typography } from "@material-tailwind/react";
+import { useUserProfile } from "../../../shared/Hooks/useUserProfile";
 
 import otherIcon from "../../../Assets/svg/dashboard/ajo/other_group_saving_icon.svg";
 import otherImage from "../../../Assets/png/dashboard/ajo/other_group_saving_image.png";
@@ -95,6 +96,29 @@ const AjoPage = () => {
       totalSaved: "$100.5m",
     },
   ];
+
+  // Fetching data for Group History section
+  const { userCircles, circlesLoading, circlesError } = useUserProfile();
+
+  const ongoingGroupsFromAPI = userCircles
+    ? userCircles
+        .map((circle: any) => ({
+          ...circle,
+          icon: circle.icon || otherIcon, // Fallback icon
+          image: circle.image || otherImage, // Fallback image
+        }))
+        .filter((item: any) => item.progress < 100)
+    : [];
+
+  const completedGroupsFromAPI = userCircles
+    ? userCircles
+        .map((circle: any) => ({
+          ...circle,
+          icon: circle.icon || otherIcon,
+          image: circle.image || otherImage,
+        }))
+        .filter((item: any) => item.progress === 100)
+    : [];
 
   return (
     <main className="mb-[40px] flex flex-col  gap-8 font-asap">
@@ -215,30 +239,44 @@ const AjoPage = () => {
             </div>
           </div>
           <section className="w-[100%] flex-shrink-0 rounded-xl bg-[#C5B0D833] px-2 pt-3">
-            {groupHistory === "ongoing" ? (
-              <GroupHistoryTemplate
-                description="This are the list of active groups you created"
-                historyList={otherGroupSavings.filter(
-                  (item) => item.progress < 100,
-                )}
-                length={`My groups (${otherGroupSavings.filter((item) => item.progress < 100).length})`}
-                title="Active groups"
-                key={1}
-                buttonText="Withdraw"
-                onClick={() => {}}
-              />
-            ) : (
+            {circlesLoading ? (
+              <Typography className="p-4 text-center">
+                Loading group history...
+              </Typography>
+            ) : circlesError ? (
+              <Typography className="p-4 text-center" color="red">
+                Error fetching group history: {circlesError}
+              </Typography>
+            ) : groupHistory === "ongoing" ? (
+              ongoingGroupsFromAPI.length > 0 ? (
+                <GroupHistoryTemplate
+                  description="This are the list of active groups you created"
+                  historyList={ongoingGroupsFromAPI}
+                  length={`My groups (${ongoingGroupsFromAPI.length})`}
+                  title="Active groups"
+                  key={1}
+                  buttonText="Withdraw"
+                  onClick={() => {}}
+                />
+              ) : (
+                <Typography className="p-4 text-center">
+                  No ongoing groups available.
+                </Typography>
+              )
+            ) : completedGroupsFromAPI.length > 0 ? (
               <GroupHistoryTemplate
                 description="This are the list of past groups you created or joined."
-                historyList={otherGroupSavings.filter(
-                  (item) => item.progress === 100,
-                )}
-                length={`My previous groups (${otherGroupSavings.filter((item) => item.progress === 100).length})`}
+                historyList={completedGroupsFromAPI}
+                length={`My previous groups (${completedGroupsFromAPI.length})`}
                 title="Previous Groups"
                 key={2}
                 buttonText="Withdraw"
                 onClick={() => {}}
               />
+            ) : (
+              <Typography className="p-4 text-center">
+                No completed groups available.
+              </Typography>
             )}
           </section>
         </section>

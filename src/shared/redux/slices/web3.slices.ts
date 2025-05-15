@@ -210,6 +210,7 @@ export const GetAllUserTokens = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const data = await web3Services.GetAllUserTokens();
+      //console.log(data);
       return data;
     } catch (error: any) {
       const message = error.message;
@@ -321,7 +322,6 @@ export const CashwyreFund = createAsyncThunk<
   }
 });
 
-// --- Onramp Confirm Types ---
 interface CashwyreOnrampConfirmPayload {
   body: {
     amount: number;
@@ -359,7 +359,6 @@ export const CashwyreOnrampConfirm = createAsyncThunk<
   }
 });
 
-// --- Offramp Quote Types ---
 interface CashwyreOfframpQuotePayload {
   body: {
     amount: number;
@@ -395,7 +394,6 @@ export const CashwyreOfframpQuote = createAsyncThunk<
   }
 });
 
-// --- Offramp Confirm Types ---
 interface CashwyreOfframpConfirmPayload {
   body: {
     amount: number;
@@ -433,6 +431,38 @@ export const CashwyreOfframpConfirm = createAsyncThunk<
   }
 });
 
+export const GetCashwyreHistory = createAsyncThunk<
+  CashwyreHistoryResponse,
+  void,
+  { rejectValue: string }
+>("web3/getCashwyreHistory", async (_, thunkAPI) => {
+  try {
+    //console.log("GetCashwyreHistory thunk called");
+    const data = await web3Services.getCashwyreHistory();
+    //console.log("Data received in thunk:", data);
+    
+    const formattedData: CashwyreHistoryResponse = {
+      data: data.data || [],
+      message: data.message || "Successfully fetched cashwyre transactions",
+      success: data.success !== false
+    };
+    
+    return formattedData;
+  } catch (error: any) {
+    console.error("Error in GetCashwyreHistory thunk:", error);
+    const message =
+      error.message || "Failed to fetch cashwyre transaction history";
+    thunkAPI.dispatch(setMessage(message));
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
+interface CashwyreHistoryResponse {
+  data: CryptoTransaction[];
+  message: string;
+  success: boolean;
+}
+
 interface CryptoState {
   actvateCryptWallet: Record<string, any> | null;
   cryptoBalance: number;
@@ -442,12 +472,15 @@ interface CryptoState {
   userPools: Pool[] | null;
   userTokens: any[] | null;
   cryptoHistory: CryptoTransaction[] | null;
+  cashwyreHistory: CryptoTransaction[] | null;
   loading: boolean;
   userPoolsLoading: boolean;
   cryptoHistoryLoading: boolean;
+  cashwyreHistoryLoading: boolean;
   error: string | null;
   userPoolsError: string | null;
   cryptoHistoryError: string | null;
+  cashwyreHistoryError: string | null;
   walletMessage: string | null;
   totalContributionBalanceCrypto: number | null;
   totalContributionBalanceLoading: boolean;
@@ -472,18 +505,19 @@ const initialState: CryptoState = {
   userPools: null,
   userTokens: null,
   cryptoHistory: null,
+  cashwyreHistory: null,
   loading: false,
   userPoolsLoading: false,
   cryptoHistoryLoading: false,
+  cashwyreHistoryLoading: false,
   error: null,
   userPoolsError: null,
   cryptoHistoryError: null,
+  cashwyreHistoryError: null,
   walletMessage: null,
-  // --- Initialize New State ---
   totalContributionBalanceCrypto: null,
   totalContributionBalanceLoading: false,
   totalContributionBalanceError: null,
-  // --- End Initialize ---
   onrampConfirmLoading: false,
   onrampConfirmError: null,
   onrampConfirmResult: null,
@@ -503,8 +537,12 @@ export const Web3Slices = createSlice({
       state.cryptoHistory = null;
       state.cryptoHistoryLoading = false;
       state.cryptoHistoryError = null;
+      state.cashwyreHistory = null;
+      state.cashwyreHistoryLoading = false;
+      state.cashwyreHistoryError = null;
     },
   },
+
   extraReducers: (builder) => {
     builder
       .addCase(ActivateCryptoWallet.pending, (state) => {
@@ -807,6 +845,20 @@ export const Web3Slices = createSlice({
         state.offrampConfirmResult = null;
         state.offrampConfirmError =
           action.payload?.message || "Failed to confirm offramp transaction";
+      })
+      .addCase(GetCashwyreHistory.pending, (state) => {
+        state.cashwyreHistoryLoading = true;
+        state.cashwyreHistoryError = null;
+      })
+      .addCase(GetCashwyreHistory.fulfilled, (state, action) => {
+        state.cashwyreHistoryLoading = false;
+        state.cashwyreHistory = action.payload.data;
+        state.cashwyreHistoryError = null;
+      })
+      .addCase(GetCashwyreHistory.rejected, (state, action) => {
+        state.cashwyreHistoryLoading = false;
+        state.cashwyreHistory = null;
+        state.cashwyreHistoryError = action.payload as string;
       });
   },
 });

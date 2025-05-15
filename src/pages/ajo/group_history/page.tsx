@@ -1,149 +1,176 @@
-import { Props } from "react-select"
-import { DashboardHeader } from "../../../components/common/DashboardHeader"
-import { useState } from "react";
+import { Props } from "react-select";
+import { DashboardHeader } from "../../../components/common/DashboardHeader";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import GroupHistoryTemplate from "../components/group_history_template";
-
+import { useUserProfile } from "../../../shared/Hooks/useUserProfile";
+import { Typography } from "@material-tailwind/react";
 
 import createImage from "../../../Assets/png/dashboard/ajo/create_new_group.png";
 import otherIcon from "../../../Assets/svg/dashboard/ajo/other_group_saving_icon.svg";
 import otherImage from "../../../Assets/png/dashboard/ajo/other_group_saving_image.png";
 
-
 const GroupHistoryPage = (props: Props) => {
-    // state to control the group history selected
-    const [groupHistory, setGroupHistory] = useState("ongoing");
+  const [groupHistory, setGroupHistory] = useState("ongoing");
 
-      // fetched data from server
-      const otherGroupSavings = [
-        {
-          icon: otherIcon,
-          image: otherImage,
-          name: "Tech Achievers",
-          members: 10,
-          progress: 1,
-          amount: "$10 daily",
-          goal: "$100k per member",
-          totalSaved: "$100.5m",
-        },
-        {
-          icon: otherIcon,
-          image: otherImage,
-          name: "Tech Achievers",
-          members: 10,
-          progress: 19,
-          amount: "$10 daily",
-          goal: "$100k per member",
-          totalSaved: "$100.5m",
-        },
-        {
-          icon: otherIcon,
-          image: otherImage,
-          name: "Tech Achievers",
-          members: 10,
-          progress: 90,
-          amount: "$10 daily",
-          goal: "$100k per member",
-          totalSaved: "$100.5m",
-        },
-        {
-          icon: otherIcon,
-          image: otherImage,
-          name: "Tech Achievers",
-          members: 10,
-          progress: 70,
-          amount: "$10 daily",
-          goal: "$100k per member",
-          totalSaved: "$100.5m",
-        },
-        {
-          icon: otherIcon,
-          image: otherImage,
-          name: "Tech Achievers",
-          members: 10,
-          progress: 100,
-          amount: "$10 daily",
-          goal: "$100k per member",
-          totalSaved: "$100.5m",
-        },
-        {
-          icon: otherIcon,
-          image: otherImage,
-          name: "Tech Achievers",
-          members: 10,
-          progress: 0,
-          amount: "$10 daily",
-          goal: "$100k per member",
-          totalSaved: "$100.5m",
-        },
-        {
-          icon: otherIcon,
-          image: otherImage,
-          name: "Tech Achievers",
-          members: 10,
-          progress: 10,
-          amount: "$10 daily",
-          goal: "$100k per member",
-          totalSaved: "$100.5m",
-        },
-    ];
+  const {
+    profileDetails,
+    userCircles,
+    circlesLoading,
+    circlesError,
+    fetchUserCircles,
+  } = useUserProfile();
 
+  const ongoingGroups = userCircles
+    ? userCircles
+        .map((circle: any) => ({
+          ...circle,
+          icon: circle.icon || otherIcon,
+          image: circle.image || otherImage,
+        }))
+        .filter((item: any) => item.progress < 100)
+    : [];
 
+  const completedGroups = userCircles
+    ? userCircles
+        .map((circle: any) => ({
+          ...circle,
+          icon: circle.icon || otherIcon,
+          image: circle.image || otherImage,
+        }))
+        .filter((item: any) => item.progress === 100)
+    : [];
+
+  const allUserGroups = userCircles
+    ? userCircles.map((circle: any) => ({
+        ...circle,
+        icon: circle.icon || otherIcon,
+        image: circle.image || otherImage,
+      }))
+    : [];
+
+  if (circlesLoading) {
     return (
-        <main className="flex flex-col font-asap gap-8 mb-[40px]">
-            <DashboardHeader className="flex items-center justify-center text-2xl  md:text-3xl lg:mt-[2em] lg:text-xl">
-                Group History
-            </DashboardHeader>
+      <main className="mb-[40px] flex min-h-[50vh] flex-col items-center justify-center gap-8 font-asap">
+        <DashboardHeader className="flex items-center justify-center text-2xl  md:text-3xl lg:mt-[2em] lg:text-xl">
+          Group History
+        </DashboardHeader>
+        <Typography>Loading group history...</Typography>
+      </main>
+    );
+  }
 
-           <section className="flex flex-col gap-8 w-[100%]">
-                <section className="w-[100%] flex flex-col gap-3">
-                    <div className=" px-4 lg:px-6">
-                        <div className="flex w-[100%] justify-between border-b-[1.5px] border-b-[#DDD8D8B2]">
-                            <button className={`font-[500] text-[#1E1E1E] text-[16px] lg:text-[18px]  font-asap  pb-5 ${groupHistory === 'ongoing' ? 'opacity-100 font-[600] border-b-[2.5px] border-b-[#440080]' : 'opacity-50'}`} onClick={() => setGroupHistory('ongoing')}>
-                                Ongoing
-                            </button>
-                            <button className={`font-[500] text-[#1E1E1E] text-[16px] lg:text-[18px]  font-asap  pb-5 ${groupHistory === 'completed' ? 'opacity-100 font-[600] border-b-[2.5px] border-b-[#440080]' : 'opacity-50'}`} onClick={() => setGroupHistory('completed')}>
-                                Completed
-                            </button>
-                        </div>
-                    </div>
-                    <section className="w-[100%] bg-[#C5B0D833] pt-3 px-4 rounded-xl">
-                        {
-                            groupHistory === 'ongoing' 
-                                ? 
-                            <GroupHistoryTemplate description="This are the list of active groups you created" historyList={otherGroupSavings.filter(item => item.progress < 100)} length={`My groups (${otherGroupSavings.filter(item => item.progress < 100).length})`} title="Active groups" key={1} buttonText="Withdraw" onClick={() => {}} /> 
-                                : 
-                            <GroupHistoryTemplate description="This are the list of past groups you created or joined." historyList={otherGroupSavings.filter(item => item.progress === 100)} length={`My previous groups (${otherGroupSavings.filter(item => item.progress === 100).length})`} title="Previous Groups" key={2} buttonText="Withdraw" onClick={() => {}} />
-                        }
-                    </section>
-                </section>
+  if (circlesError) {
+    return (
+      <main className="mb-[40px] flex min-h-[50vh] flex-col items-center justify-center gap-8 font-asap">
+        <DashboardHeader className="flex items-center justify-center text-2xl  md:text-3xl lg:mt-[2em] lg:text-xl">
+          Group History
+        </DashboardHeader>
+        <Typography color="red">
+          Error fetching group history: {circlesError}
+        </Typography>
+      </main>
+    );
+  }
 
-                {/* JOINT SAVINGS GROUP */}
-                <section className="mt-12 flex w-[100%] flex-col  px-4 lg:px-6">
-                <GroupHistoryTemplate
-                    description="This are the list of active groups you joined."
-                    historyList={otherGroupSavings}
-                    length={`Savings groups (${otherGroupSavings.length})`}
-                    title="Joint Saving Groups"
-                    key={2}
-                    buttonText="Joined" 
+  return (
+    <main className="mb-[40px] flex flex-col gap-8 font-asap">
+      <DashboardHeader className="flex items-center justify-center text-2xl  md:text-3xl lg:mt-[2em] lg:text-xl">
+        Group History
+      </DashboardHeader>
+
+      <section className="flex w-[100%] flex-col gap-8">
+        <section className="flex w-[100%] flex-col gap-3">
+          <div className=" px-4 lg:px-6">
+            <div className="flex w-[100%] justify-between border-b-[1.5px] border-b-[#DDD8D8B2]">
+              <button
+                className={`pb-5 font-asap text-[16px] font-[500]  text-[#1E1E1E]  lg:text-[18px] ${groupHistory === "ongoing" ? "border-b-[2.5px] border-b-[#440080] font-[600] opacity-100" : "opacity-50"}`}
+                onClick={() => setGroupHistory("ongoing")}
+              >
+                Ongoing
+              </button>
+              <button
+                className={`pb-5 font-asap text-[16px] font-[500]  text-[#1E1E1E]  lg:text-[18px] ${groupHistory === "completed" ? "border-b-[2.5px] border-b-[#440080] font-[600] opacity-100" : "opacity-50"}`}
+                onClick={() => setGroupHistory("completed")}
+              >
+                Completed
+              </button>
+            </div>
+          </div>
+          <section className="w-[100%] rounded-xl bg-[#C5B0D833] px-4 pt-3">
+            {groupHistory === "ongoing" ? (
+              <>
+                {ongoingGroups.length > 0 ? (
+                  <GroupHistoryTemplate
+                    description="This are the list of active groups you created"
+                    historyList={ongoingGroups}
+                    length={`My groups (${ongoingGroups.length})`}
+                    title="Active groups"
+                    key={1}
+                    buttonText="Withdraw"
                     onClick={() => {}}
-                />
-                </section>
+                  />
+                ) : (
+                  <Typography>No ongoing groups available.</Typography>
+                )}
+              </>
+            ) : (
+              <>
+                {completedGroups.length > 0 ? (
+                  <GroupHistoryTemplate
+                    description="This are the list of past groups you created or joined."
+                    historyList={completedGroups}
+                    length={`My previous groups (${completedGroups.length})`}
+                    title="Previous Groups"
+                    key={2}
+                    buttonText="Withdraw"
+                    onClick={() => {}}
+                  />
+                ) : (
+                  <Typography>No completed groups available.</Typography>
+                )}
+              </>
+            )}
+          </section>
+        </section>
 
-                    {/* CREATE NEW SAVINGS GROUP */}
-                <section className="w-[100%] flex flex-col mt-12 items-center justify-center gap-4  px-4 lg:px-6">
-                    <img src={createImage} alt="create new savings group" className="w-[150px] h-[100px]" />
-                    <p className="text-[#6E6C6C] text-[16px] lg:text-[18px] font-[400] text-center">
-                        Everyday is a good day to save some money
-                    </p>
-                    <Link to={"/dashboard/ajo/open-group"}  className="bg-[#440080] text-[16px] lg:text-[18px] font-medium w-fit px-6 h-[45px] rounded-md flex items-center justify-center text-white hover:bg-[#3D0073]">
-                        Create a new group
-                    </Link>
-                </section>
-           </section>
-        </main>
-    )
-}
+        {/* JOINT SAVINGS GROUP */}
+        <section className="mt-12 flex w-[100%] flex-col  px-4 lg:px-6">
+          {allUserGroups.length > 0 ? (
+            <GroupHistoryTemplate
+              description="This are the list of active groups you joined."
+              historyList={allUserGroups}
+              length={`Savings groups (${allUserGroups.length})`}
+              title="Joint Saving Groups"
+              key={3}
+              buttonText="Joined"
+              onClick={() => {}}
+            />
+          ) : (
+            <Typography>No joint savings groups available.</Typography>
+          )}
+        </section>
 
-export default GroupHistoryPage
+        {/* CREATE NEW SAVINGS GROUP */}
+        <section className="mt-12 flex w-[100%] flex-col items-center justify-center gap-4  px-4 lg:px-6">
+          <img
+            src={createImage}
+            alt="create new savings group"
+            className="h-[100px] w-[150px]"
+          />
+          <p className="text-center text-[16px] font-[400] text-[#6E6C6C] lg:text-[18px]">
+            Everyday is a good day to save some money
+          </p>
+          <Link
+            to={"/dashboard/ajo/open-group"}
+            className="flex h-[45px] w-fit items-center justify-center rounded-md bg-[#440080] px-6 text-[16px] font-medium text-white hover:bg-[#3D0073] lg:text-[18px]"
+          >
+            Create a new group
+          </Link>
+        </section>
+      </section>
+    </main>
+  );
+};
+
+export default GroupHistoryPage;

@@ -89,7 +89,6 @@ export async function GetWalletBalance(): Promise<GetWalletBalanceResponse> {
 export async function GetWalletCard(): Promise<GetWalletCardResponse> {
   const url = `${API_URL}${API_ENDPOINTS.WALLET.GET_CARDS}`;
   const headers = authHeader();
-  console.log("hea", headers);
   try {
     const response = await axios.get<GetWalletCardResponse>(url, {
       headers: authHeader(),

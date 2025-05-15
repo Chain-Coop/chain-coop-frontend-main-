@@ -7,6 +7,7 @@ import person1 from "../Assets/png/home/Co-op-PX1.png";
 import person2 from "../Assets/png/home/Co-op-PX2.png";
 import person3 from "../Assets/png/home/Co-op-PX3.png";
 import wallet from "../Assets/svg/dashboard/wallet.svg";
+import buy from "../Assets/svg/dashboard/wallet/buy.svg";
 import home from "../Assets/svg/dashboard/home.svg";
 import contribution from "../Assets/svg/dashboard/contribution.svg";
 import ajo from "../Assets/svg/dashboard/ajo.svg";
@@ -54,6 +55,12 @@ export const sidebarLinks = [
     pathsToCheck: ["/dashboard/wallet"],
   },
   {
+    img: buy,
+    text: "Buy Crypto",
+    to: "/dashboard/wallet/fund/fund_crypto_wallet",
+    pathsToCheck: ["/dashboard/wallet/fund/fund_crypto_wallet"],
+  },
+  {
     img: profile,
     text: "Profile",
     to: "/dashboard/profile",
@@ -83,6 +90,11 @@ export const dashboardNav = [
     to: "/dashboard/wallet",
   },
   {
+    img: buy,
+    text: "Buy Crypto",
+    to: "/dashboard/wallet/fund/fund_crypto_wallet",
+  },
+  {
     img: profile,
     text: "Profile",
     to: "/dashboard/profile",
@@ -96,7 +108,7 @@ export const becomeData = [
       "Build a culture of saving and join others in building communal wealth by saving in Naira.",
   },
   {
-    title: "Stay Safe from Inflation with USDT, USDC, Gold, etc.",
+    title: "Stay Safe from Inflation with USDT, USDC, BTC, etc.",
     paragraph:
       "Beat inflation by saving in stablecoins and other cryptos. Automate your savings from Naira to Crypto.",
   },

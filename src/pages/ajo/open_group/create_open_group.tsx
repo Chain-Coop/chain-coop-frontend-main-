@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router-dom";
-import { Button, Typography } from "@material-tailwind/react";
-
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Button } from "@material-tailwind/react";
+import { Typography } from "@material-tailwind/react";
 import createImage from "../../../Assets/png/dashboard/ajo/open_group_image.png";
 import rightArrow from "../../../Assets/svg/dashboard/ajo/right_arrow.svg";
 import FirstOpenGroupForm from "../components/first_open_group_form";
@@ -22,8 +22,22 @@ import ReviewOpenGroupForm from "../components/review_open_group_form";
 import SuccessModal from "../components/success_modal";
 import { IoIosArrowBack } from "react-icons/io";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
+import PrepareData from "./prepare_data";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../../shared/redux/store";
+import { toast } from "react-toastify";
+import { CreateSavingsCircle } from "../../../shared/redux/slices/web_savings_groups.slices";
 
 const CreateOpenGroup = () => {
+  const location = useLocation();
+  const groupType = location.pathname.includes("closed-group")
+    ? "closed"
+    : "open";
+
+  const profileDetails = useSelector(
+    (state: any) => state?.landing?.getProfile,
+  );
+
   const [firstFormData, setFirstFormData] = useState<firstOpenGroupType>({
     savings_title: "",
     savings_description: "",
@@ -34,15 +48,19 @@ const CreateOpenGroup = () => {
   const [secondFormData, setSecondFormData] = useState<secondOpenGroupType>({
     total_saving_amount: "",
     savings_frequency: "",
-    start_date: "Start date",
-    end_date: "End date",
+    start_date: "",
+    end_date: "",
   });
 
   const [thirdFormData, setThirdFormData] = useState<thirdOpenGroupType>({
-    daily_deposit: 30,
+    depositAmount: 30,
     savings_image: null,
     agree: false,
   });
+
+  const dispatch: AppDispatch = useDispatch();
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [isNextDisabled, setIsNextDisabled] = useState<boolean>(true);
 
@@ -64,6 +82,8 @@ const CreateOpenGroup = () => {
     <ThirdOpenGroupForm
       data={thirdFormData}
       currency={firstFormData.savings_currency}
+      total_saving_amount={secondFormData.total_saving_amount}
+      savings_frequency={secondFormData.savings_frequency}
       setData={setThirdFormData}
       key={2}
     />,
@@ -96,8 +116,33 @@ const CreateOpenGroup = () => {
     validateInputs();
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const openModal = async () => {
+    setLoading(true);
+    try {
+      const payload = PrepareData({
+        first: firstFormData,
+        second: secondFormData,
+        third: thirdFormData,
+        groupType,
+        userId: profileDetails?._id,
+      });
+
+      //console.log('Data being sent to CreateSavingsCircle:', payload);
+
+      const response = await dispatch(CreateSavingsCircle(payload)).unwrap();
+      //console.log("CreateSavingsCircle Response:", response);
+
+      toast.success("Group created successfully!");
+      setIsModalOpen(true);
+
+      setTimeout(() => {
+        navigate("/dashboard/ajo");
+      }, 2000);
+    } catch (error: any) {
+      toast.error(error?.message || "Failed to create group");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleBackClick = () => {
@@ -112,7 +157,9 @@ const CreateOpenGroup = () => {
       >
         <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
         <div className="flex flex-grow items-center justify-center">
-          <div className="tracking-wide">Create Open Group</div>
+          <div className="tracking-wide">
+            Create {groupType === "closed" ? "Closed" : "Open"} Group
+          </div>
         </div>
       </DashboardHeader>
 
@@ -138,7 +185,7 @@ const CreateOpenGroup = () => {
         {formSteps[formStepsIndex]}
 
         <div
-          className={`flex ${formStepsIndex > 0 ? "justify-between" : "justify-end"} mt-[20px] items-center`}
+          className={`flex w-[100%] self-center 2xl:w-[80%] ${formStepsIndex > 0 ? "justify-between" : "justify-end"} mt-[20px] items-center`}
         >
           {formStepsIndex > 0 && (
             <Button
@@ -156,14 +203,14 @@ const CreateOpenGroup = () => {
           )}
           {formStepsIndex > 2 ? (
             <Button
-              className={`w-fit rounded-lg bg-[#440080] py-2 font-asap text-[18px] font-[500] capitalize tracking-tighter text-white `}
+              className={`h-[47px] w-fit rounded-lg bg-[#440080] font-asap text-[18px] font-[500] capitalize tracking-tighter text-white `}
               onClick={openModal}
             >
               Create group
             </Button>
           ) : (
             <Button
-              className="min-w-[120px] rounded-lg bg-[#440080] py-2 font-[500] normal-case tracking-tighter"
+              className={`h-[47px] w-[121px] rounded-lg bg-[#440080] font-asap text-[20px] font-[500] capitalize tracking-tighter text-white ${isNextDisabled ? "cursor-not-allowed opacity-70" : ""}`}
               onClick={nextForm}
               disabled={isNextDisabled}
             >

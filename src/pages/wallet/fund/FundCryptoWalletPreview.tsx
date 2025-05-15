@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import btcImg from "../../../Assets/svg/dashboard/wallet/btc.svg";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
@@ -9,7 +9,9 @@ import BankTransfer from "../../../components/dashboard/wallet/modal/crypro/moda
 import ConfirmingPaymentModal from "../../../components/dashboard/wallet/modal/crypro/modals/ConfirmPayment";
 import { OrderData, Web3State } from "../../../shared/types/types";
 import { IoIosArrowDropleft } from "react-icons/io";
-import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowBack } from "react-icons/io";
+import { toast } from "react-toastify";
+import FundProgressBar from "../../../components/dashboard/wallet/modal/crypro/ProgressBar";
 
 const FundCryptoWalletPreview: React.FC = () => {
   const navigate = useNavigate();
@@ -18,9 +20,43 @@ const FundCryptoWalletPreview: React.FC = () => {
   const data = (state?.data?.data || {}) as OrderData;
   const network = state?.network || "BTC Lightning";
   const networkValue = state?.networkValue || {};
+  const cryptoImg = state?.cryptoImg || btcImg;
   const [showBankModal, setShowBankModal] = React.useState(false);
   const [showLoaderModal, setShowLoaderModal] = React.useState(false);
   const [orderConfirmed, setOrderConfirmed] = React.useState(false);
+
+  useEffect(() => {
+    // Check if required data is missing
+    if (!data || !data.amountInCryptoAsset || !data.cryptoAsset) {
+      toast.error("Missing required data. Please try again.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        toastId: "missing-data-error",
+      });
+      setTimeout(() => {
+        navigate(-1);
+      }, 3000);
+      return;
+    }
+
+    // Show warning about page refresh
+    toast.info(
+      "Avoid refreshing or leaving this page while transaction is ongoing",
+      {
+        position: "top-right",
+        autoClose: 7000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        toastId: "avoid-refresh-warning",
+      },
+    );
+  }, [data, navigate]);
 
   const onrampConfirmLoading = useSelector(
     (s: { web3: Web3State }) => s.web3.onrampConfirmLoading,
@@ -40,6 +76,22 @@ const FundCryptoWalletPreview: React.FC = () => {
     });
 
   const handleBuy = async () => {
+    if (!data.reference || !data.transactionReference) {
+      toast.error("Transaction reference is missing. Please try again.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        toastId: "missing-reference-error",
+      });
+      setTimeout(() => {
+        navigate(-1);
+      }, 3000);
+      return;
+    }
+
     const payload = {
       amount: data.amountInLocalCurrency,
       crypto: data.cryptoAsset,
@@ -53,13 +105,38 @@ const FundCryptoWalletPreview: React.FC = () => {
       setOrderConfirmed(true);
     } catch (error) {
       console.error("Error confirming order:", error);
+      toast.error("Failed to confirm order. Please try again.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        toastId: "confirm-order-error",
+      });
+      setTimeout(() => {
+        navigate(-1);
+      }, 3000);
     }
   };
 
   const handleViewBankDetails = () => {
-    if (onrampConfirmResult && onrampConfirmResult.bankName) {
-      setShowBankModal(true);
+    if (!onrampConfirmResult?.bankName) {
+      toast.error("Bank details not available. Please try again.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        toastId: "missing-bank-details-error",
+      });
+      setTimeout(() => {
+        navigate(-1);
+      }, 3000);
+      return;
     }
+    setShowBankModal(true);
   };
 
   const handleCloseBankModal = () => {
@@ -67,6 +144,22 @@ const FundCryptoWalletPreview: React.FC = () => {
   };
 
   const handleConfirmTransfer = () => {
+    if (!data) {
+      toast.error("Transaction data is missing. Please try again.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        toastId: "missing-transaction-data-error",
+      });
+      setTimeout(() => {
+        navigate(-1);
+      }, 3000);
+      return;
+    }
+
     setShowBankModal(false);
     setShowLoaderModal(true);
     setTimeout(() => {
@@ -81,8 +174,13 @@ const FundCryptoWalletPreview: React.FC = () => {
     navigate(-1);
   };
 
+  // If data is missing, don't render the component
+  if (!data || !data.amountInCryptoAsset || !data.cryptoAsset) {
+    return null;
+  }
+
   return (
-    <main className="mt-0 lg:mt-8">
+    <main className="mb-8 mt-0 lg:mt-8">
       <DashboardHeader className=" relative flex items-center justify-center text-2xl tracking-wide md:text-3xl lg:text-xl">
         <IoIosArrowBack
           onClick={handleBackClick}
@@ -91,60 +189,65 @@ const FundCryptoWalletPreview: React.FC = () => {
         />
         Fund Wallet
       </DashboardHeader>
+      <FundProgressBar step={2} />
       <section className="relative mx-auto mt-6 w-full px-2">
         <div className="mt-4 flex flex-col items-center">
           <h2 className="mb-2 text-center text-lg font-semibold">
             Confirm {(data.cryptoAsset || "crypto").toUpperCase()} order
           </h2>
-          <div className="flex h-[121px] w-[121px] items-center justify-center rounded-full bg-[#F9D68A]">
-            <img
-              src={btcImg}
-              alt={data.cryptoAsset || "crypto"}
-              className="mb-2 h-16 w-16"
-            />
-          </div>
+          <img
+            src={cryptoImg}
+            alt={data.cryptoAsset || "crypto"}
+            className="mb-2 h-[121px] w-[121px]"
+          />
 
           <div className="my-3 text-3xl font-bold text-text2">
             {data.amountInCryptoAsset}{" "}
             {(data.cryptoAsset || "crypto").toUpperCase()}
           </div>
-          <div className="mb-10 text-xl text-[#939090]">
+          <div className="mb-10 text-base text-[#939090] md:text-xl">
             Exchange rate: 1 {(data.cryptoAsset || "crypto").toUpperCase()} ≈{" "}
             {formatCurrency(data.cryptoRate, data.currency)}
           </div>
         </div>
         <div className="space-y-10 text-sm">
           <div className="flex justify-between border-b border-[#C4C0C0] pb-2">
-            <span className="text-xl font-medium">
+            <span className="text-base font-medium md:text-xl">
               Deposit amount ({data.currency || "NGN"})
             </span>
-            <span className="text-lg font-semibold">
+            <span className="text:base font-semibold md:text-lg">
               {formatCurrency(data.amountInLocalCurrency, data.currency)}
             </span>
           </div>
           <div className="flex justify-between border-b border-[#C4C0C0] pb-2">
-            <span className="text-xl font-medium">
+            <span className="text-base font-medium md:text-xl">
               Deposit amount in {(data.cryptoAsset || "crypto").toUpperCase()}
             </span>
-            <span className="text-lg font-semibold">
+            <span className="text:base font-semibold md:text-lg">
               {data.amountInCryptoAsset}{" "}
               {(data.cryptoAsset || "crypto").toUpperCase()}
             </span>
           </div>
           <div className="flex justify-between border-b border-[#C4C0C0] pb-2">
-            <span className="text-xl font-medium">Total to receive</span>
-            <span className="text-lg font-semibold">
+            <span className="text-base font-medium md:text-xl">
+              Total to receive
+            </span>
+            <span className="text:base font-semibold md:text-lg">
               {data.amountInCryptoAsset}{" "}
               {(data.cryptoAsset || "crypto").toUpperCase()}
             </span>
           </div>
           <div className="flex justify-between border-b border-[#C4C0C0] pb-2">
             <span className="text-xl font-medium">Network</span>
-            <span className="text-lg font-semibold">{network}</span>
+            <span className="text:base font-semibold md:text-lg">
+              {network}
+            </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-xl font-medium">Convert type</span>
-            <span className="text-lg font-semibold">Market</span>
+            <span className="text-base font-medium md:text-xl">
+              Convert type
+            </span>
+            <span className="text:base font-semibold md:text-lg">Market</span>
           </div>
         </div>
 

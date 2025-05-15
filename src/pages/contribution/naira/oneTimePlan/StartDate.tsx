@@ -144,7 +144,6 @@ const StartDate: React.FC = () => {
       contributionType: contributionType,
       savingsType: "One-time",
     };
-    console.log("body", body);
     try {
       const response = await dispatch(CreateContributionPlan(body)).unwrap();
       if (response?.result) {

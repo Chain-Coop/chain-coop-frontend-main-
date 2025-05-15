@@ -12,7 +12,6 @@ import { IoMdClose } from "react-icons/io";
 import OtpPin from "../../../../shared/utils/OtpInput";
 import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
 import { AppDispatch } from "../../../../shared/redux/store";
-import useUserProfile from "../../../../shared/Hooks/useUserProfile";
 import { toast } from "react-toastify";
 import { RESEND_LOGIN_OTP } from "../../../../shared/redux/services/landing.services";
 import { VerifyUserAuth } from "../../../../shared/redux/slices/landing.slices";
@@ -72,7 +71,6 @@ const PhoneNumberOtp: React.FC<PhoneNumberOtpProps> = ({
     setIsLoading(true);
     try {
       const response = await dispatch(VerifyUserAuth({ otp, email })).unwrap();
-      console.log("Res", response);
       if (response) {
         toast.success("OTP verified successfully");
         onOtpEntered();
@@ -88,21 +86,21 @@ const PhoneNumberOtp: React.FC<PhoneNumberOtpProps> = ({
     }
   };
 
-  const handleResendOtp = async () => {
-    if (resendDisabled) return;
+  // const handleResendOtp = async () => {
+  //   if (resendDisabled) return;
 
-    setIsOtpSending(true);
-    try {
-      const response = await RESEND_LOGIN_OTP("/auth/resend_otp", { email });
-      toast.success(response.data.msg || "OTP resent to your email");
+  //   setIsOtpSending(true);
+  //   try {
+  //     const response = await RESEND_LOGIN_OTP("/auth/resend_otp", { email });
+  //     toast.success(response.data.msg || "OTP resent to your email");
 
-      setResendDisabled(true);
-    } catch (error: any) {
-      toast.error(error?.message || "Failed to resend OTP");
-    } finally {
-      setIsOtpSending(false);
-    }
-  };
+  //     setResendDisabled(true);
+  //   } catch (error: any) {
+  //     toast.error(error?.message || "Failed to resend OTP");
+  //   } finally {
+  //     setIsOtpSending(false);
+  //   }
+  // };
 
   return (
     <Dialog
@@ -156,7 +154,7 @@ const PhoneNumberOtp: React.FC<PhoneNumberOtpProps> = ({
 
         <div className="mt-4 text-center">
           <button
-            onClick={handleResendOtp}
+            // onClick={handleResendOtp}
             disabled={resendDisabled || isOtpSending}
             className={`text-sm text-text2 ${
               resendDisabled

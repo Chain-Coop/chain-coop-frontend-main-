@@ -3,12 +3,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import { OrderData } from "../../../shared/types/types";
 import success from "../../../Assets/svg/auth/sucess.svg";
-import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowBack } from "react-icons/io";
+import FundProgressBar from "../../../components/dashboard/wallet/modal/crypro/ProgressBar";
 
 const FundCryptoWalletSuccess: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const data = (location.state?.data?.data || {}) as OrderData;
+  const network = location.state?.network || "BTC Lightning";
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -23,7 +25,7 @@ const FundCryptoWalletSuccess: React.FC = () => {
   };
 
   return (
-    <main className="mt-0 lg:mt-8">
+    <main className="mt-0 mb-8 lg:my-8">
       <DashboardHeader className=" relative flex items-center justify-center text-2xl tracking-wide md:text-3xl lg:text-xl">
         <IoIosArrowBack
           onClick={handleBackClick}
@@ -32,6 +34,8 @@ const FundCryptoWalletSuccess: React.FC = () => {
         />
         Fund Wallet
       </DashboardHeader>
+
+      <FundProgressBar step={3} />
 
       <section className="relative mx-auto mt-6 w-full px-2">
         <div className="mt-4 flex flex-col items-center">
@@ -67,13 +71,20 @@ const FundCryptoWalletSuccess: React.FC = () => {
 
           <div className="flex justify-between border-b border-[#C4C0C0] pb-2">
             <span className="text-xl font-medium">Network</span>
-            <span className="text-lg font-semibold">{data.network}</span>
+            <span className="text-lg font-semibold">{network}</span>
           </div>
 
           <div className="flex justify-between">
             <span className="text-xl font-medium">Reference</span>
             <span className="max-w-[200px] truncate text-lg font-semibold text-text2">
               {data.reference}
+            </span>
+          </div>
+
+          <div className="flex justify-between">
+            <span className="text-xl font-medium">Txt Reference</span>
+            <span className="max-w-[200px] truncate text-lg font-semibold text-text2">
+              {data.transactionReference}
             </span>
           </div>
         </div>

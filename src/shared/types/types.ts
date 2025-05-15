@@ -101,8 +101,8 @@ export interface secondOpenGroupType {
 }
 
 export interface thirdOpenGroupType {
-  daily_deposit: number;
-  savings_image: Blob | null;
+  depositAmount: number;
+  savings_image: File | null;
   agree: boolean;
 }
 
@@ -110,6 +110,20 @@ export interface openGroupFormType {
   firstForm: firstOpenGroupType;
   secondForm: secondOpenGroupType;
   thirdForm: thirdOpenGroupType;
+}
+
+export interface PrepareDataType {
+  name: string;
+  description?: string;
+  depositAmount: number;
+  currency: string;
+  savingFrequency: string;
+  goalAmount: number;
+  groupType: string;
+  startDate: string;
+  endDate: string;
+  userId: string;
+  image?: Blob;
 }
 
 export interface WithdrawUserPoolPayload {
@@ -142,6 +156,10 @@ export interface CryptoTransaction {
   Token: string;
   createdAt: string;
   updatedAt: string;
+  cryptoAsset: string;
+  reference: string;
+  status: string;
+  rate: number;
   __v?: number;
 }
 
