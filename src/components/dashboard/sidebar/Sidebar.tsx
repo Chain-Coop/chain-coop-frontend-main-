@@ -10,6 +10,7 @@ const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { profileDetails } = useUserProfile();
+
   const home = () => {
     navigate("/dashboard");
   };
@@ -44,19 +45,17 @@ const Sidebar = () => {
         <nav className="mb-[3em] ml-5 flex flex-col">
           {sidebarLinks.map((link, index) => {
             const isActive =
-              (link.pathsToCheck
-                ? link.pathsToCheck.some((path) =>
-                    path === location.pathname
-                      ? true
-                      : path !== link.to && location.pathname.startsWith(path),
-                  )
-                : false) || location.pathname === link.to;
+              location.pathname === link.to ||
+              (link.pathsToCheck?.some((path) =>
+                location.pathname.startsWith(path),
+              ) ??
+                false);
 
             return (
               <Link
                 key={index}
                 to={link.to}
-                className={`text flex items-center px-4 py-5  text-[16px] text-[#1E1E1E] hover:bg-Dh ${
+                className={`text flex items-center px-4 py-5 text-[16px] text-[#1E1E1E] hover:bg-Dh ${
                   isActive
                     ? "active !important border-l-2 border-text2 bg-Dh font-semibold"
                     : ""

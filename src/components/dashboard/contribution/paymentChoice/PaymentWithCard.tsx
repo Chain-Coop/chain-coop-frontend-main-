@@ -69,6 +69,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
 
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [isPaymentLoading, setIsPaymentLoading] = useState(false);
 
   const cards: any = walletCard?.cards ?? [];
 
@@ -81,11 +82,13 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
       setSelectedCard(null);
       setCurrentPage(0);
       dispatch(clearTransactionError());
+      setIsPaymentLoading(false);
     }
   }, [isOpen, dispatch]);
 
   useEffect(() => {
     if (payContributionSuccess) {
+      setIsPaymentLoading(false);
       onClose();
       navigate("/dashboard/contribution");
     }
@@ -96,6 +99,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
       payContributionPaystackSuccess &&
       payContributionPaystack?.payment?.info?.data?.authorization_url
     ) {
+      setIsPaymentLoading(false);
       onClose();
       window.location.href =
         payContributionPaystack.payment.info.data.authorization_url;
@@ -112,6 +116,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
     }
 
     dispatch(clearTransactionError());
+    setIsPaymentLoading(true); // Start payment loading
 
     const basePayload = {
       contributionId,
@@ -119,7 +124,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
     };
 
     if (paymentType === "card" && selectedCard?.authorization_code) {
-      dispatch(
+      await dispatch(
         PayContribution({
           ...basePayload,
           paymentType: "card",
@@ -127,7 +132,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
         }),
       );
     } else if (paymentType === "paystack") {
-      dispatch(
+      await dispatch(
         PayContributionPaystack({
           ...basePayload,
           paymentType: "paystack",
@@ -138,6 +143,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
         type: "transaction/setError",
         payload: "Selected card is invalid or missing authorization code",
       });
+      setIsPaymentLoading(false); 
     }
   };
 
@@ -305,10 +311,13 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
                 {selectedCard ? (
                   <Button
                     onClick={() => handlePayment("card")}
-                    disabled={isLoading || !selectedCard.authorization_code}
+                    disabled={
+                      isPaymentLoading || !selectedCard.authorization_code
+                    }
+                    loading={isPaymentLoading}
                     className="flex w-full items-center justify-center rounded-lg bg-text2 px-4 py-2.5 text-sm font-bold normal-case text-white transition-colors disabled:opacity-50"
                   >
-                    {isLoading ? "Processing..." : "Pay Now"}
+                    {isPaymentLoading ? "Processing..." : "Pay Now"}
                   </Button>
                 ) : (
                   <div className="flex w-full flex-col items-center justify-between gap-2 sm:flex-row sm:gap-4">
@@ -320,8 +329,8 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
                     </Link>
                     <Button
                       onClick={() => handlePayment("paystack")}
-                      disabled={isLoading}
-                      loading={isLoading}
+                      disabled={isPaymentLoading}
+                      loading={isPaymentLoading}
                       className="flex w-full items-center justify-center rounded-lg bg-text2 px-4 py-2.5 text-sm font-bold normal-case text-white transition-colors disabled:opacity-50 sm:w-auto"
                     >
                       Pay Direct
