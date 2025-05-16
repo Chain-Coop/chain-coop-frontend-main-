@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import noCard from "../../Assets/png/dashboard/noCard.png";
 import arrow from "../../Assets/svg/dashboard/wallet/transfer-arrow.svg";
-import { useUserCard } from "../../shared/Hooks/useUserProfile";
+import { useWallet } from "../../shared/Hooks/useUserProfile";
 import { AppDispatch } from "../../shared/redux/store";
 import { useAppDispatch } from "../../shared/redux/reduxHooks";
 import { DashboardHeader } from "../../components/common/DashboardHeader";
@@ -13,13 +13,13 @@ import {
   GetWalletCard,
 } from "../../shared/redux/slices/transaction.slices";
 import { CardBrandLogo, cardDesigns, Chip } from "../../shared/utils/Helpers";
-// import DeleteCard from "../../components/dashboard/profile/security/modal/deleteCard";
 import { Button } from "@material-tailwind/react";
 import { TrashIcon } from "../../Assets/svg";
 import { Card } from "../../shared/types/types";
+import DeleteUserCard from "../../components/dashboard/profile/security/modal/deleteCard";
 
 const ManageCards = () => {
-  const { useWalletCards } = useUserCard();
+  const { walletCard } = useWallet();
   const navigate = useNavigate();
   const dispatch: AppDispatch = useAppDispatch();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -88,8 +88,8 @@ const ManageCards = () => {
         </header>
 
         <div className="mt-4 flex flex-col gap-6">
-          {useWalletCards?.cards?.length > 0 ? (
-            useWalletCards?.cards?.map((card: Card) => (
+          {walletCard?.cards?.length > 0 ? (
+            walletCard?.cards?.map((card: Card) => (
               <div
                 key={card.authorization_code}
                 className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6"
@@ -147,27 +147,23 @@ const ManageCards = () => {
                 <p className="font-medium text-gray-600">
                   No saved cards found.
                 </p>
-                <Link to="/dashboard/contribution/purpose">
-                  <div className="flex items-center gap-2">
-                    <p className="text-lg font-semibold text-text2">
-                      Add a Card
-                    </p>
-                    <img src={arrow} alt="Arrow" className="w-4 sm:w-5" />
-                  </div>
-                </Link>
+                <div className="flex items-center gap-2">
+                  <p className="text-lg font-semibold text-text2">Add a Card</p>
+                  <img src={arrow} alt="Arrow" className="w-4 sm:w-5" />
+                </div>
               </div>
             </div>
           )}
         </div>
       </section>
 
-      {/* <DeleteCard
+      <DeleteUserCard
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleDeleteCard}
         isDeleting={isDeleting}
         selectedCard={selectedCard}
-      /> */}
+      />
     </main>
   );
 };

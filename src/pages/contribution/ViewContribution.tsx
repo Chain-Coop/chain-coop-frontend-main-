@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { format, parseISO } from "date-fns";
 import { useSelector, useDispatch } from "react-redux";
@@ -14,7 +14,6 @@ import {
 import {
   calculateSavingsDuration,
   formatBalance,
-  isDateValid,
 } from "../../shared/utils/format";
 import { DashboardHeader } from "../../components/common/DashboardHeader";
 import {
@@ -31,6 +30,7 @@ import BalanceDisplay from "../../components/dashboard/contribution/balanceDispl
 import { Alert } from "@mui/material";
 import { GetContributionDetailsByIdResponse } from "../../shared/types";
 import { useContribution } from "../../shared/Hooks/useUserProfile";
+import { toast } from "react-toastify";
 
 interface WalletCard {
   cards: Array<unknown>;
@@ -78,6 +78,11 @@ const ViewContribution = () => {
   const realBalance = unpaidBalance
     ? formatBalance(unpaidBalance.totalAmount)
     : "₦0.00";
+
+  const isOneTimeContribution =
+    contributionDetails?.contributionType?.toLowerCase() === "one-time";
+
+  const hasUnpaidBalance = unpaidBalance && unpaidBalance.totalAmount > 0;
 
   useEffect(() => {
     if (!contributionId) {
@@ -165,6 +170,10 @@ const ViewContribution = () => {
   };
 
   const handleOpenModal = () => {
+    if (!hasUnpaidBalance) {
+      toast.info("You have not missed any contribution.");
+      return;
+    }
     setIsModalOpen(true);
   };
 
@@ -210,7 +219,9 @@ const ViewContribution = () => {
       <header className="mt-0 lg:mt-8">
         <DashboardHeader className="flex items-center justify-center">
           {contributionDetails?.history[0]?.savingsType || "Savings"} Savings (
-          {contributionDetails?.contributionPlan || "Plan"})
+          {contributionDetails?.contributionPlan ||
+            contributionDetails?.contributionType}
+          )
         </DashboardHeader>
       </header>
 
@@ -300,7 +311,7 @@ const ViewContribution = () => {
             </Link>
           </div>
 
-          {isDateValid(contributionDetails?.nextContributionDate) && (
+          {!isOneTimeContribution && (
             <Typography className="mt-4 font-semibold text-gray-600">
               Next Contribution:{" "}
               {formatContributionDate(

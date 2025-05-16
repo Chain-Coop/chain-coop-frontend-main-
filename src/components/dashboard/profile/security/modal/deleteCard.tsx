@@ -17,7 +17,7 @@ interface DeleteCardDialogProps {
   selectedCard: Card | null;
 }
 
-const DeleteCard: React.FC<DeleteCardDialogProps> = ({
+const DeleteUserCard: React.FC<DeleteCardDialogProps> = ({
   isOpen,
   onClose,
   onConfirm,
@@ -49,4 +49,4 @@ const DeleteCard: React.FC<DeleteCardDialogProps> = ({
   );
 };
 
-export default DeleteCard;
+export default DeleteUserCard;
