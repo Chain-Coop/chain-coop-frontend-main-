@@ -59,12 +59,15 @@ const lockTypeConfigs: Record<number, LockTypeConfig> = {
 };
 
 // Define Network Configurations - Updated
-const ALL_SHARED_NETWORKS = [
-  { label: "LISK", value: "LISK", disabled: false },
-  { label: "BSC (BNB Smart Chain)", value: "BSC", disabled: false }, // BNB Smart Chain is often referred to as BSC
+const STABLE_COIN_NETWORKS = [
+  { label: "BSC (BNB Smart Chain)", value: "BSC", disabled: false },
   { label: "ETHERLINK", value: "ETHERLINK", disabled: false },
   { label: "GNOSIS", value: "GNOSIS", disabled: false },
-  // Add any other shared networks here
+];
+
+const BTC_NETWORKS = [
+  { label: "BTC Core", value: "BTC_CORE", disabled: false },
+  { label: "BTC Lightning", value: "BTC_LIGHTNING", disabled: false },
 ];
 
 const UnifiedContributionCurrencyType: React.FC = () => {
@@ -113,42 +116,62 @@ const UnifiedContributionCurrencyType: React.FC = () => {
   const [error, setError] = useState("");
 
   // State for Network Selection
-  const [selectedNetwork, setSelectedNetwork] = useState<{ label: string; value: string; disabled?: boolean } | null>(null);
-  const [showNetworkModal, setShowNetworkModal] = useState(false);
-  const [availableNetworks, setAvailableNetworks] = useState<Array<{ label: string; value: string; disabled?: boolean }>>([]);
+  const [selectedNetwork, setSelectedNetwork] = useState<{
+    label: string;
+    value: string;
+    disabled?: boolean;
+  } | null>(null);
+  const [availableNetworks, setAvailableNetworks] = useState<
+    Array<{ label: string; value: string; disabled?: boolean }>
+  >([]);
 
   useEffect(() => {
     // Update available networks when tokenName changes
     if (formData.tokenName) {
-      // All crypto types now use the same shared networks
-      const networks = ALL_SHARED_NETWORKS.sort((a, b) => Number(a.disabled) - Number(b.disabled));
-      setAvailableNetworks(networks);
+      let networks: Array<{ label: string; value: string; disabled?: boolean }>;
+      if (formData.tokenName === "BTC") {
+        networks = BTC_NETWORKS;
+      } else if (["USDT", "USDC"].includes(formData.tokenName)) {
+        networks = STABLE_COIN_NETWORKS;
+      } else {
+        networks = []; // For other tokens like LISK
+      }
+
+      const sortedNetworks = networks.sort(
+        (a, b) => Number(a.disabled) - Number(b.disabled),
+      );
+      setAvailableNetworks(sortedNetworks);
 
       // Set a default network if none is selected or current is invalid
-      if (networks.length > 0) {
-        const currentNetworkIsValid = networks.some(n => n.value === selectedNetwork?.value && !n.disabled);
+      if (sortedNetworks.length > 0) {
+        const currentNetworkIsValid = sortedNetworks.some(
+          (n) => n.value === selectedNetwork?.value && !n.disabled,
+        );
         if (!selectedNetwork || !currentNetworkIsValid) {
-          const firstEnabled = networks.find(n => !n.disabled);
+          const firstEnabled = sortedNetworks.find((n) => !n.disabled);
           if (firstEnabled) {
             setSelectedNetwork(firstEnabled);
-            setFormData(prev => ({ ...prev, network: firstEnabled.value }));
-          } else if (networks.length > 0) { // Fallback if all are disabled
-            setSelectedNetwork(networks[0]);
-            setFormData(prev => ({ ...prev, network: networks[0].value }));
+            setFormData((prev) => ({ ...prev, network: firstEnabled.value }));
+          } else if (sortedNetworks.length > 0) {
+            // Fallback if all are disabled
+            setSelectedNetwork(sortedNetworks[0]);
+            setFormData((prev) => ({
+              ...prev,
+              network: sortedNetworks[0].value,
+            }));
           }
         }
-      } else { // Should not happen if ALL_SHARED_NETWORKS is populated
+      } else {
         setSelectedNetwork(null);
-        setFormData(prev => ({ ...prev, network: "" }));
+        setFormData((prev) => ({ ...prev, network: "" }));
       }
     } else {
       // Clear network if no token is selected
       setAvailableNetworks([]);
       setSelectedNetwork(null);
-      setFormData(prev => ({ ...prev, network: "" }));
+      setFormData((prev) => ({ ...prev, network: "" }));
     }
   }, [formData.tokenName]); // Re-run when tokenName changes
-
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -174,7 +197,6 @@ const UnifiedContributionCurrencyType: React.FC = () => {
       USDT: "2",
       USDC: "2",
       BTC: "2",
-      LISK: "2",
     };
 
     setFormData((prev) => ({
@@ -184,16 +206,15 @@ const UnifiedContributionCurrencyType: React.FC = () => {
       network: "", // Reset network, useEffect will set a default
     }));
     // setSelectedNetwork(null); // Let useEffect handle setting the default selectedNetwork
-    setShowNetworkModal(true); // Open network modal
   };
 
-  const handleNetworkSelect = (network: { label: string; value: string; disabled?: boolean }) => {
-    if (network.disabled) return;
-
-    setSelectedNetwork(network);
-    setFormData(prev => ({ ...prev, network: network.value }));
-    setShowNetworkModal(false);
-    // BTC Core specific logic is removed
+  const handleNetworkSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = e.target.value;
+    const network = availableNetworks.find((n) => n.value === selectedValue);
+    if (network && !network.disabled) {
+      setSelectedNetwork(network);
+      setFormData((prev) => ({ ...prev, network: network.value }));
+    }
   };
 
   const handleNext = () => {
@@ -212,7 +233,11 @@ const UnifiedContributionCurrencyType: React.FC = () => {
       return;
     }
 
-    if (formData.currency === "Cryptocurrency" && formData.tokenId && !formData.network) {
+    if (
+      formData.currency === "Cryptocurrency" &&
+      formData.tokenId &&
+      !formData.network
+    ) {
       setError("Please select a network for the chosen cryptocurrency");
       return;
     }
@@ -228,18 +253,6 @@ const UnifiedContributionCurrencyType: React.FC = () => {
     navigate(currentConfig.nextPath, {
       state: stateToPass,
     });
-  };
-
-  const modalVariants = {
-    hidden: { opacity: 0, y: 50, scale: 0.95 },
-    visible: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", damping: 20, stiffness: 200 } },
-    exit: { opacity: 0, y: 50, scale: 0.95, transition: { duration: 0.2 } },
-  };
-
-  const backdropVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
-    exit: { opacity: 0 },
   };
 
   return (
@@ -361,7 +374,6 @@ const UnifiedContributionCurrencyType: React.FC = () => {
                     { type: "USDT", icon: usdt },
                     { type: "USDC", icon: usdc },
                     { type: "BTC", icon: bitcoin },
-                    { type: "LISK", icon: bitcoin },
                   ].map(({ type, icon }) => (
                     <button
                       key={type}
@@ -384,88 +396,47 @@ const UnifiedContributionCurrencyType: React.FC = () => {
 
             {formData.tokenName && (
               <div className="relative mb-4 mt-8">
-                <label className="mb-1 block text-lg font-medium text-memt1">Token network</label>
-                <button
-                  className="flex w-full items-center justify-between rounded border border-gray-300 bg-white px-3 py-3 text-left shadow-sm focus:border-text2 focus:outline-none focus:ring-1 focus:ring-text2"
-                  onClick={() => setShowNetworkModal(true)}
-                  type="button"
-                >
-                  {selectedNetwork ? selectedNetwork.label : "Select Network"}
-                  <span className="ml-2 text-gray-500">▼</span>
-                </button>
+                <label className="mb-1 block text-lg font-medium text-memt1">
+                  Token network
+                </label>
+                <div className="relative">
+                  <select
+                    value={selectedNetwork?.value || ""}
+                    onChange={handleNetworkSelect}
+                    className="w-full appearance-none rounded-md border border-gray-300 bg-white px-4 py-3 pr-10 text-gray-700 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-text2 focus:outline-none focus:ring-2 focus:ring-text2 focus:ring-opacity-50"
+                  >
+                    <option value="" disabled className="text-gray-500">
+                      Select Network
+                    </option>
+                    {availableNetworks.map((network) => (
+                      <option
+                        key={network.value}
+                        value={network.value}
+                        disabled={network.disabled}
+                        className={`py-2 ${network.disabled ? "text-gray-400" : "text-gray-700"}`}
+                      >
+                        {network.label}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg
+                      className="h-5 w-5 fill-current"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                </div>
               </div>
             )}
           </>
         )}
-
-        {/* Network Selection Modal */}
-        <AnimatePresence>
-          {showNetworkModal && formData.tokenName && (
-            <>
-              <motion.div
-                className="fixed inset-0 z-40 bg-black bg-opacity-50"
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                variants={backdropVariants}
-                onClick={() => setShowNetworkModal(false)}
-              />
-              <motion.div
-                className="fixed bottom-0 left-0 right-0 z-50 max-h-[70vh] w-full overflow-y-auto rounded-t-2xl bg-white p-0 shadow-xl md:bottom-auto md:left-1/2 md:top-1/2 md:max-h-[80vh] md:w-[90%] md:max-w-sm md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-lg"
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                variants={modalVariants}
-              >
-                <div className="p-5">
-                  <div className="mb-4 flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-gray-800">
-                      Select Network for {formData.tokenName}
-                    </h3>
-                    <button
-                      onClick={() => setShowNetworkModal(false)}
-                      className="text-gray-500 hover:text-gray-700"
-                      aria-label="Close network selection"
-                    >
-                      <IoClose size={24} />
-                    </button>
-                  </div>
-                  <div className="space-y-2">
-                    {availableNetworks.length > 0 ? (
-                      availableNetworks.map((n) => (
-                        <div
-                          key={n.value}
-                          className={`flex items-center justify-between rounded-lg border p-3 transition-colors
-                            ${n.disabled ? "cursor-not-allowed bg-gray-100 text-gray-400 opacity-70" : "cursor-pointer border-gray-200 hover:bg-purple-50"}
-                            ${selectedNetwork?.value === n.value && !n.disabled ? "border-text2 ring-2 ring-text2 bg-purple-100" : "border-gray-200"}`}
-                          onClick={() => handleNetworkSelect(n)}
-                          tabIndex={n.disabled ? -1 : 0}
-                          aria-disabled={n.disabled}
-                          role="option"
-                          aria-selected={selectedNetwork?.value === n.value}
-                        >
-                          <div className="flex items-center">
-                            {/* You can add generic network icons here if desired, or remove the img tag */}
-                            <span className={`font-medium ${selectedNetwork?.value === n.value && !n.disabled ? "text-text2" : (n.disabled ? "text-gray-400" : "text-gray-700")}`}>
-                              {n.label}
-                            </span>
-                          </div>
-                          {selectedNetwork?.value === n.value && !n.disabled && (
-                            <svg className="h-5 w-5 text-text2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                            </svg>
-                          )}
-                        </div>
-                      ))
-                    ) : (
-                      <p className="text-center text-gray-500">No available networks for {formData.tokenName}.</p> // Should not be seen if ALL_SHARED_NETWORKS is populated
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
 
         {error && (
           <Alert severity="error" className="mb-4 mt-4">
@@ -488,7 +459,8 @@ const UnifiedContributionCurrencyType: React.FC = () => {
             onClick={handleNext}
             disabled={
               !formData.currency ||
-              (formData.currency === "Cryptocurrency" && (!formData.tokenId || !formData.network))
+              (formData.currency === "Cryptocurrency" &&
+                (!formData.tokenId || !formData.network))
             }
           >
             Next

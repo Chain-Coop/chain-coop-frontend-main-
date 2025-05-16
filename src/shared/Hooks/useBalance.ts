@@ -130,7 +130,7 @@ export const useUnPaidContribution = () => {
   };
 };
 
-export const useCryptoWallet = () => {
+export const useCryptoWallet = (network: string = "ETHERLINK") => {
   const { isVisible, setIsVisible } = useVisibilityState(
     "walletBalanceVisible",
     true,
@@ -143,7 +143,10 @@ export const useCryptoWallet = () => {
   } = useBalanceFetcher(
     (state: any) => state.web3,
     Web3Slices.GetTotalCryptoWalletBalance,
-    { refreshInterval: 30000 },
+    {
+      refreshInterval: 30000,
+      params: network,
+    },
   );
   useEffect(() => {
     //console.log('Web3 State:', cryptoState);
@@ -200,10 +203,10 @@ export const useAllUserPools = () => {
   return { userPools: data, loading, error, fetchUserPools: fetch };
 };
 
-export const useAllUserTokens = () => {
+export const useAllUserTokens = (network: string = "ETHERLINK") => {
   const { data, fetch } = useDataFetcher(
     (state: any) => state.web3.userTokens,
-    Web3Slices.GetAllUserTokens,
+    () => Web3Slices.GetAllUserTokens(network),
   );
   return { userTokens: data, fetchUserTokens: fetch };
 };

@@ -62,8 +62,10 @@ const TOKEN_NAMES: Record<string, string> = {
 };
 
 const CryptoMain = () => {
-  const { Balance, isWalletVisible, setIsWalletVisible } = useCryptoWallet();
-  const { userTokens, fetchUserTokens } = useAllUserTokens();
+  const [selectedNetwork, setSelectedNetwork] = useState("ETHERLINK");
+  const { Balance, isWalletVisible, setIsWalletVisible } =
+    useCryptoWallet(selectedNetwork);
+  const { userTokens, fetchUserTokens } = useAllUserTokens(selectedNetwork);
   const { profileDetails, fetchUserProfile } = useUserProfile();
   const { cryptoWalletDetails } = useCryptoWalletDetails();
   const navigate = useNavigate();
@@ -77,7 +79,7 @@ const CryptoMain = () => {
     if (profileDetails?.isWalletActivated) {
       fetchUserTokens();
     }
-  }, [fetchUserTokens, profileDetails?.isWalletActivated]);
+  }, [fetchUserTokens, profileDetails?.isWalletActivated, selectedNetwork]);
 
   const handleCopy = (address: string) => {
     navigator?.clipboard.writeText(address);
@@ -121,6 +123,11 @@ const CryptoMain = () => {
     }
   };
 
+  // Add network selection handler
+  const handleNetworkChange = (network: string) => {
+    setSelectedNetwork(network);
+  };
+
   return (
     <main>
       <div className="mt-0 lg:mt-8">
@@ -132,10 +139,23 @@ const CryptoMain = () => {
         <section className="text-center text-text4">
           <div className="flex flex-col gap-3 py-[1.5em] sm:flex-row sm:justify-between sm:gap-4">
             {profileDetails?.isWalletActivated === true && (
-              <div className="hidden w-fit transform items-center justify-center gap-2 rounded-lg border-2 border-text2 bg-[#ECE6F2] px-3 py-2 font-medium text-text2 transition-all duration-300 hover:scale-105 active:scale-95 sm:w-auto sm:justify-start lg:py-2">
-                Wallet Activated
-                <img src={walletActivated} alt="walletActivated" />
-              </div>
+              <>
+                <div className="hidden w-fit transform items-center justify-center gap-2 rounded-lg border-2 border-text2 bg-[#ECE6F2] px-3 py-2 font-medium text-text2 transition-all duration-300 hover:scale-105 active:scale-95 sm:w-auto sm:justify-start lg:py-2">
+                  Wallet Activated
+                  <img src={walletActivated} alt="walletActivated" />
+                </div>
+                <div className="flex items-center gap-4">
+                  <select
+                    value={selectedNetwork}
+                    onChange={(e) => handleNetworkChange(e.target.value)}
+                    className="rounded-lg border-2 border-gray-400 px-3 py-2 text-sm focus:border-text2 focus:outline-none"
+                  >
+                    <option value="ETHERLINK">ETHERLINK</option>
+                    <option value="BSC">BSC</option>
+                    <option value="GNOSIS">GNOSIS</option>
+                  </select>
+                </div>
+              </>
             )}
             <div className="ml-auto flex">
               <Button
