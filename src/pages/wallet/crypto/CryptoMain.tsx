@@ -79,8 +79,12 @@ const CryptoMain = () => {
 
   useEffect(() => {
     if (profileDetails?.isWalletActivated) {
+      console.log("Wallet is activated, fetching data...");
+      console.log("Selected network:", selectedNetwork);
       fetchUserTokens();
       fetchTotalBalance();
+    } else {
+      console.log("Wallet is not activated");
     }
   }, [
     fetchUserTokens,
@@ -88,6 +92,11 @@ const CryptoMain = () => {
     profileDetails?.isWalletActivated,
     selectedNetwork,
   ]);
+
+  // Add console log for total balance
+  useEffect(() => {
+    console.log("Total balance:", totalBalance);
+  }, [totalBalance]);
 
   const handleCopy = (address: string) => {
     navigator?.clipboard.writeText(address);
