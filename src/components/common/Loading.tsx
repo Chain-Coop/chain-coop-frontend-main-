@@ -19,6 +19,28 @@ export const DetailsSkeleton: React.FC = () => (
   </div>
 );
 
+export const SkeletonTransactionCard = () => {
+  return (
+    <div className="flex animate-pulse flex-col gap-[10px] rounded-lg border border-gray-300 px-3 py-[1em] shadow-md md:px-[1.5em]">
+      <div className="flex flex-col gap-1 md:flex-row md:justify-between md:gap-0">
+        <div className="flex items-center justify-between md:justify-start md:gap-4">
+          <div className="h-4 w-20 rounded bg-gray-200"></div>
+          <div className="h-4 w-16 rounded bg-gray-200"></div>
+        </div>
+        <div className="flex items-center justify-between md:justify-start md:gap-4">
+          <div className="h-4 w-24 rounded bg-gray-200"></div>
+          <div className="h-4 w-20 rounded bg-gray-200"></div>
+        </div>
+      </div>
+      <hr className="mt-2 h-[1px] rounded-md bg-gray-200" />
+      <div className="flex items-center justify-between">
+        <div className="h-4 w-32 rounded bg-gray-200"></div>
+        <div className="h-4 w-24 rounded bg-gray-200"></div>
+      </div>
+    </div>
+  );
+};
+
 export const StatsSkeleton: React.FC = () => (
   <div className="mt-6 flex animate-pulse justify-between rounded-2xl bg-text2 py-4">
     <div className="m-auto w-[35%] rounded-full border-2 border-gray-500 bg-white py-2">

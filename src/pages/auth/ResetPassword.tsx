@@ -2,25 +2,43 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button } from "@material-tailwind/react";
-import { RESEND_LOGIN_OTP } from "../../shared/redux/services/landing.services";
 import OtpInput from "../../shared/utils/OtpInput";
-import { useDispatch } from "react-redux";
-import { VerifyUserAuth } from "../../shared/redux/slices/landing.slices";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  ResendEmailOtp,
+  resetAuthState,
+  VerifyUserAuth,
+} from "../../shared/redux/slices/landing.slices";
+import { ResendEmailOtpRequest } from "../../shared/types";
+import { AppDispatch } from "../../shared/redux/store";
+import { RootState } from "../../shared/redux/rootReducer";
 
 const ResetPassword = () => {
-  const [loading, setLoading] = useState(false);
-  const [verifying, setVerifying] = useState(false);
-  const [otp, setOtp] = useState("");
   const [timer, setTimer] = useState(0);
+  const [otp, setOtp] = useState("");
+  const [submittedOtp, setSubmittedOtp] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { isLoading, verifyEmailSuccess, error } = useSelector(
+    (state: RootState) => state.landing,
+  );
+
   const queryParams = new URLSearchParams(location.search);
   const email = queryParams.get("email");
 
   useEffect(() => {
-    if (otp.length === 6) {
+    dispatch(resetAuthState());
+    return () => {
+      dispatch(resetAuthState());
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (otp.length === 6 && !submittedOtp) {
+      setSubmittedOtp(true);
       handleSubmit();
     }
   }, [otp]);
@@ -32,46 +50,56 @@ const ResetPassword = () => {
     };
   }, [timer]);
 
-  const ResendOtp = async () => {
-    if (timer > 0) return;
-    setLoading(true);
-    const endpoint = `/auth/resend_otp`;
-    try {
-      const response = await RESEND_LOGIN_OTP(endpoint, { email });
-      toast.success(response.data.msg);
-      setTimer(30);
-    } catch (response: any) {
-      toast.error(response.data.msg);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (verifyEmailSuccess) {
+      navigate(`/new-password?email=${email}`);
+      toast.success("OTP verification successful");
+      dispatch(resetAuthState());
     }
+  }, [verifyEmailSuccess, email, navigate, dispatch]);
+
+  useEffect(() => {
+    if (error && submittedOtp) {
+      toast.error(error || "Invalid OTP. Please try again.");
+      setOtp("");
+      setSubmittedOtp(false);
+    }
+  }, [error]);
+
+  const handleResendOtp = () => {
+    if (!email) {
+      toast.error("Email is missing. Please try registering again.");
+      return;
+    }
+
+    dispatch(resetAuthState());
+
+    dispatch(ResendEmailOtp({ email } as ResendEmailOtpRequest))
+      .unwrap()
+      .then((response) => {
+        toast.success(response.msg);
+        setTimer(30);
+        setOtp("");
+        setSubmittedOtp(false);
+      })
+      .catch((err) => {
+        // Error already handled by Redux and useEffect
+      });
   };
 
-  const handleSubmit = async () => {
-    setVerifying(true);
-    try {
-      const resultAction = await dispatch(
-        VerifyUserAuth({
-          email,
-          otp,
-        }) as any,
-      );
+  const handleSubmit = () => {
+    dispatch(resetAuthState());
 
-      if (VerifyUserAuth.fulfilled.match(resultAction)) {
-        navigate(`/new-password?email=${email}`);
-        toast.success("OTP verification successful");
-      } else {
-        toast.error(resultAction.payload || "Invalid OTP. Please try again.");
-      }
-    } catch (error: any) {
-      toast.error(error.message || "Something went wrong. Please try again.");
-    } finally {
-      setVerifying(false);
-    }
+    dispatch(
+      VerifyUserAuth({
+        email: email || "",
+        otp,
+      }),
+    );
   };
 
   const getButtonText = () => {
-    if (loading) return "Sending OTP...";
+    if (isLoading) return "Sending OTP...";
     if (timer > 0) return `Resend OTP (${timer}s)`;
     return "Resend OTP";
   };
@@ -102,14 +130,16 @@ const ResetPassword = () => {
 
           <div className="mt-[1em] h-16 lg:mt-[2em]">
             <Button
-              onClick={ResendOtp}
+              onClick={handleResendOtp}
               className="w-[12em] rounded-full bg-text2 py-3 font-medium normal-case text-text5 sm:text-lg"
-              disabled={loading || timer > 0}
+              disabled={isLoading || timer > 0}
             >
               {getButtonText()}
             </Button>
-            {verifying && (
-              <p className="mt-2 text-sm text-gray-600">Verifying OTP...</p>
+            {isLoading && (
+              <p className="mt-2 text-sm text-gray-600">
+                {submittedOtp ? "Verifying OTP..." : "Processing..."}
+              </p>
             )}
           </div>
         </div>

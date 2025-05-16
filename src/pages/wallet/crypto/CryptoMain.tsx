@@ -17,14 +17,19 @@ import {
   useCryptoWalletDetails,
   useTotalBalance,
 } from "../../../shared/Hooks/useBalance";
-import useUserProfile from "../../../shared/Hooks/useUserProfile";
-import { useAppDispatch } from "../../../shared/redux/reduxHooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../shared/redux/reduxHooks";
 import { AppDispatch } from "../../../shared/redux/store";
 import { ActivateCryptoWallet } from "../../../shared/redux/slices/web3.slices";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import ToggleButton from "../../../shared/utils/ToggleButton";
 import { TransferIcon, WithdrawIcon } from "../../../Assets/svg";
 import CryptoTransactionHistory from "./CryptoTransactionHistory";
+import { RootState } from "../../../shared/redux/rootReducer";
+import { GetUserProfile } from "../../../shared/redux/slices/landing.slices";
+import { useUserProfile } from "../../../shared/Hooks/useUserProfile";
 
 interface TokenInfo {
   tokenAddress: string;

@@ -13,7 +13,6 @@ const SavingsAmount = () => {
   const [error, setError] = useState("");
   const { purpose, currency, savingsType, contributionType } =
     location.state || {};
-  console.log("purpose", purpose);
   const formatAmount = (value: string) => {
     const numbers = value.replace(/\D/g, "");
     const formatted = Number(numbers).toLocaleString();

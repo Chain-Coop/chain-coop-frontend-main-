@@ -2,16 +2,23 @@ import { Link, useNavigate } from "react-router-dom";
 import { IoIosNotifications } from "react-icons/io";
 import { Button, Typography } from "@material-tailwind/react";
 import { useAllNotification } from "../../shared/Hooks/useUserProfile";
-import { handleLogout } from "../../shared/utils/auth";
 import Avatar from "../../components/dashboard/profile/avatar/Avatar";
 import Details from "../../components/dashboard/profile/profileDetails/main/Details";
 import Security from "../../components/dashboard/profile/security/Security";
 import { DashboardHeader } from "../../components/common/DashboardHeader";
 import IdVerification from "../../components/dashboard/profile/idVerification/idVerification";
+import { handleLoggout } from "../../shared/utils/auth";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../shared/redux/store";
 
 const Profile = () => {
-  const navigate = useNavigate();
   const { totalCount } = useAllNotification();
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    handleLoggout(dispatch, navigate);
+  };
 
   return (
     <main>
@@ -41,7 +48,7 @@ const Profile = () => {
           <div className="sm:hidden lg:block">
             <Button
               className="rounded-full bg-text3 px-[1.8em] py-[2px] text-sm font-bold text-text2"
-              onClick={() => handleLogout(navigate)}
+              onClick={handleLogout}
             >
               Logout
             </Button>

@@ -1,6 +1,5 @@
 import ToggleButton from "../../../shared/utils/ToggleButton";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
-import useWalletBalance from "../../../shared/Hooks/useBalance";
 import { HiOutlinePlus } from "react-icons/hi";
 import { groupSavingsOptions } from "../../../data/Data";
 import { useState, useEffect } from "react";
@@ -12,6 +11,9 @@ import otherIcon from "../../../Assets/svg/dashboard/ajo/other_group_saving_icon
 import otherImage from "../../../Assets/png/dashboard/ajo/other_group_saving_image.png";
 import GroupCard from "../components/group_card";
 import GroupHistoryTemplate from "../components/group_history_template";
+
+import { useWalletBalance } from "../../../shared/Hooks/useBalance";
+
 interface CircleFromAPI {
   name?: string;
   members?: any;

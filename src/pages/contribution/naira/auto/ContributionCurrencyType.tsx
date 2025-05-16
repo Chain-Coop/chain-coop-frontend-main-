@@ -8,14 +8,24 @@ import {
   getSavingsTypeTitle,
 } from "../../../../shared/utils/Helpers";
 
-const ContributionCurrencyType = () => {
+interface ContributionCurrencyTypeState {
+  savingsType: string;
+  contributionType: string;
+}
+
+interface ContributionFund {
+  text: string;
+  icon: React.ReactNode;
+}
+
+const ContributionCurrencyType: React.FC = () => {
   const [hoveredPlan, setHoveredPlan] = useState<number | null>(null);
   const [cryptoType, setCryptoType] = useState("");
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const location = useLocation();
-  console.log("loca", location);
-  const { savingsType, contributionType } = location.state || {};
+  const { savingsType, contributionType } =
+    location.state as ContributionCurrencyTypeState;
 
   const handleNext = () => {
     if (!cryptoType) {
@@ -25,7 +35,7 @@ const ContributionCurrencyType = () => {
 
     setError("");
     navigate("/dashboard/contribution/purpose", {
-      state: { currency: "NGN", savingsType, contributionType },
+      state: { currency: cryptoType, savingsType, contributionType },
     });
   };
 
@@ -46,7 +56,7 @@ const ContributionCurrencyType = () => {
           </p>
         </header>
 
-        {ContributionFundType.map((plan: any, index: number) => (
+        {ContributionFundType.map((plan: ContributionFund, index: number) => (
           <div
             key={index}
             className={`mt-8 flex w-full items-center justify-between rounded-lg px-4 py-[9px] 

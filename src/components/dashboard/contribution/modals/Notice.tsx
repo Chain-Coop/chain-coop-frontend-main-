@@ -9,12 +9,14 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import { format, parseISO } from "date-fns";
-import useUserProfile from "../../../../shared/Hooks/useUserProfile";
 import {
   isBeforeWithdrawalDate,
   useWithdrawalValidation,
 } from "../../../../shared/Hooks/useBalance";
 import { IoMdClose } from "react-icons/io";
+import { useAppSelector } from "../../../../shared/redux/reduxHooks";
+import { RootState } from "../../../../shared/redux/rootReducer";
+import { useUserProfile } from "../../../../shared/Hooks/useUserProfile";
 
 interface NoticeModalProps {
   isOpen: boolean;
@@ -36,6 +38,7 @@ const NoticeModal: React.FC<NoticeModalProps> = ({
   balance = 0,
 }) => {
   const { profileDetails } = useUserProfile();
+
   const membershipStatus = profileDetails?.membershipStatus || "inactive";
 
   const validation = useWithdrawalValidation({

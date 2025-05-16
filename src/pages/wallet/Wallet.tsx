@@ -1,19 +1,28 @@
-import { useNavigate } from "react-router";
-import { Link } from "react-router-dom";
-import useWalletBalance from "../../shared/Hooks/useBalance";
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { DashboardHeader } from "../../components/common/DashboardHeader";
 import { Button, Typography } from "@material-tailwind/react";
-import ToggleButton from "../../shared/utils/ToggleButton";
 import { FundIcon, WithdrawIcon } from "../../Assets/svg";
 import History from "../../components/dashboard/wallet/TransactionHistory/History";
+import { formatBalance } from "../../shared/utils/format";
+import BalanceDisplay from "../../components/dashboard/contribution/balanceDisplay/balanceDisplay";
+import { useWallet } from "../../shared/Hooks/useUserProfile";
 
 const Wallet = () => {
-  const { isWalletVisible, setIsWalletVisible, formattedBalance } =
-    useWalletBalance();
   const navigate = useNavigate();
+  const { walletBalance, isLoading } = useWallet();
+
+  const [isWalletVisible, setIsWalletVisible] = useState<boolean>(() => {
+    const saved = sessionStorage.getItem("walletBalanceVisible");
+    return saved ? JSON.parse(saved) : true;
+  });
 
   const switchToCrypto = () => {
     navigate("/dashboard/wallet/crypto_wallet");
+  };
+
+  const formatCurrency = (amount: number | undefined) => {
+    return amount ? formatBalance(amount) : "₦0.00";
   };
 
   return (
@@ -38,39 +47,31 @@ const Wallet = () => {
               </Button>
             </div>
 
-            <div className="rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-md sm:p-16">
-              <div className="flex justify-center gap-4">
-                <p className="font-medium">Naira Wallet Balance</p>
-                <div>
-                  <ToggleButton
-                    isVisible={isWalletVisible}
-                    onToggle={(newVisibility) => {
-                      setIsWalletVisible(newVisibility);
-                      sessionStorage.setItem(
-                        "walletBalanceVisible",
-                        newVisibility.toString(),
-                      );
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="mx-auto mt-6 w-60 rounded-md">
-                {isWalletVisible ? (
-                  <p className="text-xl font-bold lg:text-xl">
-                    {formattedBalance}
-                  </p>
-                ) : (
-                  <p className="text-2xl font-bold">*********</p>
-                )}
-                <hr className="mt-4 h-px rounded-md bg-howtext" />
-              </div>
+            <div className="rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A] sm:p-16">
+              <BalanceDisplay
+                title="Naira Wallet Balance"
+                balance={walletBalance?.balance}
+                isLoading={isLoading}
+                isVisible={isWalletVisible}
+                onToggle={(newVisibility) => {
+                  setIsWalletVisible(newVisibility);
+                  sessionStorage.setItem(
+                    "walletBalanceVisible",
+                    newVisibility.toString(),
+                  );
+                }}
+                formatCurrency={formatCurrency}
+                className="w-60"
+              />
             </div>
           </section>
 
-          <section className="my-8 rounded-3xl border-[1px] border-gray-300 px-4 shadow-md">
+          <section className="my-8 rounded-3xl border-[1px] border-gray-300 px-4 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A]">
             <div className="flex items-center justify-between gap-4 px-3 py-8 font-semibold text-howtext sm:gap-8 lg:px-10">
-              <Link to="/dashboard/wallet/withdraw"
-              state={{ walletType: "naira" }}>
+              <Link
+                to="/dashboard/wallet/withdraw"
+                state={{ walletType: "naira" }}
+              >
                 <div className="flex cursor-pointer flex-col items-center bg-inherit text-center">
                   <WithdrawIcon />
                   <span className="block text-sm text-memt1 sm:text-base lg:text-lg">

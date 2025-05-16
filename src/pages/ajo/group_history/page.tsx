@@ -31,8 +31,6 @@ const GroupHistoryPage = (props: Props) => {
         .filter((item: any) => item.progress < 100)
     : [];
 
-  console.log("GROUP HISTORY PAGE - Processed ongoingGroups:", ongoingGroups);
-
   const completedGroups = userCircles
     ? userCircles
         .map((circle: any) => ({

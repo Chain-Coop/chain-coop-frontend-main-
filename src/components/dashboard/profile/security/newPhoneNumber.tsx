@@ -10,9 +10,11 @@ import {
 } from "@material-tailwind/react";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
-import useUserProfile from "../../../../shared/Hooks/useUserProfile";
 import { PhoneNumberInput } from "../../../common/phoneNumberInput";
 import { UPDATE_PHONE_NUMBER } from "../../../../shared/redux/services/landing.services";
+import { useAppSelector } from "../../../../shared/redux/reduxHooks";
+import { RootState } from "../../../../shared/redux/rootReducer";
+import { GetUserProfile } from "../../../../shared/redux/slices/landing.slices";
 
 interface NewPhoneNumberProps {
   isOpen: boolean;
@@ -29,34 +31,34 @@ const NewPhoneNumber = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const { profileDetails, fetchUserProfile } = useUserProfile();
+  const { profileDetails } = useUserProfile();
 
-  const handleSubmit = async () => {
-    setIsLoading(true);
-    setError("");
+  // const handleSubmit = async () => {
+  //   setIsLoading(true);
+  //   setError("");
 
-    try {
-      const response = await UPDATE_PHONE_NUMBER("/auth/change_phone_number", {
-        newPhoneNumber,
-        userId: profileDetails.id,
-      });
+  //   try {
+  //     const response = await UPDATE_PHONE_NUMBER("/auth/change_phone_number", {
+  //       newPhoneNumber,
+  //       userId: getProfile?.id,
+  //     });
 
-      if (response.status === 200) {
-        await fetchUserProfile();
-        onSuccess();
-      } else {
-        const errorMsg = response.data?.msg || "Failed to update phone number";
-        setError(errorMsg);
-        toast.error(errorMsg);
-      }
-    } catch (error: any) {
-      const errorMsg = error?.message || "Failed to update phone number";
-      setError(errorMsg);
-      toast.error(errorMsg);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //     if (response.status === 200) {
+  //       await GetUserProfile();
+  //       onSuccess();
+  //     } else {
+  //       const errorMsg = response.data?.msg || "Failed to update phone number";
+  //       setError(errorMsg);
+  //       toast.error(errorMsg);
+  //     }
+  //   } catch (error: any) {
+  //     const errorMsg = error?.message || "Failed to update phone number";
+  //     setError(errorMsg);
+  //     toast.error(errorMsg);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   return (
     <Dialog
@@ -115,7 +117,7 @@ const NewPhoneNumber = ({
       <DialogFooter className="flex justify-center">
         <Button
           variant="filled"
-          onClick={handleSubmit}
+          // onClick={handleSubmit}
           disabled={isLoading || !newPhoneNumber}
           loading={isLoading}
           className="flex w-full justify-center rounded-full bg-text2 text-sm font-normal normal-case sm:w-[60%] sm:py-3 lg:py-2"

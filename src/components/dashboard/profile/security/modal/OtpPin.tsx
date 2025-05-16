@@ -14,7 +14,7 @@ import {
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { VerifyUserAuth } from "../../../../../shared/redux/slices/landing.slices";
-import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
+import { useUserProfile } from "../../../../../shared/Hooks/useUserProfile";
 
 interface OtpPinProps {
   isOpen: boolean;
@@ -41,7 +41,7 @@ const OtpPin = ({ isOpen, onNext, onClose }: OtpPinProps) => {
     try {
       const resultAction = await dispatch(
         VerifyUserAuth({
-          email: profileDetails.email,
+          email: profileDetails?.email || "",
           otp,
         }) as any,
       );

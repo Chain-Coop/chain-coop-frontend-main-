@@ -3,70 +3,61 @@ import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate, useLocation } from "react-router";
 import log from "../../../Assets/svg/dashboard/contribution/log.svg";
 import { Alert } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { parseISO, isAfter, isToday } from "date-fns";
 import { AppDispatch } from "../../../shared/redux/store";
-import { useAppDispatch } from "../../../shared/redux/reduxHooks";
-import useWalletBalance from "../../../shared/Hooks/useBalance";
 import { GetContributionDetailsById } from "../../../shared/redux/slices/transaction.slices";
 import { formatBalance } from "../../../shared/utils/format";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import { Button, Typography } from "@material-tailwind/react";
 import { ArrowIcon } from "../../../Assets/svg";
 import NoticeModal from "../../../components/dashboard/contribution/modals/Notice";
+import { RootState } from "../../../shared/redux/rootReducer";
+import { useWallet } from "../../../shared/Hooks/useUserProfile";
 
 const WithdrawContribution = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch: AppDispatch = useAppDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [displayAmount, setDisplayAmount] = useState("");
   const [actualAmount, setActualAmount] = useState("");
-  const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [withdrawalAmount, setWithdrawalAmount] = useState<number>(0);
+  const [localError, setLocalError] = useState("");
 
-  const { contributionDetails } = useSelector(
-    (state: any) => state?.transaction,
+  const { contributionDetails, error } = useSelector(
+    (state: RootState) => state.transaction,
   );
-  console.log("connn", contributionDetails);
-  const { formattedBalance } = useWalletBalance();
+  const { walletBalance, isLoading } = useWallet();
 
   useEffect(() => {
-    const initializeComponent = async () => {
-      if (!location.state?.contributionId) {
-        navigate("/dashboard/contribution");
-        return;
-      }
+    if (!location.state?.contributionId) {
+      navigate("/dashboard/contribution");
+      return;
+    }
+    dispatch(
+      GetContributionDetailsById({
+        contributionId: location.state.contributionId,
+      }),
+    );
+  }, [dispatch, location.state, navigate]);
 
-      try {
-        await dispatch(
-          GetContributionDetailsById({
-            contributionId: location?.state?.contributionId,
-          }),
-        ).unwrap();
-      } catch (error) {
-        setError("Failed to load contribution details");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    initializeComponent();
-  }, [location.state, navigate, dispatch]);
+  const formatCurrency = (amount: number | undefined) => {
+    return amount ? formatBalance(amount) : "₦0.00";
+  };
 
   const handleBackClick = () => {
     navigate(-1);
   };
 
   const formatNumberWithCommas = (value: string) => {
-    const cleanValue = value?.replace(/[^\d.]/g, "");
+    const cleanValue = value.replace(/[^\d.]/g, "");
     const parts = cleanValue.split(".");
     const wholePart = parts[0];
     const decimalPart = parts[1] || "";
 
-    const formattedWholePart = wholePart?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const formattedWholePart = wholePart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
     return decimalPart
       ? `${formattedWholePart}.${decimalPart.slice(0, 2)}`
@@ -75,17 +66,17 @@ const WithdrawContribution = () => {
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
-    const numericValue = inputValue?.replace(/[^\d.]/g, "");
+    const numericValue = inputValue.replace(/[^\d.]/g, "");
 
-    const parts = numericValue?.split(".");
+    const parts = numericValue.split(".");
     let cleanValue = parts[0];
-    if (parts?.length > 1) {
-      cleanValue += "." + parts[1]?.slice(0, 2);
+    if (parts.length > 1) {
+      cleanValue += "." + parts[1].slice(0, 2);
     }
 
     setActualAmount(cleanValue);
     setDisplayAmount(formatNumberWithCommas(cleanValue));
-    setError("");
+    setLocalError("");
   };
 
   const confirmAmount = () => {
@@ -94,12 +85,12 @@ const WithdrawContribution = () => {
     const withdrawalDate = contributionDetails?.withdrawalDate;
 
     if (isNaN(amountInNaira) || amountInNaira <= 0) {
-      setError("Please enter a valid amount");
+      setLocalError("Please enter a valid amount");
       return;
     }
 
     if (amountInNaira > contributionBalance) {
-      setError(
+      setLocalError(
         `Insufficient balance. Your contribution balance is ${formatBalance(
           contributionBalance,
         )}`,
@@ -130,7 +121,7 @@ const WithdrawContribution = () => {
         amountInNaira,
         contributionId: location.state.contributionId,
         contributionPlan: contributionDetails?.contributionPlan,
-        savingsType: contributionDetails?.history[0]?.savingsType,
+        savingsType: contributionDetails?.history[0]?.savingsType || "Flexible",
         withdrawalDate: contributionDetails?.withdrawalDate,
       },
     });
@@ -139,6 +130,11 @@ const WithdrawContribution = () => {
   const handleModalConfirm = () => {
     setIsModalOpen(false);
     navigateToConfirmation(parseFloat(actualAmount));
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setWithdrawalAmount(0);
   };
 
   const renderHeader = () => (
@@ -160,11 +156,29 @@ const WithdrawContribution = () => {
     return (
       <main>
         {renderHeader()}
-        <div className="flex h-[50vh] items-center justify-center">
-          <div className="animate-pulse text-gray-500">
-            Loading contribution details...
+        <section className="px-3">
+          <div className="mt-6 animate-pulse">
+            <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-2">
+                <div className="h-5 w-32 rounded bg-gray-200"></div>
+                <div className="h-4 w-20 rounded bg-gray-200"></div>
+              </div>
+              <div className="h-6 w-6 rounded bg-gray-200"></div>
+              <div className="flex flex-col gap-2">
+                <div className="h-5 w-32 rounded bg-gray-200"></div>
+                <div className="h-4 w-20 rounded bg-gray-200"></div>
+              </div>
+            </div>
+            <div className="mt-4 flex flex-col gap-4">
+              <hr className="w-full bg-gray-200" />
+              <div className="flex items-center justify-between">
+                <div className="h-5 w-32 rounded bg-gray-200"></div>
+                <div className="h-10 w-28 rounded bg-gray-200"></div>
+              </div>
+              <hr className="w-full bg-gray-200" />
+            </div>
           </div>
-        </div>
+        </section>
       </main>
     );
   }
@@ -187,11 +201,6 @@ const WithdrawContribution = () => {
     );
   }
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-    setWithdrawalAmount(0);
-  };
-
   return (
     <main>
       {renderHeader()}
@@ -209,7 +218,9 @@ const WithdrawContribution = () => {
           <ArrowIcon />
           <div className="flex flex-col gap-2">
             <Typography className="font-medium">Wallet Balance</Typography>
-            <span className="text-gray-400">{formattedBalance}</span>
+            <span className="text-gray-400">
+              {formatCurrency(walletBalance?.balance)}
+            </span>
           </div>
         </div>
 
@@ -243,16 +254,16 @@ const WithdrawContribution = () => {
           <p>Monthly</p>
         </div>
 
-        {error && (
+        {(error || localError) && (
           <Alert severity="error" className="mt-4">
-            {error}
+            {localError || error}
           </Alert>
         )}
 
         <Button
           variant="text"
           onClick={confirmAmount}
-          className={` mt-[2em] w-full bg-text2 py-3 text-sm normal-case text-white hover:bg-text2 ${
+          className={`mt-[2em] w-full bg-text2 py-3 text-sm normal-case text-white hover:bg-text2 ${
             displayAmount ? "bg-text2" : "cursor-not-allowed"
           }`}
           disabled={!displayAmount}
@@ -264,7 +275,7 @@ const WithdrawContribution = () => {
         isOpen={isModalOpen}
         onClose={handleModalClose}
         onConfirm={handleModalConfirm}
-        withdrawalDate={contributionDetails?.withdrawalDate}
+        withdrawalDate={contributionDetails?.withdrawalDate || ""}
         savingsType={contributionDetails?.history[0]?.savingsType || "Flexible"}
         withdrawalAmount={Number(actualAmount)}
         balance={contributionDetails?.balance || 0}

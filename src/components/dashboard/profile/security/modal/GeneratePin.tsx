@@ -14,7 +14,8 @@ import {
 } from "@material-tailwind/react";
 import { MoveRight } from "lucide-react";
 import { IoMdClose } from "react-icons/io";
-import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
+import { useAppSelector } from "../../../../../shared/redux/reduxHooks";
+import { useUserProfile } from "../../../../../shared/Hooks/useUserProfile";
 
 interface GeneratePinModalProps {
   isOpen: boolean;

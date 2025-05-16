@@ -8,7 +8,10 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { format, parseISO, isAfter, isToday } from "date-fns";
-import useUserProfile from "../../../../shared/Hooks/useUserProfile";
+import { RootState } from "../../../../../../shared/redux/rootReducer";
+import { useAppSelector } from "../../../../../../shared/redux/reduxHooks";
+import { useUserProfile } from "../../../../../../shared/Hooks/useUserProfile";
+import { profile } from "console";
 
 interface NoticeModalProps {
   isOpen: boolean;

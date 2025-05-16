@@ -1,17 +1,15 @@
-import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../../Assets/svg/cooplogo.svg";
 import { sidebarLinks } from "../../../data/Data";
 import member from "../../../Assets/jpg/membership/customer.jpg";
 import investor from "../../../Assets/jpg/membership/investor.jpg";
-import useUserProfile from "../../../shared/Hooks/useUserProfile";
 import { Typography } from "@material-tailwind/react";
+import { useUserProfile } from "../../../shared/Hooks/useUserProfile";
 
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { profileDetails } = useUserProfile();
-
   const home = () => {
     navigate("/dashboard");
   };

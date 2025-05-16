@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
+import { useAppSelector } from "../../../../shared/redux/reduxHooks";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { AppDispatch } from "../../../../shared/redux/store";
 import {
   GetWalletCard,
   PayContribution,
   PayContributionPaystack,
+  clearTransactionError,
 } from "../../../../shared/redux/slices/transaction.slices";
 import { Alert, Snackbar } from "@mui/material";
-import useUserProfile, {
-  useUserCard,
-} from "../../../../shared/Hooks/useUserProfile";
-import { CardBrandLogo } from "../../../../shared/utils/Helpers";
 import {
   Dialog,
   DialogHeader,
@@ -33,8 +29,16 @@ import {
   handleNext,
   handlePrev,
   handleCloseError,
+  CardBrandLogo,
 } from "../../../../shared/utils/Helpers";
 import { IoMdClose } from "react-icons/io";
+import { AppDispatch } from "../../../../shared/redux/store";
+import { useDispatch } from "react-redux";
+import { RootState } from "../../../../shared/redux/rootReducer";
+import {
+  useUserProfile,
+  useWallet,
+} from "../../../../shared/Hooks/useUserProfile";
 
 interface PaymentWithCardProps {
   contributionData: {
@@ -50,15 +54,23 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
   onClose,
   isOpen,
 }) => {
-  const { useWalletCards } = useUserCard();
   const contributionId = contributionData?.contributionId;
-  const dispatch: AppDispatch = useAppDispatch();
-  const [selectedCard, setSelectedCard] = useState<Card | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0);
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const {
+    payContributionSuccess,
+    payContributionPaystackSuccess,
+    payContributionPaystack,
+    isLoading,
+    error,
+  } = useAppSelector((state: RootState) => state.transaction);
   const { profileDetails } = useUserProfile();
+  const { walletCard } = useWallet();
+
+  const [selectedCard, setSelectedCard] = useState<Card | null>(null);
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const cards: any = walletCard?.cards ?? [];
 
   useEffect(() => {
     dispatch(GetWalletCard());
@@ -67,71 +79,65 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
   useEffect(() => {
     if (isOpen) {
       setSelectedCard(null);
-      setError(null);
       setCurrentPage(0);
+      dispatch(clearTransactionError());
     }
-  }, [isOpen]);
+  }, [isOpen, dispatch]);
 
-  const cards = useWalletCards?.cards ?? [];
+  useEffect(() => {
+    if (payContributionSuccess) {
+      onClose();
+      navigate("/dashboard/contribution");
+    }
+  }, [payContributionSuccess, navigate, onClose]);
+
+  useEffect(() => {
+    if (
+      payContributionPaystackSuccess &&
+      payContributionPaystack?.payment?.info?.data?.authorization_url
+    ) {
+      onClose();
+      window.location.href =
+        payContributionPaystack.payment.info.data.authorization_url;
+    }
+  }, [payContributionPaystackSuccess, payContributionPaystack, onClose]);
 
   const handlePayment = async (paymentType: "card" | "paystack") => {
-    if (!contributionId) {
-      setError("Invalid contribution data");
+    if (!contributionId || !profileDetails?._id) {
+      dispatch({
+        type: "transaction/setError",
+        payload: "Invalid contribution or user data",
+      });
       return;
     }
 
-    setError(null);
-    setIsLoading(true);
+    dispatch(clearTransactionError());
 
-    try {
-      const basePayload = {
-        contributionId,
-        userId: profileDetails._id,
-      };
+    const basePayload = {
+      contributionId,
+      userId: profileDetails._id,
+    };
 
-      if (paymentType === "card" && selectedCard) {
-        const paymentResponse: any = await dispatch(
-          PayContribution({
-            ...basePayload,
-            paymentType: "card",
-            cardAuthCode: selectedCard.authorization_code,
-          }),
-        ).unwrap();
-
-        if (paymentResponse.landing.statusCode === 200) {
-          onClose();
-          navigate("/dashboard/contribution");
-        }
-      } else {
-        const paymentResponse = await dispatch(
-          PayContributionPaystack({
-            ...basePayload,
-            paymentType: "paystack",
-          }),
-        ).unwrap();
-
-        if (paymentResponse?.landing?.payment?.info?.data?.authorization_url) {
-          onClose();
-          window.location.href =
-            paymentResponse.landing.payment.info.data.authorization_url;
-        } else {
-          throw new Error("Missing payment authorization URL");
-        }
-      }
-    } catch (error: any) {
-      let errorMessage = "An error occurred during payment. Please try again.";
-
-      if (error?.response?.data?.message) {
-        errorMessage = error.response.data.message;
-      } else if (error?.message) {
-        errorMessage = error.message;
-      } else if (typeof error === "string") {
-        errorMessage = error;
-      }
-
-      setError(errorMessage);
-    } finally {
-      setIsLoading(false);
+    if (paymentType === "card" && selectedCard?.authorization_code) {
+      dispatch(
+        PayContribution({
+          ...basePayload,
+          paymentType: "card",
+          cardAuthCode: selectedCard.authorization_code,
+        }),
+      );
+    } else if (paymentType === "paystack") {
+      dispatch(
+        PayContributionPaystack({
+          ...basePayload,
+          paymentType: "paystack",
+        }),
+      );
+    } else {
+      dispatch({
+        type: "transaction/setError",
+        payload: "Selected card is invalid or missing authorization code",
+      });
     }
   };
 
@@ -145,11 +151,11 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
       <Snackbar
         open={!!error}
         autoHideDuration={6000}
-        onClose={() => handleCloseError(setError)}
+        onClose={() => dispatch(clearTransactionError())}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert
-          onClose={() => handleCloseError(setError)}
+          onClose={() => dispatch(clearTransactionError())}
           severity="error"
           variant="filled"
           sx={{ width: "100%" }}
@@ -192,7 +198,15 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
               </DialogHeader>
 
               <div className="relative mt-4">
-                {cards?.length > 0 ? (
+                {isLoading && !cards.length ? (
+                  <div className="space-y-2">
+                    <div className="h-32 w-full animate-pulse rounded-xl bg-gray-200 sm:w-[25em]"></div>
+                    <div className="flex justify-center gap-1">
+                      <div className="h-1.5 w-3 rounded-full bg-purple-600"></div>
+                      <div className="h-1.5 w-1.5 rounded-full bg-gray-300"></div>
+                    </div>
+                  </div>
+                ) : cards.length > 0 ? (
                   <>
                     <div className="relative mx-auto w-full overflow-hidden sm:w-[25em] sm:px-6">
                       {currentPage > 0 && (
@@ -212,7 +226,6 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
                             handleCardSelect(
                               cards[currentPage],
                               setSelectedCard,
-                              setError,
                             )
                           }
                           className={`group relative aspect-[1.8/1] w-full cursor-pointer rounded-xl bg-gradient-to-r px-2 py-2 shadow-lg transition-all hover:shadow-xl sm:px-4
@@ -220,12 +233,11 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
                               cardDesigns[
                                 cards[
                                   currentPage
-                                ]?.brand?.toLowerCase() as keyof typeof cardDesigns
+                                ].card_type.toLowerCase() as keyof typeof cardDesigns
                               ] || cardDesigns.default
                             }
                             ${
-                              selectedCard?.authorization_code ===
-                              cards[currentPage].authorization_code
+                              selectedCard?.id === cards[currentPage].id
                                 ? "ring-2 ring-white"
                                 : ""
                             }`}
@@ -233,7 +245,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
                           <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 opacity-0 transition-opacity group-hover:opacity-100" />
 
                           <div className="mb-3 text-sm font-bold text-white/90 sm:mb-4 sm:text-base">
-                            {cards[currentPage]?.bank?.toUpperCase()}
+                            {cards[currentPage].bank.toUpperCase()}
                           </div>
 
                           <Chip />
@@ -293,11 +305,10 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
                 {selectedCard ? (
                   <Button
                     onClick={() => handlePayment("card")}
-                    disabled={isLoading}
-                    loading={isLoading}
+                    disabled={isLoading || !selectedCard.authorization_code}
                     className="flex w-full items-center justify-center rounded-lg bg-text2 px-4 py-2.5 text-sm font-bold normal-case text-white transition-colors disabled:opacity-50"
                   >
-                    {isLoading ? "Loading..." : "Pay Now"}
+                    {isLoading ? "Processing..." : "Pay Now"}
                   </Button>
                 ) : (
                   <div className="flex w-full flex-col items-center justify-between gap-2 sm:flex-row sm:gap-4">
@@ -310,6 +321,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
                     <Button
                       onClick={() => handlePayment("paystack")}
                       disabled={isLoading}
+                      loading={isLoading}
                       className="flex w-full items-center justify-center rounded-lg bg-text2 px-4 py-2.5 text-sm font-bold normal-case text-white transition-colors disabled:opacity-50 sm:w-auto"
                     >
                       Pay Direct

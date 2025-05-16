@@ -2,10 +2,10 @@ import { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import TierOneFirstModal from "../kyc/teirOne/phoneNumber/TierOneFirstModal";
-import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 import { Typography } from "@material-tailwind/react";
 import Success from "../../../../common/Success";
 import UpdateBvnModal from "../kyc/teirTwo/bvn/UpdateBvnModal";
+import { useUserProfile } from "../../../../../shared/Hooks/useUserProfile";
 
 const Details = () => {
   const navigate = useNavigate();
@@ -101,7 +101,7 @@ const Details = () => {
         isOpen={showTierOneModal}
         onClose={handleModalClose}
         onBvnStepClick={handleBvnStepClick}
-        isVerified={profileDetails?.isVerified}
+        isVerified={profileDetails?.isVerified ?? false}
       />
       <UpdateBvnModal isOpen={showBvnFirstModal} onClose={handleModalClose} />
       <Success

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import usePasswordToggle from "../../../../../shared/utils/usePasswordToggle";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../../../shared/redux/store";
+import { ResetPassword } from "../../../../../shared/redux/slices/landing.slices";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
-import { RESET_PASSWORD } from "../../../../../shared/redux/services/landing.services";
 import {
   Button,
   Dialog,
@@ -13,10 +14,11 @@ import {
 } from "@material-tailwind/react";
 import { IoMdClose } from "react-icons/io";
 import FormInput from "../../../../common/FormInput";
+import { toast } from "react-toastify";
 
 interface NewPasswordProps {
   email: string;
-  otp: string;
+  otp?: string; // Made optional since the page component doesn't use it
   onSuccess: () => void;
   onClose: () => void;
   isOpen: boolean;
@@ -31,15 +33,26 @@ const NewPassword: React.FC<NewPasswordProps> = ({
 }) => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
-  const [passwordType, togglePasswordType] = usePasswordToggle();
-  const [confirmPasswordType, toggleConfirmPasswordType] = usePasswordToggle();
+  const [passwordType, setPasswordType] = useState("password");
+  const [confirmPasswordType, setConfirmPasswordType] = useState("password");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const dispatch = useDispatch<AppDispatch>();
+
+  const togglePasswordType = () => {
+    setPasswordType(passwordType === "password" ? "text" : "password");
+  };
+
+  const toggleConfirmPasswordType = () => {
+    setConfirmPasswordType(
+      confirmPasswordType === "password" ? "text" : "password",
+    );
+  };
 
   const resetPasswordFunc = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const endpoint = `/auth/reset_password`;
+    setError("");
 
     if (newPassword.length < 8) {
       setError("Password must be at least 8 characters long");
@@ -54,22 +67,30 @@ const NewPassword: React.FC<NewPasswordProps> = ({
     }
 
     try {
-      const response = await RESET_PASSWORD(endpoint, {
-        email,
-        otp,
-        password: newPassword,
-        confirmPassword: confirmNewPassword,
-      });
+      const resultAction = await dispatch(
+        ResetPassword({
+          email,
+          password: newPassword,
+          confirmPassword: confirmNewPassword,
+        }),
+      );
+
       setLoading(false);
-      if (response?.status === 200) {
-        setError("");
+
+      if (ResetPassword.fulfilled.match(resultAction)) {
+        toast.success("Password reset successfully");
         onSuccess();
       } else {
-        setError(response.data.msg || "Error resetting password");
+        const errorMsg =
+          (resultAction.payload as string) || "Failed to reset password";
+        setError(errorMsg);
+        toast.error(errorMsg);
       }
-    } catch (error) {
+    } catch (error: any) {
       setLoading(false);
-      setError("Error resetting password");
+      const errorMessage = error.message || "Error resetting password";
+      setError(errorMessage);
+      toast.error(errorMessage);
     }
   };
 

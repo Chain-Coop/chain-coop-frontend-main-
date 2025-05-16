@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { AppDispatch } from "../../../../shared/redux/store";
-import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
+import { useAppSelector } from "../../../../shared/redux/reduxHooks";
 import {
-  useUserCard,
-  useUserProfile,
-} from "../../../../shared/Hooks/useUserProfile";
-import {
+  clearTransactionState,
   CreateContributionPlan,
-  GetWalletCard,
   PayContributionPaystack,
 } from "../../../../shared/redux/slices/transaction.slices";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
@@ -18,49 +13,103 @@ import PaymentWithCard from "../../../../components/dashboard/contribution/payme
 import PayWithPaystack from "../../../../components/dashboard/contribution/paymentChoice/PayWithPaystack";
 import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg";
 import { getSavingsTypeTitle } from "../../../../shared/utils/Helpers";
+import { formatFullDate } from "../../../../shared/utils/format";
+import { AppDispatch } from "../../../../shared/redux/store";
+import { useDispatch } from "react-redux";
+import { RootState } from "../../../../shared/redux/rootReducer";
+import {
+  useUserProfile,
+  useWallet,
+} from "../../../../shared/Hooks/useUserProfile";
 
-interface ContributionResponse {
-  result: {
-    contributionId: string;
-    withdrawalDate: string;
-  };
+interface PreviewState {
+  purpose: string;
+  plan: string;
+  amount: number;
+  currency: string;
+  savingsType: string;
+  contributionType: string;
+  startDate: string;
+  endDate: string;
 }
 
-const Preview = () => {
+const Preview: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch: AppDispatch = useAppDispatch();
-  const { useWalletCards } = useUserCard();
+  const dispatch = useDispatch<AppDispatch>();
+  const {
+    contributionPlan,
+    payContributionPaystack,
+    isLoading,
+    error,
+    createContributionPlanSuccess,
+    payContributionPaystackSuccess,
+  } = useAppSelector((state: RootState) => state.transaction);
   const { profileDetails } = useUserProfile();
+  const { walletCard } = useWallet();
+  const state = location.state as PreviewState | undefined;
+
+  useEffect(() => {
+    if (!state) {
+      console.error(
+        "Preview: Missing location.state, redirecting to contribution page",
+      );
+      navigate("/dashboard/contribution");
+    } else {
+      console.log("Preview: Received state:", state);
+    }
+  }, [state, navigate]);
+
+  if (!state) {
+    return null;
+  }
 
   const {
     purpose,
     plan,
     amount,
-    currency,
     savingsType,
     contributionType,
     startDate,
     endDate,
-  } = location.state || {};
-  const hasCards = (useWalletCards?.cards ?? []).length > 0;
+  } = state;
+  const hasCards = (walletCard?.cards ?? []).length > 0;
 
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [contributionData, setContributionData] = useState<
-    ContributionResponse["result"] | null
-  >(null);
-  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+  const [contributionData, setContributionData] = useState<{
+    contributionId: string;
+    withdrawalDate: string;
+  } | null>(null);
 
   useEffect(() => {
-    dispatch(GetWalletCard());
+    dispatch(clearTransactionState());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (createContributionPlanSuccess && contributionPlan?.result) {
+      setContributionData(contributionPlan.result);
+      setIsModalOpen(true);
+    }
+  }, [createContributionPlanSuccess, contributionPlan]);
+
+  useEffect(() => {
+    if (
+      payContributionPaystackSuccess &&
+      payContributionPaystack?.payment?.info?.data?.authorization_url
+    ) {
+      handleModalClose();
+      window.location.href =
+        payContributionPaystack.payment.info.data.authorization_url;
+    }
+  }, [payContributionPaystackSuccess, payContributionPaystack]);
 
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError("");
+
+    if (!profileDetails?._id) {
+      navigate("/dashboard/contribution");
+      return;
+    }
 
     const body = {
       savingsCategory: purpose,
@@ -68,89 +117,40 @@ const Preview = () => {
       amount,
       startDate,
       endDate,
-      currency,
+      currency: "NGN",
       savingsType,
       contributionType,
     };
 
-    try {
-      const response = await dispatch(CreateContributionPlan(body)).unwrap();
-      if (response?.result) {
-        setContributionData(response.result);
-        setIsModalOpen(true);
-      } else {
-        setError("Contribution plan creation failed. Please try again.");
-      }
-    } catch (error: any) {
-      setError(error?.msg || "An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    dispatch(CreateContributionPlan(body));
   };
 
   const handleDirectPayment = async (paymentType: "paystack") => {
-    if (!contributionData?.contributionId) {
-      setError("Invalid contribution data");
+    if (!contributionData?.contributionId || !profileDetails?._id) {
+      console.error(
+        "Preview: Missing contributionId or userId for Paystack payment",
+      );
       return;
     }
 
-    setIsProcessingPayment(true);
-    setError("");
-
-    try {
-      const paymentResponse = await dispatch(
-        PayContributionPaystack({
-          contributionId: contributionData.contributionId,
-          userId: profileDetails?._id,
-          paymentType: "paystack",
-        }),
-      ).unwrap();
-
-      if (paymentResponse?.landing?.payment?.info?.data?.authorization_url) {
-        handleModalClose();
-        window.location.href =
-          paymentResponse.landing.payment.info.data.authorization_url;
-      } else {
-        throw new Error("Missing payment authorization URL");
-      }
-    } catch (error: any) {
-      let errorMessage = "An error occurred during payment. Please try again.";
-      if (error?.response?.data?.message) {
-        errorMessage = error.response.data.message;
-      } else if (error?.message) {
-        errorMessage = error.message;
-      } else if (typeof error === "string") {
-        errorMessage = error;
-      }
-      setError(errorMessage);
-    } finally {
-      setIsProcessingPayment(false);
-    }
+    dispatch(
+      PayContributionPaystack({
+        contributionId: contributionData.contributionId,
+        userId: profileDetails._id,
+        paymentType: "paystack",
+      }),
+    );
   };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
-    setIsProcessingPayment(false);
-    setError("");
   };
 
-  const formattedStartDate = startDate
-    ? new Date(startDate).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    : "N/A";
-  const formattedEndDate = endDate
-    ? new Date(endDate).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    : "N/A";
+  const formattedStartDate = startDate ? formatFullDate(startDate) : "N/A";
+  const formattedEndDate = endDate ? formatFullDate(endDate) : "N/A";
 
   const previewData = [
-    { label: "Amount", value: `${currency || "NGN"} ${amount || "0"}` },
+    { label: "Amount", value: `${"NGN"} ${amount || "0"}` },
     { label: "Start Date", value: formattedStartDate },
     { label: "End Date", value: formattedEndDate },
   ];
@@ -163,8 +163,7 @@ const Preview = () => {
       <div>
         <header className="mt-[1.5em] flex flex-col gap-2 lg:mt-[3em]">
           <Typography className="text-2xl font-bold">
-            {getSavingsTypeTitle(savingsType)} {""}
-            Preview
+            {getSavingsTypeTitle(savingsType)} Preview
           </Typography>
 
           <Typography className="mt-4 text-xl text-gray-400">Title</Typography>
@@ -198,11 +197,10 @@ const Preview = () => {
           </button>
           <Button
             onClick={handleSubmit}
-            disabled={loading}
-            loading={loading}
+            disabled={isLoading}
             className="flex items-center justify-center rounded-md bg-text2 px-8 py-2 font-semibold normal-case text-white transition-all duration-300 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg active:scale-95 active:transform"
           >
-            Submit
+            {isLoading ? "Submitting..." : "Submit"}
           </Button>
         </div>
       </div>
@@ -218,7 +216,7 @@ const Preview = () => {
       ) : (
         <PayWithPaystack
           onSelect={handleDirectPayment}
-          isProcessing={isProcessingPayment}
+          isProcessing={isLoading}
           isOpen={isModalOpen}
           onClose={handleModalClose}
         />

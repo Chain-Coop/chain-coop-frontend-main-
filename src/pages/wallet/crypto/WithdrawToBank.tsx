@@ -191,7 +191,7 @@ const WithdrawToBank: React.FC = () => {
           />
         </div>
         {/* Info banner */}
-        <div className="mt-4 mb-6 text-base px-0 md:px-5 text-center md:text-lg">
+        <div className="mb-6 mt-4 px-0 text-center text-base md:px-5 md:text-lg">
           When withdrawing crypto, the amount will be converted to Naira based
           on current market rates. The final amount you receive may vary
           slightly due to market fluctuations.
@@ -225,10 +225,6 @@ const WithdrawToBank: React.FC = () => {
                 {/* Modal container */}
                 <motion.div
                   className="fixed left-[5%] top-1/2 z-50 w-[90%] max-w-sm -translate-x-1/2 -translate-y-1/2 transform overflow-y-auto rounded-lg bg-white p-0 shadow-xl md:left-[25%] lg:left-1/2"
-                  style={{
-                    margin: 0,
-                    maxHeight: "80vh",
-                  }}
                   initial="hidden"
                   animate="visible"
                   exit="exit"
@@ -320,10 +316,6 @@ const WithdrawToBank: React.FC = () => {
                 {/* Modal container */}
                 <motion.div
                   className="fixed left-[5%] top-1/2 z-50 w-[90%] max-w-sm -translate-x-1/2 -translate-y-1/2 transform overflow-y-auto rounded-lg bg-white p-0 shadow-xl md:left-[25%] lg:left-1/2"
-                  style={{
-                    margin: 0,
-                    maxHeight: "80vh",
-                  }}
                   initial="hidden"
                   animate="visible"
                   exit="exit"
