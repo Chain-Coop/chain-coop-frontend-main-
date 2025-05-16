@@ -1,7 +1,14 @@
 import { useSelector } from "react-redux";
 import { format, parseISO } from "date-fns";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { Box, Step, StepLabel, Stepper } from "@mui/material";
+import {
+  Timeline,
+  TimelineItem,
+  TimelineConnector,
+  TimelineHeader,
+  TimelineIcon,
+  TimelineBody,
+} from "@material-tailwind/react";
 import { TrackerSkeleton } from "../../../common/Loading";
 
 interface ContributionTrackerProps {
@@ -59,20 +66,27 @@ export const ContributionTracker: React.FC<ContributionTrackerProps> = ({
       (a, b) => new Date(a?.Date)?.getTime() - new Date(b?.Date)?.getTime(),
     );
 
+    const isOneTime =
+      contributionDetails?.contributionType?.toLowerCase() === "one-time";
+
     if (sortedHistory?.length > 0) {
       const firstTransaction = sortedHistory[0];
-      steps?.push({
-        label: "Start Date",
-        date: firstTransaction?.Date,
-        amount: firstTransaction?.amount,
-        type: firstTransaction?.type,
-        balance: firstTransaction?.balance,
-        description: "Start of regular contributions",
-        status: firstTransaction?.status,
-        reference: firstTransaction?.reference,
-      });
 
-      sortedHistory?.slice(1).forEach((transaction) => {
+      if (!isOneTime) {
+        steps?.push({
+          label: "Start Date",
+          date: firstTransaction?.Date,
+          amount: firstTransaction?.amount,
+          type: firstTransaction?.type,
+          balance: firstTransaction?.balance,
+          description: "Start of regular contributions",
+          status: firstTransaction?.status,
+          reference: firstTransaction?.reference,
+        });
+      }
+
+      const startIndex = isOneTime ? 0 : 1;
+      sortedHistory?.slice(startIndex).forEach((transaction) => {
         const isDebitSuccess =
           transaction?.type?.toLowerCase() === "debit" &&
           transaction?.status?.toLowerCase() === "success";
@@ -94,7 +108,7 @@ export const ContributionTracker: React.FC<ContributionTrackerProps> = ({
       });
     }
 
-    if (isDateValid(nextContributionDate)) {
+    if (!isOneTime && isDateValid(nextContributionDate)) {
       steps.push({
         label: "Next Contribution",
         date: nextContributionDate,
@@ -168,7 +182,7 @@ export const ContributionTracker: React.FC<ContributionTrackerProps> = ({
   }
 
   return (
-    <section className="mt-4  sm:mt-6">
+    <section className="mt-4 sm:mt-6">
       <div className="mb-4 space-y-1 sm:space-y-2">
         <p className="text-lg font-bold">Transaction History</p>
         <p className="text-xs sm:text-base">
@@ -182,24 +196,24 @@ export const ContributionTracker: React.FC<ContributionTrackerProps> = ({
       </div>
       <div className="mb-3 flex items-center justify-between sm:mb-4">
         <p className="text-sm font-medium sm:text-lg">
-          {contributionDetails?.contributionPlan} Contribution Plan
+          {contributionDetails?.contributionType?.toLowerCase() === "one-time"
+            ? "One-Time Contribution"
+            : `${contributionDetails?.contributionPlan} Contribution Plan`}
         </p>
         <p className="text-sm font-medium sm:text-lg">Status</p>
       </div>
-      <Box sx={{ maxWidth: "100%" }}>
-        <Stepper orientation="vertical">
+
+      <div className="w-full">
+        <Timeline>
           {steps.map((step, index) => (
-            <Step key={index} active={isStepActive(step?.status)}>
-              <StepLabel
-                sx={{
-                  "& .MuiStepLabel-iconContainer": {
-                    paddingRight: "1rem",
-                    "& .MuiStepIcon-root": {
-                      color: isStepActive(step?.status) ? "#430280" : "#9CA3AF",
-                    },
-                  },
-                }}
-              >
+            <TimelineItem key={index}>
+              {index !== steps.length - 1 && <TimelineConnector />}
+              <TimelineHeader>
+                <TimelineIcon
+                  className={
+                    isStepActive(step?.status) ? "bg-[#430280]" : "bg-[#9CA3AF]"
+                  }
+                />
                 <div className="flex w-full flex-col space-y-2 sm:space-y-3">
                   <div className="flex items-start justify-between sm:items-center">
                     <p className="text-sm font-semibold sm:text-lg">
@@ -213,26 +227,28 @@ export const ContributionTracker: React.FC<ContributionTrackerProps> = ({
                       {step?.status}
                     </div>
                   </div>
-                  <div className="space-y-1 sm:space-y-2">
-                    <p className="text-xs font-medium text-gray-600 sm:text-base">
-                      {formatSafeDateTime(step?.date)}
-                    </p>
-                    {formatAmount(step?.amount, step?.type)}
-                    {step.balance !== null && (
-                      <p className="text-xs font-medium text-gray-600 sm:text-base">
-                        Current Balance:{" "}
-                        <span className="font-semibold text-text2">
-                          NGN {step?.balance?.toLocaleString()}
-                        </span>
-                      </p>
-                    )}
-                  </div>
                 </div>
-              </StepLabel>
-            </Step>
+              </TimelineHeader>
+              <TimelineBody className="pb-6">
+                <div className="ml-4 space-y-1 sm:space-y-2">
+                  <p className="text-xs font-medium text-gray-600 sm:text-base">
+                    {formatSafeDateTime(step?.date)}
+                  </p>
+                  {formatAmount(step?.amount, step?.type)}
+                  {step.balance !== null && (
+                    <p className="text-xs font-medium text-gray-600 sm:text-base">
+                      Current Balance:{" "}
+                      <span className="font-semibold text-text2">
+                        NGN {step?.balance?.toLocaleString()}
+                      </span>
+                    </p>
+                  )}
+                </div>
+              </TimelineBody>
+            </TimelineItem>
           ))}
-        </Stepper>
-      </Box>
+        </Timeline>
+      </div>
 
       <div className="mt-6 flex items-center justify-center gap-4">
         <button

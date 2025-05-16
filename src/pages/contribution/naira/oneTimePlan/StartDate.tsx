@@ -142,7 +142,7 @@ const StartDate: React.FC = () => {
       endDate: finalEndDate,
       currency: currency,
       contributionType: contributionType,
-      savingsType: "One-time",
+      savingsType: savingsType,
     };
     try {
       const response = await dispatch(CreateContributionPlan(body)).unwrap();

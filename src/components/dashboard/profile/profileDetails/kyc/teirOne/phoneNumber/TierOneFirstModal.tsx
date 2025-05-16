@@ -10,9 +10,7 @@ import {
 } from "@material-tailwind/react";
 import { IoMdClose } from "react-icons/io";
 import { SubmitKycTier2 } from "../../../../../../../shared/redux/slices/transaction.slices";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
-import { RootState } from "../../../../../../../shared/redux/rootReducer";
+import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../../../shared/redux/store";
 import { useUserProfile } from "../../../../../../../shared/Hooks/useUserProfile";
 
@@ -30,22 +28,21 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
   isVerified,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
-  const { kycTier2 } = useSelector((state: RootState) => state.transaction);
   const { profileDetails } = useUserProfile();
 
   const userId = profileDetails?.id;
 
-  // const handleTier2Click = async () => {
-  //   try {
-  //     const result = await dispatch(SubmitKycTier2(userId)).unwrap();
-  //     if (result.redirectUrl) {
-  //       navigate(result.redirectUrl);
-  //     }
-  //   } catch (error) {
-  //     console.error("KYC Tier 2 submission failed:", error);
-  //   }
-  // };
+  const handleTier2Click = async () => {
+    try {
+      const result = await dispatch(SubmitKycTier2(userId)).unwrap();
+      if (result.verificationUrl) {
+        onClose();
+        window.location.href = result.verificationUrl;
+      }
+    } catch (error) {
+      console.error("KYC Tier 2 submission failed:", error);
+    }
+  };
 
   return (
     <Dialog size="sm" open={isOpen} handler={onClose} className="bg-white">
@@ -119,7 +116,7 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
                 variant="h6"
                 className="text-sm font-bold text-gray-900"
               >
-                Teir 0
+                Teir 1
               </Typography>
               <Typography
                 variant="small"
@@ -155,7 +152,7 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
               </Typography>
             </div>
             <button
-              // onClick={handleTier2Click}
+              onClick={handleTier2Click}
               className="rounded-full bg-gray-100 p-2"
             >
               <CircleArrow />
