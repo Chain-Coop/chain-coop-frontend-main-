@@ -19,7 +19,6 @@ const ContributionCurrencyType = () => {
   const [error, setError] = useState("");
   const location = useLocation();
   const { savingsType, contributionType } = location.state || {};
-  console.log("cc", contributionType);
   const handleNext = () => {
     if (!cryptoType) {
       setError("Please select a contribution plan");

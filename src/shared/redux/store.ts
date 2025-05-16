@@ -14,7 +14,14 @@ import {
 const persistConfig = {
   key: "root",
   storage: storage,
-  blacklist: ["apiProductSlice"],
+  blacklist: [
+    "apiProductSlice",
+    "landing",
+    "transaction",
+    "web3",
+    "kyc",
+    "notificationApplication",
+  ],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

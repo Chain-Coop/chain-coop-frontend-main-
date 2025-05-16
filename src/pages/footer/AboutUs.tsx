@@ -6,7 +6,6 @@ import heather from "../../Assets/png/footer/about/heather.png";
 import samad from "../../Assets/png/footer/about/samad.png";
 import imageRight from "../../Assets/png/home/about-bg.png";
 import aya from "../../Assets/png/home/abt-aya.png";
-import lisk from "../../Assets/png/home/abt-lisk.png";
 import Marquee from "react-fast-marquee";
 import { Link } from "react-router-dom";
 import NavBar from "../../components/common/NavBar";
@@ -16,8 +15,8 @@ import Footer from "../../components/common/Footer";
 
 const AboutUs = () => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const topInvestors = [aya, lisk, aya, lisk];
-  const bottomInvestors = [aya, lisk, aya, lisk];
+  const topInvestors = [aya, aya];
+  // const bottomInvestors = [aya, aya];
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -153,7 +152,7 @@ const AboutUs = () => {
                 </div>
               </Marquee>
             </div>
-            <div>
+            {/* <div>
               <Marquee
                 speed={40}
                 gradient={true}
@@ -176,7 +175,7 @@ const AboutUs = () => {
                   ))}
                 </div>
               </Marquee>
-            </div>
+            </div> */}
           </div>
         </motion.section>
       </main>

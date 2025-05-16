@@ -6,7 +6,7 @@ import { formatBalance } from "../utils/format";
 import { setMessage } from "../redux/slices/message.slices";
 import * as transactionSlices from "../redux/slices/transaction.slices";
 import * as Web3Slices from "../redux/slices/web3.slices";
-import { Pool, CryptoTransaction } from "../types/types";
+import { CryptoTransaction } from "../types/types";
 import { parseISO, isAfter, isToday } from "date-fns";
 
 const useVisibilityState = (storageKey: string, defaultValue = true) => {
@@ -69,43 +69,6 @@ const useBalanceFetcher = <T extends unknown>(
     loading,
     error,
     fetch,
-  };
-};
-
-export const useWalletBalance = () => {
-  const { isVisible, setIsVisible } = useVisibilityState(
-    "walletBalanceVisible",
-  );
-  const { data, balanceInNaira, formattedBalance } = useBalanceFetcher(
-    (state: any) => state?.transaction?.getWalletBalance,
-    transactionSlices.GetWalletBalance,
-  );
-
-  return {
-    isWalletVisible: isVisible,
-    setIsWalletVisible: setIsVisible,
-    formattedBalance,
-    balanceInNaira,
-    cards: data?.allCards || [],
-  };
-};
-
-export const useContributionBalance = () => {
-  const { isVisible, setIsVisible } = useVisibilityState(
-    "contributionBalanceVisible",
-  );
-  const { formattedBalance, loading, error } = useBalanceFetcher(
-    (state: any) => state?.transaction?.getContributionBalance,
-    transactionSlices.GetContributionBalance,
-    { balanceKey: "totalBalance" },
-  );
-
-  return {
-    isContributionVisible: isVisible,
-    setIsContributionVisible: setIsVisible,
-    formattedBalance,
-    isLoading: loading,
-    error,
   };
 };
 
@@ -203,6 +166,24 @@ export const useAllUserPools = () => {
   return { userPools: data, loading, error, fetchUserPools: fetch };
 };
 
+export const useWalletBalance = () => {
+  const { isVisible, setIsVisible } = useVisibilityState(
+    "walletBalanceVisible",
+  );
+  const { data, balanceInNaira, formattedBalance } = useBalanceFetcher(
+    (state: any) => state?.transaction?.getWalletBalance,
+    transactionSlices.GetWalletBalance,
+  );
+
+  return {
+    isWalletVisible: isVisible,
+    setIsWalletVisible: setIsVisible,
+    formattedBalance,
+    balanceInNaira,
+    cards: data?.allCards || [],
+  };
+};
+
 export const useAllUserTokens = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { allNetworkTokens, allNetworkTokensLoading, allNetworkTokensError } =
@@ -232,8 +213,6 @@ export const useAllUserTokens = () => {
     fetchUserTokens,
   };
 };
-
-export default useWalletBalance;
 
 export const useUserTransaction = () => {
   const { data } = useBalanceFetcher(

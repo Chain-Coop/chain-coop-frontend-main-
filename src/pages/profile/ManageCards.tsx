@@ -9,11 +9,11 @@ import { AppDispatch } from "../../shared/redux/store";
 import { useAppDispatch } from "../../shared/redux/reduxHooks";
 import { DashboardHeader } from "../../components/common/DashboardHeader";
 import {
-  deleteCard,
+  DeleteCard,
   GetWalletCard,
 } from "../../shared/redux/slices/transaction.slices";
 import { CardBrandLogo, cardDesigns, Chip } from "../../shared/utils/Helpers";
-import DeleteCard from "../../components/dashboard/profile/security/modal/deleteCard";
+// import DeleteCard from "../../components/dashboard/profile/security/modal/deleteCard";
 import { Button } from "@material-tailwind/react";
 import { TrashIcon } from "../../Assets/svg";
 import { Card } from "../../shared/types/types";
@@ -41,7 +41,7 @@ const ManageCards = () => {
     try {
       setIsDeleting(true);
       await dispatch(
-        deleteCard({ cardId: selectedCard.authorization_code }),
+        DeleteCard({ cardId: selectedCard.authorization_code }),
       ).unwrap();
       await dispatch(GetWalletCard());
       toast.success("Card deleted successfully");
@@ -161,13 +161,13 @@ const ManageCards = () => {
         </div>
       </section>
 
-      <DeleteCard
+      {/* <DeleteCard
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleDeleteCard}
         isDeleting={isDeleting}
         selectedCard={selectedCard}
-      />
+      /> */}
     </main>
   );
 };

@@ -198,7 +198,6 @@ const UnifiedPreviewSavings: React.FC = () => {
   };
 
   const handleConnectWallet = () => {
-    console.log("Connect wallet process initiated...");
     setShowConnectWalletModal(false);
     toast.info(
       "Wallet connection successful. Proceed with depositing funds externally.",

@@ -1,695 +1,925 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { setMessage } from "./message.slices";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import TransactionServices from "../services/transaction.services";
-
-interface ContributionHistory {
-  _id: string;
-  contribution: string;
-  currency: string;
-  user: string;
-  amount: number;
-  Date: string;
-  type: string;
-  balance: number;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-}
-
-interface ContributionDetails {
-  startDate: string;
-  nextContributionDate: string;
-  withdrawalDate: string;
-  amount: number;
-  status: string;
-  contributionPlan: string;
-  savingsCategory: string;
-  balance: number;
-  history: ContributionHistory[];
-  currency: string;
-}
-
-export const GetWalletBalance = createAsyncThunk(
-  "transaction/getWalletBalance",
-  async (_, thunkAPI) => {
-    try {
-      const data = await TransactionServices.GetWalletBalance();
-      return { transaction: data };
-    } catch (error: any) {
-      return handleAsyncError(error, thunkAPI);
-    }
-  },
-);
-
-export const GetWalletCard = createAsyncThunk(
-  "transaction/getWalletCard",
-  async (_, thunkAPI) => {
-    try {
-      const data = await TransactionServices.GetWalletCard();
-      return { transaction: data };
-    } catch (error: any) {
-      return handleAsyncError(error, thunkAPI);
-    }
-  },
-);
-
-export const GetContributionBalance = createAsyncThunk(
-  "transaction/getContributionBalance",
-  async (_, thunkAPI) => {
-    try {
-      const data = await TransactionServices.GetContributionBalance();
-      return { transaction: data };
-    } catch (error: any) {
-      return handleAsyncError(error, thunkAPI);
-    }
-  },
-);
-
-export const GetUsersTransaction = createAsyncThunk(
-  "transaction/getUsersTransaction",
-  async (_, thunkAPI) => {
-    try {
-      const data = await TransactionServices.GetUsersTransaction();
-      return { transaction: data };
-    } catch (error: any) {
-      return handleAsyncError(error, thunkAPI);
-    }
-  },
-);
-
-export const GetAllProject = createAsyncThunk(
-  "transaction/getAllProject",
-  async (_, thunkAPI) => {
-    try {
-      const data = await TransactionServices.GetAllProject();
-      return { transaction: data };
-    } catch (error: any) {
-      return handleAsyncError(error, thunkAPI);
-    }
-  },
-);
-
-export const CreateContributionPlan = createAsyncThunk(
-  "transaction/createContributionPlan",
-  async (body: any, thunkAPI) => {
-    try {
-      const data = await TransactionServices.CreateContributionPlan(body);
-      return data;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error || error);
-    }
-  },
-);
-
-const handleAsyncError = (error: any, thunkAPI: any) => {
-  let message = error.error || "An error occurred. Please try again.";
-
-  if (!error.response) {
-    message = "Network error. Please check your internet connection.";
-  }
-  thunkAPI.dispatch(setMessage(message));
-  return thunkAPI.rejectWithValue(message);
-};
-
-export const FundWallet = createAsyncThunk(
-  "transaction/fundWallet",
-  async (body: any, thunkAPI) => {
-    try {
-      const data = await TransactionServices.FundWallet(body);
-      return { transaction: data };
-    } catch (error: any) {
-      const message = error.msg;
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue(message);
-    }
-  },
-);
-
-export const VerifyFundWallet = createAsyncThunk(
-  "transaction/verifyFundWallet",
-  async (body: any, thunkAPI) => {
-    try {
-      const data = await TransactionServices.VerifyFundWallet(body);
-      return { transaction: data };
-    } catch (error: any) {
-      return handleAsyncError(error, thunkAPI);
-    }
-  },
-);
-
-export const GetAllBanks = createAsyncThunk(
-  "transaction/getAllBanks",
-  async (_, thunkAPI) => {
-    try {
-      const data = await TransactionServices.GetAllBanks();
-      return { transaction: data };
-    } catch (error: any) {
-      return handleAsyncError(error, thunkAPI);
-    }
-  },
-);
-
-export const GetAccountName = createAsyncThunk(
-  "transaction/getAccountName",
-  async (body: any, thunkAPI) => {
-    try {
-      const data = await TransactionServices.GetAccountName(body);
-      return { transaction: data };
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(
-        error?.error || "An unexpected error occurred",
-      );
-    }
-  },
-);
-
-export const GeneratePinOTP = createAsyncThunk(
-  "transaction/generatePinOTP",
-  async (_, thunkAPI) => {
-    try {
-      const data = await TransactionServices.GeneratePinOTP();
-      return { landing: data };
-    } catch (error: any) {
-      const message = error.msg;
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue(message);
-    }
-  },
-);
-
-export const CreateTransactionPin = createAsyncThunk(
-  "transaction/createTransaction",
-  async (body: { otp: number; newpin: string }, thunkAPI) => {
-    try {
-      const response = await TransactionServices.CreateTransactionPin(body);
-      return response;
-    } catch (error: any) {
-      if (error?.msg) {
-        return thunkAPI.rejectWithValue(error.msg);
-      }
-      return thunkAPI.rejectWithValue("Failed to create PIN");
-    }
-  },
-);
-
-export const WithdrawalFromWallet = createAsyncThunk(
-  "transaction/withdrawalFromWallet",
-  async (body: any, thunkAPI) => {
-    try {
-      const data = await TransactionServices.WithdrawalFromWallet(body);
-      return { landing: data };
-    } catch (error: any) {
-      const message = error;
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue(message);
-    }
-  },
-);
-
-export const WithdrawalFromContribution = createAsyncThunk(
-  "transaction/withdrawalFromContribution",
-  async (body: any, thunkAPI) => {
-    try {
-      const data = await TransactionServices.WithdrawalFromContribution(body);
-      return { landing: data };
-    } catch (error: any) {
-      const message = error;
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue(message);
-    }
-  },
-);
-
-export const GetUsersContributionHistory = createAsyncThunk(
-  "transaction/getUsersContributionHistory",
-  async (
-    {
-      page,
-      limit,
-      search = "",
-      // sort = "desc",
-      filter = "",
-    }: {
-      page: number;
-      limit: number;
-      search: string;
-      sort?: string;
-      filter?: string;
-    },
-    thunkAPI,
-  ) => {
-    try {
-      const data = await TransactionServices.GetUsersContributionHistory(
-        page,
-        limit,
-        // sort,
-        search,
-        filter,
-      );
-      return { transaction: data };
-    } catch (error: any) {
-      return handleAsyncError(error, thunkAPI);
-    }
-  },
-);
-
-export const GetContributionDetailsById = createAsyncThunk(
-  "transaction/getContributionDetailsById",
-  async ({
-    contributionId,
-    page,
-    limit,
-  }: {
-    contributionId: any;
-    page?: number;
-    limit?: number;
-  }) => {
-    const response = await TransactionServices.GetContributionDetailsById(
-      contributionId,
-      page,
-      limit,
-    );
-    return response;
-  },
-);
-
-export const PayContribution = createAsyncThunk(
-  "transaction/payContribution",
-  async (body: any, thunkAPI) => {
-    try {
-      const data = await TransactionServices.PayContribution(body);
-      return { landing: data };
-    } catch (error: any) {
-      const message = error.msg;
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue(message);
-    }
-  },
-);
-
-export const PayContributionPaystack = createAsyncThunk(
-  "transaction/payContributionPaystck",
-  async (body: any, thunkAPI) => {
-    try {
-      const data = await TransactionServices.PayContributionPaystack(body);
-      return { landing: data };
-    } catch (error: any) {
-      console.log("error", error);
-      const message = error.msg;
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue(message);
-    }
-  },
-);
-
-export const PayUnPaidContribution = createAsyncThunk(
-  "transaction/payUnPaidContribution",
-  async (body: any, thunkAPI) => {
-    try {
-      const data = await TransactionServices.PayUnPaidContribution(body);
-      return { landing: data };
-    } catch (error: any) {
-      const message = error.msg;
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue(message);
-    }
-  },
-);
-
-export const deleteCard = createAsyncThunk(
-  "transaction/deleteCard",
-  async (body: any, thunkAPI) => {
-    try {
-      const response = await TransactionServices.deleteCard(body);
-      return response.data;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  },
-);
-
-export const GetUnPaidBalance = createAsyncThunk(
-  "transaction/getUnPaidBalance",
-  async (contributionId: string, thunkAPI) => {
-    try {
-      const data = await TransactionServices.GetUnPaidBalance(contributionId);
-      return { transaction: data };
-    } catch (error: any) {
-      return handleAsyncError(error, thunkAPI);
-    }
-  },
-);
+import {
+  ApiError,
+  GetWalletBalanceResponse,
+  GetWalletCardResponse,
+  FundWalletRequest,
+  FundWalletResponse,
+  VerifyFundWalletRequest,
+  VerifyFundWalletResponse,
+  GetUsersTransactionResponse,
+  GetAllProjectResponse,
+  CreateContributionPlanRequest,
+  CreateContributionPlanResponse,
+  GetContributionBalanceResponse,
+  GetUsersContributionHistoryResponse,
+  PayContributionRequest,
+  PayContributionResponse,
+  PayContributionPaystackRequest,
+  PayContributionPaystackResponse,
+  GetContributionDetailsByIdResponse,
+  WithdrawalFromContributionRequest,
+  WithdrawalFromContributionResponse,
+  PayUnPaidContributionRequest,
+  PayUnPaidContributionResponse,
+  GetUnPaidBalanceResponse,
+  GetAllBanksResponse,
+  GetAccountNameRequest,
+  GetAccountNameResponse,
+  GeneratePinOTPResponse,
+  CreateTransactionPinRequest,
+  CreateTransactionPinResponse,
+  DeleteCardRequest,
+  DeleteCardResponse,
+  WithdrawalFromWalletRequest,
+  WithdrawalFromWalletResponse,
+  Teir2KycResponse,
+} from "../../types";
+import { setMessage } from "./message.slices";
 
 interface TransactionState {
-  getWalletBalance: any | null;
-  getWalletCard: any | null;
-  getUnPaidContributionBalance: any | null;
-  getContributionBalance: any | null;
-  getUsersTransaction: any | null;
-  getUsersContribution: any | null;
-  fundWalletStatus: "idle" | "loading" | "success" | "failed";
-  allProjects: any;
-  allBanks: any;
-  contributionPlan: any;
-  fundUserWallet: any | null;
-  veryfyFundUserWallet: any | null;
-  getUserAccountName: null;
-  currentProject: any | null;
-  createPin: any | null;
-  getPinOtp: any | null;
-  removeCard: null;
-  fundContribution: any | null;
-  fundContributionPaystack: any | null;
-  fundUnPaidContribution: any | null;
-  requestWithdrawalWallet: any | null;
-  requestWithdrawalContribution: any | null;
-  contributionDetails: ContributionDetails | null;
-  loading: boolean;
-  error: string | null | Record<string, unknown>;
+  walletBalance: GetWalletBalanceResponse | null;
+  walletCard: GetWalletCardResponse | null;
+  contributionBalance: GetContributionBalanceResponse | null;
+  usersTransaction: GetUsersTransactionResponse | null;
+  allProjects: GetAllProjectResponse | null;
+  contributionPlan: CreateContributionPlanResponse | null;
+  fundWallet: FundWalletResponse | null;
+  verifyFundWallet: VerifyFundWalletResponse | null;
+  allBanks: GetAllBanksResponse | null;
+  accountName: GetAccountNameResponse | null;
+  pinOtp: GeneratePinOTPResponse | null;
+  transactionPin: CreateTransactionPinResponse | null;
+  withdrawalWallet: WithdrawalFromWalletResponse | null;
+  withdrawalContribution: WithdrawalFromContributionResponse | null;
+  usersContributionHistory: GetUsersContributionHistoryResponse | null;
+  contributionDetails: GetContributionDetailsByIdResponse | null;
+  payContribution: PayContributionResponse | null;
+  payContributionPaystack: PayContributionPaystackResponse | null;
+  payUnPaidContribution: PayUnPaidContributionResponse | null;
+  unpaidBalance: GetUnPaidBalanceResponse | null;
+  deleteCard: DeleteCardResponse | null;
+  kycTier2: Teir2KycResponse | null;
+  kycTier2Success: boolean;
+  isLoading: boolean;
+  error: string | null;
+  fundWalletSuccess: boolean;
+  verifyFundWalletSuccess: boolean;
+  createContributionPlanSuccess: boolean;
+  payContributionSuccess: boolean;
+  payContributionPaystackSuccess: boolean;
+  payUnPaidContributionSuccess: boolean;
+  withdrawalWalletSuccess: boolean;
+  withdrawalContributionSuccess: boolean;
+  createTransactionPinSuccess: boolean;
+  deleteCardSuccess: boolean;
 }
 
 const initialState: TransactionState = {
-  getWalletBalance: null,
-  getWalletCard: null,
-  getUnPaidContributionBalance: null,
-  getContributionBalance: null,
-  getUsersTransaction: null,
-  getUsersContribution: null,
-  fundWalletStatus: "idle",
+  walletBalance: null,
+  walletCard: null,
+  contributionBalance: null,
+  usersTransaction: null,
   allProjects: null,
-  allBanks: null,
   contributionPlan: null,
-  fundUserWallet: null,
-  getUserAccountName: null,
-  veryfyFundUserWallet: null,
-  currentProject: null,
-  createPin: null,
-  getPinOtp: null,
-  fundContribution: null,
-  fundContributionPaystack: null,
-  fundUnPaidContribution: null,
-  requestWithdrawalWallet: null,
-  requestWithdrawalContribution: null,
-  removeCard: null,
+  fundWallet: null,
+  verifyFundWallet: null,
+  allBanks: null,
+  accountName: null,
+  pinOtp: null,
+  transactionPin: null,
+  withdrawalWallet: null,
+  withdrawalContribution: null,
+  usersContributionHistory: null,
   contributionDetails: null,
-  loading: false,
+  payContribution: null,
+  payContributionPaystack: null,
+  payUnPaidContribution: null,
+  unpaidBalance: null,
+  deleteCard: null,
+  isLoading: false,
   error: null,
+  fundWalletSuccess: false,
+  verifyFundWalletSuccess: false,
+  createContributionPlanSuccess: false,
+  payContributionSuccess: false,
+  payContributionPaystackSuccess: false,
+  payUnPaidContributionSuccess: false,
+  withdrawalWalletSuccess: false,
+  withdrawalContributionSuccess: false,
+  createTransactionPinSuccess: false,
+  deleteCardSuccess: false,
+  kycTier2: null,
+  kycTier2Success: false,
 };
 
-export const transactionSlice = createSlice({
+export const GetWalletBalance = createAsyncThunk<
+  GetWalletBalanceResponse,
+  void,
+  { rejectValue: string }
+>("transaction/getWalletBalance", async (_, { dispatch, rejectWithValue }) => {
+  try {
+    const data = await TransactionServices.wallet.GetWalletBalance();
+    return data;
+  } catch (error: unknown) {
+    const apiError = error as ApiError;
+    const message = apiError.msg || "Failed to fetch wallet balance";
+    dispatch(setMessage(message));
+    return rejectWithValue(message);
+  }
+});
+
+export const GetWalletCard = createAsyncThunk<
+  GetWalletCardResponse,
+  void,
+  { rejectValue: string }
+>("transaction/getWalletCard", async (_, { dispatch, rejectWithValue }) => {
+  try {
+    const data = await TransactionServices.wallet.GetWalletCard();
+    return data;
+  } catch (error: unknown) {
+    const apiError = error as ApiError;
+    const message = apiError.msg || "Failed to fetch wallet cards";
+    dispatch(setMessage(message));
+    return rejectWithValue(message);
+  }
+});
+
+export const GetContributionBalance = createAsyncThunk<
+  GetContributionBalanceResponse,
+  void,
+  { rejectValue: string }
+>(
+  "transaction/getContributionBalance",
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      const data =
+        await TransactionServices.contribution.GetContributionBalance();
+      return data;
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      const message = apiError.msg || "Failed to fetch contribution balance";
+      dispatch(setMessage(message));
+      return rejectWithValue(message);
+    }
+  },
+);
+
+export const GetUsersTransaction = createAsyncThunk<
+  GetUsersTransactionResponse,
+  void,
+  { rejectValue: string }
+>(
+  "transaction/getUsersTransaction",
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      const data = await TransactionServices.wallet.GetUsersTransaction();
+      return data;
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      const message = apiError.msg || "Failed to fetch transaction history";
+      dispatch(setMessage(message));
+      return rejectWithValue(message);
+    }
+  },
+);
+
+export const GetAllProject = createAsyncThunk<
+  GetAllProjectResponse,
+  void,
+  { rejectValue: string }
+>("transaction/getAllProject", async (_, { dispatch, rejectWithValue }) => {
+  try {
+    const data = await TransactionServices.project.GetAllProject();
+    return data;
+  } catch (error: unknown) {
+    const apiError = error as ApiError;
+    const message = apiError.msg || "Failed to fetch projects";
+    dispatch(setMessage(message));
+    return rejectWithValue(message);
+  }
+});
+
+export const CreateContributionPlan = createAsyncThunk<
+  CreateContributionPlanResponse,
+  CreateContributionPlanRequest,
+  { rejectValue: string }
+>(
+  "transaction/createContributionPlan",
+  async (body, { dispatch, rejectWithValue }) => {
+    try {
+      const data =
+        await TransactionServices.contribution.CreateContributionPlan(body);
+      return data;
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      const message = apiError.msg || "Failed to create contribution plan";
+      dispatch(setMessage(message));
+      return rejectWithValue(message);
+    }
+  },
+);
+
+export const FundWallet = createAsyncThunk<
+  FundWalletResponse,
+  FundWalletRequest,
+  { rejectValue: string }
+>("transaction/fundWallet", async (body, { dispatch, rejectWithValue }) => {
+  try {
+    const data = await TransactionServices.wallet.FundWallet(body);
+    return data;
+  } catch (error: unknown) {
+    const apiError = error as ApiError;
+    const message = apiError.msg || "Failed to fund wallet";
+    dispatch(setMessage(message));
+    return rejectWithValue(message);
+  }
+});
+
+export const VerifyFundWallet = createAsyncThunk<
+  VerifyFundWalletResponse,
+  VerifyFundWalletRequest,
+  { rejectValue: string }
+>(
+  "transaction/verifyFundWallet",
+  async (body, { dispatch, rejectWithValue }) => {
+    try {
+      const data = await TransactionServices.wallet.VerifyFundWallet(body);
+      return data;
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      const message = apiError.msg || "Failed to verify wallet funding";
+      dispatch(setMessage(message));
+      return rejectWithValue(message);
+    }
+  },
+);
+
+export const GetAllBanks = createAsyncThunk<
+  GetAllBanksResponse,
+  void,
+  { rejectValue: string }
+>("transaction/getAllBanks", async (_, { dispatch, rejectWithValue }) => {
+  try {
+    const data = await TransactionServices.wallet.GetAllBanks();
+    return data;
+  } catch (error: unknown) {
+    const apiError = error as ApiError;
+    const message = apiError.msg || "Failed to fetch banks";
+    dispatch(setMessage(message));
+    return rejectWithValue(message);
+  }
+});
+
+export const GetAccountName = createAsyncThunk<
+  GetAccountNameResponse,
+  GetAccountNameRequest,
+  { rejectValue: string }
+>("transaction/getAccountName", async (body, { dispatch, rejectWithValue }) => {
+  try {
+    const data = await TransactionServices.wallet.GetAccountName(body);
+    return data;
+  } catch (error: unknown) {
+    const apiError = error as ApiError;
+    const message = apiError.msg || "Failed to fetch account name";
+    dispatch(setMessage(message));
+    return rejectWithValue(message);
+  }
+});
+
+export const GeneratePinOTP = createAsyncThunk<
+  GeneratePinOTPResponse,
+  void,
+  { rejectValue: string }
+>("transaction/generatePinOTP", async (_, { dispatch, rejectWithValue }) => {
+  try {
+    const data = await TransactionServices.wallet.GeneratePinOTP();
+    return data;
+  } catch (error: unknown) {
+    const apiError = error as ApiError;
+    const message = apiError.msg || "Failed to generate PIN OTP";
+    dispatch(setMessage(message));
+    return rejectWithValue(message);
+  }
+});
+
+export const CreateTransactionPin = createAsyncThunk<
+  CreateTransactionPinResponse,
+  CreateTransactionPinRequest,
+  { rejectValue: string }
+>(
+  "transaction/createTransactionPin",
+  async (body, { dispatch, rejectWithValue }) => {
+    try {
+      const data = await TransactionServices.wallet.CreateTransactionPin(body);
+      return data;
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      const message = apiError.msg || "Failed to create transaction PIN";
+      dispatch(setMessage(message));
+      return rejectWithValue(message);
+    }
+  },
+);
+
+export const WithdrawalFromWallet = createAsyncThunk<
+  WithdrawalFromWalletResponse,
+  WithdrawalFromWalletRequest,
+  { rejectValue: string }
+>(
+  "transaction/withdrawalFromWallet",
+  async (body, { dispatch, rejectWithValue }) => {
+    try {
+      const data = await TransactionServices.wallet.WithdrawalFromWallet(body);
+      return data;
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      const message = apiError.msg || "Failed to withdraw from wallet";
+      dispatch(setMessage(message));
+      return rejectWithValue(message);
+    }
+  },
+);
+
+export const WithdrawalFromContribution = createAsyncThunk<
+  WithdrawalFromContributionResponse,
+  WithdrawalFromContributionRequest,
+  { rejectValue: string }
+>(
+  "transaction/withdrawalFromContribution",
+  async (body, { dispatch, rejectWithValue }) => {
+    try {
+      const data =
+        await TransactionServices.contribution.WithdrawalFromContribution(body);
+      return data;
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      const message = apiError.msg || "Failed to withdraw from contribution";
+      dispatch(setMessage(message));
+      return rejectWithValue(message);
+    }
+  },
+);
+
+export const GetUsersContributionHistory = createAsyncThunk<
+  GetUsersContributionHistoryResponse,
+  { page: number; limit: number; search?: string; filter?: string },
+  { rejectValue: string }
+>(
+  "transaction/getUsersContributionHistory",
+  async (
+    { page, limit, search = "", filter = "" },
+    { dispatch, rejectWithValue },
+  ) => {
+    try {
+      const data =
+        await TransactionServices.contribution.GetUsersContributionHistory(
+          page,
+          limit,
+          search,
+          filter,
+        );
+      return data;
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      const message = apiError.msg || "Failed to fetch contribution history";
+      dispatch(setMessage(message));
+      return rejectWithValue(message);
+    }
+  },
+);
+
+export const GetContributionDetailsById = createAsyncThunk<
+  GetContributionDetailsByIdResponse,
+  { contributionId: string; page?: number; limit?: number },
+  { rejectValue: string }
+>(
+  "transaction/getContributionDetailsById",
+  async ({ contributionId, page, limit }, { dispatch, rejectWithValue }) => {
+    try {
+      const data =
+        await TransactionServices.contribution.GetContributionDetailsById(
+          contributionId,
+          page,
+          limit,
+        );
+      return data;
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      const message = apiError.msg || "Failed to fetch contribution details";
+      dispatch(setMessage(message));
+      return rejectWithValue(message);
+    }
+  },
+);
+
+export const PayContribution = createAsyncThunk<
+  PayContributionResponse,
+  PayContributionRequest,
+  { rejectValue: string }
+>(
+  "transaction/payContribution",
+  async (body, { dispatch, rejectWithValue }) => {
+    try {
+      const data = await TransactionServices.contribution.PayContribution(body);
+      return data;
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      const message = apiError.msg || "Failed to pay contribution";
+      dispatch(setMessage(message));
+      return rejectWithValue(message);
+    }
+  },
+);
+
+export const PayContributionPaystack = createAsyncThunk<
+  PayContributionPaystackResponse,
+  PayContributionPaystackRequest,
+  { rejectValue: string }
+>(
+  "transaction/payContributionPaystack",
+  async (body, { dispatch, rejectWithValue }) => {
+    try {
+      const data =
+        await TransactionServices.contribution.PayContributionPaystack(body);
+      return data;
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      const message = apiError.msg || "Failed to pay contribution via Paystack";
+      dispatch(setMessage(message));
+      return rejectWithValue(message);
+    }
+  },
+);
+
+export const PayUnPaidContribution = createAsyncThunk<
+  PayUnPaidContributionResponse,
+  PayUnPaidContributionRequest,
+  { rejectValue: string }
+>(
+  "transaction/payUnPaidContribution",
+  async (body, { dispatch, rejectWithValue }) => {
+    try {
+      const data =
+        await TransactionServices.contribution.PayUnPaidContribution(body);
+      return data;
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      const message = apiError.msg || "Failed to pay unpaid contribution";
+      dispatch(setMessage(message));
+      return rejectWithValue(message);
+    }
+  },
+);
+
+export const DeleteCard = createAsyncThunk<
+  DeleteCardResponse,
+  DeleteCardRequest,
+  { rejectValue: string }
+>("transaction/deleteCard", async (body, { dispatch, rejectWithValue }) => {
+  try {
+    const data = await TransactionServices.wallet.DeleteCard(body);
+    return data;
+  } catch (error: unknown) {
+    const apiError = error as ApiError;
+    const message = apiError.msg || "Failed to delete card";
+    dispatch(setMessage(message));
+    return rejectWithValue(message);
+  }
+});
+
+export const GetUnPaidBalance = createAsyncThunk<
+  GetUnPaidBalanceResponse,
+  string,
+  { rejectValue: string }
+>(
+  "transaction/getUnPaidBalance",
+  async (contributionId, { dispatch, rejectWithValue }) => {
+    try {
+      const data =
+        await TransactionServices.contribution.GetUnPaidBalance(contributionId);
+      return data;
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      const message = apiError.msg || "Failed to fetch unpaid balance";
+      dispatch(setMessage(message));
+      return rejectWithValue(message);
+    }
+  },
+);
+
+export const SubmitKycTier2 = createAsyncThunk<
+  Teir2KycResponse,
+  string,
+  { rejectValue: string }
+>(
+  "transaction/submitKycTier2",
+  async (userId, { dispatch, rejectWithValue }) => {
+    try {
+      const data = await TransactionServices.kyc.SubmitKycTier2(userId);
+      return data;
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      const message = apiError.msg || "Failed to submit KYC Tier 2";
+      dispatch(setMessage(message));
+      return rejectWithValue(message);
+    }
+  },
+);
+
+const transactionSlice = createSlice({
   name: "transaction",
   initialState,
   reducers: {
     resetFundWalletStatus: (state) => {
-      state.fundWalletStatus = "idle";
+      state.fundWalletSuccess = false;
+      state.fundWallet = null;
     },
     clearContributionDetails: (state) => {
       state.contributionDetails = null;
     },
+    clearTransactionError: (state) => {
+      state.error = null;
+    },
+    clearTransactionState(state) {
+      state.payContributionSuccess = false;
+      state.createContributionPlanSuccess = false;
+      state.payContributionPaystackSuccess = false;
+      state.error = null;
+      state.contributionPlan = null;
+      state.payContributionPaystack = null;
+    },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(
-        GetWalletBalance.fulfilled,
-        (state, action: PayloadAction<{ transaction: any }>) => {
-          state.getWalletBalance = action.payload.transaction;
-        },
-      )
-      .addCase(GetWalletBalance.rejected, (state) => {
-        state.getWalletBalance = null;
-      })
+    // GetWalletBalance
+    builder.addCase(GetWalletBalance.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(GetWalletBalance.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.walletBalance = action.payload;
+    });
+    builder.addCase(GetWalletBalance.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to fetch wallet balance";
+      state.walletBalance = null;
+    });
 
-      .addCase(
-        GetWalletCard.fulfilled,
-        (state, action: PayloadAction<{ transaction: any }>) => {
-          state.getWalletCard = action.payload.transaction;
-        },
-      )
-      .addCase(GetWalletCard.rejected, (state) => {
-        state.getWalletCard = null;
-      })
+    // GetWalletCard
+    builder.addCase(GetWalletCard.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(GetWalletCard.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.walletCard = action.payload;
+    });
+    builder.addCase(GetWalletCard.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to fetch wallet cards";
+      state.walletCard = null;
+    });
 
-      .addCase(GetContributionBalance.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(
-        GetContributionBalance.fulfilled,
-        (state, action: PayloadAction<{ transaction: any }>) => {
-          state.loading = false;
-          state.getContributionBalance = action.payload.transaction;
-        },
-      )
-      .addCase(GetContributionBalance.rejected, (state, action) => {
-        state.loading = false;
-        state.getContributionBalance = null;
-        state.error = action.payload as string;
-      })
+    // GetContributionBalance
+    builder.addCase(GetContributionBalance.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(GetContributionBalance.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.contributionBalance = action.payload;
+    });
+    builder.addCase(GetContributionBalance.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to fetch contribution balance";
+      state.contributionBalance = null;
+    });
 
-      .addCase(
-        GetUsersTransaction.fulfilled,
-        (state, action: PayloadAction<{ transaction: any }>) => {
-          state.getUsersTransaction = action.payload.transaction;
-        },
-      )
-      .addCase(GetUsersTransaction.rejected, (state) => {
-        state.getUsersTransaction = null;
-      })
+    // GetUsersTransaction
+    builder.addCase(GetUsersTransaction.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(GetUsersTransaction.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.usersTransaction = action.payload;
+    });
+    builder.addCase(GetUsersTransaction.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to fetch transaction history";
+      state.usersTransaction = null;
+    });
 
-      .addCase(GetAllProject.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(
-        GetAllProject.fulfilled,
-        (state, action: PayloadAction<{ transaction: any }>) => {
-          state.loading = false;
-          state.allProjects = action.payload.transaction;
-        },
-      )
-      .addCase(GetAllProject.rejected, (state, action) => {
-        state.loading = false;
-        state.allProjects = null;
-        state.error = action.payload as string;
-      })
+    // GetAllProject
+    builder.addCase(GetAllProject.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(GetAllProject.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.allProjects = action.payload;
+    });
+    builder.addCase(GetAllProject.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to fetch projects";
+      state.allProjects = null;
+    });
 
-      .addCase(
-        CreateContributionPlan.fulfilled,
-        (state, action: PayloadAction<any>) => {
-          state.contributionPlan = action.payload.contribution;
-          state.error = null;
-        },
-      )
+    // CreateContributionPlan
+    builder.addCase(CreateContributionPlan.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+      state.createContributionPlanSuccess = false;
+    });
+    builder.addCase(CreateContributionPlan.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.contributionPlan = action.payload;
+      state.createContributionPlanSuccess = true;
+    });
+    builder.addCase(CreateContributionPlan.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to create contribution plan";
+      state.contributionPlan = null;
+      state.createContributionPlanSuccess = false;
+    });
 
-      .addCase(CreateContributionPlan.rejected, (state, action) => {
-        state.contributionPlan = null;
-        state.error =
-          (action as string | Record<string, unknown>) ||
-          "An unknown error occurred";
-      })
+    // FundWallet
+    builder.addCase(FundWallet.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+      state.fundWalletSuccess = false;
+    });
+    builder.addCase(FundWallet.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.fundWallet = action.payload;
+      state.fundWalletSuccess = true;
+    });
+    builder.addCase(FundWallet.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to fund wallet";
+      state.fundWallet = null;
+      state.fundWalletSuccess = false;
+    });
 
-      .addCase(
-        VerifyFundWallet.fulfilled,
-        (state, action: PayloadAction<{ transaction: any }>) => {
-          state.veryfyFundUserWallet = action.payload.transaction;
-        },
-      )
-      .addCase(VerifyFundWallet.rejected, (state) => {
-        state.veryfyFundUserWallet = null;
-      })
+    // VerifyFundWallet
+    builder.addCase(VerifyFundWallet.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+      state.verifyFundWalletSuccess = false;
+    });
+    builder.addCase(VerifyFundWallet.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.verifyFundWallet = action.payload;
+      state.verifyFundWalletSuccess = true;
+    });
+    builder.addCase(VerifyFundWallet.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to verify wallet funding";
+      state.verifyFundWallet = null;
+      state.verifyFundWalletSuccess = false;
+    });
 
-      .addCase(GetAllBanks.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(
-        GetAllBanks.fulfilled,
-        (state, action: PayloadAction<{ transaction: any }>) => {
-          state.allBanks = action.payload.transaction;
-        },
-      )
-      .addCase(GetAllBanks.rejected, (state, action) => {
-        state.loading = false;
-        state.allBanks = null;
-        state.error = action.payload as string;
-      })
+    // GetAllBanks
+    builder.addCase(GetAllBanks.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(GetAllBanks.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.allBanks = action.payload;
+    });
+    builder.addCase(GetAllBanks.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to fetch banks";
+      state.allBanks = null;
+    });
 
-      .addCase(GetAccountName.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(
-        GetAccountName.fulfilled,
-        (state, action: PayloadAction<any>) => {
-          state.getUserAccountName = action.payload;
-        },
-      )
-      .addCase(GetAccountName.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
+    // GetAccountName
+    builder.addCase(GetAccountName.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(GetAccountName.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.accountName = action.payload;
+    });
+    builder.addCase(GetAccountName.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to fetch account name";
+      state.accountName = null;
+    });
 
-      .addCase(CreateTransactionPin.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(CreateTransactionPin.fulfilled, (state, action) => {
-        state.loading = false;
-        state.error = null;
-        state.createPin = action.payload;
-      })
-      .addCase(CreateTransactionPin.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-        state.createPin = null;
-      })
-
-      .addCase(GeneratePinOTP.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      });
+    // GeneratePinOTP
+    builder.addCase(GeneratePinOTP.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
     builder.addCase(GeneratePinOTP.fulfilled, (state, action) => {
-      state.getPinOtp = action.payload.landing;
+      state.isLoading = false;
+      state.pinOtp = action.payload;
     });
-    builder
-      .addCase(GeneratePinOTP.rejected, (state) => {
-        state.getPinOtp = null;
-      })
+    builder.addCase(GeneratePinOTP.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to generate PIN OTP";
+      state.pinOtp = null;
+    });
 
-      .addCase(WithdrawalFromWallet.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      });
+    // CreateTransactionPin
+    builder.addCase(CreateTransactionPin.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+      state.createTransactionPinSuccess = false;
+    });
+    builder.addCase(CreateTransactionPin.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.transactionPin = action.payload;
+      state.createTransactionPinSuccess = true;
+    });
+    builder.addCase(CreateTransactionPin.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to create transaction PIN";
+      state.transactionPin = null;
+      state.createTransactionPinSuccess = false;
+    });
+
+    // WithdrawalFromWallet
+    builder.addCase(WithdrawalFromWallet.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+      state.withdrawalWalletSuccess = false;
+    });
     builder.addCase(WithdrawalFromWallet.fulfilled, (state, action) => {
-      state.loading = false;
-      state.requestWithdrawalWallet = action.payload.landing;
+      state.isLoading = false;
+      state.withdrawalWallet = action.payload;
+      state.withdrawalWalletSuccess = true;
     });
-    builder
-      .addCase(WithdrawalFromWallet.rejected, (state) => {
-        state.loading = false;
-        state.requestWithdrawalWallet = null;
-      })
+    builder.addCase(WithdrawalFromWallet.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to withdraw from wallet";
+      state.withdrawalWallet = null;
+      state.withdrawalWalletSuccess = false;
+    });
 
-      .addCase(WithdrawalFromContribution.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      });
+    // WithdrawalFromContribution
+    builder.addCase(WithdrawalFromContribution.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+      state.withdrawalContributionSuccess = false;
+    });
+    // In WithdrawalFromContribution.fulfilled
     builder.addCase(WithdrawalFromContribution.fulfilled, (state, action) => {
-      state.loading = false;
-      state.requestWithdrawalContribution = action.payload.landing;
+      state.isLoading = false;
+      state.withdrawalContribution = action.payload;
+      state.withdrawalContributionSuccess = true;
     });
-    builder
-      .addCase(WithdrawalFromContribution.rejected, (state) => {
-        state.loading = false;
-        state.requestWithdrawalContribution = null;
-      })
+    builder.addCase(WithdrawalFromContribution.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to withdraw from contribution";
+      state.withdrawalContribution = null;
+      state.withdrawalContributionSuccess = false;
+    });
 
-      .addCase(GetUsersContributionHistory.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(
-        GetUsersContributionHistory.fulfilled,
-        (state, action: PayloadAction<{ transaction: any }>) => {
-          state.loading = false;
-          state.getUsersContribution = action.payload.transaction;
-        },
-      )
-      .addCase(GetUsersContributionHistory.rejected, (state, action) => {
-        state.loading = false;
-        state.getUsersContribution = null;
-        state.error = action.payload as string;
-      })
+    // GetUsersContributionHistory
+    builder.addCase(GetUsersContributionHistory.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(GetUsersContributionHistory.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.usersContributionHistory = action.payload;
+    });
+    builder.addCase(GetUsersContributionHistory.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to fetch contribution history";
+      state.usersContributionHistory = null;
+    });
 
-      .addCase(GetContributionDetailsById.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(GetContributionDetailsById.fulfilled, (state, action) => {
-        state.loading = false;
-        state.error = null;
-        state.contributionDetails = {
-          currency: action.payload.currency,
-          startDate: action.payload.startDate,
-          nextContributionDate: action.payload.nextContributionDate,
-          withdrawalDate: action.payload.withdrawalDate,
-          amount: action.payload.history[0]?.amount || 0,
-          status: action.payload.history[0]?.status || "",
-          contributionPlan: action.payload.contributionPlan || "",
-          savingsCategory: action.payload.savingsCategory || "",
-          balance: action.payload.balance || 0,
-          history: action.payload.history || [],
-        };
-      })
+    // GetContributionDetailsById
+    builder.addCase(GetContributionDetailsById.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(GetContributionDetailsById.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.contributionDetails = action.payload;
+    });
+    builder.addCase(GetContributionDetailsById.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to fetch contribution details";
+      state.contributionDetails = null;
+    });
 
-      .addCase(GetContributionDetailsById.rejected, (state, action) => {
-        state.loading = false;
-        state.contributionDetails = null;
-      })
+    // PayContribution
+    builder.addCase(PayContribution.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+      state.payContributionSuccess = false;
+    });
+    builder.addCase(PayContribution.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.payContribution = action.payload;
+      state.payContributionSuccess = true;
+    });
+    builder.addCase(PayContribution.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to pay contribution";
+      state.payContribution = null;
+      state.payContributionSuccess = false;
+    });
 
-      .addCase(PayContribution.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(PayContribution.fulfilled, (state, action) => {
-        state.fundContribution = action.payload.landing;
-      })
-
-      .addCase(PayContribution.rejected, (state) => {
-        state.fundContribution = null;
-      })
-
-      .addCase(PayContributionPaystack.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      });
+    // PayContributionPaystack
+    builder.addCase(PayContributionPaystack.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+      state.payContributionPaystackSuccess = false;
+    });
     builder.addCase(PayContributionPaystack.fulfilled, (state, action) => {
-      state.fundContributionPaystack = action.payload.landing;
+      state.isLoading = false;
+      state.payContributionPaystack = action.payload;
+      state.payContributionPaystackSuccess = true;
+    });
+    builder.addCase(PayContributionPaystack.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to pay contribution via Paystack";
+      state.payContributionPaystack = null;
+      state.payContributionPaystackSuccess = false;
+    });
+
+    // PayUnPaidContribution
+    builder.addCase(PayUnPaidContribution.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+      state.payUnPaidContributionSuccess = false;
+    });
+    builder.addCase(PayUnPaidContribution.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.payUnPaidContribution = action.payload;
+      state.payUnPaidContributionSuccess = true;
+    });
+    builder.addCase(PayUnPaidContribution.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to pay unpaid contribution";
+      state.payUnPaidContribution = null;
+      state.payUnPaidContributionSuccess = false;
+    });
+
+    // DeleteCard
+    builder.addCase(DeleteCard.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+      state.deleteCardSuccess = false;
+    });
+    builder.addCase(DeleteCard.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.deleteCard = action.payload;
+      state.deleteCardSuccess = true;
+    });
+    builder.addCase(DeleteCard.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to delete card";
+      state.deleteCard = null;
+      state.deleteCardSuccess = false;
+    });
+
+    // GetUnPaidBalance
+    builder.addCase(GetUnPaidBalance.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(GetUnPaidBalance.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.unpaidBalance = action.payload;
     });
     builder
-      .addCase(PayContributionPaystack.rejected, (state) => {
-        state.fundContributionPaystack = null;
+      .addCase(GetUnPaidBalance.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || "Failed to fetch unpaid balance";
+        state.unpaidBalance = null;
       })
 
-      .addCase(PayUnPaidContribution.pending, (state) => {
-        state.loading = true;
+      .addCase(SubmitKycTier2.pending, (state) => {
+        state.isLoading = true;
         state.error = null;
+        state.kycTier2Success = false;
       })
-      .addCase(PayUnPaidContribution.fulfilled, (state, action) => {
-        state.fundUnPaidContribution = action.payload.landing;
+      .addCase(SubmitKycTier2.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.kycTier2 = action.payload;
+        state.kycTier2Success = true;
       })
-      .addCase(PayUnPaidContribution.rejected, (state) => {
-        state.fundUnPaidContribution = null;
-        state.loading = false;
-      })
-
-      .addCase(deleteCard.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(deleteCard.fulfilled, (state, action: PayloadAction<any>) => {
-        state.loading = false;
-        state.removeCard = action.payload;
-      })
-
-      .addCase(deleteCard.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || "Failed to delete card";
-      })
-
-      .addCase(
-        GetUnPaidBalance.fulfilled,
-        (state, action: PayloadAction<{ transaction: any }>) => {
-          state.getUnPaidContributionBalance = action.payload.transaction;
-        },
-      )
-      .addCase(GetUnPaidBalance.rejected, (state) => {
-        state.getUnPaidContributionBalance = null;
+      .addCase(SubmitKycTier2.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || "Failed to submit KYC Tier 2";
+        state.kycTier2 = null;
+        state.kycTier2Success = false;
       });
   },
 });
 
+export const { clearTransactionError, clearTransactionState } =
+  transactionSlice.actions;
 export const { resetFundWalletStatus, clearContributionDetails } =
   transactionSlice.actions;
 

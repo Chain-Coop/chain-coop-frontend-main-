@@ -1,29 +1,31 @@
 import { useState, useEffect } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate, useLocation } from "react-router";
-import { useDispatch } from "react-redux";
 import { Alert } from "@mui/material";
 import { Button, Typography } from "@material-tailwind/react";
-import { AppDispatch } from "../../../shared/redux/store";
-import useUserProfile from "../../../shared/Hooks/useUserProfile";
-import {
-  WithdrawalFromContribution,
-  GeneratePinOTP,
-} from "../../../shared/redux/slices/transaction.slices";
-import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import { formatBalance } from "../../../shared/utils/format";
+import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import Success from "../../../components/common/Success";
 import { parseISO, isAfter, isToday } from "date-fns";
 import PinModal from "../../../components/common/PinModal";
 import ChangePin from "../../../components/dashboard/profile/security/modal/ChangePin";
 import OtpPin from "../../../components/dashboard/profile/security/modal/OtpPin";
 import GeneratePin from "../../../components/dashboard/profile/security/modal/GeneratePin";
+import {
+  WithdrawalFromContribution,
+  GeneratePinOTP,
+  GetWalletBalance,
+} from "../../../shared/redux/slices/transaction.slices";
+import { AppDispatch } from "../../../shared/redux/store";
+import { useDispatch } from "react-redux";
+import { useUserProfile } from "../../../shared/Hooks/useUserProfile";
+import { GetUserProfile } from "../../../shared/redux/slices/landing.slices";
 
 const ConfirmAmount = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
-  const { profileDetails, fetchUserProfile } = useUserProfile();
+  const { profileDetails } = useUserProfile();
 
   const [pinStep, setPinStep] = useState(0);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -106,7 +108,7 @@ const ConfirmAmount = () => {
 
   const handleCloseSuccessModal = () => {
     setIsSuccessModalOpen(false);
-    navigate("/dashboard");
+    navigate("/contribution");
   };
 
   const handleGeneratePinClose = () => {
@@ -144,7 +146,7 @@ const ConfirmAmount = () => {
 
   const handleChangePinSuccess = async () => {
     try {
-      await fetchUserProfile();
+      await dispatch(GetUserProfile()).unwrap();
       setPinStep(4);
     } catch (error: any) {
       setError("Failed to refresh profile. Please try again.");
@@ -168,14 +170,20 @@ const ConfirmAmount = () => {
     setError("");
 
     try {
+      const pinNumber = parseInt(submittedPin, 10);
+      if (isNaN(pinNumber)) {
+        throw new Error("Invalid PIN. Please enter a valid number.");
+      }
+
       const body = {
         amount: totalDeduction,
         contributionId: contributionId,
-        pin: submittedPin,
+        pin: pinNumber,
       };
 
       const result = await dispatch(WithdrawalFromContribution(body)).unwrap();
-      if (result?.landing?.statusCode === 200) {
+      if (result?.statusCode === 200) {
+        dispatch(GetWalletBalance());
         setPinStep(0);
         setIsSuccessModalOpen(true);
         setPin("");
@@ -191,15 +199,10 @@ const ConfirmAmount = () => {
   };
 
   const handleConfirmWithdrawal = async () => {
-    try {
-      await fetchUserProfile();
-      if (profileDetails?.isPinCreated) {
-        setPinStep(4);
-      } else {
-        setPinStep(1);
-      }
-    } catch (error: any) {
-      setError("Failed to fetch profile. Please try again.");
+    if (profileDetails?.isPinCreated) {
+      setPinStep(4);
+    } else {
+      setPinStep(1);
     }
   };
 

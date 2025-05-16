@@ -6,13 +6,24 @@ import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import { Plan } from "../../../../data/Data";
 import { getSavingsTypeTitle } from "../../../../shared/utils/Helpers";
 
-const SavingsPlan = () => {
+interface SavingsPlanState {
+  purpose: string;
+  currency: string;
+  savingsType: string;
+  contributionType: string;
+}
+
+interface PlanOption {
+  text: string;
+}
+
+const SavingsPlan: React.FC = () => {
   const [contributionPlan, setContributionPlan] = useState("");
   const [hoveredPlan, setHoveredPlan] = useState<number | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const { purpose, currency, savingsType, contributionType } =
-    location.state || {};
+    location.state as SavingsPlanState;
   const [error, setError] = useState("");
 
   const handleNext = () => {
@@ -50,7 +61,7 @@ const SavingsPlan = () => {
         </header>
 
         <div className="mt-8 space-y-4">
-          {Plan.map((plan: any, index: number) => (
+          {Plan.map((plan: PlanOption, index: number) => (
             <div
               key={index}
               className={`flex w-full items-center justify-between rounded-lg px-4 py-[9px] 

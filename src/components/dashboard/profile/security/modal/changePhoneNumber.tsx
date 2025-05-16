@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import useUserProfile from "../../../../../shared/Hooks/useUserProfile";
 import {
   Button,
   Dialog,
@@ -13,6 +12,8 @@ import FormInput from "../../../../common/FormInput";
 import { IoMdClose } from "react-icons/io";
 import { RESEND_LOGIN_OTP } from "../../../../../shared/redux/services/landing.services";
 import { toast } from "react-toastify";
+import { RootState } from "../../../../../shared/redux/rootReducer";
+import { useAppSelector } from "../../../../../shared/redux/reduxHooks";
 
 interface ChangePhoneNumberProps {
   email: string;
@@ -29,15 +30,15 @@ const ChangePhoneNumber = ({
   isOpen,
   onClose,
 }: ChangePhoneNumberProps) => {
-  const { profileDetails } = useUserProfile();
+  const { getProfile } = useAppSelector((state: RootState) => state.landing);
   const [error, setError] = useState("");
   const [isOtpSending, setIsOtpSending] = useState(false);
 
   useEffect(() => {
-    if (profileDetails?.email) {
-      setEmail(profileDetails.email);
+    if (getProfile?.email) {
+      setEmail(getProfile.email);
     }
-  }, [profileDetails?.email, setEmail]);
+  }, [getProfile?.email, setEmail]);
 
   const GetOtp = async () => {
     if (!email) {
@@ -65,7 +66,8 @@ const ChangePhoneNumber = ({
       handler={onClose}
       className="bg-[#E9E9E9] p-4 sm:p-6"
       dismiss={{ enabled: false }}
-s    >
+      s
+    >
       <DialogHeader className="relative flex flex-col justify-center pt-10 text-center">
         <IconButton
           variant="text"

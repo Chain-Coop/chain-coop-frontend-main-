@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RxDotFilled } from "react-icons/rx";
 import { Button, Typography } from "@material-tailwind/react";
 import { AppDispatch } from "../../../shared/redux/store";
 import {
   WithdrawalFromWallet,
   GeneratePinOTP,
+  GetWalletBalance,
 } from "../../../shared/redux/slices/transaction.slices";
 import { CashwyreOfframpConfirm } from "../../../shared/redux/slices/web3.slices";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
@@ -16,10 +17,13 @@ import PinModal from "../../../components/common/PinModal";
 import GeneratePin from "../../../components/dashboard/profile/security/modal/GeneratePin";
 import OtpPin from "../../../components/dashboard/profile/security/modal/OtpPin";
 import ChangePin from "../../../components/dashboard/profile/security/modal/ChangePin";
-import { useAppSelector } from "../../../shared/redux/reduxHooks";
 import SuccessModal from "../../../components/dashboard/wallet/modal/SuccessModal";
-import useUserProfile from "../../../shared/Hooks/useUserProfile";
-import { Alert } from "@mui/material";
+import { RootState } from "../../../shared/redux/rootReducer";
+import { GetUserProfile } from "../../../shared/redux/slices/landing.slices";
+import {
+  useUserProfile,
+  useWallet,
+} from "../../../shared/Hooks/useUserProfile";
 
 interface BankAccount {
   accountNumber: string;
@@ -37,7 +41,8 @@ const SelectBank = () => {
   const cryptoData = location.state?.data?.data;
   const isCryptoWithdrawal = !!cryptoData;
   const dispatch: AppDispatch = useDispatch();
-  const { profileDetails, fetchUserProfile } = useUserProfile();
+  const { profileDetails } = useUserProfile();
+  const { walletBalance } = useWallet();
 
   const [pinStep, setPinStep] = useState(0);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -50,6 +55,7 @@ const SelectBank = () => {
   );
 
   const isPinCreated = profileDetails?.isPinCreated || false;
+
   const handleBackClick = () => {
     navigate(-1);
   };
@@ -64,12 +70,12 @@ const SelectBank = () => {
     });
   };
 
-  const accountData = useAppSelector(
-    (state: any) => state?.transaction?.getWalletBalance,
-  );
-
   const hasBankAccount =
-    accountData?.bankAccounts && accountData?.bankAccounts?.length > 0;
+    walletBalance?.bankAccounts && walletBalance.bankAccounts.length > 0;
+  useEffect(() => {
+    dispatch(GetWalletBalance());
+    dispatch(GetUserProfile());
+  }, [dispatch]);
 
   const handleBankAccount = () => {
     navigate("/dashboard/wallet/bank-account", { state: { amount } });
@@ -124,7 +130,7 @@ const SelectBank = () => {
 
   const handleChangePinSuccess = async () => {
     try {
-      await fetchUserProfile();
+      await dispatch(GetUserProfile()).unwrap();
       setPinStep(4);
     } catch (error: any) {
       setError("Failed to refresh profile. Please try again.");
@@ -160,7 +166,6 @@ const SelectBank = () => {
         };
         await dispatch(CashwyreOfframpConfirm({ body: payload })).unwrap();
       } else {
-        // Naira withdrawal payload
         const response = await dispatch(
           WithdrawalFromWallet({
             accountNumber: selectedAccount.accountNumber,
@@ -168,14 +173,13 @@ const SelectBank = () => {
             amount,
             bankName: selectedAccount.bankName,
             pin,
-            otp: otp || undefined,
-        }),
+          }),
         ).unwrap();
       }
 
       handleSuccessfulTransaction();
     } catch (err: any) {
-      const errorMessage = err.error || "An error occurred. Please try again.";
+      const errorMessage = err || "An error occurred. Please try again.";
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -185,7 +189,7 @@ const SelectBank = () => {
   const handleSelectAccount = async (account: BankAccount) => {
     try {
       setSelectedAccount(account);
-      await fetchUserProfile();
+      await dispatch(GetUserProfile()).unwrap();
       if (isPinCreated) {
         setPinStep(4);
       } else {
@@ -201,7 +205,7 @@ const SelectBank = () => {
       <header className="lg:mt-8">
         <DashboardHeader
           className="relative cursor-pointer items-center"
-          onClick={handleBackClick}
+          onClick={() => navigate(-1)}
         >
           <IoIosArrowBack
             size={25}
@@ -229,7 +233,7 @@ const SelectBank = () => {
                 Existing Bank Accounts
               </Typography>
               <div className="mt-4 flex flex-col gap-4">
-                {accountData.bankAccounts.map((account: BankAccount) => (
+                {walletBalance?.bankAccounts.map((account: BankAccount) => (
                   <div
                     key={account._id}
                     className="flex h-auto flex-col items-center gap-4 rounded-xl bg-[#ece6f2] px-4 py-6 text-center sm:px-6"
@@ -268,12 +272,6 @@ const SelectBank = () => {
                 You haven't added any bank accounts
               </Typography>
             </div>
-          )}
-
-          {error && (
-            <Alert severity="error" className="mt-4">
-              {error}
-            </Alert>
           )}
 
           <Button

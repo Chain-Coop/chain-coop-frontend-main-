@@ -7,13 +7,21 @@ import { getSavingsTypeTitle } from "../../../../shared/utils/Helpers";
 
 const MIN_AMOUNT = 2000;
 
-const SavingsAmount = () => {
+interface SavingsAmountState {
+  purpose: string;
+  plan: string;
+  currency: string;
+  savingsType: string;
+  contributionType: string;
+}
+
+const SavingsAmount: React.FC = () => {
   const [amount, setAmount] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
   const [error, setError] = useState("");
   const { purpose, plan, currency, savingsType, contributionType } =
-    location.state || {};
+    location.state as SavingsAmountState;
 
   const formatAmount = (value: string) => {
     const numbers = value.replace(/\D/g, "");

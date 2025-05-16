@@ -76,7 +76,6 @@ const Pin: React.FC<PinModalProps> = ({
             <IoMdClose size={20} />
           </button>
 
-          {/* Modal Title */}
           <h2 className="mb-4 text-center text-xl font-bold">
             My Chain Co-op Pin
           </h2>
@@ -84,7 +83,6 @@ const Pin: React.FC<PinModalProps> = ({
             Enter your transaction pin
           </p>
 
-          {/* PIN Input Fields */}
           <div className="flex justify-center gap-2">
             {[...Array(4)].map((_, index) => (
               <input
@@ -100,7 +98,6 @@ const Pin: React.FC<PinModalProps> = ({
             ))}
           </div>
 
-          {/* Send Button */}
           <Button
             onClick={handleSend}
             className="mt-6 w-full rounded-2xl bg-text2 py-2 text-white"
@@ -110,7 +107,6 @@ const Pin: React.FC<PinModalProps> = ({
         </div>
       </div>
 
-      {/* Success Modal */}
       {showSuccess && <Success onClose={handleCloseSuccess} />}
     </>
   );

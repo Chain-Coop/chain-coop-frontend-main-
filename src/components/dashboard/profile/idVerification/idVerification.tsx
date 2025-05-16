@@ -1,5 +1,4 @@
 import { Typography } from "@material-tailwind/react";
-import useUserProfile from "../../../../shared/Hooks/useUserProfile";
 import {
   BvnVerified,
   NotVerified,
@@ -7,6 +6,7 @@ import {
   Verified,
 } from "../../../../Assets/svg";
 import { IoIosArrowForward } from "react-icons/io";
+import { useUserProfile } from "../../../../shared/Hooks/useUserProfile";
 
 const IdVerification = () => {
   const { profileDetails } = useUserProfile();

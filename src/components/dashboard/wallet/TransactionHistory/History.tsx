@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   formatBalance,
   formatDayAndDate,
@@ -6,12 +6,14 @@ import {
   formatRelativeTime,
 } from "../../../../shared/utils/format";
 import transact from "../../../../Assets/png/dashboard/wallet/transaction.png";
-import { useUserTransaction } from "../../../../shared/Hooks/useBalance";
-import Tooltip from "@mui/material/Tooltip";
 import { Button } from "@material-tailwind/react";
+import Tooltip from "@mui/material/Tooltip";
+import { Transaction } from "../../../../shared/types";
+import { SkeletonTransactionCard } from "../../../common/Loading";
+import { useWallet } from "../../../../shared/Hooks/useUserProfile";
 
 const History = () => {
-  const { getTransaction } = useUserTransaction();
+  const { usersTransaction, isLoading, error } = useWallet();
   const [showAll, setShowAll] = useState(false);
 
   const handleViewAll = () => {
@@ -26,7 +28,7 @@ const History = () => {
     });
   };
 
-  const getAmountStyles = (type: string) => {
+  const getAmountStyles = (type: "credit" | "debit") => {
     if (type === "debit") {
       return {
         color: "text-red-500",
@@ -39,6 +41,8 @@ const History = () => {
     };
   };
 
+  const transactions = usersTransaction || [];
+
   return (
     <main className="">
       <div className="flex flex-col gap-[1.5em] py-6">
@@ -46,7 +50,7 @@ const History = () => {
           <h1 className="text-xl font-semibold text-memt1 lg:text-xl">
             Recent Transactions
           </h1>
-          {getTransaction && getTransaction.length > 3 && (
+          {transactions.length > 3 && (
             <Button
               className="flex items-center rounded-lg border-[2px] border-text2 bg-inherit px-3 py-1 text-sm font-semibold text-memt1 md:px-4 md:text-base"
               onClick={handleViewAll}
@@ -56,15 +60,25 @@ const History = () => {
           )}
         </div>
 
-        {getTransaction && getTransaction.length > 0 ? (
-          getTransaction
-            .slice(0, showAll ? getTransaction.length : 3)
-            .map((transaction: any, index: any) => {
+        {isLoading ? (
+          <section className="flex flex-col gap-[1em]">
+            {[...Array(3)].map((_, index) => (
+              <SkeletonTransactionCard key={index} />
+            ))}
+          </section>
+        ) : error ? (
+          <section className="flex h-full flex-col items-center justify-center py-[3em] text-center">
+            <p className="text-base text-red-500 md:text-lg">{error}</p>
+          </section>
+        ) : transactions.length > 0 ? (
+          transactions
+            .slice(0, showAll ? transactions.length : 3)
+            .map((transaction: Transaction) => {
               const amountStyle = getAmountStyles(transaction.type);
               return (
                 <div
-                  key={index}
-                  className="flex flex-col gap-[10px] rounded-lg border border-gray-300 px-3 py-[1em] shadow-md md:px-[1.5em]"
+                  key={transaction._id}
+                  className="flex flex-col gap-[10px] rounded-lg border border-gray-300 px-3 py-[1em] shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A] md:px-[1.5em]"
                 >
                   <div className="flex flex-col gap-1 md:flex-row md:justify-between md:gap-0">
                     <div className="flex items-center justify-between md:justify-start md:gap-4">

@@ -1,41 +1,22 @@
 import React from "react";
 import newspaper from "../../../Assets/svg/dashboard/newspaper.svg";
-import { useAllProjects } from "../../../shared/Hooks/useUserProfile";
-import { useNavigate } from "react-router";
 import { Button } from "@material-tailwind/react";
-
-interface Project {
-  _id: string;
-  title: string;
-  status: string;
-  documentUrl: string;
-  createdAt: string;
-}
+import { useAllProjects } from "../../../shared/Hooks/useUserProfile";
 
 const Right = () => {
-  const { useProjects, loading } = useAllProjects();
-
-  const latestProjects = React.useMemo(() => {
-    if (!useProjects) return [];
-    return [...useProjects]
-      .sort(
-        (a: Project, b: Project) =>
-          new Date(b?.createdAt)?.getTime() - new Date(a?.createdAt)?.getTime(),
-      )
-      .slice(0, 2);
-  }, [useProjects]);
+  const { latestProjects } = useAllProjects();
 
   const renderProjects = React.useCallback(() => {
     if (!latestProjects?.length) {
       return null;
     }
 
-    return latestProjects?.map((project: Project) => (
-      <div key={project._id} className="mt-[1em] h-[200px] w-full px-[1em]">
+    return latestProjects?.map((project) => (
+      <div key={project?._id} className="mt-[1em] h-[200px] w-full px-[1em]">
         <article
           className="h-full rounded-2xl bg-no-repeat p-[1em] transition-transform hover:scale-[1.02]"
           style={{
-            backgroundImage: `url(${project.documentUrl})`,
+            backgroundImage: `url(${project?.documentUrl})`,
             backgroundSize: "contain",
             backgroundPosition: "center",
             backgroundColor: "rgba(255, 255, 255, 0.1)",
@@ -45,13 +26,13 @@ const Right = () => {
           <h1 className="p-[1em] text-lg font-medium uppercase text-text3">
             {project?.title}
           </h1>
-          <Button className="font-base mt-[1.5em] flex cursor-not-allowed justify-center rounded-xl bg-coming2 px-[15px]  py-[6px] font-semibold normal-case text-black">
+          <Button className="font-base mt-[1.5em] flex cursor-not-allowed justify-center rounded-xl bg-coming2 px-[15px] py-[6px] font-semibold normal-case text-black">
             {project?.status}
           </Button>
         </article>
       </div>
     ));
-  }, [loading, latestProjects]);
+  }, [latestProjects]);
 
   return (
     <aside className="flex min-h-screen w-[30em] flex-col border-l border-bl bg-inherit px-[3em] py-[3em] text-memt1">
@@ -67,7 +48,7 @@ const Right = () => {
               Network, a Business-Oriented Community Designed as a Cooperative
               for Open and Digital Membership
             </p>
-            <img src={newspaper} alt="newpaper-icon" />
+            <img src={newspaper} alt="newspaper-icon" />
           </div>
         </article>
 

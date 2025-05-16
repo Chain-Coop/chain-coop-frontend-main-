@@ -1,5 +1,9 @@
 import { InputHTMLAttributes } from "react";
 
+export interface ApiError {
+  msg: string;
+}
+
 export interface ModalProps {
   isOpen?: boolean;
   onClose?: () => void;
@@ -62,6 +66,7 @@ export interface PINInputProps {
 }
 
 export interface Card {
+  id: string;
   authorization_code: string;
   last4: string;
   exp_month: string;

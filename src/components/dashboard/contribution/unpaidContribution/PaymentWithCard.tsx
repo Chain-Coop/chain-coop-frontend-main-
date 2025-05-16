@@ -1,120 +1,153 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
-import { Loader2, ChevronLeft, ChevronRight } from "lucide-react";
-import { AppDispatch } from "../../../../shared/redux/store";
+import { useAppSelector } from "../../../../shared/redux/reduxHooks";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
-  GetWalletCard,
   PayUnPaidContribution,
+  clearTransactionError,
 } from "../../../../shared/redux/slices/transaction.slices";
 import { Alert, Snackbar } from "@mui/material";
-import { useUserCard } from "../../../../shared/Hooks/useUserProfile";
 import {
-  CardBrandLogo,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  Typography,
+  Button,
+  DialogFooter,
+  IconButton,
+} from "@material-tailwind/react";
+import { ROUTES } from "../../../../shared/routes";
+import { Card } from "../../../../shared/types/types";
+import {
   cardDesigns,
   Chip,
   formatCardNumber,
   formatExpiryDate,
   handleCardSelect,
-  handleCloseError,
   handleNext,
   handlePrev,
+  CardBrandLogo,
 } from "../../../../shared/utils/Helpers";
-import {
-  Button,
-  Dialog,
-  DialogBody,
-  DialogFooter,
-  DialogHeader,
-  IconButton,
-  Typography,
-} from "@material-tailwind/react";
-import { ROUTES } from "../../../../shared/routes";
-import { Card } from "../../../../shared/types/types";
 import { IoMdClose } from "react-icons/io";
+import { AppDispatch } from "../../../../shared/redux/store";
+import { useDispatch } from "react-redux";
+import { RootState } from "../../../../shared/redux/rootReducer";
+import { useWallet } from "../../../../shared/Hooks/useUserProfile";
 
-const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
-  const { useWalletCards } = useUserCard();
+interface PaymentWithCardProps {
+  contributionData: string;
+  onClose: () => void;
+  handler: () => void;
+  isOpen: boolean;
+}
+
+const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
+  contributionData,
+  onClose,
+  isOpen,
+  handler,
+}) => {
+  const { walletCard, isLoading: walletLoading } = useWallet();
   const contributionId = contributionData;
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const dispatch: AppDispatch = useAppDispatch();
+  const {
+    payUnPaidContribution,
+    payUnPaidContributionSuccess,
+    isLoading,
+    error,
+  } = useAppSelector((state: RootState) => state.transaction);
+
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [localError, setLocalError] = useState<string | null>(null);
 
-  useEffect(() => {
-    dispatch(GetWalletCard());
-  }, [dispatch]);
+  const cards: any = walletCard?.cards ?? [];
 
   useEffect(() => {
     if (isOpen) {
       setSelectedCard(null);
-      setError(null);
       setCurrentPage(0);
+      dispatch(clearTransactionError());
+      setLocalError(null);
     }
-  }, [isOpen]);
+  }, [isOpen, dispatch]);
 
-  const cards = useWalletCards?.cards ?? [];
-
-  const handlePayment = async (paymentType: "card" | "paystack") => {
-    setError(null);
-    setIsLoading(true);
-
-    try {
-      const basePayload = {
-        contributionId,
-        paymentType,
-      };
-
-      let paymentResponse;
-      if (paymentType === "card" && selectedCard) {
-        paymentResponse = await dispatch(
-          PayUnPaidContribution({
-            ...basePayload,
-            cardData: selectedCard.authorization_code,
-          }),
-        ).unwrap();
-        onClose();
-        navigate("/dashboard/contribution");
-      } else {
-        paymentResponse = await dispatch(
-          PayUnPaidContribution(basePayload),
-        ).unwrap();
-        if (paymentResponse.landing?.charge?.info?.data?.authorization_url) {
-          window.location.href =
-            paymentResponse.landing?.charge?.info?.data?.authorization_url;
-        } else {
-          throw new Error("Failed to initiate payment. Please try again.");
-        }
-      }
-    } catch (error: any) {
-      setError(error || "An error occurred during payment. Please try again.");
-    } finally {
-      setIsLoading(false);
+  useEffect(() => {
+    if (payUnPaidContributionSuccess) {
+      navigate("/dashboard/contribution");
+      onClose();
     }
+  }, [payUnPaidContributionSuccess, navigate, onClose]);
+
+  useEffect(() => {
+    if (
+      payUnPaidContributionSuccess &&
+      payUnPaidContribution?.payment?.info?.data?.authorization_url
+    ) {
+      const redirectUrl =
+        payUnPaidContribution.payment.info.data.authorization_url;
+      onClose();
+      window.location.href = redirectUrl;
+    }
+  }, [payUnPaidContributionSuccess, payUnPaidContribution, onClose]);
+
+  useEffect(() => {
+    if (error) {
+      setLocalError(error);
+    }
+  }, [error]);
+
+  const handlePayment = (paymentType: "card" | "paystack") => {
+    if (!contributionId) {
+      setLocalError("Missing contribution data");
+      return;
+    }
+
+    dispatch(clearTransactionError());
+
+    const payload: {
+      contributionId: string;
+      paymentType: "card" | "paystack";
+      authorization_code?: string;
+    } = { contributionId, paymentType };
+    if (paymentType === "card" && selectedCard?.authorization_code) {
+      payload.authorization_code = selectedCard.authorization_code;
+    }
+
+    dispatch(PayUnPaidContribution(payload)).catch(() => {
+      setLocalError("Payment processing failed. Please try again.");
+    });
   };
+
+  const displayError = localError || error;
 
   return (
     <Dialog
       size="sm"
       open={isOpen}
       handler={onClose}
-      className="bg-[#ECECF2] px-4 sm:px-6"
+      className="bg-[#ECECF2] px-4"
     >
       <Snackbar
-        open={!!error}
+        open={!!displayError}
         autoHideDuration={6000}
-        onClose={() => handleCloseError(setError)}
+        onClose={() => {
+          setLocalError(null);
+          dispatch(clearTransactionError());
+        }}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert
-          onClose={() => handleCloseError(setError)}
+          onClose={() => {
+            setLocalError(null);
+            dispatch(clearTransactionError());
+          }}
           severity="error"
           variant="filled"
           sx={{ width: "100%" }}
         >
-          {error}
+          {displayError}
         </Alert>
       </Snackbar>
 
@@ -138,7 +171,6 @@ const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
 
         <DialogBody>
           <section className="rounded-3xl bg-white p-4 sm:p-6">
-            {" "}
             <div className="flex flex-col">
               <DialogHeader className="flex flex-col text-center">
                 <Typography
@@ -153,7 +185,15 @@ const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
               </DialogHeader>
 
               <div className="relative mt-4">
-                {cards?.length > 0 ? (
+                {walletLoading && !cards.length ? (
+                  <div className="space-y-2">
+                    <div className="h-32 w-full animate-pulse rounded-xl bg-gray-200 sm:w-[25em]"></div>
+                    <div className="flex justify-center gap-1">
+                      <div className="h-1.5 w-3 rounded-full bg-purple-600"></div>
+                      <div className="h-1.5 w-1.5 rounded-full bg-gray-300"></div>
+                    </div>
+                  </div>
+                ) : cards.length > 0 ? (
                   <>
                     <div className="relative mx-auto w-full overflow-hidden sm:w-[25em] sm:px-6">
                       {currentPage > 0 && (
@@ -173,28 +213,26 @@ const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
                             handleCardSelect(
                               cards[currentPage],
                               setSelectedCard,
-                              setError,
                             )
                           }
                           className={`group relative aspect-[1.8/1] w-full cursor-pointer rounded-xl bg-gradient-to-r px-2 py-2 shadow-lg transition-all hover:shadow-xl sm:px-4
-                                    ${
-                                      cardDesigns[
-                                        cards[
-                                          currentPage
-                                        ]?.brand?.toLowerCase() as keyof typeof cardDesigns
-                                      ] || cardDesigns.default
-                                    }
-                                    ${
-                                      selectedCard?.authorization_code ===
-                                      cards[currentPage].authorization_code
-                                        ? "ring-2 ring-white"
-                                        : ""
-                                    }`}
+                            ${
+                              cardDesigns[
+                                cards[
+                                  currentPage
+                                ].card_type?.toLowerCase() as keyof typeof cardDesigns
+                              ] || cardDesigns.default
+                            }
+                            ${
+                              selectedCard?.id === cards[currentPage].id
+                                ? "ring-2 ring-white"
+                                : ""
+                            }`}
                         >
                           <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 opacity-0 transition-opacity group-hover:opacity-100" />
 
                           <div className="mb-3 text-sm font-bold text-white/90 sm:mb-4 sm:text-base">
-                            {cards[currentPage]?.bank?.toUpperCase()}
+                            {cards[currentPage].bank?.toUpperCase() || "BANK"}
                           </div>
 
                           <Chip />
@@ -254,11 +292,10 @@ const PaymentWithCard = ({ contributionData, onClose, isOpen }: any) => {
                 {selectedCard ? (
                   <Button
                     onClick={() => handlePayment("card")}
-                    disabled={isLoading}
-                    loading={isLoading}
+                    disabled={isLoading || !selectedCard.authorization_code}
                     className="flex w-full items-center justify-center rounded-lg bg-text2 px-4 py-2.5 text-sm font-bold normal-case text-white transition-colors disabled:opacity-50"
                   >
-                    {isLoading ? "Loading..." : "Pay Now"}
+                    Pay Now
                   </Button>
                 ) : (
                   <div className="flex w-full flex-col items-center justify-between gap-2 sm:flex-row sm:gap-4">

@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { Alert } from "@mui/material";
-import useUserProfile, {
-  useUserCard,
+import {
+  useUserProfile,
+  useWallet,
 } from "../../../../shared/Hooks/useUserProfile";
 import {
   addDays,
@@ -34,7 +35,7 @@ interface ContributionResponse {
 }
 
 const StartDate: React.FC = () => {
-  const { useWalletCards } = useUserCard();
+  const { walletCard } = useWallet();
   const { profileDetails } = useUserProfile();
   const today = formatDate(new Date());
   const startDate = today;
@@ -59,7 +60,7 @@ const StartDate: React.FC = () => {
 
   const MAX_YEARS = 2;
 
-  const hasCards = (useWalletCards?.cards ?? []).length > 0;
+  const hasCards = (walletCard?.cards ?? []).length > 0;
 
   useEffect(() => {
     dispatch(GetWalletCard());
@@ -143,7 +144,6 @@ const StartDate: React.FC = () => {
       contributionType: contributionType,
       savingsType: "One-time",
     };
-
     try {
       const response = await dispatch(CreateContributionPlan(body)).unwrap();
       if (response?.result) {
@@ -172,15 +172,15 @@ const StartDate: React.FC = () => {
       const paymentResponse = await dispatch(
         PayContributionPaystack({
           contributionId: contributionData.contributionId,
-          userId: profileDetails?._id,
+          userId: profileDetails?._id || "",
           paymentType: "paystack",
         }),
       ).unwrap();
 
-      if (paymentResponse?.landing?.payment?.info?.data?.authorization_url) {
+      if (paymentResponse?.payment?.info?.data?.authorization_url) {
         handleModalClose();
         window.location.href =
-          paymentResponse.landing.payment.info.data.authorization_url;
+          paymentResponse?.payment.info.data.authorization_url;
       } else {
         throw new Error("Missing payment authorization URL");
       }

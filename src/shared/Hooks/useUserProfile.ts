@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useRef } from "react";
+import { useCallback, useEffect, useState, useRef, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GetUserProfile, uploadAvatar } from "../redux/slices/landing.slices";
 import { AppDispatch } from "../redux/store";
@@ -6,7 +6,11 @@ import { setMessage } from "../redux/slices/message.slices";
 import {
   GetAllBanks,
   GetAllProject,
+  GetContributionBalance,
+  GetUnPaidBalance,
   GetUsersContributionHistory,
+  GetUsersTransaction,
+  GetWalletBalance,
   GetWalletCard,
 } from "../redux/slices/transaction.slices";
 import { getAllNotification } from "../redux/slices/notification.slices";
@@ -16,11 +20,13 @@ import { GetSavingCircleByUser } from "../redux/slices/web_savings_groups.slices
 enum UploadFields {
   ProfilePicture = "profilePicture",
 }
+import { Project } from "../types";
+import { RootState } from "../redux/rootReducer";
 
 export const useUserProfile = () => {
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const profileDetails = useSelector(
-    (state: any) => state?.landing?.getProfile,
+    (state: RootState) => state.landing.getProfile,
   );
   const userToken = sessionStorage.getItem("userData");
   const [loading, setLoading] = useState(false);
@@ -56,34 +62,15 @@ export const useUserProfile = () => {
   }, [dispatch, profileDetails?._id]);
 
   useEffect(() => {
-    fetchUserProfile().catch((error) => {});
-    fetchUserCircles();
-  }, [fetchUserProfile, fetchUserCircles]);
-
-  const uploadUserAvatar = async (selectedFile: File) => {
-    if (userToken && selectedFile) {
-      setLoading(true);
-      try {
-        const formData = new FormData();
-        formData.append(UploadFields.ProfilePicture, selectedFile);
-        await dispatch(uploadAvatar(formData)).unwrap();
-        await fetchUserProfile();
-      } catch (error: any) {
-        const errorMessage = error.message || "Failed to upload avatar";
-        dispatch(setMessage(errorMessage));
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      const errorMessage = "Token not found or file not selected";
-      dispatch(setMessage(errorMessage));
+    if (!profileDetails) {
+      fetchUserProfile().catch((error) => {
+        console.error("Failed to fetch user profile:", error);
+      });
     }
-  };
+  }, [fetchUserProfile, profileDetails]);
 
   return {
     profileDetails,
-    loading,
-    uploadUserAvatar,
     fetchUserProfile,
     userCircles,
     circlesLoading,
@@ -92,14 +79,99 @@ export const useUserProfile = () => {
   };
 };
 
-export const useAllProjects = () => {
-  const dispatch: AppDispatch = useDispatch();
+export const useWallet = () => {
+  const dispatch = useDispatch<AppDispatch>();
 
-  const useProjects = useSelector(
-    (state: any) => state?.transaction?.allProjects,
+  const walletBalance = useSelector(
+    (state: RootState) => state.transaction.walletBalance,
   );
+  const usersTransaction = useSelector(
+    (state: RootState) => state.transaction.usersTransaction,
+  );
+  const walletCard = useSelector(
+    (state: RootState) => state.transaction.walletCard,
+  );
+  const isLoading = useSelector(
+    (state: RootState) => state.transaction.isLoading,
+  );
+  const error = useSelector((state: RootState) => state.transaction.error);
 
-  const loading = useSelector((state: any) => state?.transaction?.loading);
+  useEffect(() => {
+    dispatch(GetWalletBalance());
+    dispatch(GetUsersTransaction());
+    dispatch(GetWalletCard());
+  }, [dispatch]);
+
+  return {
+    walletBalance,
+    usersTransaction,
+    walletCard,
+    isLoading,
+    error,
+  };
+};
+
+export const useContribution = ({
+  page,
+  limit,
+  search,
+  filter,
+  contributionId,
+}: {
+  page: number;
+  limit: number;
+  search: string;
+  filter: string;
+  contributionId?: string;
+}) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const contributionBalance = useSelector(
+    (state: RootState) => state.transaction.contributionBalance,
+  );
+  const usersContributionHistory = useSelector(
+    (state: RootState) => state.transaction.usersContributionHistory,
+  );
+  const unpaidBalance = useSelector(
+    (state: RootState) => state.transaction.unpaidBalance,
+  );
+  const isLoading = useSelector(
+    (state: RootState) => state.transaction.isLoading,
+  );
+  const error = useSelector((state: RootState) => state.transaction.error);
+
+  useEffect(() => {
+    dispatch(GetContributionBalance());
+    dispatch(
+      GetUsersContributionHistory({
+        page,
+        limit,
+        search,
+        filter,
+      }),
+    );
+    if (contributionId) {
+      dispatch(GetUnPaidBalance(contributionId));
+    }
+  }, [dispatch, page, limit, search, filter, contributionId]);
+
+  return {
+    contributionBalance,
+    usersContributionHistory,
+    unpaidBalance,
+    isLoading,
+    error,
+  };
+};
+
+export const useAllProjects = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const allProjects = useSelector(
+    (state: RootState) => state.transaction.allProjects,
+  );
+  const isLoading = useSelector(
+    (state: RootState) => state.transaction.isLoading,
+  );
 
   const userToken = sessionStorage.getItem("userData");
 
@@ -108,7 +180,7 @@ export const useAllProjects = () => {
       dispatch(GetAllProject())
         .unwrap()
         .catch((error: any) => {
-          const errorMessage = error.message;
+          const errorMessage = error.message || "Failed to fetch projects";
           dispatch(setMessage(errorMessage));
         });
     } else {
@@ -116,7 +188,18 @@ export const useAllProjects = () => {
     }
   }, [dispatch, userToken]);
 
-  return { useProjects, loading };
+  const latestProjects = useMemo(() => {
+    if (!allProjects || !Array.isArray(allProjects)) return [];
+
+    return [...allProjects]
+      .sort(
+        (a: Project, b: Project) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      )
+      .slice(0, 2);
+  }, [allProjects]);
+
+  return { allProjects, latestProjects, isLoading };
 };
 
 export const useAllBanks = () => {
@@ -143,8 +226,6 @@ export const useAllBanks = () => {
 
   return { useBanks, loading };
 };
-
-export default useUserProfile;
 
 export const usePinSetup = (isPinCreated: boolean) => {
   const [showPinSetup, setShowPinSetup] = useState(false);
@@ -182,58 +263,6 @@ export const usePinSetup = (isPinCreated: boolean) => {
     setShowReminder,
     showSuccessModal,
     setShowSuccessModal,
-  };
-};
-
-export const useUserContributionHistory = (
-  page: number,
-  limit: number,
-  search: string = "",
-  filter: string = "",
-) => {
-  const dispatch: AppDispatch = useDispatch();
-  const [debouncedSearch, setDebouncedSearch] = useState(search);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearch(search);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [search]);
-
-  const getContributions = useSelector(
-    (state: any) => state?.transaction?.getUsersContribution,
-  );
-
-  const loading = useSelector((state: any) => state?.transaction?.loading);
-
-  const error = useSelector((state: any) => state?.transaction?.error);
-
-  useEffect(() => {
-    const userToken = sessionStorage.getItem("userData");
-    if (userToken) {
-      dispatch(
-        GetUsersContributionHistory({
-          page,
-          limit,
-          search: debouncedSearch,
-          filter,
-        }),
-      )
-        .unwrap()
-        .catch((err: any) => {
-          dispatch(setMessage(err.message || "Failed to fetch contributions"));
-        });
-    } else {
-      dispatch(setMessage("User token not found"));
-    }
-  }, [dispatch, page, limit, debouncedSearch, filter]);
-
-  return {
-    getContributions,
-    isLoading: loading,
-    error,
   };
 };
 
@@ -318,9 +347,6 @@ export const useAllUserPools = () => {
 
   useEffect(() => {
     if (isWalletActivated && !hasFetchedForActiveWallet.current) {
-      console.log(
-        "Dispatching GetAllUserPools because wallet is active and fetch hasn't occurred.",
-      );
       dispatch(GetAllUserPools());
       hasFetchedForActiveWallet.current = true;
     }

@@ -1,92 +1,141 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import logo from "../../Assets/svg/auth/logo.svg";
-import { FaArrowLeft } from "react-icons/fa6";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
-import Select from "react-select";
+import { FaArrowLeft } from "react-icons/fa6";
 import { Button, Typography } from "@material-tailwind/react";
+import Select from "react-select";
+import logo from "../../Assets/svg/auth/logo.svg";
 import usePasswordToggle from "../../shared/utils/usePasswordToggle";
 import { AppDispatch } from "../../shared/redux/store";
+import { RootState } from "../../shared/redux/rootReducer";
+import {
+  checkPasswordStrength,
+  getPasswordStrengthColor,
+  membershipOptions,
+} from "../../shared/utils/Helpers";
+import {
+  RegisterUser,
+  resetAuthState,
+} from "../../shared/redux/slices/landing.slices";
+import { clearMessage } from "../../shared/redux/slices/message.slices";
 import FormInput from "../../components/common/FormInput";
-import { ROUTES } from "../../shared/routes";
-import { RegisterUser } from "../../shared/redux/slices/landing.slices";
 import { PhoneNumberInput } from "../../components/common/phoneNumberInput";
-
-const checkPasswordStrength = (
-  password: string,
-): { score: number; message: string } => {
-  let score = 0;
-  let message = "";
-
-  if (password.length >= 8) score++;
-  if (password.match(/[a-z]/)) score++;
-  if (password.match(/[A-Z]/)) score++;
-  if (password.match(/[0-9]/)) score++;
-  if (password.match(/[^a-zA-Z0-9]/)) score++;
-
-  switch (score) {
-    case 0:
-    case 1:
-      message = "Very Weak";
-      break;
-    case 2:
-      message = "Weak";
-      break;
-    case 3:
-      message = "Medium";
-      break;
-    case 4:
-      message = "Strong";
-      break;
-    case 5:
-      message = "Very Strong";
-      break;
-    default:
-      message = "Very Weak";
-  }
-
-  return { score, message };
-};
+import { ROUTES } from "../../shared/routes";
+import { RegisterUserRequest } from "../../shared/types";
 
 const CreateAccount = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [membershipType, setMembershipType] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState<RegisterUserRequest>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    username: "",
+    phoneNumber: "",
+    membershipType: "",
+    password: "",
+  });
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordStrength, setPasswordStrength] = useState({
     score: 0,
     message: "",
   });
-  const [loading, setLoading] = useState(false);
-  const [passwordType, togglePasswordType] = usePasswordToggle();
-  const [confirmPasswordType, toggleConfirmPasswordType] = usePasswordToggle();
   const [isPhoneValid, setIsPhoneValid] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [passwordType, togglePasswordType] = usePasswordToggle();
+  const [confirmPasswordType, toggleConfirmPasswordType] = usePasswordToggle();
 
   const navigate = useNavigate();
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const membershipOptions = [
-    { value: "Explorer", label: "Explorer" },
-    { value: "Pioneer", label: "Pioneer" },
-  ];
+  const { isLoading, error, registerSuccess } = useSelector(
+    (state: RootState) => state.landing,
+  );
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    if (formData.password) {
+      setPasswordStrength(checkPasswordStrength(formData.password));
+    } else {
+      setPasswordStrength({ score: 0, message: "" });
+    }
+  }, [formData.password]);
+
+  useEffect(() => {
+    setPasswordsMatch(
+      formData.password === confirmPassword || confirmPassword === "",
+    );
+  }, [formData.password, confirmPassword]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetAuthState());
+      dispatch(clearMessage());
+    };
+  }, [dispatch]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const requiredFields: (keyof RegisterUserRequest)[] = [
+      "firstName",
+      "lastName",
+      "email",
+      "username",
+      "phoneNumber",
+      "membershipType",
+      "password",
+    ];
+    if (requiredFields.some((field) => !formData[field])) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+
+    if (!isPhoneValid) {
+      toast.error("Please enter a valid phone number.");
+      return;
+    }
+
+    if (!passwordsMatch) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+
+    if (passwordStrength.score < 3) {
+      toast.error("Please choose a stronger password.");
+      return;
+    }
+
+    try {
+      const response = await dispatch(RegisterUser(formData)).unwrap();
+      toast.success("Signup successful! Please verify your email.");
+      navigate(
+        `/verify-email?email=${encodeURIComponent(formData.email)}&phoneNumber=${encodeURIComponent(formData.phoneNumber)}&userId=${response.user._id}`,
+      );
+    } catch (err) {
+      // Error handled by useEffect
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev: RegisterUserRequest) => ({ ...prev, [name]: value }));
+  };
 
   const customSelectStyles = {
     control: (base: any) => ({
       ...base,
-      height: "4em",
+      height: "3rem",
       borderRadius: "9999px",
       borderColor: "#E5E7EB",
       boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1)",
@@ -94,99 +143,13 @@ const CreateAccount = () => {
         borderColor: "#440080",
       },
     }),
-    option: (base: any, state: { isSelected: any }) => ({
+    option: (base: any, state: { isSelected: boolean }) => ({
       ...base,
       backgroundColor: state.isSelected ? "#440080" : "white",
       "&:hover": {
         backgroundColor: state.isSelected ? "#440080" : "#F3F4F6",
       },
     }),
-  };
-
-  useEffect(() => {
-    if (password) {
-      setPasswordStrength(checkPasswordStrength(password));
-    }
-  }, [password]);
-
-  useEffect(() => {
-    setPasswordsMatch(password === confirmPassword || confirmPassword === "");
-  }, [password, confirmPassword]);
-
-  const home = (e: React.MouseEvent) => {
-    e.preventDefault();
-    navigate("/login");
-  };
-
-  const getPasswordStrengthColor = (score: number) => {
-    switch (score) {
-      case 0:
-      case 1:
-        return "bg-red-500";
-      case 2:
-        return "bg-orange-500";
-      case 3:
-        return "bg-yellow-500";
-      case 4:
-        return "bg-green-500";
-      case 5:
-        return "bg-green-600";
-      default:
-        return "bg-gray-200";
-    }
-  };
-
-  const registerUser = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!isPhoneValid) {
-      toast.error("Please enter a valid phone number");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match!");
-      return;
-    }
-
-    if (passwordStrength.score < 3) {
-      toast.error("Please choose a stronger password!");
-      return;
-    }
-
-    setLoading(true);
-
-    const body = {
-      firstName,
-      lastName,
-      email,
-      username,
-      phoneNumber,
-      membershipType,
-      password,
-    };
-
-    dispatch(RegisterUser(body))
-      .unwrap()
-      .then((response: any) => {
-        const userId = response?.landing?.user?._id;
-        setFirstName("");
-        setLastName("");
-        setEmail("");
-        setUsername("");
-        setPhoneNumber("");
-        setMembershipType("");
-        setPassword("");
-        setConfirmPassword("");
-        setLoading(false);
-
-        navigate(
-          `/verify-email?email=${email}&phoneNumber=${encodeURIComponent(phoneNumber)}&userId=${userId}`,
-        );
-      })
-      .catch((error: any) => {
-        setLoading(false);
-        toast.error(error);
-      });
   };
 
   return (
@@ -197,7 +160,7 @@ const CreateAccount = () => {
             src={logo}
             alt="Logo"
             className="mx-auto mb-4 h-[5em] cursor-pointer"
-            onClick={home}
+            onClick={() => navigate(-1)}
           />
           <Typography
             variant="h1"
@@ -210,48 +173,45 @@ const CreateAccount = () => {
           </Typography>
         </div>
 
-        <form className="flex flex-col gap-6" onSubmit={registerUser}>
+        <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
           <FormInput
             label="First Name"
             type="text"
-            id="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            placeholder="first name"
-            disabled={loading}
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleInputChange}
+            placeholder="Enter your first name"
+            disabled={isLoading}
             required
           />
-
           <FormInput
             label="Last Name"
             type="text"
-            id="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            placeholder="last name"
-            disabled={loading}
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleInputChange}
+            placeholder="Enter your last name"
+            disabled={isLoading}
             required
           />
-
           <FormInput
             label="Email Address"
             type="email"
-            id="email-input"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="e-mail address"
-            disabled={loading}
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            placeholder="Enter your email"
+            disabled={isLoading}
             required
           />
-
           <FormInput
             label="Username"
             type="text"
-            id="username-input"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="username"
-            disabled={loading}
+            name="username"
+            value={formData.username}
+            onChange={handleInputChange}
+            placeholder="Choose a username"
+            disabled={isLoading}
             required
           />
 
@@ -263,53 +223,65 @@ const CreateAccount = () => {
               Phone Number
             </label>
             <PhoneNumberInput
-              value={phoneNumber}
-              onChange={setPhoneNumber}
-              disabled={loading}
+              value={formData.phoneNumber}
+              onChange={(value: string) =>
+                setFormData((prev: RegisterUserRequest) => ({
+                  ...prev,
+                  phoneNumber: value,
+                }))
+              }
+              disabled={isLoading}
               onValidityChange={setIsPhoneValid}
             />
-            {phoneNumber && !isPhoneValid && (
+
+            {formData.phoneNumber && !isPhoneValid && (
               <p className="mt-1 text-sm text-red-500">
-                Please enter a valid whatsapp phone number
+                Please enter a valid WhatsApp phone number
               </p>
             )}
           </div>
-          <FormInput
-            label="Membership Type"
-            customInput={
-              <Select
-                value={membershipOptions.find(
-                  (option) => option.value === membershipType,
-                )}
-                onChange={(option) => setMembershipType(option?.value || "")}
-                options={membershipOptions}
-                styles={customSelectStyles}
-                isDisabled={loading}
-              />
+          <Select
+            id="membershipType-input"
+            value={membershipOptions.find(
+              (option) => option.value === formData.membershipType,
+            )}
+            onChange={(option: any | null) =>
+              setFormData((prev: RegisterUserRequest) => ({
+                ...prev,
+                membershipType: option?.value || "",
+              }))
             }
+            options={membershipOptions}
+            styles={customSelectStyles}
+            isDisabled={isLoading}
+            placeholder="Select membership type"
           />
 
           <FormInput
             label="Password"
             type={passwordType}
-            id="password-input"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            disabled={loading}
+            name="password"
+            value={formData.password}
+            onChange={handleInputChange}
+            placeholder="Enter your password"
+            disabled={isLoading}
             autoComplete="new-password"
             required
             rightElement={
-              <button type="button" onClick={togglePasswordType}>
+              <button
+                type="button"
+                onClick={togglePasswordType}
+                aria-label="Toggle password visibility"
+              >
                 {passwordType === "password" ? (
-                  <MdOutlineVisibilityOff />
+                  <MdOutlineVisibilityOff size={20} />
                 ) : (
-                  <MdOutlineVisibility />
+                  <MdOutlineVisibility size={20} />
                 )}
               </button>
             }
             helperText={
-              password && (
+              formData.password && (
                 <>
                   <div className="mb-1 flex h-1 overflow-hidden rounded-full bg-gray-200">
                     {[1, 2, 3, 4, 5].map((index) => (
@@ -342,21 +314,25 @@ const CreateAccount = () => {
           <FormInput
             label="Confirm Password"
             type={confirmPasswordType}
-            id="confirm-password-input"
+            name="confirmPassword"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="Confirm Password"
-            disabled={loading}
+            placeholder="Confirm your password"
+            disabled={isLoading}
             required
             error={
               !passwordsMatch && confirmPassword ? "Passwords do not match" : ""
             }
             rightElement={
-              <button type="button" onClick={toggleConfirmPasswordType}>
+              <button
+                type="button"
+                onClick={toggleConfirmPasswordType}
+                aria-label="Toggle confirm password visibility"
+              >
                 {confirmPasswordType === "password" ? (
-                  <MdOutlineVisibilityOff />
+                  <MdOutlineVisibilityOff size={20} />
                 ) : (
-                  <MdOutlineVisibility />
+                  <MdOutlineVisibility size={20} />
                 )}
               </button>
             }
@@ -366,15 +342,21 @@ const CreateAccount = () => {
             type="submit"
             className="relative mt-[2em] flex w-full items-center justify-center rounded-full bg-text2 p-4 text-center text-sm font-semibold normal-case text-text5"
             disabled={
-              loading ||
+              isLoading ||
               !isPhoneValid ||
               !passwordsMatch ||
               passwordStrength.score < 3 ||
-              !membershipType
+              !formData.firstName ||
+              !formData.lastName ||
+              !formData.email ||
+              !formData.username ||
+              !formData.phoneNumber ||
+              !formData.membershipType ||
+              !formData.password
             }
-            loading={loading}
+            loading={isLoading}
           >
-            {loading ? "Signing up..." : "Signup"}
+            Sign Up
           </Button>
         </form>
         <div

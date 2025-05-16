@@ -4,8 +4,10 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
-import { RESET_PASSWORD } from "../../shared/redux/services/landing.services";
 import FormInput from "../../components/common/FormInput";
+import { ResetPassword } from "../../shared/redux/slices/landing.slices";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../shared/redux/store";
 
 const NewPassword = () => {
   const [passwordType, setPasswordType] = useState("password");
@@ -16,6 +18,7 @@ const NewPassword = () => {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -36,30 +39,31 @@ const NewPassword = () => {
     );
   };
 
-  const handleClose = () => {
-    navigate("/login");
-  };
-
   const resetPasswordFunc = async (e: any) => {
     e.preventDefault();
     setLoading(true);
-    const endpoint = `/auth/reset_password`;
+
     try {
-      const response = await RESET_PASSWORD(endpoint, {
-        email: email,
-        password: password,
-        confirmPassword: confirmPassword,
-      });
-      setLoading(false);
-      if (response.status === 200) {
-        toast.success(response.data.msg);
+      const resultAction = await dispatch(
+        ResetPassword({
+          email: email,
+          password: password,
+          confirmPassword: confirmPassword,
+        }),
+      );
+
+      if (ResetPassword.fulfilled.match(resultAction)) {
+        toast.success("Password reset successfully");
         navigate("/login");
       } else {
-        toast.error(response.data.msg);
+        const errorMsg =
+          (resultAction.payload as string) || "Failed to reset password";
+        toast.error(errorMsg);
       }
     } catch (error: any) {
+      toast.error(error.message || "An unexpected error occurred");
+    } finally {
       setLoading(false);
-      toast.error(error.response?.data?.msg);
     }
   };
 

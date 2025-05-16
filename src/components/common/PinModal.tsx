@@ -1,10 +1,5 @@
 import { Button, IconButton, Typography } from "@material-tailwind/react";
-import {
-  Dialog,
-  DialogHeader,
-  DialogBody,
-  DialogFooter,
-} from "@material-tailwind/react";
+import { Dialog, DialogHeader, DialogBody } from "@material-tailwind/react";
 import { Alert } from "@mui/material";
 import OtpInput from "../../shared/utils/OtpInput";
 import { PinModalProps } from "../../shared/types/types";
