@@ -58,7 +58,6 @@ const lockTypeConfigs: Record<number, LockTypeConfig> = {
   },
 };
 
-// Define Network Configurations - Updated
 const STABLE_COIN_NETWORKS = [
   { label: "BSC (BNB Smart Chain)", value: "BSC", disabled: false },
   { label: "ETHERLINK", value: "ETHERLINK", disabled: false },
@@ -112,11 +111,10 @@ const UnifiedContributionCurrencyType: React.FC = () => {
     currency: "",
     tokenId: "",
     tokenName: "",
-    network: "", // For selected network value
+    network: "",
   });
   const [error, setError] = useState("");
 
-  // State for Network Selection
   const [selectedNetwork, setSelectedNetwork] = useState<{
     label: string;
     value: string;
@@ -127,7 +125,6 @@ const UnifiedContributionCurrencyType: React.FC = () => {
   >([]);
 
   useEffect(() => {
-    // Update available networks when tokenName changes
     if (formData.tokenName) {
       let networks: Array<{ label: string; value: string; disabled?: boolean }>;
       if (formData.tokenName === "BTC") {
@@ -135,7 +132,7 @@ const UnifiedContributionCurrencyType: React.FC = () => {
       } else if (["USDT", "USDC"].includes(formData.tokenName)) {
         networks = STABLE_COIN_NETWORKS;
       } else {
-        networks = []; // For other tokens like LISK
+        networks = [];
       }
 
       const sortedNetworks = networks.sort(
@@ -143,7 +140,6 @@ const UnifiedContributionCurrencyType: React.FC = () => {
       );
       setAvailableNetworks(sortedNetworks);
 
-      // Set a default network if none is selected or current is invalid
       if (sortedNetworks.length > 0) {
         const currentNetworkIsValid = sortedNetworks.some(
           (n) => n.value === selectedNetwork?.value && !n.disabled,
@@ -154,7 +150,6 @@ const UnifiedContributionCurrencyType: React.FC = () => {
             setSelectedNetwork(firstEnabled);
             setFormData((prev) => ({ ...prev, network: firstEnabled.value }));
           } else if (sortedNetworks.length > 0) {
-            // Fallback if all are disabled
             setSelectedNetwork(sortedNetworks[0]);
             setFormData((prev) => ({
               ...prev,
@@ -167,12 +162,11 @@ const UnifiedContributionCurrencyType: React.FC = () => {
         setFormData((prev) => ({ ...prev, network: "" }));
       }
     } else {
-      // Clear network if no token is selected
       setAvailableNetworks([]);
       setSelectedNetwork(null);
       setFormData((prev) => ({ ...prev, network: "" }));
     }
-  }, [formData.tokenName]); // Re-run when tokenName changes
+  }, [formData.tokenName]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -204,9 +198,8 @@ const UnifiedContributionCurrencyType: React.FC = () => {
       ...prev,
       tokenId: tokenMapping[tokenName],
       tokenName,
-      network: "", // Reset network, useEffect will set a default
+      network: "",
     }));
-    // setSelectedNetwork(null); // Let useEffect handle setting the default selectedNetwork
   };
 
   const handleNetworkSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {

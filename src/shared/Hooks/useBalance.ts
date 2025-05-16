@@ -203,12 +203,34 @@ export const useAllUserPools = () => {
   return { userPools: data, loading, error, fetchUserPools: fetch };
 };
 
-export const useAllUserTokens = (network: string = "ETHERLINK") => {
-  const { data, fetch } = useDataFetcher(
-    (state: any) => state.web3.userTokens,
-    () => Web3Slices.GetAllUserTokens(network),
-  );
-  return { userTokens: data, fetchUserTokens: fetch };
+export const useAllUserTokens = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { allNetworkTokens, allNetworkTokensLoading, allNetworkTokensError } =
+    useSelector(
+      (state: any) => ({
+        allNetworkTokens: state.web3.allNetworkTokens,
+        allNetworkTokensLoading: state.web3.allNetworkTokensLoading,
+        allNetworkTokensError: state.web3.allNetworkTokensError,
+      }),
+      shallowEqual,
+    );
+
+  const fetchUserTokens = useCallback(() => {
+    // Fetches tokens from ALL supported networks
+    dispatch(Web3Slices.FetchAllTokensFromSupportedNetworks());
+  }, [dispatch]);
+
+  // useEffect(() => {
+  //   // Decide if you want to auto-fetch on hook mount or let the component decide
+  //   // fetchUserTokens();
+  // }, [fetchUserTokens]);
+
+  return {
+    userTokens: allNetworkTokens || [],
+    loading: allNetworkTokensLoading,
+    error: allNetworkTokensError,
+    fetchUserTokens,
+  };
 };
 
 export default useWalletBalance;
@@ -418,9 +440,28 @@ export const useWithdrawalValidation = ({
 };
 
 export const useTotalBalance = (network: string = "ETHERLINK") => {
-  const { data, fetch } = useDataFetcher(
-    (state: any) => state.web3.totalBalance,
-    () => Web3Slices.GetTotalBalance(network),
+  const dispatch = useDispatch<AppDispatch>();
+  const { totalBalanceData, isLoading, errorData } = useSelector(
+    (state: any) => ({
+      totalBalanceData: state.web3.totalBalance,
+      isLoading: state.web3.loading,
+      errorData: state.web3.error,
+    }),
+    shallowEqual,
   );
-  return { totalBalance: data, fetchTotalBalance: fetch };
+
+  const fetchTotalBalance = useCallback(() => {
+    dispatch(Web3Slices.GetTotalBalance(network))
+      .unwrap()
+      .catch((err: any) => {
+        console.error("Failed to fetch total balance:", err);
+      });
+  }, [dispatch, network]);
+
+  return {
+    totalBalance: totalBalanceData,
+    loading: isLoading,
+    error: errorData,
+    fetchTotalBalance,
+  };
 };

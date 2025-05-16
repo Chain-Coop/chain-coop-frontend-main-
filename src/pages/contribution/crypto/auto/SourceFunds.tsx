@@ -169,7 +169,6 @@ const UnifiedSourceFunds: React.FC = () => {
     if (config) {
       setCurrentConfig(config);
     } else {
-      // Default to flexible if lockedType is invalid or not found
       setCurrentConfig(sourceFundsConfigs[0]);
       console.warn(
         "Invalid or missing lockedType in location state for SourceFunds. Defaulting to Flexible Savings config.",
@@ -182,7 +181,6 @@ const UnifiedSourceFunds: React.FC = () => {
       setError("Please enter a valid deposit amount.");
       return;
     }
-    // Only validate debitAmount if it's not a one-time contribution
     if (!isOneTimeContribution && !debitAmount) {
       setError("Please enter an amount to be debited periodically.");
       return;
@@ -214,7 +212,6 @@ const UnifiedSourceFunds: React.FC = () => {
       ...(currentConfig?.hasTermsCheckbox && { termsAccepted }),
     };
 
-    // Only include debitAmount if it's not a one-time contribution
     if (!isOneTimeContribution) {
       updatedFormData.debitAmount = debitAmount;
     }
@@ -227,7 +224,6 @@ const UnifiedSourceFunds: React.FC = () => {
   };
 
   if (!currentConfig) {
-    // Can show a loader here
     return (
       <main className="pb-[1.5em]">
         <p className="mt-10 text-center">Loading configuration...</p>
