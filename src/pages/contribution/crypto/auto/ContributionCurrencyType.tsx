@@ -220,7 +220,7 @@ const UnifiedContributionCurrencyType: React.FC = () => {
     setError("");
 
     const stateToPass: any = {
-      ...formData, // formData now includes 'network'
+      ...formData,
       lockedType: currentLockedType,
       contributionType: incomingContributionType,
     };
@@ -356,7 +356,7 @@ const UnifiedContributionCurrencyType: React.FC = () => {
                   </header>
                 </div>
                 <hr />
-                <div className="mt-[1em] flex flex-col items-center justify-center gap-[2em] px-[1em] md:flex-row md:items-start md:justify-start">
+                <div className="mt-[1em] flex flex-col flex-wrap items-center justify-center gap-[2em] px-[1em] md:flex-row md:items-start md:justify-start">
                   {[
                     { type: "USDT", icon: usdt },
                     { type: "USDC", icon: usdc },
