@@ -49,11 +49,9 @@ const Preview: React.FC = () => {
   const { walletCard } = useWallet();
   const state = location.state as PreviewState | undefined;
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   useEffect(() => {
     if (!state) {
-      console.error(
-        "Preview: Missing location.state, redirecting to contribution page",
-      );
       navigate("/dashboard/contribution");
     } else {
       console.log("Preview: Received state:", state);
@@ -89,6 +87,7 @@ const Preview: React.FC = () => {
     if (createContributionPlanSuccess && contributionPlan?.result) {
       setContributionData(contributionPlan.result);
       setIsModalOpen(true);
+      setIsSubmitting(false);
     }
   }, [createContributionPlanSuccess, contributionPlan]);
 
@@ -111,6 +110,8 @@ const Preview: React.FC = () => {
       return;
     }
 
+    setIsSubmitting(true);
+
     const body = {
       savingsCategory: purpose,
       contributionPlan: plan,
@@ -122,7 +123,11 @@ const Preview: React.FC = () => {
       contributionType,
     };
 
-    dispatch(CreateContributionPlan(body));
+    try {
+      await dispatch(CreateContributionPlan(body)).unwrap();
+    } catch (err) {
+      setIsSubmitting(false);
+    }
   };
 
   const handleDirectPayment = async (paymentType: "paystack") => {
@@ -197,10 +202,10 @@ const Preview: React.FC = () => {
           </button>
           <Button
             onClick={handleSubmit}
-            disabled={isLoading}
+            disabled={isSubmitting}
             className="flex items-center justify-center rounded-md bg-text2 px-8 py-2 font-semibold normal-case text-white transition-all duration-300 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg active:scale-95 active:transform"
           >
-            {isLoading ? "Submitting..." : "Submit"}
+            {isSubmitting ? "Submitting..." : "Submit"}
           </Button>
         </div>
       </div>
