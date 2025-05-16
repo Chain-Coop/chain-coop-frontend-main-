@@ -11,19 +11,29 @@ import otherIcon from "../../../Assets/svg/dashboard/ajo/other_group_saving_icon
 import otherImage from "../../../Assets/png/dashboard/ajo/other_group_saving_image.png";
 import GroupCard from "../components/group_card";
 import GroupHistoryTemplate from "../components/group_history_template";
+
 import { useWalletBalance } from "../../../shared/Hooks/useBalance";
+
+interface CircleFromAPI {
+  name?: string;
+  members?: any;
+  progress?: number;
+  amount?: string | number;
+  goal?: string | number;
+  totalSaved?: string | number;
+  icon?: string;
+  currentIndividualTotal?: number;
+  image?: string;
+  [key: string]: any;
+}
 
 const AjoPage = () => {
   const { isWalletVisible, setIsWalletVisible, formattedBalance } =
     useWalletBalance();
 
-  // state to select active group saving option
   const [groupOption, setGroupOption] = useState(0);
-
-  // state to control the group history selected
   const [groupHistory, setGroupHistory] = useState("ongoing");
 
-  // fetched data from server
   const otherGroupSavings = [
     {
       icon: otherIcon,
@@ -97,26 +107,40 @@ const AjoPage = () => {
     },
   ];
 
-  // Fetching data for Group History section
   const { userCircles, circlesLoading, circlesError } = useUserProfile();
+
+  const processCircleData = (circle: CircleFromAPI): any => {
+    const processed = {
+      ...circle,
+      name: typeof circle.name === 'string' ? circle.name : 'Unnamed Group',
+      icon: circle.icon || otherIcon,
+      image: circle.image || otherImage,
+      progress: typeof circle.progress === 'number' ? circle.progress : 0,
+      amount: circle.amount ? String(circle.amount) : 'N/A',
+      goal: circle.goal ? String(circle.goal) : 'N/A',
+      totalSaved: circle.totalSaved ? String(circle.totalSaved) : 'N/A',
+    };
+    if (Array.isArray(circle.members)) {
+      processed.members = circle.members.length;
+    } else if (typeof circle.members === 'object' && circle.members !== null) {
+      console.warn("A 'members' property is an object:", circle.members, "for circle:", circle.name);
+      processed.members = "Data Error";
+    } else if (typeof circle.members !== 'number') {
+      processed.members = circle.members || 0;
+    }
+
+    return processed;
+  };
 
   const ongoingGroupsFromAPI = userCircles
     ? userCircles
-        .map((circle: any) => ({
-          ...circle,
-          icon: circle.icon || otherIcon, // Fallback icon
-          image: circle.image || otherImage, // Fallback image
-        }))
+        .map(processCircleData)
         .filter((item: any) => item.progress < 100)
     : [];
 
   const completedGroupsFromAPI = userCircles
     ? userCircles
-        .map((circle: any) => ({
-          ...circle,
-          icon: circle.icon || otherIcon,
-          image: circle.image || otherImage,
-        }))
+        .map(processCircleData)
         .filter((item: any) => item.progress === 100)
     : [];
 
@@ -209,7 +233,7 @@ const AjoPage = () => {
                 members={group.members}
                 name={group.name}
                 progress={group.progress}
-                totalSaved={group.totalSaved}
+                balance={group.totalSaved}
                 buttonText="Join"
                 onClick={() => {}}
               />
