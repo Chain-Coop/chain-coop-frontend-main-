@@ -510,6 +510,20 @@ const getCashwyreHistory = async () => {
   }
 };
 
+const GetTotalBalance = async (network: string = "ETHERLINK") => {
+  const url = `${API_URL}/web3/balance/total/${network}`;
+  try {
+    const response = await axios({
+      url,
+      headers: authHeader(),
+      method: "get",
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const web3Services = {
   ActivateCryptoWallet,
   GetTotalCryptoWalletBalance,
@@ -533,6 +547,7 @@ const web3Services = {
   CashwyreOfframpQuote,
   CashwyreOfframpConfirm,
   getCashwyreHistory,
+  GetTotalBalance,
 };
 
 export default web3Services;

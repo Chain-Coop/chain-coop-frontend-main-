@@ -14,6 +14,7 @@ import {
   useAllUserTokens,
   useCryptoWallet,
   useCryptoWalletDetails,
+  useTotalBalance,
 } from "../../../shared/Hooks/useBalance";
 import useUserProfile from "../../../shared/Hooks/useUserProfile";
 import { useAppDispatch } from "../../../shared/redux/reduxHooks";
@@ -65,6 +66,7 @@ const CryptoMain = () => {
   const [selectedNetwork, setSelectedNetwork] = useState("ETHERLINK");
   const { Balance, isWalletVisible, setIsWalletVisible } =
     useCryptoWallet(selectedNetwork);
+  const { totalBalance, fetchTotalBalance } = useTotalBalance(selectedNetwork);
   const { userTokens, fetchUserTokens } = useAllUserTokens(selectedNetwork);
   const { profileDetails, fetchUserProfile } = useUserProfile();
   const { cryptoWalletDetails } = useCryptoWalletDetails();
@@ -78,8 +80,14 @@ const CryptoMain = () => {
   useEffect(() => {
     if (profileDetails?.isWalletActivated) {
       fetchUserTokens();
+      fetchTotalBalance();
     }
-  }, [fetchUserTokens, profileDetails?.isWalletActivated, selectedNetwork]);
+  }, [
+    fetchUserTokens,
+    fetchTotalBalance,
+    profileDetails?.isWalletActivated,
+    selectedNetwork,
+  ]);
 
   const handleCopy = (address: string) => {
     navigator?.clipboard.writeText(address);
@@ -185,12 +193,20 @@ const CryptoMain = () => {
 
                 <div className="w-60 text-center">
                   {isWalletVisible ? (
-                    <p className="text-xl font-bold lg:text-xl">
-                      $
-                      {typeof Balance === "number"
-                        ? Balance.toFixed(2)
-                        : "0.00"}
-                    </p>
+                    <>
+                      <p className="text-xl font-bold lg:text-xl">
+                        $
+                        {typeof Balance === "number"
+                          ? Balance.toFixed(2)
+                          : "0.00"}
+                      </p>
+                      <p className="mt-2 text-sm text-gray-600">
+                        Total Balance: $
+                        {typeof totalBalance === "number"
+                          ? totalBalance.toFixed(2)
+                          : "0.00"}
+                      </p>
+                    </>
                   ) : (
                     <p className="text-2xl font-bold">*********</p>
                   )}

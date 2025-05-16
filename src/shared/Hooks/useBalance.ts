@@ -416,3 +416,11 @@ export const useWithdrawalValidation = ({
     isStrictLockBlocked: false,
   };
 };
+
+export const useTotalBalance = (network: string = "ETHERLINK") => {
+  const { data, fetch } = useDataFetcher(
+    (state: any) => state.web3.totalBalance,
+    () => Web3Slices.GetTotalBalance(network),
+  );
+  return { totalBalance: data, fetchTotalBalance: fetch };
+};
