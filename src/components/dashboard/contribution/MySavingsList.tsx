@@ -66,14 +66,14 @@ const MySavingsList: React.FC<MySavingsListProps> = ({
 
   return (
     <section className="mt-6 w-full sm:mt-8 lg:mt-10">
-      <header className="flex flex-col items-start md:flex-row md:items-center justify-between gap-4">
-        <h1 className="text-lg font-bold sm:text-xl lg:text-2xl">My Savings</h1>
-        <div className="flex items-center gap-2">
-          <div className="relative block">
+      <header className="flex flex-col items-start justify-between gap-4">
+        <h1 className="text-lg font-bold tracking-tight sm:text-xl md:text-2xl">My Savings</h1>
+        <div className="flex items-center gap-2 w-full">
+          <div className="relative block w-full">
             <input
-              className="rounded-lg border-2 border-[#F5F0F0] py-2 pl-8 pr-3 placeholder:text-sm"
+              className="border-2 w-full rounded-full border-[#F5F0F0] py-3.5 shadow-xl pl-8 pr-3 placeholder:text-sm"
               type="search"
-              placeholder="Search savings by title"
+              placeholder="Search Contributions"
               value={searchTerm}
               onChange={onSearchChange}
               onKeyDown={onSearchKeyDown}
@@ -85,10 +85,11 @@ const MySavingsList: React.FC<MySavingsListProps> = ({
           </div>
           <button
             onClick={() => setIsFilterModalOpen(true)}
-            className="rounded-lg border-2 border-[#F5F0F0] p-2 text-gray-600 transition-colors hover:bg-gray-100"
+            className="rounded-lg flex gap-1 items-center border-[#F5F0F0] p-2 text-gray-600 transition-colors hover:bg-gray-100"
             aria-label="Filter savings"
           >
             <IoFilterOutline size={22} />
+            <p className="hidden md:block">Filter</p>
           </button>
         </div>
       </header>

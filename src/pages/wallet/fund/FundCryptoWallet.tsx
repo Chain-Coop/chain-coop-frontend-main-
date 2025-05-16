@@ -7,12 +7,10 @@ import { CashwyreFund } from "../../../shared/redux/slices/web3.slices";
 import btcImg from "../../../Assets/svg/dashboard/bitcoin.svg";
 import usdcImg from "../../../Assets/svg/dashboard/usd.svg";
 import usdtImg from "../../../Assets/svg/dashboard/usdt.svg";
-// IoClose and motion/AnimatePresence might not be needed if modals are fully removed,
-// but keeping them for BtcCoreNoticeModal's potential internal use or future needs.
 import { IoClose } from "react-icons/io5";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
-import { IoIosArrowBack, IoIosArrowDropleft } from "react-icons/io"; // Combined imports
+import { IoIosArrowBack, IoIosArrowDropleft } from "react-icons/io";
 import BtcCoreNoticeModal from "../../../components/dashboard/wallet/modal/crypro/modals/NoticeModal";
 import FundProgressBar from "../../../components/dashboard/wallet/modal/crypro/ProgressBar";
 
@@ -30,7 +28,6 @@ const ALL_NETWORKS = [
 ];
 
 const NETWORKS_BY_CRYPTO: Record<string, string[]> = {
-  // Added type for NETWORKS_BY_CRYPTO
   bitcoin: ["BTC_LN", "btc"],
   usdc: ["bsc", "etherlink"],
   usdt: ["bsc", "etherlink"],
@@ -39,12 +36,11 @@ const NETWORKS_BY_CRYPTO: Record<string, string[]> = {
 const FundCryptoWallet: React.FC = () => {
   const [crypto, setCrypto] = useState(
     () => CRYPTOS.find((c) => !c.disabled) || CRYPTOS[0],
-  ); // Initialize with first non-disabled or first
-  // Removed showCryptoModal and showNetworkModal states
+  );
   const [availableNetworks, setAvailableNetworks] = useState<
     typeof ALL_NETWORKS
   >([]);
-  const [network, setNetwork] = useState(ALL_NETWORKS[0]); // Will be updated by useEffect
+  const [network, setNetwork] = useState(ALL_NETWORKS[0]);
   const [amount, setAmount] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showBtcCoreModal, setShowBtcCoreModal] = useState(false);
@@ -62,30 +58,23 @@ const FundCryptoWallet: React.FC = () => {
     setAvailableNetworks(networks);
 
     if (networks.length > 0) {
-      // Check if the current network is valid for the new crypto type
       const currentNetworkStillValid = networks.some(
         (n) => n.value === network.value && !n.disabled,
       );
 
       if (currentNetworkStillValid) {
-        // If current network is still valid and enabled, keep it.
-        // No change needed to 'network' state here.
       } else {
-        // If current network is not valid or disabled, find the first enabled one.
         const firstEnabled = networks.find((n) => !n.disabled);
         if (firstEnabled) {
           setNetwork(firstEnabled);
         } else {
-          // If all are disabled, set to the first one in the filtered list (which will be disabled)
           setNetwork(networks[0]);
         }
       }
     } else {
-      // No available networks for this crypto, clear selection or handle as error
-      // For now, setting to a default-like state or the first from ALL_NETWORKS if needed
-      setNetwork(ALL_NETWORKS[0]); // Or handle this case more specifically
+      setNetwork(ALL_NETWORKS[0]);
     }
-  }, [crypto]); // Removed 'network' from dependency array to avoid potential loops with auto-selection
+  }, [crypto]);
 
   const handlePreviewOrder = async () => {
     setIsSubmitting(true);
@@ -159,8 +148,6 @@ const FundCryptoWallet: React.FC = () => {
     );
     if (selectedNet && !selectedNet.disabled) {
       if (selectedNet.value === "btc") {
-        // "btc" is the value for BTC Core
-        // Set network state first so BtcCoreNoticeModal knows which network was selected
         setNetwork(selectedNet);
         setShowBtcCoreModal(true);
       } else {
@@ -302,7 +289,7 @@ const FundCryptoWallet: React.FC = () => {
               placeholder="₦ 100,000"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              min={0} // Ensure non-negative numbers
+              min={0}
             />
             <span className="ml-2 font-bold text-green-600">NGN</span>
           </div>
@@ -310,12 +297,11 @@ const FundCryptoWallet: React.FC = () => {
         {/* Preview Order Button */}
         <div className="mt-10 flex items-center justify-between">
           <button
-            onClick={() => navigate(-1)} // Simplified back navigation
+            onClick={() => navigate(-1)}
             className="flex items-center transition-all duration-300 ease-in-out hover:scale-110 hover:text-text2"
           >
             <IoIosArrowDropleft size={25} />
             <span className="ml-1">Back</span>{" "}
-            {/* Added Back text for consistency */}
           </button>
           <button
             className="rounded-md bg-text2 px-8 py-2 font-semibold text-white
@@ -338,10 +324,7 @@ const FundCryptoWallet: React.FC = () => {
       <BtcCoreNoticeModal
         open={showBtcCoreModal}
         onClose={() => {
-          // User chose to proceed with BTC Core or closed the notice
           setShowBtcCoreModal(false);
-          // 'network' state should already be BTC Core from handleNetworkChange
-          // No need to setShowNetworkModal(false) as it's not used
         }}
         onSwitchToLightning={() => {
           const lightningNetwork = ALL_NETWORKS.find(
@@ -351,7 +334,6 @@ const FundCryptoWallet: React.FC = () => {
             setNetwork(lightningNetwork);
           }
           setShowBtcCoreModal(false);
-          // No need to setShowNetworkModal(false)
         }}
       />
     </main>

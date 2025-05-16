@@ -6,7 +6,15 @@ import {
   WithdrawUserPoolPayload,
   CryptoTransaction,
   Pool,
+  TokenInfo,
 } from "../../types/types";
+
+const SUPPORTED_NETWORKS_FOR_ALL_TOKENS = [
+  "ETHERLINK",
+  "BSC",
+  "GNOSIS",
+  "LISK",
+];
 
 export const ActivateCryptoWallet = createAsyncThunk(
   "web3/activateCryptoWallet",
@@ -210,13 +218,45 @@ export const GetAllUserTokens = createAsyncThunk(
   async (network: string = "ETHERLINK", thunkAPI) => {
     try {
       const data = await web3Services.GetAllUserTokens(network);
-      return data;
+      return { tokens: data.data || [], network };
     } catch (error: any) {
-      const message = error.message;
-      return thunkAPI.rejectWithValue(message);
+      const message = error.message || `Failed to fetch tokens for ${network}`;
+      return thunkAPI.rejectWithValue({ message, network });
     }
   },
 );
+
+export const FetchAllTokensFromSupportedNetworks = createAsyncThunk<
+  TokenInfo[],
+  void,
+  { rejectValue: { message: string } }
+>("web3/fetchAllTokensFromSupportedNetworks", async (_, thunkAPI) => {
+  try {
+    const allTokensPromises = SUPPORTED_NETWORKS_FOR_ALL_TOKENS.map(
+      async (network) => {
+        try {
+          const response = await web3Services.GetAllUserTokens(network);
+          const tokensFromNetwork: TokenInfo[] = response.data || [];
+          return tokensFromNetwork.map((token) => ({ ...token, network }));
+        } catch (networkError: any) {
+          console.error(
+            `Failed to fetch tokens for network ${network}:`,
+            networkError.message || networkError,
+          );
+          return [];
+        }
+      },
+    );
+
+    const results = await Promise.all(allTokensPromises);
+    const combinedTokens = results.flat();
+    return combinedTokens;
+  } catch (error: any) {
+    const message =
+      error.message || "An error occurred while fetching all user tokens.";
+    return thunkAPI.rejectWithValue({ message });
+  }
+});
 
 export const StopPeriodicPool = createAsyncThunk<
   any,
@@ -436,10 +476,7 @@ export const GetCashwyreHistory = createAsyncThunk<
   { rejectValue: string }
 >("web3/getCashwyreHistory", async (_, thunkAPI) => {
   try {
-    //console.log("GetCashwyreHistory thunk called");
     const data = await web3Services.getCashwyreHistory();
-    //console.log("Data received in thunk:", data);
-
     const formattedData: CashwyreHistoryResponse = {
       data: data.data || [],
       message: data.message || "Successfully fetched cashwyre transactions",
@@ -448,7 +485,6 @@ export const GetCashwyreHistory = createAsyncThunk<
 
     return formattedData;
   } catch (error: any) {
-    console.error("Error in GetCashwyreHistory thunk:", error);
     const message =
       error.message || "Failed to fetch cashwyre transaction history";
     thunkAPI.dispatch(setMessage(message));
@@ -483,7 +519,10 @@ interface CryptoState {
   registerUserPool: { [key: string]: any } | null;
   updateRegisteredUserPool: null;
   userPools: Pool[] | null;
-  userTokens: any[] | null;
+  userTokens: TokenInfo[] | null;
+  allNetworkTokens: TokenInfo[] | null;
+  allNetworkTokensLoading: boolean;
+  allNetworkTokensError: string | null;
   cryptoHistory: CryptoTransaction[] | null;
   cashwyreHistory: CryptoTransaction[] | null;
   loading: boolean;
@@ -518,6 +557,9 @@ const initialState: CryptoState = {
   updateRegisteredUserPool: null,
   userPools: null,
   userTokens: null,
+  allNetworkTokens: null,
+  allNetworkTokensLoading: false,
+  allNetworkTokensError: null,
   cryptoHistory: null,
   cashwyreHistory: null,
   loading: false,
@@ -723,18 +765,39 @@ export const Web3Slices = createSlice({
       })
 
       .addCase(GetAllUserTokens.pending, (state) => {
-        state.loading = true;
         state.error = null;
       })
       .addCase(GetAllUserTokens.fulfilled, (state, action) => {
-        state.loading = false;
-        state.userTokens = action.payload.data;
+        state.userTokens = action.payload.tokens;
         state.error = null;
       })
       .addCase(GetAllUserTokens.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
+        state.error =
+          (action.payload as any)?.message ||
+          `Failed to fetch tokens for network: ${(action.payload as any)?.network}`;
       })
+
+      .addCase(FetchAllTokensFromSupportedNetworks.pending, (state) => {
+        state.allNetworkTokensLoading = true;
+        state.allNetworkTokensError = null;
+      })
+      .addCase(
+        FetchAllTokensFromSupportedNetworks.fulfilled,
+        (state, action: PayloadAction<TokenInfo[]>) => {
+          state.allNetworkTokensLoading = false;
+          state.allNetworkTokens = action.payload;
+          state.allNetworkTokensError = null;
+        },
+      )
+      .addCase(
+        FetchAllTokensFromSupportedNetworks.rejected,
+        (state, action) => {
+          state.allNetworkTokensLoading = false;
+          state.allNetworkTokensError =
+            (action.payload as any)?.message || "Failed to fetch all tokens";
+          state.allNetworkTokens = null;
+        },
+      )
 
       .addCase(StopPeriodicPool.pending, (state) => {
         state.loading = true;
