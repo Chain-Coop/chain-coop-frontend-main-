@@ -462,9 +462,23 @@ interface CashwyreHistoryResponse {
   success: boolean;
 }
 
+export const GetTotalBalance = createAsyncThunk(
+  "web3/getTotalBalance",
+  async (network: string = "ETHERLINK", thunkAPI) => {
+    try {
+      const data = await web3Services.GetTotalBalance(network);
+      return data;
+    } catch (error: any) {
+      const message = error.message;
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
 interface CryptoState {
   actvateCryptWallet: Record<string, any> | null;
   cryptoBalance: number;
+  totalBalance: number;
   cryptoWalletDetails: Record<string, any> | null;
   registerUserPool: { [key: string]: any } | null;
   updateRegisteredUserPool: null;
@@ -499,6 +513,7 @@ const initialState: CryptoState = {
   actvateCryptWallet: null,
   cryptoWalletDetails: null,
   cryptoBalance: 0,
+  totalBalance: 0,
   registerUserPool: null,
   updateRegisteredUserPool: null,
   userPools: null,
@@ -858,6 +873,20 @@ export const Web3Slices = createSlice({
         state.cashwyreHistoryLoading = false;
         state.cashwyreHistory = null;
         state.cashwyreHistoryError = action.payload as string;
+      })
+      .addCase(GetTotalBalance.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(GetTotalBalance.fulfilled, (state, action) => {
+        state.loading = false;
+        state.totalBalance = action.payload.data || 0;
+        state.error = null;
+      })
+      .addCase(GetTotalBalance.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.totalBalance = 0;
       });
   },
 });
