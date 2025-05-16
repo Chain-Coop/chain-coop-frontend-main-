@@ -63,6 +63,7 @@ const STABLE_COIN_NETWORKS = [
   { label: "BSC (BNB Smart Chain)", value: "BSC", disabled: false },
   { label: "ETHERLINK", value: "ETHERLINK", disabled: false },
   { label: "GNOSIS", value: "GNOSIS", disabled: false },
+  { label: "LISK", value: "LISK", disabled: false },
 ];
 
 const BTC_NETWORKS = [

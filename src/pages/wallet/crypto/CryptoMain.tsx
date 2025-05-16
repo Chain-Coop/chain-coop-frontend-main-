@@ -152,7 +152,7 @@ const CryptoMain = () => {
                   Wallet Activated
                   <img src={walletActivated} alt="walletActivated" />
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="hidden items-center gap-4">
                   <select
                     value={selectedNetwork}
                     onChange={(e) => handleNetworkChange(e.target.value)}
@@ -195,13 +195,6 @@ const CryptoMain = () => {
                   {isWalletVisible ? (
                     <>
                       <p className="text-xl font-bold lg:text-xl">
-                        $
-                        {typeof Balance === "number"
-                          ? Balance.toFixed(2)
-                          : "0.00"}
-                      </p>
-                      <p className="mt-2 text-sm text-gray-600">
-                        Total Balance: $
                         {typeof totalBalance === "number"
                           ? totalBalance.toFixed(2)
                           : "0.00"}

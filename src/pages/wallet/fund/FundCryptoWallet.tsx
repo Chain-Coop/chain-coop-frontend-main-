@@ -25,7 +25,6 @@ const CRYPTOS = [
 const ALL_NETWORKS = [
   { label: "BTC Lightning", value: "BTC_LN", disabled: false },
   { label: "BTC Core", value: "btc", disabled: false },
-  { label: "LISK", value: "lisk", disabled: true },
   { label: "BNB Smart Chain-BEP20", value: "bsc", disabled: false },
   { label: "Etherlink", value: "etherlink", disabled: true },
 ];
@@ -33,8 +32,8 @@ const ALL_NETWORKS = [
 const NETWORKS_BY_CRYPTO: Record<string, string[]> = {
   // Added type for NETWORKS_BY_CRYPTO
   bitcoin: ["BTC_LN", "btc"],
-  usdc: ["lisk", "bsc", "etherlink"],
-  usdt: ["lisk", "bsc", "etherlink"],
+  usdc: ["bsc", "etherlink"],
+  usdt: ["bsc", "etherlink"],
 };
 
 const FundCryptoWallet: React.FC = () => {
