@@ -207,10 +207,9 @@ export const WithdrawUserPool = createAsyncThunk<
 
 export const GetAllUserTokens = createAsyncThunk(
   "web3/getAllUserTokens",
-  async (_, thunkAPI) => {
+  async (network: string = "ETHERLINK", thunkAPI) => {
     try {
-      const data = await web3Services.GetAllUserTokens();
-      //console.log(data);
+      const data = await web3Services.GetAllUserTokens(network);
       return data;
     } catch (error: any) {
       const message = error.message;
@@ -440,13 +439,13 @@ export const GetCashwyreHistory = createAsyncThunk<
     //console.log("GetCashwyreHistory thunk called");
     const data = await web3Services.getCashwyreHistory();
     //console.log("Data received in thunk:", data);
-    
+
     const formattedData: CashwyreHistoryResponse = {
       data: data.data || [],
       message: data.message || "Successfully fetched cashwyre transactions",
-      success: data.success !== false
+      success: data.success !== false,
     };
-    
+
     return formattedData;
   } catch (error: any) {
     console.error("Error in GetCashwyreHistory thunk:", error);
