@@ -93,7 +93,7 @@ export const useUnPaidContribution = () => {
   };
 };
 
-export const useCryptoWallet = () => {
+export const useCryptoWallet = (network: string = "ETHERLINK") => {
   const { isVisible, setIsVisible } = useVisibilityState(
     "walletBalanceVisible",
     true,
@@ -106,7 +106,10 @@ export const useCryptoWallet = () => {
   } = useBalanceFetcher(
     (state: any) => state.web3,
     Web3Slices.GetTotalCryptoWalletBalance,
-    { refreshInterval: 30000 },
+    {
+      refreshInterval: 30000,
+      params: network,
+    },
   );
   useEffect(() => {
     //console.log('Web3 State:', cryptoState);
@@ -182,11 +185,33 @@ export const useWalletBalance = () => {
 };
 
 export const useAllUserTokens = () => {
-  const { data, fetch } = useDataFetcher(
-    (state: any) => state.web3.userTokens,
-    Web3Slices.GetAllUserTokens,
-  );
-  return { userTokens: data, fetchUserTokens: fetch };
+  const dispatch = useDispatch<AppDispatch>();
+  const { allNetworkTokens, allNetworkTokensLoading, allNetworkTokensError } =
+    useSelector(
+      (state: any) => ({
+        allNetworkTokens: state.web3.allNetworkTokens,
+        allNetworkTokensLoading: state.web3.allNetworkTokensLoading,
+        allNetworkTokensError: state.web3.allNetworkTokensError,
+      }),
+      shallowEqual,
+    );
+
+  const fetchUserTokens = useCallback(() => {
+    // Fetches tokens from ALL supported networks
+    dispatch(Web3Slices.FetchAllTokensFromSupportedNetworks());
+  }, [dispatch]);
+
+  // useEffect(() => {
+  //   // Decide if you want to auto-fetch on hook mount or let the component decide
+  //   // fetchUserTokens();
+  // }, [fetchUserTokens]);
+
+  return {
+    userTokens: allNetworkTokens || [],
+    loading: allNetworkTokensLoading,
+    error: allNetworkTokensError,
+    fetchUserTokens,
+  };
 };
 
 export const useUserTransaction = () => {
@@ -390,5 +415,32 @@ export const useWithdrawalValidation = ({
     netAmount,
     shortfall,
     isStrictLockBlocked: false,
+  };
+};
+
+export const useTotalBalance = (network: string = "ETHERLINK") => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { totalBalanceData, isLoading, errorData } = useSelector(
+    (state: any) => ({
+      totalBalanceData: state.web3.totalBalance,
+      isLoading: state.web3.loading,
+      errorData: state.web3.error,
+    }),
+    shallowEqual,
+  );
+
+  const fetchTotalBalance = useCallback(() => {
+    dispatch(Web3Slices.GetTotalBalance(network))
+      .unwrap()
+      .catch((err: any) => {
+        console.error("Failed to fetch total balance:", err);
+      });
+  }, [dispatch, network]);
+
+  return {
+    totalBalance: totalBalanceData,
+    loading: isLoading,
+    error: errorData,
+    fetchTotalBalance,
   };
 };

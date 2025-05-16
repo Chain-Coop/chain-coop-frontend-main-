@@ -19,8 +19,8 @@ const ActivateCryptoWallet = async () => {
   }
 };
 
-const GetTotalCryptoWalletBalance = async () => {
-  const url = `${API_URL}/web3/balance/total`;
+const GetTotalCryptoWalletBalance = async (network: string = "ETHERLINK") => {
+  const url = `${API_URL}/web3/balance/tokens/${network}`;
   try {
     const response = await axios({
       url,
@@ -225,8 +225,8 @@ const WithdrawUserPool = async (body: any) => {
   }
 };
 
-const GetAllUserTokens = async () => {
-  const url = `${API_URL}/web3/balance/tokens`;
+const GetAllUserTokens = async (network: string = "ETHERLINK") => {
+  const url = `${API_URL}/web3/balance/tokens/${network}`;
   try {
     const response = await axios({
       url,
@@ -480,18 +480,19 @@ const CashwyreOfframpConfirm = async (body: any) => {
 const getCashwyreHistory = async () => {
   const url = `${API_URL}/web3/cashwyre/transactions`;
   //console.log("Fetching cashwyre history from:", url);
-  
+
   try {
     const response = await axios.get(url, {
       headers: authHeader(),
     });
     //console.log("Raw API response:", response);
     //console.log("Cashwyre history data:", response.data);
-    
+
     return {
       data: response.data.data || [],
-      message: response.data.message || "Successfully fetched cashwyre transactions",
-      success: response.data.success !== false
+      message:
+        response.data.message || "Successfully fetched cashwyre transactions",
+      success: response.data.success !== false,
     };
   } catch (error: any) {
     //console.error("Error in getCashwyreHistory:", error);
@@ -506,6 +507,20 @@ const getCashwyreHistory = async () => {
     } else {
       throw new Error("Network Error: Could not fetch crypto history.");
     }
+  }
+};
+
+const GetTotalBalance = async (network: string = "ETHERLINK") => {
+  const url = `${API_URL}/web3/balance/total/${network}`;
+  try {
+    const response = await axios({
+      url,
+      headers: authHeader(),
+      method: "get",
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -532,6 +547,7 @@ const web3Services = {
   CashwyreOfframpQuote,
   CashwyreOfframpConfirm,
   getCashwyreHistory,
+  GetTotalBalance,
 };
 
 export default web3Services;

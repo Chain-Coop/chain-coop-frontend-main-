@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FiArrowUpRight } from "react-icons/fi";
 import { LuArrowDownRight } from "react-icons/lu";
@@ -11,26 +11,38 @@ import { FaChevronRight } from "react-icons/fa";
 import { MdOutlinePeopleOutline } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
 
-import sampleImage from "../../../Assets/png/dashboard/ajo/sample_savings_image.png";
-import icon from "../../../Assets/svg/dashboard/ajo/details_icon.svg";
+import defaultPageImage from "../../../Assets/png/dashboard/ajo/sample_savings_image.png";
+import defaultPageIcon from "../../../Assets/svg/dashboard/ajo/details_icon.svg";
 import currency_icon from "../../../Assets/svg/dashboard/ajo/currency_icon.svg";
 import { IoIosArrowBack } from "react-icons/io";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import { membersBriefData } from "../../../data/Data";
 import Members_Template from "./member_template";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FundModal from "./fund_modal";
+import { GroupCardProps } from "../components/group_card";
 
 const SavingsDetail = () => {
-  const { name } = useParams();
+  const { name: nameFromParams } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const progress = 50;
+  const cardData = location.state as GroupCardProps | undefined;
+
+  const displayName = cardData?.name || nameFromParams || "Savings Details";
+  const displayImage = cardData?.image || defaultPageImage;
+  const displayIcon = cardData?.icon || defaultPageIcon;
+  const displayMembersCount = cardData?.members ?? membersBriefData.length;
+  const contributionAmount = cardData?.amount || "N/A";
+  const groupGoal = cardData?.goal || "N/A";
+  const totalSavedByGroup = cardData?.balance || "0.00";
+  const currentProgress = cardData?.progress ?? 0;
 
   const firstSavingsData = [
     {
       key: "Daily Deposit",
-      value: "$10",
-      addition: "(optional)",
+      value: contributionAmount,
+      addition: contributionAmount !== "N/A" ? "(from group)" : "(optional)",
     },
     {
       key: "Start Date",
@@ -61,15 +73,15 @@ const SavingsDetail = () => {
     },
   ];
 
-  const navigate = useNavigate();
 
-  // state to toggle the modal
   const [isFundModalOpen, setIsFundModalOpen] = useState<boolean>(false);
 
-  // function to navigate back
   const handleBackClick = () => {
     navigate(-1);
   };
+
+  const mySavingsAmount = "$200";
+  const mySavingsProgress = 50;
 
   return (
     <main className="mb-[20px] flex  flex-col  font-asap">
@@ -79,7 +91,7 @@ const SavingsDetail = () => {
       >
         <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
         <div className="flex flex-grow items-center justify-center">
-          <div className="tracking-wide">{name}</div>
+          <div className="tracking-wide">{displayName}</div>
         </div>
       </DashboardHeader>
 
@@ -87,27 +99,27 @@ const SavingsDetail = () => {
         {/* SAVINGS INTRO AND HEADER */}
         <section className="mt-[10px] flex justify-between gap-2 bg-[#ECE6F240] py-4">
           <img
-            src={sampleImage}
-            alt={name}
+            src={displayImage}
+            alt={displayName}
             className="hidden w-[160px] flex-shrink-0 rounded-lg sm:block"
           />
           <div className="flex w-[100%] flex-col gap-2 text-[#1E1E1EB2]">
             <div className="flex w-[100%] items-center justify-between sm:items-start">
               <img
-                src={sampleImage}
-                alt={name}
+                src={displayImage}
+                alt={displayName}
                 className="h-[50px] w-[70px] rounded-lg sm:hidden sm:flex-shrink-0"
               />
               <div className="flex flex-col items-start gap-1">
                 <h2 className="text-[22px] font-[600] tracking-tight text-[#1E1E1E] lg:text-[24px]">
-                  {name}
+                  {displayName}
                 </h2>
                 <Link
-                  to={`/leadership-board/{name}`}
+                  to={`/leadership-board/${displayName}`}
                   className="flex items-center sm:gap-1"
                 >
                   <img
-                    src={icon}
+                    src={displayIcon}
                     alt="leadership board"
                     className="hidden h-[14px] w-[14px] sm:block"
                   />
@@ -117,12 +129,11 @@ const SavingsDetail = () => {
                   <GrFormNext className="text-[16px] text-[#440080]" />
                 </Link>
               </div>
-              <ProgressCircle progress={5} />
+              <ProgressCircle progress={currentProgress} /> 
             </div>
             <Typography className="font-asap text-[16px] font-[400] leading-tight tracking-wide">
-              alialiquam vel elementum facilisis amet netus elementum. Quam
-              mauris diam pretium etiam pellentesque accumsan. Enim nisl sit
-              interdum id vivamus nibh lacus s feug.
+              This is a group savings plan for {displayName}. Our goal is {groupGoal}.
+              Join us and contribute {contributionAmount}!
             </Typography>
           </div>
         </section>
@@ -132,29 +143,30 @@ const SavingsDetail = () => {
             My savings
           </Typography>
           <h2 className="text-[34px] font-[600] tracking-tight text-[#1E1E1E] lg:text-[36px]">
-            $200
+            {mySavingsAmount}
           </h2>
           <div className="my-4 flex w-[100%] items-center justify-center gap-1 border-y border-[#C4C0C080] py-2">
             <Typography className="font-asap text-[14px] font-[400] leading-tight tracking-wide text-[#302B2B]">
               Savings progress
             </Typography>
-            {progress > 0 ? (
+            {mySavingsProgress > 0 ? (
               <FiArrowUpRight className="text-[14px] text-[#2EC046]" />
             ) : (
               <LuArrowDownRight className="text-[14px] text-red-500" />
             )}
             <Typography
-              className={`font-asap text-[14px] font-[700] leading-tight tracking-wide text-[#302B2B] ${progress > 0 ? "text-[#2EC046]" : "text-red-500"}`}
+              className={`font-asap text-[14px] font-[700] leading-tight tracking-wide text-[#302B2B] ${mySavingsProgress > 0 ? "text-[#2EC046]" : "text-red-500"}`}
             >
-              {progress}%
+              {mySavingsProgress}% 
             </Typography>
           </div>
           <Typography className="font-asap text-[14px] font-[400] leading-tight tracking-wide opacity-60">
-            Total saved
+            Total saved by group
           </Typography>
           <h2 className="text-[34px] font-[600] tracking-tight text-[#1E1E1E] lg:text-[36px]">
-            $29,000.67
+            ${totalSavedByGroup}
           </h2>
+          {/* ... Buttons ... */}
           <div className="mt-8 flex w-[100%] flex-wrap items-center justify-between gap-y-4">
             <Button
               onClick={() => setIsFundModalOpen(true)}
@@ -191,7 +203,7 @@ const SavingsDetail = () => {
               <Typography className="font-asap text-[16px] font-[500] text-[#939090] lg:text-[18px]">
                 {data.key}
               </Typography>
-              <div className="flex w-[150px] items-center justify-between gap-1 rounded-lg border-2 border-[#440080] bg-[#ECE6F2] p-2">
+              <div className="flex w-fit items-center justify-between gap-1 rounded-lg border-2 border-[#440080] bg-[#ECE6F2] p-2 pr-3"> {/* Adjusted width to fit content */}
                 {data.image && (
                   <img
                     src={data.image}
@@ -199,29 +211,30 @@ const SavingsDetail = () => {
                     className="h-[24px] w-[24px]"
                   />
                 )}
-                <Typography className="pr-6 font-asap text-[14px] font-[500] text-[#302B2B] lg:text-[16px]">
+                <Typography className="font-asap text-[14px] font-[500] text-[#302B2B] lg:text-[16px]">
                   {data.value}
                 </Typography>
-                <BsPatchCheck className="text-[24px] text-[#440080]" />
+                <BsPatchCheck className="ml-2 text-[24px] text-[#440080]" />
               </div>
             </li>
           ))}
-
-          <li className="flex w-[96%] items-center justify-between border-b border-b-[#DDD8D887] pb-4 pt-10">
+          {/* ... other list items ... */}
+           <li className="flex w-[96%] items-center justify-between border-b border-b-[#DDD8D887] pb-4 pt-10">
             <Typography className="font-asap text-[16px] font-[500] text-[#939090] lg:text-[18px]">
               Withdrawal Day
             </Typography>
             <Typography className="font-asap text-[16px] font-[500] text-black lg:text-[18px]">
-              28/04/2025
+              28/04/2025 {/* Placeholder */}
             </Typography>
           </li>
         </ul>
 
         {/* TRANSACTION BOX */}
         <Link
-          to={`/dashboard/ajo/${name}/transactions`}
+          to={`/dashboard/ajo/${displayName}/transactions`}
           className="mt-6 flex w-[100%] items-center justify-between rounded-md border border-[#DDD8D84D] bg-[#ECE6F25E] px-3 py-6"
         >
+          {/* ... */}
           <div className="flex w-[80%] flex-col  gap-4">
             <h3 className="text-[18px] font-[500] tracking-tight text-[#1E1E1E]">
               Transaction history
@@ -239,10 +252,11 @@ const SavingsDetail = () => {
         <section className="mt-8 flex flex-col gap-3">
           <div className="flex items-center justify-between border-b-2 border-b-[#DDD8D880] pb-2">
             <h3 className="text-[18px] font-[600] tracking-tight text-[#1E1E1E]">
-              Members ({membersBriefData.length})
+              Members ({displayMembersCount})
             </h3>
+            {/* ... Invite users link ... */}
             <Link
-              to={"/dashboard/ajo/open-group/members"}
+              to={`/dashboard/ajo/${displayName}/members-invite`}
               className="flex items-center gap-2"
             >
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#ECE6F25E]">
@@ -255,7 +269,7 @@ const SavingsDetail = () => {
             </Link>
           </div>
           <ul className="mt-[10px] flex flex-col gap-4">
-            {membersBriefData.map((data, index) => (
+            {membersBriefData.slice(0, Math.min(3, displayMembersCount)).map((data, index) => (
               <Members_Template
                 amount={data.amount}
                 index={index}
@@ -268,10 +282,10 @@ const SavingsDetail = () => {
           </ul>
         </section>
         <Link
-          to={"/dashboard/ajo/${name}/members"}
+          to={`/dashboard/ajo/${displayName}/members`}
           className="mt-8 flex h-[45px] w-[200px] items-center justify-center self-center rounded-md border-2 border-[#440080] bg-white text-center font-asap text-[16px] font-[600] text-[#440080]"
         >
-          See all
+          See all members
         </Link>
       </section>
       <FundModal isOpen={isFundModalOpen} setIsOpen={setIsFundModalOpen} />

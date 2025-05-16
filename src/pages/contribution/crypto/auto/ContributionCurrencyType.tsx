@@ -8,6 +8,8 @@ import usdt from "../../../../Assets/svg/dashboard/usdt.svg";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import ProgressBar from "../../../../components/dashboard/contribution/ProgressBar";
+import { IoClose } from "react-icons/io5";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface LocationState {
   lockedType?: number;
@@ -56,6 +58,18 @@ const lockTypeConfigs: Record<number, LockTypeConfig> = {
   },
 };
 
+const STABLE_COIN_NETWORKS = [
+  { label: "BSC (BNB Smart Chain)", value: "BSC", disabled: false },
+  { label: "ETHERLINK", value: "ETHERLINK", disabled: false },
+  { label: "GNOSIS", value: "GNOSIS", disabled: false },
+  { label: "LISK", value: "LISK", disabled: false },
+];
+
+const BTC_NETWORKS = [
+  { label: "BTC Core", value: "BTC_CORE", disabled: false },
+  { label: "BTC Lightning", value: "BTC_LIGHTNING", disabled: false },
+];
+
 const UnifiedContributionCurrencyType: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -97,8 +111,62 @@ const UnifiedContributionCurrencyType: React.FC = () => {
     currency: "",
     tokenId: "",
     tokenName: "",
+    network: "",
   });
   const [error, setError] = useState("");
+
+  const [selectedNetwork, setSelectedNetwork] = useState<{
+    label: string;
+    value: string;
+    disabled?: boolean;
+  } | null>(null);
+  const [availableNetworks, setAvailableNetworks] = useState<
+    Array<{ label: string; value: string; disabled?: boolean }>
+  >([]);
+
+  useEffect(() => {
+    if (formData.tokenName) {
+      let networks: Array<{ label: string; value: string; disabled?: boolean }>;
+      if (formData.tokenName === "BTC") {
+        networks = BTC_NETWORKS;
+      } else if (["USDT", "USDC"].includes(formData.tokenName)) {
+        networks = STABLE_COIN_NETWORKS;
+      } else {
+        networks = [];
+      }
+
+      const sortedNetworks = networks.sort(
+        (a, b) => Number(a.disabled) - Number(b.disabled),
+      );
+      setAvailableNetworks(sortedNetworks);
+
+      if (sortedNetworks.length > 0) {
+        const currentNetworkIsValid = sortedNetworks.some(
+          (n) => n.value === selectedNetwork?.value && !n.disabled,
+        );
+        if (!selectedNetwork || !currentNetworkIsValid) {
+          const firstEnabled = sortedNetworks.find((n) => !n.disabled);
+          if (firstEnabled) {
+            setSelectedNetwork(firstEnabled);
+            setFormData((prev) => ({ ...prev, network: firstEnabled.value }));
+          } else if (sortedNetworks.length > 0) {
+            setSelectedNetwork(sortedNetworks[0]);
+            setFormData((prev) => ({
+              ...prev,
+              network: sortedNetworks[0].value,
+            }));
+          }
+        }
+      } else {
+        setSelectedNetwork(null);
+        setFormData((prev) => ({ ...prev, network: "" }));
+      }
+    } else {
+      setAvailableNetworks([]);
+      setSelectedNetwork(null);
+      setFormData((prev) => ({ ...prev, network: "" }));
+    }
+  }, [formData.tokenName]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -121,16 +189,26 @@ const UnifiedContributionCurrencyType: React.FC = () => {
 
   const handleCryptoTypeSelect = (tokenName: string) => {
     const tokenMapping: Record<string, string> = {
-      USDT: "1",
+      USDT: "2",
       USDC: "2",
-      BTC: "3",
+      BTC: "2",
     };
 
     setFormData((prev) => ({
       ...prev,
       tokenId: tokenMapping[tokenName],
       tokenName,
+      network: "",
     }));
+  };
+
+  const handleNetworkSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = e.target.value;
+    const network = availableNetworks.find((n) => n.value === selectedValue);
+    if (network && !network.disabled) {
+      setSelectedNetwork(network);
+      setFormData((prev) => ({ ...prev, network: network.value }));
+    }
   };
 
   const handleNext = () => {
@@ -146,6 +224,15 @@ const UnifiedContributionCurrencyType: React.FC = () => {
 
     if (formData.currency === "Cryptocurrency" && !formData.tokenId) {
       setError("Please select a cryptocurrency type");
+      return;
+    }
+
+    if (
+      formData.currency === "Cryptocurrency" &&
+      formData.tokenId &&
+      !formData.network
+    ) {
+      setError("Please select a network for the chosen cryptocurrency");
       return;
     }
 
@@ -265,41 +352,86 @@ const UnifiedContributionCurrencyType: React.FC = () => {
         </div>
 
         {formData.currency === "Cryptocurrency" && (
-          <section className="mt-[3em]">
-            <div className="w-full max-w-[30em] rounded-xl bg-inherit py-[2em] shadow-lg md:max-w-full">
-              <div className="px-[1em]">
-                <header>
-                  <h4 className="mb-2 text-lg font-semibold text-memt1">
-                    Select Cryptocurrency type
-                  </h4>
-                </header>
+          <>
+            <section className="mt-[3em]">
+              <div className="w-full max-w-[30em] rounded-xl bg-inherit py-[2em] shadow-lg md:max-w-full">
+                <div className="px-[1em]">
+                  <header>
+                    <h4 className="mb-2 text-lg font-semibold text-memt1">
+                      Select Cryptocurrency type
+                    </h4>
+                  </header>
+                </div>
+                <hr />
+                <div className="mt-[1em] flex flex-col items-center justify-center gap-[2em] px-[1em] md:flex-row md:items-start md:justify-start">
+                  {[
+                    { type: "USDT", icon: usdt },
+                    { type: "USDC", icon: usdc },
+                    { type: "BTC", icon: bitcoin },
+                  ].map(({ type, icon }) => (
+                    <button
+                      key={type}
+                      onClick={() => handleCryptoTypeSelect(type)}
+                      className={`flex w-[9em] items-center gap-2 rounded-md bg-[#ECE6F2] px-6 py-2 font-medium transition-all duration-300 lg:py-1
+                        ${
+                          formData.tokenName === type
+                            ? "border-2 border-text2"
+                            : "hover:bg-text2 hover:text-white"
+                        }
+                        transform uppercase hover:scale-105 active:scale-95`}
+                    >
+                      <img src={icon} alt={type} className="h-8 w-8" />
+                      <span>{type}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
-              <hr />
-              <div className="mt-[1em] flex flex-col items-center justify-center gap-[2em] px-[1em] md:flex-row md:items-start md:justify-start">
-                {[
-                  { type: "USDT", icon: usdt },
-                  { type: "USDC", icon: usdc },
-                  { type: "BTC", icon: bitcoin },
-                ].map(({ type, icon }) => (
-                  <button
-                    key={type}
-                    onClick={() => handleCryptoTypeSelect(type)}
-                    className={`flex w-[9em] items-center gap-2 rounded-md bg-[#ECE6F2] px-6 py-2 font-medium transition-all duration-300 lg:py-1
-                      ${
-                        formData.tokenName === type
-                          ? "border-2 border-text2"
-                          : "hover:bg-text2 hover:text-white"
-                      }
-                      transform uppercase hover:scale-105 active:scale-95`}
+            </section>
+
+            {formData.tokenName && (
+              <div className="relative mb-4 mt-8">
+                <label className="mb-1 block text-lg font-medium text-memt1">
+                  Token network
+                </label>
+                <div className="relative">
+                  <select
+                    value={selectedNetwork?.value || ""}
+                    onChange={handleNetworkSelect}
+                    className="w-full appearance-none rounded-md border border-gray-300 bg-white px-4 py-3 pr-10 text-gray-700 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-text2 focus:outline-none focus:ring-2 focus:ring-text2 focus:ring-opacity-50"
                   >
-                    <img src={icon} alt={type} className="h-8 w-8" />
-                    <span>{type}</span>
-                  </button>
-                ))}
+                    <option value="" disabled className="text-gray-500">
+                      Select Network
+                    </option>
+                    {availableNetworks.map((network) => (
+                      <option
+                        key={network.value}
+                        value={network.value}
+                        disabled={network.disabled}
+                        className={`py-2 ${network.disabled ? "text-gray-400" : "text-gray-700"}`}
+                      >
+                        {network.label}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg
+                      className="h-5 w-5 fill-current"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                </div>
               </div>
-            </div>
-          </section>
+            )}
+          </>
         )}
+
         {error && (
           <Alert severity="error" className="mb-4 mt-4">
             {error}
@@ -321,7 +453,8 @@ const UnifiedContributionCurrencyType: React.FC = () => {
             onClick={handleNext}
             disabled={
               !formData.currency ||
-              (formData.currency === "Cryptocurrency" && !formData.tokenId)
+              (formData.currency === "Cryptocurrency" &&
+                (!formData.tokenId || !formData.network))
             }
           >
             Next

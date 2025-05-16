@@ -141,6 +141,19 @@ const UnifiedPreviewSavings: React.FC = () => {
       );
     }
 
+    toast.info(
+      "Don't refresh or close this tab. Real power takes a minute. You're not just saving... you're making history",
+      {
+        position: "top-right",
+        autoClose: 7000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        toastId: "avoid-refresh-warning-on-pin-submit",
+      },
+    );
+
     let finalPayload: any = {
       ...restOfFormData,
       tokenId: tokenId,
@@ -247,7 +260,7 @@ const UnifiedPreviewSavings: React.FC = () => {
           </div>
 
           <section className="flex w-full flex-col gap-2 md:flex-row md:gap-5">
-            <div className="flex items-center gap-1 md:gap-2">
+            <div className="hidden items-center gap-1 md:gap-2">
               <h2 className="text-sm font-semibold text-gray-500">
                 Interest Rate:
               </h2>
@@ -353,18 +366,25 @@ const UnifiedPreviewSavings: React.FC = () => {
               </h2>
               <p className="font-bold">{formData.fundSource || "N/A"}</p>
             </div>
+
+            <div className="h-[83px] w-full rounded-lg bg-[#ECE6F242] p-4 md:w-[210px] md:p-2">
+              <h2 className="text-sm font-semibold text-gray-500">
+                Network
+              </h2>
+              <p className="font-bold">{formData.network || "N/A"}</p>
+            </div>
           </section>
         </div>
 
         <div className="mt-[3em] flex items-center justify-between">
-          <button
+          <Button
             onClick={() => navigate(-1)}
             className="flex items-center transition-transform duration-300 hover:scale-110 hover:text-text2"
-            aria-label="Go back"
+           
           >
             <IoIosArrowDropleft size={30} />
             <span className="ml-1 font-medium">Back</span>
-          </button>
+          </Button>
           <Button
             variant="filled"
             onClick={handlePay}

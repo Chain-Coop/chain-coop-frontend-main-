@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import walletActivated from "../../../Assets/svg/dashboard/walletActivated.svg";
@@ -8,12 +8,14 @@ import lisk from "../../../Assets/svg/dashboard/token_lisk.svg";
 import usdc from "../../../Assets/svg/dashboard/usd.svg";
 import usdt from "../../../Assets/svg/dashboard/usdt.svg";
 import weth from "../../../Assets/svg/dashboard/ethereum.svg";
+import gnosis from "../../../Assets/svg/dashboard/gnosis.svg";
 import { Copy, Check } from "lucide-react";
 import { Button, Typography } from "@material-tailwind/react";
 import {
   useAllUserTokens,
   useCryptoWallet,
   useCryptoWalletDetails,
+  useTotalBalance,
 } from "../../../shared/Hooks/useBalance";
 import {
   useAppDispatch,
@@ -33,6 +35,7 @@ interface TokenInfo {
   tokenAddress: string;
   balance: number;
   tokenSymbol: string;
+  network?: string;
 }
 
 interface TokenListItem {
@@ -45,6 +48,7 @@ interface TokenListItem {
 const TOKEN_IMAGES: Record<string, string> = {
   USDT: usdt,
   USDC: usdc,
+  GNO: gnosis,
   WETH: weth,
   ETH: weth,
   WBTC: lisk,
@@ -58,6 +62,7 @@ const TOKEN_NAMES: Record<string, string> = {
   USDT: "Tether",
   USDC: "USD Coin",
   WETH: "Wrapped Ethereum",
+  GNO: "Gnosis",
   ETH: "Ethereum",
   WBTC: "Wrapped Bitcoin",
   BTC: "Bitcoin",
@@ -66,13 +71,38 @@ const TOKEN_NAMES: Record<string, string> = {
   WUSDC: "Wrapped USD Coin",
 };
 
+const DISPLAY_NETWORKS = ["ETHERLINK", "BSC", "GNOSIS", "LISK"];
+
 const CryptoMain = () => {
-  const { Balance, isWalletVisible, setIsWalletVisible } = useCryptoWallet();
-  const { userTokens, fetchUserTokens } = useAllUserTokens();
+  const [selectedNetworkForView, setSelectedNetworkForView] = useState<string>(
+    DISPLAY_NETWORKS[0],
+  );
+
+  const { isWalletVisible, setIsWalletVisible } = useCryptoWallet(
+    DISPLAY_NETWORKS[1],
+  );
+
+  const {
+    totalBalance,
+    fetchTotalBalance,
+    loading: loadingTotalBalance,
+  } = useTotalBalance(
+    selectedNetworkForView === "All"
+      ? DISPLAY_NETWORKS[1]
+      : selectedNetworkForView,
+  );
+
+  const {
+    userTokens: allTokensFromSupportedNetworks,
+    fetchUserTokens,
+    loading: loadingUserTokens,
+    error: errorUserTokens,
+  } = useAllUserTokens();
+
   const { profileDetails, fetchUserProfile } = useUserProfile();
   const { cryptoWalletDetails } = useCryptoWalletDetails();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const [activatingWalletLoading, setActivatingWalletLoading] = useState(false);
   const dispatch: AppDispatch = useAppDispatch();
   const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>(
     {},
@@ -80,9 +110,28 @@ const CryptoMain = () => {
 
   useEffect(() => {
     if (profileDetails?.isWalletActivated) {
+      console.log("Wallet is activated, fetching all user tokens...");
       fetchUserTokens();
+    } else {
+      console.log("Wallet is not activated");
     }
   }, [fetchUserTokens, profileDetails?.isWalletActivated]);
+
+  useEffect(() => {
+    if (profileDetails?.isWalletActivated && selectedNetworkForView !== "All") {
+      console.log("Fetching total balance for:", selectedNetworkForView);
+      fetchTotalBalance();
+    } else if (
+      profileDetails?.isWalletActivated &&
+      selectedNetworkForView === "All"
+    ) {
+      fetchTotalBalance();
+    }
+  }, [
+    fetchTotalBalance,
+    profileDetails?.isWalletActivated,
+    selectedNetworkForView,
+  ]);
 
   const handleCopy = (address: string) => {
     navigator?.clipboard.writeText(address);
@@ -92,12 +141,22 @@ const CryptoMain = () => {
     }, 2000);
   };
 
-  const tokenList: TokenListItem[] = React.useMemo(() => {
-    if (!userTokens || userTokens.length === 0) return [];
+  const tokenList: TokenListItem[] = useMemo(() => {
+    if (
+      !allTokensFromSupportedNetworks ||
+      allTokensFromSupportedNetworks.length === 0
+    )
+      return [];
 
-    return userTokens.map((token: TokenInfo) => {
+    const filtered: TokenInfo[] =
+      selectedNetworkForView === "All"
+        ? allTokensFromSupportedNetworks
+        : allTokensFromSupportedNetworks.filter(
+            (token: TokenInfo) => token.network === selectedNetworkForView,
+          );
+
+    return filtered.map((token: TokenInfo) => {
       const symbol = token.tokenSymbol || "";
-
       return {
         img: TOKEN_IMAGES[symbol] || usdc,
         symbol: symbol,
@@ -105,7 +164,7 @@ const CryptoMain = () => {
         token: token,
       };
     });
-  }, [userTokens]);
+  }, [allTokensFromSupportedNetworks, selectedNetworkForView]);
 
   const switchToNaira = () => {
     navigate("/dashboard/wallet");
@@ -113,17 +172,20 @@ const CryptoMain = () => {
 
   const activateWallet = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setLoading(true);
+    setActivatingWalletLoading(true);
     try {
       const response = await dispatch(ActivateCryptoWallet()).unwrap();
       toast.success(response.message);
       await fetchUserProfile();
-      await fetchUserTokens();
     } catch (error: any) {
-      toast.error(error);
+      toast.error(error.message || "Failed to activate wallet");
     } finally {
-      setLoading(false);
+      setActivatingWalletLoading(false);
     }
+  };
+
+  const handleNetworkViewChange = (network: string) => {
+    setSelectedNetworkForView(network);
   };
 
   return (
@@ -137,10 +199,42 @@ const CryptoMain = () => {
         <section className="text-center text-text4">
           <div className="flex flex-col gap-3 py-[1.5em] sm:flex-row sm:justify-between sm:gap-4">
             {profileDetails?.isWalletActivated === true && (
-              <div className="hidden w-fit transform items-center justify-center gap-2 rounded-lg border-2 border-text2 bg-[#ECE6F2] px-3 py-2 font-medium text-text2 transition-all duration-300 hover:scale-105 active:scale-95 sm:w-auto sm:justify-start lg:py-2">
-                Wallet Activated
-                <img src={walletActivated} alt="walletActivated" />
-              </div>
+              <>
+                <div className="hidden w-fit transform items-center justify-center gap-2 rounded-lg border-2 border-text2 bg-[#ECE6F2] px-3 py-2 font-medium text-text2 transition-all duration-300 hover:scale-105 active:scale-95 sm:w-auto sm:justify-start lg:py-2">
+                  Wallet Activated
+                  <img src={walletActivated} alt="walletActivated" />
+                </div>
+                {/* Network Dropdown for View */}
+                <div className="flex items-center gap-4">
+                  <div className="relative">
+                    {" "}
+                    <select
+                      value={selectedNetworkForView}
+                      onChange={(e) => handleNetworkViewChange(e.target.value)}
+                      className="appearance-none rounded-lg border-2 border-gray-300 bg-white px-4 py-2.5 pr-8 text-sm font-medium text-gray-700 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-text2 focus:outline-none focus:ring-2 focus:ring-text2 focus:ring-opacity-50"
+                    >
+                      {DISPLAY_NETWORKS.map((net) => (
+                        <option key={net} value={net} className="py-1">
+                          {" "}
+                          {net}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                      <svg
+                        className="h-5 w-5 fill-current"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </>
             )}
             <div className="ml-auto flex">
               <Button
@@ -159,7 +253,12 @@ const CryptoMain = () => {
             <div className="rounded-3xl border-2 border-gray-300 py-[2em] shadow-lg">
               <div className="flex flex-col items-center justify-center gap-4">
                 <div className="flex items-center gap-4">
-                  <p className="font-medium">Total Crypto Wallet Balance</p>
+                  <p className="font-medium">
+                    Total Crypto Wallet Balance
+                    {selectedNetworkForView !== "All"
+                      ? ` (${selectedNetworkForView})`
+                      : " (Overview)"}
+                  </p>
                   <div>
                     <ToggleButton
                       isVisible={isWalletVisible}
@@ -171,10 +270,11 @@ const CryptoMain = () => {
                 <div className="w-60 text-center">
                   {isWalletVisible ? (
                     <p className="text-xl font-bold lg:text-xl">
-                      $
-                      {typeof Balance === "number"
-                        ? Balance.toFixed(2)
-                        : "0.00"}
+                      {loadingTotalBalance
+                        ? "**********"
+                        : typeof totalBalance === "number"
+                          ? totalBalance.toFixed(2)
+                          : "0.00"}
                     </p>
                   ) : (
                     <p className="text-2xl font-bold">*********</p>
@@ -217,10 +317,12 @@ const CryptoMain = () => {
               <div className="flex justify-center gap-4">
                 <Button
                   onClick={activateWallet}
-                  loading={loading}
+                  loading={activatingWalletLoading}
                   className="flex w-auto transform items-center gap-2 rounded-lg bg-text2 px-9 text-sm font-semibold normal-case text-white transition-all duration-300 hover:scale-105 active:scale-95 lg:py-3"
                 >
-                  {loading ? "Activating..." : "Activate Wallet"}
+                  {activatingWalletLoading
+                    ? "Activating..."
+                    : "Activate Wallet"}
                 </Button>
               </div>
               <p className="mt-3 text-sm font-medium text-gray-400">
@@ -233,79 +335,102 @@ const CryptoMain = () => {
         {profileDetails?.isWalletActivated === true && (
           <>
             <section className="mt-6">
-              <h1 className="text-lg font-semibold">Token Balance</h1>
-
-              {/* Show loading state when no user tokens are available yet */}
-              {!userTokens && (
+              <h1 className="text-lg font-semibold">
+                Token Balance ({selectedNetworkForView})
+              </h1>
+              {loadingUserTokens && (
                 <div className="mt-4 flex items-center justify-center py-8">
                   <p className="text-center text-gray-500">Loading tokens...</p>
                 </div>
               )}
-
-              {/* Show message when no tokens are found */}
-              {userTokens && userTokens.length === 0 && (
+              {!loadingUserTokens && errorUserTokens && (
                 <div className="mt-4 flex items-center justify-center py-8">
-                  <p className="text-center text-gray-500">
-                    No tokens found in your wallet
+                  <p className="text-center text-red-500">
+                    Error: {errorUserTokens}
                   </p>
                 </div>
               )}
-
-              {/* Display token list items */}
-              <div className="mt-[1em] flex flex-col gap-[1em]">
-                {tokenList.map((list, index) => (
-                  <div
-                    key={index}
-                    className="flex flex-col rounded-lg border-2 border-gray-300 p-4"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div>
-                          <img
-                            src={list.img}
-                            alt={list.symbol}
-                            className="h-8 w-8"
-                          />
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <p className="font-medium text-gray-400">
-                            {list.symbol}
-                          </p>
-                          <p className="font-bold">{list.title}</p>
-                        </div>
-                      </div>
-                      <div>
-                        <p className="font-bold">${list.token?.balance || 0}</p>
-                      </div>
-                    </div>
-
-                    {list.token?.tokenAddress && (
-                      <div className="flex">
-                        <div className="mt-2 flex w-[200px] items-center justify-between rounded-md border border-gray-200 bg-gray-50 px-3 py-1.5">
-                          <span className="font-mono text-sm text-gray-600">
-                            {`${list.token.tokenAddress.slice(0, 6)}...${list.token.tokenAddress.slice(-4)}`}
-                          </span>
-                          <button
-                            onClick={() => handleCopy(list.token.tokenAddress)}
-                            className="ml-2 text-gray-500 hover:text-gray-700"
-                            title={
-                              copiedStates[list.token.tokenAddress]
-                                ? "Copied!"
-                                : "Copy address"
-                            }
-                          >
-                            {copiedStates[list.token.tokenAddress] ? (
-                              <Check className="h-4 w-4 text-green-500" />
-                            ) : (
-                              <Copy className="h-4 w-4" />
-                            )}
-                          </button>
-                        </div>
-                      </div>
-                    )}
+              {!loadingUserTokens &&
+                !errorUserTokens &&
+                tokenList.length === 0 && (
+                  <div className="mt-4 flex items-center justify-center py-8">
+                    <p className="text-center text-gray-500">
+                      No tokens found{" "}
+                      {selectedNetworkForView !== "All"
+                        ? `for ${selectedNetworkForView}`
+                        : "across networks"}
+                      .
+                    </p>
                   </div>
-                ))}
-              </div>
+                )}
+              {!loadingUserTokens &&
+                !errorUserTokens &&
+                tokenList.length > 0 && (
+                  <div className="mt-[1em] flex flex-col gap-[1em]">
+                    {tokenList.map((list) => (
+                      <div
+                        key={`${list.token.tokenAddress}-${list.token.network || list.symbol}`}
+                        className="flex flex-col rounded-lg border-2 border-gray-300 p-4"
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div>
+                              <img
+                                src={list.img}
+                                alt={list.symbol}
+                                className="h-8 w-8"
+                              />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <p className="font-medium text-gray-400">
+                                {list.symbol}{" "}
+                                {list.token.network
+                                  ? `(${list.token.network})`
+                                  : ""}
+                              </p>
+                              <p className="font-bold">{list.title}</p>
+                            </div>
+                          </div>
+                          <div>
+                            <p className="font-bold">
+                              $
+                              {list.token?.balance?.toLocaleString(undefined, {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 6,
+                              }) || "0.00"}
+                            </p>
+                          </div>
+                        </div>
+                        {list.token?.tokenAddress && (
+                          <div className="flex">
+                            <div className="mt-2 flex w-full max-w-[calc(100%-2rem)] items-center justify-between rounded-md border border-gray-200 bg-gray-50 px-3 py-1.5 sm:w-[200px]">
+                              <span className="font-mono truncate text-sm text-gray-600">
+                                {`${list.token.tokenAddress.slice(0, 6)}...${list.token.tokenAddress.slice(-4)}`}
+                              </span>
+                              <button
+                                onClick={() =>
+                                  handleCopy(list.token.tokenAddress)
+                                }
+                                className="ml-2 flex-shrink-0 text-gray-500 hover:text-gray-700"
+                                title={
+                                  copiedStates[list.token.tokenAddress]
+                                    ? "Copied!"
+                                    : "Copy address"
+                                }
+                              >
+                                {copiedStates[list.token.tokenAddress] ? (
+                                  <Check className="h-4 w-4 text-green-500" />
+                                ) : (
+                                  <Copy className="h-4 w-4" />
+                                )}
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
             </section>
 
             <section className="flex w-full items-center justify-center">

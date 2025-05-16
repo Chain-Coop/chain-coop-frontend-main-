@@ -34,7 +34,7 @@ const GroupHistoryTemplate = (props: GroupHistoryTemplateTypes) => {
             members={group.members}
             name={group.name}
             progress={group.progress}
-            totalSaved={group.totalSaved}
+            balance={group.balance}
             buttonText={props.buttonText}
             onClick={props.onClick}
           />

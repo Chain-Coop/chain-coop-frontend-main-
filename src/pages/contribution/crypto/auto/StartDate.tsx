@@ -89,7 +89,7 @@ const UnifiedStartDate: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const {
-    lockedType = 0, // Default to 0 (Flexible) if not provided
+    lockedType = 0,
     tokenName,
     contributionType,
     ...passedFormData
@@ -118,7 +118,7 @@ const UnifiedStartDate: React.FC = () => {
     if (config) {
       setCurrentConfig(config);
     } else {
-      setCurrentConfig(startDateConfigs[0]); // Default to Flexible
+      setCurrentConfig(startDateConfigs[0]);
       console.warn(
         "Invalid or missing lockedType in location state for StartDate. Defaulting to Flexible Savings config.",
       );
@@ -129,7 +129,7 @@ const UnifiedStartDate: React.FC = () => {
     if (isOneTimeContribution) {
       const config: DateCalculationConfig = {
         dailyIntervals: [7, 14, 30, 60, 90, 180, 365],
-      }; // Default for one-time
+      };
       const dates = calculateAvailableEndDates(todayString, "daily", config);
       setAvailableEndDates(dates);
       setSavingFrequency("ONE-TIME");
@@ -243,7 +243,6 @@ const UnifiedStartDate: React.FC = () => {
       setError("Configuration error. Cannot proceed.");
       setLoading(false);
     }
-    // setLoading(false) // Typically handled by navigation or if an error occurs before navigation
   };
 
   if (!currentConfig) {
@@ -288,7 +287,7 @@ const UnifiedStartDate: React.FC = () => {
           </div>
         </section>
         {!isOneTimeContribution &&
-          currentConfig && ( // Conditionally render frequency selection
+          currentConfig && (
             <section className="mt-[2em]">
               <div>
                 <h2 className="text-lg font-bold text-memt1">
@@ -327,7 +326,7 @@ const UnifiedStartDate: React.FC = () => {
           </div>
         </div>
 
-        {(savingFrequency || isOneTimeContribution) && ( // Show if frequency selected OR it's one-time
+        {(savingFrequency || isOneTimeContribution) && (
           <section className="mt-[1em]">
             <FormControl fullWidth>
               <InputLabel

@@ -8,7 +8,7 @@ import {
 import { IoChevronDown } from "react-icons/io5";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import cryptoSavings from "../../../../Assets/png/dashboard/cryptSavings.png";
-import ProgressBar from "../../../../components/dashboard/contribution/ProgressBar"
+import ProgressBar from "../../../../components/dashboard/contribution/ProgressBar";
 
 interface LocationState {
   lockedType?: number;
@@ -32,24 +32,28 @@ interface SourceFundsLockTypeConfig {
   getNoteText?: (tokenName?: string, selectedSource?: string) => string | null;
 }
 
-const UNIFIED_PREVIEW_SAVINGS_PATH = "/dashboard/contribution/crypto/unified-preview-savings";
+const UNIFIED_PREVIEW_SAVINGS_PATH =
+  "/dashboard/contribution/crypto/unified-preview-savings";
 
 const sourceFundsConfigs: Record<number, SourceFundsLockTypeConfig> = {
-  0: { // Flexible
+  0: {
+    // Flexible
     dashboardTitle: "Flexible Savings",
     pageTitle: "Flexible Savings",
     previewPath: UNIFIED_PREVIEW_SAVINGS_PATH,
     getInitialAmountPlaceholder: (tokenName = "Tokens") =>
       `e.g., 10 ${tokenName}`,
   },
-  1: { // Lock
+  1: {
+    // Lock
     dashboardTitle: "Lock Savings",
     pageTitle: "Lock Savings",
     previewPath: UNIFIED_PREVIEW_SAVINGS_PATH,
     getInitialAmountPlaceholder: (tokenName = "Tokens") =>
       `e.g., 10 ${tokenName}`,
   },
-  2: { // Strict Lock
+  2: {
+    // Strict Lock
     dashboardTitle: "Strict Lock Savings",
     pageTitle: "Strict Lock Savings",
     mainDescription:
@@ -165,7 +169,6 @@ const UnifiedSourceFunds: React.FC = () => {
     if (config) {
       setCurrentConfig(config);
     } else {
-      // Default to flexible if lockedType is invalid or not found
       setCurrentConfig(sourceFundsConfigs[0]);
       console.warn(
         "Invalid or missing lockedType in location state for SourceFunds. Defaulting to Flexible Savings config.",
@@ -178,7 +181,6 @@ const UnifiedSourceFunds: React.FC = () => {
       setError("Please enter a valid deposit amount.");
       return;
     }
-    // Only validate debitAmount if it's not a one-time contribution
     if (!isOneTimeContribution && !debitAmount) {
       setError("Please enter an amount to be debited periodically.");
       return;
@@ -204,15 +206,15 @@ const UnifiedSourceFunds: React.FC = () => {
       fundSource:
         selectedSource === "external-wallet"
           ? "External Crypto Wallet"
-          : "Internal Crypto Wallet",
+          : selectedSource === "debit-card"
+            ? "Debit Card"
+            : "Internal Crypto Wallet",
       ...(currentConfig?.hasTermsCheckbox && { termsAccepted }),
     };
 
-    // Only include debitAmount if it's not a one-time contribution
     if (!isOneTimeContribution) {
       updatedFormData.debitAmount = debitAmount;
     }
-
 
     if (currentConfig) {
       navigate(currentConfig.previewPath, { state: updatedFormData });
@@ -222,7 +224,6 @@ const UnifiedSourceFunds: React.FC = () => {
   };
 
   if (!currentConfig) {
-    // Can show a loader here
     return (
       <main className="pb-[1.5em]">
         <p className="mt-10 text-center">Loading configuration...</p>
@@ -278,12 +279,24 @@ const UnifiedSourceFunds: React.FC = () => {
             options={[
               { value: "internal-wallet", label: "Internal Crypto Wallet" },
               { value: "external-wallet", label: "External Crypto Wallet" },
+              { value: "debit-card", label: "Debit Card" },
             ]}
           />
           {selectedSource === "internal-wallet" && (
             <p className="mt-2 text-sm text-red-500">
               Funds will automatically be deducted from your Chain Coop crypto
               wallet.
+            </p>
+          )}
+          {selectedSource === "external-wallet" && (
+            <p className="mt-2 text-sm text-red-500">
+              You will be prompted to select the wallet you want to use.
+            </p>
+          )}
+          {selectedSource === "debit-card" && (
+            <p className="mt-2 text-sm text-red-500">
+              You will be redirected to our secure payment gateway to complete
+              the transaction.
             </p>
           )}
         </div>
@@ -293,7 +306,9 @@ const UnifiedSourceFunds: React.FC = () => {
             htmlFor={
               selectedSource === "internal-wallet"
                 ? "initialSaveAmount"
-                : "externalTokenAmount"
+                : selectedSource === "debit-card"
+                  ? "debitCardAmount"
+                  : "externalTokenAmount"
             }
             className="mb-3 flex text-lg font-semibold text-memt1"
           >
@@ -304,7 +319,9 @@ const UnifiedSourceFunds: React.FC = () => {
             id={
               selectedSource === "internal-wallet"
                 ? "initialSaveAmount"
-                : "externalTokenAmount"
+                : selectedSource === "debit-card"
+                  ? "debitCardAmount"
+                  : "externalTokenAmount"
             }
             value={initialSaveAmount}
             onChange={(e) => setInitialSaveAmount(e.target.value)}

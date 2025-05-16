@@ -202,3 +202,10 @@ export interface ConfirmingPaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+export interface TokenInfo {
+  tokenAddress: string;
+  balance: number;
+  tokenSymbol: string;
+  network?: string;
+}
