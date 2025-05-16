@@ -7,11 +7,12 @@ import { CashwyreFund } from "../../../shared/redux/slices/web3.slices";
 import btcImg from "../../../Assets/svg/dashboard/bitcoin.svg";
 import usdcImg from "../../../Assets/svg/dashboard/usd.svg";
 import usdtImg from "../../../Assets/svg/dashboard/usdt.svg";
-import { IoIosArrowDropleft } from "react-icons/io";
+// IoClose and motion/AnimatePresence might not be needed if modals are fully removed,
+// but keeping them for BtcCoreNoticeModal's potential internal use or future needs.
 import { IoClose } from "react-icons/io5";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
-import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowDropleft } from "react-icons/io"; // Combined imports
 import BtcCoreNoticeModal from "../../../components/dashboard/wallet/modal/crypro/modals/NoticeModal";
 import FundProgressBar from "../../../components/dashboard/wallet/modal/crypro/ProgressBar";
 
@@ -29,20 +30,22 @@ const ALL_NETWORKS = [
   { label: "Etherlink", value: "etherlink", disabled: true },
 ];
 
-const NETWORKS_BY_CRYPTO = {
+const NETWORKS_BY_CRYPTO: Record<string, string[]> = {
+  // Added type for NETWORKS_BY_CRYPTO
   bitcoin: ["BTC_LN", "btc"],
   usdc: ["lisk", "bsc", "etherlink"],
   usdt: ["lisk", "bsc", "etherlink"],
 };
 
 const FundCryptoWallet: React.FC = () => {
-  const [crypto, setCrypto] = useState(CRYPTOS[0]);
-  const [showCryptoModal, setShowCryptoModal] = useState(false);
+  const [crypto, setCrypto] = useState(
+    () => CRYPTOS.find((c) => !c.disabled) || CRYPTOS[0],
+  ); // Initialize with first non-disabled or first
+  // Removed showCryptoModal and showNetworkModal states
   const [availableNetworks, setAvailableNetworks] = useState<
     typeof ALL_NETWORKS
   >([]);
-  const [network, setNetwork] = useState(ALL_NETWORKS[0]);
-  const [showNetworkModal, setShowNetworkModal] = useState(false);
+  const [network, setNetwork] = useState(ALL_NETWORKS[0]); // Will be updated by useEffect
   const [amount, setAmount] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showBtcCoreModal, setShowBtcCoreModal] = useState(false);
@@ -60,20 +63,30 @@ const FundCryptoWallet: React.FC = () => {
     setAvailableNetworks(networks);
 
     if (networks.length > 0) {
-      const currentNetworkIsValid = networks.some(
-        (n) => n.value === network.value,
+      // Check if the current network is valid for the new crypto type
+      const currentNetworkStillValid = networks.some(
+        (n) => n.value === network.value && !n.disabled,
       );
 
-      if (!currentNetworkIsValid || networks[0].disabled) {
+      if (currentNetworkStillValid) {
+        // If current network is still valid and enabled, keep it.
+        // No change needed to 'network' state here.
+      } else {
+        // If current network is not valid or disabled, find the first enabled one.
         const firstEnabled = networks.find((n) => !n.disabled);
         if (firstEnabled) {
           setNetwork(firstEnabled);
         } else {
+          // If all are disabled, set to the first one in the filtered list (which will be disabled)
           setNetwork(networks[0]);
         }
       }
+    } else {
+      // No available networks for this crypto, clear selection or handle as error
+      // For now, setting to a default-like state or the first from ALL_NETWORKS if needed
+      setNetwork(ALL_NETWORKS[0]); // Or handle this case more specifically
     }
-  }, [crypto]);
+  }, [crypto]); // Removed 'network' from dependency array to avoid potential loops with auto-selection
 
   const handlePreviewOrder = async () => {
     setIsSubmitting(true);
@@ -128,38 +141,33 @@ const FundCryptoWallet: React.FC = () => {
     }
   };
 
-  const modalVariants = {
-    hidden: { opacity: 0, scale: 0.95 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        type: "spring",
-        damping: 25,
-        stiffness: 300,
-      },
-    },
-    exit: {
-      opacity: 0,
-      scale: 0.95,
-      transition: {
-        duration: 0.2,
-      },
-    },
-  };
-
-  const backdropVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
-  };
-
   const handleBackClick = () => {
     navigate(-1);
   };
 
-  const handleCryptoChange = (selectedCrypto: (typeof CRYPTOS)[0]) => {
-    setCrypto(selectedCrypto);
-    setShowCryptoModal(false);
+  const handleCryptoChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = event.target.value;
+    const selectedCrypto = CRYPTOS.find((c) => c.value === selectedValue);
+    if (selectedCrypto && !selectedCrypto.disabled) {
+      setCrypto(selectedCrypto);
+    }
+  };
+
+  const handleNetworkChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = event.target.value;
+    const selectedNet = availableNetworks.find(
+      (n) => n.value === selectedValue,
+    );
+    if (selectedNet && !selectedNet.disabled) {
+      if (selectedNet.value === "btc") {
+        // "btc" is the value for BTC Core
+        // Set network state first so BtcCoreNoticeModal knows which network was selected
+        setNetwork(selectedNet);
+        setShowBtcCoreModal(true);
+      } else {
+        setNetwork(selectedNet);
+      }
+    }
   };
 
   return (
@@ -184,7 +192,7 @@ const FundCryptoWallet: React.FC = () => {
           />
         </div>
         {/* Info banner */}
-        <div className="mt-4 mb-6 text-base px-0 md:px-5 text-center md:text-lg">
+        <div className="mb-6 mt-4 px-0 text-center text-base md:px-5 md:text-lg">
           Cryptocurrency prices fluctuate based on market conditions, so there
           is no fixed rate. However, your account will be credited with the
           equivalent amount of crypto based on the market price at the time of
@@ -193,185 +201,96 @@ const FundCryptoWallet: React.FC = () => {
 
         {/* Crypto type dropdown */}
         <div className="relative mb-4">
-          <label className="mb-1 block text-lg font-medium">Crypto type</label>
-          <button
-            className="flex w-full items-center justify-between rounded border px-3 py-2"
-            onClick={() => setShowCryptoModal(true)}
-            type="button"
+          <label
+            htmlFor="crypto-select"
+            className="mb-1 block text-lg font-medium"
           >
-            {crypto.label}
-            <span className="ml-2">▼</span>
-          </button>
-
-          {/* Slide-down modal for crypto selection */}
-          <AnimatePresence>
-            {showCryptoModal && (
-              <>
-                <motion.div
-                  className="fixed inset-0 z-40 bg-black bg-opacity-30"
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                  variants={backdropVariants}
-                  onClick={() => setShowCryptoModal(false)}
-                />
-
-                {/* Modal container*/}
-                <motion.div
-                  className="fixed left-[5%] top-1/2 z-50 w-[90%] max-w-sm -translate-x-1/2 -translate-y-1/2 transform overflow-y-auto rounded-lg bg-white p-0 shadow-xl md:left-[25%] lg:left-1/2"
-                  style={{
-                    margin: 0,
-                    maxHeight: "80vh",
-                  }}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  variants={modalVariants}
+            Crypto type
+          </label>
+          <div className="relative">
+            <select
+              id="crypto-select"
+              value={crypto.value}
+              onChange={handleCryptoChange}
+              className="w-full appearance-none rounded-md border border-gray-300 bg-white px-4 py-3 pr-10 text-gray-700 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-text2 focus:outline-none focus:ring-2 focus:ring-text2 focus:ring-opacity-50"
+            >
+              {CRYPTOS.map((c) => (
+                <option
+                  key={c.value}
+                  value={c.value}
+                  disabled={c.disabled}
+                  className={`py-2 ${c.disabled ? "text-gray-400" : "text-gray-700"}`}
                 >
-                  <div className="p-5">
-                    <div className="mb-4 flex items-center justify-between">
-                      <h3 className="text-lg font-medium">
-                        Select Cryptocurrency Type
-                      </h3>
-                      <button
-                        onClick={() => setShowCryptoModal(false)}
-                        className="text-gray-500 hover:text-gray-700"
-                      >
-                        <IoClose size={24} />
-                      </button>
-                    </div>
-
-                    {/* Crypto options */}
-                    <div className="space-y-3">
-                      {CRYPTOS.map((c) => (
-                        <div
-                          key={c.value}
-                          className={`flex items-center justify-between rounded-lg border border-gray-200 p-3
-                            ${c.disabled ? "cursor-not-allowed bg-gray-100 opacity-60" : "cursor-pointer hover:bg-gray-50"}`}
-                          onClick={() => !c.disabled && handleCryptoChange(c)}
-                          tabIndex={c.disabled ? -1 : 0}
-                          aria-disabled={c.disabled}
-                        >
-                          <div className="flex items-center space-x-3">
-                            <div
-                              className={`flex h-8 w-8 items-center justify-center rounded-full ${c.value === "bitcoin" ? "bg-purple-100" : c.value === "usdc" ? "bg-blue-100" : "bg-green-100"}`}
-                            >
-                              <img
-                                src={c.img}
-                                alt={c.label}
-                                className="h-8 w-8"
-                              />
-                            </div>
-                            <span className="font-medium">
-                              {c.value === "bitcoin"
-                                ? "BTC"
-                                : c.value.toUpperCase()}
-                            </span>
-                          </div>
-                          <input
-                            type="radio"
-                            checked={crypto.value === c.value}
-                            readOnly
-                            disabled={c.disabled}
-                            className="h-5 w-5 accent-purple-600"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              </>
-            )}
-          </AnimatePresence>
+                  {c.label}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg
+                className="h-5 w-5 fill-current"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+          </div>
         </div>
 
         {/* Token network dropdown */}
         <div className="relative mb-4">
-          <label className="mb-1 block text-lg font-medium">
+          <label
+            htmlFor="network-select"
+            className="mb-1 block text-lg font-medium"
+          >
             Token network
           </label>
-          <button
-            className="flex w-full items-center justify-between rounded border px-3 py-2"
-            onClick={() => setShowNetworkModal(true)}
-            type="button"
-          >
-            {network.label}
-            <span className="ml-2">▼</span>
-          </button>
-
-          <AnimatePresence>
-            {showNetworkModal && (
-              <>
-                <motion.div
-                  className="fixed inset-0 z-40 bg-black bg-opacity-30"
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                  variants={backdropVariants}
-                  onClick={() => setShowNetworkModal(false)}
+          <div className="relative">
+            <select
+              id="network-select"
+              value={network.value}
+              onChange={handleNetworkChange}
+              className="w-full appearance-none rounded-md border border-gray-300 bg-white px-4 py-3 pr-10 text-gray-700 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-text2 focus:outline-none focus:ring-2 focus:ring-text2 focus:ring-opacity-50"
+              disabled={
+                availableNetworks.length === 0 ||
+                availableNetworks.every((n) => n.disabled)
+              }
+            >
+              {availableNetworks.length > 0 ? (
+                availableNetworks.map((n) => (
+                  <option
+                    key={n.value}
+                    value={n.value}
+                    disabled={n.disabled}
+                    className={`py-2 ${n.disabled ? "text-gray-400" : "text-gray-700"}`}
+                  >
+                    {n.label}
+                  </option>
+                ))
+              ) : (
+                <option value="" disabled className="text-gray-500">
+                  No networks available for {crypto.label}
+                </option>
+              )}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg
+                className="h-5 w-5 fill-current"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a 1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clipRule="evenodd"
                 />
-
-                {/* Modal container */}
-                <motion.div
-                  className="fixed left-[5%] top-1/2 z-50 w-[90%] max-w-sm -translate-x-1/2 -translate-y-1/2 transform overflow-y-auto rounded-lg bg-white p-0 shadow-xl md:left-[25%] lg:left-1/2"
-                  style={{
-                    margin: 0,
-                    maxHeight: "80vh",
-                  }}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  variants={modalVariants}
-                >
-                  <div className="p-5">
-                    <div className="mb-4 flex items-center justify-between">
-                      <h3 className="text-lg font-medium">
-                        Select Token Network
-                      </h3>
-                      <button
-                        onClick={() => setShowNetworkModal(false)}
-                        className="text-gray-500 hover:text-gray-700"
-                      >
-                        <IoClose size={24} />
-                      </button>
-                    </div>
-
-                    {/* Network options - filtered by selected crypto */}
-                    <div className="space-y-3">
-                      {availableNetworks.map((n) => (
-                        <div
-                          key={n.value}
-                          className={`flex items-center justify-between rounded-lg border border-gray-200 p-3
-                            ${n.disabled ? "cursor-not-allowed bg-gray-100 opacity-60" : "cursor-pointer hover:bg-gray-50"}`}
-                          onClick={() => {
-                            if (!n.disabled) {
-                              if (n.value === "btc") {
-                                setShowBtcCoreModal(true);
-                              } else {
-                                setNetwork(n);
-                                setShowNetworkModal(false);
-                              }
-                            }
-                          }}
-                          tabIndex={n.disabled ? -1 : 0}
-                          aria-disabled={n.disabled}
-                        >
-                          <span className="font-medium">{n.label}</span>
-                          <input
-                            type="radio"
-                            checked={network.value === n.value}
-                            readOnly
-                            disabled={n.disabled}
-                            className="h-5 w-5 accent-purple-600"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              </>
-            )}
-          </AnimatePresence>
+              </svg>
+            </div>
+          </div>
         </div>
 
         {/* Enter Amount */}
@@ -384,7 +303,7 @@ const FundCryptoWallet: React.FC = () => {
               placeholder="₦ 100,000"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              min={0}
+              min={0} // Ensure non-negative numbers
             />
             <span className="ml-2 font-bold text-green-600">NGN</span>
           </div>
@@ -392,17 +311,25 @@ const FundCryptoWallet: React.FC = () => {
         {/* Preview Order Button */}
         <div className="mt-10 flex items-center justify-between">
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate(-1)} // Simplified back navigation
             className="flex items-center transition-all duration-300 ease-in-out hover:scale-110 hover:text-text2"
           >
             <IoIosArrowDropleft size={25} />
+            <span className="ml-1">Back</span>{" "}
+            {/* Added Back text for consistency */}
           </button>
           <button
             className="rounded-md bg-text2 px-8 py-2 font-semibold text-white
               transition-all duration-300 ease-in-out hover:scale-105 hover:bg-opacity-90 hover:shadow-lg
               active:scale-95 active:transform disabled:cursor-not-allowed disabled:opacity-50"
             onClick={handlePreviewOrder}
-            disabled={!amount || isSubmitting}
+            disabled={
+              !amount ||
+              isSubmitting ||
+              network.disabled ||
+              (availableNetworks.length > 0 &&
+                availableNetworks.every((n) => n.disabled))
+            }
           >
             {isSubmitting ? "Processing..." : "Preview order"}
           </button>
@@ -412,14 +339,20 @@ const FundCryptoWallet: React.FC = () => {
       <BtcCoreNoticeModal
         open={showBtcCoreModal}
         onClose={() => {
+          // User chose to proceed with BTC Core or closed the notice
           setShowBtcCoreModal(false);
-          setNetwork(ALL_NETWORKS.find((net) => net.value === "btc")!);
-          setShowNetworkModal(false);
+          // 'network' state should already be BTC Core from handleNetworkChange
+          // No need to setShowNetworkModal(false) as it's not used
         }}
         onSwitchToLightning={() => {
-          setNetwork(ALL_NETWORKS.find((net) => net.value === "BTC_LN")!);
+          const lightningNetwork = ALL_NETWORKS.find(
+            (net) => net.value === "BTC_LN",
+          );
+          if (lightningNetwork) {
+            setNetwork(lightningNetwork);
+          }
           setShowBtcCoreModal(false);
-          setShowNetworkModal(false);
+          // No need to setShowNetworkModal(false)
         }}
       />
     </main>
