@@ -179,7 +179,7 @@ const Preview: React.FC = () => {
           {previewData.map((item, index) => (
             <div
               key={index}
-              className="flex flex-col rounded-lg bg-gray-200 p-4 transition-all duration-300 hover:shadow-md"
+              className="flex items-center justify-between rounded-lg bg-gray-200 p-4 transition-all duration-300 hover:shadow-md md:flex-col md:items-start"
             >
               <p className="font-semibold text-gray-500">{item.label}</p>
               <h1 className="mt-auto text-xl font-medium">{item.value}</h1>
