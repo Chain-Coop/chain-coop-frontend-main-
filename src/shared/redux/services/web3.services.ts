@@ -524,6 +524,38 @@ const GetTotalBalance = async (network: string = "ETHERLINK") => {
   }
 };
 
+const ActivateBitcoinAccount = async () => {
+  const url = `${API_URL}/web3/account/activateBitcoin`;
+  try {
+    const response = await axios.post(url, null, {
+      headers: authHeader(),
+    });
+    return response.data; // Assuming it returns { message: string, data?: any }
+  } catch (error: any) {
+    if (error.response) {
+      throw error.response.data;
+    } else {
+      throw new Error("Network Error: Could not activate Bitcoin account.");
+    }
+  }
+};
+
+const GetBitcoinBalance = async () => {
+  const url = `${API_URL}/web3/balance/bitcoin/balance`;
+  try {
+    const response = await axios.get(url, {
+      headers: authHeader(),
+    });
+    return response.data; // Assuming it returns { data: { balance: number, address?: string }, message?: string }
+  } catch (error: any) {
+    if (error.response) {
+      throw error.response.data;
+    } else {
+      throw new Error("Network Error: Could not fetch Bitcoin balance.");
+    }
+  }
+};
+
 const web3Services = {
   ActivateCryptoWallet,
   GetTotalCryptoWalletBalance,
@@ -548,6 +580,8 @@ const web3Services = {
   CashwyreOfframpConfirm,
   getCashwyreHistory,
   GetTotalBalance,
+    ActivateBitcoinAccount,
+  GetBitcoinBalance, 
 };
 
 export default web3Services;

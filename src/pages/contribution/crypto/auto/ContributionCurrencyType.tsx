@@ -8,8 +8,7 @@ import usdt from "../../../../Assets/svg/dashboard/usdt.svg";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import ProgressBar from "../../../../components/dashboard/contribution/ProgressBar";
-import { IoClose } from "react-icons/io5";
-import { motion, AnimatePresence } from "framer-motion";
+import BtcCoreNoticeModal from "../../../../components/dashboard/wallet/modal/crypro/modals/NoticeModal"; // Import the modal
 
 interface LocationState {
   lockedType?: number;
@@ -60,14 +59,14 @@ const lockTypeConfigs: Record<number, LockTypeConfig> = {
 
 const STABLE_COIN_NETWORKS = [
   { label: "BSC (BNB Smart Chain)", value: "BSC", disabled: false },
-  { label: "ETHERLINK", value: "ETHERLINK", disabled: false },
-  { label: "GNOSIS", value: "GNOSIS", disabled: false },
-  { label: "LISK", value: "LISK", disabled: false },
+  { label: "ETHERLINK", value: "ETHERLINK", disabled: true },
+  { label: "POLYGON", value: "POLYGON", disabled: true },
+  { label: "LISK", value: "LISK", disabled: true },
 ];
 
 const BTC_NETWORKS = [
-  { label: "BTC Core", value: "BTC_CORE", disabled: false },
   { label: "BTC Lightning", value: "BTC_LIGHTNING", disabled: false },
+  { label: "BTC Core", value: "BTC_CORE", disabled: false },
 ];
 
 const UnifiedContributionCurrencyType: React.FC = () => {
@@ -123,6 +122,8 @@ const UnifiedContributionCurrencyType: React.FC = () => {
   const [availableNetworks, setAvailableNetworks] = useState<
     Array<{ label: string; value: string; disabled?: boolean }>
   >([]);
+
+  const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false);
 
   useEffect(() => {
     if (formData.tokenName) {
@@ -208,7 +209,24 @@ const UnifiedContributionCurrencyType: React.FC = () => {
     if (network && !network.disabled) {
       setSelectedNetwork(network);
       setFormData((prev) => ({ ...prev, network: network.value }));
+      if (network.value === "BTC_CORE") {
+        setIsNoticeModalOpen(true);
+      }
     }
+  };
+
+  const handleSwitchToLightning = () => {
+    const lightningNetwork = BTC_NETWORKS.find(
+      (n) => n.value === "BTC_LIGHTNING",
+    );
+    if (lightningNetwork) {
+      setSelectedNetwork(lightningNetwork);
+      setFormData((prev) => ({
+        ...prev,
+        network: lightningNetwork.value,
+      }));
+    }
+    setIsNoticeModalOpen(false);
   };
 
   const handleNext = () => {
@@ -461,6 +479,13 @@ const UnifiedContributionCurrencyType: React.FC = () => {
           </button>
         </div>
       </div>
+
+      {/* BtcCoreNoticeModal */}
+      <BtcCoreNoticeModal
+        open={isNoticeModalOpen}
+        onClose={() => setIsNoticeModalOpen(false)}
+        onSwitchToLightning={handleSwitchToLightning}
+      />
     </main>
   );
 };

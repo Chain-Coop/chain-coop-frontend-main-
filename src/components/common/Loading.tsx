@@ -127,3 +127,79 @@ export const NotificationSkeleton = () => (
     </div>
   </div>
 );
+
+export const TokenListItemSkeleton: React.FC = () => (
+  <div className="flex animate-pulse flex-col gap-2 rounded-lg border-2 border-gray-300 p-4 lg:py-8">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-3">
+        <div className="h-8 w-8 rounded-full bg-gray-200"></div>
+        <div className="flex flex-col gap-1">
+          <div className="h-4 w-16 rounded bg-gray-200"></div>
+          <div className="h-5 w-24 rounded bg-gray-200"></div>
+        </div>
+      </div>
+      <div className="h-6 w-20 rounded bg-gray-200"></div>
+    </div>
+  </div>
+);
+
+export const TokenListSkeleton: React.FC<{ count?: number }> = ({
+  count = 5,
+}) => (
+  <div className="mt-[1em] flex flex-col gap-[1em]">
+    {Array.from({ length: count }).map((_, index) => (
+      <TokenListItemSkeleton key={index} />
+    ))}
+  </div>
+);
+
+export const SingleTransactionItemSkeleton: React.FC = () => (
+  <div className="flex animate-pulse flex-col gap-3 rounded-md border border-gray-200 p-4">
+    <div className="mb-1 flex items-center justify-between">
+      <div className="h-4 w-16 rounded bg-gray-200"></div>
+      <div className="h-5 w-24 rounded bg-gray-200"></div>
+    </div>
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-1">
+        <div className="h-3 w-10 rounded bg-gray-200"></div>
+        <div className="h-4 w-36 rounded bg-gray-200"></div>
+      </div>
+      <div className="flex items-center gap-1">
+        <div className="h-3 w-8 rounded bg-gray-200"></div>
+        <div className="h-4 w-28 rounded bg-gray-200"></div>
+      </div>
+      <div className="flex flex-col justify-between gap-1 md:flex-row md:gap-0">
+        <div className="flex items-center">
+          <div className="h-3 w-16 rounded bg-gray-200 mr-1"></div>
+          <div className="h-4 w-14 rounded bg-gray-200"></div>
+        </div>
+        <div className="flex items-center">
+          <div className="h-3 w-24 rounded bg-gray-200 mr-1"></div>
+          <div className="h-4 w-16 rounded bg-gray-200"></div>
+        </div>
+      </div>
+      <div className="flex items-center gap-1">
+        <div className="h-3 w-16 rounded bg-gray-200"></div>
+        <div className="h-4 w-20 rounded bg-gray-200"></div>
+      </div>
+    </div>
+  </div>
+);
+
+export const TransactionHistorySkeleton: React.FC<{ dateGroups?: number, itemsPerGroup?: number }> = ({ dateGroups = 2, itemsPerGroup = 2 }) => (
+  <div className="my-8 animate-pulse">
+    <div className="flex flex-col gap-6 mt-6">
+      {Array.from({ length: dateGroups }).map((_, groupIndex) => (
+        <div key={groupIndex} className="flex flex-col gap-3">
+          <div className="flex items-center justify-between text-sm">
+            <div className="h-4 w-32 rounded bg-gray-200"></div>
+            <div className="h-4 w-24 rounded bg-gray-200"></div>
+          </div>
+          {Array.from({ length: itemsPerGroup }).map((_, itemIndex) => (
+            <SingleTransactionItemSkeleton key={itemIndex} />
+          ))}
+        </div>
+      ))}
+    </div>
+  </div>
+);
