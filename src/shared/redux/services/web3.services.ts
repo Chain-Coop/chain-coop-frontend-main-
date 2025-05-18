@@ -225,6 +225,29 @@ const WithdrawUserPool = async (body: any) => {
   }
 };
 
+const WithdrawAutoUserPool = async (body: any) => {
+  const url = `${API_URL}/web3/v2/periodicSaving/withdraw`;
+  try {
+    const response = await axios.post(url, body, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error("Backend error response:", error.response.data);
+      const backendMessage =
+        error.response.data.msg ||
+        error.response.data.message ||
+        error.response.data?.error?.message ||
+        "An error occurred";
+      throw new Error(backendMessage);
+    } else {
+      console.error("Network error:", error.message);
+      throw new Error("Network Error: Please check your internet connection.");
+    }
+  }
+};
+
 const GetAllUserTokens = async (network: string = "ETHERLINK") => {
   const url = `${API_URL}/web3/balance/tokens/${network}`;
   try {
@@ -530,7 +553,7 @@ const ActivateBitcoinAccount = async () => {
     const response = await axios.post(url, null, {
       headers: authHeader(),
     });
-    return response.data; // Assuming it returns { message: string, data?: any }
+    return response.data;
   } catch (error: any) {
     if (error.response) {
       throw error.response.data;
@@ -546,7 +569,7 @@ const GetBitcoinBalance = async () => {
     const response = await axios.get(url, {
       headers: authHeader(),
     });
-    return response.data; // Assuming it returns { data: { balance: number, address?: string }, message?: string }
+    return response.data;
   } catch (error: any) {
     if (error.response) {
       throw error.response.data;
@@ -565,6 +588,7 @@ const web3Services = {
   GetAllUserPools,
   UpdateUserPool,
   WithdrawUserPool,
+  WithdrawAutoUserPool,
   GetAllUserTokens,
   UpdateAutoPool,
   StopPeriodicPool,
@@ -580,8 +604,8 @@ const web3Services = {
   CashwyreOfframpConfirm,
   getCashwyreHistory,
   GetTotalBalance,
-    ActivateBitcoinAccount,
-  GetBitcoinBalance, 
+  ActivateBitcoinAccount,
+  GetBitcoinBalance,
 };
 
 export default web3Services;

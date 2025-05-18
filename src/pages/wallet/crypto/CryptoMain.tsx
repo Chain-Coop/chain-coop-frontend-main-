@@ -24,10 +24,11 @@ import { AppDispatch } from "../../../shared/redux/store";
 import { ActivateCryptoWallet } from "../../../shared/redux/slices/web3.slices";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import ToggleButton from "../../../shared/utils/ToggleButton";
-import { TransferIcon, WithdrawIcon } from "../../../Assets/svg";
+import { TransferIcon, FundIcon, WithdrawIcon } from "../../../Assets/svg";
 import CryptoTransactionHistory from "./CryptoTransactionHistory";
 import { useUserProfile } from "../../../shared/Hooks/useUserProfile";
 import { TokenListSkeleton } from "../../../components/common/Loading";
+import { TokenDetails } from "../../../components/dashboard/wallet/modal/crypro/modals/TokenDetails";
 
 interface TokenInfo {
   tokenAddress: string;
@@ -73,11 +74,12 @@ const TOKEN_NAMES: Record<string, string> = {
   WUSDC: "Wrapped USD Coin",
 };
 
-const AggregatedTokenListItem: React.FC<{ listItem: TokenListItem }> = React.memo(({ listItem }) => {
+const AggregatedTokenListItem: React.FC<{
+  listItem: TokenListItem;
+  onViewDetails: (token: TokenListItem) => void;
+}> = React.memo(({ listItem, onViewDetails }) => {
   return (
-    <div
-      className="flex flex-col rounded-lg border-2 border-gray-300 p-4 lg:py-8"
-    >
+    <div className="flex flex-col rounded-lg border-2 border-gray-300 p-4 lg:py-8">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div>
@@ -89,10 +91,14 @@ const AggregatedTokenListItem: React.FC<{ listItem: TokenListItem }> = React.mem
             />
           </div>
           <div className="flex flex-col gap-1">
-            <p className="font-medium text-gray-400">
-              {listItem.symbol}{" "}
-            </p>
+            <p className="font-medium text-gray-400">{listItem.symbol} </p>
             <p className="font-bold">{listItem.title}</p>
+            <button
+              onClick={() => onViewDetails(listItem)}
+              className="mt-1 w-fit rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600 hover:bg-gray-200"
+            >
+              View Details
+            </button>
           </div>
         </div>
         <div>
@@ -109,11 +115,19 @@ const AggregatedTokenListItem: React.FC<{ listItem: TokenListItem }> = React.mem
 });
 AggregatedTokenListItem.displayName = "AggregatedTokenListItem";
 
-
 const CryptoMain = () => {
   const { isWalletVisible, setIsWalletVisible } = useCryptoWallet("ETHERLINK");
-  const { totalBalance, fetchTotalBalance, loading: loadingTotalBalance } = useTotalBalance();
-  const { userTokens: allTokensFromSupportedNetworks, fetchUserTokens, loading: loadingUserTokens, error: errorUserTokens } = useAllUserTokens();
+  const {
+    totalBalance,
+    fetchTotalBalance,
+    loading: loadingTotalBalance,
+  } = useTotalBalance();
+  const {
+    userTokens: allTokensFromSupportedNetworks,
+    fetchUserTokens,
+    loading: loadingUserTokens,
+    error: errorUserTokens,
+  } = useAllUserTokens();
   const { profileDetails, fetchUserProfile } = useUserProfile();
   const { cryptoWalletDetails } = useCryptoWalletDetails();
   const {
@@ -125,9 +139,19 @@ const CryptoMain = () => {
     bitcoinBalanceLoading,
     fetchBitcoinBalance,
   } = useBitcoinAccount();
+  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
+  const [selectedToken, setSelectedToken] = useState<TokenListItem | null>(
+    null,
+  );
+
+  const handleViewTokenDetails = (token: TokenListItem) => {
+    setSelectedToken(token);
+    setDetailsModalOpen(true);
+  };
 
   const navigate = useNavigate();
-  const [activatingGenericWalletLoading, setActivatingGenericWalletLoading] = useState(false);
+  const [activatingGenericWalletLoading, setActivatingGenericWalletLoading] =
+    useState(false);
   const dispatch: AppDispatch = useAppDispatch();
 
   useEffect(() => {
@@ -148,29 +172,63 @@ const CryptoMain = () => {
   ]);
 
   const tokenList: TokenListItem[] = useMemo(() => {
-    if (!allTokensFromSupportedNetworks || allTokensFromSupportedNetworks.length === 0) return [];
-    const aggregatedTokens: { [symbol: string]: { totalBalance: number; networks: Set<string>; firstToken: TokenInfo; }; } = {};
+    if (
+      !allTokensFromSupportedNetworks ||
+      allTokensFromSupportedNetworks.length === 0
+    )
+      return [];
+    const aggregatedTokens: {
+      [symbol: string]: {
+        totalBalance: number;
+        networks: Set<string>;
+        firstToken: TokenInfo;
+      };
+    } = {};
     allTokensFromSupportedNetworks.forEach((token: TokenInfo) => {
       if (!token.tokenSymbol) return;
       if (!aggregatedTokens[token.tokenSymbol]) {
-        aggregatedTokens[token.tokenSymbol] = { totalBalance: 0, networks: new Set<string>(), firstToken: token };
+        aggregatedTokens[token.tokenSymbol] = {
+          totalBalance: 0,
+          networks: new Set<string>(),
+          firstToken: token,
+        };
       }
       aggregatedTokens[token.tokenSymbol].totalBalance += token.balance;
-      if (token.network) aggregatedTokens[token.tokenSymbol].networks.add(token.network);
+      if (token.network)
+        aggregatedTokens[token.tokenSymbol].networks.add(token.network);
     });
-    return Object.entries(aggregatedTokens).map(([symbol, data]) => {
-      const displayNetworks = Array.from(data.networks);
-      return {
-        img: TOKEN_IMAGES[symbol] || usdc, symbol: symbol, title: TOKEN_NAMES[symbol] || symbol,
-        token: { tokenAddress: data.firstToken.tokenAddress, balance: data.totalBalance, tokenSymbol: symbol, network: displayNetworks.length === 1 ? displayNetworks[0] : undefined, networks: displayNetworks, },
-        isAggregated: displayNetworks.length > 1,
-      };
-    });
+
+    const allAggregatedItems = Object.entries(aggregatedTokens).map(
+      ([symbol, data]) => {
+        const displayNetworks = Array.from(data.networks);
+        return {
+          img: TOKEN_IMAGES[symbol] || usdc,
+          symbol: symbol,
+          title: TOKEN_NAMES[symbol] || symbol,
+          token: {
+            tokenAddress: data.firstToken.tokenAddress,
+            balance: data.totalBalance,
+            tokenSymbol: symbol,
+            network:
+              displayNetworks.length === 1 ? displayNetworks[0] : undefined,
+            networks: displayNetworks,
+          },
+          isAggregated: displayNetworks.length > 1,
+        };
+      },
+    );
+
+    const allowedSymbols = ["USDC", "USDT"];
+    return allAggregatedItems.filter((item) =>
+      allowedSymbols.includes(item.symbol.toUpperCase()),
+    );
   }, [allTokensFromSupportedNetworks]);
 
   const switchToNaira = () => navigate("/dashboard/wallet");
 
-  const activateGenericWallet = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const activateGenericWallet = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+  ) => {
     e.preventDefault();
     setActivatingGenericWalletLoading(true);
     try {
@@ -187,7 +245,9 @@ const CryptoMain = () => {
   const handleActivateBitcoin = async () => {
     try {
       const response = await activateBitcoinAccount();
-      toast.success(response.message || "Bitcoin account activation initiated.");
+      toast.success(
+        response.message || "Bitcoin account activation initiated.",
+      );
       await fetchUserProfile();
       await fetchBitcoinBalance();
     } catch (error: any) {
@@ -242,7 +302,9 @@ const CryptoMain = () => {
                   {isWalletVisible ? (
                     <p className="text-xl font-bold lg:text-xl">
                       {loadingTotalBalance ? (
-                        <div className="animate-pulse"><div className="mx-auto h-6 w-32 rounded bg-gray-200"></div></div>
+                        <div className="animate-pulse">
+                          <div className="mx-auto h-6 w-32 rounded bg-gray-200"></div>
+                        </div>
                       ) : typeof totalBalance === "number" ? (
                         `$${totalBalance.toFixed(2)}`
                       ) : (
@@ -259,11 +321,19 @@ const CryptoMain = () => {
           ) : (
             <div className="rounded-3xl border-2 border-gray-300 py-[3.5em] shadow-lg">
               <div className="flex justify-center gap-4">
-                <Button onClick={activateGenericWallet} loading={activatingGenericWalletLoading} className="flex w-auto transform items-center gap-2 rounded-lg bg-text2 px-9 text-sm font-semibold normal-case text-white transition-all duration-300 hover:scale-105 active:scale-95 lg:py-3">
-                  {activatingGenericWalletLoading ? "Activating..." : "Activate Wallet"}
+                <Button
+                  onClick={activateGenericWallet}
+                  loading={activatingGenericWalletLoading}
+                  className="flex w-auto transform items-center gap-2 rounded-lg bg-text2 px-9 text-sm font-semibold normal-case text-white transition-all duration-300 hover:scale-105 active:scale-95 lg:py-3"
+                >
+                  {activatingGenericWalletLoading
+                    ? "Activating..."
+                    : "Activate Wallet"}
                 </Button>
               </div>
-              <p className="mt-3 text-sm font-medium text-gray-400">Activate your crypto-wallet to access your account.</p>
+              <p className="mt-3 text-sm font-medium text-gray-400">
+                Activate your crypto-wallet to access your account.
+              </p>
             </div>
           )}
         </section>
@@ -273,94 +343,121 @@ const CryptoMain = () => {
             <section className="mt-6">
               <h1 className="text-lg font-semibold">Token Balances</h1>
 
-              {loadingUserTokens && <TokenListSkeleton count={3} />}
+              {loadingUserTokens && <TokenListSkeleton count={2} />}
               {!loadingUserTokens && errorUserTokens && (
                 <div className="mt-4 flex items-center justify-center py-8">
-                  <p className="text-center text-red-500">Error: {errorUserTokens}</p>
-                </div>
-              )}
-              {!loadingUserTokens && !errorUserTokens && tokenList.length > 0 && (
-                <div className="mt-[1em] flex flex-col gap-[1em]">
-                  {tokenList.map((list) => (
-                    <AggregatedTokenListItem
-                      key={`${list.symbol}-aggregated-${list.token.networks?.join('-') || list.token.network}`}
-                      listItem={list}
-                    />
-                  ))}
-                </div>
-              )}
-
-              <div className="mt-[1em]"> 
-                {isBitcoinAccountActivated !== true && !bitcoinActivationLoading && (
-                  <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-400 p-4 text-center hover:border-orange-500 lg:py-6">
-                    <img src={bitcoinIcon} alt="Bitcoin" className="mb-2 h-10 w-10 opacity-60" />
-                    <p className="mb-3 text-base font-medium text-gray-600">
-                      Bitcoin (BTC)
-                    </p>
-                    <p className="mb-4 text-sm text-gray-500">
-                      Activate your Bitcoin wallet to send and receive BTC.
-                    </p>
-                    <Button
-                      onClick={handleActivateBitcoin}
-                      className="flex transform items-center gap-2 rounded-lg bg-orange-500 px-6 py-2 text-sm font-semibold normal-case text-white transition-all duration-300 hover:bg-orange-600 active:scale-95"
-                    >
-                      Activate Bitcoin Wallet
-                    </Button>
-                  </div>
-                )}
-
-                {bitcoinActivationLoading && (
-                  <div className="flex flex-col items-center justify-center rounded-lg border-2 border-gray-300 p-4 lg:py-8 animate-pulse">
-                    <div className="h-10 w-10 rounded-full bg-gray-200 mb-3"></div>
-                    <div className="h-5 w-20 rounded bg-gray-200 mb-2"></div>
-                    <div className="h-4 w-40 rounded bg-gray-200 mb-3"></div>
-                    <div className="h-8 w-48 rounded bg-gray-200"></div>
-                    <p className="mt-3 text-sm text-orange-500">Activating Bitcoin Wallet...</p>
-                  </div>
-                )}
-
-                {isBitcoinAccountActivated === true && !bitcoinActivationLoading && (
-                  <div className="flex flex-col rounded-lg border-2 border-gray-300 p-4 lg:py-8">
-                    {bitcoinBalanceLoading ? (
-                      <div className="flex animate-pulse items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="h-8 w-8 rounded-full bg-gray-200"></div>
-                          <div className="flex flex-col gap-1">
-                            <div className="h-4 w-16 rounded bg-gray-200"></div>
-                            <div className="h-5 w-24 rounded bg-gray-200"></div>
-                          </div>
-                        </div>
-                        <div className="h-6 w-20 rounded bg-gray-200"></div>
-                      </div>
-                    ) : (
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div><img src={TOKEN_IMAGES['BTC']} alt="BTC" className="h-8 w-8" /></div>
-                          <div className="flex flex-col gap-1">
-                            <p className="font-medium text-gray-400">BTC</p>
-                            <p className="font-bold">Bitcoin</p>
-                          </div>
-                        </div>
-                        <div>
-                          <p className="font-bold">
-                            {bitcoinBalance !== undefined ? bitcoinBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 8 }) : "0.00000000"}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {!loadingUserTokens && !errorUserTokens && tokenList.length === 0 &&
-               isBitcoinAccountActivated !== true &&
-               !bitcoinActivationLoading && (
-                <div className="mt-4 flex items-center justify-center py-8">
-                  <p className="text-center text-gray-500">
-                    No other tokens found. You can activate your Bitcoin wallet above.
+                  <p className="text-center text-red-500">
+                    Error: {errorUserTokens}
                   </p>
                 </div>
               )}
+              {!loadingUserTokens &&
+                !errorUserTokens &&
+                tokenList.length > 0 && (
+                  <div className="mt-[1em] flex flex-col gap-[1em]">
+                    {tokenList.map((list) => (
+                      <AggregatedTokenListItem
+                        key={`${list.symbol}-aggregated-${list.token.networks?.join("-") || list.token.network}`}
+                        listItem={list}
+                        onViewDetails={handleViewTokenDetails}
+                      />
+                    ))}
+                  </div>
+                )}
+
+              <div className="mt-[1em]">
+                {isBitcoinAccountActivated !== true &&
+                  !bitcoinActivationLoading && (
+                    <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-400 p-4 text-center hover:border-orange-500 lg:py-6">
+                      <img
+                        src={bitcoinIcon}
+                        alt="Bitcoin"
+                        className="mb-2 h-10 w-10 opacity-60"
+                      />
+                      <p className="mb-3 text-base font-medium text-gray-600">
+                        Bitcoin (BTC)
+                      </p>
+                      <p className="mb-4 text-sm text-gray-500">
+                        Activate your Bitcoin wallet to send and receive BTC.
+                      </p>
+                      <Button
+                        onClick={handleActivateBitcoin}
+                        className="flex transform items-center gap-2 rounded-lg bg-orange-500 px-6 py-2 text-sm font-semibold normal-case text-white transition-all duration-300 hover:bg-orange-600 active:scale-95"
+                      >
+                        Activate Bitcoin Wallet
+                      </Button>
+                    </div>
+                  )}
+
+                {bitcoinActivationLoading && (
+                  <div className="flex animate-pulse flex-col items-center justify-center rounded-lg border-2 border-gray-300 p-4 lg:py-8">
+                    <div className="mb-3 h-10 w-10 rounded-full bg-gray-200"></div>
+                    <div className="mb-2 h-5 w-20 rounded bg-gray-200"></div>
+                    <div className="mb-3 h-4 w-40 rounded bg-gray-200"></div>
+                    <div className="h-8 w-48 rounded bg-gray-200"></div>
+                    <p className="mt-3 text-sm text-orange-500">
+                      Activating Bitcoin Wallet...
+                    </p>
+                  </div>
+                )}
+
+                {isBitcoinAccountActivated === true &&
+                  !bitcoinActivationLoading && (
+                    <div className="flex flex-col rounded-lg border-2 border-gray-300 p-4 lg:py-8">
+                      {bitcoinBalanceLoading ? (
+                        <div className="flex animate-pulse items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="h-8 w-8 rounded-full bg-gray-200"></div>
+                            <div className="flex flex-col gap-1">
+                              <div className="h-4 w-16 rounded bg-gray-200"></div>
+                              <div className="h-5 w-24 rounded bg-gray-200"></div>
+                            </div>
+                          </div>
+                          <div className="h-6 w-20 rounded bg-gray-200"></div>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div>
+                              <img
+                                src={TOKEN_IMAGES["BTC"]}
+                                alt="BTC"
+                                className="h-8 w-8"
+                              />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <p className="font-medium text-gray-400">BTC</p>
+                              <p className="font-bold">Bitcoin</p>
+                            </div>
+                          </div>
+                          <div>
+                            <p className="font-bold">
+                              {bitcoinBalance !== undefined
+                                ? bitcoinBalance.toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 8,
+                                  })
+                                : "0.00000000"}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+              </div>
+
+              {!loadingUserTokens &&
+                !errorUserTokens &&
+                tokenList.length === 0 &&
+                isBitcoinAccountActivated !== true &&
+                !bitcoinActivationLoading && (
+                  <div className="mt-4 flex items-center justify-center py-8">
+                    <p className="text-center text-gray-500">
+                      No other tokens found. You can activate your Bitcoin
+                      wallet above.
+                    </p>
+                  </div>
+                )}
             </section>
 
             <section className="flex w-full items-center justify-center">
@@ -370,9 +467,15 @@ const CryptoMain = () => {
                     to="/dashboard/wallet/crypto/withdraw"
                     state={{ walletType: "crypto" }}
                   >
-                    <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex flex-col items-center bg-inherit text-center">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex flex-col items-center bg-inherit text-center"
+                    >
                       <WithdrawIcon />
-                      <span className="block text-memt1 lg:text-lg">Withdraw</span>
+                      <span className="block text-memt1 lg:text-lg">
+                        Withdraw
+                      </span>
                     </motion.button>
                   </Link>
 
@@ -380,16 +483,28 @@ const CryptoMain = () => {
                     to="/dashboard/wallet/deposit/crypto"
                     state={{ walletType: "crypto" }}
                   >
-                    <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex flex-col items-center bg-inherit text-center">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex flex-col items-center bg-inherit text-center"
+                    >
                       <TransferIcon />
-                      <span className="block text-memt1 lg:text-lg">Deposit</span>
+                      <span className="block text-memt1 lg:text-lg">
+                        Deposit
+                      </span>
                     </motion.button>
                   </Link>
 
                   <Link to="/dashboard/wallet/fund/fund_crypto_wallet">
-                    <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex flex-col items-center bg-inherit text-center">
-                      <TransferIcon />
-                      <span className="block text-memt1 lg:text-lg">Fund Wallet</span>
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex flex-col items-center bg-inherit text-center"
+                    >
+                      <FundIcon />
+                      <span className="block text-memt1 lg:text-lg">
+                        Fund Wallet
+                      </span>
                     </motion.button>
                   </Link>
                 </div>
@@ -400,6 +515,13 @@ const CryptoMain = () => {
           </>
         )}
       </div>
+
+      <TokenDetails
+        isOpen={detailsModalOpen}
+        onClose={() => setDetailsModalOpen(false)}
+        token={selectedToken}
+        allTokens={allTokensFromSupportedNetworks || []}
+      />
     </main>
   );
 };

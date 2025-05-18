@@ -45,19 +45,19 @@ const ALL_DEPOSIT_NETWORKS: NetworkOption[] = [
     label: "Polygon (Matic)",
     value: "polygon",
     addressType: "evm",
-    disabled: true,
+    disabled: false,
   },
   {
     label: "Etherlink",
     value: "etherlink",
     addressType: "evm",
-    disabled: true,
+    disabled: false,
   },
   {
     label: "Lisk",
     value: "lisk",
     addressType: "evm",
-    disabled: true,
+    disabled: false,
   },
 ];
 

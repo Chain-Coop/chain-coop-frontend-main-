@@ -4,6 +4,7 @@ import { setMessage } from "./message.slices";
 import web3Services from "../services/web3.services";
 import {
   WithdrawUserPoolPayload,
+  WithdrawAutoUserPoolPayload,
   CryptoTransaction,
   Pool,
   TokenInfo,
@@ -204,6 +205,22 @@ export const WithdrawUserPool = createAsyncThunk<
 >("web3/withdrawUserPool", async (payload, { rejectWithValue }) => {
   try {
     const response = await web3Services.WithdrawUserPool(payload);
+    return response;
+  } catch (error: any) {
+    const message =
+      error?.message || "An unknown error occurred during withdrawal.";
+
+    return rejectWithValue({ message });
+  }
+});
+
+export const WithdrawAutoUserPool = createAsyncThunk<
+  any,
+  WithdrawAutoUserPoolPayload,
+  { rejectValue: { message: string } }
+>("web3/withdrawAutoUserPool", async (payload, { rejectWithValue }) => {
+  try {
+    const response = await web3Services.WithdrawAutoUserPool(payload);
     return response;
   } catch (error: any) {
     const message =
@@ -499,9 +516,9 @@ interface CashwyreHistoryResponse {
 }
 
 export const FetchGrandTotalBalanceFromAllNetworks = createAsyncThunk<
-  number, // Resolve type: a single number for the grand total
-  void, // Argument type: none
-  { rejectValue: string } // Reject type
+  number,
+  void,
+  { rejectValue: string }
 >("web3/getTotalBalance", async (_, thunkAPI) => {
   try {
     let grandTotal = 0;
@@ -543,7 +560,7 @@ export const ActivateBitcoin = createAsyncThunk(
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue({ message });
     }
-  }
+  },
 );
 
 export const FetchBitcoinBalance = createAsyncThunk(
@@ -557,7 +574,7 @@ export const FetchBitcoinBalance = createAsyncThunk(
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue({ message });
     }
-  }
+  },
 );
 
 interface CryptoState {
@@ -673,7 +690,7 @@ export const Web3Slices = createSlice({
       state.bitcoinAddress = null;
       state.bitcoinBalanceLoading = false;
       state.bitcoinBalanceError = null;
-    }
+    },
   },
 
   extraReducers: (builder) => {
@@ -836,6 +853,21 @@ export const Web3Slices = createSlice({
         state.error = null;
       })
       .addCase(WithdrawUserPool.rejected, (state, action) => {
+        state.loading = false;
+        state.updateRegisteredUserPool = null;
+        state.error = action.payload?.message || "Failed to withdraw Pool";
+      })
+
+      .addCase(WithdrawAutoUserPool.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(WithdrawAutoUserPool.fulfilled, (state, action) => {
+        state.loading = false;
+        state.updateRegisteredUserPool = action.payload.data;
+        state.error = null;
+      })
+      .addCase(WithdrawAutoUserPool.rejected, (state, action) => {
         state.loading = false;
         state.updateRegisteredUserPool = null;
         state.error = action.payload?.message || "Failed to withdraw Pool";
@@ -1043,14 +1075,16 @@ export const Web3Slices = createSlice({
       .addCase(ActivateBitcoin.fulfilled, (state, action) => {
         state.bitcoinActivationLoading = false;
         state.isBitcoinAccountActivated = true;
-        state.bitcoinAccountStatusMessage = action.payload.message || "Bitcoin account activated successfully.";
+        state.bitcoinAccountStatusMessage =
+          action.payload.message || "Bitcoin account activated successfully.";
       })
       .addCase(ActivateBitcoin.rejected, (state, action) => {
         state.bitcoinActivationLoading = false;
-        state.bitcoinActivationError = (action.payload as any)?.message || "Bitcoin activation failed.";
+        state.bitcoinActivationError =
+          (action.payload as any)?.message || "Bitcoin activation failed.";
         state.isBitcoinAccountActivated = false;
       })
-      
+
       .addCase(FetchBitcoinBalance.pending, (state) => {
         state.bitcoinBalanceLoading = true;
         state.bitcoinBalanceError = null;
@@ -1060,13 +1094,21 @@ export const Web3Slices = createSlice({
         state.bitcoinBalance = action.payload?.balance || 0;
         state.bitcoinAddress = action.payload?.address || null;
         state.isBitcoinAccountActivated = true;
-        state.bitcoinAccountStatusMessage = (action.meta.arg as any)?.message || "Bitcoin balance fetched.";
+        state.bitcoinAccountStatusMessage =
+          (action.meta.arg as any)?.message || "Bitcoin balance fetched.";
       })
       .addCase(FetchBitcoinBalance.rejected, (state, action) => {
         state.bitcoinBalanceLoading = false;
-        state.bitcoinBalanceError = (action.payload as any)?.message || "Failed to fetch Bitcoin balance.";
-        if ((action.payload as any)?.message?.toLowerCase().includes("not found") || (action.payload as any)?.message?.toLowerCase().includes("not active")) {
-            state.isBitcoinAccountActivated = false;
+        state.bitcoinBalanceError =
+          (action.payload as any)?.message ||
+          "Failed to fetch Bitcoin balance.";
+        if (
+          (action.payload as any)?.message
+            ?.toLowerCase()
+            .includes("not found") ||
+          (action.payload as any)?.message?.toLowerCase().includes("not active")
+        ) {
+          state.isBitcoinAccountActivated = false;
         }
         state.bitcoinBalance = 0;
         state.bitcoinAddress = null;

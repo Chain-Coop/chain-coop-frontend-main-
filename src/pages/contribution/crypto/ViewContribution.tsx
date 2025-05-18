@@ -14,7 +14,7 @@ import Naira from "../../../Assets/svg/dashboard/contribution/naira.svg";
 import up from "../../../Assets/svg/dashboard/contribution/up.svg";
 import FundSavingsModal from "../../../components/dashboard/contribution/modals/FundContribution";
 import UpdateSavingsModal from "../../../components/dashboard/contribution/modals/UpdateContribution";
-import EarlyWithdrawalModal from "../../../components/dashboard/contribution/modals/EarlyWithdrawal"; // Import the new modal
+import EarlyWithdrawalModal from "../../../components/dashboard/contribution/modals/EarlyWithdrawal";
 import TransactionHistory from "./TransactionHistory";
 import { Pool } from "../../../shared/types/types";
 import {
@@ -62,7 +62,7 @@ const ViewCryptoContribution = () => {
   };
 
   const calculateEndDate = (
-    startDateISO: string,
+    startDateISO: string | null,
     durationDays: number,
   ): Date | null => {
     if (!startDateISO || durationDays === undefined || durationDays === null) {
@@ -171,6 +171,7 @@ const ViewCryptoContribution = () => {
             poolIndex: contribution.poolId,
             symbol: contribution.tokenSymbol,
             amount: currentAmount,
+            poolType: contribution.poolType,
           },
         },
       );
@@ -259,12 +260,12 @@ const ViewCryptoContribution = () => {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    disabled={isWithdrawButtonDisabled} // Keep existing disabled logic for strict lock/inactive
-                    onClick={handleWithdrawClick} // Use the new handler function
+                    disabled={isWithdrawButtonDisabled}
+                    onClick={handleWithdrawClick}
                     className={`flex-1 whitespace-nowrap rounded-lg border-2 border-gray-200 bg-inherit px-[1.5em] py-[5px] text-lg font-semibold shadow-lg lg:px-[3em] lg:py-[13px] ${
                       isWithdrawButtonDisabled
                         ? "cursor-not-allowed opacity-50"
-                        : "" // Note: Styling doesn't prevent click if lockType is 1 before end date
+                        : ""
                     }`}
                   >
                     Withdraw
@@ -402,7 +403,7 @@ const ViewCryptoContribution = () => {
               </Typography>
             </div>
           </section>
-          <TransactionHistory contribution={contribution} />
+          <TransactionHistory contribution={{ ...contribution, transactions: [] }} />
         </section>
       </section>
 
