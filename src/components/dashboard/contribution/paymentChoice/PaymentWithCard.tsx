@@ -116,7 +116,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
     }
 
     dispatch(clearTransactionError());
-    setIsPaymentLoading(true); // Start payment loading
+    setIsPaymentLoading(true);
 
     const basePayload = {
       contributionId,
@@ -143,7 +143,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
         type: "transaction/setError",
         payload: "Selected card is invalid or missing authorization code",
       });
-      setIsPaymentLoading(false); 
+      setIsPaymentLoading(false);
     }
   };
 
@@ -152,7 +152,7 @@ const PaymentWithCard: React.FC<PaymentWithCardProps> = ({
       size="sm"
       open={isOpen}
       handler={onClose}
-      className="bg-[#ECECF2] px-4"
+      className="bg-[#ECECF2] px-1 md:px-2"
     >
       <Snackbar
         open={!!error}

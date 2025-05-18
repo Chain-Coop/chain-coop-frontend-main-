@@ -139,13 +139,38 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
             )}
           </div>
 
-          <div className="flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A]">
+          <div
+            className={`flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A] ${
+              !isVerified ? "cursor-not-allowed opacity-50" : "cursor-pointer"
+            }`}
+            onClick={isVerified ? onBvnStepClick : undefined}
+          >
             <div className="flex flex-col gap-1">
               <Typography
                 variant="h6"
                 className="text-sm font-bold text-gray-900"
               >
                 Tier 2
+              </Typography>
+              <Typography
+                variant="small"
+                className="text-xs font-normal text-gray-500"
+              >
+                Upload your BVN
+              </Typography>
+            </div>
+            <Button className="rounded-full bg-gray-100 p-2">
+              <CircleArrow />
+            </Button>
+          </div>
+
+          <div className="flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A]">
+            <div className="flex flex-col gap-1">
+              <Typography
+                variant="h6"
+                className="text-sm font-bold text-gray-900"
+              >
+                Tier 3
               </Typography>
               <Typography
                 variant="small"
@@ -161,31 +186,6 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
               disabled={isLoading}
             >
               {!isLoading && <CircleArrow />}
-            </Button>
-          </div>
-
-          <div
-            className={`flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A] ${
-              !isVerified ? "cursor-not-allowed opacity-50" : "cursor-pointer"
-            }`}
-            onClick={isVerified ? onBvnStepClick : undefined}
-          >
-            <div className="flex flex-col gap-1">
-              <Typography
-                variant="h6"
-                className="text-sm font-bold text-gray-900"
-              >
-                Tier 3
-              </Typography>
-              <Typography
-                variant="small"
-                className="text-xs font-normal text-gray-500"
-              >
-                Upload your BVN
-              </Typography>
-            </div>
-            <Button className="rounded-full bg-gray-100 p-2">
-              <CircleArrow />
             </Button>
           </div>
         </div>

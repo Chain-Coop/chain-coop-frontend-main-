@@ -200,7 +200,7 @@ export const ContributionTracker: React.FC<ContributionTrackerProps> = ({
             ? "One-Time Contribution"
             : `${contributionDetails?.contributionPlan} Contribution Plan`}
         </p>
-        <p className="text-sm font-medium sm:text-lg">Status</p>
+        <p className="hidden text-sm font-medium sm:text-lg md:flex">Status</p>
       </div>
 
       <div className="w-full">
@@ -220,7 +220,7 @@ export const ContributionTracker: React.FC<ContributionTrackerProps> = ({
                       {step?.label}
                     </p>
                     <div
-                      className={`inline-flex min-w-[90px] items-center justify-center rounded-full px-3 py-1 text-xs sm:min-w-[120px] sm:px-4 sm:py-1.5 sm:text-sm ${getStatusStyle(
+                      className={`inline-flex hidden min-w-[90px] items-center justify-center rounded-full px-3 py-1 text-xs sm:min-w-[120px] sm:px-4 sm:py-1.5 sm:text-sm md:flex ${getStatusStyle(
                         step?.status,
                       )}`}
                     >
