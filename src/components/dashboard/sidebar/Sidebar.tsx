@@ -10,6 +10,7 @@ const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { profileDetails } = useUserProfile();
+
   const home = () => {
     navigate("/dashboard");
   };
@@ -52,7 +53,7 @@ const Sidebar = () => {
               <Link
                 key={index}
                 to={link.to}
-                className={`text flex items-center px-4 py-5  text-[16px] text-[#1E1E1E] hover:bg-Dh ${
+                className={`text flex items-center px-4 py-5 text-[16px] text-[#1E1E1E] hover:bg-Dh ${
                   isActive
                     ? "active !important border-l-2 border-text2 bg-Dh font-semibold"
                     : ""

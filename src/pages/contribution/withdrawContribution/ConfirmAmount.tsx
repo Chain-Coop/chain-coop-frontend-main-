@@ -108,7 +108,7 @@ const ConfirmAmount = () => {
 
   const handleCloseSuccessModal = () => {
     setIsSuccessModalOpen(false);
-    navigate("/contribution");
+    navigate("/dashboard/contribution");
   };
 
   const handleGeneratePinClose = () => {
@@ -184,6 +184,7 @@ const ConfirmAmount = () => {
       const result = await dispatch(WithdrawalFromContribution(body)).unwrap();
       if (result?.statusCode === 200) {
         dispatch(GetWalletBalance());
+        dispatch(GetUserProfile());
         setPinStep(0);
         setIsSuccessModalOpen(true);
         setPin("");
@@ -192,7 +193,7 @@ const ConfirmAmount = () => {
         throw new Error("Transaction failed");
       }
     } catch (error: any) {
-      setError(error.message || "Invalid PIN or OTP. Please try again.");
+      setError(error || "Invalid PIN or OTP. Please try again.");
     } finally {
       setLoading(false);
     }

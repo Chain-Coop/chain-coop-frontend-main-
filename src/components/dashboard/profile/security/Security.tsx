@@ -10,10 +10,7 @@ import Success from "../../../common/Success";
 import ChangePhoneNumber from "./modal/changePhoneNumber";
 import PhoneNumberOtp from "./phoneNumberOtp";
 import NewPhoneNumber from "./newPhoneNumber";
-import { useAppSelector } from "../../../../shared/redux/reduxHooks";
-import { RootState } from "../../../../shared/redux/rootReducer";
 import { useUserProfile } from "../../../../shared/Hooks/useUserProfile";
-import { profile } from "console";
 
 const Security = () => {
   const { profileDetails } = useUserProfile();
@@ -110,15 +107,15 @@ const Security = () => {
         // dispatch(resetPasswordState());
       },
     },
-    {
-      title: "Change phone number",
-      onClick: () => {
-        setCurrentModalType("phoneNumber");
-        setChangePhoneNumberSteps(1);
-        setIsModalOpen(true);
-        setOtp("");
-      },
-    },
+    // {
+    //   title: "Change phone number",
+    //   onClick: () => {
+    //     setCurrentModalType("phoneNumber");
+    //     setChangePhoneNumberSteps(1);
+    //     setIsModalOpen(true);
+    //     setOtp("");
+    //   },
+    // },
   ];
 
   const renderModal = () => {
@@ -197,41 +194,41 @@ const Security = () => {
       }
     }
 
-    if (currentModalType === "phoneNumber") {
-      switch (changePhoneNumberSteps) {
-        case 1:
-          return (
-            <ChangePhoneNumber
-              email={email}
-              setEmail={setEmail}
-              onEmailSent={handleEmailSent}
-              isOpen={true}
-              onClose={handleModalClose}
-            />
-          );
-        case 2:
-          return (
-            <PhoneNumberOtp
-              otp={otp}
-              setOtp={setOtp}
-              isOpen={isModalOpen}
-              onClose={handleModalClose}
-              onOtpEntered={() => setChangePhoneNumberSteps(3)}
-              email={email}
-            />
-          );
-        case 3:
-          return (
-            <NewPhoneNumber
-              isOpen={isModalOpen}
-              onClose={handleModalClose}
-              onSuccess={handlePhoneNumberSuccess}
-            />
-          );
-        default:
-          return null;
-      }
-    }
+    // if (currentModalType === "phoneNumber") {
+    //   switch (changePhoneNumberSteps) {
+    //     case 1:
+    //       return (
+    //         <ChangePhoneNumber
+    //           email={email}
+    //           setEmail={setEmail}
+    //           onEmailSent={handleEmailSent}
+    //           isOpen={true}
+    //           onClose={handleModalClose}
+    //         />
+    //       );
+    //     case 2:
+    //       return (
+    //         <PhoneNumberOtp
+    //           otp={otp}
+    //           setOtp={setOtp}
+    //           isOpen={isModalOpen}
+    //           onClose={handleModalClose}
+    //           onOtpEntered={() => setChangePhoneNumberSteps(3)}
+    //           email={email}
+    //         />
+    //       );
+    //     case 3:
+    //       return (
+    //         <NewPhoneNumber
+    //           isOpen={isModalOpen}
+    //           onClose={handleModalClose}
+    //           onSuccess={handlePhoneNumberSuccess}
+    //         />
+    //       );
+    //     default:
+    //       return null;
+    //   }
+    // }
   };
 
   return (
