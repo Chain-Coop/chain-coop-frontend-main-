@@ -366,7 +366,8 @@ const CryptoMain = () => {
                 )}
 
               <div className="mt-[1em]">
-                {isBitcoinAccountActivated !== true &&
+                {!profileDetails?.isBitcoinWalletActivated &&
+                  isBitcoinAccountActivated !== true &&
                   !bitcoinActivationLoading && (
                     <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-400 p-4 text-center hover:border-orange-500 lg:py-6">
                       <img
@@ -401,7 +402,8 @@ const CryptoMain = () => {
                   </div>
                 )}
 
-                {isBitcoinAccountActivated === true &&
+                {(profileDetails?.isBitcoinWalletActivated === true ||
+                  isBitcoinAccountActivated === true) &&
                   !bitcoinActivationLoading && (
                     <div className="flex flex-col rounded-lg border-2 border-gray-300 p-4 lg:py-8">
                       {bitcoinBalanceLoading ? (
