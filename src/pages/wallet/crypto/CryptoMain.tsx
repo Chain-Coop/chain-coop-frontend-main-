@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import walletActivated from "../../../Assets/svg/dashboard/walletActivated.svg";
+import bitcoinIcon from "../../../Assets/svg/dashboard/bitcoin.svg";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import lisk from "../../../Assets/svg/dashboard/token_lisk.svg";
@@ -9,33 +10,31 @@ import usdc from "../../../Assets/svg/dashboard/usd.svg";
 import usdt from "../../../Assets/svg/dashboard/usdt.svg";
 import weth from "../../../Assets/svg/dashboard/ethereum.svg";
 import gnosis from "../../../Assets/svg/dashboard/gnosis.svg";
-import { Copy, Check } from "lucide-react";
+import polygon from "../../../Assets/svg/dashboard/polygon-matic-logo.svg";
 import { Button, Typography } from "@material-tailwind/react";
 import {
   useAllUserTokens,
   useCryptoWallet,
   useCryptoWalletDetails,
   useTotalBalance,
+  useBitcoinAccount,
 } from "../../../shared/Hooks/useBalance";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "../../../shared/redux/reduxHooks";
+import { useAppDispatch } from "../../../shared/redux/reduxHooks";
 import { AppDispatch } from "../../../shared/redux/store";
 import { ActivateCryptoWallet } from "../../../shared/redux/slices/web3.slices";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import ToggleButton from "../../../shared/utils/ToggleButton";
 import { TransferIcon, WithdrawIcon } from "../../../Assets/svg";
 import CryptoTransactionHistory from "./CryptoTransactionHistory";
-import { RootState } from "../../../shared/redux/rootReducer";
-import { GetUserProfile } from "../../../shared/redux/slices/landing.slices";
 import { useUserProfile } from "../../../shared/Hooks/useUserProfile";
+import { TokenListSkeleton } from "../../../components/common/Loading";
 
 interface TokenInfo {
   tokenAddress: string;
   balance: number;
   tokenSymbol: string;
   network?: string;
+  networks?: string[];
 }
 
 interface TokenListItem {
@@ -43,16 +42,18 @@ interface TokenListItem {
   symbol: string;
   title: string;
   token: TokenInfo;
+  isAggregated: boolean;
 }
 
 const TOKEN_IMAGES: Record<string, string> = {
   USDT: usdt,
   USDC: usdc,
   GNO: gnosis,
+  Polygon: polygon,
   WETH: weth,
   ETH: weth,
   WBTC: lisk,
-  BTC: lisk,
+  BTC: bitcoinIcon,
   LSK: lisk,
   LUSD: usdc,
   WUSDC: usdc,
@@ -63,6 +64,7 @@ const TOKEN_NAMES: Record<string, string> = {
   USDC: "USD Coin",
   WETH: "Wrapped Ethereum",
   GNO: "Gnosis",
+  Polygon: "Matic",
   ETH: "Ethereum",
   WBTC: "Wrapped Bitcoin",
   BTC: "Bitcoin",
@@ -71,108 +73,106 @@ const TOKEN_NAMES: Record<string, string> = {
   WUSDC: "Wrapped USD Coin",
 };
 
-const DISPLAY_NETWORKS = ["ETHERLINK", "BSC", "GNOSIS", "LISK"];
+const AggregatedTokenListItem: React.FC<{ listItem: TokenListItem }> = React.memo(({ listItem }) => {
+  return (
+    <div
+      className="flex flex-col rounded-lg border-2 border-gray-300 p-4 lg:py-8"
+    >
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div>
+            <img
+              src={listItem.img}
+              alt={listItem.symbol}
+              className="h-8 w-8"
+              loading="lazy"
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <p className="font-medium text-gray-400">
+              {listItem.symbol}{" "}
+            </p>
+            <p className="font-bold">{listItem.title}</p>
+          </div>
+        </div>
+        <div>
+          <p className="font-bold">
+            {listItem.token?.balance?.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 6,
+            }) || "0.00"}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+});
+AggregatedTokenListItem.displayName = "AggregatedTokenListItem";
+
 
 const CryptoMain = () => {
-  const [selectedNetworkForView, setSelectedNetworkForView] = useState<string>(
-    DISPLAY_NETWORKS[0],
-  );
-
-  const { isWalletVisible, setIsWalletVisible } = useCryptoWallet(
-    DISPLAY_NETWORKS[1],
-  );
-
-  const {
-    totalBalance,
-    fetchTotalBalance,
-    loading: loadingTotalBalance,
-  } = useTotalBalance(
-    selectedNetworkForView === "All"
-      ? DISPLAY_NETWORKS[1]
-      : selectedNetworkForView,
-  );
-
-  const {
-    userTokens: allTokensFromSupportedNetworks,
-    fetchUserTokens,
-    loading: loadingUserTokens,
-    error: errorUserTokens,
-  } = useAllUserTokens();
-
+  const { isWalletVisible, setIsWalletVisible } = useCryptoWallet("ETHERLINK");
+  const { totalBalance, fetchTotalBalance, loading: loadingTotalBalance } = useTotalBalance();
+  const { userTokens: allTokensFromSupportedNetworks, fetchUserTokens, loading: loadingUserTokens, error: errorUserTokens } = useAllUserTokens();
   const { profileDetails, fetchUserProfile } = useUserProfile();
   const { cryptoWalletDetails } = useCryptoWalletDetails();
+  const {
+    isBitcoinAccountActivated,
+    bitcoinActivationLoading,
+    activateBitcoinAccount,
+    bitcoinBalance,
+    bitcoinAddress,
+    bitcoinBalanceLoading,
+    fetchBitcoinBalance,
+  } = useBitcoinAccount();
+
   const navigate = useNavigate();
-  const [activatingWalletLoading, setActivatingWalletLoading] = useState(false);
+  const [activatingGenericWalletLoading, setActivatingGenericWalletLoading] = useState(false);
   const dispatch: AppDispatch = useAppDispatch();
-  const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>(
-    {},
-  );
 
   useEffect(() => {
     if (profileDetails?.isWalletActivated) {
-      console.log("Wallet is activated, fetching all user tokens...");
       fetchUserTokens();
-    } else {
-      console.log("Wallet is not activated");
-    }
-  }, [fetchUserTokens, profileDetails?.isWalletActivated]);
-
-  useEffect(() => {
-    if (profileDetails?.isWalletActivated && selectedNetworkForView !== "All") {
-      console.log("Fetching total balance for:", selectedNetworkForView);
       fetchTotalBalance();
-    } else if (
-      profileDetails?.isWalletActivated &&
-      selectedNetworkForView === "All"
-    ) {
-      fetchTotalBalance();
+      if (isBitcoinAccountActivated === true) {
+        fetchBitcoinBalance();
+      }
     }
   }, [
+    fetchUserTokens,
     fetchTotalBalance,
     profileDetails?.isWalletActivated,
-    selectedNetworkForView,
+    profileDetails?.isBitcoinWalletActivated,
+    isBitcoinAccountActivated,
+    fetchBitcoinBalance,
   ]);
 
-  const handleCopy = (address: string) => {
-    navigator?.clipboard.writeText(address);
-    setCopiedStates((prev) => ({ ...prev, [address]: true }));
-    setTimeout(() => {
-      setCopiedStates((prev) => ({ ...prev, [address]: false }));
-    }, 2000);
-  };
-
   const tokenList: TokenListItem[] = useMemo(() => {
-    if (
-      !allTokensFromSupportedNetworks ||
-      allTokensFromSupportedNetworks.length === 0
-    )
-      return [];
-
-    const filtered: TokenInfo[] =
-      selectedNetworkForView === "All"
-        ? allTokensFromSupportedNetworks
-        : allTokensFromSupportedNetworks.filter(
-            (token: TokenInfo) => token.network === selectedNetworkForView,
-          );
-
-    return filtered.map((token: TokenInfo) => {
-      const symbol = token.tokenSymbol || "";
+    if (!allTokensFromSupportedNetworks || allTokensFromSupportedNetworks.length === 0) return [];
+    const aggregatedTokens: { [symbol: string]: { totalBalance: number; networks: Set<string>; firstToken: TokenInfo; }; } = {};
+    allTokensFromSupportedNetworks.forEach((token: TokenInfo) => {
+      if (!token.tokenSymbol) return;
+      if (!aggregatedTokens[token.tokenSymbol]) {
+        aggregatedTokens[token.tokenSymbol] = { totalBalance: 0, networks: new Set<string>(), firstToken: token };
+      }
+      aggregatedTokens[token.tokenSymbol].totalBalance += token.balance;
+      if (token.network) aggregatedTokens[token.tokenSymbol].networks.add(token.network);
+    });
+    return Object.entries(aggregatedTokens).map(([symbol, data]) => {
+      const displayNetworks = Array.from(data.networks);
       return {
-        img: TOKEN_IMAGES[symbol] || usdc,
-        symbol: symbol,
-        title: TOKEN_NAMES[symbol] || symbol,
-        token: token,
+        img: TOKEN_IMAGES[symbol] || usdc, symbol: symbol, title: TOKEN_NAMES[symbol] || symbol,
+        token: { tokenAddress: data.firstToken.tokenAddress, balance: data.totalBalance, tokenSymbol: symbol, network: displayNetworks.length === 1 ? displayNetworks[0] : undefined, networks: displayNetworks, },
+        isAggregated: displayNetworks.length > 1,
       };
     });
-  }, [allTokensFromSupportedNetworks, selectedNetworkForView]);
+  }, [allTokensFromSupportedNetworks]);
 
-  const switchToNaira = () => {
-    navigate("/dashboard/wallet");
-  };
+  const switchToNaira = () => navigate("/dashboard/wallet");
 
-  const activateWallet = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const activateGenericWallet = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setActivatingWalletLoading(true);
+    setActivatingGenericWalletLoading(true);
     try {
       const response = await dispatch(ActivateCryptoWallet()).unwrap();
       toast.success(response.message);
@@ -180,12 +180,19 @@ const CryptoMain = () => {
     } catch (error: any) {
       toast.error(error.message || "Failed to activate wallet");
     } finally {
-      setActivatingWalletLoading(false);
+      setActivatingGenericWalletLoading(false);
     }
   };
 
-  const handleNetworkViewChange = (network: string) => {
-    setSelectedNetworkForView(network);
+  const handleActivateBitcoin = async () => {
+    try {
+      const response = await activateBitcoinAccount();
+      toast.success(response.message || "Bitcoin account activation initiated.");
+      await fetchUserProfile();
+      await fetchBitcoinBalance();
+    } catch (error: any) {
+      toast.error(error.message || "Failed to activate Bitcoin account.");
+    }
   };
 
   return (
@@ -204,36 +211,6 @@ const CryptoMain = () => {
                   Wallet Activated
                   <img src={walletActivated} alt="walletActivated" />
                 </div>
-                {/* Network Dropdown for View */}
-                <div className="flex items-center gap-4">
-                  <div className="relative">
-                    {" "}
-                    <select
-                      value={selectedNetworkForView}
-                      onChange={(e) => handleNetworkViewChange(e.target.value)}
-                      className="appearance-none rounded-lg border-2 border-gray-300 bg-white px-4 py-2.5 pr-8 text-sm font-medium text-gray-700 shadow-sm transition-all duration-200 hover:border-gray-400 focus:border-text2 focus:outline-none focus:ring-2 focus:ring-text2 focus:ring-opacity-50"
-                    >
-                      {DISPLAY_NETWORKS.map((net) => (
-                        <option key={net} value={net} className="py-1">
-                          {" "}
-                          {net}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                      <svg
-                        className="h-5 w-5 fill-current"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
               </>
             )}
             <div className="ml-auto flex">
@@ -250,15 +227,10 @@ const CryptoMain = () => {
           </div>
 
           {profileDetails?.isWalletActivated === true ? (
-            <div className="rounded-3xl border-2 border-gray-300 py-[2em] shadow-lg">
+            <div className="rounded-3xl border-2 border-gray-300 py-[4em] shadow-lg">
               <div className="flex flex-col items-center justify-center gap-4">
                 <div className="flex items-center gap-4">
-                  <p className="font-medium">
-                    Total Crypto Wallet Balance
-                    {selectedNetworkForView !== "All"
-                      ? ` (${selectedNetworkForView})`
-                      : " (Overview)"}
-                  </p>
+                  <p className="font-medium">Total Crypto Wallet Balance</p>
                   <div>
                     <ToggleButton
                       isVisible={isWalletVisible}
@@ -266,68 +238,32 @@ const CryptoMain = () => {
                     />
                   </div>
                 </div>
-
                 <div className="w-60 text-center">
                   {isWalletVisible ? (
                     <p className="text-xl font-bold lg:text-xl">
-                      {loadingTotalBalance
-                        ? "**********"
-                        : typeof totalBalance === "number"
-                          ? totalBalance.toFixed(2)
-                          : "0.00"}
+                      {loadingTotalBalance ? (
+                        <div className="animate-pulse"><div className="mx-auto h-6 w-32 rounded bg-gray-200"></div></div>
+                      ) : typeof totalBalance === "number" ? (
+                        `$${totalBalance.toFixed(2)}`
+                      ) : (
+                        "$0.00"
+                      )}
                     </p>
                   ) : (
                     <p className="text-2xl font-bold">*********</p>
                   )}
-                  <hr className="mt-4 h-px rounded-md bg-howtext" />
-                </div>
-
-                <div className="mt-[1em] flex flex-col items-center gap-4">
-                  <h1 className="font-semibold">User Address</h1>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      value={cryptoWalletDetails?.address || ""}
-                      readOnly
-                      className="font-mono h-8 w-[280px] overflow-hidden text-ellipsis whitespace-nowrap rounded-lg border-2 border-gray-400 pl-3 pr-10 text-sm"
-                    />
-                    <button
-                      onClick={() =>
-                        handleCopy(cryptoWalletDetails?.address || "")
-                      }
-                      className="absolute right-2 top-1/2 -translate-y-1/2 transform rounded-md p-1 text-gray-500 transition-all duration-200 hover:bg-gray-100 hover:text-gray-700"
-                      title={
-                        copiedStates[cryptoWalletDetails?.address || ""]
-                          ? "Copied!"
-                          : "Copy address"
-                      }
-                    >
-                      {copiedStates[cryptoWalletDetails?.address || ""] ? (
-                        <Check className="h-4 w-4 text-green-500" />
-                      ) : (
-                        <Copy className="h-4 w-4" />
-                      )}
-                    </button>
-                  </div>
+                  <hr className="mt-2 h-px rounded-md bg-howtext" />
                 </div>
               </div>
             </div>
           ) : (
             <div className="rounded-3xl border-2 border-gray-300 py-[3.5em] shadow-lg">
               <div className="flex justify-center gap-4">
-                <Button
-                  onClick={activateWallet}
-                  loading={activatingWalletLoading}
-                  className="flex w-auto transform items-center gap-2 rounded-lg bg-text2 px-9 text-sm font-semibold normal-case text-white transition-all duration-300 hover:scale-105 active:scale-95 lg:py-3"
-                >
-                  {activatingWalletLoading
-                    ? "Activating..."
-                    : "Activate Wallet"}
+                <Button onClick={activateGenericWallet} loading={activatingGenericWalletLoading} className="flex w-auto transform items-center gap-2 rounded-lg bg-text2 px-9 text-sm font-semibold normal-case text-white transition-all duration-300 hover:scale-105 active:scale-95 lg:py-3">
+                  {activatingGenericWalletLoading ? "Activating..." : "Activate Wallet"}
                 </Button>
               </div>
-              <p className="mt-3 text-sm font-medium text-gray-400">
-                Activate your crypto-wallet to access your account.
-              </p>
+              <p className="mt-3 text-sm font-medium text-gray-400">Activate your crypto-wallet to access your account.</p>
             </div>
           )}
         </section>
@@ -335,133 +271,125 @@ const CryptoMain = () => {
         {profileDetails?.isWalletActivated === true && (
           <>
             <section className="mt-6">
-              <h1 className="text-lg font-semibold">
-                Token Balance ({selectedNetworkForView})
-              </h1>
-              {loadingUserTokens && (
-                <div className="mt-4 flex items-center justify-center py-8">
-                  <p className="text-center text-gray-500">Loading tokens...</p>
-                </div>
-              )}
+              <h1 className="text-lg font-semibold">Token Balances</h1>
+
+              {loadingUserTokens && <TokenListSkeleton count={3} />}
               {!loadingUserTokens && errorUserTokens && (
                 <div className="mt-4 flex items-center justify-center py-8">
-                  <p className="text-center text-red-500">
-                    Error: {errorUserTokens}
+                  <p className="text-center text-red-500">Error: {errorUserTokens}</p>
+                </div>
+              )}
+              {!loadingUserTokens && !errorUserTokens && tokenList.length > 0 && (
+                <div className="mt-[1em] flex flex-col gap-[1em]">
+                  {tokenList.map((list) => (
+                    <AggregatedTokenListItem
+                      key={`${list.symbol}-aggregated-${list.token.networks?.join('-') || list.token.network}`}
+                      listItem={list}
+                    />
+                  ))}
+                </div>
+              )}
+
+              <div className="mt-[1em]"> 
+                {isBitcoinAccountActivated !== true && !bitcoinActivationLoading && (
+                  <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-400 p-4 text-center hover:border-orange-500 lg:py-6">
+                    <img src={bitcoinIcon} alt="Bitcoin" className="mb-2 h-10 w-10 opacity-60" />
+                    <p className="mb-3 text-base font-medium text-gray-600">
+                      Bitcoin (BTC)
+                    </p>
+                    <p className="mb-4 text-sm text-gray-500">
+                      Activate your Bitcoin wallet to send and receive BTC.
+                    </p>
+                    <Button
+                      onClick={handleActivateBitcoin}
+                      className="flex transform items-center gap-2 rounded-lg bg-orange-500 px-6 py-2 text-sm font-semibold normal-case text-white transition-all duration-300 hover:bg-orange-600 active:scale-95"
+                    >
+                      Activate Bitcoin Wallet
+                    </Button>
+                  </div>
+                )}
+
+                {bitcoinActivationLoading && (
+                  <div className="flex flex-col items-center justify-center rounded-lg border-2 border-gray-300 p-4 lg:py-8 animate-pulse">
+                    <div className="h-10 w-10 rounded-full bg-gray-200 mb-3"></div>
+                    <div className="h-5 w-20 rounded bg-gray-200 mb-2"></div>
+                    <div className="h-4 w-40 rounded bg-gray-200 mb-3"></div>
+                    <div className="h-8 w-48 rounded bg-gray-200"></div>
+                    <p className="mt-3 text-sm text-orange-500">Activating Bitcoin Wallet...</p>
+                  </div>
+                )}
+
+                {isBitcoinAccountActivated === true && !bitcoinActivationLoading && (
+                  <div className="flex flex-col rounded-lg border-2 border-gray-300 p-4 lg:py-8">
+                    {bitcoinBalanceLoading ? (
+                      <div className="flex animate-pulse items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="h-8 w-8 rounded-full bg-gray-200"></div>
+                          <div className="flex flex-col gap-1">
+                            <div className="h-4 w-16 rounded bg-gray-200"></div>
+                            <div className="h-5 w-24 rounded bg-gray-200"></div>
+                          </div>
+                        </div>
+                        <div className="h-6 w-20 rounded bg-gray-200"></div>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div><img src={TOKEN_IMAGES['BTC']} alt="BTC" className="h-8 w-8" /></div>
+                          <div className="flex flex-col gap-1">
+                            <p className="font-medium text-gray-400">BTC</p>
+                            <p className="font-bold">Bitcoin</p>
+                          </div>
+                        </div>
+                        <div>
+                          <p className="font-bold">
+                            {bitcoinBalance !== undefined ? bitcoinBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 8 }) : "0.00000000"}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {!loadingUserTokens && !errorUserTokens && tokenList.length === 0 &&
+               isBitcoinAccountActivated !== true &&
+               !bitcoinActivationLoading && (
+                <div className="mt-4 flex items-center justify-center py-8">
+                  <p className="text-center text-gray-500">
+                    No other tokens found. You can activate your Bitcoin wallet above.
                   </p>
                 </div>
               )}
-              {!loadingUserTokens &&
-                !errorUserTokens &&
-                tokenList.length === 0 && (
-                  <div className="mt-4 flex items-center justify-center py-8">
-                    <p className="text-center text-gray-500">
-                      No tokens found{" "}
-                      {selectedNetworkForView !== "All"
-                        ? `for ${selectedNetworkForView}`
-                        : "across networks"}
-                      .
-                    </p>
-                  </div>
-                )}
-              {!loadingUserTokens &&
-                !errorUserTokens &&
-                tokenList.length > 0 && (
-                  <div className="mt-[1em] flex flex-col gap-[1em]">
-                    {tokenList.map((list) => (
-                      <div
-                        key={`${list.token.tokenAddress}-${list.token.network || list.symbol}`}
-                        className="flex flex-col rounded-lg border-2 border-gray-300 p-4"
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            <div>
-                              <img
-                                src={list.img}
-                                alt={list.symbol}
-                                className="h-8 w-8"
-                              />
-                            </div>
-                            <div className="flex flex-col gap-1">
-                              <p className="font-medium text-gray-400">
-                                {list.symbol}{" "}
-                                {list.token.network
-                                  ? `(${list.token.network})`
-                                  : ""}
-                              </p>
-                              <p className="font-bold">{list.title}</p>
-                            </div>
-                          </div>
-                          <div>
-                            <p className="font-bold">
-                              $
-                              {list.token?.balance?.toLocaleString(undefined, {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 6,
-                              }) || "0.00"}
-                            </p>
-                          </div>
-                        </div>
-                        {list.token?.tokenAddress && (
-                          <div className="flex">
-                            <div className="mt-2 flex w-full max-w-[calc(100%-2rem)] items-center justify-between rounded-md border border-gray-200 bg-gray-50 px-3 py-1.5 sm:w-[200px]">
-                              <span className="font-mono truncate text-sm text-gray-600">
-                                {`${list.token.tokenAddress.slice(0, 6)}...${list.token.tokenAddress.slice(-4)}`}
-                              </span>
-                              <button
-                                onClick={() =>
-                                  handleCopy(list.token.tokenAddress)
-                                }
-                                className="ml-2 flex-shrink-0 text-gray-500 hover:text-gray-700"
-                                title={
-                                  copiedStates[list.token.tokenAddress]
-                                    ? "Copied!"
-                                    : "Copy address"
-                                }
-                              >
-                                {copiedStates[list.token.tokenAddress] ? (
-                                  <Check className="h-4 w-4 text-green-500" />
-                                ) : (
-                                  <Copy className="h-4 w-4" />
-                                )}
-                              </button>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
             </section>
 
             <section className="flex w-full items-center justify-center">
-              <div className="my-8 w-full rounded-3xl border-[2px] border-gray-300 px-4 shadow-md lg:w-[25em]">
-                <div className="flex items-center justify-between px-4 py-8 font-semibold text-howtext lg:px-10">
+              <div className="my-8 w-full rounded-3xl border-[2px] border-gray-300 px-4 shadow-md ">
+                <div className="flex items-center justify-between px-4 py-8 font-semibold text-howtext lg:px-2">
                   <Link
                     to="/dashboard/wallet/crypto/withdraw"
                     state={{ walletType: "crypto" }}
                   >
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="flex flex-col items-center bg-inherit text-center"
-                    >
+                    <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex flex-col items-center bg-inherit text-center">
                       <WithdrawIcon />
-                      <span className="block text-memt1 lg:text-lg">
-                        Withdraw
-                      </span>
+                      <span className="block text-memt1 lg:text-lg">Withdraw</span>
+                    </motion.button>
+                  </Link>
+
+                  <Link
+                    to="/dashboard/wallet/deposit/crypto"
+                    state={{ walletType: "crypto" }}
+                  >
+                    <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex flex-col items-center bg-inherit text-center">
+                      <TransferIcon />
+                      <span className="block text-memt1 lg:text-lg">Deposit</span>
                     </motion.button>
                   </Link>
 
                   <Link to="/dashboard/wallet/fund/fund_crypto_wallet">
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="flex flex-col items-center bg-inherit text-center"
-                    >
+                    <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex flex-col items-center bg-inherit text-center">
                       <TransferIcon />
-                      <span className="block text-memt1 lg:text-lg">
-                        Fund Wallet
-                      </span>
+                      <span className="block text-memt1 lg:text-lg">Fund Wallet</span>
                     </motion.button>
                   </Link>
                 </div>

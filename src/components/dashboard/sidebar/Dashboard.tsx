@@ -26,6 +26,7 @@ import OneTimeStartDate from "../../../pages/contribution/naira/oneTimePlan/Star
 import FundCryptoWallet from "../../../pages/wallet/fund/FundCryptoWallet";
 import FundCryptoWalletPreview from "../../../pages/wallet/fund/FundCryptoWalletPreview";
 import FundCryptoWalletSuccess from "../../../pages/wallet/fund/FundCryptoWalletSuccess";
+import DepositCryptoPage from "../../../pages/wallet/deposit/depositCrypto";
 
 import AjoPage from "../../../pages/ajo/main/ajo";
 import SavingsDetail from "../../../pages/ajo/savings_detail/page";
@@ -169,6 +170,11 @@ const Dashboard = () => {
           <Route
             path="/contribution/withdraw_contribution/confirm_crypto_amount"
             element={<ConfirmCryptoWithdrawal />}
+          />
+
+          <Route
+            path="/wallet/deposit/crypto"
+            element={<DepositCryptoPage />}
           />
 
           <Route path="ajo" element={<AjoPage />} />

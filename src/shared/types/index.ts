@@ -140,6 +140,7 @@ export interface UserProfileResponse {
   firstName: string;
   lastName: string;
   isWalletActivated: boolean;
+  isBitcoinWalletActivated: boolean;
   createdAt: string;
   updatedAt: string;
   __v: number;
