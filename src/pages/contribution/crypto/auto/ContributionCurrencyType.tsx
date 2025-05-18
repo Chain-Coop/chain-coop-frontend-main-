@@ -59,9 +59,9 @@ const lockTypeConfigs: Record<number, LockTypeConfig> = {
 
 const STABLE_COIN_NETWORKS = [
   { label: "BSC (BNB Smart Chain)", value: "BSC", disabled: false },
-  { label: "ETHERLINK", value: "ETHERLINK", disabled: true },
-  { label: "POLYGON", value: "POLYGON", disabled: true },
-  { label: "LISK", value: "LISK", disabled: true },
+  { label: "ETHERLINK", value: "ETHERLINK", disabled: false },
+  { label: "POLYGON", value: "POLYGON", disabled: false },
+  { label: "LISK", value: "LISK", disabled: false },
 ];
 
 const BTC_NETWORKS = [

@@ -131,6 +131,11 @@ export interface WithdrawUserPoolPayload {
   pin: string;
 }
 
+export interface WithdrawAutoUserPoolPayload {
+  poolId_bytes: string;
+  pin: string;
+}
+
 export interface Pool {
   _id: string;
   poolId: string;
