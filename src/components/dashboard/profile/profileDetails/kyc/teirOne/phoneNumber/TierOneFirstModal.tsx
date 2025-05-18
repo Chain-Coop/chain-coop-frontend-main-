@@ -7,14 +7,14 @@ import {
   DialogHeader,
   DialogBody,
   IconButton,
+  Button,
 } from "@material-tailwind/react";
 import { IoMdClose } from "react-icons/io";
 import { SubmitKycTier2 } from "../../../../../../../shared/redux/slices/transaction.slices";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
-import { RootState } from "../../../../../../../shared/redux/rootReducer";
 import { AppDispatch } from "../../../../../../../shared/redux/store";
 import { useUserProfile } from "../../../../../../../shared/Hooks/useUserProfile";
+import { RootState } from "../../../../../../../shared/redux/rootReducer";
 
 interface TierOneFirstModalProps {
   isOpen: boolean;
@@ -30,22 +30,22 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
   isVerified,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
-  const { kycTier2 } = useSelector((state: RootState) => state.transaction);
   const { profileDetails } = useUserProfile();
+  const { isLoading } = useSelector((state: RootState) => state.transaction);
 
   const userId = profileDetails?.id;
 
-  // const handleTier2Click = async () => {
-  //   try {
-  //     const result = await dispatch(SubmitKycTier2(userId)).unwrap();
-  //     if (result.redirectUrl) {
-  //       navigate(result.redirectUrl);
-  //     }
-  //   } catch (error) {
-  //     console.error("KYC Tier 2 submission failed:", error);
-  //   }
-  // };
+  const handleTier2Click = async () => {
+    try {
+      const result = await dispatch(SubmitKycTier2(userId ?? "")).unwrap();
+      if (result.verificationUrl) {
+        onClose();
+        window.location.href = result.verificationUrl;
+      }
+    } catch (error) {
+      console.error("KYC Tier 2 submission failed:", error);
+    }
+  };
 
   return (
     <Dialog size="sm" open={isOpen} handler={onClose} className="bg-white">
@@ -89,7 +89,7 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="flex w-full items-center justify-between rounded-lg border border-gray-200 p-4  shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A]">
+          <div className="flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A]">
             <div className="flex flex-col gap-1">
               <Typography
                 variant="h6"
@@ -119,7 +119,7 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
                 variant="h6"
                 className="text-sm font-bold text-gray-900"
               >
-                Teir 0
+                Tier 1
               </Typography>
               <Typography
                 variant="small"
@@ -139,31 +139,8 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
             )}
           </div>
 
-          <div className="flex w-full items-center justify-between rounded-lg border border-gray-200 p-4  shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A] ">
-            <div className="flex flex-col gap-1">
-              <Typography
-                variant="h6"
-                className="text-sm font-bold text-gray-900"
-              >
-                Teir 2
-              </Typography>
-              <Typography
-                variant="small"
-                className="text-xs font-normal text-gray-500"
-              >
-                Upload your ID or Passport
-              </Typography>
-            </div>
-            <button
-              // onClick={handleTier2Click}
-              className="rounded-full bg-gray-100 p-2"
-            >
-              <CircleArrow />
-            </button>
-          </div>
-
           <div
-            className={`flex w-full items-center justify-between rounded-lg border border-gray-200 p-4  shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A] ${
+            className={`flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A] ${
               !isVerified ? "cursor-not-allowed opacity-50" : "cursor-pointer"
             }`}
             onClick={isVerified ? onBvnStepClick : undefined}
@@ -173,7 +150,7 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
                 variant="h6"
                 className="text-sm font-bold text-gray-900"
               >
-                Teir 3
+                Tier 2
               </Typography>
               <Typography
                 variant="small"
@@ -182,9 +159,34 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
                 Upload your BVN
               </Typography>
             </div>
-            <button className="rounded-full bg-gray-100 p-2">
+            <Button className="rounded-full bg-gray-100 p-2">
               <CircleArrow />
-            </button>
+            </Button>
+          </div>
+
+          <div className="flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A]">
+            <div className="flex flex-col gap-1">
+              <Typography
+                variant="h6"
+                className="text-sm font-bold text-gray-900"
+              >
+                Tier 3
+              </Typography>
+              <Typography
+                variant="small"
+                className="text-xs font-normal text-gray-500"
+              >
+                Upload your ID or Passport
+              </Typography>
+            </div>
+            <Button
+              loading={isLoading}
+              onClick={handleTier2Click}
+              className="flex items-center justify-center rounded-full bg-gray-100 p-2"
+              disabled={isLoading}
+            >
+              {!isLoading && <CircleArrow />}
+            </Button>
           </div>
         </div>
       </DialogBody>

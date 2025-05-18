@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { format, parseISO } from "date-fns";
 import { useSelector, useDispatch } from "react-redux";
@@ -14,7 +14,6 @@ import {
 import {
   calculateSavingsDuration,
   formatBalance,
-  isDateValid,
 } from "../../shared/utils/format";
 import { DashboardHeader } from "../../components/common/DashboardHeader";
 import {
@@ -31,6 +30,7 @@ import BalanceDisplay from "../../components/dashboard/contribution/balanceDispl
 import { Alert } from "@mui/material";
 import { GetContributionDetailsByIdResponse } from "../../shared/types";
 import { useContribution } from "../../shared/Hooks/useUserProfile";
+import { toast } from "react-toastify";
 
 interface WalletCard {
   cards: Array<unknown>;
@@ -78,6 +78,11 @@ const ViewContribution = () => {
   const realBalance = unpaidBalance
     ? formatBalance(unpaidBalance.totalAmount)
     : "₦0.00";
+
+  const isOneTimeContribution =
+    contributionDetails?.contributionType?.toLowerCase() === "one-time";
+
+  const hasUnpaidBalance = unpaidBalance && unpaidBalance.totalAmount > 0;
 
   useEffect(() => {
     if (!contributionId) {
@@ -165,6 +170,10 @@ const ViewContribution = () => {
   };
 
   const handleOpenModal = () => {
+    if (!hasUnpaidBalance) {
+      toast.info("You have not missed any contribution.");
+      return;
+    }
     setIsModalOpen(true);
   };
 
@@ -210,11 +219,13 @@ const ViewContribution = () => {
       <header className="mt-0 lg:mt-8">
         <DashboardHeader className="flex items-center justify-center">
           {contributionDetails?.history[0]?.savingsType || "Savings"} Savings (
-          {contributionDetails?.contributionPlan || "Plan"})
+          {contributionDetails?.contributionPlan ||
+            contributionDetails?.contributionType}
+          )
         </DashboardHeader>
       </header>
 
-      <section className="px-6 lg:mx-auto lg:max-w-2xl">
+      <section className="px-2 lg:mx-auto lg:max-w-2xl">
         <header className="flex items-center justify-between py-4">
           <IoIosArrowBack
             onClick={handleBackClick}
@@ -268,10 +279,10 @@ const ViewContribution = () => {
               </p>
             </div>
             <div className="flex w-full flex-col items-center rounded-full border-2 border-gray-500 bg-white px-6 py-3 lg:w-[35%]">
+              <p className="font-medium">Withdrawal Day</p>
               <p className="font-semibold">
                 {formatContributionDate(contributionDetails?.withdrawalDate)}
               </p>
-              <p className="font-medium">Withdrawal Day</p>
             </div>
           </div>
 
@@ -300,7 +311,7 @@ const ViewContribution = () => {
             </Link>
           </div>
 
-          {isDateValid(contributionDetails?.nextContributionDate) && (
+          {!isOneTimeContribution && (
             <Typography className="mt-4 font-semibold text-gray-600">
               Next Contribution:{" "}
               {formatContributionDate(
@@ -312,39 +323,39 @@ const ViewContribution = () => {
           <hr className="my-8" />
         </article>
 
-        <section className="my-8 grid grid-cols-2 gap-4">
-          <div className="rounded-xl bg-Dh p-5">
-            <Typography className="text-lg font-semibold text-gray-600">
+        <section className="my-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="flex items-center justify-between rounded-xl bg-Dh p-5 md:flex-col md:items-start">
+            <Typography className="text-sm font-semibold text-gray-600 md:flex-col md:text-lg">
               Deposit Amount
             </Typography>
-            <Typography className="mt-2 text-lg font-semibold">
+            <Typography className="mt-2 text-sm font-semibold md:text-lg">
               {getFirstDepositAmount()}
             </Typography>
           </div>
-          <div className="rounded-xl bg-Dh p-5">
-            <Typography className="text-lg font-semibold text-gray-600">
+          <div className="flex items-center justify-between rounded-xl bg-Dh p-5 md:flex-col md:items-start">
+            <Typography className="text-sm font-semibold text-gray-600 md:text-lg">
               Savings Duration
             </Typography>
-            <Typography className="mt-2 text-lg font-semibold">
+            <Typography className="mt-2 text-sm font-semibold md:text-lg">
               {calculateSavingsDuration(
                 contributionDetails?.startDate,
                 contributionDetails?.withdrawalDate,
               )}
             </Typography>
           </div>
-          <div className="rounded-xl bg-Dh p-5">
-            <Typography className="text-lg font-semibold text-gray-600">
+          <div className="flex items-center justify-between rounded-xl bg-Dh p-5 md:flex-col md:items-start">
+            <Typography className="text-sm font-semibold text-gray-600 md:text-lg">
               Start Date
             </Typography>
-            <Typography className="mt-2 text-lg font-semibold">
+            <Typography className="mt-2 text-sm font-semibold md:text-lg">
               {formatContributionDate(contributionDetails?.startDate)}
             </Typography>
           </div>
-          <div className="rounded-xl bg-Dh p-5">
-            <Typography className="text-lg font-semibold text-gray-600">
+          <div className="flex items-center justify-between rounded-xl bg-Dh p-5 md:flex-col md:items-start">
+            <Typography className="text-sm font-semibold text-gray-600 md:text-lg">
               End Date
             </Typography>
-            <Typography className="mt-2 text-lg font-semibold">
+            <Typography className="mt-2 text-sm font-semibold md:text-lg">
               {formatContributionDate(contributionDetails?.withdrawalDate)}
             </Typography>
           </div>

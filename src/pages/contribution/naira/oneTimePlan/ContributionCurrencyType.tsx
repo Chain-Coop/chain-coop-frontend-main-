@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { IoIosArrowDropleft } from "react-icons/io";
+import prevFormIcon from "../../../../Assets/svg/dashboard/ajo/prev_form.svg";
 import { Alert } from "@mui/material";
 import NigerianFlag from "../../../../Assets/svg/dashboard/contribution/NigerianFlag.svg";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
@@ -19,6 +19,7 @@ const ContributionCurrencyType = () => {
   const [error, setError] = useState("");
   const location = useLocation();
   const { savingsType, contributionType } = location.state || {};
+  console.log("savingstype", savingsType, contributionType);
   const handleNext = () => {
     if (!cryptoType) {
       setError("Please select a contribution plan");
@@ -100,7 +101,7 @@ const ContributionCurrencyType = () => {
             onClick={() => navigate(-1)}
             className="flex items-center transition-all duration-300 ease-in-out hover:scale-110 hover:text-text2"
           >
-            <IoIosArrowDropleft size={25} />
+            <img src={prevFormIcon} alt="Previous form" className="w-[40px]" />
           </button>
           <button
             className="rounded-md bg-text2 px-8 py-2 font-semibold text-white

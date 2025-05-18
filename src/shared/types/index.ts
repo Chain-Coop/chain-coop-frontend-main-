@@ -516,5 +516,7 @@ export interface Teir2KycRequest {
 }
 
 export interface Teir2KycResponse {
-  authorizationUrl: string;
+  status: number;
+  message: string;
+  verificationUrl: string;
 }
