@@ -72,7 +72,6 @@ const DepositCryptoPage: React.FC = () => {
   const { cryptoWalletDetails, fetchCryptoWalletDetails } =
     useCryptoWalletDetails();
 
-  // Pass fetchCryptoWalletDetails to useUserProfile so it's called after profile fetch
   const { profileDetails } = useUserProfile(fetchCryptoWalletDetails);
   const {
     bitcoinAddress,
@@ -125,7 +124,6 @@ const DepositCryptoPage: React.FC = () => {
         profileDetails?.isBitcoinWalletActivated ||
         isBitcoinActiveInSession
       ) {
-        // Use btcAddress from cryptoWalletDetails if available
         if (cryptoWalletDetails?.btcAddress) {
           setDepositAddress(cryptoWalletDetails.btcAddress);
           setAddressMessage(null);
@@ -353,14 +351,9 @@ const DepositCryptoPage: React.FC = () => {
                   )}
                 </button>
               </div>
-              {currentNetworkWarning && (
-                <div className="mt-3 rounded-md border border-yellow-300 bg-yellow-50 p-3 text-xs text-yellow-800">
-                  <strong>Important:</strong> {currentNetworkWarning} Only send{" "}
-                  {selectedCrypto.label} via the {selectedNetwork?.label}{" "}
-                  network. Sending other assets or using a different network may
-                  result in permanent loss of funds.
-                </div>
-              )}
+              <div className="mt-3 rounded-md border border-yellow-300 bg-yellow-50 p-3 text-xs text-yellow-800">
+                <strong>Important:</strong> {currentNetworkWarning}
+              </div>
             </>
           ) : (
             <div className="flex h-24 items-center justify-center rounded-md border border-gray-200 bg-white p-3 text-gray-500">

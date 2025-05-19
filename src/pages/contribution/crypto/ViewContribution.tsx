@@ -398,7 +398,23 @@ const ViewCryptoContribution = () => {
             </div>
           </section>
           <TransactionHistory
-            contribution={{ ...contribution, transactions: [] }}
+            contribution={{
+              poolId: contribution.poolId,
+              poolType: contribution.poolType as "oneTime" | "periodic",
+              tokenSymbol: contribution.tokenSymbol,
+              totalAmount: contribution.totalAmount,
+              isActive: contribution.isActive,
+              transactions: Array.isArray(contribution.transactions)
+                ? contribution.transactions.map((tx) => ({
+                    txHash: tx.txHash || "",
+                    amount: typeof tx.amount === "string" ? tx.amount : "0",
+                    timestamp: tx.timestamp || new Date().toISOString(),
+                    depositType: tx.depositType || "Deposit",
+                    poolAmount: tx.poolAmount || "0",
+                    status: tx.status || "CONFIRMED",
+                  }))
+                : [],
+            }}
           />
         </section>
       </section>

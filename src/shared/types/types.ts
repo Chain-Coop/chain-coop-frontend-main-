@@ -148,6 +148,9 @@ export interface Pool {
   tokenAddress: string;
   lockType: 0 | 1 | 2;
   isActive: boolean;
+  transactions: {
+    txHash: string;
+  };
   interval?: string;
   periodicAmount?: number | string;
   createdAt?: string;
