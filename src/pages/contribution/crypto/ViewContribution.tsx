@@ -32,7 +32,8 @@ const ViewCryptoContribution = () => {
   const [isFundModalOpen, setIsFundModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
-  const [isEarlyWithdrawalModalOpen, setIsEarlyWithdrawalModalOpen] = useState(false);
+  const [isEarlyWithdrawalModalOpen, setIsEarlyWithdrawalModalOpen] =
+    useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -89,7 +90,7 @@ const ViewCryptoContribution = () => {
     contribution?.duration ?? 0,
   );
 
-  const formattedEndDateString = formatDate(endDate); 
+  const formattedEndDateString = formatDate(endDate);
 
   const isStrictLock = contribution?.lockType === 2;
   const isLockSavings = contribution?.lockType === 1;
@@ -98,7 +99,8 @@ const ViewCryptoContribution = () => {
 
   const disableStrictWithdrawal = isStrictLock && !isEndDateReached;
 
-  const isWithdrawButtonDisabled = disableStrictWithdrawal || !contribution?.isActive;
+  const isWithdrawButtonDisabled =
+    disableStrictWithdrawal || !contribution?.isActive;
 
   const nextChargeDate = useMemo(() => {
     if (
@@ -163,18 +165,14 @@ const ViewCryptoContribution = () => {
     if (isLockSavings && !isEndDateReached) {
       setIsEarlyWithdrawalModalOpen(true);
     } else {
-     
-      navigate(
-        "/dashboard/contribution/withdraw_crypto_contribution",
-        {
-          state: {
-            poolIndex: contribution.poolId,
-            symbol: contribution.tokenSymbol,
-            amount: currentAmount,
-            poolType: contribution.poolType,
-          },
+      navigate("/dashboard/contribution/withdraw_crypto_contribution", {
+        state: {
+          poolIndex: contribution.poolId,
+          symbol: contribution.tokenSymbol,
+          amount: currentAmount,
+          poolType: contribution.poolType,
         },
-      );
+      });
     }
   };
 
@@ -182,18 +180,14 @@ const ViewCryptoContribution = () => {
     setIsEarlyWithdrawalModalOpen(false);
     if (!contribution) return;
 
-    navigate(
-      "/dashboard/contribution/withdraw_crypto_contribution",
-      {
-        state: {
-          poolIndex: contribution.poolId,
-          symbol: contribution.tokenSymbol,
-          amount: amountAfterFee,
-        },
+    navigate("/dashboard/contribution/withdraw_crypto_contribution", {
+      state: {
+        poolIndex: contribution.poolId,
+        symbol: contribution.tokenSymbol,
+        amount: amountAfterFee,
       },
-    );
+    });
   };
-
 
   return (
     <main className="pb-[1.5em] ">
@@ -228,7 +222,7 @@ const ViewCryptoContribution = () => {
               </div>
 
               <div className="mt-[1.5em] flex flex-col items-center justify-center gap-4 text-center text-text3">
-                <p className="flex w-full items-center justify-center gap-1 rounded-lg border-[1px] border-dashed border-text2 py-4 text-sm font-bold text-text2 lg:w-[80%]">
+                <p className="hidden w-full items-center justify-center gap-1 rounded-lg border-[1px] border-dashed border-text2 py-4 text-sm font-bold text-text2 lg:w-[80%]">
                   <img src={Naira} alt="naira-symbol" />
                   Naira Equivalent: <span>NGN 8000</span>
                 </p>
@@ -403,7 +397,9 @@ const ViewCryptoContribution = () => {
               </Typography>
             </div>
           </section>
-          <TransactionHistory contribution={{ ...contribution, transactions: [] }} />
+          <TransactionHistory
+            contribution={{ ...contribution, transactions: [] }}
+          />
         </section>
       </section>
 
@@ -427,16 +423,15 @@ const ViewCryptoContribution = () => {
       />
 
       {contribution && (
-         <EarlyWithdrawalModal
-            isOpen={isEarlyWithdrawalModalOpen}
-            onClose={() => setIsEarlyWithdrawalModalOpen(false)}
-            onConfirm={handleEarlyWithdrawalConfirm}
-            totalAmount={Number(contribution.totalAmount) || 0}
-            feePercentage={3}
-            formattedEndDate={formattedEndDateString}
-         />
+        <EarlyWithdrawalModal
+          isOpen={isEarlyWithdrawalModalOpen}
+          onClose={() => setIsEarlyWithdrawalModalOpen(false)}
+          onConfirm={handleEarlyWithdrawalConfirm}
+          totalAmount={Number(contribution.totalAmount) || 0}
+          feePercentage={3}
+          formattedEndDate={formattedEndDateString}
+        />
       )}
-
     </main>
   );
 };
