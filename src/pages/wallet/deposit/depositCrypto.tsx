@@ -69,9 +69,11 @@ const NETWORKS_BY_CRYPTO: Record<string, string[]> = {
 
 const DepositCryptoPage: React.FC = () => {
   const navigate = useNavigate();
-  const { profileDetails } = useUserProfile();
   const { cryptoWalletDetails, fetchCryptoWalletDetails } =
     useCryptoWalletDetails();
+
+  // Pass fetchCryptoWalletDetails to useUserProfile so it's called after profile fetch
+  const { profileDetails } = useUserProfile(fetchCryptoWalletDetails);
   const {
     bitcoinAddress,
     isBitcoinAccountActivated: isBitcoinActiveInSession,
@@ -123,7 +125,11 @@ const DepositCryptoPage: React.FC = () => {
         profileDetails?.isBitcoinWalletActivated ||
         isBitcoinActiveInSession
       ) {
-        if (bitcoinAddress) {
+        // Use btcAddress from cryptoWalletDetails if available
+        if (cryptoWalletDetails?.btcAddress) {
+          setDepositAddress(cryptoWalletDetails.btcAddress);
+          setAddressMessage(null);
+        } else if (bitcoinAddress) {
           setDepositAddress(bitcoinAddress);
           setAddressMessage(null);
         } else {
@@ -204,11 +210,7 @@ const DepositCryptoPage: React.FC = () => {
     setIsBtcCoreNoticeOpen(false);
   };
 
-  const currentNetworkWarning =
-    selectedNetwork?.warning ||
-    (selectedNetwork?.addressType === "evm" && selectedCrypto.value !== "ETH"
-      ? `Ensure you are sending ${selectedCrypto.label} as a token on the ${selectedNetwork.label} network.`
-      : null);
+  const currentNetworkWarning = `Ensure you are sending ${selectedCrypto.label} as a token on the ${selectedNetwork?.label} network. Only send ${selectedCrypto.label} via the ${selectedNetwork?.label} network. Sending other assets or using a different network may result in permanent loss of funds.`;
 
   return (
     <main className="mt-0 lg:mt-8">
@@ -326,7 +328,7 @@ const DepositCryptoPage: React.FC = () => {
 
         {/* Deposit Address Display */}
         <div className="mt-8 rounded-lg bg-gray-50 p-4 shadow">
-          <h2 className="mb-3 text-lg font-semibold text-gray-800">
+          <h2 className="mb-3 text-center text-lg font-semibold text-gray-800">
             Your {selectedCrypto.label} ({selectedNetwork?.label}) Address:
           </h2>
           {depositAddress ? (

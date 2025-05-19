@@ -15,6 +15,7 @@ import BankDropdown, { Bank } from "../../../../../../common/BankDropdown";
 
 import { Alert } from "@mui/material";
 import { VerifyBvnDetails } from "../../../../../../../shared/redux/slices/kyc.slices";
+import { IoMdClose } from "react-icons/io";
 
 const VerifyBvn = ({
   isOpen,
@@ -82,6 +83,14 @@ const VerifyBvn = ({
       dismiss={{ enabled: false }}
     >
       <form onSubmit={handleSubmit}>
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute left-4 top-4 z-10 rounded-full p-1.5 hover:bg-gray-100 focus:outline-none"
+          aria-label="Close"
+        >
+          <IoMdClose size={24} />
+        </button>
         <DialogHeader className="flex flex-col justify-center text-center">
           <Typography className="text-lg font-semibold leading-tight tracking-tight text-black lg:text-2xl">
             Verify Your BVN

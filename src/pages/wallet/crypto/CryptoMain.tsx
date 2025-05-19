@@ -418,7 +418,7 @@ const CryptoMain = () => {
                           <div className="h-6 w-20 rounded bg-gray-200"></div>
                         </div>
                       ) : (
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between py-[1em]">
                           <div className="flex items-center gap-3">
                             <div>
                               <img
