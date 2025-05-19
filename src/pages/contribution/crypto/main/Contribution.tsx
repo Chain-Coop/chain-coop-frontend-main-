@@ -261,7 +261,14 @@ const CryptoSavings: React.FC = () => {
                   <div className="h-6 animate-pulse rounded bg-gray-200 sm:h-8"></div>
                 ) : isContributionVisible ? (
                   <p className="text-xl font-bold lg:text-2xl">
-                    ${formattedTotalContributionCrypto}
+                    $
+                    {Number(formattedTotalContributionCrypto).toLocaleString(
+                      undefined,
+                      {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      },
+                    )}
                   </p>
                 ) : (
                   <p className="text-lg font-bold sm:text-xl">*********</p>

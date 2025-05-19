@@ -306,7 +306,10 @@ const CryptoMain = () => {
                           <div className="mx-auto h-6 w-32 rounded bg-gray-200"></div>
                         </div>
                       ) : typeof totalBalance === "number" ? (
-                        `$${totalBalance.toFixed(2)}`
+                        `$${totalBalance.toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}`
                       ) : (
                         "$0.00"
                       )}
