@@ -89,7 +89,7 @@ const VerifyBvn = ({
           className="absolute left-4 top-4 z-10 rounded-full p-1.5 hover:bg-gray-100 focus:outline-none"
           aria-label="Close"
         >
-          <IoClose size={24} />
+          <IoMdClose size={24} />
         </button>
         <DialogHeader className="flex flex-col justify-center text-center">
           <Typography className="text-lg font-semibold leading-tight tracking-tight text-black lg:text-2xl">
