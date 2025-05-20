@@ -14,7 +14,7 @@ import Naira from "../../../Assets/svg/dashboard/contribution/naira.svg";
 import up from "../../../Assets/svg/dashboard/contribution/up.svg";
 import FundSavingsModal from "../../../components/dashboard/contribution/modals/FundContribution";
 import UpdateSavingsModal from "../../../components/dashboard/contribution/modals/UpdateContribution";
-import EarlyWithdrawalModal from "../../../components/dashboard/contribution/modals/EarlyWithdrawal"; // Import the new modal
+import EarlyWithdrawalModal from "../../../components/dashboard/contribution/modals/EarlyWithdrawal";
 import TransactionHistory from "./TransactionHistory";
 import { Pool } from "../../../shared/types/types";
 import {
@@ -32,7 +32,8 @@ const ViewCryptoContribution = () => {
   const [isFundModalOpen, setIsFundModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
-  const [isEarlyWithdrawalModalOpen, setIsEarlyWithdrawalModalOpen] = useState(false);
+  const [isEarlyWithdrawalModalOpen, setIsEarlyWithdrawalModalOpen] =
+    useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -62,7 +63,7 @@ const ViewCryptoContribution = () => {
   };
 
   const calculateEndDate = (
-    startDateISO: string,
+    startDateISO: string | null,
     durationDays: number,
   ): Date | null => {
     if (!startDateISO || durationDays === undefined || durationDays === null) {
@@ -89,7 +90,7 @@ const ViewCryptoContribution = () => {
     contribution?.duration ?? 0,
   );
 
-  const formattedEndDateString = formatDate(endDate); 
+  const formattedEndDateString = formatDate(endDate);
 
   const isStrictLock = contribution?.lockType === 2;
   const isLockSavings = contribution?.lockType === 1;
@@ -98,7 +99,8 @@ const ViewCryptoContribution = () => {
 
   const disableStrictWithdrawal = isStrictLock && !isEndDateReached;
 
-  const isWithdrawButtonDisabled = disableStrictWithdrawal || !contribution?.isActive;
+  const isWithdrawButtonDisabled =
+    disableStrictWithdrawal || !contribution?.isActive;
 
   const nextChargeDate = useMemo(() => {
     if (
@@ -163,17 +165,14 @@ const ViewCryptoContribution = () => {
     if (isLockSavings && !isEndDateReached) {
       setIsEarlyWithdrawalModalOpen(true);
     } else {
-     
-      navigate(
-        "/dashboard/contribution/withdraw_crypto_contribution",
-        {
-          state: {
-            poolIndex: contribution.poolId,
-            symbol: contribution.tokenSymbol,
-            amount: currentAmount,
-          },
+      navigate("/dashboard/contribution/withdraw_crypto_contribution", {
+        state: {
+          poolIndex: contribution.poolId,
+          symbol: contribution.tokenSymbol,
+          amount: currentAmount,
+          poolType: contribution.poolType,
         },
-      );
+      });
     }
   };
 
@@ -181,18 +180,14 @@ const ViewCryptoContribution = () => {
     setIsEarlyWithdrawalModalOpen(false);
     if (!contribution) return;
 
-    navigate(
-      "/dashboard/contribution/withdraw_crypto_contribution",
-      {
-        state: {
-          poolIndex: contribution.poolId,
-          symbol: contribution.tokenSymbol,
-          amount: amountAfterFee,
-        },
+    navigate("/dashboard/contribution/withdraw_crypto_contribution", {
+      state: {
+        poolIndex: contribution.poolId,
+        symbol: contribution.tokenSymbol,
+        amount: amountAfterFee,
       },
-    );
+    });
   };
-
 
   return (
     <main className="pb-[1.5em] ">
@@ -227,7 +222,7 @@ const ViewCryptoContribution = () => {
               </div>
 
               <div className="mt-[1.5em] flex flex-col items-center justify-center gap-4 text-center text-text3">
-                <p className="flex w-full items-center justify-center gap-1 rounded-lg border-[1px] border-dashed border-text2 py-4 text-sm font-bold text-text2 lg:w-[80%]">
+                <p className="hidden w-full items-center justify-center gap-1 rounded-lg border-[1px] border-dashed border-text2 py-4 text-sm font-bold text-text2 lg:w-[80%]">
                   <img src={Naira} alt="naira-symbol" />
                   Naira Equivalent: <span>NGN 8000</span>
                 </p>
@@ -259,12 +254,12 @@ const ViewCryptoContribution = () => {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    disabled={isWithdrawButtonDisabled} // Keep existing disabled logic for strict lock/inactive
-                    onClick={handleWithdrawClick} // Use the new handler function
+                    disabled={isWithdrawButtonDisabled}
+                    onClick={handleWithdrawClick}
                     className={`flex-1 whitespace-nowrap rounded-lg border-2 border-gray-200 bg-inherit px-[1.5em] py-[5px] text-lg font-semibold shadow-lg lg:px-[3em] lg:py-[13px] ${
                       isWithdrawButtonDisabled
                         ? "cursor-not-allowed opacity-50"
-                        : "" // Note: Styling doesn't prevent click if lockType is 1 before end date
+                        : ""
                     }`}
                   >
                     Withdraw
@@ -402,7 +397,25 @@ const ViewCryptoContribution = () => {
               </Typography>
             </div>
           </section>
-          <TransactionHistory contribution={contribution} />
+          <TransactionHistory
+            contribution={{
+              poolId: contribution.poolId,
+              poolType: contribution.poolType as "oneTime" | "periodic",
+              tokenSymbol: contribution.tokenSymbol,
+              totalAmount: contribution.totalAmount,
+              isActive: contribution.isActive,
+              transactions: Array.isArray(contribution.transactions)
+                ? contribution.transactions.map((tx) => ({
+                    txHash: tx.txHash || "",
+                    amount: typeof tx.amount === "string" ? tx.amount : "0",
+                    timestamp: tx.timestamp || new Date().toISOString(),
+                    depositType: tx.depositType || "Deposit",
+                    poolAmount: tx.poolAmount || "0",
+                    status: tx.status || "CONFIRMED",
+                  }))
+                : [],
+            }}
+          />
         </section>
       </section>
 
@@ -426,16 +439,15 @@ const ViewCryptoContribution = () => {
       />
 
       {contribution && (
-         <EarlyWithdrawalModal
-            isOpen={isEarlyWithdrawalModalOpen}
-            onClose={() => setIsEarlyWithdrawalModalOpen(false)}
-            onConfirm={handleEarlyWithdrawalConfirm}
-            totalAmount={Number(contribution.totalAmount) || 0}
-            feePercentage={3}
-            formattedEndDate={formattedEndDateString}
-         />
+        <EarlyWithdrawalModal
+          isOpen={isEarlyWithdrawalModalOpen}
+          onClose={() => setIsEarlyWithdrawalModalOpen(false)}
+          onConfirm={handleEarlyWithdrawalConfirm}
+          totalAmount={Number(contribution.totalAmount) || 0}
+          feePercentage={3}
+          formattedEndDate={formattedEndDateString}
+        />
       )}
-
     </main>
   );
 };

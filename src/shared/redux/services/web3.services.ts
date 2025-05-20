@@ -225,6 +225,29 @@ const WithdrawUserPool = async (body: any) => {
   }
 };
 
+const WithdrawAutoUserPool = async (body: any) => {
+  const url = `${API_URL}/web3/v2/periodicSaving/withdraw`;
+  try {
+    const response = await axios.post(url, body, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error("Backend error response:", error.response.data);
+      const backendMessage =
+        error.response.data.msg ||
+        error.response.data.message ||
+        error.response.data?.error?.message ||
+        "An error occurred";
+      throw new Error(backendMessage);
+    } else {
+      console.error("Network error:", error.message);
+      throw new Error("Network Error: Please check your internet connection.");
+    }
+  }
+};
+
 const GetAllUserTokens = async (network: string = "ETHERLINK") => {
   const url = `${API_URL}/web3/balance/tokens/${network}`;
   try {
@@ -524,6 +547,38 @@ const GetTotalBalance = async (network: string = "ETHERLINK") => {
   }
 };
 
+const ActivateBitcoinAccount = async () => {
+  const url = `${API_URL}/web3/account/activateBitcoin`;
+  try {
+    const response = await axios.post(url, null, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw error.response.data;
+    } else {
+      throw new Error("Network Error: Could not activate Bitcoin account.");
+    }
+  }
+};
+
+const GetBitcoinBalance = async () => {
+  const url = `${API_URL}/web3/balance/bitcoin/balance`;
+  try {
+    const response = await axios.get(url, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw error.response.data;
+    } else {
+      throw new Error("Network Error: Could not fetch Bitcoin balance.");
+    }
+  }
+};
+
 const web3Services = {
   ActivateCryptoWallet,
   GetTotalCryptoWalletBalance,
@@ -533,6 +588,7 @@ const web3Services = {
   GetAllUserPools,
   UpdateUserPool,
   WithdrawUserPool,
+  WithdrawAutoUserPool,
   GetAllUserTokens,
   UpdateAutoPool,
   StopPeriodicPool,
@@ -548,6 +604,8 @@ const web3Services = {
   CashwyreOfframpConfirm,
   getCashwyreHistory,
   GetTotalBalance,
+  ActivateBitcoinAccount,
+  GetBitcoinBalance,
 };
 
 export default web3Services;

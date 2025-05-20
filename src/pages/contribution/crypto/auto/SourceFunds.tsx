@@ -9,6 +9,7 @@ import { IoChevronDown } from "react-icons/io5";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
 import cryptoSavings from "../../../../Assets/png/dashboard/cryptSavings.png";
 import ProgressBar from "../../../../components/dashboard/contribution/ProgressBar";
+import { toast } from "react-toastify";
 
 interface LocationState {
   lockedType?: number;
@@ -236,6 +237,21 @@ const UnifiedSourceFunds: React.FC = () => {
     selectedSource,
   );
 
+  const handleTermsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const isChecked = e.target.checked;
+  setTermsAccepted(isChecked);
+
+  if (isChecked && currentConfig?.hasTermsCheckbox && lockedType === 2) {
+    toast.info(
+      "Accepting the terms means you acknowledge that you cannot withdraw your funds until the due date.",
+      {
+        position: "top-right",
+        autoClose: 8000,
+      },
+    );
+  }
+};
+
   return (
     <main className="pb-[1.5em]">
       <DashboardHeader className="flex items-center justify-center sm:mt-[0] lg:mt-[2em]">
@@ -359,9 +375,9 @@ const UnifiedSourceFunds: React.FC = () => {
                 type="checkbox"
                 className="h-5 w-5 accent-text2"
                 checked={termsAccepted}
-                onChange={(e) => setTermsAccepted(e.target.checked)}
+                onChange={handleTermsChange} 
               />
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-black font-black">
                 {currentConfig.termsText}
               </span>
             </label>

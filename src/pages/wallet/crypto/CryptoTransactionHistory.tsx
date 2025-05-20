@@ -12,6 +12,7 @@ import {
   IoFilterOutline,
   IoOptionsOutline,
 } from "react-icons/io5";
+import { TransactionHistorySkeleton } from "../../../components/common/Loading";
 
 const SaveIcon = () => <span>+</span>;
 const WithdrawIcon = () => <span>-</span>;
@@ -62,7 +63,6 @@ const CryptoTransactionHistory: React.FC = () => {
     error: cashwyreError,
   } = useCashwyreHistory();
 
-  // Function to check if a transaction is a cashwyre transaction
   const isCashwyreTransaction = (tx: any): boolean => {
     return (
       tx.hasOwnProperty("cryptoAssetNetwork") ||
@@ -70,14 +70,12 @@ const CryptoTransactionHistory: React.FC = () => {
     );
   };
 
-  // Combine and filter transactions based on selected filter
   const filteredTransactions = useMemo(() => {
     const crypto = cryptoTransactions || [];
     const cashwyre = cashwyreTransactions || [];
 
     let result = [];
 
-    // Apply type filter
     switch (filterType) {
       case "wallet":
         result = cashwyre || [];
@@ -101,7 +99,6 @@ const CryptoTransactionHistory: React.FC = () => {
       );
     }
 
-    // Sort by date based on sortOrder
     return [...result].sort((a, b) => {
       const dateA = new Date(a?.createdAt || 0).getTime();
       const dateB = new Date(b?.createdAt || 0).getTime();
@@ -117,7 +114,6 @@ const CryptoTransactionHistory: React.FC = () => {
 
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
-  // Use combined loading and error states
   const isLoading = cryptoLoading || cashwyreLoading;
   const hasError = cryptoError || cashwyreError;
   const errorMessage = cryptoError || cashwyreError;
@@ -318,7 +314,7 @@ const CryptoTransactionHistory: React.FC = () => {
 
       {isLoading && (
         <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center text-gray-500">
-          <Typography>Loading history...</Typography>
+          <TransactionHistorySkeleton dateGroups={2} itemsPerGroup={2} />
         </div>
       )}
 

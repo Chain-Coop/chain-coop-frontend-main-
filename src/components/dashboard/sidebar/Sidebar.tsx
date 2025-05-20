@@ -46,10 +46,8 @@ const Sidebar = () => {
           {sidebarLinks.map((link, index) => {
             const isActive =
               location.pathname === link.to ||
-              (link.pathsToCheck?.some((path) =>
-                location.pathname.startsWith(path),
-              ) ??
-                false);
+              (link.pathsToCheck &&
+                link.pathsToCheck.some((p) => location.pathname === p));
 
             return (
               <Link

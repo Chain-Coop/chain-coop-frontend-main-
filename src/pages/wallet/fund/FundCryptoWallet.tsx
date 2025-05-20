@@ -16,7 +16,7 @@ import FundProgressBar from "../../../components/dashboard/wallet/modal/crypro/P
 
 const CRYPTOS = [
   { label: "Bitcoin (BTC)", value: "bitcoin", img: btcImg, disabled: false },
-  { label: "USDC", value: "usdc", img: usdcImg, disabled: true },
+  { label: "USDC", value: "usdc", img: usdcImg, disabled: false },
   { label: "USDT", value: "usdt", img: usdtImg, disabled: false },
 ];
 
@@ -25,12 +25,14 @@ const ALL_NETWORKS = [
   { label: "BTC Core", value: "btc", disabled: false },
   { label: "BNB Smart Chain-BEP20", value: "bsc", disabled: false },
   { label: "Etherlink", value: "etherlink", disabled: true },
+  { label: "Lisk", value: "lsk", disabled: true },
+  { label: "Polygon", value: "polygon", disabled: true },
 ];
 
 const NETWORKS_BY_CRYPTO: Record<string, string[]> = {
   bitcoin: ["BTC_LN", "btc"],
-  usdc: ["bsc", "etherlink"],
-  usdt: ["bsc", "etherlink"],
+  usdc: ["bsc", "etherlink", "lsk", "polygon"],
+  usdt: ["bsc", "etherlink", "lsk", "polygon"],
 };
 
 const FundCryptoWallet: React.FC = () => {

@@ -418,7 +418,7 @@ export const useWithdrawalValidation = ({
   };
 };
 
-export const useTotalBalance = (network: string = "ETHERLINK") => {
+export const useTotalBalance = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { totalBalanceData, isLoading, errorData } = useSelector(
     (state: any) => ({
@@ -429,18 +429,67 @@ export const useTotalBalance = (network: string = "ETHERLINK") => {
     shallowEqual,
   );
 
+  // console.log("Grand Total Balance Data from hook:", totalBalanceData);
+
   const fetchTotalBalance = useCallback(() => {
-    dispatch(Web3Slices.GetTotalBalance(network))
+    dispatch(Web3Slices.FetchGrandTotalBalanceFromAllNetworks())
       .unwrap()
       .catch((err: any) => {
-        console.error("Failed to fetch total balance:", err);
+        console.error("Failed to dispatch fetchGrandTotalBalance:", err);
       });
-  }, [dispatch, network]);
+  }, [dispatch]);
 
   return {
     totalBalance: totalBalanceData,
     loading: isLoading,
     error: errorData,
     fetchTotalBalance,
+  };
+};
+
+export const useBitcoinAccount = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const {
+    isBitcoinAccountActivated,
+    bitcoinAccountStatusMessage,
+    bitcoinActivationLoading,
+    bitcoinActivationError,
+    bitcoinBalance,
+    bitcoinAddress,
+    bitcoinBalanceLoading,
+    bitcoinBalanceError,
+  } = useSelector(
+    (state: any) => ({
+      isBitcoinAccountActivated: state.web3.isBitcoinAccountActivated,
+      bitcoinAccountStatusMessage: state.web3.bitcoinAccountStatusMessage,
+      bitcoinActivationLoading: state.web3.bitcoinActivationLoading,
+      bitcoinActivationError: state.web3.bitcoinActivationError,
+      bitcoinBalance: state.web3.bitcoinBalance,
+      bitcoinAddress: state.web3.bitcoinAddress,
+      bitcoinBalanceLoading: state.web3.bitcoinBalanceLoading,
+      bitcoinBalanceError: state.web3.bitcoinBalanceError,
+    }),
+    shallowEqual,
+  );
+
+  const activateBitcoinAccount = useCallback(() => {
+    return dispatch(Web3Slices.ActivateBitcoin()).unwrap();
+  }, [dispatch]);
+
+  const fetchBitcoinBalance = useCallback(() => {
+    return dispatch(Web3Slices.FetchBitcoinBalance()).unwrap();
+  }, [dispatch]);
+
+  return {
+    isBitcoinAccountActivated,
+    bitcoinAccountStatusMessage,
+    bitcoinActivationLoading,
+    bitcoinActivationError,
+    activateBitcoinAccount,
+    bitcoinBalance,
+    bitcoinAddress,
+    bitcoinBalanceLoading,
+    bitcoinBalanceError,
+    fetchBitcoinBalance,
   };
 };

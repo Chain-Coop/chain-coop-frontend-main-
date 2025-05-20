@@ -7,7 +7,7 @@ import WithdrawExternalModal from "./modals/WithdrawExternalModal";
 
 const WithdrawCryptoContribution: React.FC = () => {
   const location = useLocation();
-  const { poolIndex, symbol, amount } = location.state || {};
+  const { poolIndex, symbol, amount, poolType } = location.state || {};
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isExternalWalletModalOpen, setIsExternalWalletModalOpen] =
@@ -19,7 +19,7 @@ const WithdrawCryptoContribution: React.FC = () => {
       navigate(
         "/dashboard/contribution/withdraw_contribution/confirm_crypto_amount",
         {
-          state: { poolIndex, symbol, amount },
+          state: { poolIndex, symbol, amount, poolType },
         },
       );
     } else if (option === "external") {

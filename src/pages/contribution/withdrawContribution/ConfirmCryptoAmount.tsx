@@ -6,7 +6,10 @@ import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import PinModal from "../../../components/common/PinModal";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../shared/redux/store";
-import { WithdrawUserPool } from "../../../shared/redux/slices/web3.slices";
+import {
+  WithdrawUserPool,
+  WithdrawAutoUserPool,
+} from "../../../shared/redux/slices/web3.slices";
 import Success from "../../../components/common/Success";
 import { toast } from "react-toastify";
 
@@ -14,7 +17,7 @@ const ConfirmCryptoAmount: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
-  const { amount, poolIndex, symbol } = location.state || {
+  const { amount, poolIndex, symbol, poolType } = location.state || {
     amount: "0.00",
     poolIndex: null,
     symbol: null,
@@ -42,12 +45,21 @@ const ConfirmCryptoAmount: React.FC = () => {
         pin: enteredPin,
       });
 
-      await dispatch(
-        WithdrawUserPool({
-          poolId_bytes,
-          pin: enteredPin,
-        }),
-      ).unwrap();
+      if (poolType === "periodic") {
+        await dispatch(
+          WithdrawAutoUserPool({
+            poolId_bytes,
+            pin: enteredPin,
+          }),
+        ).unwrap();
+      } else {
+        await dispatch(
+          WithdrawUserPool({
+            poolId_bytes,
+            pin: enteredPin,
+          }),
+        ).unwrap();
+      }
 
       setIsPinModalOpen(false);
       setIsSuccessModalOpen(true);
@@ -114,7 +126,7 @@ const ConfirmCryptoAmount: React.FC = () => {
           onClick={handleConfirm}
           className="h-[52px] w-[60%] rounded bg-text2 py-3 font-black text-white hover:bg-[#4a1d7d]"
         >
-          Fund ${amount}
+          Withdraw ${amount}
         </motion.button>
       </div>
 

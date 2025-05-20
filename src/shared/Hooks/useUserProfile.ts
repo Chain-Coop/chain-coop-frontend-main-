@@ -23,7 +23,7 @@ enum UploadFields {
 import { Project } from "../types";
 import { RootState } from "../redux/rootReducer";
 
-export const useUserProfile = () => {
+export const useUserProfile = (onProfileFetched?: () => void) => {
   const dispatch = useDispatch<AppDispatch>();
   const profileDetails = useSelector(
     (state: RootState) => state.landing.getProfile,
@@ -31,14 +31,15 @@ export const useUserProfile = () => {
   const userToken = sessionStorage.getItem("userData");
   const [loading, setLoading] = useState(false);
 
-  // State for user saving circles
   const [userCircles, setUserCircles] = useState<any[]>([]);
   const [circlesLoading, setCirclesLoading] = useState(false);
   const [circlesError, setCirclesError] = useState<string | null>(null);
 
-  const fetchUserProfile = useCallback(() => {
-    return dispatch(GetUserProfile()).unwrap();
-  }, [dispatch]);
+  const fetchUserProfile = useCallback(async () => {
+    const result = await dispatch(GetUserProfile()).unwrap();
+    if (onProfileFetched) onProfileFetched();
+    return result;
+  }, [dispatch, onProfileFetched]);
 
   const fetchUserCircles = useCallback(async () => {
     if (profileDetails?._id) {
