@@ -15,7 +15,7 @@ import BtcCoreNoticeModal from "../../../components/dashboard/wallet/modal/crypr
 import FundProgressBar from "../../../components/dashboard/wallet/modal/crypro/ProgressBar";
 
 const CRYPTOS = [
-  { label: "Bitcoin (BTC)", value: "bitcoin", img: btcImg, disabled: false },
+  { label: "Bitcoin (BTC)", value: "bitcoin", img: btcImg, disabled: true },
   { label: "USDC", value: "usdc", img: usdcImg, disabled: false },
   { label: "USDT", value: "usdt", img: usdtImg, disabled: false },
 ];
