@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { Button, Typography } from "@material-tailwind/react";
+import { Typography, Button } from "@material-tailwind/react";
 import { Filter } from "../../../../Assets/svg";
 import FormInput from "../../../../components/common/FormInput";
 import { Alert } from "@mui/material";
@@ -12,21 +12,28 @@ interface Contribution {
   _id: string;
   savingsCategory: string;
   balance: number;
+  savingsType: "Flexible" | "Lock" | "Strict";
+  contributionType: "auto" | "one-time";
+  endDate: string;
+  contributionPlan?: string;
+  amount?: number;
+  currency?: string;
+  startDate?: string;
+  nextContributionDate?: string;
+  lastContributionDate?: string;
+  withdrawalDate?: string;
+  status?: string;
 }
 
 interface AutoSavingsProps {
   contributions: Contribution[];
   isLoading: boolean;
   error: string | null;
-  currentPage: number;
-  totalPages: number;
   searchTerm: string;
   filterType: string;
   isFilterOpen: boolean;
   onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onFilterChange: (value: string) => void;
-  onPrevPage: () => void;
-  onNextPage: () => void;
   onNavigateToDetails: (contributionId: string) => void;
   setIsFilterOpen: (value: boolean) => void;
 }
@@ -35,38 +42,46 @@ const AutoSavings: React.FC<AutoSavingsProps> = ({
   contributions,
   isLoading,
   error,
-  currentPage,
-  totalPages,
   searchTerm,
-  filterType,
-  isFilterOpen,
   onSearchChange,
-  onFilterChange,
-  onPrevPage,
-  onNextPage,
   onNavigateToDetails,
+  isFilterOpen,
   setIsFilterOpen,
 }) => {
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const itemsPerPage = 10;
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(contributions.length / itemsPerPage),
+  );
+
+  const currentContributions = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return contributions.slice(startIndex, endIndex);
+  }, [contributions, currentPage]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [contributions]);
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
   const formatCurrency = (amount: number | undefined) => {
     if (!amount && amount !== 0) return "₦ 0";
     return `₦ ${amount.toLocaleString()}`;
   };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (isFilterOpen) {
-        const target = event.target as HTMLElement;
-        if (!target.closest(".relative")) {
-          setIsFilterOpen(false);
-        }
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isFilterOpen, setIsFilterOpen]);
 
   return (
     <section className="mt-0 w-full md:mt-4">
@@ -84,69 +99,21 @@ const AutoSavings: React.FC<AutoSavingsProps> = ({
             wrapperClassName="w-full"
             value={searchTerm}
             onChange={onSearchChange}
-            className=" shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A]"
+            className="shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A]"
           />
         </div>
 
         <div className="relative flex items-center">
-          <div
-            className="flex cursor-pointer items-center gap-2"
+          <Button
+            className="flex items-center gap-2 normal-case"
+            variant="text"
             onClick={() => setIsFilterOpen(!isFilterOpen)}
           >
             <Filter />
             <Typography className="hidden font-medium md:block">
               Filter by:
             </Typography>
-          </div>
-
-          {isFilterOpen && (
-            <div className="absolute right-0 top-10 z-10 w-48 rounded-md bg-white p-2 shadow-lg">
-              <div
-                className={`cursor-pointer rounded-md p-2 hover:bg-gray-100 ${
-                  filterType === "" ? "bg-gray-100 font-semibold" : ""
-                }`}
-                onClick={() => {
-                  onFilterChange("");
-                  setIsFilterOpen(false);
-                }}
-              >
-                All Savings
-              </div>
-              <div
-                className={`cursor-pointer rounded-md p-2 ${
-                  filterType === "flexible" ? "bg-gray-100 font-semibold" : ""
-                }`}
-                onClick={() => {
-                  onFilterChange("flexible");
-                  setIsFilterOpen(false);
-                }}
-              >
-                Flexible
-              </div>
-              <div
-                className={`cursor-pointer rounded-md p-2 ${
-                  filterType === "lock" ? "bg-gray-100 font-semibold" : ""
-                }`}
-                onClick={() => {
-                  onFilterChange("lock");
-                  setIsFilterOpen(false);
-                }}
-              >
-                Lock
-              </div>
-              <div
-                className={`cursor-pointer rounded-md p-2 ${
-                  filterType === "strict" ? "bg-gray-100 font-semibold" : ""
-                }`}
-                onClick={() => {
-                  onFilterChange("strict");
-                  setIsFilterOpen(false);
-                }}
-              >
-                Strict Lock
-              </div>
-            </div>
-          )}
+          </Button>
         </div>
       </div>
 
@@ -164,14 +131,14 @@ const AutoSavings: React.FC<AutoSavingsProps> = ({
             </span>
             <div className="flex gap-2 font-semibold">
               <button
-                onClick={onPrevPage}
+                onClick={handlePrevPage}
                 disabled={currentPage <= 1}
                 className="rounded p-1 text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <IoIosArrowBack size={20} />
               </button>
               <button
-                onClick={onNextPage}
+                onClick={handleNextPage}
                 disabled={currentPage >= totalPages}
                 className="rounded p-1 text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
               >
@@ -181,7 +148,7 @@ const AutoSavings: React.FC<AutoSavingsProps> = ({
           </div>
           <hr className="border-gray-500" />
 
-          {contributions.map((contribution) => (
+          {currentContributions.map((contribution) => (
             <motion.div
               key={contribution._id}
               initial={{ opacity: 0, y: 20 }}

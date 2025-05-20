@@ -18,11 +18,13 @@ import {
   LoginUser,
   resetAuthState,
 } from "../../shared/redux/slices/landing.slices";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const UserLogin = () => {
   const [formData, setFormData] = useState<LoginRequest>({
     email: "",
     password: "",
+    recaptchaToken: "",
   });
   const [passwordType, togglePasswordType] = usePasswordToggle();
   const navigate = useNavigate();
@@ -32,6 +34,10 @@ const UserLogin = () => {
     (state: RootState) => state.landing,
   );
 
+  const handleRecaptchaChange = (token: string | null) => {
+    setFormData((prev) => ({ ...prev, recaptchaToken: token || "" }));
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -39,7 +45,6 @@ const UserLogin = () => {
   useEffect(() => {
     if (loginSuccess && loginData) {
       sessionStorage.setItem("authToken", loginData.token);
-
       sessionStorage.setItem(
         "userData",
         JSON.stringify({
@@ -83,6 +88,11 @@ const UserLogin = () => {
 
     if (!formData.email || !formData.password) {
       toast.error("Please fill in all fields.");
+      return;
+    }
+
+    if (!formData.recaptchaToken) {
+      toast.error("Please complete the reCAPTCHA.");
       return;
     }
 
@@ -156,6 +166,15 @@ const UserLogin = () => {
               </button>
             }
           />
+
+          <div className="mt-4 flex justify-center">
+            <ReCAPTCHA
+              sitekey={
+                (import.meta as any).env.VITE_REACT_APP_RECAPTCHA_SITE_KEY
+              }
+              onChange={handleRecaptchaChange}
+            />
+          </div>
 
           <div className="flex justify-end">
             <Link

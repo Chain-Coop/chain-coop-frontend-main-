@@ -364,19 +364,14 @@ export const WithdrawalFromContribution = createAsyncThunk<
 
 export const GetUsersContributionHistory = createAsyncThunk<
   GetUsersContributionHistoryResponse,
-  { page: number; limit: number; search?: string; filter?: string },
+  { search?: string; filter?: string },
   { rejectValue: string }
 >(
   "transaction/getUsersContributionHistory",
-  async (
-    { page, limit, search = "", filter = "" },
-    { dispatch, rejectWithValue },
-  ) => {
+  async ({ search = "", filter = "" }, { dispatch, rejectWithValue }) => {
     try {
       const data =
         await TransactionServices.contribution.GetUsersContributionHistory(
-          page,
-          limit,
           search,
           filter,
         );

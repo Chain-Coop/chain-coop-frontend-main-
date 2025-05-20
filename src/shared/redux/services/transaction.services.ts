@@ -186,12 +186,10 @@ export async function GetContributionBalance(): Promise<GetContributionBalanceRe
 }
 
 export async function GetUsersContributionHistory(
-  page: number,
-  limit: number,
   search: string = "",
   filter: string = "",
 ): Promise<GetUsersContributionHistoryResponse> {
-  let url = `${API_URL}${API_ENDPOINTS.CONTRIBUTION.GET_HISTORY}?page=${page}&limit=${limit}`;
+  let url = `${API_URL}${API_ENDPOINTS.CONTRIBUTION.GET_HISTORY}`;
   if (search && search.trim()) {
     url += `&search=${encodeURIComponent(search.trim())}`;
   }
