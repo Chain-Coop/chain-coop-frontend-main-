@@ -24,6 +24,7 @@ const ContributionCurrencyType: React.FC = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const location = useLocation();
+  console.log("");
   const { savingsType, contributionType } =
     location.state as ContributionCurrencyTypeState;
 
