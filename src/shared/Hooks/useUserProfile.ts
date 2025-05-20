@@ -112,16 +112,10 @@ export const useWallet = () => {
 };
 
 export const useContribution = ({
-  page,
-  limit,
   search,
-  filter,
   contributionId,
 }: {
-  page: number;
-  limit: number;
   search: string;
-  filter: string;
   contributionId?: string;
 }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -144,16 +138,13 @@ export const useContribution = ({
     dispatch(GetContributionBalance());
     dispatch(
       GetUsersContributionHistory({
-        page,
-        limit,
         search,
-        filter,
       }),
     );
     if (contributionId) {
       dispatch(GetUnPaidBalance(contributionId));
     }
-  }, [dispatch, page, limit, search, filter, contributionId]);
+  }, [dispatch, search, contributionId]);
 
   return {
     contributionBalance,

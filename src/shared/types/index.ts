@@ -14,6 +14,7 @@ export interface BackendError {
 export interface LoginRequest {
   email: string;
   password: string;
+  recaptchaToken?: string;
 }
 
 export interface LoginResponse {
@@ -437,10 +438,17 @@ export interface Contribution {
   _id: string;
   savingsCategory: string;
   balance: number;
-  contributionPlan: string;
-  startDate: string;
-  nextContributionDate: string;
-  amount: number;
+  savingsType: "Flexible" | "Lock" | "Strict";
+  contributionType: "auto" | "one-time";
+  endDate: string;
+  contributionPlan?: string;
+  amount?: number;
+  currency?: string;
+  startDate?: string;
+  nextContributionDate?: string;
+  lastContributionDate?: string;
+  withdrawalDate?: string;
+  status?: string;
 }
 
 export interface GetContributionBalanceResponse {

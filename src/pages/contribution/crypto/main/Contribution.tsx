@@ -12,7 +12,6 @@ import ToggleButton from "../../../../shared/utils/ToggleButton";
 import { motion } from "framer-motion";
 import { Typography, Button } from "@material-tailwind/react";
 import { DashboardHeader } from "../../../../components/common/DashboardHeader";
-import { SavingsPlan } from "../../../../components/dashboard/contribution/modals/SavingsPlan";
 import { Flexibile, Lock, Strict } from "../../../../Assets/svg";
 import FundSavingsModal from "../../../../components/dashboard/contribution/modals/FundContribution";
 import UpdateSavingsModal from "../../../../components/dashboard/contribution/modals/UpdateContribution";
@@ -21,7 +20,6 @@ import FilterSavings, {
   SavingsFilters,
 } from "../../../../components/dashboard/contribution/modals/FilterSavings";
 import { Pool } from "../../../../shared/types/types";
-import { IoIosArrowDown } from "react-icons/io";
 
 const UNIFIED_CRYPTO_PURPOSE_PATH =
   "/dashboard/contribution/crypto/unified-crypto-purpose";
@@ -203,7 +201,6 @@ const CryptoSavings: React.FC = () => {
     if (termToSearch) {
       dispatch(SearchUserPools(termToSearch));
     } else {
-      //console.log("Empty search submitted, ensuring all pools are fetched.");
       dispatch(GetAllUserPools());
     }
   };
@@ -212,6 +209,10 @@ const CryptoSavings: React.FC = () => {
     if (event.key === "Enter") {
       handleSearchSubmit(event);
     }
+  };
+
+  const switchToNaira = () => {
+    navigate("/dashboard/contribution");
   };
 
   return (
@@ -225,25 +226,24 @@ const CryptoSavings: React.FC = () => {
       </DashboardHeader>
 
       <main>
-        <section>
+        <section className="mt-6 w-full md:mt-8">
+          <div className="flex justify-end">
+            <Button
+              onClick={switchToNaira}
+              variant="outlined"
+              className="mb-6 flex transform items-center rounded-lg border border-text2 normal-case text-text2 transition-all duration-300 hover:scale-105 active:scale-95"
+            >
+              <Typography className="text-sm font-medium">
+                Switch to Naira
+              </Typography>
+            </Button>
+          </div>
           <article className="text-center text-gray-700">
-            {/* Top Balance Section */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-6 rounded-3xl border-[2px] border-gray-200 bg-white p-6 shadow-md"
+              className="rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A] sm:p-16"
             >
-              <div className="mb-4 flex justify-end">
-                <button
-                  onClick={toggleModal}
-                  className="text-md flex transform  items-center gap-2 rounded-lg border-[3px] border-gray-200 bg-[#E3D9E6] px-3 py-2 font-semibold normal-case text-text2 transition-all duration-300
-                  hover:scale-105 active:scale-95"
-                >
-                  Crypto Savings
-                  <IoIosArrowDown />
-                </button>
-              </div>
-
               <div className="flex items-center justify-center gap-2 sm:gap-4">
                 <p className="text-xs font-medium sm:text-sm lg:text-base">
                   Total Contribution Balance
@@ -449,14 +449,6 @@ const CryptoSavings: React.FC = () => {
         onApplyFilters={handleApplyFilters}
       />
 
-      {/* SavingsPlan Modal */}
-      <SavingsPlan
-        open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        savingsType={savingsType}
-        onSavingsTypeChange={handleSavingsTypeChange}
-      />
-      {/* FundSavingsModal */}
       {selectedContribution && (
         <FundSavingsModal
           isOpen={isFundModalOpen}
