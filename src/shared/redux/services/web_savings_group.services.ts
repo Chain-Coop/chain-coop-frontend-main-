@@ -1,4 +1,3 @@
-// store/thunks/createSavingsCircle.ts
 import axios from "axios";
 import authHeader from "./headers";
 
@@ -54,12 +53,14 @@ const GetAllSavingCircles = async () => {
   }
 };
 
-const GetSavingCircleByUser = async (userID: string) => {
-  const url = `${API_URL}/savingcircle/user/${userID}`;
+const GetSavingCircleByUser = async (userId: string) => {
+  const url = `${API_URL}/savingcircle/user/${userId}`;
   try {
     const response = await axios.get(url, { headers: authHeader() });
+    //console.log("[GetSavingCircleByUser] Response data:", response.data);
     return response.data;
   } catch (error: any) {
+    //console.error("[GetSavingCircleByUser] Error:", error);
     handleApiError(error);
   }
 };
@@ -74,11 +75,24 @@ const GetSavingCircleByID = async (circleID: string) => {
   }
 };
 
+const GetPublicSavingCircles = async () => {
+  const url = `${API_URL}/savingcircle/public`;
+  try {
+    const response = await axios.get(url, { headers: authHeader() });
+    //console.log("[GetPublicSavingCircles] Response data:", response.data);
+    return response.data;
+  } catch (error: any) {
+    //console.error("[GetPublicSavingCircles] Error:", error);
+    handleApiError(error);
+  }
+};
+
 const WebGroupSavings = {
   CreateSavingsCircle,
   GetAllSavingCircles,
   GetSavingCircleByUser,
   GetSavingCircleByID,
+  GetPublicSavingCircles,
 };
 
 export default WebGroupSavings;

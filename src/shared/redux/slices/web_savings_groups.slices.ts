@@ -28,10 +28,18 @@ export const GetAllSavingCircles = createAsyncThunk(
 export const GetSavingCircleByUser = createAsyncThunk(
   "savingcircle/getByUserID",
   async (userID: string, thunkAPI) => {
+    //console.log("[GetSavingCircleByUser] Starting thunk with userID:", userID);
+
     try {
+      //console.log("[GetSavingCircleByUser] Calling service function...");
       const data = await WebGroupSavings.GetSavingCircleByUser(userID);
-      return { web_group_savings: data };
+      //console.log("[GetSavingCircleByUser] Service returned data:", data);
+
+      const result = { web_group_savings: data };
+      //console.log("[GetSavingCircleByUser] Returning to reducer:", result);
+      return result;
     } catch (error: any) {
+      //console.error("[GetSavingCircleByUser] Thunk error:", error);
       return handleAsyncError(error, thunkAPI);
     }
   },
@@ -61,16 +69,37 @@ export const CreateSavingsCircle = createAsyncThunk(
   },
 );
 
+export const GetPublicSavingCircles = createAsyncThunk(
+  "savingcircle/public",
+  async (_, thunkAPI) => {
+    //console.log("[GetPublicSavingCircles] Starting thunk");
+    try {
+      //console.log("[GetPublicSavingCircles] Calling service function...");
+      const data = await WebGroupSavings.GetPublicSavingCircles();
+      //console.log("[GetPublicSavingCircles] Service returned data:", data);
+
+      const result = { public_savings: { data: data.circles } };
+      //console.log("[GetPublicSavingCircles] Returning to reducer:", result);
+      return result;
+    } catch (error: any) {
+      //console.error("[GetPublicSavingCircles] Thunk error:", error);
+      return handleAsyncError(error, thunkAPI);
+    }
+  },
+);
+
 interface WebGroupSavingsType {
   loading: boolean;
   error: string;
   web_group_savings: any;
+  public_savings: any;
 }
 
 const initialState: WebGroupSavingsType = {
   loading: false,
   error: "",
   web_group_savings: null,
+  public_savings: null,
 };
 
 export const WebGroupSavingsSlice = createSlice({
@@ -155,6 +184,29 @@ export const WebGroupSavingsSlice = createSlice({
         state.error =
           (action.payload as string) || "Failed to create savings circle!";
         return state;
+      })
+
+      .addCase(GetPublicSavingCircles.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      .addCase(GetPublicSavingCircles.fulfilled, (state, action) => {
+        console.log(
+          "[GetPublicSavingCircles] Reducer received data:",
+          action.payload,
+        );
+        state.loading = false;
+        state.public_savings = action.payload.public_savings;
+        console.log(
+          "[GetPublicSavingCircles] Updated state:",
+          state.public_savings,
+        );
+      })
+      .addCase(GetPublicSavingCircles.rejected, (state, action) => {
+        state.loading = false;
+        state.public_savings = null;
+        state.error =
+          (action.payload as string) || "Failed to fetch public circles";
       });
   },
 });

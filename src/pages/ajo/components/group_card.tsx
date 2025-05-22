@@ -15,6 +15,8 @@ export interface GroupCardProps {
   progress: number;
   buttonText?: string;
   onClick?: () => void;
+  circleData?: any;
+  isPublicGroup?: boolean;
 }
 
 const GroupCard: React.FC<GroupCardProps> = ({
@@ -28,6 +30,8 @@ const GroupCard: React.FC<GroupCardProps> = ({
   balance,
   buttonText,
   onClick,
+  circleData,
+  isPublicGroup,
 }) => {
   return (
     <div className="flex h-fit w-full flex-shrink-0 flex-col rounded-3xl border-[2px] border-gray-200 bg-white shadow-md sm:h-[234px] sm:flex-row lg:h-fit lg:flex-col xl:h-fit xl:flex-row xl:gap-1">
@@ -66,7 +70,7 @@ const GroupCard: React.FC<GroupCardProps> = ({
               <strong className="font-semibold text-black">Goal:</strong> {goal}
             </Typography>
             <Typography className="font-asap font-medium text-[#6E6C6C]">
-              Total saved: ${balance}
+              Total saved: {balance}
             </Typography>
           </div>
 
@@ -83,7 +87,11 @@ const GroupCard: React.FC<GroupCardProps> = ({
             {buttonText}
           </Button>
           <Link
-            to={`/dashboard/ajo/${name}`}
+            to={
+              isPublicGroup
+                ? `/dashboard/ajo/other/${name}`
+                : `/dashboard/ajo/${name}`
+            }
             state={{
               name,
               image,
@@ -93,6 +101,17 @@ const GroupCard: React.FC<GroupCardProps> = ({
               goal,
               balance,
               progress,
+              description: circleData?.description,
+              groupType: circleData?.groupType,
+              status: circleData?.status,
+              startDate: circleData?.startDate,
+              endDate: circleData?.endDate,
+              currentIndividualTotal: circleData?.currentIndividualTotal,
+              currency: circleData?.currency,
+              depositAmount: circleData?.depositAmount,
+              goalAmount: circleData?.goalAmount,
+              nextContributionDate: circleData?.nextContributionDate,
+              isPublicGroup: isPublicGroup || false,
             }}
             className="flex h-[35px] w-fit items-center justify-center rounded-md bg-white px-4 text-sm text-[#440080] ring-1 ring-[#440080] lg:text-base"
           >
