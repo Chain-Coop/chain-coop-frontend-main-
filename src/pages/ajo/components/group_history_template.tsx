@@ -37,6 +37,7 @@ const GroupHistoryTemplate = (props: GroupHistoryTemplateTypes) => {
             balance={group.balance}
             buttonText={props.buttonText}
             onClick={props.onClick}
+            circleData={group.circleData}
           />
         ))}
       </div>

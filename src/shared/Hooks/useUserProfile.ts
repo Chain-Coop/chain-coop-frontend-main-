@@ -15,7 +15,10 @@ import {
 } from "../redux/slices/transaction.slices";
 import { getAllNotification } from "../redux/slices/notification.slices";
 import { GetAllUserPools } from "../redux/slices/web3.slices";
-import { GetSavingCircleByUser } from "../redux/slices/web_savings_groups.slices";
+import {
+  GetSavingCircleByUser,
+  GetPublicSavingCircles,
+} from "../redux/slices/web_savings_groups.slices";
 
 enum UploadFields {
   ProfilePicture = "profilePicture",
@@ -34,6 +37,12 @@ export const useUserProfile = (onProfileFetched?: () => void) => {
   const [userCircles, setUserCircles] = useState<any[]>([]);
   const [circlesLoading, setCirclesLoading] = useState(false);
   const [circlesError, setCirclesError] = useState<string | null>(null);
+
+  const [publicCircles, setPublicCircles] = useState<any[]>([]);
+  const [publicCirclesLoading, setPublicCirclesLoading] = useState(false);
+  const [publicCirclesError, setPublicCirclesError] = useState<string | null>(
+    null,
+  );
 
   const fetchUserProfile = useCallback(async () => {
     const result = await dispatch(GetUserProfile()).unwrap();
@@ -62,6 +71,22 @@ export const useUserProfile = (onProfileFetched?: () => void) => {
     }
   }, [dispatch, profileDetails?._id]);
 
+  const fetchPublicCircles = useCallback(async () => {
+    setPublicCirclesLoading(true);
+    setPublicCirclesError(null);
+    try {
+      const result = await dispatch(GetPublicSavingCircles()).unwrap();
+      setPublicCircles(result?.public_savings?.data || []);
+    } catch (error: any) {
+      const errorMessage =
+        error?.message || error?.error || "Failed to fetch public circles";
+      setPublicCirclesError(errorMessage);
+      dispatch(setMessage(errorMessage));
+    } finally {
+      setPublicCirclesLoading(false);
+    }
+  }, [dispatch]);
+
   useEffect(() => {
     if (!profileDetails) {
       fetchUserProfile().catch((error) => {
@@ -77,6 +102,10 @@ export const useUserProfile = (onProfileFetched?: () => void) => {
     circlesLoading,
     circlesError,
     fetchUserCircles,
+    publicCircles,
+    publicCirclesLoading,
+    publicCirclesError,
+    fetchPublicCircles,
   };
 };
 
