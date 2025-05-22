@@ -154,7 +154,6 @@ export function validateCustomEndDate(
     type?: "daily" | "monthly";
   },
 ): { isValid: boolean; error?: string } {
-  const MIN_DAILY_DAYS = config?.minDays || 7;
   const MAX_YEARS = config?.maxYears || 2;
   const type = config?.type || "daily";
 
@@ -165,16 +164,6 @@ export function validateCustomEndDate(
 
   if (end <= start) {
     return { isValid: false, error: "End date must be after start date" };
-  }
-
-  const diffTime = Math.abs(end.getTime() - start.getTime());
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-  if (type === "daily" && diffDays < MIN_DAILY_DAYS - 1) {
-    return {
-      isValid: false,
-      error: `Minimum duration is ${MIN_DAILY_DAYS} days`,
-    };
   }
 
   const maxDate = addMonths(start, MAX_YEARS * 12);

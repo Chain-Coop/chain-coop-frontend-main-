@@ -145,12 +145,12 @@ const ViewContribution = () => {
           paymentType,
         }),
       ).unwrap();
-      if (paymentResponse?.charge?.info?.data?.authorization_url) {
-        window.location.href =
-          paymentResponse.charge.info.data.authorization_url;
-      } else {
-        setLocalError("Failed to initiate payment. Please try again.");
-      }
+      // if (paymentResponse?.charge?.info?.data?.authorization_url) {
+      //   window.location.href =
+      //     paymentResponse.charge.info.data.authorization_url;
+      // } else {
+      //   setLocalError("Failed to initiate payment. Please try again.");
+      // }
     } catch (err: any) {
       setLocalError(
         err.message || "An error occurred during payment. Please try again.",
