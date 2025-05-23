@@ -8,6 +8,7 @@ import * as transactionSlices from "../redux/slices/transaction.slices";
 import * as Web3Slices from "../redux/slices/web3.slices";
 import { CryptoTransaction } from "../types/types";
 import { parseISO, isAfter, isToday } from "date-fns";
+import { GetUserTotalGroupBalance } from "../redux/slices/web_savings_groups.slices";
 
 const useVisibilityState = (storageKey: string, defaultValue = true) => {
   const [isVisible, setIsVisible] = useState(() => {
@@ -491,5 +492,33 @@ export const useBitcoinAccount = () => {
     bitcoinBalanceLoading,
     bitcoinBalanceError,
     fetchBitcoinBalance,
+  };
+};
+
+
+export const useUserTotalGroupBalance = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const {
+    totalGroupBalance,
+    totalGroupBalanceLoading,
+    totalGroupBalanceError,
+  } = useSelector(
+    (state: any) => state.web_group_savings || {}
+  );
+
+  const fetchTotalGroupBalance = useCallback(() => {
+    dispatch(GetUserTotalGroupBalance());
+  }, [dispatch]);
+
+  useEffect(() => {
+    fetchTotalGroupBalance();
+  }, [fetchTotalGroupBalance]);
+
+  return {
+    totalGroupBalance,
+    totalGroupBalanceLoading,
+    totalGroupBalanceError,
+    fetchTotalGroupBalance,
   };
 };

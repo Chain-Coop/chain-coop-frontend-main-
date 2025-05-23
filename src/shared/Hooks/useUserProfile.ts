@@ -72,20 +72,21 @@ export const useUserProfile = (onProfileFetched?: () => void) => {
   }, [dispatch, profileDetails?._id]);
 
   const fetchPublicCircles = useCallback(async () => {
-    setPublicCirclesLoading(true);
-    setPublicCirclesError(null);
-    try {
-      const result = await dispatch(GetPublicSavingCircles()).unwrap();
-      setPublicCircles(result?.public_savings?.data || []);
-    } catch (error: any) {
-      const errorMessage =
-        error?.message || error?.error || "Failed to fetch public circles";
-      setPublicCirclesError(errorMessage);
-      dispatch(setMessage(errorMessage));
-    } finally {
-      setPublicCirclesLoading(false);
-    }
-  }, [dispatch]);
+  setPublicCirclesLoading(true);
+  setPublicCirclesError(null);
+  try {
+    const result = await dispatch(GetPublicSavingCircles()).unwrap();
+    setPublicCircles(result || []);
+    //console.log("Public Circles:", result);
+  } catch (error: any) {
+    const errorMessage =
+      error?.message || error?.error || "Failed to fetch public circles";
+    setPublicCirclesError(errorMessage);
+    dispatch(setMessage(errorMessage));
+  } finally {
+    setPublicCirclesLoading(false);
+  }
+}, [dispatch]);
 
   useEffect(() => {
     if (!profileDetails) {

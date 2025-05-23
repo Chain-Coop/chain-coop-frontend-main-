@@ -39,6 +39,9 @@ const ViewCryptoContribution = () => {
   const navigate = useNavigate();
   const contribution = location.state as Pool | null;
 
+  console.log("Contribution data in ViewContribution:", JSON.stringify(contribution, null, 2));
+
+
   if (!contribution) {
     return (
       <main className="flex min-h-screen items-center justify-center">

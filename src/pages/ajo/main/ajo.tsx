@@ -10,7 +10,12 @@ import otherIcon from "../../../Assets/svg/dashboard/ajo/other_group_saving_icon
 import otherImage from "../../../Assets/png/dashboard/ajo/other_group_saving_image.png";
 import GroupCard from "../components/group_card";
 import GroupHistoryTemplate from "../components/group_history_template";
-import { useWalletBalance } from "../../../shared/Hooks/useBalance";
+import { useUserTotalGroupBalance } from "../../../shared/Hooks/useBalance";
+import {
+  DetailsSkeleton,
+  GroupCardSkeletonRow,
+  GroupHistorySkeleton,
+} from "../../../components/common/Loading";
 
 interface CircleMember {
   progress: number;
@@ -47,11 +52,18 @@ interface CircleFromAPI {
 }
 
 const AjoPage = () => {
-  const { isWalletVisible, setIsWalletVisible, formattedBalance } =
-    useWalletBalance();
+  const {
+    totalGroupBalance,
+    totalGroupBalanceLoading,
+    totalGroupBalanceError,
+  } = useUserTotalGroupBalance();
 
   const [groupOption, setGroupOption] = useState(0);
   const [groupHistory, setGroupHistory] = useState("ongoing");
+  const [isWalletVisible, setIsWalletVisible] = useState(() => {
+    const stored = sessionStorage.getItem("totalGroupFund");
+    return stored ? stored === "true" : true;
+  });
 
   const {
     userCircles,
@@ -83,8 +95,7 @@ const AjoPage = () => {
       balance: `${circle.currency}${circle.balance.toLocaleString()}`,
       progress: circle.progress || 0,
       buttonText: isPublic ? "Join" : "Withdraw",
-      onClick: () => {}, // Add your join logic here
-      // Additional data that might be useful
+      onClick: () => {},
       description: circle.description,
       groupType: circle.groupType,
       status: circle.status,
@@ -134,7 +145,11 @@ const AjoPage = () => {
           <div className="mx-auto mt-6 flex w-60 flex-col rounded-md">
             {isWalletVisible ? (
               <p className="self-center text-xl font-bold lg:text-xl">
-                {formattedBalance}
+                {totalGroupBalanceLoading
+                  ? "Loading..."
+                  : totalGroupBalance !== null
+                    ? `₦${Number(totalGroupBalance).toLocaleString()}`
+                    : "₦0"}
               </p>
             ) : (
               <p className="self-center text-2xl font-bold">*********</p>
@@ -188,9 +203,7 @@ const AjoPage = () => {
           </h3>
           <section className="scrollbar-hide flex w-[100%] gap-4 overflow-x-auto py-2">
             {publicCirclesLoading ? (
-              <Typography className="p-4 text-center">
-                Loading public groups...
-              </Typography>
+              <GroupCardSkeletonRow count={3} />
             ) : publicCirclesError ? (
               <Typography className="p-4 text-center" color="red">
                 Error: {publicCirclesError}
@@ -232,9 +245,7 @@ const AjoPage = () => {
           </div>
           <section className="w-[100%] flex-shrink-0 rounded-xl bg-[#C5B0D833] px-2 pt-3">
             {circlesLoading ? (
-              <Typography className="p-4 text-center">
-                Loading group history...
-              </Typography>
+              <GroupHistorySkeleton />
             ) : circlesError ? (
               <Typography className="p-4 text-center" color="red">
                 Error fetching group history: {circlesError}

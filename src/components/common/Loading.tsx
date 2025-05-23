@@ -170,11 +170,11 @@ export const SingleTransactionItemSkeleton: React.FC = () => (
       </div>
       <div className="flex flex-col justify-between gap-1 md:flex-row md:gap-0">
         <div className="flex items-center">
-          <div className="h-3 w-16 rounded bg-gray-200 mr-1"></div>
+          <div className="mr-1 h-3 w-16 rounded bg-gray-200"></div>
           <div className="h-4 w-14 rounded bg-gray-200"></div>
         </div>
         <div className="flex items-center">
-          <div className="h-3 w-24 rounded bg-gray-200 mr-1"></div>
+          <div className="mr-1 h-3 w-24 rounded bg-gray-200"></div>
           <div className="h-4 w-16 rounded bg-gray-200"></div>
         </div>
       </div>
@@ -186,9 +186,12 @@ export const SingleTransactionItemSkeleton: React.FC = () => (
   </div>
 );
 
-export const TransactionHistorySkeleton: React.FC<{ dateGroups?: number, itemsPerGroup?: number }> = ({ dateGroups = 2, itemsPerGroup = 2 }) => (
+export const TransactionHistorySkeleton: React.FC<{
+  dateGroups?: number;
+  itemsPerGroup?: number;
+}> = ({ dateGroups = 2, itemsPerGroup = 2 }) => (
   <div className="my-8 animate-pulse">
-    <div className="flex flex-col gap-6 mt-6">
+    <div className="mt-6 flex flex-col gap-6">
       {Array.from({ length: dateGroups }).map((_, groupIndex) => (
         <div key={groupIndex} className="flex flex-col gap-3">
           <div className="flex items-center justify-between text-sm">
@@ -200,6 +203,80 @@ export const TransactionHistorySkeleton: React.FC<{ dateGroups?: number, itemsPe
           ))}
         </div>
       ))}
+    </div>
+  </div>
+);
+
+export const GroupCardSkeleton = () => (
+  <div className="flex h-fit w-full flex-shrink-0 animate-pulse flex-col rounded-3xl border-[2px] border-gray-200 bg-white shadow-md sm:h-[234px] sm:flex-row lg:h-fit lg:flex-col xl:h-fit xl:flex-row xl:gap-1">
+    <div className="relative h-[150px] w-[100%] flex-shrink-0 rounded-l-xl bg-gray-200 sm:h-full sm:w-[158px] lg:h-fit lg:w-[100%] xl:h-full xl:w-[158px]">
+      <div className="absolute right-2 top-2 h-[30px] w-[30px] rounded-full bg-gray-300"></div>
+    </div>
+
+    <div className="flex w-[96%] flex-col justify-between gap-1 py-2 pl-4 pr-2 lg:py-4 xl:py-2">
+      <div className="flex items-start justify-between">
+        <div className="flex flex-col gap-2">
+          <div className="h-6 w-32 rounded bg-gray-300"></div>
+          <div className="flex items-center gap-2">
+            <div className="h-4 w-24 rounded bg-gray-300"></div>
+            <div className="h-[10px] w-[10px] rounded-full bg-gray-300"></div>
+            <div className="h-4 w-16 rounded bg-gray-300"></div>
+          </div>
+          <div className="h-4 w-40 rounded bg-gray-300"></div>
+          <div className="h-4 w-32 rounded bg-gray-300"></div>
+        </div>
+        <div className="h-12 w-12 rounded-full bg-gray-300"></div>
+      </div>
+
+      <div className="mt-3 flex w-full justify-between pb-3 xl:mt-0">
+        <div className="h-[35px] w-20 rounded-md bg-gray-300"></div>
+        <div className="h-[35px] w-20 rounded-md bg-gray-300"></div>
+      </div>
+    </div>
+  </div>
+);
+
+export const GroupCardSkeletonRow = ({ count = 3 }) => (
+  <div className="scrollbar-hide flex w-[100%] gap-4 overflow-x-auto py-2">
+    {Array.from({ length: count }).map((_, index) => (
+      <div key={index} className="min-w-[280px] flex-shrink-0">
+        <GroupCardSkeleton />
+      </div>
+    ))}
+  </div>
+);
+
+export const GroupHistorySkeleton = () => (
+  <div className="w-[100%] flex-shrink-0 animate-pulse rounded-xl bg-[#C5B0D833] px-2 pt-3">
+    <div className="p-4">
+      <div className="mb-2 h-6 w-36 rounded-md bg-gray-300"></div>
+      <div className="mb-4 h-4 w-64 rounded-md bg-gray-300"></div>
+
+      <div className="my-3 h-5 w-48 rounded-md bg-gray-300"></div>
+
+      <div className="space-y-4">
+        {Array.from({ length: 2 }).map((_, index) => (
+          <div
+            key={index}
+            className="flex flex-col items-center gap-3 rounded-lg bg-white p-3 sm:flex-row"
+          >
+            <div className="h-16 w-16 rounded-md bg-gray-200"></div>
+
+            <div className="flex w-full flex-1 items-center justify-between">
+              <div className="space-y-2">
+                <div className="h-5 w-32 rounded bg-gray-200"></div>
+                <div className="h-4 w-24 rounded bg-gray-200"></div>
+                <div className="h-4 w-40 rounded bg-gray-200"></div>
+              </div>
+
+              <div className="flex space-x-2">
+                <div className="h-10 w-24 rounded-md bg-gray-200"></div>
+                <div className="h-10 w-24 rounded-md bg-gray-200"></div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   </div>
 );

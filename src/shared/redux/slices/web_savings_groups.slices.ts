@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import TransactionServices from "../services/transaction.services";
 import { setMessage } from "./message.slices";
 import WebGroupSavings from "../services/web_savings_group.services";
 
@@ -72,18 +71,47 @@ export const CreateSavingsCircle = createAsyncThunk(
 export const GetPublicSavingCircles = createAsyncThunk(
   "savingcircle/public",
   async (_, thunkAPI) => {
-    //console.log("[GetPublicSavingCircles] Starting thunk");
     try {
-      //console.log("[GetPublicSavingCircles] Calling service function...");
-      const data = await WebGroupSavings.GetPublicSavingCircles();
-      //console.log("[GetPublicSavingCircles] Service returned data:", data);
+      const response = await WebGroupSavings.GetPublicSavingCircles();
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error.message || "Failed to fetch public circles",
+      );
+    }
+  },
+);
 
-      const result = { public_savings: { data: data.circles } };
-      //console.log("[GetPublicSavingCircles] Returning to reducer:", result);
+export const JoinSavingCircle = createAsyncThunk(
+  "savingcircle/join",
+  async (circleData: { circleId: string }, thunkAPI) => {
+    console.log("[JoinSavingCircle] Starting thunk with data:", circleData);
+
+    try {
+      console.log("[JoinSavingCircle] Calling service function...");
+      const data = await WebGroupSavings.JoinSavingCircle(circleData);
+      console.log("[JoinSavingCircle] Service returned data:", data);
+
+      const result = { join_response: data };
+      console.log("[JoinSavingCircle] Returning to reducer:", result);
       return result;
     } catch (error: any) {
-      //console.error("[GetPublicSavingCircles] Thunk error:", error);
+      console.error("[JoinSavingCircle] Thunk error:", error);
       return handleAsyncError(error, thunkAPI);
+    }
+  },
+);
+
+export const GetUserTotalGroupBalance = createAsyncThunk(
+  "savingcircle/userTotalBalance",
+  async (_, thunkAPI) => {
+    try {
+      const data = await WebGroupSavings.GetUserTotalGroupBalance();
+      return data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error.message || "Failed to fetch total group balance",
+      );
     }
   },
 );
@@ -93,16 +121,23 @@ interface WebGroupSavingsType {
   error: string;
   web_group_savings: any;
   public_savings: any;
+  join_response: any;
+  totalGroupBalance: number | null;
+  totalGroupBalanceLoading: boolean;
+  totalGroupBalanceError: string | null;
 }
-
 const initialState: WebGroupSavingsType = {
   loading: false,
   error: "",
   web_group_savings: null,
   public_savings: null,
+  join_response: null,
+  totalGroupBalance: null,
+  totalGroupBalanceLoading: false,
+  totalGroupBalanceError: null,
 };
 
-export const WebGroupSavingsSlice = createSlice({
+const webGroupSavingsSlice = createSlice({
   name: "web_group_savings",
   initialState,
   reducers: {},
@@ -115,7 +150,7 @@ export const WebGroupSavingsSlice = createSlice({
         state.loading = false;
         return {
           ...state,
-          web_group_savings: action.payload.web_group_savings,
+          web_group_savings: action.payload.web_group_savings?.data || [],
         };
       })
       .addCase(GetAllSavingCircles.rejected, (state, action) => {
@@ -133,10 +168,10 @@ export const WebGroupSavingsSlice = createSlice({
         state.loading = true;
       })
       .addCase(GetSavingCircleByUser.fulfilled, (state, action) => {
-        state.loading = false;
         return {
           ...state,
-          web_group_savings: action.payload.web_group_savings,
+          loading: false,
+          web_group_savings: action.payload.data || [],
         };
       })
       .addCase(GetSavingCircleByUser.rejected, (state, action) => {
@@ -191,22 +226,45 @@ export const WebGroupSavingsSlice = createSlice({
         state.error = "";
       })
       .addCase(GetPublicSavingCircles.fulfilled, (state, action) => {
-        console.log(
-          "[GetPublicSavingCircles] Reducer received data:",
-          action.payload,
-        );
         state.loading = false;
-        state.public_savings = action.payload.public_savings;
-        console.log(
-          "[GetPublicSavingCircles] Updated state:",
-          state.public_savings,
-        );
+        state.public_savings = action.payload.data || [];
       })
       .addCase(GetPublicSavingCircles.rejected, (state, action) => {
         state.loading = false;
         state.public_savings = null;
         state.error =
           (action.payload as string) || "Failed to fetch public circles";
+      })
+
+      .addCase(JoinSavingCircle.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      .addCase(JoinSavingCircle.fulfilled, (state, action) => {
+        state.loading = false;
+        state.join_response = action.payload.join_response;
+      })
+      .addCase(JoinSavingCircle.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+
+      .addCase(GetUserTotalGroupBalance.pending, (state) => {
+        state.totalGroupBalanceLoading = true;
+        state.totalGroupBalanceError = null;
+      })
+      .addCase(GetUserTotalGroupBalance.fulfilled, (state, action) => {
+        state.totalGroupBalanceLoading = false;
+        state.totalGroupBalance = action.payload?.data ?? 0;
+      })
+      .addCase(GetUserTotalGroupBalance.rejected, (state, action) => {
+        state.totalGroupBalanceLoading = false;
+        state.totalGroupBalanceError = action.payload as string;
       });
   },
 });
+
+export const {
+  reducer: webGroupSavingsReducer,
+  actions: webGroupSavingsActions,
+} = webGroupSavingsSlice;

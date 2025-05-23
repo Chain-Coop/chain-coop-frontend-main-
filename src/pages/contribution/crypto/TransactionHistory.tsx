@@ -117,6 +117,8 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
     }
   };
 
+  console.log("Transactions to render:", transactions);
+
   return (
     <section className="my-10 w-full">
       {/* Auto-Deduction Section*/}
