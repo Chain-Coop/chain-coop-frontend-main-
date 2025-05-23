@@ -1,4 +1,3 @@
-import React from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
@@ -8,9 +7,13 @@ import { IoIosArrowBack } from "react-icons/io";
 import { GrFormNext } from "react-icons/gr";
 import { BsPatchCheck } from "react-icons/bs";
 import { MdOutlinePeopleOutline } from "react-icons/md";
-import currency_icon from "../../../Assets/svg/dashboard/ajo/currency_icon.svg";
+import currency_icon from "../../../Assets/svg/dashboard/ajo/naira_icon.svg";
 import Members_Template from "../savings_detail/member_template";
-import usFlag from "../../../Assets/svg/dashboard/ajo/currency_icon.svg";
+import usFlag from "../../../Assets/svg/dashboard/ajo/naira_icon.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../../shared/redux/store";
+import { JoinSavingCircle } from "../../../shared/redux/slices/web_savings_groups.slices";
+import { toast } from "react-toastify";
 
 interface OtherGroupDetailsState {
   name: string;
@@ -33,12 +36,46 @@ interface OtherGroupDetailsState {
 }
 
 const OtherGroupDetails = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();
   const navigate = useNavigate();
   const state = location.state as OtherGroupDetailsState & { circleData?: any };
 
+  const groupData = location.state;
+
+  const webGroupSavings =
+    useSelector((state: any) => state.web_group_savings) || {};
+  const { loading, join_response, error } = webGroupSavings;
+
   const handleBackClick = () => {
     navigate(-1);
+  };
+
+  const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
+  const userId = userData?._id || userData?.userId;
+
+  const handleJoinGroup = async () => {
+    const group = state.circleData;
+    if (!group?._id || !userId || !group?.inviteCode) {
+      toast.error("Missing group or user information");
+      return;
+    }
+
+    try {
+      const payload = {
+        circleId: group._id,
+        userId: userId,
+        inviteCode: group.inviteCode,
+      };
+
+      const result = await dispatch(JoinSavingCircle(payload)).unwrap();
+
+      toast.success("Successfully joined the group!");
+      navigate("/dashboard/ajo");
+    } catch (error: any) {
+      const errorMessage = error?.message || "Failed to join group";
+      toast.error(errorMessage);
+    }
   };
 
   const firstSavingsData = [
@@ -76,7 +113,6 @@ const OtherGroupDetails = () => {
     },
   ];
 
-  // Calculate days left for end date
   const getDaysLeft = (endDate: string) => {
     const end = new Date(endDate);
     const now = new Date();
@@ -87,7 +123,6 @@ const OtherGroupDetails = () => {
 
   const daysLeft = getDaysLeft(state.endDate);
 
-  // Helper to format date as (DD/MM/YYYY)
   const formatDate = (dateString: string) => {
     if (!dateString) return "";
     const date = new Date(dateString);
@@ -97,7 +132,6 @@ const OtherGroupDetails = () => {
   const formattedStartDate = formatDate(state.startDate);
   const formattedEndDate = formatDate(state.endDate);
 
-  // Get members from circleData or fallback to dummy
   const members = state.circleData?.members || [
     {
       userId: "",
@@ -175,9 +209,10 @@ const OtherGroupDetails = () => {
           <div className="mt-8 flex w-[100%] flex-wrap items-center justify-between gap-y-4">
             <Button
               className="flex h-[45px] w-[100%] items-center justify-center self-start rounded-md border-2 border-[#3D0073] bg-[#440080] px-6 font-asap text-[16px] font-medium normal-case text-white hover:bg-white hover:text-[#3D0073] sm:w-[190px] lg:text-[18px]"
-              onClick={() => {}}
+              onClick={handleJoinGroup}
+              disabled={loading}
             >
-              Join Group
+              {loading ? "Joining..." : "Join"}
             </Button>
           </div>
         </section>
@@ -219,7 +254,7 @@ const OtherGroupDetails = () => {
             <Typography className="font-asap text-[16px] font-[500] tracking-tight text-[#939090] lg:text-[18px]">
               Saving Frequency
             </Typography>
-            <div className="flex items-center gap-2 rounded-lg border-2 border-[#440080] bg-[#ECE6F2] px-4 py-1">
+            <div className="flex w-[100px] items-center gap-2 rounded-lg border-2 border-[#440080] bg-[#ECE6F2] px-4 py-1">
               <Typography className="font-asap text-[14px] font-[500] text-[#302B2B] lg:text-[16px]">
                 Daily
               </Typography>
@@ -230,7 +265,7 @@ const OtherGroupDetails = () => {
             <Typography className="font-asap text-[16px] font-[500] tracking-tight text-[#939090] lg:text-[18px]">
               Currency/Token
             </Typography>
-            <div className="flex items-center gap-2 rounded-lg border-2 border-[#440080] bg-[#ECE6F2] px-4 py-1">
+            <div className="flex w-[100px] items-center gap-2 rounded-lg border-2 border-[#440080] bg-[#ECE6F2] px-4 py-1">
               <img src={usFlag} alt="flag" className="h-[20px] w-[20px]" />
               <Typography className="font-asap text-[14px] font-[500] text-[#302B2B] lg:text-[16px]">
                 {state.currency}
@@ -262,7 +297,7 @@ const OtherGroupDetails = () => {
             state={{
               members: members,
               createdBy: createdBy,
-              amount: state.amount
+              amount: state.amount,
             }}
             className="flex items-center gap-1"
           >
