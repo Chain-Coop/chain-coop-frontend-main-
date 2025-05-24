@@ -455,10 +455,6 @@ export const Company = [
     text: "About Us",
     to: "/about-us",
   },
-  {
-    text: "Register Class",
-    to: "/form",
-  },
 ];
 
 export const Explore = [
@@ -469,6 +465,10 @@ export const Explore = [
   {
     text: "Partnership",
     to: "/partner-with-us",
+  },
+  {
+    text: "Register Class",
+    to: "/form",
   },
 ];
 
