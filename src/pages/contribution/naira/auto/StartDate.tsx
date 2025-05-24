@@ -191,6 +191,11 @@ const StartDate: React.FC = () => {
               <MenuItem value="">
                 <em>Select end date</em>
               </MenuItem>
+              {isDaily && (
+                <MenuItem value="custom">
+                  <em>Set custom end date</em>
+                </MenuItem>
+              )}
               {availableEndDates.map((date) => (
                 <MenuItem key={date} value={date}>
                   {new Date(date)?.toLocaleDateString("en-US", {
@@ -207,11 +212,6 @@ const StartDate: React.FC = () => {
                   )
                 </MenuItem>
               ))}
-              {isDaily && (
-                <MenuItem value="custom">
-                  <em>Set custom end date</em>
-                </MenuItem>
-              )}
             </Select>
           </FormControl>
 
@@ -252,7 +252,7 @@ const StartDate: React.FC = () => {
           <Button
             onClick={handleSubmit}
             disabled={!endDate && !customEndDate}
-            className="m-auto flex w-[80%] justify-center rounded-md bg-text2 px-8 py-[1em] text-sm font-semibold normal-case text-white transition-all duration-300 ease-in-out hover:scale-105 hover:bg-opacity-90 hover:shadow-lg active:scale-95 active:transform"
+            className="px Geology, Astronomy, and Space Exploration-8 m-auto flex w-[80%] justify-center rounded-md bg-text2 py-[1em] text-sm font-semibold normal-case text-white transition-all duration-300 ease-in-out hover:scale-105 hover:bg-opacity-90 hover:shadow-lg active:scale-95 active:transform"
           >
             Next
           </Button>

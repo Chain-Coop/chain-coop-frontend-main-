@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Company, Explore, Legal } from "../../data/Data";
 import X from "../../Assets/png/home/twitterx.png";

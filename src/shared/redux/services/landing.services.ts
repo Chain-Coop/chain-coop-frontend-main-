@@ -217,7 +217,7 @@ export async function UPDATE_PHONE_NUMBER(
 ): Promise<UpdatePhoneNumberResponse> {
   const url = `${API_URL}${API_ENDPOINTS.AUTH.UPDATE_PHONE_NUMBER}`;
   try {
-    const response = await axios.post<UpdatePhoneNumberResponse>(url, data);
+    const response = await axios.put<UpdatePhoneNumberResponse>(url, data);
     return response.data;
   } catch (error) {
     throw handleAxiosError(error);
