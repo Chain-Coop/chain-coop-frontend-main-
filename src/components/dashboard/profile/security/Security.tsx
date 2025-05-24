@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import GeneratePin from "./modal/GeneratePin";
 import OtpPin from "./modal/OtpPin";
@@ -54,7 +54,6 @@ const Security = () => {
 
   const handleModalClose = () => {
     resetStates();
-    setOtp("");
   };
 
   const handlePasswordResetSuccess = () => {
@@ -73,14 +72,6 @@ const Security = () => {
     setIsPhoneNumberSuccessModalOpen(false);
     resetStates();
   };
-
-  const handleEmailSent = useCallback(() => {
-    if (currentModalType === "password") {
-      setPasswordResetStep(2);
-    } else if (currentModalType === "phoneNumber") {
-      setChangePhoneNumberSteps(2);
-    }
-  }, [currentModalType]);
 
   const handleSuccessModalClose = () => {
     setIsSuccessModalOpen(false);
@@ -104,7 +95,6 @@ const Security = () => {
         setPasswordResetStep(1);
         setIsModalOpen(true);
         setOtp("");
-        // dispatch(resetPasswordState());
       },
     },
     {
@@ -128,7 +118,7 @@ const Security = () => {
             <Email
               email={email}
               setEmail={setEmail}
-              onEmailSent={handleEmailSent}
+              onEmailSent={() => setPasswordResetStep(2)}
               isOpen={true}
               onClose={handleModalClose}
             />
@@ -199,11 +189,9 @@ const Security = () => {
         case 1:
           return (
             <ChangePhoneNumber
-              email={email}
-              setEmail={setEmail}
-              onEmailSent={handleEmailSent}
-              isOpen={true}
+              isOpen={isModalOpen}
               onClose={handleModalClose}
+              onOtpSent={() => setChangePhoneNumberSteps(2)}
             />
           );
         case 2:
@@ -214,17 +202,18 @@ const Security = () => {
               isOpen={isModalOpen}
               onClose={handleModalClose}
               onOtpEntered={() => setChangePhoneNumberSteps(3)}
-              email={email}
             />
           );
         case 3:
           return (
             <NewPhoneNumber
+              otp={otp}
               isOpen={isModalOpen}
               onClose={handleModalClose}
               onSuccess={handlePhoneNumberSuccess}
             />
           );
+          return null;
         default:
           return null;
       }

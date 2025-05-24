@@ -127,6 +127,12 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
               >
                 Upload your Phone number
               </Typography>
+              <Typography
+                variant="small"
+                className="text-xs font-normal text-gray-500"
+              >
+                Daily Transaction Limit: N50,000.00
+              </Typography>
             </div>
             {isVerified ? (
               <div className="rounded bg-green-500 px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-green-600">
@@ -157,6 +163,12 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
                 className="text-xs font-normal text-gray-500"
               >
                 Upload your BVN
+              </Typography>
+              <Typography
+                variant="small"
+                className="text-xs font-normal text-gray-500"
+              >
+                Daily Transaction Limit: N200,000.00
               </Typography>
             </div>
             <Button className="rounded-full bg-gray-100 p-2">

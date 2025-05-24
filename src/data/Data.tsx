@@ -455,6 +455,10 @@ export const Company = [
     text: "About Us",
     to: "/about-us",
   },
+  {
+    text: "Register Class",
+    to: "/form",
+  },
 ];
 
 export const Explore = [

@@ -198,12 +198,7 @@ export const isDateValid = (dateString?: string) => {
   }
 };
 
-/**
- * Calculates the savings duration between two dates
- * @param startDate - ISO date string for the starting date
- * @param endDate - ISO date string for the ending date
- * @returns A formatted string representing the duration
- */ export const calculateSavingsDuration = (
+export const calculateSavingsDuration = (
   startDate?: string,
   endDate?: string,
 ): string => {
@@ -213,7 +208,7 @@ export const isDateValid = (dateString?: string) => {
     const start = parseISO(startDate);
     const end = parseISO(endDate);
 
-    const days = differenceInDays(end, start);
+    const days = differenceInDays(end, start) + 1;
 
     const months = differenceInMonths(end, start);
 

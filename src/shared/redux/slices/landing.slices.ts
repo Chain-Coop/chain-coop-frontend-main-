@@ -23,6 +23,8 @@ import {
   ResetPasswordResponse,
   ForgotPasswordResponse,
   ForgotPasswordRequest,
+  UpdatePhoneNumberResponse,
+  UpdatePhoneNumberRequest,
 } from "../../types";
 import { setMessage } from "./message.slices";
 
@@ -42,6 +44,8 @@ interface LandingState {
   verifyPhoneSuccess: boolean;
   loginSuccess: boolean;
   forgotPasswordSuccess: boolean;
+  updatePhoneNumberSuccess: boolean;
+  updatePhoneNumber: UpdatePhoneNumberResponse | null;
 }
 
 const initialState: LandingState = {
@@ -60,6 +64,8 @@ const initialState: LandingState = {
   verifyPhoneSuccess: false,
   loginSuccess: false,
   forgotPasswordSuccess: false,
+  updatePhoneNumber: null,
+  updatePhoneNumberSuccess: false,
 };
 
 export const RegisterUser = createAsyncThunk<
@@ -242,6 +248,21 @@ export const ForgotPassword = createAsyncThunk<
   }
 });
 
+export const UpdatePhoneNumber = createAsyncThunk<
+  UpdatePhoneNumberResponse,
+  UpdatePhoneNumberRequest,
+  { rejectValue: string }
+>("landing/updatePhoneNumber", async (body, { dispatch, rejectWithValue }) => {
+  try {
+    const data = await Services.public.UPDATE_PHONE_NUMBER(body);
+    return data;
+  } catch (error: any) {
+    const message = error.msg || "Failed to update phone number";
+    dispatch(setMessage(message));
+    return rejectWithValue(message);
+  }
+});
+
 const landingSlice = createSlice({
   name: "landing",
   initialState,
@@ -260,6 +281,8 @@ const landingSlice = createSlice({
       state.verifyPhoneSuccess = false;
       state.loginSuccess = false;
       state.forgotPasswordSuccess = false;
+      state.updatePhoneNumber = null;
+      state.updatePhoneNumberSuccess = false;
       // Preserve getProfile and avatarUrl
     },
   },
@@ -441,6 +464,22 @@ const landingSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload || "Failed to send password reset request";
       state.forgotPasswordSuccess = false;
+    });
+
+    builder.addCase(UpdatePhoneNumber.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+      state.updatePhoneNumberSuccess = false;
+    });
+    builder.addCase(UpdatePhoneNumber.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.updatePhoneNumber = action.payload;
+      state.updatePhoneNumberSuccess = true;
+    });
+    builder.addCase(UpdatePhoneNumber.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to update phone number";
+      state.updatePhoneNumberSuccess = false;
     });
   },
 });

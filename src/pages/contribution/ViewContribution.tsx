@@ -55,10 +55,7 @@ const ViewContribution = () => {
   );
 
   const { unpaidBalance } = useContribution({
-    page: 1,
-    limit: 10,
     search: "",
-    filter: "",
     contributionId,
   });
 
@@ -73,7 +70,6 @@ const ViewContribution = () => {
   const [localError, setLocalError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const ITEMS_PER_PAGE = 12;
 
   const realBalance = unpaidBalance
     ? formatBalance(unpaidBalance.totalAmount)
@@ -83,6 +79,9 @@ const ViewContribution = () => {
     contributionDetails?.contributionType?.toLowerCase() === "one-time";
 
   const hasUnpaidBalance = unpaidBalance && unpaidBalance.totalAmount > 0;
+
+  const isStrictSavings =
+    contributionDetails?.history[0]?.savingsType === "Strict";
 
   useEffect(() => {
     if (!contributionId) {
@@ -94,16 +93,11 @@ const ViewContribution = () => {
       if (!walletCard?.cards?.length) {
         dispatch(GetWalletCard());
       }
-
       const response: any = await dispatch(
         GetContributionDetailsById({
           contributionId,
-          page: currentPage,
-          limit: ITEMS_PER_PAGE,
         }),
       );
-      const historyLength = response.payload?.history?.length || 0;
-      setHasMore(historyLength === ITEMS_PER_PAGE);
     };
 
     fetchInitialData();
@@ -111,7 +105,7 @@ const ViewContribution = () => {
     return () => {
       dispatch(clearContributionDetails());
     };
-  }, [dispatch, contributionId, currentPage, navigate]);
+  }, [dispatch, contributionId, navigate]);
 
   const formatCurrency = (amount: number | undefined) => {
     return amount ? formatBalance(amount) : "₦0.00";
@@ -145,12 +139,6 @@ const ViewContribution = () => {
           paymentType,
         }),
       ).unwrap();
-      // if (paymentResponse?.charge?.info?.data?.authorization_url) {
-      //   window.location.href =
-      //     paymentResponse.charge.info.data.authorization_url;
-      // } else {
-      //   setLocalError("Failed to initiate payment. Please try again.");
-      // }
     } catch (err: any) {
       setLocalError(
         err.message || "An error occurred during payment. Please try again.",
@@ -288,28 +276,30 @@ const ViewContribution = () => {
 
           <hr className="my-8" />
 
-          <div className="flex justify-between">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={handleOpenModal}
-              className="rounded-full border-2 border-gray-200 bg-inherit px-6 py-2 text-lg font-semibold shadow-lg"
-            >
-              Add Money
-            </motion.button>
-            <Link
-              to="/dashboard/contribution/withdraw_contribution"
-              state={{ contributionId }}
-            >
+          {!isStrictSavings && (
+            <div className="flex justify-between">
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                onClick={handleOpenModal}
                 className="rounded-full border-2 border-gray-200 bg-inherit px-6 py-2 text-lg font-semibold shadow-lg"
               >
-                Withdraw
+                Add Money
               </motion.button>
-            </Link>
-          </div>
+              <Link
+                to="/dashboard/contribution/withdraw_contribution"
+                state={{ contributionId }}
+              >
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="rounded-full border-2 border-gray-200 bg-inherit px-6 py-2 text-lg font-semibold shadow-lg"
+                >
+                  Withdraw
+                </motion.button>
+              </Link>
+            </div>
+          )}
 
           {!isOneTimeContribution && (
             <Typography className="mt-4 font-semibold text-gray-600">
