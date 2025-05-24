@@ -6,143 +6,118 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Typography } from "@material-tailwind/react";
 import { useUserProfile } from "../../../shared/Hooks/useUserProfile";
-
 import otherIcon from "../../../Assets/svg/dashboard/ajo/other_group_saving_icon.svg";
 import otherImage from "../../../Assets/png/dashboard/ajo/other_group_saving_image.png";
 import GroupCard from "../components/group_card";
 import GroupHistoryTemplate from "../components/group_history_template";
+import { useUserTotalGroupBalance } from "../../../shared/Hooks/useBalance";
+import {
+  DetailsSkeleton,
+  GroupCardSkeletonRow,
+  GroupHistorySkeleton,
+} from "../../../components/common/Loading";
 
-import { useWalletBalance } from "../../../shared/Hooks/useBalance";
+interface CircleMember {
+  progress: number;
+  userId: string;
+  contribution: number;
+  status: string;
+  failures: number;
+  _id: string;
+}
 
 interface CircleFromAPI {
-  name?: string;
-  members?: any;
-  progress?: number;
-  amount?: string | number;
-  goal?: string | number;
-  totalSaved?: string | number;
-  icon?: string;
-  currentIndividualTotal?: number;
-  image?: string;
-  [key: string]: any;
+  _id: string;
+  name: string;
+  icon: string;
+  image: string;
+  description: string;
+  status: string;
+  groupType: string;
+  createdBy: string;
+  members: CircleMember[];
+  invitedUsers: any[];
+  currency: string;
+  balance: number;
+  depositAmount: number;
+  progress: number;
+  startDate: string;
+  endDate: string;
+  goalAmount: number;
+  currentIndividualTotal: number;
+  nextContributionDate: string | null;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }
 
 const AjoPage = () => {
-  const { isWalletVisible, setIsWalletVisible, formattedBalance } =
-    useWalletBalance();
+  const {
+    totalGroupBalance,
+    totalGroupBalanceLoading,
+    totalGroupBalanceError,
+  } = useUserTotalGroupBalance();
 
   const [groupOption, setGroupOption] = useState(0);
   const [groupHistory, setGroupHistory] = useState("ongoing");
+  const [isWalletVisible, setIsWalletVisible] = useState(() => {
+    const stored = sessionStorage.getItem("totalGroupFund");
+    return stored ? stored === "true" : true;
+  });
 
-  const otherGroupSavings = [
-    {
-      icon: otherIcon,
-      image: otherImage,
-      name: "Tech Achievers",
-      members: 10,
-      progress: 1,
-      amount: "$10 daily",
-      goal: "$100k per member",
-      totalSaved: "$100.5m",
-    },
-    {
-      icon: otherIcon,
-      image: otherImage,
-      name: "Tech Achievers",
-      members: 10,
-      progress: 19,
-      amount: "$10 daily",
-      goal: "$100k per member",
-      totalSaved: "$100.5m",
-    },
-    {
-      icon: otherIcon,
-      image: otherImage,
-      name: "Tech Achievers",
-      members: 10,
-      progress: 90,
-      amount: "$10 daily",
-      goal: "$100k per member",
-      totalSaved: "$100.5m",
-    },
-    {
-      icon: otherIcon,
-      image: otherImage,
-      name: "Tech Achievers",
-      members: 10,
-      progress: 70,
-      amount: "$10 daily",
-      goal: "$100k per member",
-      totalSaved: "$100.5m",
-    },
-    {
-      icon: otherIcon,
-      image: otherImage,
-      name: "Tech Achievers",
-      members: 10,
-      progress: 100,
-      amount: "$10 daily",
-      goal: "$100k per member",
-      totalSaved: "$100.5m",
-    },
-    {
-      icon: otherIcon,
-      image: otherImage,
-      name: "Tech Achievers",
-      members: 10,
-      progress: 0,
-      amount: "$10 daily",
-      goal: "$100k per member",
-      totalSaved: "$100.5m",
-    },
-    {
-      icon: otherIcon,
-      image: otherImage,
-      name: "Tech Achievers",
-      members: 10,
-      progress: 10,
-      amount: "$10 daily",
-      goal: "$100k per member",
-      totalSaved: "$100.5m",
-    },
-  ];
+  const {
+    userCircles,
+    circlesLoading,
+    circlesError,
+    fetchUserCircles,
+    publicCircles,
+    publicCirclesLoading,
+    publicCirclesError,
+    fetchPublicCircles,
+  } = useUserProfile();
 
-  const { userCircles, circlesLoading, circlesError } = useUserProfile();
+  useEffect(() => {
+    fetchUserCircles();
+    fetchPublicCircles();
+  }, [fetchUserCircles, fetchPublicCircles]);
 
-  const processCircleData = (circle: CircleFromAPI): any => {
-    const processed = {
-      ...circle,
-      name: typeof circle.name === 'string' ? circle.name : 'Unnamed Group',
+  const processCircleData = (
+    circle: CircleFromAPI,
+    isPublic: boolean = false,
+  ) => {
+    return {
+      name: circle.name || "Unnamed Group",
       icon: circle.icon || otherIcon,
       image: circle.image || otherImage,
-      progress: typeof circle.progress === 'number' ? circle.progress : 0,
-      amount: circle.amount ? String(circle.amount) : 'N/A',
-      goal: circle.goal ? String(circle.goal) : 'N/A',
-      totalSaved: circle.totalSaved ? String(circle.totalSaved) : 'N/A',
+      members: Array.isArray(circle.members) ? circle.members.length : 0,
+      amount: `${circle.currency}${circle.depositAmount.toLocaleString()}`,
+      goal: `${circle.currency}${circle.goalAmount.toLocaleString()}`,
+      balance: `${circle.currency}${circle.balance.toLocaleString()}`,
+      progress: circle.progress || 0,
+      buttonText: isPublic ? "Join" : "Withdraw",
+      onClick: () => {},
+      description: circle.description,
+      groupType: circle.groupType,
+      status: circle.status,
+      startDate: new Date(circle.startDate).toLocaleDateString(),
+      endDate: new Date(circle.endDate).toLocaleDateString(),
+      currentIndividualTotal: `${circle.currency}${circle.currentIndividualTotal.toLocaleString()}`,
+      isPublicGroup: isPublic,
+      circleData: circle,
     };
-    if (Array.isArray(circle.members)) {
-      processed.members = circle.members.length;
-    } else if (typeof circle.members === 'object' && circle.members !== null) {
-      console.warn("A 'members' property is an object:", circle.members, "for circle:", circle.name);
-      processed.members = "Data Error";
-    } else if (typeof circle.members !== 'number') {
-      processed.members = circle.members || 0;
-    }
-
-    return processed;
   };
 
-  const ongoingGroupsFromAPI = userCircles
-    ? userCircles
-        .map(processCircleData)
-        .filter((item: any) => item.progress < 100)
-    : [];
+  const ongoingGroups = userCircles
+    .map((circle) => processCircleData(circle, false))
+    .filter((item) => item.progress < 100);
 
-  const completedGroupsFromAPI = userCircles
-    ? userCircles
-        .map(processCircleData)
-        .filter((item: any) => item.progress === 100)
-    : [];
+  const completedGroups = userCircles
+    .map((circle) => processCircleData(circle, false))
+    .filter((item) => item.progress === 100);
+
+  const processedPublicCircles = publicCircles.map((circle) =>
+    processCircleData(circle, true),
+  );
 
   return (
     <main className="mb-[40px] flex flex-col  gap-8 font-asap">
@@ -170,7 +145,11 @@ const AjoPage = () => {
           <div className="mx-auto mt-6 flex w-60 flex-col rounded-md">
             {isWalletVisible ? (
               <p className="self-center text-xl font-bold lg:text-xl">
-                {formattedBalance}
+                {totalGroupBalanceLoading
+                  ? "Loading..."
+                  : totalGroupBalance !== null
+                    ? `₦${Number(totalGroupBalance).toLocaleString()}`
+                    : "₦0"}
               </p>
             ) : (
               <p className="self-center text-2xl font-bold">*********</p>
@@ -223,21 +202,23 @@ const AjoPage = () => {
             Other Saving Groups
           </h3>
           <section className="scrollbar-hide flex w-[100%] gap-4 overflow-x-auto py-2">
-            {otherGroupSavings.map((group, index) => (
-              <GroupCard
-                key={index}
-                amount={group.amount}
-                goal={group.goal}
-                icon={group.icon}
-                image={group.image}
-                members={group.members}
-                name={group.name}
-                progress={group.progress}
-                balance={group.totalSaved}
-                buttonText="Join"
-                onClick={() => {}}
-              />
-            ))}
+            {publicCirclesLoading ? (
+              <GroupCardSkeletonRow count={3} />
+            ) : publicCirclesError ? (
+              <Typography className="p-4 text-center" color="red">
+                Error: {publicCirclesError}
+              </Typography>
+            ) : processedPublicCircles.length > 0 ? (
+              processedPublicCircles.map((group, index) => (
+                <div key={index} className="min-w-[280px] flex-shrink-0">
+                  <GroupCard {...group} circleData={publicCircles[index]} />
+                </div>
+              ))
+            ) : (
+              <Typography className="p-4 text-center">
+                No public groups available.
+              </Typography>
+            )}
           </section>
         </section>
 
@@ -264,19 +245,17 @@ const AjoPage = () => {
           </div>
           <section className="w-[100%] flex-shrink-0 rounded-xl bg-[#C5B0D833] px-2 pt-3">
             {circlesLoading ? (
-              <Typography className="p-4 text-center">
-                Loading group history...
-              </Typography>
+              <GroupHistorySkeleton />
             ) : circlesError ? (
               <Typography className="p-4 text-center" color="red">
                 Error fetching group history: {circlesError}
               </Typography>
             ) : groupHistory === "ongoing" ? (
-              ongoingGroupsFromAPI.length > 0 ? (
+              ongoingGroups.length > 0 ? (
                 <GroupHistoryTemplate
                   description="This are the list of active groups you created"
-                  historyList={ongoingGroupsFromAPI}
-                  length={`My groups (${ongoingGroupsFromAPI.length})`}
+                  historyList={ongoingGroups}
+                  length={`My groups (${ongoingGroups.length})`}
                   title="Active groups"
                   key={1}
                   buttonText="Withdraw"
@@ -287,11 +266,11 @@ const AjoPage = () => {
                   No ongoing groups available.
                 </Typography>
               )
-            ) : completedGroupsFromAPI.length > 0 ? (
+            ) : completedGroups.length > 0 ? (
               <GroupHistoryTemplate
                 description="This are the list of past groups you created or joined."
-                historyList={completedGroupsFromAPI}
-                length={`My previous groups (${completedGroupsFromAPI.length})`}
+                historyList={completedGroups}
+                length={`My previous groups (${completedGroups.length})`}
                 title="Previous Groups"
                 key={2}
                 buttonText="Withdraw"

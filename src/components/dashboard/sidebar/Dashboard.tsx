@@ -30,6 +30,7 @@ import DepositCryptoPage from "../../../pages/wallet/deposit/depositCrypto";
 
 import AjoPage from "../../../pages/ajo/main/ajo";
 import SavingsDetail from "../../../pages/ajo/savings_detail/page";
+import OtherGroupDetails from "../../../pages/ajo/details/other_group_details";
 
 import Preview from "../../../pages/contribution/naira/auto/Preview";
 import Contribution from "../../../pages/contribution/Contribution";
@@ -191,6 +192,7 @@ const Dashboard = () => {
           />
           <Route path="ajo/:name/members" element={<MembersPage />} />
           <Route path="ajo/:name" element={<SavingsDetail />} />
+          <Route path="ajo/other/:name" element={<OtherGroupDetails />} />
 
           <Route
             path="wallet/fund/fund_crypto_wallet"
