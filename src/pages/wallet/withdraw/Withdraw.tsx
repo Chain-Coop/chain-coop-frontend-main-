@@ -59,7 +59,7 @@ const Withdraw = () => {
         className="relative cursor-pointer items-center lg:mt-[2em]"
         onClick={handleBackClick}
       >
-        <IoIosArrowBack size={25} className="absolute left-0 cursor-pointer" />
+        <IoIosArrowBack size={25} className="absolute left-8 cursor-pointer" />
         <div className="flex flex-grow items-center justify-center">
           <div className="tracking-wide">Withdraw</div>
         </div>

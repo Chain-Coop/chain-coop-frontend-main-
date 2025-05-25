@@ -30,7 +30,7 @@ const FundWallet: React.FC = () => {
       >
         <IoIosArrowBack
           size={25}
-          className="absolute left-2 top-1/2 -translate-y-1/2 transform cursor-pointer lg:left-0"
+          className="absolute left-8 top-1/2 -translate-y-1/2 transform cursor-pointer"
         />
         <div className="flex flex-grow items-center justify-center">
           <div className="tracking-wide">Fund Wallet</div>

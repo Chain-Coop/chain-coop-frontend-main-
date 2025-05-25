@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { dashboardNav } from "../../data/Data";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -53,23 +53,22 @@ const DashboardNav = () => {
           onClick={handleMenuClick}
         />
       </div>
-      <Drawer open={openMenu} onClose={() => setOpenMenu(false)} anchor="right">
+      <Drawer open={openMenu} onClose={() => setOpenMenu(false)} anchor="left">
         <Box
           sx={{
             width: "100%",
             maxWidth: "100%",
             display: "flex",
-            justifyContent: "end",
+            justifyContent: "space-between",
             alignItems: "center",
             padding: "1rem",
-            position: "relative",
           }}
         >
+          <img src={logo} alt="Chain Co-op Logo" />
           <HiX
             className="cursor-pointer"
             onClick={() => setOpenMenu(false)}
             size={30}
-            style={{ position: "absolute", top: "10px", right: "10px" }}
           />
         </Box>
         <Box
