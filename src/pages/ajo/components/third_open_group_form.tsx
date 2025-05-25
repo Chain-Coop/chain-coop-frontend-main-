@@ -23,7 +23,6 @@ const ThirdOpenGroupForm = ({
 }: Props) => {
   const max = total_saving_amount.replace(/,/g, "");
 
-  //console.log(max, typeof(max))
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,

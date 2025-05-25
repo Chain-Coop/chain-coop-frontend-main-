@@ -1,18 +1,15 @@
-// src/pages/GoogleFormPage.tsx
 import { useState } from "react";
 import { Typography, CardBody } from "@material-tailwind/react";
-import { useNavigate } from "react-router-dom";
 
 const GoogleFormPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
 
   const handleIframeLoad = () => {
     setIsLoading(false);
   };
 
   return (
-    <main className="mt-4 px-4">
+    <main className="mt-4">
       <CardBody className="flex flex-col gap-4">
         {isLoading && (
           <Typography className="text-center font-normal text-gray-600">
@@ -35,7 +32,6 @@ const GoogleFormPage: React.FC = () => {
             Loading…
           </iframe>
 
-          {/* Fallback link if iframe doesn't work */}
           <div className="mt-4 text-center">
             <Typography variant="small" className="text-gray-600">
               Having trouble viewing the form?{" "}

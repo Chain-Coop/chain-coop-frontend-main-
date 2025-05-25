@@ -77,7 +77,6 @@ const PreviewSavings = () => {
     dispatch(CreatePeriodicPool(finalPayload))
       .unwrap()
       .then((response) => {
-        console.log("Pool created successfully:", response);
         setShowPinModal(false);
         toast.success("Savings pool created successfully!");
         navigate("/dashboard/contribution/main/crypto_contribution");
