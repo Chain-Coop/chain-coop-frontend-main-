@@ -48,16 +48,18 @@ const Sidebar = () => {
               location.pathname === link.to ||
               (link.pathsToCheck &&
                 link.pathsToCheck.some((p) => location.pathname === p));
+            const isAjo = link.text === "Ajo";
 
             return (
               <Link
                 key={index}
-                to={link.to}
+                to={isAjo ? "#" : link.to}
+                onClick={isAjo ? (e) => e.preventDefault() : undefined}
                 className={`text flex items-center px-4 py-5 text-[16px] text-[#1E1E1E] hover:bg-Dh ${
                   isActive
                     ? "active !important border-l-2 border-text2 bg-Dh font-semibold"
                     : ""
-                }`}
+                } ${isAjo ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 <img
                   src={link.img}
@@ -65,6 +67,11 @@ const Sidebar = () => {
                   className="mr-3 h-5 w-5"
                 />
                 {link.text}
+                {isAjo && (
+                  <span className="ml-auto text-xs italic text-gray-500">
+                    Coming Soon
+                  </span>
+                )}
               </Link>
             );
           })}
@@ -90,8 +97,8 @@ const Sidebar = () => {
               variant="small"
               className="leading-snug tracking-tight text-howtext"
             >
-              This card grants you access to the Chain Coop Chain Network
-              ecosystem. Once activated, it becomes non-transferable.
+              This card grants you access to the Chain Coop Chain Network ecosystem.
+              Once activated, it becomes non-transferable.
             </Typography>
           </section>
         </nav>

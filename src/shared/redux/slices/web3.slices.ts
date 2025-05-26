@@ -13,7 +13,7 @@ import {
 const SUPPORTED_NETWORKS_FOR_ALL_TOKENS = [
   "ETHERLINK",
   "BSC",
-  "GNOSIS",
+  "POLYGON",
   "LISK",
 ];
 
@@ -577,6 +577,55 @@ export const FetchBitcoinBalance = createAsyncThunk(
   },
 );
 
+interface WithdrawCryptoTokenPayload {
+  amount: string;
+  network: string;
+  token: string;
+  address: string;
+  tokenId: string;
+  pin: string;
+  [key: string]: any;
+}
+
+export const WithdrawCryptoToken = createAsyncThunk<
+  any,
+  WithdrawCryptoTokenPayload,
+  { rejectValue: { message: string } }
+>("web3/withdrawCryptoToken", async (payload, { rejectWithValue }) => {
+  try {
+    const response = await web3Services.WithdrawCryptoToken(payload);
+    return response;
+  } catch (error: any) {
+    const message =
+      error?.message || "An unknown error occurred during withdrawal.";
+
+    return rejectWithValue({ message });
+  }
+});
+
+interface WithdrawBitcoinPayload {
+  amount: string;
+  address: string;
+  pin: string;
+  [key: string]: any;
+}
+
+export const WithdrawBitcoin = createAsyncThunk<
+  any,
+  WithdrawBitcoinPayload,
+  { rejectValue: { message: string } }
+>("web3/withdrawBitcoin", async (payload, { rejectWithValue }) => {
+  try {
+    const response = await web3Services.WithdrawBitcoin(payload);
+    return response;
+  } catch (error: any) {
+    const message =
+      error?.message || "An unknown error occurred during Bitcoin withdrawal.";
+
+    return rejectWithValue({ message });
+  }
+});
+
 interface CryptoState {
   actvateCryptWallet: Record<string, any> | null;
   cryptoBalance: number;
@@ -1112,6 +1161,37 @@ export const Web3Slices = createSlice({
         }
         state.bitcoinBalance = 0;
         state.bitcoinAddress = null;
+      })
+
+      .addCase(WithdrawCryptoToken.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(WithdrawCryptoToken.fulfilled, (state, action) => {
+        state.loading = false;
+        state.updateRegisteredUserPool = action.payload.data;
+        state.error = null;
+      })
+      .addCase(WithdrawCryptoToken.rejected, (state, action) => {
+        state.loading = false;
+        state.updateRegisteredUserPool = null;
+        state.error =
+          action.payload?.message || "Failed to withdraw crypto token";
+      })
+
+      .addCase(WithdrawBitcoin.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(WithdrawBitcoin.fulfilled, (state, action) => {
+        state.loading = false;
+        state.updateRegisteredUserPool = action.payload.data;
+        state.error = null;
+      })
+      .addCase(WithdrawBitcoin.rejected, (state, action) => {
+        state.loading = false;
+        state.updateRegisteredUserPool = null;
+        state.error = action.payload?.message || "Failed to withdraw Bitcoin";
       });
   },
 });

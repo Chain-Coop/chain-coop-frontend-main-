@@ -579,6 +579,50 @@ const GetBitcoinBalance = async () => {
   }
 };
 
+const WithdrawCryptoToken = async (body: any) => {
+  const url = `${API_URL}/web3/account/withdraw`;
+  try {
+    const response = await axios.post(url, body, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error("Backend error response:", error.response.data);
+      const backendMessage =
+        error.response.data.message ||
+        error.response.data.msg ||
+        "An error occurred";
+      throw new Error(backendMessage);
+    } else {
+      console.error("Network error:", error.message);
+      throw new Error("Network Error: Please check your internet connection.");
+    }
+  }
+};
+
+const WithdrawBitcoin = async (body: any) => {
+  const url = `${API_URL}/web3/account/withdraw`;
+  try {
+    const response = await axios.post(url, body, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error("Backend error response:", error.response.data);
+      const backendMessage =
+        error.response.data.message ||
+        error.response.data.msg ||
+        "An error occurred";
+      throw new Error(backendMessage);
+    } else {
+      console.error("Network error:", error.message);
+      throw new Error("Network Error: Please check your internet connection.");
+    }
+  }
+};
+
 const web3Services = {
   ActivateCryptoWallet,
   GetTotalCryptoWalletBalance,
@@ -606,6 +650,8 @@ const web3Services = {
   GetTotalBalance,
   ActivateBitcoinAccount,
   GetBitcoinBalance,
+  WithdrawCryptoToken,
+  WithdrawBitcoin,
 };
 
 export default web3Services;

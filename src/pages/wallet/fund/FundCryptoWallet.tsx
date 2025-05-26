@@ -7,30 +7,28 @@ import { CashwyreFund } from "../../../shared/redux/slices/web3.slices";
 import btcImg from "../../../Assets/svg/dashboard/bitcoin.svg";
 import usdcImg from "../../../Assets/svg/dashboard/usd.svg";
 import usdtImg from "../../../Assets/svg/dashboard/usdt.svg";
-import { IoClose } from "react-icons/io5";
-import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 import { IoIosArrowBack, IoIosArrowDropleft } from "react-icons/io";
 import BtcCoreNoticeModal from "../../../components/dashboard/wallet/modal/crypro/modals/NoticeModal";
 import FundProgressBar from "../../../components/dashboard/wallet/modal/crypro/ProgressBar";
 
 const CRYPTOS = [
-  { label: "Bitcoin (BTC)", value: "bitcoin", img: btcImg, disabled: true },
+  { label: "Bitcoin (BTC)", value: "bitcoin", img: btcImg, disabled: false },
   { label: "USDC", value: "usdc", img: usdcImg, disabled: false },
   { label: "USDT", value: "usdt", img: usdtImg, disabled: false },
 ];
 
 const ALL_NETWORKS = [
-  { label: "BTC Lightning", value: "BTC_LN", disabled: false },
-  { label: "BTC Core", value: "btc", disabled: false },
+  { label: "BTC Lightning", value: "BTC_LN", disabled: true },
+  { label: "BTC Core", value: "BTC", disabled: false },
   { label: "BNB Smart Chain-BEP20", value: "bsc", disabled: false },
-  { label: "Etherlink", value: "etherlink", disabled: true },
-  { label: "Lisk", value: "lsk", disabled: true },
-  { label: "Polygon", value: "polygon", disabled: true },
+  { label: "Etherlink", value: "etherlink", disabled: false },
+  { label: "Lisk", value: "lsk", disabled: false },
+  { label: "Polygon", value: "polygon", disabled: false },
 ];
 
 const NETWORKS_BY_CRYPTO: Record<string, string[]> = {
-  bitcoin: ["BTC_LN", "btc"],
+  bitcoin: ["BTC_LN", "BTC"],
   usdc: ["bsc", "etherlink", "lsk", "polygon"],
   usdt: ["bsc", "etherlink", "lsk", "polygon"],
 };
