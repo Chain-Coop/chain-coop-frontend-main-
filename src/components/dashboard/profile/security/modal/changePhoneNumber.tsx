@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Button,
   Dialog,
@@ -8,50 +8,51 @@ import {
   Typography,
   IconButton,
 } from "@material-tailwind/react";
-import FormInput from "../../../../common/FormInput";
 import { IoMdClose } from "react-icons/io";
-import {
-  RESEND_LOGIN_OTP,
-  RESEND_VERIFY_OTP,
-} from "../../../../../shared/redux/services/landing.services";
 import { toast } from "react-toastify";
-import { RootState } from "../../../../../shared/redux/rootReducer";
-import { useAppSelector } from "../../../../../shared/redux/reduxHooks";
 import { MoveRight } from "lucide-react";
 import { useUserProfile } from "../../../../../shared/Hooks/useUserProfile";
+import { useAppDispatch } from "../../../../../shared/redux/reduxHooks";
+import { AppDispatch } from "../../../../../shared/redux/store";
+import { ResendVerifyOtp } from "../../../../../shared/redux/slices/landing.slices";
 
 interface ChangePhoneNumberProps {
-  email: string;
-  setEmail: (email: string) => void;
-  onEmailSent: () => void;
   isOpen: boolean;
   onClose: () => void;
+  onOtpSent: () => void;
 }
 
-const ChangePhoneNumber = ({
-  email,
-  setEmail,
-  onEmailSent,
+const ChangePhoneNumber: React.FC<ChangePhoneNumberProps> = ({
   isOpen,
   onClose,
-}: ChangePhoneNumberProps) => {
+  onOtpSent,
+}) => {
   const { profileDetails } = useUserProfile();
   const phoneNumber = profileDetails?.phoneNumber;
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch: AppDispatch = useAppDispatch();
 
-  const GetOtp = async () => {
-    if (!phoneNumber) {
-      setError("Email is required");
+  const isPhoneNumberValid = !!phoneNumber;
+
+  const handleGenerateOtp = async () => {
+    if (!isPhoneNumberValid) {
+      setError("No phone number found in your profile");
       return;
     }
 
+    setIsLoading(true);
+    setError("");
     try {
-      const response = await RESEND_VERIFY_OTP({ phoneNumber });
-      toast.success(response.msg || "OTP sent to your email");
-      onEmailSent();
+      await dispatch(ResendVerifyOtp({ phoneNumber })).unwrap();
+      toast.success(`OTP sent to ${phoneNumber}`);
+      onOtpSent();
     } catch (error: any) {
-      toast.error(error || "Failed to send OTP");
+      const errorMessage = error || "Failed to send OTP";
+      toast.error(errorMessage);
+      setError(errorMessage);
     } finally {
+      setIsLoading(false);
     }
   };
 
@@ -64,7 +65,7 @@ const ChangePhoneNumber = ({
       open={isOpen}
       handler={onClose}
       size="sm"
-      className="overflow-y-auto py-3 "
+      className="overflow-y-auto py-3"
       dismiss={{ enabled: false }}
     >
       <DialogHeader className="relative flex justify-center px-2 text-center sm:px-4">
@@ -74,28 +75,44 @@ const ChangePhoneNumber = ({
             color="gray"
             onClick={onClose}
             className="h-10 w-10 p-0 hover:bg-gray-100"
+            disabled={isLoading}
+            onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
+            placeholder=""
           >
             <IoMdClose size={24} className="text-text2" />
           </IconButton>
         </div>
-        <Typography variant="h1" className="text-2xl font-semibold">
-          Update Phone number
+        <Typography variant="h5" className="text-2xl font-semibold">
+          Update Phone Number
         </Typography>
       </DialogHeader>
       <DialogBody className="overflow-y-auto text-center text-black">
-        <Typography className="font-normal">
-          Have you forgotten or lost your PIN?
-        </Typography>
-        <Typography className="font-normal">
-          Click on the link below to generate an OTP to this whatsapp number
-          {phoneNumber}
-        </Typography>
+        {isPhoneNumberValid ? (
+          <>
+            <Typography className="font-normal">
+              Click below to generate an OTP for your current phone number
+            </Typography>
+            <Typography className="mt-2 font-normal">
+              OTP will be sent to {phoneNumber}
+            </Typography>
+          </>
+        ) : (
+          <Typography className="font-normal text-red-500">
+            No phone number found in your profile. Please update your profile.
+          </Typography>
+        )}
+        {error && (
+          <Typography color="red" className="mt-2 text-sm">
+            {error}
+          </Typography>
+        )}
       </DialogBody>
       <DialogFooter className="flex justify-center">
         <Button
-          onClick={GetOtp}
-          // disabled={isLoading}
-          // loading={isLoading}
+          onClick={handleGenerateOtp}
+          disabled={isLoading || !isPhoneNumberValid}
+          loading={isLoading}
           className="flex items-center gap-2 bg-transparent text-lg font-semibold normal-case text-text2 shadow-none"
         >
           Generate OTP
@@ -107,11 +124,3 @@ const ChangePhoneNumber = ({
 };
 
 export default ChangePhoneNumber;
-
-// import React from "react";
-
-// const ChangePhoneNumber = () => {
-//   return <div></div>;
-// };
-
-// export default ChangePhoneNumber;

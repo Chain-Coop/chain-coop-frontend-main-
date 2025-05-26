@@ -141,7 +141,7 @@ const FilterContributions: React.FC<FilterContributionsProps> = ({
                         ? "filled"
                         : "outlined"
                     }
-                    className={`rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                    className={`rounded-full px-4 py-2 text-xs font-medium normal-case transition-colors duration-200 ${
                       selectedContributionType === option.value
                         ? "bg-text2 text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -165,7 +165,7 @@ const FilterContributions: React.FC<FilterContributionsProps> = ({
                     variant={
                       selectedLockType === option.value ? "filled" : "outlined"
                     }
-                    className={`rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                    className={`rounded-full px-4 py-2 text-xs font-medium normal-case transition-colors duration-200 ${
                       selectedLockType === option.value
                         ? "bg-text2 text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -189,7 +189,7 @@ const FilterContributions: React.FC<FilterContributionsProps> = ({
                     variant={
                       selectedStatus === option.value ? "filled" : "outlined"
                     }
-                    className={`rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                    className={`rounded-full px-4 py-2 text-xs font-medium normal-case transition-colors duration-200 ${
                       selectedStatus === option.value
                         ? "bg-text2 text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -205,13 +205,13 @@ const FilterContributions: React.FC<FilterContributionsProps> = ({
               <Button
                 onClick={handleReset}
                 variant="outlined"
-                className="flex-1 rounded-lg border border-gray-300 py-3 text-center font-semibold text-gray-700 transition-colors hover:bg-gray-50"
+                className="flex-1 rounded-lg border border-gray-300 py-3 text-center font-semibold normal-case text-gray-700 transition-colors hover:bg-gray-50"
               >
                 Reset
               </Button>
               <Button
                 onClick={handleApply}
-                className="flex-1 rounded-lg bg-text2 py-3 text-center font-semibold text-white transition-colors hover:bg-purple-700"
+                className="flex-1 rounded-lg bg-text2 py-3 text-center font-semibold normal-case text-white transition-colors hover:bg-purple-700"
               >
                 Apply Filters
               </Button>

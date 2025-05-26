@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import noCard from "../../Assets/png/dashboard/noCard.png";
 import arrow from "../../Assets/svg/dashboard/wallet/transfer-arrow.svg";
@@ -71,7 +71,7 @@ const ManageCards = () => {
         >
           <IoIosArrowBack
             size={25}
-            className="absolute left-0 cursor-pointer"
+            className="absolute left-8 cursor-pointer"
           />
           <div className="flex flex-grow items-center justify-center">
             <div className="tracking-wide">Manage Cards</div>
@@ -88,8 +88,8 @@ const ManageCards = () => {
         </header>
 
         <div className="mt-4 flex flex-col gap-6">
-          {walletCard?.cards?.length > 0 ? (
-            walletCard?.cards?.map((card: Card) => (
+          {walletCard?.cards && walletCard.cards.length > 0 ? (
+            walletCard.cards.map((card: any) => (
               <div
                 key={card.authorization_code}
                 className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6"

@@ -79,7 +79,7 @@ const Dashboard = () => {
         <Sidebar />
       </aside>
       <section className="custom-scroll-bar h-screen w-full flex-1 overflow-y-auto px-4 md:px-14">
-        <nav className="px-4 sm:block lg:hidden">
+        <nav className="sm:block lg:hidden">
           <DashboardNav />
         </nav>
         <Routes>

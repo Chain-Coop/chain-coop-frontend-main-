@@ -8,7 +8,7 @@ export const API_ENDPOINTS = {
     RESEND_WHATSAPP_OTP: "/auth/resend_whatsapp_otp",
     RESET_PASSWORD: "/auth/reset_password",
     FORGOT_PASSWORD: "/auth/forget_password",
-    UPDATE_PHONE_NUMBER: "/auth/update_phone_number",
+    UPDATE_PHONE_NUMBER: "/auth/change_phone_number",
   },
   USER: {
     GET_PROFILE: "/auth/user",

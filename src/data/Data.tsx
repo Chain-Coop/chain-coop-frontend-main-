@@ -466,6 +466,10 @@ export const Explore = [
     text: "Partnership",
     to: "/partner-with-us",
   },
+  {
+    text: "Register Class",
+    to: "/form",
+  },
 ];
 
 export const Legal = [

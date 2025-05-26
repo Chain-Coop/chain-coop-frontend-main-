@@ -487,11 +487,14 @@ const CryptoMain = () => {
                   <Link
                     to="/dashboard/wallet/deposit/crypto"
                     state={{ walletType: "crypto" }}
+                    className="cursor-not-allowed"
                   >
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="flex flex-col items-center bg-inherit text-center"
+                      disabled={true}
+                      onClick={(e) => e.preventDefault()}
+                      className="flex flex-col opacity-50 items-center bg-inherit text-center"
                     >
                       <TransferIcon />
                       <span className="block text-memt1 lg:text-lg">

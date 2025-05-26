@@ -52,6 +52,7 @@ const ThirdOpenGroupForm: React.FC<ThirdOpenGroupFormProps> = ({
   savings_frequency,
   total_saving_amount,
   setData,
+
   maxDepositAmount,
   minDepositAmount = 0,
   depositStep,

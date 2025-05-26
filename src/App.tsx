@@ -20,6 +20,7 @@ import AboutUs from "./pages/footer/AboutUs";
 import PrivacyPolicy from "./pages/footer/PrivacyPolicy";
 import VerifyEmail from "./pages/auth/verifyEmail";
 import VerifyPhoneNumber from "./pages/auth/verifyPhoneNumber";
+import GoogleFormPage from "./pages/auth/googleFormPage";
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
           path="/reset-successfull"
           element={<PaaswordRessetSuccessfull />}
         />
+        <Route path="/form" element={<GoogleFormPage />} />
         <Route element={<ProtectedRoutes />}>
           <Route path="/dashboard/*" element={<Dashboard />} />
         </Route>

@@ -89,7 +89,7 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A]">
+          {/* <div className="flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A]">
             <div className="flex flex-col gap-1">
               <Typography
                 variant="h6"
@@ -107,7 +107,7 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
             <div className="rounded bg-red-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-600">
               Upgrade
             </div>
-          </div>
+          </div> */}
 
           <div
             className={`flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A] ${
@@ -126,6 +126,12 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
                 className="text-xs font-normal text-gray-500"
               >
                 Upload your Phone number
+              </Typography>
+              <Typography
+                variant="small"
+                className="text-xs font-normal text-gray-500"
+              >
+                Daily Transaction Limit: N50,000.00
               </Typography>
             </div>
             {isVerified ? (
@@ -157,6 +163,12 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
                 className="text-xs font-normal text-gray-500"
               >
                 Upload your BVN
+              </Typography>
+              <Typography
+                variant="small"
+                className="text-xs font-normal text-gray-500"
+              >
+                Daily Transaction Limit: N200,000.00
               </Typography>
             </div>
             <Button className="rounded-full bg-gray-100 p-2">

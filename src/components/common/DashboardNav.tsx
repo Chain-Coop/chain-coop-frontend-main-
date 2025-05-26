@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { dashboardNav } from "../../data/Data";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -15,6 +15,7 @@ import member from "../../Assets/jpg/membership/customer.jpg";
 import investor from "../../Assets/jpg/membership/investor.jpg";
 import { handleLoggout } from "../../shared/utils/auth";
 import { useUserProfile } from "../../shared/Hooks/useUserProfile";
+import { Typography } from "@material-tailwind/react";
 
 const DashboardNav = () => {
   const [openMenu, setOpenMenu] = useState(false);
@@ -53,23 +54,22 @@ const DashboardNav = () => {
           onClick={handleMenuClick}
         />
       </div>
-      <Drawer open={openMenu} onClose={() => setOpenMenu(false)} anchor="right">
+      <Drawer open={openMenu} onClose={() => setOpenMenu(false)} anchor="left">
         <Box
           sx={{
             width: "100%",
             maxWidth: "100%",
             display: "flex",
-            justifyContent: "end",
+            justifyContent: "space-between",
             alignItems: "center",
             padding: "1rem",
-            position: "relative",
           }}
         >
+          <img src={logo} alt="Chain Co-op Logo" />
           <HiX
             className="cursor-pointer"
             onClick={() => setOpenMenu(false)}
             size={30}
-            style={{ position: "absolute", top: "10px", right: "10px" }}
           />
         </Box>
         <Box
@@ -79,17 +79,33 @@ const DashboardNav = () => {
           onKeyDown={() => setOpenMenu(false)}
         >
           <List>
-            {dashboardNav.map((item, index) => (
-              <ListItem key={index} disablePadding>
-                <ListItemButton component={Link} to={item.to}>
-                  <img src={item.img} alt="imgs" />
-                  <ListItemText
-                    className="ml-2 font-extrabold"
-                    primary={item.text}
-                  />
-                </ListItemButton>
-              </ListItem>
-            ))}
+            {dashboardNav.map((item, index) => {
+              const isAjo = item.text === "Ajo";
+              return (
+                <ListItem key={index} disablePadding>
+                  <ListItemButton
+                    component={Link}
+                    to={isAjo ? "#" : item.to}
+                    onClick={isAjo ? (e) => e.preventDefault() : undefined}
+                    className={`${isAjo ? "cursor-not-allowed opacity-50" : ""}`}
+                  >
+                    <img src={item.img} alt="imgs" />
+                    <ListItemText
+                      className="ml-2 font-extrabold"
+                      primary={item.text}
+                    />
+                    {isAjo && (
+                      <Typography
+                        variant="small"
+                        className="ml-auto text-xs italic text-gray-500"
+                      >
+                        Coming Soon
+                      </Typography>
+                    )}
+                  </ListItemButton>
+                </ListItem>
+              );
+            })}
           </List>
           <div>
             <div className="mt-[1em] px-4">

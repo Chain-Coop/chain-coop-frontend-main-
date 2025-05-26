@@ -18,6 +18,8 @@ interface ContributionTrackerProps {
   hasMore: boolean;
 }
 
+const ITEMS_PER_PAGE = 12;
+
 const isDateValid = (dateString?: string) => {
   if (!dateString) return false;
   try {
@@ -60,7 +62,7 @@ export const ContributionTracker: React.FC<ContributionTrackerProps> = ({
     history = [],
   } = contributionDetails || {};
 
-  const buildSteps = () => {
+  const buildFullSteps = () => {
     const steps = [];
     const sortedHistory = [...(history || [])].sort(
       (a, b) => new Date(a?.Date)?.getTime() - new Date(b?.Date)?.getTime(),
@@ -123,6 +125,15 @@ export const ContributionTracker: React.FC<ContributionTrackerProps> = ({
     return steps;
   };
 
+  const fullSteps = buildFullSteps();
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+
+  const steps = fullSteps.slice(startIndex, endIndex);
+
+  const hasMoreSteps = endIndex < fullSteps.length;
+
   const getStatusStyle = (status?: string) => {
     switch (status?.toLowerCase()) {
       case "completed":
@@ -174,8 +185,6 @@ export const ContributionTracker: React.FC<ContributionTrackerProps> = ({
   const isWithdrawalDatePassed = withdrawalDate
     ? new Date(withdrawalDate) <= new Date()
     : false;
-
-  const steps = buildSteps();
 
   if (isLoading) {
     return <TrackerSkeleton />;
@@ -265,9 +274,9 @@ export const ContributionTracker: React.FC<ContributionTrackerProps> = ({
         <span className="text-sm font-medium">Page {currentPage}</span>
         <button
           onClick={handleNextPage}
-          disabled={!hasMore}
+          disabled={!hasMoreSteps}
           className={`flex items-center rounded-full px-4 py-2 ${
-            !hasMore
+            !hasMoreSteps
               ? "cursor-not-allowed bg-gray-200 text-gray-400"
               : "bg-text2 text-white hover:bg-opacity-90"
           }`}

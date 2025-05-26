@@ -172,7 +172,9 @@ export interface UploadAvatarResponse {
 }
 
 export interface UpdatePhoneNumberRequest {
-  phoneNumber: string;
+  userId: string;
+  otp: string;
+  newPhoneNumber: string;
 }
 
 export interface UpdatePhoneNumberResponse {
