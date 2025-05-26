@@ -297,6 +297,27 @@ const SavingsDetail: React.FC<SavingsDetailProps> = ({ className = "" }) => {
         </ul>
       </section>
 
+      <Link
+        to={`/dashboard/ajo/${displayName}/transactions`}
+        state={{
+          group: group,
+          members: members,
+        }}
+        className="mt-6 flex w-[100%] items-center justify-between rounded-md border border-[#DDD8D84D] bg-[#ECE6F25E] px-3 py-6"
+      >
+        <div className="flex w-[80%] flex-col  gap-4">
+          <h3 className="text-[18px] font-[500] tracking-tight text-[#1E1E1E]">
+            Transaction history
+          </h3>
+          <h3 className="font-asap text-[14px] font-[400] text-[#1E1E1E] opacity-80">
+            See all withdrawing and funding on this group
+          </h3>
+        </div>
+        <button>
+          <FaChevronRight className="text-[16px] text-[#1E1E1E]" />
+        </button>
+      </Link>
+
       <section className="mt-[20px] flex w-[100%] flex-col">
         <div className="flex w-[100%] items-center justify-between">
           <div className="flex items-center gap-2">
