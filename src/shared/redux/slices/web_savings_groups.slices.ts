@@ -116,6 +116,78 @@ export const GetUserTotalGroupBalance = createAsyncThunk(
   },
 );
 
+export const GetSavingCircleHistory = createAsyncThunk(
+  "savingcircle/history",
+  async (circleId: string, thunkAPI) => {
+    try {
+      const data = await WebGroupSavings.GetSavingCircleHistory(circleId);
+      return data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error.message || "Failed to fetch circle transaction history",
+      );
+    }
+  },
+);
+
+export const InitializeSavingCirclePayment = createAsyncThunk(
+  "savingcircle/initializePayment",
+  async (
+    paymentData: {
+      circleId: string;
+      userId: string;
+      depositAmount: number;
+      paymentType: string;
+      callbackUrl: string;
+    },
+    thunkAPI,
+  ) => {
+    try {
+      const data = await WebGroupSavings.InitializeSavingCirclePayment(paymentData);
+      return data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error.message || "Failed to initialize payment",
+      );
+    }
+  },
+);
+
+export const MakeSavingCirclePayment = createAsyncThunk(
+  "savingcircle/makePayment",
+  async (
+    paymentData: {
+      circleId: string;
+      userId: string;
+      paymentType: string;
+    },
+    thunkAPI,
+  ) => {
+    try {
+      const data = await WebGroupSavings.MakeSavingCirclePayment(paymentData);
+      return data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error.message || "Failed to process payment",
+      );
+    }
+  },
+);
+
+export const VerifySavingCirclePayment = createAsyncThunk(
+  "savingcircle/verifyPayment",
+  async (reference: string, thunkAPI) => {
+    try {
+      const data = await WebGroupSavings.VerifySavingCirclePayment(reference);
+      return data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error.message || "Failed to verify payment",
+      );
+    }
+  },
+);
+
 interface WebGroupSavingsType {
   loading: boolean;
   error: string;
@@ -125,6 +197,14 @@ interface WebGroupSavingsType {
   totalGroupBalance: number | null;
   totalGroupBalanceLoading: boolean;
   totalGroupBalanceError: string | null;
+  circleHistory: any[];
+  historyLoading: boolean;
+  historyError: string | null;
+  paymentInitialization: any | null;
+  payment: any | null;
+  paymentVerification: any | null;
+  paymentLoading: boolean;
+  paymentError: string | null;
 }
 const initialState: WebGroupSavingsType = {
   loading: false,
@@ -135,6 +215,14 @@ const initialState: WebGroupSavingsType = {
   totalGroupBalance: null,
   totalGroupBalanceLoading: false,
   totalGroupBalanceError: null,
+  circleHistory: [],
+  historyLoading: false,
+  historyError: null,
+  paymentInitialization: null,
+  payment: null,
+  paymentVerification: null,
+  paymentLoading: false,
+  paymentError: null,
 };
 
 const webGroupSavingsSlice = createSlice({
@@ -260,6 +348,58 @@ const webGroupSavingsSlice = createSlice({
       .addCase(GetUserTotalGroupBalance.rejected, (state, action) => {
         state.totalGroupBalanceLoading = false;
         state.totalGroupBalanceError = action.payload as string;
+      })
+
+      .addCase(GetSavingCircleHistory.pending, (state) => {
+        state.historyLoading = true;
+        state.historyError = null;
+      })
+      .addCase(GetSavingCircleHistory.fulfilled, (state, action) => {
+        state.historyLoading = false;
+        state.circleHistory = action.payload?.data || [];
+      })
+      .addCase(GetSavingCircleHistory.rejected, (state, action) => {
+        state.historyLoading = false;
+        state.historyError = action.payload as string;
+      })
+
+      .addCase(InitializeSavingCirclePayment.pending, (state) => {
+        state.paymentLoading = true;
+        state.paymentError = null;
+      })
+      .addCase(InitializeSavingCirclePayment.fulfilled, (state, action) => {
+        state.paymentLoading = false;
+        state.paymentInitialization = action.payload;
+      })
+      .addCase(InitializeSavingCirclePayment.rejected, (state, action) => {
+        state.paymentLoading = false;
+        state.paymentError = action.payload as string;
+      })
+
+      .addCase(MakeSavingCirclePayment.pending, (state) => {
+        state.paymentLoading = true;
+        state.paymentError = null;
+      })
+      .addCase(MakeSavingCirclePayment.fulfilled, (state, action) => {
+        state.paymentLoading = false;
+        state.payment = action.payload;
+      })
+      .addCase(MakeSavingCirclePayment.rejected, (state, action) => {
+        state.paymentLoading = false;
+        state.paymentError = action.payload as string;
+      })
+
+      .addCase(VerifySavingCirclePayment.pending, (state) => {
+        state.paymentLoading = true;
+        state.paymentError = null;
+      })
+      .addCase(VerifySavingCirclePayment.fulfilled, (state, action) => {
+        state.paymentLoading = false;
+        state.paymentVerification = action.payload;
+      })
+      .addCase(VerifySavingCirclePayment.rejected, (state, action) => {
+        state.paymentLoading = false;
+        state.paymentError = action.payload as string;
       });
   },
 });
