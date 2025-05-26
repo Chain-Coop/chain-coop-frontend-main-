@@ -10,117 +10,127 @@ import {
 } from "@material-tailwind/react";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
+import { useAppDispatch } from "../../../../shared/redux/reduxHooks";
+import { AppDispatch } from "../../../../shared/redux/store";
+import {
+  GetUserProfile,
+  UpdatePhoneNumber,
+} from "../../../../shared/redux/slices/landing.slices";
+import { useUserProfile } from "../../../../shared/Hooks/useUserProfile";
 import { PhoneNumberInput } from "../../../common/phoneNumberInput";
-import { UPDATE_PHONE_NUMBER } from "../../../../shared/redux/services/landing.services";
-import { useAppSelector } from "../../../../shared/redux/reduxHooks";
-import { RootState } from "../../../../shared/redux/rootReducer";
-import { GetUserProfile } from "../../../../shared/redux/slices/landing.slices";
+import { UpdatePhoneNumberRequest } from "../../../../shared/types";
 
 interface NewPhoneNumberProps {
+  otp: string;
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
 }
 
-const NewPhoneNumber = ({
+const NewPhoneNumber: React.FC<NewPhoneNumberProps> = ({
+  otp,
   isOpen,
   onClose,
   onSuccess,
-}: NewPhoneNumberProps) => {
+}) => {
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const { profileDetails } = useUserProfile();
+  const dispatch: AppDispatch = useAppDispatch();
 
-  // const handleSubmit = async () => {
-  //   setIsLoading(true);
-  //   setError("");
+  const handleSubmit = async () => {
+    if (!newPhoneNumber) {
+      setError("Please enter a new phone number");
+      return;
+    }
 
-  //   try {
-  //     const response = await UPDATE_PHONE_NUMBER("/auth/change_phone_number", {
-  //       newPhoneNumber,
-  //       userId: getProfile?.id,
-  //     });
+    const phoneRegex = /^\+?[1-9]\d{1,14}$/;
+    if (!phoneRegex.test(newPhoneNumber)) {
+      setError("Please enter a valid phone number (e.g., +1234567890)");
+      return;
+    }
 
-  //     if (response.status === 200) {
-  //       await GetUserProfile();
-  //       onSuccess();
-  //     } else {
-  //       const errorMsg = response.data?.msg || "Failed to update phone number";
-  //       setError(errorMsg);
-  //       toast.error(errorMsg);
-  //     }
-  //   } catch (error: any) {
-  //     const errorMsg = error?.message || "Failed to update phone number";
-  //     setError(errorMsg);
-  //     toast.error(errorMsg);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+    setIsLoading(true);
+    setError("");
+    try {
+      const payload: UpdatePhoneNumberRequest = {
+        userId: profileDetails?.id || "",
+        otp,
+        newPhoneNumber,
+      };
+      const response = await dispatch(UpdatePhoneNumber(payload)).unwrap();
+      if (response) {
+        await dispatch(GetUserProfile()).unwrap();
+        toast.success("Phone number updated successfully");
+        onSuccess();
+      } else {
+        throw new Error("Failed to update phone number");
+      }
+    } catch (error: any) {
+      const errorMessage = error || "Failed to update phone number";
+      toast.error(errorMessage);
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Dialog
-      size="sm"
+      animate={{
+        mount: { scale: 1, y: 0 },
+        unmount: { scale: 0.9, y: -100 },
+      }}
       open={isOpen}
       handler={onClose}
+      size="sm"
       className="bg-[#E9E9E9] p-4 sm:p-6"
       dismiss={{ enabled: false }}
     >
-      <DialogHeader className="relative flex flex-col justify-center text-center">
-        <IconButton
-          variant="text"
-          color="gray"
-          onClick={onClose}
-          className="absolute left-2 top-2 h-10 w-10 p-2"
-          ripple={false}
-          placeholder=""
-          onPointerEnterCapture={() => {}}
-          onPointerLeaveCapture={() => {}}
-        >
-          <IoMdClose size={24} className="m-auto text-gray-700" />
-        </IconButton>
-
-        <Typography variant="h4" className="text-xl font-semibold sm:text-2xl">
+      <DialogHeader className="relative flex justify-center px-2 text-center sm:px-4">
+        <div className="absolute left-2 top-2">
+          <IconButton
+            variant="text"
+            color="gray"
+            onClick={onClose}
+            className="h-10 w-10 p-0 hover:bg-gray-100"
+            disabled={isLoading}
+            onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
+            placeholder=""
+          >
+            <IoMdClose size={24} className="text-text2" />
+          </IconButton>
+        </div>
+        <Typography variant="h5" className="text-2xl font-semibold">
           Update Phone Number
         </Typography>
-        <Typography
-          color="gray"
-          className="mt-1 text-sm font-normal sm:text-base"
-        >
+      </DialogHeader>
+      <DialogBody className="overflow-y-auto text-center text-black">
+        <Typography className="font-normal">
           Enter your new phone number
         </Typography>
-      </DialogHeader>
-
-      <DialogBody>
-        <div className="mb-4 sm:mb-6">
-          <label
-            htmlFor="phoneNumber-input"
-            className="text-textPrimary mb-2 flex font-semibold"
-          >
-            Phone Number
-          </label>
+        <div className="mt-4">
           <PhoneNumberInput
             value={newPhoneNumber}
-            onChange={setNewPhoneNumber}
+            onChange={(value) => setNewPhoneNumber(value)}
+            disabled={isLoading}
           />
+          {error && (
+            <Typography color="red" className="mt-2 text-sm">
+              {error}
+            </Typography>
+          )}
         </div>
-
-        {error && (
-          <Typography color="red" className="text-center text-xs sm:text-sm">
-            {error}
-          </Typography>
-        )}
       </DialogBody>
-
       <DialogFooter className="flex justify-center">
         <Button
-          variant="filled"
-          // onClick={handleSubmit}
-          disabled={isLoading || !newPhoneNumber}
+          onClick={handleSubmit}
+          disabled={isLoading}
           loading={isLoading}
-          className="flex w-full justify-center rounded-full bg-text2 text-sm font-normal normal-case sm:w-[60%] sm:py-3 lg:py-2"
+          className="flex items-center gap-2 rounded-full bg-text2 text-lg font-normal normal-case text-white"
         >
           Update Phone Number
         </Button>

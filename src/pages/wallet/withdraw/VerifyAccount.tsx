@@ -168,7 +168,7 @@ const VerifyAccount = () => {
         >
           <IoIosArrowBack
             size={25}
-            className="absolute left-0 cursor-pointer"
+            className="absolute left-8 cursor-pointer"
           />
           <div className="flex flex-grow items-center justify-center">
             <div className="tracking-wide">Verify Account</div>

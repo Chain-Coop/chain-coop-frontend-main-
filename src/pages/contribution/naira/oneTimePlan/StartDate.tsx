@@ -259,6 +259,9 @@ const StartDate: React.FC = () => {
               <MenuItem value="">
                 <em>Select end date</em>
               </MenuItem>
+              <MenuItem value="custom">
+                <em>Set custom end date</em>
+              </MenuItem>
               {availableEndDates.map((date) => (
                 <MenuItem key={date} value={date}>
                   {new Date(date)?.toLocaleDateString("en-US", {
@@ -269,9 +272,6 @@ const StartDate: React.FC = () => {
                   ({getDateDifference(startDate, date, "monthly")})
                 </MenuItem>
               ))}
-              <MenuItem value="custom">
-                <em>Set custom end date</em>
-              </MenuItem>
             </Select>
           </FormControl>
 
