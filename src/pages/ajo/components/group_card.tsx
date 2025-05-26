@@ -1,14 +1,23 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 import ProgressCircle from "./progress_circle";
-import { Typography } from "@material-tailwind/react";
-import { Button } from "@material-tailwind/react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../shared/redux/store";
-import { JoinSavingCircle } from "../../../shared/redux/slices/web_savings_groups.slices";
-import { toast } from "react-toastify";
+
+// Define a more specific type for circle data
+export interface CircleData {
+  description?: string;
+  groupType?: string;
+  status?: string;
+  startDate?: string;
+  endDate?: string;
+  currentIndividualTotal?: number;
+  currency?: string;
+  depositAmount?: number;
+  goalAmount?: number;
+  nextContributionDate?: string;
+}
 
 export interface GroupCardProps {
+  // Required props
   name: string;
   image: string;
   icon: string;
@@ -17,10 +26,26 @@ export interface GroupCardProps {
   goal: string;
   balance: string;
   progress: number;
+
+  // Optional props
   buttonText?: string;
   onClick?: () => void;
-  circleData?: any;
+  circleData?: CircleData;
   isPublicGroup?: boolean;
+
+  // Customization props
+  className?: string;
+  imageClassName?: string;
+  iconClassName?: string;
+  titleClassName?: string;
+  textClassName?: string;
+  primaryButtonClassName?: string;
+  secondaryButtonClassName?: string;
+  primaryButtonText?: string;
+  secondaryButtonText?: string;
+  onPrimaryButtonClick?: () => void;
+  onSecondaryButtonClick?: () => void;
+  customLinkPath?: (name: string) => string;
 }
 
 const GroupCard: React.FC<GroupCardProps> = ({
@@ -36,40 +61,32 @@ const GroupCard: React.FC<GroupCardProps> = ({
   onClick,
   circleData,
   isPublicGroup,
+  className = "",
+  imageClassName = "",
+  iconClassName = "",
+  titleClassName = "",
+  textClassName = "",
+  primaryButtonClassName = "",
+  secondaryButtonClassName = "",
+  primaryButtonText = "Withdraw",
+  secondaryButtonText = "Details",
+  onPrimaryButtonClick,
+  onSecondaryButtonClick,
+  customLinkPath,
 }) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
-  const [joiningGroup, setJoiningGroup] = useState(false);
+  const defaultLinkPath = isPublicGroup
+    ? `/dashboard/ajo/other/${name}`
+    : `/dashboard/ajo/${name}`;
 
-  const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
-  const userId = userData?._id || userData?.userId;
-
-  const handleJoinGroup = async (e: React.MouseEvent) => {
-    e.preventDefault();
-
-    setJoiningGroup(true);
-    try {
-      const payload = {
-        circleId: circleData._id,
-        userId: userId,
-        inviteCode: circleData.inviteCode,
-      };
-
-      await dispatch(JoinSavingCircle(payload)).unwrap();
-      toast.success("Successfully joined the group!");
-      navigate("/dashboard/ajo");
-    } catch (error: any) {
-      const errorMessage = error?.message || "Failed to join group";
-      toast.error(errorMessage);
-    } finally {
-      setJoiningGroup(false);
-    }
-  };
+  const linkPath = customLinkPath ? customLinkPath(name) : defaultLinkPath;
 
   return (
-    <div className="flex h-fit w-full flex-shrink-0 flex-col rounded-3xl border-[2px] border-gray-200 bg-white shadow-md sm:h-[234px] sm:flex-row lg:h-fit lg:flex-col xl:h-fit xl:flex-row xl:gap-1">
-      {/* Image Section remains unchanged */}
-      <div className="relative h-[150px] w-[100%] flex-shrink-0 rounded-l-xl sm:h-full sm:w-[158px] lg:h-fit lg:w-[100%] xl:h-full xl:w-[158px]">
+    <div
+      className={`flex h-fit w-full flex-shrink-0 flex-col rounded-3xl border-[2px] border-gray-200 bg-white shadow-md sm:h-[234px] sm:flex-row lg:h-fit lg:flex-col xl:h-fit xl:flex-row xl:gap-1 ${className}`}
+    >
+      <div
+        className={`relative h-[150px] w-[100%] flex-shrink-0 rounded-l-xl sm:h-full sm:w-[158px] lg:h-fit lg:w-[100%] xl:h-full xl:w-[158px] ${imageClassName}`}
+      >
         <img
           src={image}
           alt={name}
@@ -78,56 +95,56 @@ const GroupCard: React.FC<GroupCardProps> = ({
         <img
           src={icon}
           alt={name}
-          className="absolute right-2 top-2 h-[30px] w-[30px]"
+          className={`absolute right-2 top-2 h-[30px] w-[30px] ${iconClassName}`}
         />
       </div>
 
-      {/* Content Section */}
       <div className="flex w-[96%] flex-col justify-between gap-1 py-2 pl-4 pr-2 lg:py-4 xl:py-2">
-        {/* Upper content remains unchanged */}
         <div className="flex items-start justify-between">
           <div className="flex flex-col gap-2">
-            <h4 className="text-wrap  text-lg font-semibold text-[#1E1E1EE5] xl:text-xl">
+            <h4
+              className={`text-wrap text-lg font-semibold text-[#1E1E1EE5] xl:text-xl ${titleClassName}`}
+            >
               {name}
             </h4>
             <div className="flex items-center gap-2">
-              <Typography className="font-asap text-[14px] font-semibold text-[#6E6C6C]">
+              <span
+                className={`font-asap text-[14px] font-semibold text-[#6E6C6C] ${textClassName}`}
+              >
                 {members} members
-              </Typography>
+              </span>
               <div className="h-[10px] w-[10px] rounded-full bg-[#C5B0D8]" />
-              <Typography className="font-asap text-[14px] font-normal text-[#6E6C6C]">
+              <span
+                className={`font-asap text-[14px] font-normal text-[#6E6C6C] ${textClassName}`}
+              >
                 {amount}
-              </Typography>
+              </span>
             </div>
-            <Typography className="font-asap font-normal text-[#6E6C6C]">
+            <span
+              className={`font-asap font-normal text-[#6E6C6C] ${textClassName}`}
+            >
               <strong className="font-semibold text-black">Goal:</strong> {goal}
-            </Typography>
-            <Typography className="font-asap font-medium text-[#6E6C6C]">
+            </span>
+            <span
+              className={`font-asap font-medium text-[#6E6C6C] ${textClassName}`}
+            >
               Total saved: {balance}
-            </Typography>
+            </span>
           </div>
           <ProgressCircle progress={progress} />
         </div>
 
-        {/* Buttons - updated with join functionality */}
         <div className="mt-3 flex w-full justify-between pb-3 xl:mt-0">
-          <Button
-            className="flex h-[35px] w-fit items-center justify-center rounded-md bg-[#440080] px-4 text-sm font-medium capitalize text-white hover:bg-[#3D0073] lg:text-base"
-            onClick={isPublicGroup ? handleJoinGroup : onClick}
-            disabled={joiningGroup}
-          >
-            {isPublicGroup
-              ? joiningGroup
-                ? "Joining..."
-                : "Join"
-              : buttonText}
-          </Button>
+          {!isPublicGroup && (
+            <button
+              className={`mr-auto flex h-[35px] w-fit items-center justify-center rounded-md bg-[#440080] px-4 text-sm font-medium capitalize text-white hover:bg-[#3D0073] lg:text-base ${primaryButtonClassName}`}
+              onClick={onPrimaryButtonClick || onClick}
+            >
+              {primaryButtonText || buttonText}
+            </button>
+          )}
           <Link
-            to={
-              isPublicGroup
-                ? `/dashboard/ajo/other/${name}`
-                : `/dashboard/ajo/${name}`
-            }
+            to={linkPath}
             state={{
               name,
               image,
@@ -150,9 +167,10 @@ const GroupCard: React.FC<GroupCardProps> = ({
               isPublicGroup: isPublicGroup || false,
               circleData,
             }}
-            className="flex h-[35px] w-fit items-center justify-center rounded-md bg-white px-4 text-sm text-[#440080] ring-1 ring-[#440080] lg:text-base"
+            className={`flex h-[35px] w-fit items-center justify-center rounded-md bg-white px-4 text-sm text-[#440080] ring-1 ring-[#440080] lg:text-base ${secondaryButtonClassName}`}
+            onClick={onSecondaryButtonClick}
           >
-            Details
+            {secondaryButtonText}
           </Link>
         </div>
       </div>

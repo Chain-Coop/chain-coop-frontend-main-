@@ -5,16 +5,11 @@ import { LuArrowDownRight } from "react-icons/lu";
 import { GrFormNext } from "react-icons/gr";
 import ProgressCircle from "../components/progress_circle";
 import { BsPatchCheck } from "react-icons/bs";
-import { Typography } from "@material-tailwind/react";
-import { Button } from "@material-tailwind/react";
 import { FaChevronRight } from "react-icons/fa";
 import { MdOutlinePeopleOutline } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
-
-import defaultPageImage from "../../../Assets/png/dashboard/ajo/sample_savings_image.png";
-import defaultPageIcon from "../../../Assets/svg/dashboard/ajo/details_icon.svg";
-import currency_icon from "../../../Assets/svg/dashboard/ajo/currency_icon.svg";
 import { IoIosArrowBack } from "react-icons/io";
+import { RiDeleteBin6Line } from "react-icons/ri";
 import { DashboardHeader } from "../../../components/common/DashboardHeader";
 import { membersBriefData } from "../../../data/Data";
 import Members_Template from "./member_template";
@@ -22,13 +17,68 @@ import { useState, useEffect } from "react";
 import FundModal from "./fund_modal";
 import { GroupCardProps } from "../components/group_card";
 
-const SavingsDetail = () => {
+import defaultPageImage from "../../../Assets/png/dashboard/ajo/sample_savings_image.png";
+import defaultPageIcon from "../../../Assets/svg/dashboard/ajo/details_icon.svg";
+import bitcoin_icon from "../../../Assets/svg/dashboard/bitcoin.svg";
+
+// Types
+interface SavingsDetailProps {
+  className?: string;
+}
+
+interface SavingsData {
+  name: string;
+  image?: string;
+  icon?: string;
+  members?: Array<{
+    userId: string;
+    progress: number;
+    contribution: number;
+    status: string;
+    failures: number;
+    _id: string;
+    name: string;
+    role: string;
+    joined: string;
+  }>;
+  amount?: string | number;
+  depositAmount?: string | number;
+  goal?: string | number;
+  goalAmount?: string | number;
+  balance?: string | number;
+  progress?: number;
+  description?: string;
+  groupType?: string;
+  status?: string;
+  startDate?: string;
+  endDate?: string;
+  currency?: string;
+  nextContributionDate?: string;
+  createdBy?: string;
+}
+
+// Constants
+const DEFAULT_MEMBER = {
+  userId: "",
+  progress: 0,
+  contribution: 0,
+  status: "",
+  failures: 0,
+  _id: "",
+  name: "",
+  role: "Member",
+  joined: new Date().toISOString(),
+};
+
+const SavingsDetail: React.FC<SavingsDetailProps> = ({ className = "" }) => {
   const { name: nameFromParams } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
 
-  const state = location.state as any;
+  const state = location.state as { circleData?: SavingsData } | SavingsData;
   const group = state.circleData || state;
+
+  // Derived state
   const displayName = group.name || nameFromParams || "Savings Details";
   const displayImage = group.image || defaultPageImage;
   const displayIcon = group.icon || defaultPageIcon;
@@ -44,26 +94,14 @@ const SavingsDetail = () => {
   const status = group.status || "";
   const startDate = group.startDate || "";
   const endDate = group.endDate || "";
-  const currency = group.currency || "";
+  const currency = group.currency || "BTC";
   const nextContributionDate = group.nextContributionDate || "";
   const progress = group.progress || 0;
   const createdBy = group.createdBy;
   const members =
     Array.isArray(group.members) && group.members.length > 0
       ? group.members
-      : [
-          {
-            userId: "",
-            progress: 0,
-            contribution: 0,
-            status: "",
-            failures: 0,
-            _id: "",
-            name: "",
-            role: "Member",
-            joined: new Date().toISOString(),
-          },
-        ];
+      : [DEFAULT_MEMBER];
 
   const [isFundModalOpen, setIsFundModalOpen] = useState<boolean>(false);
 
@@ -71,15 +109,14 @@ const SavingsDetail = () => {
     navigate(-1);
   };
 
-  // Helper to format date as (DD/MM/YYYY)
-  const formatDate = (dateString: string) => {
+  // Helper functions
+  const formatDate = (dateString: string): string => {
     if (!dateString) return "";
     const date = new Date(dateString);
     return `(${date.toLocaleDateString("en-GB")})`;
   };
 
-  // Calculate days left for end date
-  const getDaysLeft = (endDate: string) => {
+  const getDaysLeft = (endDate: string): number => {
     const end = new Date(endDate);
     const now = new Date();
     const diff = end.getTime() - now.getTime();
@@ -92,7 +129,7 @@ const SavingsDetail = () => {
   const formattedEndDate = formatDate(endDate);
 
   return (
-    <main className="mb-[20px] flex  flex-col  font-asap">
+    <main className={`mb-[20px] flex flex-col font-asap ${className}`}>
       <DashboardHeader
         className="relative cursor-pointer items-center lg:mt-[2em]"
         onClick={handleBackClick}
@@ -103,7 +140,7 @@ const SavingsDetail = () => {
         </div>
       </DashboardHeader>
 
-      <section className="mb-[20px] flex  flex-col">
+      <section className="mb-[20px] flex flex-col">
         {/* SAVINGS INTRO AND HEADER */}
         <section className="mt-[10px] flex justify-between gap-2 bg-[#ECE6F240] py-4">
           <img
@@ -131,209 +168,191 @@ const SavingsDetail = () => {
                     alt="leadership board"
                     className="hidden h-[14px] w-[14px] sm:block"
                   />
-                  <Typography className="font-asap text-[12px] font-[600] text-[#565454]">
+                  <span className="font-asap text-[12px] font-[600] text-[#565454]">
                     View leadership board
-                  </Typography>
+                  </span>
                   <GrFormNext className="text-[16px] text-[#440080]" />
                 </Link>
               </div>
-              <ProgressCircle progress={currentProgress} />
+              <div className="w-[60px] sm:w-[80px]">
+                <ProgressCircle progress={currentProgress} />
+              </div>
             </div>
-            <Typography className="font-asap text-[16px] font-[400] leading-tight tracking-wide">
+            <p className="font-asap text-[16px] font-[400] leading-tight tracking-wide">
               {description}
-            </Typography>
+            </p>
           </div>
         </section>
 
         <section className="flex w-[100%] flex-col items-center justify-center bg-[#FFF7FC] p-4">
-          <Typography className="font-asap text-[14px] font-[400] leading-tight tracking-wide opacity-60">
+          <span className="font-asap text-[14px] font-[400] leading-tight tracking-wide opacity-60">
             My savings
-          </Typography>
+          </span>
           <h2 className="text-[34px] font-[600] tracking-tight text-[#1E1E1E] lg:text-[36px]">
             {totalSavedByGroup}
           </h2>
           <div className="my-4 flex w-[100%] items-center justify-center gap-1 border-y border-[#C4C0C080] py-2">
-            <Typography className="font-asap text-[14px] font-[400] leading-tight tracking-wide text-[#302B2B]">
+            <span className="font-asap text-[14px] font-[400] leading-tight tracking-wide text-[#302B2B]">
               Savings progress
-            </Typography>
-            {progress? (
+            </span>
+            {progress ? (
               <FiArrowUpRight className="text-[14px] text-[#2EC046]" />
             ) : (
               <LuArrowDownRight className="text-[14px] text-red-500" />
             )}
-            <Typography
+            <span
               className={`font-asap text-[14px] font-[700] leading-tight tracking-wide text-[#302B2B] ${progress > 0 ? "text-[#2EC046]" : "text-red-500"}`}
             >
               {progress}%
-            </Typography>
+            </span>
           </div>
-          <Typography className="font-asap text-[14px] font-[400] leading-tight tracking-wide opacity-60">
+          <span className="font-asap text-[14px] font-[400] leading-tight tracking-wide opacity-60">
             Total saved by group
-          </Typography>
+          </span>
           <h2 className="text-[34px] font-[600] tracking-tight text-[#1E1E1E] lg:text-[36px]">
             {totalSavedByGroup}
           </h2>
-          {/* ... Buttons ... */}
+
+          {/* Action Buttons */}
           <div className="mt-8 flex w-[100%] flex-wrap items-center justify-between gap-y-4">
-            <Button
+            <button
               onClick={() => setIsFundModalOpen(true)}
               className="flex h-[45px] w-[100%] items-center justify-center self-start rounded-md border-2 border-[#3D0073] bg-[#440080] px-6 font-asap text-[16px] font-medium normal-case text-white hover:bg-white hover:text-[#3D0073] sm:w-[190px] lg:text-[18px]"
             >
               Fund
-            </Button>
-            <Button className="flex h-[45px] w-[100%] items-center justify-center self-start rounded-md border-2 border-[#3D0073] bg-white px-6 font-asap text-[16px] font-medium normal-case text-black hover:bg-[#3D0073] hover:text-white sm:w-[190px] lg:text-[18px]">
+            </button>
+            <button className="flex h-[45px] w-[100%] items-center justify-center self-start rounded-md border-2 border-[#3D0073] bg-white px-6 font-asap text-[16px] font-medium normal-case text-black hover:bg-[#3D0073] hover:text-white sm:w-[190px] lg:text-[18px]">
               Withdraw
-            </Button>
+            </button>
           </div>
         </section>
 
         <ul className="mt-[20px] flex w-[100%] flex-col">
           <li className="flex w-[96%] items-center justify-between border-b border-b-[#DDD8D887] pb-4 pt-10">
-            <Typography className="font-asap text-[16px] font-[500] tracking-tight text-[#939090] lg:text-[18px]">
+            <span className="font-asap text-[16px] font-[500] tracking-tight text-[#939090] lg:text-[18px]">
               Daily Deposit
-            </Typography>
-            <Typography className="font-asap text-[16px] font-[500] tracking-tight text-black lg:text-[18px]">
+            </span>
+            <span className="font-asap text-[16px] font-[500] tracking-tight text-black lg:text-[18px]">
               {contributionAmount}{" "}
               <span className="text-[#939090]">(from group)</span>
-            </Typography>
+            </span>
           </li>
           <li className="flex w-[96%] items-center justify-between border-b border-b-[#DDD8D887] pb-4 pt-10">
-            <Typography className="font-asap text-[16px] font-[500] tracking-tight text-[#939090] lg:text-[18px]">
+            <span className="font-asap text-[16px] font-[500] tracking-tight text-[#939090] lg:text-[18px]">
               Start Date
-            </Typography>
-            <Typography className="font-asap text-[16px] font-[500] tracking-tight text-black lg:text-[18px]">
+            </span>
+            <span className="font-asap text-[16px] font-[500] tracking-tight text-black lg:text-[18px]">
               {formattedStartDate}
-            </Typography>
+            </span>
           </li>
           <li className="flex w-[96%] items-center justify-between border-b border-b-[#DDD8D887] pb-4 pt-10">
-            <Typography className="font-asap text-[16px] font-[500] tracking-tight text-[#939090] lg:text-[18px]">
+            <span className="font-asap text-[16px] font-[500] tracking-tight text-[#939090] lg:text-[18px]">
               End Date
-            </Typography>
-            <Typography className="font-asap text-[16px] font-[500] tracking-tight text-black lg:text-[18px]">
+            </span>
+            <span className="font-asap text-[16px] font-[500] tracking-tight text-black lg:text-[18px]">
               Ends in {daysLeft} days {formattedEndDate}
-            </Typography>
+            </span>
           </li>
           <li className="flex w-[96%] items-center justify-between border-b border-b-[#DDD8D887] pb-4 pt-10">
-            <Typography className="font-asap text-[16px] font-[500] tracking-tight text-[#939090] lg:text-[18px]">
+            <span className="font-asap text-[16px] font-[500] tracking-tight text-[#939090] lg:text-[18px]">
               Daily Duration
-            </Typography>
-            <Typography className="font-asap text-[16px] font-[500] tracking-tight text-black lg:text-[18px]">
+            </span>
+            <span className="font-asap text-[16px] font-[500] tracking-tight text-black lg:text-[18px]">
               Everyday
-            </Typography>
+            </span>
           </li>
           <li className="flex w-[96%] items-center justify-between border-b border-b-[#DDD8D887] pb-4 pt-10">
-            <Typography className="font-asap text-[16px] font-[500] tracking-tight text-[#939090] lg:text-[18px]">
+            <span className="font-asap text-[16px] font-[500] tracking-tight text-[#939090] lg:text-[18px]">
               Contribution Schedule
-            </Typography>
-            <Typography className="font-asap text-[16px] font-[500] tracking-tight text-black lg:text-[18px]">
+            </span>
+            <span className="font-asap text-[16px] font-[500] tracking-tight text-black lg:text-[18px]">
               Daily
-            </Typography>
+            </span>
           </li>
           <li className="flex w-[96%] items-center justify-between border-b border-b-[#DDD8D887] pb-4 pt-10">
-            <Typography className="font-asap text-[16px] font-[500] tracking-tight text-[#939090] lg:text-[18px]">
+            <span className="font-asap text-[16px] font-[500] tracking-tight text-[#939090] lg:text-[18px]">
               Currency/Token
-            </Typography>
+            </span>
             <div className="flex items-center gap-2 rounded-lg border-2 border-[#440080] bg-[#ECE6F2] px-4 py-1">
               <img
-                src={currency_icon}
-                alt="flag"
+                src={bitcoin_icon}
+                alt="bitcoin"
                 className="h-[20px] w-[20px]"
               />
-              <Typography className="font-asap text-[14px] font-[500] text-[#302B2B] lg:text-[16px]">
+              <span className="font-asap text-[14px] font-[500] text-[#302B2B] lg:text-[16px]">
                 {currency}
-              </Typography>
+              </span>
               <BsPatchCheck className="ml-2 text-[24px] text-[#440080]" />
             </div>
           </li>
           <li className="flex w-[96%] items-center justify-between border-b border-b-[#DDD8D887] pb-4 pt-10">
-            <Typography className="font-asap text-[16px] font-[500] tracking-tight text-[#939090] lg:text-[18px]">
+            <span className="font-asap text-[16px] font-[500] tracking-tight text-[#939090] lg:text-[18px]">
               Withdrawal Day
-            </Typography>
-            <Typography className="font-asap text-[16px] font-[500] tracking-tight text-black lg:text-[18px]">
+            </span>
+            <span className="font-asap text-[16px] font-[500] tracking-tight text-black lg:text-[18px]">
               {formattedEndDate}
-            </Typography>
+            </span>
           </li>
         </ul>
-
-        {/* TRANSACTION BOX */}
-        <Link
-          to={`/dashboard/ajo/${displayName}/transactions`}
-          state={{
-            group: group,
-            members: members,
-          }}
-          className="mt-6 flex w-[100%] items-center justify-between rounded-md border border-[#DDD8D84D] bg-[#ECE6F25E] px-3 py-6"
-        >
-          <div className="flex w-[80%] flex-col  gap-4">
-            <h3 className="text-[18px] font-[500] tracking-tight text-[#1E1E1E]">
-              Transaction history
-            </h3>
-            <Typography className="font-asap text-[14px] font-[400] text-[#1E1E1E] opacity-80">
-              See all withdrawing and funding on this group
-            </Typography>
-          </div>
-          <button>
-            <FaChevronRight className="text-[16px] text-[#1E1E1E]" />
-          </button>
-        </Link>
-
-        {/* MEMBERS LIST */}
-        <section className="mt-8 flex flex-col gap-3">
-          <div className="flex items-center justify-between border-b-2 border-b-[#DDD8D880] pb-2">
-            <h3 className="text-[18px] font-[600] tracking-tight text-[#1E1E1E]">
-              Members ({displayMembersCount})
-            </h3>
-            {/* ... Invite users link ... */}
-            <Link
-              to={`/dashboard/ajo/${displayName}/members-invite`}
-              state={{
-                group: group,
-                members: members,
-              }}
-              className="flex items-center gap-2"
-            >
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#ECE6F25E]">
-                <FaPlus className="-translate-y-[1px] translate-x-[2px] text-[8px] text-[#3D0073]" />
-                <MdOutlinePeopleOutline className="-translate-x-[2px] text-[20px] text-[#3D0073]" />
-              </div>
-              <Typography className="font-asap text-[16px] font-[500] text-[#1E1E1E]">
-                Invite users
-              </Typography>
-            </Link>
-          </div>
-          <ul className="mt-[10px] flex flex-col gap-4">
-            {members.map((member: any, index: number) => (
-              <Members_Template
-                key={member._id || index}
-                name={member.name || "John Doe"}
-                userType={member.userId === createdBy ? "Admin" : "Member"}
-                amount={
-                  typeof member.contribution === "number"
-                    ? `$${member.contribution}`
-                    : contributionAmount || "N/A"
-                }
-                progress={
-                  typeof member.progress === "number" ? member.progress : 0
-                }
-                index={index}
-                showDelete={false}
-              />
-            ))}
-          </ul>
-        </section>
-        <Link
-          to={`/dashboard/ajo/${displayName}/members`}
-          state={{
-            members: members,
-            createdBy: createdBy,
-            amount: contributionAmount,
-          }}
-          className="mt-8 flex h-[45px] w-[200px] items-center justify-center self-center rounded-md border-2 border-[#440080] bg-white text-center font-asap text-[16px] font-[600] text-[#440080]"
-        >
-          See all members
-        </Link>
       </section>
-      <FundModal isOpen={isFundModalOpen} setIsOpen={setIsFundModalOpen} />
+
+      <section className="mt-[20px] flex w-[100%] flex-col">
+        <div className="flex w-[100%] items-center justify-between">
+          <div className="flex items-center gap-2">
+            <MdOutlinePeopleOutline className="text-[24px] text-[#440080]" />
+            <span className="font-asap text-[18px] font-[600] tracking-tight text-[#1E1E1E]">
+              Members
+            </span>
+          </div>
+          <button className="flex items-center gap-2 rounded-md border-2 border-[#3D0073] bg-white px-4 py-2 font-asap text-[14px] font-medium normal-case text-black hover:bg-[#3D0073] hover:text-white">
+            <FaPlus className="text-[14px]" />
+            Add Member
+          </button>
+        </div>
+
+        <div className="mt-4 flex w-[100%] flex-col gap-4">
+          {members.map((member, index) => (
+            <div
+              key={member._id || index}
+              className="flex w-[100%] items-center justify-between rounded-lg border border-[#DDD8D887] p-4"
+            >
+              <div className="flex items-center gap-4">
+                <div className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-[#ECE6F2]">
+                  <span className="font-asap text-[16px] font-[600] text-[#440080]">
+                    {member.name ? member.name.charAt(0).toUpperCase() : "?"}
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-asap text-[16px] font-[500] text-[#1E1E1E]">
+                    {member.name || "Unknown Member"}
+                  </span>
+                  <span className="font-asap text-[14px] font-[400] text-[#939090]">
+                    {member.role || "Member"}
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="flex flex-col items-end">
+                  <span className="font-asap text-[14px] font-[500] text-[#1E1E1E]">
+                    {member.contribution} {currency}
+                  </span>
+                  <span className="font-asap text-[12px] font-[400] text-[#939090]">
+                    Joined {new Date(member.joined).toLocaleDateString()}
+                  </span>
+                </div>
+                <button className="text-[#FF0000] hover:text-[#CC0000]">
+                  <RiDeleteBin6Line size={20} />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <FundModal
+        open={isFundModalOpen}
+        onClose={() => setIsFundModalOpen(false)}
+      />
     </main>
   );
 };
