@@ -27,6 +27,7 @@ interface SavingsDetailProps {
 }
 
 interface SavingsData {
+  _id: string;
   name: string;
   image?: string;
   icon?: string;
@@ -57,7 +58,6 @@ interface SavingsData {
   createdBy?: string;
 }
 
-// Constants
 const DEFAULT_MEMBER = {
   userId: "",
   progress: 0,
@@ -76,7 +76,8 @@ const SavingsDetail: React.FC<SavingsDetailProps> = ({ className = "" }) => {
   const navigate = useNavigate();
 
   const state = location.state as { circleData?: SavingsData } | SavingsData;
-  const group = state.circleData || state;
+  const group =
+    "circleData" in state ? state.circleData! : (state as SavingsData);
 
   // Derived state
   const displayName = group.name || nameFromParams || "Savings Details";
@@ -350,8 +351,11 @@ const SavingsDetail: React.FC<SavingsDetailProps> = ({ className = "" }) => {
       </section>
 
       <FundModal
-        open={isFundModalOpen}
-        onClose={() => setIsFundModalOpen(false)}
+        isOpen={isFundModalOpen}
+        setIsOpen={setIsFundModalOpen}
+        circleId={group._id}
+        depositAmount={Number(contributionAmount)}
+        circleName={displayName}
       />
     </main>
   );

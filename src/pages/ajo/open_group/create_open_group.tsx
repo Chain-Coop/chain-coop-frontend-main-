@@ -50,6 +50,7 @@ const CreateOpenGroup = () => {
     savings_frequency: "",
     start_date: "",
     end_date: "",
+    members: [] as string[],
   });
 
   const [thirdFormData, setThirdFormData] = useState<thirdOpenGroupType>({

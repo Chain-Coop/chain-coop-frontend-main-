@@ -7,11 +7,12 @@ import { IoIosArrowRoundForward } from "react-icons/io";
 import success from "../../Assets/svg/auth/sucess.svg";
 import { useDispatch } from "react-redux";
 import { GetUserProfile } from "../../shared/redux/slices/landing.slices";
+import { AppDispatch } from "../../shared/redux/store";
 
 const PaymentCallback = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [error, setError] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
   const { verifyPayment, isLoading } = useSavingCirclePayment();

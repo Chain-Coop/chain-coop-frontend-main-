@@ -175,7 +175,7 @@ const SavingsCirclePayment: React.FC<SavingsCirclePaymentProps> = ({
                 Amount
               </span>
               <span className={`font-semibold ${amountValueClassName}`}>
-                ${depositAmount.toFixed(2)}
+                ${(depositAmount || 0).toFixed(2)}
               </span>
             </div>
             <div className="flex justify-between">

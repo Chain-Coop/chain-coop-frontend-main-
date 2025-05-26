@@ -2,40 +2,22 @@ import React from "react";
 
 interface ProgressCircleProps {
   progress: number;
-  className?: string;
 }
 
-const ProgressCircle: React.FC<ProgressCircleProps> = ({
-  progress,
-  className = "",
-}) => {
-  const radius = 32;
-  const strokeWidth = 4;
+const ProgressCircle: React.FC<ProgressCircleProps> = ({ progress }) => {
+  const radius = 42;
+  const strokeWidth = 6;
   const circumference = 2 * Math.PI * radius;
-  const normalizedProgress = Math.min(Math.max(progress, 0), 100);
-  const offset = circumference - (normalizedProgress / 100) * circumference;
+  const offset = circumference - (progress / 100) * circumference;
 
   return (
-    <div
-      className={`relative ${className}`}
-      role="progressbar"
-      aria-valuenow={normalizedProgress}
-      aria-valuemin={0}
-      aria-valuemax={100}
-      aria-label={`Progress: ${normalizedProgress}%`}
-    >
-      <svg
-        className="h-full w-full"
-        viewBox="0 0 100 100"
-        style={{
-          minWidth: radius * 2 + strokeWidth,
-          minHeight: radius * 2 + strokeWidth,
-        }}
-      >
+    <div className="relative h-[50px] w-[50px] lg:h-[60px] lg:w-[72px]">
+      <svg className="h-full w-full" viewBox="0 0 100 100">
         {/* Background Circle */}
         <circle
+          className="text-[#E3D9EC]"
           strokeWidth={strokeWidth}
-          stroke="#E3D9EC"
+          stroke="currentColor"
           fill="transparent"
           r={radius}
           cx="50"
@@ -43,9 +25,9 @@ const ProgressCircle: React.FC<ProgressCircleProps> = ({
         />
         {/* Progress Circle */}
         <circle
-          className="transition-all duration-300"
+          className="text-[#440080] transition-all duration-300"
           strokeWidth={strokeWidth}
-          stroke="#440080"
+          stroke="currentColor"
           fill="transparent"
           r={radius}
           cx="50"
@@ -58,10 +40,12 @@ const ProgressCircle: React.FC<ProgressCircleProps> = ({
       </svg>
       {/* Progress Text */}
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-[10px] text-[#440080]">
-          {normalizedProgress}%
+        <span className="text-[12px] font-bold text-[#440080]">
+          {progress}%
         </span>
-        <span className="text-[5px] text-[#6B7280]">Completed</span>
+        <span className="text-[6px] font-[600] text-gray-500 lg:text-[7px]">
+          Completed
+        </span>
       </div>
     </div>
   );

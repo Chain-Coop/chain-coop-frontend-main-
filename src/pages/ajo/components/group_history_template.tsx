@@ -102,10 +102,10 @@ const GroupHistoryTemplate: React.FC<GroupHistoryTemplateProps> = ({
         {length}
       </h5>
       <div
-        className={`flex flex-shrink-0 flex-wrap justify-between gap-4 pb-8 ${listContainerClassName}`}
+        className={`flex w-full flex-shrink-0 flex-wrap justify-between gap-4 pb-8 ${listContainerClassName}`}
       >
         {historyList.map((group: GroupCardProps, index: number) => (
-          <div key={index} className={cardContainerClassName}>
+          <div key={index} className={`w-full ${cardContainerClassName}`}>
             <GroupCard
               amount={group.amount}
               goal={group.goal}

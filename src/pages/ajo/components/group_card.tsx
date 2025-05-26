@@ -82,7 +82,7 @@ const GroupCard: React.FC<GroupCardProps> = ({
 
   return (
     <div
-      className={`flex h-fit w-full flex-shrink-0 flex-col rounded-3xl border-[2px] border-gray-200 bg-white shadow-md sm:h-[234px] sm:flex-row lg:h-fit lg:flex-col xl:h-fit xl:flex-row xl:gap-1 ${className}`}
+      className={`flex h-fit w-full flex-shrink-0 flex-col rounded-3xl border-[2px] border-gray-200 bg-white shadow-md sm:h-[234px] sm:flex-row lg:h-fit lg:flex-col xl:h-fit xl:flex-row xl:gap-1 xl:w-full ${className}`}
     >
       <div
         className={`relative h-[150px] w-[100%] flex-shrink-0 rounded-l-xl sm:h-full sm:w-[158px] lg:h-fit lg:w-[100%] xl:h-full xl:w-[158px] ${imageClassName}`}
