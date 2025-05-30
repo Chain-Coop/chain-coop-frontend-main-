@@ -1,25 +1,92 @@
-import { firstOpenGroupType } from "../../../shared/types/types";
 import React from "react";
-import { Typography } from "@material-tailwind/react";
-import { Button } from "@material-tailwind/react";
-
-import liskIcon from "../../../Assets/svg/dashboard/ajo/lisk_icon.svg";
-import usdcIcon from "../../../Assets/svg/dashboard/ajo/usdc_icon.svg";
-import usdtIcon from "../../../Assets/svg/dashboard/ajo/usdt_icon.svg";
-import nairaIcon from "../../../Assets/svg/dashboard/ajo/naira_icon.svg";
-import activeIcon from "../../../Assets/svg/dashboard/ajo/selectedIcon.svg";
+import { firstOpenGroupType } from "../../../shared/types/types";
 import FormInput from "../../../components/common/FormInput";
 
-interface Props {
-  data: firstOpenGroupType;
-  setData: React.Dispatch<React.SetStateAction<firstOpenGroupType>>;
+// Import currency icons
+import bitcoinIcon from "../../../Assets/svg/dashboard/bitcoin.svg";
+import usdcIcon from "../../../Assets/svg/dashboard/usd.svg";
+import usdtIcon from "../../../Assets/svg/dashboard/usdt.svg";
+import nairaIcon from "../../../Assets/svg/dashboard/ajo/naira_icon.svg";
+import activeIcon from "../../../Assets/svg/dashboard/ajo/selectedIcon.svg";
+
+export interface CurrencyOption {
+  name: string;
+  icon: string;
+  value: string;
 }
 
-const FirstOpenGroupForm = ({ data, setData }: Props) => {
+export interface FirstOpenGroupFormProps {
+  // Required props
+  data: firstOpenGroupType;
+  setData: React.Dispatch<React.SetStateAction<firstOpenGroupType>>;
+
+  // Optional props
+  currencyOptions?: CurrencyOption[];
+
+  // Customization props
+  className?: string;
+  formClassName?: string;
+  titleInputClassName?: string;
+  titleLabelClassName?: string;
+  descriptionClassName?: string;
+  descriptionLabelClassName?: string;
+  descriptionTextareaClassName?: string;
+  currencySectionClassName?: string;
+  currencyLabelClassName?: string;
+  currencyOptionsClassName?: string;
+  currencyOptionClassName?: string;
+  currencyOptionActiveClassName?: string;
+  currencyIconClassName?: string;
+  currencyTextClassName?: string;
+  activeIconClassName?: string;
+
+  // Custom callbacks
+  onTitleChange?: (value: string) => void;
+  onDescriptionChange?: (value: string) => void;
+  onCurrencySelect?: (currency: string, icon: string) => void;
+}
+
+const defaultCurrencyOptions: CurrencyOption[] = [
+  { name: "Bitcoin", icon: bitcoinIcon, value: "BTC" },
+  { name: "USDC", icon: usdcIcon, value: "USDC" },
+  { name: "USDT", icon: usdtIcon, value: "USDT" },
+  { name: "Naira", icon: nairaIcon, value: "₦" },
+];
+
+const FirstOpenGroupForm: React.FC<FirstOpenGroupFormProps> = ({
+  data,
+  setData,
+  currencyOptions = defaultCurrencyOptions,
+  className = "",
+  formClassName = "",
+  titleInputClassName = "",
+  titleLabelClassName = "",
+  descriptionClassName = "",
+  descriptionLabelClassName = "",
+  descriptionTextareaClassName = "",
+  currencySectionClassName = "",
+  currencyLabelClassName = "",
+  currencyOptionsClassName = "",
+  currencyOptionClassName = "",
+  currencyOptionActiveClassName = "",
+  currencyIconClassName = "",
+  currencyTextClassName = "",
+  activeIconClassName = "",
+  onTitleChange,
+  onDescriptionChange,
+  onCurrencySelect,
+}) => {
   const handleTextChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    setData({ ...data, [event.target.name]: event.target.value });
+    const { name, value } = event.target;
+    setData({ ...data, [name]: value });
+
+    if (name === "savings_title") {
+      onTitleChange?.(value);
+    } else if (name === "savings_description") {
+      onDescriptionChange?.(value);
+    }
   };
 
   const handleButtonSelection = (
@@ -29,118 +96,121 @@ const FirstOpenGroupForm = ({ data, setData }: Props) => {
   ) => {
     event.preventDefault();
     setData({ ...data, savings_currency: choice, currency_image: image });
+    onCurrencySelect?.(choice, image);
   };
 
   return (
-    <form className="flex w-[100%] flex-col items-center gap-6">
-      <label htmlFor="savings_title" className="flex w-[100%] flex-col gap-2 ">
+    <form
+      className={`flex w-full flex-col items-center gap-6 ${formClassName} ${className}`}
+    >
+      <label htmlFor="savings_title" className="flex w-full flex-col gap-2">
         <FormInput
           label="Group Title"
           type="text"
-          onChange={e => setData({ ...data, savings_title: e.target.value })}
+          onChange={handleTextChange}
           value={data.savings_title}
-          className="rounded-lg border-2 border-[#95949480] shadow-lg focus:shadow-xl"
-          labelClassName="text-lg"
+          name="savings_title"
+          className={`rounded-lg border-2 border-[#95949480] shadow-lg focus:shadow-xl ${titleInputClassName}`}
+          labelClassName={`text-lg ${titleLabelClassName}`}
         />
       </label>
 
       <label
         htmlFor="savings_description"
-        className="flex w-[100%] flex-col gap-2"
+        className={`flex w-full flex-col gap-2 ${descriptionClassName}`}
       >
-        <Typography className="text-lg font-semibold tracking-tighter">
+        <span
+          className={`text-lg font-semibold tracking-tighter ${descriptionLabelClassName}`}
+        >
           Group Description <span className="text-[#1E1E1E66]">(Optional)</span>
-        </Typography>
+        </span>
         <textarea
           rows={3}
           value={data.savings_description}
           onChange={handleTextChange}
           name="savings_description"
           id="savings_description"
-          className="rounded-lg border-2 border-[#95949480] px-4 py-2 text-[16px] font-[400] text-[#1E1E1E] shadow-lg outline-none focus:shadow-xl"
+          className={`rounded-lg border-2 border-[#95949480] px-4 py-2 text-[16px] font-[400] text-[#1E1E1E] shadow-lg outline-none focus:shadow-xl ${descriptionTextareaClassName}`}
         />
       </label>
-      <section className="flex w-full flex-col gap-2">
-        <Typography className="text-lg font-semibold tracking-tighter">
-          What currency are you saving on?
-        </Typography>
-        <div className="flex max-w-md justify-between gap-10">
-          <div className="flex w-full flex-col gap-8">
-            <Button
-              onClick={(event) =>
-                handleButtonSelection(event, "Lisk", liskIcon)
-              }
-              className={`flex w-fit  items-center justify-center gap-3 rounded-lg border-2 bg-[#ECE6F2] p-2 px-3 hover:border-[#440080] ${
-                data.savings_currency === "Lisk"
-                  ? "border-[#440080]"
-                  : "border-transparent"
-              }`}
-            >
-              <img src={liskIcon} alt="LISK" className="w-[20px]" />
-              <Typography className="font-[600] tracking-tighter text-[#302B2B]">
-                Lisk
-              </Typography>
-              {data.savings_currency === "LISK" && (
-                <img src={activeIcon} alt="LISK" className="w-[20px]" />
-              )}
-            </Button>
 
-            <Button
-              onClick={(event) =>
-                handleButtonSelection(event, "USDC", usdcIcon)
-              }
-              className={`flex w-fit  items-center justify-center gap-3 rounded-lg border-2 bg-[#ECE6F2] p-2 px-3 normal-case hover:border-[#440080] ${
-                data.savings_currency === "USDC"
-                  ? "border-[#440080]"
-                  : "border-transparent"
-              }`}
-            >
-              <img src={usdcIcon} alt="USDC" className="w-[20px]" />
-              <Typography className="text-[16px] font-[600] tracking-tighter text-[#302B2B]">
-                USDC
-              </Typography>
-              {data.savings_currency === "USDC" && (
-                <img src={activeIcon} alt="USDC" className="w-[20px]" />
-              )}
-            </Button>
+      <section
+        className={`flex w-full flex-col gap-4 ${currencySectionClassName}`}
+      >
+        <span
+          className={`text-lg font-semibold tracking-tighter ${currencyLabelClassName}`}
+        >
+          What currency are you saving on?
+        </span>
+        <div
+          className={`flex max-w-md justify-between gap-10 ${currencyOptionsClassName}`}
+        >
+          <div className="flex w-full flex-col gap-8">
+            {currencyOptions.slice(0, 2).map((option) => (
+              <button
+                key={option.value}
+                onClick={(event) =>
+                  handleButtonSelection(event, option.value, option.icon)
+                }
+                className={`flex w-fit items-center justify-center gap-3 rounded-lg border-2 bg-[#ECE6F2] p-2 px-3 hover:border-[#440080] ${
+                  data.savings_currency === option.value
+                    ? `border-[#440080] ${currencyOptionActiveClassName}`
+                    : `border-transparent ${currencyOptionClassName}`
+                }`}
+              >
+                <img
+                  src={option.icon}
+                  alt={option.name}
+                  className={`w-[20px] ${currencyIconClassName}`}
+                />
+                <span
+                  className={`font-[600] tracking-tighter text-[#302B2B] ${currencyTextClassName}`}
+                >
+                  {option.name}
+                </span>
+                {data.savings_currency === option.value && (
+                  <img
+                    src={activeIcon}
+                    alt="Selected"
+                    className={`w-[20px] ${activeIconClassName}`}
+                  />
+                )}
+              </button>
+            ))}
           </div>
 
           <div className="flex w-full flex-col gap-8">
-            <Button
-              onClick={(event) =>
-                handleButtonSelection(event, "USDT", usdtIcon)
-              }
-              className={`flex w-fit  items-center justify-center gap-3 rounded-lg border-2 bg-[#ECE6F2] p-2 px-3 hover:border-[#440080] ${
-                data.savings_currency === "USDT"
-                  ? "border-[#440080]"
-                  : "border-transparent"
-              }`}
-            >
-              <img src={usdtIcon} alt="USDT" className="w-[20px]" />
-              <Typography className="text-[16px] font-[600] tracking-tighter text-[#302B2B]">
-                USDT
-              </Typography>
-              {data.savings_currency === "USDT" && (
-                <img src={activeIcon} alt="USDT" className="w-[20px]" />
-              )}
-            </Button>
-
-            <Button
-              onClick={(event) => handleButtonSelection(event, "₦", nairaIcon)}
-              className={`flex w-fit  items-center justify-center gap-3 rounded-lg border-2 bg-[#ECE6F2] p-2 px-3 hover:border-[#440080] ${
-                data.savings_currency === "₦"
-                  ? "border-[#440080]"
-                  : "border-transparent"
-              }`}
-            >
-              <img src={nairaIcon} alt="Naira" className="w-[20px]" />
-              <Typography className="text-[16px] font-[600] tracking-tighter text-[#302B2B]">
-                Naira
-              </Typography>
-              {data.savings_currency === "₦" && (
-                <img src={activeIcon} alt="Naira" className="w-[20px]" />
-              )}
-            </Button>
+            {currencyOptions.slice(2).map((option) => (
+              <button
+                key={option.value}
+                onClick={(event) =>
+                  handleButtonSelection(event, option.value, option.icon)
+                }
+                className={`flex w-fit items-center justify-center gap-3 rounded-lg border-2 bg-[#ECE6F2] p-2 px-3 hover:border-[#440080] ${
+                  data.savings_currency === option.value
+                    ? `border-[#440080] ${currencyOptionActiveClassName}`
+                    : `border-transparent ${currencyOptionClassName}`
+                }`}
+              >
+                <img
+                  src={option.icon}
+                  alt={option.name}
+                  className={`w-[20px] ${currencyIconClassName}`}
+                />
+                <span
+                  className={`font-[600] tracking-tighter text-[#302B2B] ${currencyTextClassName}`}
+                >
+                  {option.name}
+                </span>
+                {data.savings_currency === option.value && (
+                  <img
+                    src={activeIcon}
+                    alt="Selected"
+                    className={`w-[20px] ${activeIconClassName}`}
+                  />
+                )}
+              </button>
+            ))}
           </div>
         </div>
       </section>

@@ -52,6 +52,7 @@ import GroupHistoryPage from "../../../pages/ajo/group_history/page";
 import InviteMembersPage from "../../../pages/ajo/invite_members/page";
 import TransactionHistoryPage from "../../../pages/ajo/transaction_history/page";
 import MembersPage from "../../../pages/ajo/members/page";
+import PaymentCallback from "../../../pages/payment-callback/page";
 
 // Imported Unified Crypto Components
 import UnifiedContributionCurrencyType from "../../../pages/contribution/crypto/auto/ContributionCurrencyType";
@@ -193,6 +194,7 @@ const Dashboard = () => {
           <Route path="ajo/:name/members" element={<MembersPage />} />
           <Route path="ajo/:name" element={<SavingsDetail />} />
           <Route path="ajo/other/:name" element={<OtherGroupDetails />} />
+          <Route path="payment-callback" element={<PaymentCallback />} />
 
           <Route
             path="wallet/fund/fund_crypto_wallet"

@@ -50,6 +50,7 @@ const CreateOpenGroup = () => {
     savings_frequency: "",
     start_date: "",
     end_date: "",
+    members: [] as string[],
   });
 
   const [thirdFormData, setThirdFormData] = useState<thirdOpenGroupType>({
@@ -99,11 +100,14 @@ const CreateOpenGroup = () => {
 
   const validateInputs = () => {
     if (formStepsIndex === 0) {
-      setIsNextDisabled(validateFirstForm(firstFormData));
+      const result = validateFirstForm(firstFormData);
+      setIsNextDisabled(!result.isValid);
     } else if (formStepsIndex === 1) {
-      setIsNextDisabled(validateSecondForm(secondFormData));
+      const result = validateSecondForm(secondFormData);
+      setIsNextDisabled(!result.isValid);
     } else if (formStepsIndex === 2) {
-      setIsNextDisabled(validateThirdForm(thirdFormData));
+      const result = validateThirdForm(thirdFormData);
+      setIsNextDisabled(!result.isValid);
     }
   };
 
