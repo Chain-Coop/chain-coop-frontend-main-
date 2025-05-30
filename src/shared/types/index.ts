@@ -356,6 +356,7 @@ export interface GetContributionDetailsByIdResponse {
   history: [{ savingsType: string; amount: number }];
   totalPages: number;
   currentPage: number;
+  endDate: string;
 }
 
 export interface WithdrawalFromContributionRequest {
