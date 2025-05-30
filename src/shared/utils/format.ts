@@ -208,7 +208,7 @@ export const calculateSavingsDuration = (
     const start = parseISO(startDate);
     const end = parseISO(endDate);
 
-    const days = differenceInDays(end, start) + 1;
+    const days = differenceInDays(end, start);
 
     const months = differenceInMonths(end, start);
 
