@@ -54,13 +54,11 @@ import TransactionHistoryPage from "../../../pages/ajo/transaction_history/page"
 import MembersPage from "../../../pages/ajo/members/page";
 import PaymentCallback from "../../../pages/payment-callback/page";
 
-// Imported Unified Crypto Components
 import UnifiedContributionCurrencyType from "../../../pages/contribution/crypto/auto/ContributionCurrencyType";
 import UnifiedStartDate from "../../../pages/contribution/crypto/auto/StartDate";
 import UnifiedSourceFunds from "../../../pages/contribution/crypto/auto/SourceFunds";
 import UnifiedPreviewSavings from "../../../pages/contribution/crypto/auto/PreviewSavings";
 
-// Unified components' configurations
 const UNIFIED_CRYPTO_PURPOSE_PATH =
   "/contribution/crypto/unified-crypto-purpose";
 const UNIFIED_START_DATE_PATH = "/contribution/crypto/unified-start-date";
@@ -134,7 +132,6 @@ const Dashboard = () => {
             element={<CryptoContributionDetails />}
           />
 
-          {/* Unified Crypto Contribution Routes */}
           <Route
             path={UNIFIED_CRYPTO_PURPOSE_PATH}
             element={<UnifiedContributionCurrencyType />}

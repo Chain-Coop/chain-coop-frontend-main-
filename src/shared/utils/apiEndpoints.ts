@@ -1,3 +1,5 @@
+const API_URL = (import.meta as any).env.VITE_REACT_APP_API_URL;
+
 export const API_ENDPOINTS = {
   AUTH: {
     REGISTER: "/auth/register",
@@ -44,8 +46,28 @@ export const API_ENDPOINTS = {
   },
   PROJECT: {
     GET_ALL: "/project/all-projects",
+    CREATE: `${API_URL}/project`,
   },
   KYC: {
     TIER2: "/kyc/tier2/:userId",
+  },
+  WITHDRAWAL: {
+    GET_ALL_REQUESTS: `${API_URL}/withdrawal/requests`,
+    APPROVE_WITHDRAWAL: (withdrawalId: string) =>
+      `${API_URL}/withdrawal/update-status/${withdrawalId}`,
+  },
+  NOTIFICATION: {
+    CREATE: `${API_URL}/notification`,
+  },
+  BLOG: {
+    CREATE: `${API_URL}/blog`,
+    GET_ALL_CATEGORIES: `${API_URL}/blog/category/get-all`,
+    GET_ALL_BLOGS: `${API_URL}/blog`,
+    CREATE_BLOG_CATEGORY: `${API_URL}/blog/category`,
+    DELETE_BLOG_CATEGORY: (categoryId: string) =>
+      `${API_URL}/blog/category/${categoryId}`,
+    DELETE_BLOG: (blogId: string) => `${API_URL}/blog/${blogId}`,
+    GET_BLOG_BY_ID: (blogId: string) => `${API_URL}/blog/${blogId}`,
+    UPDATE_BLOG: (blogId: string) => `${API_URL}/blog/${blogId}`,
   },
 } as const;

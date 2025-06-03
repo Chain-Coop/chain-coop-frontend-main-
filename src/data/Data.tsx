@@ -22,6 +22,13 @@ import seane from "../Assets/png/footer/team/png/tshegofatso.png";
 import taiwo from "../Assets/png/footer/team/png/taiwo.png";
 import open_group from "../Assets/svg/dashboard/ajo/open_group.svg";
 import closed_group from "../Assets/svg/dashboard/ajo/closed_group.svg";
+import projectManagement from "../../src/Assets/svg/project_management.svg";
+import contentManagement from "../../src/Assets/svg/content_management.svg";
+import financialManagement from "../../src/Assets/svg/financial_management.svg";
+import newsLetter from "../../src/Assets/svg/new_letter.svg";
+import userManagement from "../../src/Assets/svg/user_management.svg";
+import accessControl from "../../src/Assets/svg/AccessControl.svg";
+import logout from "../../src/Assets/svg/logout.svg";
 
 export const navBarLinks = [
   { to: "/why-chain-co-op", text: "Why Chain Co-op" },
@@ -1018,5 +1025,71 @@ export const teamMembers = [
       linkedin:
         "https://www.linkedin.com/in/eyitemi-onorume-849a50211?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
     },
+  },
+];
+
+export const adminSideBarLinks = [
+  {
+    img: home,
+    imgActive: home,
+    text: "Home",
+    to: "/admin/home",
+    pathsToCheck: ["/admin/home"],
+  },
+  {
+    img: projectManagement,
+    imgActive: projectManagement,
+    text: "Project Management",
+    to: "/admin/project_management",
+    pathsToCheck: ["/admin/project_management"],
+  },
+  {
+    img: contentManagement,
+    imgActive: contentManagement,
+    text: "Content Management",
+    to: "/admin/content_management",
+    pathsToCheck: ["/admin/content_management"],
+  },
+  {
+    img: financialManagement,
+    imgActive: financialManagement,
+    text: "Financial Management",
+    to: "/admin/financial_management",
+    pathsToCheck: ["/admin/financial_management"],
+  },
+  {
+    img: newsLetter,
+    imgActive: newsLetter,
+    text: "NewsLetter Management",
+    to: "/admin/news_letter",
+    pathsToCheck: ["/admin/news_letter"],
+  },
+  {
+    img: userManagement,
+    imgActive: userManagement,
+    text: "User Management",
+    to: "/admin/dashboard/user_management",
+    pathsToCheck: ["/admin/user_management"],
+  },
+  {
+    img: accessControl,
+    imgActive: accessControl,
+    text: "Access Control",
+    to: "/admin/all_control",
+    pathsToCheck: ["/admin/access_contol"],
+  },
+  {
+    img: accessControl,
+    imgActive: accessControl,
+    text: "Notification",
+    to: "/admin/notification",
+    pathsToCheck: ["/admin/notification"],
+  },
+  {
+    img: logout,
+    imgActive: logout,
+    text: "Logout",
+    to: "/admin/logout",
+    pathsToCheck: ["/admin/logout"],
   },
 ];

@@ -74,6 +74,7 @@ const handleAxiosError = (error: unknown): ApiError => {
   }
   return { msg: "An unexpected error occurred." };
 };
+
 export async function GetWalletBalance(): Promise<GetWalletBalanceResponse> {
   const url = `${API_URL}${API_ENDPOINTS.WALLET.GET_BALANCE}`;
   try {
@@ -150,7 +151,6 @@ export async function WithdrawalFromWallet(
     });
     return response.data;
   } catch (error) {
-    console.log("err", error);
     throw handleAxiosError(error);
   }
 }
@@ -190,11 +190,17 @@ export async function GetUsersContributionHistory(
   filter: string = "",
 ): Promise<GetUsersContributionHistoryResponse> {
   let url = `${API_URL}${API_ENDPOINTS.CONTRIBUTION.GET_HISTORY}`;
+
+  const params = [];
   if (search && search.trim()) {
-    url += `&search=${encodeURIComponent(search.trim())}`;
+    params.push(`search=${search.trim()}`);
   }
   if (filter) {
-    url += `&filter=${encodeURIComponent(filter)}`;
+    params.push(`filter=${filter}`);
+  }
+
+  if (params.length > 0) {
+    url += `?${params.join("&")}`;
   }
   try {
     const response = await axios.get<GetUsersContributionHistoryResponse>(url, {
