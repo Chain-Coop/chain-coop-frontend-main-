@@ -402,17 +402,7 @@ const AllBlogs: React.FC = () => {
                             >
                               <Eye className="h-4 w-4" />
                             </IconButton>
-                            <IconButton
-                              variant="text"
-                              className="text-gray-500 hover:text-[#1A2A44]"
-                              onClick={() => handleEdit(blog)}
-                              aria-label={`Edit ${blog.title || "blog"}`}
-                              placeholder=""
-                              onPointerEnterCapture={() => {}}
-                              onPointerLeaveCapture={() => {}}
-                            >
-                              <PencilIcon className="h-4 w-4" />
-                            </IconButton>
+
                             <IconButton
                               variant="text"
                               className={`${
@@ -505,17 +495,7 @@ const AllBlogs: React.FC = () => {
                         >
                           <Eye className="h-4 w-4" />
                         </Button>
-                        <Button
-                          variant="text"
-                          size="sm"
-                          className="text-gray-500 hover:text-[#1A2A44]"
-                          onClick={() => handleEdit(blog)}
-                          aria-label={`Edit ${blog.title || "blog"}`}
-                          onPointerEnterCapture={() => {}}
-                          onPointerLeaveCapture={() => {}}
-                        >
-                          <PencilIcon className="h-4 w-4" />
-                        </Button>
+
                         <Button
                           variant="text"
                           size="sm"

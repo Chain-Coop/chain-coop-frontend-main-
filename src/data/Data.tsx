@@ -1085,11 +1085,4 @@ export const adminSideBarLinks = [
     to: "/admin/notification",
     pathsToCheck: ["/admin/notification"],
   },
-  {
-    img: logout,
-    imgActive: logout,
-    text: "Logout",
-    to: "/admin/logout",
-    pathsToCheck: ["/admin/logout"],
-  },
 ];
