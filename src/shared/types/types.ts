@@ -98,6 +98,7 @@ export interface secondOpenGroupType {
   savings_frequency: string;
   start_date: string;
   end_date: string;
+  members: string[];
 }
 
 export interface thirdOpenGroupType {

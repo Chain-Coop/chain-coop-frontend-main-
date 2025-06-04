@@ -346,7 +346,7 @@ const ViewContribution = () => {
               End Date
             </Typography>
             <Typography className="mt-2 text-sm font-semibold md:text-lg">
-              {formatContributionDate(contributionDetails?.withdrawalDate)}
+              {formatContributionDate(contributionDetails?.endDate)}
             </Typography>
           </div>
         </section>

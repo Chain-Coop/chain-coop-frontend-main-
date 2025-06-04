@@ -111,6 +111,62 @@ const GetUserTotalGroupBalance = async () => {
   }
 };
 
+const GetSavingCircleHistory = async (circleId: string) => {
+  const url = `${API_URL}/savingcircle/history/${circleId}`;
+  try {
+    const response = await axios.get(url, { headers: authHeader() });
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
+const InitializeSavingCirclePayment = async (paymentData: {
+  circleId: string;
+  userId: string;
+  depositAmount: number;
+  paymentType: string;
+  callbackUrl: string;
+}) => {
+  const url = `${API_URL}/savingcircle/initialize`;
+  try {
+    const response = await axios.post(url, paymentData, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
+const MakeSavingCirclePayment = async (paymentData: {
+  circleId: string;
+  userId: string;
+  paymentType: string;
+}) => {
+  const url = `${API_URL}/savingcircle/payment`;
+  try {
+    const response = await axios.post(url, paymentData, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
+const VerifySavingCirclePayment = async (reference: string) => {
+  const url = `${API_URL}/savingcircle/verify/${reference}`;
+  try {
+    const response = await axios.get(url, {
+      headers: authHeader(),
+    });
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+  }
+};
+
 const WebGroupSavings = {
   CreateSavingsCircle,
   GetAllSavingCircles,
@@ -119,6 +175,10 @@ const WebGroupSavings = {
   GetPublicSavingCircles,
   JoinSavingCircle,
   GetUserTotalGroupBalance,
+  GetSavingCircleHistory,
+  InitializeSavingCirclePayment,
+  MakeSavingCirclePayment,
+  VerifySavingCirclePayment,
 };
 
 export default WebGroupSavings;

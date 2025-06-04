@@ -45,7 +45,7 @@ interface CircleFromAPI {
   endDate: string;
   goalAmount: number;
   currentIndividualTotal: number;
-  nextContributionDate: string | null;
+  nextContributionDate?: string;
   createdAt: string;
   updatedAt: string;
   __v: number;
@@ -145,11 +145,15 @@ const AjoPage = () => {
           <div className="mx-auto mt-6 flex w-60 flex-col rounded-md">
             {isWalletVisible ? (
               <p className="self-center text-xl font-bold lg:text-xl">
-                {totalGroupBalanceLoading
-                  ? "Loading..."
-                  : totalGroupBalance !== null
-                    ? `₦${Number(totalGroupBalance).toLocaleString()}`
-                    : "₦0"}
+                {totalGroupBalanceLoading ? (
+                  <div className="animate-pulse">
+                    <div className="mx-auto h-6 w-32 rounded bg-gray-200"></div>
+                  </div>
+                ) : totalGroupBalance !== null ? (
+                  `₦${Number(totalGroupBalance).toLocaleString()}`
+                ) : (
+                  "₦0"
+                )}
               </p>
             ) : (
               <p className="self-center text-2xl font-bold">*********</p>
@@ -260,6 +264,7 @@ const AjoPage = () => {
                   key={1}
                   buttonText="Withdraw"
                   onClick={() => {}}
+                  className="w-full"
                 />
               ) : (
                 <Typography className="p-4 text-center">
@@ -275,6 +280,7 @@ const AjoPage = () => {
                 key={2}
                 buttonText="Withdraw"
                 onClick={() => {}}
+                className="w-full"
               />
             ) : (
               <Typography className="p-4 text-center">

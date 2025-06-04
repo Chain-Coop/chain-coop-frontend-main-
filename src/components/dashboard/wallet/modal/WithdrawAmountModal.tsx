@@ -9,6 +9,7 @@ import {
 } from "@material-tailwind/react";
 import { WithdrawAmountModalProps } from "../../../../shared/types/types";
 import FormInput from "../../../common/FormInput";
+import { formatBalance } from "../../../../shared/utils/format";
 
 const WithdrawAmountModal: React.FC<WithdrawAmountModalProps> = ({
   isModalOpen,
@@ -19,8 +20,31 @@ const WithdrawAmountModal: React.FC<WithdrawAmountModalProps> = ({
   handleContinue,
   withdrawalLimit,
 }) => {
+  const displayAmount = amount
+    ? formatBalance(parseInt(amount, 10), {
+        showCents: false,
+        useGrouping: true,
+        roundToWhole: true,
+      }).replace("₦", "")
+    : "";
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value.replace(/,/g, "");
+    if (handleAmountChange) {
+      handleAmountChange({
+        ...e,
+        target: { ...e.target, value: rawValue },
+      } as React.ChangeEvent<HTMLInputElement>);
+    }
+  };
+
   return (
-    <Dialog open={isModalOpen ?? false} handler={toggleModal || (() => {})} size="sm" className="p-4">
+    <Dialog
+      open={isModalOpen ?? false}
+      handler={toggleModal || (() => {})}
+      size="sm"
+      className="p-4"
+    >
       <DialogHeader>
         <Typography
           variant="h1"
@@ -51,12 +75,12 @@ const WithdrawAmountModal: React.FC<WithdrawAmountModalProps> = ({
         <div className="mt-[1em] w-full">
           <FormInput
             label="Enter Amount"
-            type="number"
-            value={amount}
-            onChange={handleAmountChange}
+            type="text"
+            value={displayAmount}
+            onChange={handleInputChange}
             error={error}
             id="amount"
-            rightElement={<span className="font-semibold text-black">NGN</span>}
+            rightElement={<span className="font-semibold text-black">₦</span>}
             elementPosition="left"
             labelClassName="text-black"
             className="border-border bg-input w-full rounded-lg border-[1px] bg-inherit p-2 text-right text-sm font-normal text-black focus:bg-inherit focus:outline-none sm:p-3 sm:text-base"
@@ -68,9 +92,9 @@ const WithdrawAmountModal: React.FC<WithdrawAmountModalProps> = ({
       <DialogFooter>
         <Button
           variant="text"
-          className="w-full bg-text2 py-3 text-sm font-normal  normal-case text-white hover:bg-text2"
+          className="w-full bg-text2 py-3 text-sm font-normal normal-case text-white hover:bg-text2"
           onClick={handleContinue}
-          disabled={!amount}
+          disabled={!amount || !!error}
         >
           Continue
         </Button>

@@ -28,18 +28,20 @@ const Withdraw = () => {
     const inputAmount = e.target.value;
     setAmount(inputAmount);
 
-    const numAmount = parseFloat(inputAmount);
+    const numAmount = parseInt(inputAmount, 10) || 0;
     if (numAmount > WITHDRAWAL_LIMIT) {
       setError(
         `Amount exceeds the withdrawal limit of ${WITHDRAWAL_LIMIT.toLocaleString()} NGN.`,
       );
+    } else if (numAmount <= 0 && inputAmount !== "") {
+      setError("Please enter a valid amount greater than 0.");
     } else {
       setError("");
     }
   };
 
   const handleContinue = () => {
-    const numAmount = parseFloat(amount);
+    const numAmount = parseInt(amount, 10);
     if (isNaN(numAmount) || numAmount <= 0) {
       setError("Please enter a valid amount.");
     } else if (numAmount > WITHDRAWAL_LIMIT) {

@@ -21,6 +21,7 @@ import PrivacyPolicy from "./pages/footer/PrivacyPolicy";
 import VerifyEmail from "./pages/auth/verifyEmail";
 import VerifyPhoneNumber from "./pages/auth/verifyPhoneNumber";
 import GoogleFormPage from "./pages/auth/googleFormPage";
+import DashboardRoutes from "./adminPages/routes/dashboardRoutes";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
         <Route path="/form" element={<GoogleFormPage />} />
         <Route element={<ProtectedRoutes />}>
           <Route path="/dashboard/*" element={<Dashboard />} />
+          <Route path="/admin/*" element={<DashboardRoutes />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

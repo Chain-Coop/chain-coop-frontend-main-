@@ -1,3 +1,5 @@
+import { ChangeEventHandler, HTMLInputTypeAttribute, ReactNode } from "react";
+
 // src/types.ts
 export interface ApiError {
   msg: string;
@@ -356,6 +358,7 @@ export interface GetContributionDetailsByIdResponse {
   history: [{ savingsType: string; amount: number }];
   totalPages: number;
   currentPage: number;
+  endDate: string;
 }
 
 export interface WithdrawalFromContributionRequest {
@@ -529,4 +532,115 @@ export interface Teir2KycResponse {
   status: number;
   message: string;
   verificationUrl: string;
+}
+
+export interface WithdrawalRequest {
+  _id: string;
+  user: string;
+  amount: number;
+  status: string;
+  createdAt: string;
+  bankDetails: {
+    accountNumber: string;
+    bankCode: string;
+    accountName: string;
+    bankName?: string;
+  };
+}
+
+export interface ApproveWithdrawalRequest {
+  status: "completed" | "rejected";
+  reason?: string;
+}
+
+export interface Project {
+  _id: string;
+  title: string;
+  status: string;
+  documentUrl: string;
+  description: string;
+}
+
+export interface Notification {
+  title: string;
+  message: string;
+}
+
+export interface BlogPost {
+  _id: string;
+  title?: string;
+  summary?: string;
+  content?: string;
+  status?: string;
+  createdBy?: {
+    _id: string;
+    username: string;
+    lastName?: string;
+    firstName?: string;
+    id?: string;
+  } | null;
+  category?: {
+    _id: string;
+    name: string;
+  } | null;
+  coverImage?: {
+    url: string;
+    imageId: string;
+  } | null;
+  createdAt?: string;
+  updatedAt?: string;
+  __v?: number;
+}
+
+export interface BlogCategory {
+  _id: string;
+  name: string;
+  description?: string;
+}
+
+export interface iOTP {
+  OTP: string;
+  length?: number;
+  width?: any;
+  height?: any;
+  textColor?: string;
+  bgColor?: string;
+  borderWidth?: number;
+  borderColor?: string;
+  inputType?: "text" | "password" | "tel" | "number";
+}
+
+interface iFormProps {
+  label?: string;
+  value?: string | number;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
+  error?: any;
+  placeholder?: string;
+  type?: HTMLInputTypeAttribute;
+  required?: boolean;
+  requiredColor?: string;
+  optional?: boolean;
+  name?: string;
+  readOnly?: boolean;
+  bgColor?: string;
+  borderWidth?: number;
+  borderColor?: string;
+  className?: string;
+  color?: string;
+  inputRef?: any;
+  fontSize?: string;
+  min?: number;
+  max?: number;
+  paddingX?: string;
+  paddingY?: string;
+  labelPosition?: "block" | "flex";
+  id?: string;
+}
+
+export interface iSelect extends Omit<iFormProps, "onChange"> {
+  onSelect: ChangeEventHandler<HTMLSelectElement> | undefined;
+  options: string[];
+  icon?: ReactNode;
+  labelPosition?: "flex" | "block";
+  labelGap?: string;
 }

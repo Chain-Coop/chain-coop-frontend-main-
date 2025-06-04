@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+/* Add this to your main CSS file or index.css */
+@import "@ckeditor/ckeditor5-theme-lark/theme/theme.css";
 
 @tailwind base;
 @tailwind components;
@@ -93,4 +95,52 @@ input[type="number"] {
 
 .PhoneInput:hover {
   border-color: #440080;
+}
+
+/* Styles for CKEditor content area */
+.ck-content h1 {
+  font-size: 2em;
+  font-weight: bold;
+  margin: 0.67em 0;
+}
+
+.ck-content h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0.83em 0;
+}
+
+.ck-content h3 {
+  font-size: 1.17em;
+  font-weight: bold;
+  margin: 1em 0;
+}
+
+.ck-content p {
+  font-size: 1em;
+  margin: 1em 0;
+}
+
+/* Ensure styles apply when rendering blog content */
+.blog-content h1 {
+  font-size: 2em;
+  font-weight: bold;
+  margin: 0.67em 0;
+}
+
+.blog-content h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0.83em 0;
+}
+
+.blog-content h3 {
+  font-size: 1.17em;
+  font-weight: bold;
+  margin: 1em 0;
+}
+
+.blog-content p {
+  font-size: 1em;
+  margin: 1em 0;
 }
