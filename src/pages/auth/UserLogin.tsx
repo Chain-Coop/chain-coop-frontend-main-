@@ -60,6 +60,8 @@ const UserLogin = () => {
       if (loginData.isVerified) {
         if (loginData.role === "user") {
           navigate("/dashboard");
+        } else if (loginData.role === "admin") {
+          navigate("/admin/home");
         } else {
           toast.error("You do not have access to this dashboard.");
         }

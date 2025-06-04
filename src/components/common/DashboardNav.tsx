@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { dashboardNav } from "../../data/Data";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -13,13 +13,22 @@ import { HiX } from "react-icons/hi";
 import logo from "./../../Assets/svg/cooplogo.svg";
 import member from "../../Assets/jpg/membership/customer.jpg";
 import investor from "../../Assets/jpg/membership/investor.jpg";
-import { handleLoggout } from "../../shared/utils/auth";
 import { useUserProfile } from "../../shared/Hooks/useUserProfile";
 import { Typography } from "@material-tailwind/react";
+import { AppDispatch } from "../../shared/redux/store";
+import { useDispatch } from "react-redux";
+import { handleLoggout } from "../../shared/utils/auth";
 
 const DashboardNav = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const { profileDetails } = useUserProfile();
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    handleLoggout(dispatch, navigate);
+  };
+
   const getMembershipImage = () => {
     if (profileDetails?.membershipType === "patron") {
       return member;
@@ -132,7 +141,7 @@ const DashboardNav = () => {
           <Divider />
           <div className="mb-[2em] mt-[1em] px-4">
             <button
-              onClick={() => handleLoggout}
+              onClick={handleLogout}
               className="rounded-full bg-red-600 px-[3em] py-1  text-text3 shadow-md"
             >
               Logout

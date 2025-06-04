@@ -4,8 +4,8 @@ import transactionReducer from "./slices/transaction.slices";
 import notificationApplicationReduers from "./slices/notification.slices";
 import kycReducer from "./slices/kyc.slices";
 import web3Reducers from "./slices/web3.slices";
-import {webGroupSavingsReducer} from "./slices/web_savings_groups.slices";
-
+import adminReducer from "./slices/adminSlices/adminSlices";
+import { webGroupSavingsReducer } from "./slices/web_savings_groups.slices";
 
 const rootReducer = combineReducers({
   landing: landingReducer,
@@ -14,6 +14,7 @@ const rootReducer = combineReducers({
   kyc: kycReducer,
   web3: web3Reducers,
   web_group_savings: webGroupSavingsReducer,
+  admin: adminReducer,
 });
 
 export default rootReducer;
