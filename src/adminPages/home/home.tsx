@@ -1,5 +1,5 @@
 import { Button } from "@material-tailwind/react";
-import plus from "../../assets/svg/plus.svg";
+import plus from "../../Assets/svg/plus.svg";
 import { Link } from "react-router-dom";
 
 const Home = () => {
