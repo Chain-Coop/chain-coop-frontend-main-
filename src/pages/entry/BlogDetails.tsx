@@ -18,6 +18,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { createBlogComment } from "../../shared/redux/slices/adminSlices/adminSlices";
 import type { AppDispatch } from "../../shared/redux/store";
+import { motion } from "framer-motion";
 
 interface BlogPost {
   _id: string;
@@ -41,30 +42,50 @@ interface BlogPost {
   isPopular?: boolean;
 }
 
+const pageDetailVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut", when: "beforeChildren" } },
+  exit: { opacity: 0, y: -20, transition: { duration: 0.4 } },
+};
+
+const contentBlockVariants = {
+  initial: { opacity: 0, x: -20 },
+  animate: { opacity: 1, x: 0, transition: { delay: 0.1, duration: 0.5, ease: "easeOut" } },
+};
+
+const relatedSectionVariants = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0, transition: { delay: 0.3, duration: 0.5, ease: "easeOut", staggerChildren: 0.1 } },
+};
+
+const relatedCardVariants = {
+    initial: { opacity: 0, scale: 0.95 },
+    animate: { opacity: 1, scale: 1, transition: { duration: 0.4 } },
+};
+
+
 const BlogDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [blog, setBlog] = useState<BlogPost | null>(null);
   const [related, setRelated] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [initialDataLoaded, setInitialDataLoaded] = useState(false);
+
 
   const [signup, setSignup] = useState({ name: "", email: "", password: "" });
   const [submitted, setSubmitted] = useState(false);
 
   const [commentForm, setCommentForm] = useState({ name: "", comment: "" });
-  const [commentLoading, setCommentLoading] = useState(false);
   const [commentSuccess, setCommentSuccess] = useState(false);
-  const [commentError, setCommentError] = useState<string | null>(null);
 
   const dispatch = useDispatch<AppDispatch>();
-  const { isLoading, error: reduxError } = useSelector(
+  const { isLoading: commentIsLoading, error: commentReduxError } = useSelector(
     (state: any) => state.admin,
   );
 
   useEffect(() => {
     const fetchBlog = async () => {
-      setLoading(true);
       try {
         const res = await axios.get(API_ENDPOINTS.BLOG.GET_BLOG_BY_ID(id!));
         setBlog(res.data.blog);
@@ -74,13 +95,18 @@ const BlogDetails: React.FC = () => {
             b._id !== id && b.category?.name === res.data.blog.category?.name,
         );
         setRelated(relatedBlogs.slice(0, 3));
+        setInitialDataLoaded(true);
       } catch (err) {
         setError("Failed to fetch blog post");
-      } finally {
-        setLoading(false);
+        setInitialDataLoaded(true);
       }
     };
-    fetchBlog();
+    if (id) {
+        fetchBlog();
+    } else {
+        setError("Blog ID is missing.");
+        setInitialDataLoaded(true);
+    }
   }, [id]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -118,14 +144,7 @@ const BlogDetails: React.FC = () => {
       });
   };
 
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <span className="text-lg text-gray-700">Loading...</span>
-      </div>
-    );
-  }
-  if (error || !blog) {
+  if (error && initialDataLoaded) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <span className="text-lg text-red-500">
@@ -135,6 +154,17 @@ const BlogDetails: React.FC = () => {
     );
   }
 
+  if (!initialDataLoaded || !blog) {
+    return (
+      <div className="flex min-h-screen flex-col bg-[#F8F8FF]">
+        <NavBar />
+         <div className="min-h-[calc(100vh-200px)]"></div>
+        <Footer />
+      </div>
+    );
+  }
+
+
   const keyPoints = [
     blog.summary || "Key point 1...",
     "Our Ai-Driven Learning Platform will change how members learn and grow.",
@@ -143,11 +173,20 @@ const BlogDetails: React.FC = () => {
   ];
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#F8F8FF]">
+    <motion.div
+      variants={pageDetailVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      className="flex min-h-screen flex-col bg-[#F8F8FF]"
+    >
       <NavBar />
-      <div className="mx-auto w-full max-w-2xl px-4 py-8">
+      <motion.div
+        variants={contentBlockVariants}
+        className="mx-auto w-full max-w-2xl px-4 py-8"
+      >
         <div className="mb-4 flex flex-col items-center">
-          <Typography variant="small" className="mb-2 text-gray-700 hidden">
+          <Typography variant="small" className="mb-2 hidden text-gray-700">
             Author: {blog.createdBy?.username || "John Smith"}
           </Typography>
           <Typography
@@ -157,22 +196,23 @@ const BlogDetails: React.FC = () => {
             {blog.title || "Articles of investments chain blocks"}
           </Typography>
         </div>
-        <div
+        <motion.div
+          variants={contentBlockVariants}
           className="mb-4 text-base text-gray-800"
           dangerouslySetInnerHTML={{
             __html: blog.content || blog.summary || "No content available.",
           }}
         />
-        <div className="mb-4 flex justify-center">
+        <motion.div variants={contentBlockVariants} className="mb-4 flex justify-center">
           <img
             src={blog.coverImage?.url || shaking}
             alt="Blog visual"
             className="h-[200px] w-[340px] rounded-lg object-cover"
           />
-        </div>
-        <Typography className="mb-4 text-base text-gray-800">
+        </motion.div>
+        <motion.p variants={contentBlockVariants} className="mb-4 text-base text-gray-800">
           {blog.summary || "No summary available."}
-        </Typography>
+        </motion.p>
         <div className="mb-6 hidden">
           <Typography variant="h5" className="mb-2 font-bold text-text2">
             Key Points
@@ -185,7 +225,10 @@ const BlogDetails: React.FC = () => {
             ))}
           </ul>
         </div>
-        <div className="mb-4 flex flex-wrap items-start justify-between gap-2 border-b border-gray-200 pb-4">
+        <motion.div
+          variants={contentBlockVariants}
+          className="mb-4 flex flex-wrap items-start justify-between gap-2 border-b border-gray-200 pb-4"
+        >
           <div className="flex flex-col gap-2">
             <span className="text-sm text-gray-500">
               Published:{" "}
@@ -217,70 +260,10 @@ const BlogDetails: React.FC = () => {
               <FiArrowLeft className="inline" /> Return back
             </button>
           </div>
-        </div>
-        {/* Sign Up Section (commented out) */}
-        {false && (
-          <div className="mb-8">
-            <Typography variant="h6" className="mb-4 text-center text-text2">
-              Sign Up with DISQUS to engage in comments
-            </Typography>
-            <form className="space-y-4" onSubmit={handleSubmit}>
-              <div>
-                <label className="mb-1 block text-sm text-text2">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={signup.name}
-                  onChange={handleChange}
-                  className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-text2"
-                  placeholder="Name"
-                  required
-                />
-              </div>
-              <div>
-                <label className="mb-1 block text-sm text-text2">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={signup.email}
-                  onChange={handleChange}
-                  className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-text2"
-                  placeholder="Email Address"
-                  required
-                />
-              </div>
-              <div>
-                <label className="mb-1 block text-sm text-text2">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  value={signup.password}
-                  onChange={handleChange}
-                  className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-text2"
-                  placeholder="Password"
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                className="mt-4 w-full rounded bg-text2 py-2 font-semibold text-white"
-              >
-                Submit
-              </button>
-            </form>
-            {submitted && (
-              <Typography className="mt-6 cursor-pointer text-center text-sm text-text2 underline">
-                Verify your email address (photoe1@gmail.com)
-              </Typography>
-            )}
-          </div>
-        )}
+        </motion.div>
+
         {/* Comment Section */}
-        <div className="mb-8">
+        <motion.div variants={contentBlockVariants} className="mb-8">
           <Typography variant="h6" className="mb-4 text-center text-text2">
             Leave a Comment
           </Typography>
@@ -311,9 +294,9 @@ const BlogDetails: React.FC = () => {
             <button
               type="submit"
               className="mt-4 w-full rounded bg-text2 py-2 font-semibold text-white disabled:opacity-60"
-              disabled={isLoading}
+              disabled={commentIsLoading}
             >
-              {isLoading ? "Commenting..." : "Comment"}
+              {commentIsLoading ? "Commenting..." : "Comment"}
             </button>
           </form>
           {commentSuccess && (
@@ -321,14 +304,20 @@ const BlogDetails: React.FC = () => {
               Comment posted successfully!
             </Typography>
           )}
-          {reduxError && (
+          {commentReduxError && (
             <Typography className="mt-4 text-center text-sm text-red-600">
-              {reduxError}
+              {commentReduxError}
             </Typography>
           )}
-        </div>
+        </motion.div>
+
         {/* Related Articles */}
-        <div className="mt-8">
+        <motion.div
+          variants={relatedSectionVariants}
+          initial="initial"
+          animate="animate"
+          className="mt-8"
+        >
           <Typography variant="h5" className="mb-4 font-bold text-text2">
             Related Articles
           </Typography>
@@ -339,33 +328,34 @@ const BlogDetails: React.FC = () => {
               </Typography>
             )}
             {related.map((rel) => (
-              <Card
-                key={rel._id}
-                className="cursor-pointer overflow-hidden bg-white text-gray-900 shadow-md"
-                onClick={() => navigate(`/blog/${rel._id}`)}
-              >
-                <div className="relative">
-                  <img
-                    src={rel.coverImage?.url || shaking}
-                    alt={rel.title || "Blog cover"}
-                    className="h-32 w-full object-cover"
-                  />
-                </div>
-                <CardBody>
-                  <Typography variant="h6" className="font-bold text-text2">
-                    {rel.title || "Untitled"}
-                  </Typography>
-                  <Typography variant="small" className="text-gray-600">
-                    {rel.summary || "No summary available."}
-                  </Typography>
-                </CardBody>
-              </Card>
+              <motion.div key={rel._id} variants={relatedCardVariants}>
+                <Card
+                  className="cursor-pointer overflow-hidden bg-white text-gray-900 shadow-md"
+                  onClick={() => navigate(`/blog/${rel._id}`)}
+                >
+                  <div className="relative">
+                    <img
+                      src={rel.coverImage?.url || shaking}
+                      alt={rel.title || "Blog cover"}
+                      className="h-32 w-full object-cover"
+                    />
+                  </div>
+                  <CardBody>
+                    <Typography variant="h6" className="font-bold text-text2">
+                      {rel.title || "Untitled"}
+                    </Typography>
+                    <Typography variant="small" className="text-gray-600">
+                      {rel.summary || "No summary available."}
+                    </Typography>
+                  </CardBody>
+                </Card>
+              </motion.div>
             ))}
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
       <Footer />
-    </div>
+    </motion.div>
   );
 };
 

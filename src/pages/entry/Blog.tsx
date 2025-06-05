@@ -10,6 +10,7 @@ import shaking from "../../Assets/png/home/shaking.png";
 import { HiOutlineUser } from "react-icons/hi2";
 import { FaUsers } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 interface BlogPost {
   _id: string;
@@ -42,23 +43,54 @@ const categoryOptions = [
   "Crypto Saving",
 ];
 
+const pageVariants = {
+  initial: { opacity: 0 },
+  animate: {
+    opacity: 1,
+    transition: { duration: 0.5, when: "beforeChildren" },
+  },
+  exit: { opacity: 0, transition: { duration: 0.3 } },
+};
+
+const sectionVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+const cardVariants = {
+  initial: { opacity: 0, y: 30, scale: 0.98 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
+};
+
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
 const Blog: React.FC = () => {
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [initialDataLoaded, setInitialDataLoaded] = useState(false);
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
         const response = await axios.get(API_ENDPOINTS.BLOG.GET_ALL_BLOGS);
-        //console.log("Blog API response:", response.data);
         setBlogs(response.data.blogs);
+        setInitialDataLoaded(true);
       } catch (err) {
         setError("Failed to fetch blog posts");
-      } finally {
-        setLoading(false);
+        setInitialDataLoaded(true);
       }
     };
     fetchBlogs();
@@ -87,14 +119,7 @@ const Blog: React.FC = () => {
     return filtered;
   }, [selectedCategory, blogsByCategory]);
 
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <span className="text-lg text-gray-700">Loading...</span>
-      </div>
-    );
-  }
-  if (error) {
+  if (error && initialDataLoaded) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <span className="text-lg text-red-500">{error}</span>
@@ -102,11 +127,29 @@ const Blog: React.FC = () => {
     );
   }
 
+  if (!initialDataLoaded) {
+    return (
+      <div>
+        <NavBar />
+        <div className="min-h-[calc(100vh-200px)]"></div>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
-    <div>
+    <motion.div
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      variants={pageVariants}
+    >
       <NavBar />
       {/* Hero Section */}
-      <section className="relative flex h-[50vh] flex-col justify-end overflow-visible bg-text2">
+      <motion.section
+        variants={sectionVariants}
+        className="relative flex h-[50vh] flex-col justify-end overflow-visible bg-text2"
+      >
         <div className="mx-auto max-w-3xl px-4 pb-44 text-center">
           <Typography
             variant="h2"
@@ -118,7 +161,10 @@ const Blog: React.FC = () => {
           </Typography>
         </div>
         <div className="absolute bottom-[-180px] left-1/2 z-50 w-full max-w-2xl -translate-x-1/2">
-          <div className="relative mx-auto rounded-2xl shadow-lg">
+          <motion.div
+            variants={cardVariants}
+            className="relative mx-auto rounded-2xl shadow-lg"
+          >
             <img
               src={shaking}
               alt="Shaking hands"
@@ -138,69 +184,81 @@ const Blog: React.FC = () => {
                 Simple, safe and transparent way.
               </Typography>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </section>
-      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 pt-[280px] md:flex-row md:items-stretch md:justify-evenly md:gap-4">
+      </motion.section>
+
+      <motion.div
+        variants={sectionVariants}
+        className="relative z-10 mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 pt-[280px] md:flex-row md:items-stretch md:justify-evenly md:gap-4"
+      >
         <div className="flex h-full w-full max-w-md flex-col md:w-auto">
           <Typography variant="h4" className="mb-4 font-bold text-text1">
             Recent Post
           </Typography>
           {recentPost && (
-            <Card className="flex h-full min-h-[350px] flex-col rounded-xl border border-gray-200 bg-white shadow-sm">
-              <img
-                src={recentPost.coverImage?.url || logo}
-                alt={recentPost.title || "Blog cover"}
-                className="h-48 w-full rounded-t-xl object-cover"
-              />
-              <CardBody className="flex flex-1 flex-col">
-                <div className="mb-2 flex items-center justify-between">
-                  <Typography
-                    variant="h6"
-                    className="cursor-pointer font-bold text-text2 hover:underline"
-                    onClick={() => navigate(`/blog/${recentPost._id}`)}
-                  >
-                    {recentPost.title || "Untitled"}
-                  </Typography>
-                  <div className="flex items-center gap-2">
-                    <div className="h-7 w-7 overflow-hidden rounded-full bg-gray-200">
-                      <HiOutlineUser className="h-full w-full text-gray-500" />
-                    </div>
+            <motion.div variants={cardVariants}>
+              <Card className="flex h-full min-h-[350px] flex-col rounded-xl border border-gray-200 bg-white shadow-sm">
+                <img
+                  src={recentPost.coverImage?.url || logo}
+                  alt={recentPost.title || "Blog cover"}
+                  className="h-48 w-full rounded-t-xl object-cover"
+                />
+                <CardBody className="flex flex-1 flex-col">
+                  <div className="mb-2 flex items-center justify-between">
                     <Typography
-                      variant="small"
-                      className="font-bold text-gray-700"
+                      variant="h6"
+                      className="cursor-pointer font-bold text-text2 hover:underline"
+                      onClick={() => navigate(`/blog/${recentPost._id}`)}
                     >
-                      {recentPost.createdBy?.username || "John Smith"}
+                      {recentPost.title || "Untitled"}
                     </Typography>
+                    <div className="flex items-center gap-2">
+                      <div className="h-7 w-7 overflow-hidden rounded-full bg-gray-200">
+                        <HiOutlineUser className="h-full w-full text-gray-500" />
+                      </div>
+                      <Typography
+                        variant="small"
+                        className="hidden font-bold text-gray-700"
+                      >
+                        {recentPost.createdBy?.username || "John Smith"}
+                      </Typography>
+                    </div>
                   </div>
-                </div>
-                <Typography variant="small" className="mb-2 text-text1">
-                  {recentPost.summary || "No summary available."}
-                </Typography>
-                <div className="mt-auto flex items-center justify-between">
-                  <Typography variant="small" className="text-[#939090]">
-                    Posted:{" "}
-                    <span className="text-text1">
-                      {recentPost.createdAt
-                        ? format(new Date(recentPost.createdAt), "MMM dd,yyyy")
-                        : "N/A"}
-                    </span>
+                  <Typography variant="small" className="mb-2 text-text1">
+                    {recentPost.summary || "No summary available."}
                   </Typography>
-                  <Button
-                    variant="text"
-                    className="min-w-0 p-0 text-[#FF7A00]"
-                    size="sm"
-                    onClick={() => navigate(`/blog/${recentPost._id}`)}
-                  >
-                    Read more...
-                  </Button>
-                </div>
-              </CardBody>
-            </Card>
+                  <div className="mt-auto flex items-center justify-between">
+                    <Typography variant="small" className="text-[#939090]">
+                      Posted:{" "}
+                      <span className="text-text1">
+                        {recentPost.createdAt
+                          ? format(
+                              new Date(recentPost.createdAt),
+                              "MMM dd,yyyy",
+                            )
+                          : "N/A"}
+                      </span>
+                    </Typography>
+                    <Button
+                      variant="text"
+                      className="min-w-0 p-0 text-[#FF7A00]"
+                      size="sm"
+                      onClick={() => navigate(`/blog/${recentPost._id}`)}
+                    >
+                      Read more...
+                    </Button>
+                  </div>
+                </CardBody>
+              </Card>
+            </motion.div>
           )}
         </div>
         <div className="flex h-full w-full max-w-md justify-center md:mt-14 md:w-auto">
-          <div className="flex h-full min-h-[350px] w-full flex-col justify-between rounded-[30px] border border-gray-200 bg-white p-6 shadow-sm">
+          <motion.div
+            variants={cardVariants}
+            className="flex h-full min-h-[350px] w-full flex-col justify-between rounded-[30px] border border-gray-200 bg-white p-6 shadow-sm"
+          >
             <div>
               <Typography
                 variant="h5"
@@ -230,11 +288,15 @@ const Blog: React.FC = () => {
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
+
       {/* All Blogs Section */}
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-8">
+      <motion.div
+        variants={sectionVariants}
+        className="relative z-10 mx-auto w-full max-w-7xl px-4 py-8"
+      >
         <Typography
           variant="h1"
           className="mb-6 text-3xl font-bold text-gray-900"
@@ -242,7 +304,11 @@ const Blog: React.FC = () => {
           All Blogs
         </Typography>
         {Object.entries(filteredBlogsByCategory).map(([category, posts]) => (
-          <div key={category} className="mb-12">
+          <motion.div
+            key={category}
+            className="mb-12"
+            variants={staggerContainer}
+          >
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Typography
@@ -260,76 +326,81 @@ const Blog: React.FC = () => {
                 View All
               </Button>
             </div>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <motion.div
+              className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+              variants={staggerContainer}
+            >
               {posts.slice(0, 3).map((blog) => (
-                <Card
-                  key={blog._id}
-                  className="overflow-hidden bg-white text-gray-900 shadow-md"
-                >
-                  <div className="relative">
-                    <img
-                      src={blog.coverImage?.url || logo}
-                      alt={blog.title || "Blog cover"}
-                      className="h-48 w-full object-cover"
-                    />
-                    {blog.isPopular && (
-                      <span className="absolute right-2 top-2 rounded bg-[#7B2FF2] px-3 py-1 text-xs font-bold text-white">
-                        Popular
-                      </span>
-                    )}
-                  </div>
-                  <CardBody>
-                    <div className="mb-2 flex items-center justify-between gap-2">
-                      <Typography variant="h5" className="font-bold text-text2">
-                        {blog.title || "Untitled"}
-                      </Typography>
-                      <div className="flex items-center gap-2">
-                        <div className="h-8 w-8 overflow-hidden rounded-full bg-gray-200">
-                          <HiOutlineUser className="h-full w-full text-gray-500" />
-                        </div>
-                        <Typography
-                          variant="small"
-                          className="hidden font-bold text-gray-700"
-                        >
-                          {blog.createdBy?.username || "John Smith"}
-                        </Typography>
-                      </div>
-                    </div>
-                    <Typography variant="small" className="mb-4 text-text1">
-                      {blog.summary || "No summary available."}
-                    </Typography>
-                    <div className="flex items-center justify-between">
-                      <Typography variant="small" className="text-[#939090]">
-                        Posted:{" "}
-                        <span className="text-text1">
-                          {blog.createdAt
-                            ? format(new Date(blog.createdAt), "MMM dd,yyyy")
-                            : "N/A"}
+                <motion.div key={blog._id} variants={cardVariants}>
+                  <Card className="overflow-hidden bg-white text-gray-900 shadow-md">
+                    <div className="relative">
+                      <img
+                        src={blog.coverImage?.url || logo}
+                        alt={blog.title || "Blog cover"}
+                        className="h-48 w-full object-cover"
+                      />
+                      {blog.isPopular && (
+                        <span className="absolute right-2 top-2 rounded bg-[#7B2FF2] px-3 py-1 text-xs font-bold text-white">
+                          Popular
                         </span>
-                      </Typography>
-                      <Button
-                        variant="text"
-                        className="min-w-0 p-0 text-[#FF7A00]"
-                        size="sm"
-                        onClick={() => navigate(`/blog/${blog._id}`)}
-                      >
-                        Read more...
-                      </Button>
+                      )}
                     </div>
-                  </CardBody>
-                </Card>
+                    <CardBody>
+                      <div className="mb-2 flex items-center justify-between gap-2">
+                        <Typography
+                          variant="h5"
+                          className="font-bold text-text2"
+                        >
+                          {blog.title || "Untitled"}
+                        </Typography>
+                        <div className="flex items-center gap-2">
+                          <div className="h-8 w-8 overflow-hidden rounded-full bg-gray-200">
+                            <HiOutlineUser className="h-full w-full text-gray-500" />
+                          </div>
+                          <Typography
+                            variant="small"
+                            className="hidden font-bold text-gray-700"
+                          >
+                            {blog.createdBy?.username || "John Smith"}
+                          </Typography>
+                        </div>
+                      </div>
+                      <Typography variant="small" className="mb-4 text-text1">
+                        {blog.summary || "No summary available."}
+                      </Typography>
+                      <div className="flex items-center justify-between">
+                        <Typography variant="small" className="text-[#939090]">
+                          Posted:{" "}
+                          <span className="text-text1">
+                            {blog.createdAt
+                              ? format(new Date(blog.createdAt), "MMM dd,yyyy")
+                              : "N/A"}
+                          </span>
+                        </Typography>
+                        <Button
+                          variant="text"
+                          className="min-w-0 p-0 text-[#FF7A00]"
+                          size="sm"
+                          onClick={() => navigate(`/blog/${blog._id}`)}
+                        >
+                          Read more...
+                        </Button>
+                      </div>
+                    </CardBody>
+                  </Card>
+                </motion.div>
               ))}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
       <div className="flex justify-center pb-8">
         <Button className="rounded-lg bg-text2 px-8 py-2 text-white">
           View All
         </Button>
       </div>
       <Footer />
-    </div>
+    </motion.div>
   );
 };
 
