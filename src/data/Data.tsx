@@ -33,6 +33,7 @@ import logout from "../../src/Assets/svg/logout.svg";
 export const navBarLinks = [
   { to: "/why-chain-co-op", text: "Why Chain Co-op" },
   { to: "/partner-with-us", text: "Partner with us" },
+  { to: "/blog", text: "Blog" },
   { to: "/contact", text: "Contact" },
 ];
 

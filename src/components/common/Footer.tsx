@@ -40,7 +40,7 @@ const Footer = () => {
 
   return (
     <footer className="w-full overflow-hidden">
-      <header className="relative z-10 mx-auto mb-[-50px] mt-[3em] flex w-[90%] items-center justify-center rounded-2xl bg-[#CCA3BC] p-3 sm:mb-[-60px] sm:py-5 lg:mb-[-115px] lg:w-[82%] lg:p-8">
+      <header className="relative z-10 mx-auto mb-[-50px] mt-[3em] flex w-[90%] items-center justify-center rounded-2xl bg-[#CCA3BC] p-3 sm:mb-[-60px] sm:py-5 lg:mb-[-115px] lg:w-[80%] lg:p-8">
         <div className="w-full px-2 text-center sm:px-4">
           <Typography
             variant="h1"

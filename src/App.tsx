@@ -12,6 +12,7 @@ import UserLogin from "./pages/auth/UserLogin";
 import Dashboard from "./components/dashboard/sidebar/Dashboard";
 import NotFound from "./pages/NotFound";
 import WhyChainCoop from "./pages/entry/WhyChainCoop";
+import Blog from "./pages/entry/Blog";
 import ProtectedRoutes from "./components/protected/ProtectedRoute";
 import PartnerWithUs from "./pages/entry/PartnerWithUs";
 import TermsOfService from "./pages/footer/TermsOfService";
@@ -22,12 +23,14 @@ import VerifyEmail from "./pages/auth/verifyEmail";
 import VerifyPhoneNumber from "./pages/auth/verifyPhoneNumber";
 import GoogleFormPage from "./pages/auth/googleFormPage";
 import DashboardRoutes from "./adminPages/routes/dashboardRoutes";
+import BlogDetails from "./pages/entry/BlogDetails";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/why-chain-co-op" element={<WhyChainCoop />} />
+        <Route path="/blog" element={<Blog />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/partner-with-us" element={<PartnerWithUs />} />
@@ -55,7 +58,7 @@ function App() {
           <Route path="/dashboard/*" element={<Dashboard />} />
           <Route path="/admin/*" element={<DashboardRoutes />} />
         </Route>
-
+        <Route path="/blog/:id" element={<BlogDetails />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

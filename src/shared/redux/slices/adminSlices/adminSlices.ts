@@ -233,6 +233,31 @@ export const updateBlogPost = createAsyncThunk(
   },
 );
 
+export const createBlogComment = createAsyncThunk(
+  "blog/createBlogComment",
+  async (
+    {
+      blogId,
+      name,
+      comment,
+    }: { blogId: string; name: string; comment: string },
+    thunkAPI,
+  ) => {
+    try {
+      const data = await AdminServices.Blogs.CreateBlogComment(blogId, {
+        name,
+        comment,
+      });
+      return data;
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      const message = apiError.msg || "Failed to post comment";
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
 export const adminSlice = createSlice({
   name: "admin",
   initialState,
@@ -424,6 +449,17 @@ export const adminSlice = createSlice({
       })
       .addCase(approveWithdrawal.rejected, (state, action) => {
         state.isApproving = false;
+        state.error = action.payload as string;
+      })
+      .addCase(createBlogComment.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(createBlogComment.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(createBlogComment.rejected, (state, action) => {
+        state.isLoading = false;
         state.error = action.payload as string;
       });
   },
