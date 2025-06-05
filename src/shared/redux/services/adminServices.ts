@@ -75,6 +75,7 @@ const GetAllBlogs = async () => {
     const response = await axios.get(API_ENDPOINTS.BLOG.GET_ALL_BLOGS, {
       headers: authHeader(),
     });
+console.log("Blog API response data:", response.data);
     return response.data;
   } catch (error) {
     throw handleAxiosError(error);
@@ -202,6 +203,21 @@ const UpdateBlogPost = async (blogId: string, body: FormData) => {
   }
 };
 
+const CreateBlogComment = async (
+  blogId: string,
+  body: { name: string; comment: string },
+) => {
+  try {
+    const response = await axios.post(
+      `${API_ENDPOINTS.BLOG.GET_ALL_BLOGS}/comment/${blogId}`,
+      body,
+    );
+    return response.data;
+  } catch (error) {
+    throw handleAxiosError(error);
+  }
+};
+
 const AdminServices = {
   Notification: {
     CreateNotification,
@@ -215,6 +231,7 @@ const AdminServices = {
     DeleteBlogPost,
     GetBlogById,
     UpdateBlogPost,
+    CreateBlogComment,
   },
 
   Project: {

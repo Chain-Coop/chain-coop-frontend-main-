@@ -494,7 +494,7 @@ const CryptoMain = () => {
                       whileTap={{ scale: 0.98 }}
                       disabled={true}
                       onClick={(e) => e.preventDefault()}
-                      className="flex flex-col opacity-50 items-center bg-inherit text-center"
+                      className="flex flex-col items-center bg-inherit text-center opacity-50"
                     >
                       <TransferIcon />
                       <span className="block text-memt1 lg:text-lg">
