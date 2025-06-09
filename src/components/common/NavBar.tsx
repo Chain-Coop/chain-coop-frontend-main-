@@ -18,7 +18,7 @@ const NavBar = () => {
 
   return (
     <nav className="relative  left-0 top-0 flex h-[75px] w-full items-center border-b border-text5 bg-white ">
-      <div className="container mx-auto flex items-center justify-between px-3 md:max-w-[81%] md:px-0">
+      <div className="container mx-auto flex items-center justify-between px-3 md:max-w-7xl md:px-0">
         <Link to="/">
           <img src={logo} className="w-[9em]" alt="Chain Co-op Logo" />
         </Link>

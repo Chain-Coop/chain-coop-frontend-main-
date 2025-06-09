@@ -13,6 +13,7 @@ import {
 } from "../../shared/redux/slices/landing.slices";
 import { AppDispatch } from "../../shared/redux/store";
 import { RootState } from "../../shared/redux/rootReducer";
+import { FaArrowLeft } from "react-icons/fa6";
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState("");
@@ -90,6 +91,12 @@ const ForgetPassword = () => {
             Submit
           </Button>
         </form>
+        <div
+          className="absolute left-0 top-0 ml-[4em] mt-[4em] cursor-pointer sm:hidden lg:block"
+          onClick={() => navigate("/")}
+        >
+          <FaArrowLeft size={35} fill="#440080" />
+        </div>
         <section className="flex justify-center py-4">
           <Typography className="text-text font-medium">
             Know your Password ?

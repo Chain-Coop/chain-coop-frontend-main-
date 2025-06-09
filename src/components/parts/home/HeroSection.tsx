@@ -5,7 +5,7 @@ import { Button, Typography } from "@material-tailwind/react";
 import { MotionTypography } from "../../common/motionTypography";
 import { ROUTES } from "../../../shared/routes";
 
-const container = (delay: any) => ({
+const container = (delay: number) => ({
   hidden: { x: -100, opacity: 0 },
   visible: {
     x: 0,
@@ -17,8 +17,8 @@ const container = (delay: any) => ({
 const HeroSection = () => {
   return (
     <main className="relative mt-3 flex w-full flex-col md:mt-0 lg:flex-row">
-      <div className="flex items-center px-4 md:px-6 lg:w-1/2 lg:px-8">
-        <div className="mx-auto w-full max-w-xl">
+      <div className="flex items-center px-4 md:px-8 lg:flex-1 lg:px-8 xl:px-12">
+        <div className="mx-auto w-full max-w-none lg:max-w-fit">
           <MotionTypography
             variant="h1"
             variants={container(0.5)}
@@ -43,7 +43,7 @@ const HeroSection = () => {
             variants={container(1)}
             initial="hidden"
             animate="visible"
-            className="flex flex-row gap-4 sm:gap-6 lg:gap-8"
+            className="flex flex-row flex-wrap gap-4 sm:gap-6 lg:gap-8"
           >
             <Link to={ROUTES.sign_up} className="flex-shrink-0">
               <Button
@@ -67,11 +67,8 @@ const HeroSection = () => {
         </div>
       </div>
 
-      <div className="hidden lg:block lg:h-full lg:w-1/2">
-        <div
-          className="h-full w-full bg-heroBackground bg-cover bg-center bg-no-repeat"
-          style={{ minHeight: "92vh" }}
-        ></div>
+      <div className="hidden flex-1 lg:block">
+        <div className="h-full min-h-[60vh] w-full bg-heroBackground bg-cover bg-center bg-no-repeat lg:min-h-[92vh]"></div>
       </div>
     </main>
   );

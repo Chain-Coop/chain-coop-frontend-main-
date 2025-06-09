@@ -14,6 +14,7 @@ import {
 } from "../../shared/redux/slices/landing.slices";
 import { ResendVerifyOtpRequest, VerifyPhoneRequest } from "../../shared/types";
 import { clearMessage } from "../../shared/redux/slices/message.slices";
+import { FaArrowLeft } from "react-icons/fa6";
 
 const VerifyPhoneNumber = () => {
   const [code, setCode] = useState<string>("");
@@ -46,7 +47,6 @@ const VerifyPhoneNumber = () => {
 
   const phoneNumber = formatPhoneNumber(rawPhoneNumber);
 
-  // Validate query parameters
   useEffect(() => {
     if (!phoneNumber || !userId) {
       toast.error("Invalid verification link. Please try registering again.");
@@ -54,7 +54,6 @@ const VerifyPhoneNumber = () => {
     }
   }, [phoneNumber, userId, navigate]);
 
-  // Handle success and error states
   useEffect(() => {
     if (verifyPhoneSuccess) {
       toast.success("Phone number verified successfully");
@@ -66,7 +65,6 @@ const VerifyPhoneNumber = () => {
     }
   }, [verifyPhoneSuccess, error, navigate]);
 
-  // Handle OTP change and verification
   const handleOtpChange = (otpValue: string) => {
     setCode(otpValue);
     if (otpValue.length === 6 && phoneNumber && userId) {
@@ -80,7 +78,6 @@ const VerifyPhoneNumber = () => {
     }
   };
 
-  // Resend OTP
   const handleResendOtp = () => {
     if (!phoneNumber) {
       toast.error("Phone number is missing. Please try registering again.");
@@ -101,7 +98,6 @@ const VerifyPhoneNumber = () => {
       });
   };
 
-  // Start resend timer
   const startResendTimer = () => {
     setResendDisabled(true);
     setResendTimer(30);
@@ -127,6 +123,12 @@ const VerifyPhoneNumber = () => {
 
   return (
     <main className="flex h-screen items-center justify-center bg-log">
+      <div
+        className="absolute left-0 top-0 ml-[4em] mt-[4em] cursor-pointer sm:hidden lg:block"
+        onClick={() => navigate("/")}
+      >
+        <FaArrowLeft size={35} fill="#440080" />
+      </div>
       <section className="text-center md:w-[55%]">
         <div className="px-[2em]">
           <p className="font-medium text-howtext md:text-lg lg:text-base">
@@ -147,14 +149,15 @@ const VerifyPhoneNumber = () => {
 
           <Button
             onClick={handleResendOtp}
+            loading={isLoading || isResending}
             disabled={isLoading || isResending || resendDisabled}
             className="m-auto mt-6 flex w-[12em] justify-center rounded-full bg-text2 px-2 py-3 text-center font-medium normal-case text-text5 disabled:opacity-50 sm:text-lg lg:mt-[2em]"
           >
             {isResending
               ? "Resending..."
               : resendDisabled
-                ? `Resend OTP (${resendTimer}s)`
-                : "Resend OTP"}
+                ? `Send OTP (${resendTimer}s)`
+                : "Send OTP"}
           </Button>
         </div>
       </section>

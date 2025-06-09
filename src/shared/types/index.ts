@@ -43,7 +43,7 @@ export interface RegisterUserRequest {
 
 export interface RegisterResponse {
   success: boolean;
-  data: {
+  user: {
     _id: string;
     email: string;
     token: string;

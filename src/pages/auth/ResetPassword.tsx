@@ -12,6 +12,7 @@ import {
 import { ResendEmailOtpRequest } from "../../shared/types";
 import { AppDispatch } from "../../shared/redux/store";
 import { RootState } from "../../shared/redux/rootReducer";
+import { FaArrowLeft } from "react-icons/fa6";
 
 const ResetPassword = () => {
   const [timer, setTimer] = useState(0);
@@ -142,6 +143,12 @@ const ResetPassword = () => {
               </p>
             )}
           </div>
+        </div>
+        <div
+          className="absolute left-0 top-0 ml-[4em] mt-[4em] cursor-pointer sm:hidden lg:block"
+          onClick={() => navigate("/")}
+        >
+          <FaArrowLeft size={35} fill="#440080" />
         </div>
       </section>
     </main>

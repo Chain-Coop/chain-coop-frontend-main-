@@ -14,6 +14,7 @@ import { ResendEmailOtpRequest, VerifyEmailRequest } from "../../shared/types";
 import { clearMessage } from "../../shared/redux/slices/message.slices";
 import OtpInput from "../../shared/utils/OtpInput";
 import { RootState } from "../../shared/redux/rootReducer";
+import { FaArrowLeft } from "react-icons/fa6";
 
 const VerifyEmail = () => {
   const [otp, setOtp] = useState<string>("");
@@ -121,6 +122,12 @@ const VerifyEmail = () => {
 
   return (
     <main className="flex h-screen items-center justify-center bg-log">
+      <div
+        className="absolute left-0 top-0 ml-[4em] mt-[4em] cursor-pointer sm:hidden lg:block"
+        onClick={() => navigate("/")}
+      >
+        <FaArrowLeft size={35} fill="#440080" />
+      </div>
       <section className="text-center md:w-[55%]">
         <div className="px-[2em]">
           <p className="font-medium text-howtext md:text-lg lg:text-base">

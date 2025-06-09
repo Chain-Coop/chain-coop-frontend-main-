@@ -58,7 +58,7 @@ const Become = () => {
             </Button>
           </Link>
         </header>
-        <section className="container mx-auto px-4 lg:max-w-[75%] lg:px-0">
+        <section className="container mx-auto px-4 lg:max-w-7xl lg:px-0">
           <div>
             <motion.div
               variants={container}

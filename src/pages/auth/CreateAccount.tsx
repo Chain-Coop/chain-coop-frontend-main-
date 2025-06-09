@@ -120,7 +120,7 @@ const CreateAccount = () => {
       const response = await dispatch(RegisterUser(formData)).unwrap();
       toast.success("Signup successful! Please verify your email.");
       navigate(
-        `/verify-email?email=${encodeURIComponent(formData.email)}&phoneNumber=${encodeURIComponent(formData.phoneNumber)}&userId=${response.user._id}`,
+        `/verify-email?email=${encodeURIComponent(formData.email)}&phoneNumber=${encodeURIComponent(formData.phoneNumber)}&userId=${response?.user._id}`,
       );
     } catch (err) {
       // Error handled by useEffect

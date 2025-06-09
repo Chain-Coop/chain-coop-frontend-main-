@@ -80,9 +80,9 @@ const Footer = () => {
       </header>
 
       <div className="w-full bg-text2 text-white">
-        <div className="mx-auto px-4 pt-[120px] lg:w-[82%] lg:pb-[10px] lg:pt-[190px]">
-          <div className="grid w-full grid-cols-1 gap-8 lg:grid-cols-2">
-            <section className="w-full max-w-lg space-y-4">
+        <div className="mx-auto max-w-7xl px-4 pt-[80px] lg:pb-[10px] lg:pt-[140px]">
+          <div className="grid w-full grid-cols-1 gap-8 lg:grid-cols-5">
+            <section className="w-full space-y-4 lg:col-span-2">
               <Typography variant="h2" className="text-md font-light">
                 Chain Co-Op is a secure, registered cooperative dedicated to
                 empowering individuals with innovative savings solutions in
@@ -94,7 +94,7 @@ const Footer = () => {
               </Typography>
             </section>
 
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4 lg:flex lg:justify-between lg:gap-8">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4 lg:col-span-3 lg:grid-cols-4 lg:justify-items-start lg:gap-4">
               <section className="w-full space-y-4">
                 <Typography
                   variant="h2"
@@ -143,12 +143,12 @@ const Footer = () => {
                 </div>
               </section>
 
-              <section className="w-full space-y-4">
+              <section className="w-full max-w-[200px] space-y-4">
                 <Typography variant="h2" className="text-lg font-semibold">
                   Contact
                 </Typography>
                 <div className="flex flex-col gap-3">
-                  <Typography className="whitespace-nowrap text-lg font-light">
+                  <Typography className="text-lg font-light">
                     Let's build a better future together!
                   </Typography>
                   <Typography className="text-lg font-light">

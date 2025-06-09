@@ -8,6 +8,7 @@ import FormInput from "../../components/common/FormInput";
 import { ResetPassword } from "../../shared/redux/slices/landing.slices";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../shared/redux/store";
+import { FaArrowLeft } from "react-icons/fa6";
 
 const NewPassword = () => {
   const [passwordType, setPasswordType] = useState("password");
@@ -69,6 +70,12 @@ const NewPassword = () => {
 
   return (
     <main className="flex h-screen items-center justify-center bg-log px-[1em] ">
+      <div
+        className="absolute left-0 top-0 ml-[4em] mt-[4em] cursor-pointer sm:hidden lg:block"
+        onClick={() => navigate("/")}
+      >
+        <FaArrowLeft size={35} fill="#440080" />
+      </div>
       <section className="relative w-full text-center lg:w-[45%]">
         <header className="px-[2em]">
           <h1 className="mb-4 text-3xl font-bold text-text2">Reset Password</h1>
