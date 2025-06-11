@@ -28,6 +28,11 @@ const Purpose: React.FC = () => {
   const [error, setError] = useState("");
 
   const handleNext = () => {
+    if (!currency || !savingsType || !contributionType) {
+      setError("Missing contribution details. Please start over.");
+      navigate("/dashboard/contribution");
+      return;
+    }
     if (savingsCategory === "Others" && !otherCategory) {
       setError("Please enter a custom savings category");
     } else if (!savingsCategory) {

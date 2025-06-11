@@ -27,6 +27,11 @@ const SavingsPlan: React.FC = () => {
   const [error, setError] = useState("");
 
   const handleNext = () => {
+    if (!currency || !savingsType || !contributionType || !purpose) {
+      setError("Missing contribution details. Please start over.");
+      navigate("/dashboard/contribution");
+      return;
+    }
     if (contributionPlan) {
       setError("");
       navigate("/dashboard/contribution/amount", {
