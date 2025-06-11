@@ -19,6 +19,7 @@ import {
   calculateAvailableEndDates,
   validateCustomEndDate,
 } from "../../../../shared/utils/format";
+import { toast } from "react-toastify";
 
 interface StartDateState {
   purpose: string;
@@ -36,6 +37,28 @@ const StartDate: React.FC = () => {
   const { purpose, plan, amount, currency, savingsType, contributionType } =
     location.state as StartDateState;
   const isDaily = plan?.toLowerCase() === "daily";
+
+  useEffect(() => {
+    if (
+      !purpose ||
+      !plan ||
+      !amount ||
+      !currency ||
+      !savingsType ||
+      !contributionType
+    ) {
+      toast.error("Missing required information. Please start over.");
+      navigate("/dashboard/contribution");
+    }
+  }, [
+    purpose,
+    plan,
+    amount,
+    currency,
+    savingsType,
+    contributionType,
+    navigate,
+  ]);
 
   const now = new Date();
   const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(
