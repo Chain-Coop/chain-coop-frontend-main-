@@ -190,7 +190,7 @@ const Blog: React.FC = () => {
 
       <motion.div
         variants={sectionVariants}
-        className="relative z-10 mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 pt-[280px] md:flex-row md:items-stretch md:justify-evenly md:gap-4"
+        className="relative z-10 mx-auto hidden w-full max-w-7xl flex-col gap-8 px-4 pt-[280px] md:flex-row md:items-stretch md:justify-evenly md:gap-4"
       >
         <div className="flex h-full w-full max-w-md flex-col md:w-auto">
           <Typography variant="h4" className="mb-4 font-bold text-text1">
@@ -295,7 +295,7 @@ const Blog: React.FC = () => {
       {/* All Blogs Section */}
       <motion.div
         variants={sectionVariants}
-        className="relative z-10 mx-auto w-full max-w-7xl px-4 py-8"
+        className="relative z-10 mx-auto mt-44 w-full max-w-7xl px-4 py-8"
       >
         <Typography
           variant="h1"
@@ -329,31 +329,28 @@ const Blog: React.FC = () => {
             <motion.div
               className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
               variants={staggerContainer}
-            >
+                          >
               {posts.slice(0, 3).map((blog) => (
-                <motion.div key={blog._id} variants={cardVariants}>
-                  <Card className="overflow-hidden bg-white text-gray-900 shadow-md">
-                    <div className="relative">
+                <motion.div
+                  key={blog._id}
+                  variants={cardVariants}
+                  onClick={() => navigate(`/blog/${blog._id}`)}
+                  className="cursor-pointer text-left"
+                >
+                  <Card className="overflow-hidden rounded-none text-gray-900 shadow-none">
+                    <div className="relative mb-3">
                       <img
                         src={blog.coverImage?.url || logo}
                         alt={blog.title || "Blog cover"}
-                        className="h-48 w-full object-cover"
+                        className="h-80 w-full mb-2 rounded-md object-cover"
                       />
-                      {blog.isPopular && (
-                        <span className="absolute right-2 top-2 rounded bg-[#7B2FF2] px-3 py-1 text-xs font-bold text-white">
-                          Popular
-                        </span>
-                      )}
                     </div>
-                    <CardBody>
-                      <div className="mb-2 flex items-center justify-between gap-2">
-                        <Typography
-                          variant="h5"
-                          className="font-bold text-text2"
-                        >
+                    <CardBody className="text-left p-0">
+                      <div className="mb-2 flex items-start gap-2 text-left">
+                        <Typography variant="small" className="text-text1 ">
                           {blog.title || "Untitled"}
                         </Typography>
-                        <div className="flex items-center gap-2">
+                        <div className="hidden items-center gap-2">
                           <div className="h-8 w-8 overflow-hidden rounded-full bg-gray-200">
                             <HiOutlineUser className="h-full w-full text-gray-500" />
                           </div>
@@ -365,10 +362,13 @@ const Blog: React.FC = () => {
                           </Typography>
                         </div>
                       </div>
-                      <Typography variant="small" className="mb-4 text-text1">
+                      <Typography
+                        variant="h5"
+                        className="mb-4 text-left font-bold text-text2"
+                      >
                         {blog.summary || "No summary available."}
                       </Typography>
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-start justify-between">
                         <Typography variant="small" className="text-[#939090]">
                           Posted:{" "}
                           <span className="text-text1">
@@ -379,9 +379,9 @@ const Blog: React.FC = () => {
                         </Typography>
                         <Button
                           variant="text"
-                          className="min-w-0 p-0 text-[#FF7A00]"
+                          className="hidden min-w-0 p-0 text-[#FF7A00]"
                           size="sm"
-                          onClick={() => navigate(`/blog/${blog._id}`)}
+                          // onClick is removed from here as the parent div handles navigation
                         >
                           Read more...
                         </Button>
