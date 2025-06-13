@@ -44,25 +44,41 @@ interface BlogPost {
 
 const pageDetailVariants = {
   initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut", when: "beforeChildren" } },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut", when: "beforeChildren" },
+  },
   exit: { opacity: 0, y: -20, transition: { duration: 0.4 } },
 };
 
 const contentBlockVariants = {
   initial: { opacity: 0, x: -20 },
-  animate: { opacity: 1, x: 0, transition: { delay: 0.1, duration: 0.5, ease: "easeOut" } },
+  animate: {
+    opacity: 1,
+    x: 0,
+    transition: { delay: 0.1, duration: 0.5, ease: "easeOut" },
+  },
 };
 
 const relatedSectionVariants = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0, transition: { delay: 0.3, duration: 0.5, ease: "easeOut", staggerChildren: 0.1 } },
+  initial: { opacity: 0, y: 20 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.3,
+      duration: 0.5,
+      ease: "easeOut",
+      staggerChildren: 0.1,
+    },
+  },
 };
 
 const relatedCardVariants = {
-    initial: { opacity: 0, scale: 0.95 },
-    animate: { opacity: 1, scale: 1, transition: { duration: 0.4 } },
+  initial: { opacity: 0, scale: 0.95 },
+  animate: { opacity: 1, scale: 1, transition: { duration: 0.4 } },
 };
-
 
 const BlogDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -71,7 +87,6 @@ const BlogDetails: React.FC = () => {
   const [related, setRelated] = useState<BlogPost[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [initialDataLoaded, setInitialDataLoaded] = useState(false);
-
 
   const [signup, setSignup] = useState({ name: "", email: "", password: "" });
   const [submitted, setSubmitted] = useState(false);
@@ -102,10 +117,10 @@ const BlogDetails: React.FC = () => {
       }
     };
     if (id) {
-        fetchBlog();
+      fetchBlog();
     } else {
-        setError("Blog ID is missing.");
-        setInitialDataLoaded(true);
+      setError("Blog ID is missing.");
+      setInitialDataLoaded(true);
     }
   }, [id]);
 
@@ -158,12 +173,11 @@ const BlogDetails: React.FC = () => {
     return (
       <div className="flex min-h-screen flex-col bg-[#F8F8FF]">
         <NavBar />
-         <div className="min-h-[calc(100vh-200px)]"></div>
+        <div className="min-h-[calc(100vh-200px)]"></div>
         <Footer />
       </div>
     );
   }
-
 
   const keyPoints = [
     blog.summary || "Key point 1...",
@@ -203,14 +217,20 @@ const BlogDetails: React.FC = () => {
             __html: blog.content || blog.summary || "No content available.",
           }}
         />
-        <motion.div variants={contentBlockVariants} className="mb-4 flex justify-center">
+        <motion.div
+          variants={contentBlockVariants}
+          className="mb-4 flex justify-center"
+        >
           <img
             src={blog.coverImage?.url || shaking}
             alt="Blog visual"
             className="h-[200px] w-[340px] rounded-lg object-cover"
           />
         </motion.div>
-        <motion.p variants={contentBlockVariants} className="mb-4 text-base text-gray-800">
+        <motion.p
+          variants={contentBlockVariants}
+          className="mb-4 text-base text-gray-800"
+        >
           {blog.summary || "No summary available."}
         </motion.p>
         <div className="mb-6 hidden">
