@@ -11,10 +11,11 @@ import { toast } from "react-toastify";
 import { IoIosArrowBack, IoIosArrowDropleft } from "react-icons/io";
 import BtcCoreNoticeModal from "../../../components/dashboard/wallet/modal/crypro/modals/NoticeModal";
 import FundProgressBar from "../../../components/dashboard/wallet/modal/crypro/ProgressBar";
+import { NumericFormat } from "react-number-format";
 
 const CRYPTOS = [
   { label: "Bitcoin (BTC)", value: "bitcoin", img: btcImg, disabled: false },
-  { label: "USDC", value: "usdc", img: usdcImg, disabled: false },
+  { label: "USDC", value: "usd-coin", img: usdcImg, disabled: false },
   { label: "USDT", value: "usdt", img: usdtImg, disabled: false },
 ];
 
@@ -29,8 +30,8 @@ const ALL_NETWORKS = [
 
 const NETWORKS_BY_CRYPTO: Record<string, string[]> = {
   bitcoin: ["BTC_LN", "BTC"],
-  usdc: ["bsc", "etherlink", "lsk", "polygon"],
-  usdt: ["bsc", "etherlink", "lsk", "polygon"],
+  "usd-coin": ["bsc", "polygon"],
+  usdt: ["bsc", "polygon"],
 };
 
 const FundCryptoWallet: React.FC = () => {
@@ -281,17 +282,25 @@ const FundCryptoWallet: React.FC = () => {
 
         {/* Enter Amount */}
         <div className="mb-6">
-          <label className="mb-1 block text-lg font-medium">Enter Amount</label>
+          <label className="mb-1 block text-lg font-medium">
+            Enter Amount (NGN)
+          </label>
           <div className="flex items-center rounded border px-3 py-2">
-            <input
-              type="number"
-              className="flex-1 bg-transparent outline-none"
-              placeholder="₦ 100,000"
+            <span className="mr-2 text-gray-600">₦</span>
+            <NumericFormat
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              min={0}
+              thousandSeparator={true}
+              decimalScale={2}
+              placeholder="0.00"
+              onValueChange={(values) => {
+                setAmount(values.value);
+              }}
+              className="flex-1 bg-transparent outline-none"
+              disabled={isSubmitting}
             />
-            <span className="ml-2 font-bold text-green-600">NGN</span>
+          </div>
+          <div className="mt-1 text-right text-sm text-gray-500">
+            Min: ₦3,000.00 | Max: ₦4,000,000.00
           </div>
         </div>
         {/* Preview Order Button */}
@@ -299,9 +308,9 @@ const FundCryptoWallet: React.FC = () => {
           <button
             onClick={() => navigate(-1)}
             className="flex items-center transition-all duration-300 ease-in-out hover:scale-110 hover:text-text2"
+            disabled={isSubmitting}
           >
             <IoIosArrowDropleft size={25} />
-            <span className="ml-1">Back</span>{" "}
           </button>
           <button
             className="rounded-md bg-text2 px-8 py-2 font-semibold text-white
@@ -311,9 +320,9 @@ const FundCryptoWallet: React.FC = () => {
             disabled={
               !amount ||
               isSubmitting ||
-              network.disabled ||
-              (availableNetworks.length > 0 &&
-                availableNetworks.every((n) => n.disabled))
+              parseFloat(amount) < 3000 ||
+              parseFloat(amount) > 4000000 ||
+              network.disabled
             }
           >
             {isSubmitting ? "Processing..." : "Preview order"}

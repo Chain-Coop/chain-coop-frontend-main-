@@ -364,11 +364,49 @@ export const CashwyreFund = createAsyncThunk<
   CashwyreFundResponse,
   CashwyreFundPayload,
   { rejectValue: { message: string } }
->("web3/cashwyreFund", async (payload, { rejectWithValue }) => {
+>("web3/cashwyreFund", async (payload, { rejectWithValue, dispatch }) => {
   try {
+    // Only check Bitcoin wallet activation if the user is buying Bitcoin
+    if (payload.body.crypto.toLowerCase() === "bitcoin") {
+      try {
+        // Try to get crypto wallet info to check if BTC wallet exists
+        const walletResponse = await web3Services.GetCryptoWalletDetails();
+
+        // Check if Bitcoin wallet exists and is activated
+        const bitcoinWallet = walletResponse.data?.find(
+          (wallet: any) => wallet.symbol?.toLowerCase() === "btc",
+        );
+
+        if (!bitcoinWallet || !bitcoinWallet.address) {
+          // For Bitcoin only - return activation error
+          return rejectWithValue({
+            message:
+              "Bitcoin wallet not activated. Please activate your BTC wallet first.",
+          });
+        }
+      } catch (walletError) {
+        // If wallet check fails but it's only for Bitcoin, continue with the purchase
+        // This avoids blocking purchases due to wallet API issues
+        console.warn("Failed to check wallet status:", walletError);
+      }
+    }
+
+    // For all crypto types, proceed with the funding request
     const data = await web3Services.CashwyreFund(payload.body);
     return data;
   } catch (error: any) {
+    // If the error message mentions "bitcoin wallet" but we're not buying Bitcoin,
+    // provide a more appropriate error message
+    if (
+      payload.body.crypto.toLowerCase() !== "bitcoin" &&
+      error?.message?.toLowerCase().includes("bitcoin wallet")
+    ) {
+      return rejectWithValue({
+        message:
+          "An error occurred while processing your request. Please try again.",
+      });
+    }
+
     const message =
       error?.response?.data?.message ||
       error?.data?.message ||
