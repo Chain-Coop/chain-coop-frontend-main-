@@ -9,10 +9,11 @@ import usdcImg from "../../../Assets/svg/dashboard/usd.svg";
 import usdtImg from "../../../Assets/svg/dashboard/usdt.svg";
 import { IoIosArrowDropleft, IoIosArrowBack } from "react-icons/io";
 import { toast } from "react-toastify";
+import { NumericFormat } from "react-number-format";
 
 const CRYPTOS = [
   { label: "Bitcoin (BTC)", value: "bitcoin", img: btcImg, disabled: false },
-  { label: "USDC", value: "usdc", img: usdcImg, disabled: false },
+  { label: "USDC", value: "usd-coin", img: usdcImg, disabled: false },
   { label: "USDT", value: "usdt", img: usdtImg, disabled: false },
 ];
 
@@ -27,7 +28,7 @@ const ALL_NETWORKS = [
 
 const NETWORKS_BY_CRYPTO: Record<string, string[]> = {
   bitcoin: ["BTC_LN", "BTC"],
-  usdc: ["lisk", "bsc", "etherlink", "polygon"],
+  "usd-coin": ["lisk", "bsc", "etherlink", "polygon"],
   usdt: ["lisk", "bsc", "etherlink", "polygon"],
 };
 
@@ -293,21 +294,28 @@ const WithdrawToBank: React.FC = () => {
           </div>
         </div>
 
-        <div className="mb-6">
-          <label className="mb-1 block text-lg font-medium">Enter Amount</label>
+        {/* Token amount input field */}
+        <div className="mb-4">
+          <label className="mb-1 block text-base font-medium">Token Amount</label>
           <div className="flex items-center rounded border px-3 py-2">
-            <input
-              type="number"
-              className="flex-1 bg-transparent outline-none"
-              placeholder={`0.00 ${crypto.label.split(" ")[0]}`}
+            <NumericFormat
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              min={0}
-              step="any"
+              thousandSeparator={true}
+              decimalScale={crypto.value === "bitcoin" ? 8 : 6}
+              placeholder="0.00"
+              onValueChange={(values) => {
+                setAmount(values.value);
+              }}
+              className="flex-1 bg-transparent outline-none"
+              disabled={isSubmitting}
             />
-            <span className="ml-2 font-bold text-green-600">
-              {crypto.label.split(" ")[0]}
+            <span className="ml-2 text-sm font-medium text-gray-600">
+              {crypto.value.toUpperCase()}
             </span>
+          </div>
+          <div className="mt-1 text-right text-xs text-gray-500">
+            Min: {crypto.value === "bitcoin" ? "0.00050000" : "10.000000"} |
+            Max: {crypto.value === "bitcoin" ? "1.00000000" : "5,000.000000"}
           </div>
         </div>
 
