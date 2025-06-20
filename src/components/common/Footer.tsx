@@ -86,7 +86,7 @@ const Footer = () => {
               <Typography variant="h2" className="text-md font-light">
                 Chain Co-Op is a secure, registered cooperative dedicated to
                 empowering individuals with innovative savings solutions in
-                Naira and Crypto.
+                Naira.
               </Typography>
               <Typography className="text-md font-light">
                 Our platform combines cutting-edge technology with trusted
