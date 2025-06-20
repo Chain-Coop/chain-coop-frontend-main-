@@ -88,7 +88,7 @@ export const VerifykycWhatsAppOtp = async (codeData: {
 };
 
 const UpdateBvn = async (body: any) => {
-  const url = `${API_URL}/kyc/set-bvn`;
+  const url = `${API_URL}/kyc/verify-bvn`;
   try {
     const response = await axios.post(url, body, {
       headers: authHeader(),

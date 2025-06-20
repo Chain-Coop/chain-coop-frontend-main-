@@ -63,9 +63,12 @@ export const UpdateBvn = createAsyncThunk(
       const data = await KycServices.UpdateBvn(body);
       return data;
     } catch (error: any) {
-      const message = error.msg;
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue(message);
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "An unknown error occurred";
+      thunkAPI.dispatch(setMessage(errorMessage));
+      return thunkAPI.rejectWithValue(errorMessage);
     }
   },
 );

@@ -41,7 +41,35 @@ const History = () => {
     };
   };
 
-  const transactions = usersTransaction || [];
+  const getTransactionsArray = () => {
+    if (!usersTransaction) return [];
+
+    if (Array.isArray(usersTransaction)) return usersTransaction;
+    if (
+      typeof usersTransaction === "object" &&
+      usersTransaction !== null &&
+      "data" in usersTransaction &&
+      Array.isArray((usersTransaction as any).data)
+    )
+      return (usersTransaction as any).data;
+    if (
+      typeof usersTransaction === "object" &&
+      usersTransaction !== null &&
+      "transactions" in usersTransaction &&
+      Array.isArray((usersTransaction as any).transactions)
+    ) {
+      return (usersTransaction as any).transactions;
+    }
+
+    const possibleArrays = Object.values(usersTransaction).filter(
+      Array.isArray,
+    );
+    if (possibleArrays.length > 0) return possibleArrays[0];
+
+    return [];
+  };
+
+  const transactions = getTransactionsArray();
 
   return (
     <main className="">
@@ -65,10 +93,6 @@ const History = () => {
             {[...Array(3)].map((_, index) => (
               <SkeletonTransactionCard key={index} />
             ))}
-          </section>
-        ) : error ? (
-          <section className="flex h-full flex-col items-center justify-center py-[3em] text-center">
-            <p className="text-base text-red-500 md:text-lg">{error}</p>
           </section>
         ) : transactions.length > 0 ? (
           transactions

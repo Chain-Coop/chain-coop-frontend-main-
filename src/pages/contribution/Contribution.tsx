@@ -156,7 +156,7 @@ const Contribution: React.FC = () => {
 
       <main>
         <section className="mt-6 w-full md:mt-8">
-          <div className="flex justify-end">
+          {/* <div className="flex justify-end">
             <Button
               onClick={switchToCrypto}
               variant="outlined"
@@ -166,7 +166,7 @@ const Contribution: React.FC = () => {
                 Switch to Crypto
               </Typography>
             </Button>
-          </div>
+          </div> */}
 
           <article className="text-center text-gray-700">
             <motion.div

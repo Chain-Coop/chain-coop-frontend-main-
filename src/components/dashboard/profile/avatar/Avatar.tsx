@@ -63,9 +63,14 @@ const Avatar = () => {
             </label>
           </div>
           <div className="flex flex-col items-center gap-2 sm:items-start sm:gap-4">
-            <span className="text-lg font-bold">
-              {getProfile?.username || "User"}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="flex gap-2 text-lg font-bold">
+                {getProfile?.firstName || "User"}
+              </span>
+              <span className="flex gap-2 text-lg font-bold">
+                {getProfile?.lastName || ""}
+              </span>
+            </div>
             <div className="flex items-center gap-1">
               <div>
                 <img src={tier} alt="tier" className="w-5" />

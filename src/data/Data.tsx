@@ -62,12 +62,12 @@ export const sidebarLinks = [
     to: "/dashboard/wallet",
     pathsToCheck: ["/dashboard/wallet"],
   },
-  {
-    img: buy,
-    text: "Buy Crypto",
-    to: "/dashboard/wallet/fund/fund_crypto_wallet",
-    pathsToCheck: ["/dashboard/wallet/fund/fund_crypto_wallet"],
-  },
+  // {
+  //   img: buy,
+  //   text: "Buy Crypto",
+  //   to: "/dashboard/wallet/fund/fund_crypto_wallet",
+  //   pathsToCheck: ["/dashboard/wallet/fund/fund_crypto_wallet"],
+  // },
   {
     img: profile,
     text: "Profile",
