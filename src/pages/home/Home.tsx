@@ -164,14 +164,14 @@ const Home = () => {
           >
             + Add Fund
           </Button>
-          <Button
+          {/* <Button
             onClick={handleLoanClick}
             variant="text"
             className="text-md mx-auto w-full rounded-3xl bg-[#ECE6F2] py-4 text-center font-semibold text-text4 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A] transition-colors hover:bg-gray-50"
             aria-label="Get a loan"
           >
             + Get a loan
-          </Button>
+          </Button> */}
         </div>
 
         <section className="mt-8 w-full">{renderProjects()}</section>

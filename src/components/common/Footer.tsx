@@ -167,14 +167,14 @@ const Footer = () => {
           <div className="w-full border-b-2 text-text3"></div>
         </div>
 
-        <div className="mx-auto flex max-w-[90%] flex-col items-center px-3 py-8 lg:max-w-[82%] lg:flex-row lg:justify-between">
+        <div className="mx-auto flex max-w-[90%] flex-col items-center px-3 py-8 lg:max-w-[82%] lg:flex-row lg:justify-center">
           <div className="mb-4 text-center lg:mb-0 lg:text-left">
             <span className="text-text3">
               © {new Date().getFullYear()} Chain Cooperative. All rights
               reserved
             </span>
           </div>
-          <div className="flex items-center gap-6">
+          {/* <div className="flex items-center gap-6">
             <a
               href="https://twitter.com/ChainCoop"
               target="_blank"
@@ -191,7 +191,7 @@ const Footer = () => {
             >
               <img width="24" height="24" src={linkedin} alt="linkedin" />
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>

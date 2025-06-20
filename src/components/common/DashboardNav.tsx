@@ -103,14 +103,14 @@ const DashboardNav = () => {
                       className="ml-2 font-extrabold"
                       primary={item.text}
                     />
-                    {isAjo && (
+                    {/* {isAjo && (
                       <Typography
                         variant="small"
                         className="ml-auto text-xs italic text-gray-500"
                       >
                         Coming Soon
                       </Typography>
-                    )}
+                    )} */}
                   </ListItemButton>
                 </ListItem>
               );
