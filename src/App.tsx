@@ -30,7 +30,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/why-chain-co-op" element={<WhyChainCoop />} />
-        <Route path="/blog" element={<Blog />} />
+        {/* <Route path="/blog" element={<Blog />} /> */}
         <Route path="/" element={<HomePage />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/partner-with-us" element={<PartnerWithUs />} />

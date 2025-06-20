@@ -59,7 +59,7 @@ const Sidebar = () => {
                   isActive
                     ? "active !important border-l-2 border-text2 bg-Dh font-semibold"
                     : ""
-                } ${isAjo ? "opacity-50 cursor-not-allowed" : ""}`}
+                } ${isAjo ? "cursor-not-allowed opacity-50" : ""}`}
               >
                 <img
                   src={link.img}
@@ -97,8 +97,8 @@ const Sidebar = () => {
               variant="small"
               className="leading-snug tracking-tight text-howtext"
             >
-              This card grants you access to the Chain Coop Chain Network ecosystem.
-              Once activated, it becomes non-transferable.
+              This card grants you access to the Chain Coop Chain Network
+              ecosystem. Once activated, it becomes non-transferable.
             </Typography>
           </section>
         </nav>
