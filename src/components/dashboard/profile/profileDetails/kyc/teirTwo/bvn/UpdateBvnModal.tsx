@@ -12,7 +12,8 @@ import FormInput from "../../../../../../common/FormInput";
 import { useDispatch, useSelector } from "react-redux";
 import { UpdateBvn } from "../../../../../../../shared/redux/slices/kyc.slices";
 import { AppDispatch } from "../../../../../../../shared/redux/store";
-import VerifyBvn from "./VerifyBvn";
+import { toast } from "react-toastify";
+import { GetUserProfile } from "../../../../../../../shared/redux/slices/landing.slices";
 
 interface BvnModalProps {
   isOpen: boolean;
@@ -21,9 +22,8 @@ interface BvnModalProps {
 
 const UpdateBvnModal = ({ isOpen, onClose }: BvnModalProps) => {
   const dispatch: AppDispatch = useDispatch();
-  const [bvn, setBvn] = useState("");
+  const [idNumber, setIdNumber] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showVerifyModal, setShowVerifyModal] = useState(false);
 
   const { loading } = useSelector((state: any) => state.kyc) || {
     loading: false,
@@ -34,24 +34,31 @@ const UpdateBvnModal = ({ isOpen, onClose }: BvnModalProps) => {
     setIsSubmitting(true);
 
     try {
-      await dispatch(UpdateBvn({ bvn }));
-      setShowVerifyModal(true);
+      const result = await dispatch(UpdateBvn({ idNumber }));
+
+      if (UpdateBvn.fulfilled.match(result)) {
+        toast.success("BVN updated successfully!");
+        await dispatch(GetUserProfile());
+        onClose();
+      } else if (UpdateBvn.rejected.match(result)) {
+        toast.error(
+          typeof result.payload === "string" && result.payload
+            ? result.payload
+            : "Failed to update BVN",
+        );
+      }
     } catch (error) {
+      toast.error("An unexpected error occurred");
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handleVerifyClose = () => {
-    setShowVerifyModal(false);
-    onClose();
   };
 
   return (
     <>
       <Dialog
         size="md"
-        open={isOpen && !showVerifyModal}
+        open={isOpen}
         handler={onClose}
         className="py-14"
         dismiss={{ enabled: false }}
@@ -78,8 +85,8 @@ const UpdateBvnModal = ({ isOpen, onClose }: BvnModalProps) => {
             <FormInput
               label="Enter your BVN"
               type="text"
-              value={bvn}
-              onChange={(e) => setBvn(e.target.value)}
+              value={idNumber}
+              onChange={(e) => setIdNumber(e.target.value)}
               labelClassName="text-black text-text2"
               autoComplete="off"
               className="rounded-lg"
@@ -103,12 +110,6 @@ const UpdateBvnModal = ({ isOpen, onClose }: BvnModalProps) => {
           </DialogFooter>
         </form>
       </Dialog>
-
-      <VerifyBvn
-        bvn={bvn}
-        isOpen={showVerifyModal}
-        onClose={handleVerifyClose}
-      />
     </>
   );
 };

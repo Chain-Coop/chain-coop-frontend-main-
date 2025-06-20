@@ -34,8 +34,8 @@ const Wallet = () => {
           </DashboardHeader>
         </header>
         <div>
-          <section className="text-center text-text4">
-            <div className="flex justify-end py-[1.5em]">
+          <section className="mt-9 text-center text-text4">
+            {/* <div className="flex justify-end py-[1.5em]">
               <Button
                 onClick={switchToCrypto}
                 variant="outlined"
@@ -45,7 +45,7 @@ const Wallet = () => {
                   Switch to Crypto Wallet
                 </Typography>
               </Button>
-            </div>
+            </div> */}
 
             <div className="rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A] sm:p-16">
               <BalanceDisplay

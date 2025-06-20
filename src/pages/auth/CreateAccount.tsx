@@ -169,11 +169,15 @@ const CreateAccount = () => {
             Create Your Account
           </Typography>
           <Typography className="font-medium text-howtext">
-            Start building your investment portfolio and track your growth
+            Start building your investment portfolio and track your growth.
+          </Typography>
+          <Typography className="font-medium text-howtext">
+            Ensure you provide your legal name as it appears on your government
+            issued ID
           </Typography>
         </div>
 
-        <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+        <form className="mt-5 flex flex-col gap-6" onSubmit={handleSubmit}>
           <FormInput
             label="First Name"
             type="text"

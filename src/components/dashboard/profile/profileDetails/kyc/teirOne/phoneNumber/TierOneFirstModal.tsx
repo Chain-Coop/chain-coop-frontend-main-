@@ -34,6 +34,7 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
   const { isLoading } = useSelector((state: RootState) => state.transaction);
 
   const userId = profileDetails?.id;
+  const userTier = profileDetails?.Tier || 0;
 
   const handleTier2Click = async () => {
     try {
@@ -46,6 +47,46 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
       console.error("KYC Tier 2 submission failed:", error);
     }
   };
+
+  const getTierStatus = (tier: number) => {
+    if (userTier >= tier) {
+      return {
+        isCompleted: true,
+        isAccessible: false,
+        buttonContent: (
+          <div className="rounded bg-green-500 px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-green-600">
+            Done
+          </div>
+        ),
+        containerClass: "cursor-default",
+      };
+    } else if (userTier === tier - 1) {
+      return {
+        isCompleted: false,
+        isAccessible: true,
+        buttonContent: (
+          <button className="rounded-full bg-gray-100 p-2">
+            <CircleArrow />
+          </button>
+        ),
+        containerClass: "cursor-pointer",
+      };
+    } else {
+      return {
+        isCompleted: false,
+        isAccessible: false,
+        buttonContent: (
+          <button className="rounded-full bg-gray-100 p-2">
+            <CircleArrow />
+          </button>
+        ),
+        containerClass: "cursor-not-allowed opacity-50",
+      };
+    }
+  };
+
+  const tier1Status = getTierStatus(1);
+  const tier2Status = getTierStatus(2);
 
   return (
     <Dialog size="sm" open={isOpen} handler={onClose} className="bg-white">
@@ -78,7 +119,7 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
               variant="h4"
               className="text-base font-bold leading-tight text-black sm:text-sm md:text-lg"
             >
-              Complete the Tier 0 for KYC Verification
+              Complete the Tier for KYC Verification
             </Typography>
           </header>
           <article className="px-2 text-center sm:px-3">
@@ -89,30 +130,8 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
         </div>
 
         <div className="flex flex-col gap-4">
-          {/* <div className="flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A]">
-            <div className="flex flex-col gap-1">
-              <Typography
-                variant="h6"
-                className="text-sm font-bold text-gray-900"
-              >
-                {isVerified ? "Current Limit" : "Manage Limit"}
-              </Typography>
-              <Typography
-                variant="small"
-                className="text-xs font-normal text-gray-500"
-              >
-                Daily Transaction Limit: {isVerified ? "N20,000" : "N0.00"}
-              </Typography>
-            </div>
-            <div className="rounded bg-red-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-600">
-              Upgrade
-            </div>
-          </div> */}
-
           <div
-            className={`flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A] ${
-              !isVerified ? "cursor-pointer" : ""
-            }`}
+            className={`flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A] ${tier1Status.containerClass}`}
           >
             <div className="flex flex-col gap-1">
               <Typography
@@ -134,22 +153,12 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
                 Daily Transaction Limit: N50,000.00
               </Typography>
             </div>
-            {isVerified ? (
-              <div className="rounded bg-green-500 px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-green-600">
-                Done
-              </div>
-            ) : (
-              <button className="rounded-full bg-gray-100 p-2">
-                <CircleArrow />
-              </button>
-            )}
+            {tier1Status.buttonContent}
           </div>
 
           <div
-            className={`flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A] ${
-              !isVerified ? "cursor-not-allowed opacity-50" : "cursor-pointer"
-            }`}
-            onClick={isVerified ? onBvnStepClick : undefined}
+            className={`flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A] ${tier2Status.containerClass}`}
+            onClick={tier2Status.isAccessible ? onBvnStepClick : undefined}
           >
             <div className="flex flex-col gap-1">
               <Typography
@@ -171,12 +180,14 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
                 Daily Transaction Limit: N200,000.00
               </Typography>
             </div>
-            <Button className="rounded-full bg-gray-100 p-2">
-              <CircleArrow />
-            </Button>
+            {tier2Status.buttonContent}
           </div>
 
-          <div className="flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A]">
+          <div
+            className={`flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A] ${
+              userTier >= 2 ? "cursor-pointer" : "cursor-not-allowed opacity-50"
+            }`}
+          >
             <div className="flex flex-col gap-1">
               <Typography
                 variant="h6"
@@ -193,9 +204,9 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
             </div>
             <Button
               loading={isLoading}
-              onClick={handleTier2Click}
+              onClick={userTier >= 2 ? handleTier2Click : undefined}
               className="flex items-center justify-center rounded-full bg-gray-100 p-2"
-              disabled={isLoading}
+              disabled={isLoading || userTier < 2}
             >
               {!isLoading && <CircleArrow />}
             </Button>
