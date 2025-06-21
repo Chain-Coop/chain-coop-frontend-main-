@@ -12,7 +12,7 @@ const IdVerification = () => {
   const { profileDetails } = useUserProfile();
 
   const isUserVerified =
-    profileDetails?.Tier === 1 && profileDetails?.isVerified === true;
+    (profileDetails?.Tier ?? 0) >= 1 && profileDetails?.isVerified === true;
 
   const isBvnVerified = profileDetails?.Tier === 2;
 

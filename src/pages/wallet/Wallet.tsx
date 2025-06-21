@@ -35,18 +35,6 @@ const Wallet = () => {
         </header>
         <div>
           <section className="mt-9 text-center text-text4">
-            {/* <div className="flex justify-end py-[1.5em]">
-              <Button
-                onClick={switchToCrypto}
-                variant="outlined"
-                className="flex transform items-center rounded-lg border border-text2 normal-case text-text2 transition-all duration-300 hover:scale-105 active:scale-95"
-              >
-                <Typography className="text-sm font-medium">
-                  Switch to Crypto Wallet
-                </Typography>
-              </Button>
-            </div> */}
-
             <div className="rounded-3xl border-[2px] border-gray-200 bg-white p-8 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A] sm:p-16">
               <BalanceDisplay
                 title="Naira Wallet Balance"

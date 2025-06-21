@@ -104,8 +104,8 @@ const WhyChainCoop = () => {
                   Chain Co-op provides a secure platform for members to save,
                   hedge against inflation, and build wealth. We're breaking down
                   traditional wealth-building barriers and introducing a digital
-                  saving culture in Naira and Crypto, putting financial
-                  empowerment within everyone's reach.
+                  saving culture with crypto, putting financial empowerment
+                  within everyone's reach.
                 </MotionTypography>
               </div>
             </div>
@@ -252,10 +252,9 @@ const WhyChainCoop = () => {
                     variant="small"
                     className="text-center text-sm font-normal lg:text-start"
                   >
-                    Choose how you want to save—whether in dollars, naira,
-                    cryptocurrencies, or even gold. Our platform adapts to your
-                    preferences, giving you the freedom to diversify your
-                    savings like never before.
+                    Choose how you want to save—whether in dollars, crypto, or
+                    even gold. Our platform adapts to your preferences, giving
+                    you the freedom to diversify your savings like never before.
                   </Typography>
                 </div>
                 <div className="order-1 mt-4 md:order-1 md:mt-0">
@@ -345,10 +344,9 @@ const WhyChainCoop = () => {
                     variant="small"
                     className="text-center text-sm font-normal lg:text-start"
                   >
-                    Choose how you want to save—in dollars, naira,
-                    cryptocurrencies, or even gold. Our platform adapts to your
-                    preferences, giving you the freedom to diversify your
-                    savings like never before.
+                    Choose how you want to save—in dollars, crypto, or even
+                    gold. Our platform adapts to your preferences, giving you
+                    the freedom to diversify your savings like never before.
                   </Typography>
                 </div>
                 <div className="order-1 mt-4 md:order-1 md:mt-0">

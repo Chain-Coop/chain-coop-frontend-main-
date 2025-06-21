@@ -11,11 +11,10 @@ import usdt from "../../../Assets/svg/dashboard/usdt.svg";
 import weth from "../../../Assets/svg/dashboard/ethereum.svg";
 import gnosis from "../../../Assets/svg/dashboard/gnosis.svg";
 import polygon from "../../../Assets/svg/dashboard/polygon-matic-logo.svg";
-import { Button, Typography } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 import {
   useAllUserTokens,
   useCryptoWallet,
-  useCryptoWalletDetails,
   useTotalBalance,
   useBitcoinAccount,
 } from "../../../shared/Hooks/useBalance";
@@ -129,7 +128,6 @@ const CryptoMain = () => {
     error: errorUserTokens,
   } = useAllUserTokens();
   const { profileDetails, fetchUserProfile } = useUserProfile();
-  const { cryptoWalletDetails } = useCryptoWalletDetails();
   const {
     isBitcoinAccountActivated,
     bitcoinActivationLoading,
@@ -224,8 +222,6 @@ const CryptoMain = () => {
     );
   }, [allTokensFromSupportedNetworks]);
 
-  const switchToNaira = () => navigate("/dashboard/wallet");
-
   const activateGenericWallet = async (
     e: React.MouseEvent<HTMLButtonElement>,
   ) => {
@@ -273,17 +269,6 @@ const CryptoMain = () => {
                 </div>
               </>
             )}
-            <div className="ml-auto flex">
-              <Button
-                onClick={switchToNaira}
-                variant="outlined"
-                className="transform rounded-lg border border-text2 normal-case text-text2 transition-all duration-300 hover:scale-105 active:scale-95"
-              >
-                <Typography className="text-sm font-medium">
-                  Switch to Naira Wallet
-                </Typography>
-              </Button>
-            </div>
           </div>
 
           {profileDetails?.isWalletActivated === true ? (

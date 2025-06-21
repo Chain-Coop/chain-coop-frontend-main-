@@ -156,18 +156,6 @@ const Contribution: React.FC = () => {
 
       <main>
         <section className="mt-6 w-full md:mt-8">
-          {/* <div className="flex justify-end">
-            <Button
-              onClick={switchToCrypto}
-              variant="outlined"
-              className="mb-6 flex transform items-center rounded-lg border border-text2 normal-case text-text2 transition-all duration-300 hover:scale-105 active:scale-95"
-            >
-              <Typography className="text-sm font-medium">
-                Switch to Crypto
-              </Typography>
-            </Button>
-          </div> */}
-
           <article className="text-center text-gray-700">
             <motion.div
               initial={{ opacity: 0, y: -20 }}

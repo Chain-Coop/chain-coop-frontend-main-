@@ -62,12 +62,12 @@ export const sidebarLinks = [
     to: "/dashboard/wallet",
     pathsToCheck: ["/dashboard/wallet"],
   },
-  // {
-  //   img: buy,
-  //   text: "Buy Crypto",
-  //   to: "/dashboard/wallet/fund/fund_crypto_wallet",
-  //   pathsToCheck: ["/dashboard/wallet/fund/fund_crypto_wallet"],
-  // },
+  {
+    img: buy,
+    text: "Buy Crypto",
+    to: "/dashboard/wallet/fund/fund_crypto_wallet",
+    pathsToCheck: ["/dashboard/wallet/fund/fund_crypto_wallet"],
+  },
   {
     img: profile,
     text: "Profile",
@@ -111,17 +111,17 @@ export const dashboardNav = [
 
 export const becomeData = [
   {
-    title: "Save in Naira",
+    title: "Save in Crypto",
     paragraph:
-      "Build a culture of saving and join others in building communal wealth by saving in Naira.",
+      "Build a culture of saving and join others in building communal wealth by saving in crypto.",
   },
   {
     title: "Stay Safe from Inflation with USDT, USDC, BTC, etc.",
     paragraph:
-      "Beat inflation by saving in stablecoins and other cryptos. Automate your savings from Naira to Crypto.",
+      "Beat inflation by saving in stablecoins and other cryptos. Automate your savings in digital currency.",
   },
   {
-    title: "Save a Percentage of Your Naira in Crypto",
+    title: "Save a Percentage of Your Funds in Crypto",
     paragraph:
       "Choose what portion of your savings you want to be converted into crypto.",
   },

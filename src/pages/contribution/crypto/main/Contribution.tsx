@@ -35,8 +35,6 @@ const CryptoSavings: React.FC = () => {
     setIsContributionVisible,
   } = useTotalContributionBalanceCrypto(30000);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [savingsType, setSavingsType] = useState<"naira" | "crypto">("crypto");
   const [isFundModalOpen, setIsFundModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -89,20 +87,8 @@ const CryptoSavings: React.FC = () => {
     null,
   );
 
-  const handleSavingsTypeChange = (type: "naira" | "crypto") => {
-    setSavingsType(type);
-    if (type === "naira") {
-      navigate("/dashboard/contribution");
-    }
-    setIsModalOpen(false);
-  };
-
   const handleContributionTypeChange = (type: "auto" | "one-time") => {
     setContributionType(type);
-  };
-
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
   };
 
   const handleApplyFilters = useCallback((newFilters: SavingsFilters) => {
@@ -211,10 +197,6 @@ const CryptoSavings: React.FC = () => {
     }
   };
 
-  const switchToNaira = () => {
-    navigate("/dashboard/contribution");
-  };
-
   return (
     <motion.main
       initial={{ opacity: 0 }}
@@ -227,17 +209,6 @@ const CryptoSavings: React.FC = () => {
 
       <main>
         <section className="mt-6 w-full md:mt-8">
-          <div className="flex justify-end">
-            <Button
-              onClick={switchToNaira}
-              variant="outlined"
-              className="mb-6 flex transform items-center rounded-lg border border-text2 normal-case text-text2 transition-all duration-300 hover:scale-105 active:scale-95"
-            >
-              <Typography className="text-sm font-medium">
-                Switch to Naira
-              </Typography>
-            </Button>
-          </div>
           <article className="text-center text-gray-700">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
