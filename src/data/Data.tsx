@@ -7,10 +7,8 @@ import person1 from "../Assets/png/home/Co-op-PX1.png";
 import person2 from "../Assets/png/home/Co-op-PX2.png";
 import person3 from "../Assets/png/home/Co-op-PX3.png";
 import wallet from "../Assets/svg/dashboard/wallet.svg";
-import buy from "../Assets/svg/dashboard/wallet/buy.svg";
 import home from "../Assets/svg/dashboard/home.svg";
 import contribution from "../Assets/svg/dashboard/contribution.svg";
-import ajo from "../Assets/svg/dashboard/ajo.svg";
 import profile from "../Assets/svg/dashboard/Profile.svg";
 import temi from "../Assets/png/footer/team/png/temi.png";
 import heather from "../Assets/png/footer/team/png/Heather.png";
@@ -28,12 +26,11 @@ import financialManagement from "../../src/Assets/svg/financial_management.svg";
 import newsLetter from "../../src/Assets/svg/new_letter.svg";
 import userManagement from "../../src/Assets/svg/user_management.svg";
 import accessControl from "../../src/Assets/svg/AccessControl.svg";
-import logout from "../../src/Assets/svg/logout.svg";
 
 export const navBarLinks = [
   { to: "/why-chain-co-op", text: "Why Chain Co-op" },
   { to: "/partner-with-us", text: "Partner with us" },
-  { to: "/blog", text: "Blog" },
+  // { to: "/blog", text: "Blog" },
   { to: "/contact", text: "Contact" },
 ];
 
@@ -51,23 +48,20 @@ export const sidebarLinks = [
     pathsToCheck: ["/dashboard/contribution"],
   },
   {
-    img: ajo,
-    text: "Ajo",
-    to: "/dashboard/ajo",
-    pathsToCheck: ["/dashboard/ajo"],
-  },
-  {
     img: wallet,
     text: "Wallet",
     to: "/dashboard/wallet",
     pathsToCheck: ["/dashboard/wallet"],
   },
+<<<<<<< HEAD
   {
     img: buy,
     text: "Buy Crypto",
     to: "/dashboard/wallet/fund/fund_crypto_wallet",
     pathsToCheck: ["/dashboard/wallet/fund/fund_crypto_wallet"],
   },
+=======
+>>>>>>> f09838306ba95944619fd460a897adf872c4aec1
   {
     img: profile,
     text: "Profile",
@@ -88,19 +82,9 @@ export const dashboardNav = [
     to: "/dashboard/contribution",
   },
   {
-    img: ajo,
-    text: "Ajo",
-    to: "/dashboard/ajo",
-  },
-  {
     img: wallet,
     text: "Wallet",
     to: "/dashboard/wallet",
-  },
-  {
-    img: buy,
-    text: "Buy Crypto",
-    to: "/dashboard/wallet/fund/fund_crypto_wallet",
   },
   {
     img: profile,
@@ -111,19 +95,32 @@ export const dashboardNav = [
 
 export const becomeData = [
   {
+<<<<<<< HEAD
     title: "Save in Crypto",
     paragraph:
       "Build a culture of saving and join others in building communal wealth by saving in crypto.",
+=======
+    title: "Save Seamlessly",
+    paragraph:
+      "Build a culture of saving and join others in building communal wealth through smart savings.",
+>>>>>>> f09838306ba95944619fd460a897adf872c4aec1
   },
   {
-    title: "Stay Safe from Inflation with USDT, USDC, BTC, etc.",
+    title: "Protect Your Funds from Inflation",
     paragraph:
+<<<<<<< HEAD
       "Beat inflation by saving in stablecoins and other cryptos. Automate your savings in digital currency.",
   },
   {
     title: "Save a Percentage of Your Funds in Crypto",
+=======
+      "Beat inflation by saving in stable options. Automate your savings and protect your purchasing power.",
+  },
+  {
+    title: "Customize Your Savings Strategy",
+>>>>>>> f09838306ba95944619fd460a897adf872c4aec1
     paragraph:
-      "Choose what portion of your savings you want to be converted into crypto.",
+      "Choose how you want your funds saved with flexible, personalized saving options.",
   },
   {
     title: "Save Together, Grow Together",

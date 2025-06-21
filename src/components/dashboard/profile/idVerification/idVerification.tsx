@@ -10,7 +10,6 @@ import { useUserProfile } from "../../../../shared/Hooks/useUserProfile";
 
 const IdVerification = () => {
   const { profileDetails } = useUserProfile();
-
   const isUserVerified =
     (profileDetails?.Tier ?? 0) >= 1 && profileDetails?.isVerified === true;
 

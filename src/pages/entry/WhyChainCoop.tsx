@@ -104,8 +104,13 @@ const WhyChainCoop = () => {
                   Chain Co-op provides a secure platform for members to save,
                   hedge against inflation, and build wealth. We're breaking down
                   traditional wealth-building barriers and introducing a digital
+<<<<<<< HEAD
                   saving culture with crypto, putting financial empowerment
                   within everyone's reach.
+=======
+                  saving culture, putting financial empowerment within
+                  everyone's reach.
+>>>>>>> f09838306ba95944619fd460a897adf872c4aec1
                 </MotionTypography>
               </div>
             </div>
@@ -252,7 +257,11 @@ const WhyChainCoop = () => {
                     variant="small"
                     className="text-center text-sm font-normal lg:text-start"
                   >
+<<<<<<< HEAD
                     Choose how you want to save—whether in dollars, crypto, or
+=======
+                    Choose how you want to save—whether in dollars, naira, or
+>>>>>>> f09838306ba95944619fd460a897adf872c4aec1
                     even gold. Our platform adapts to your preferences, giving
                     you the freedom to diversify your savings like never before.
                   </Typography>
@@ -344,9 +353,15 @@ const WhyChainCoop = () => {
                     variant="small"
                     className="text-center text-sm font-normal lg:text-start"
                   >
+<<<<<<< HEAD
                     Choose how you want to save—in dollars, crypto, or even
                     gold. Our platform adapts to your preferences, giving you
                     the freedom to diversify your savings like never before.
+=======
+                    Choose how you want to save—in dollars, naira, or even gold.
+                    Our platform adapts to your preferences, giving you the
+                    freedom to diversify your savings like never before.
+>>>>>>> f09838306ba95944619fd460a897adf872c4aec1
                   </Typography>
                 </div>
                 <div className="order-1 mt-4 md:order-1 md:mt-0">
