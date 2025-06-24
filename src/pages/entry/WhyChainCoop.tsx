@@ -16,8 +16,8 @@ import box3 from "../../Assets/png/home/box3.png";
 import box4 from "../../Assets/png/home/box4.png";
 import box5 from "../../Assets/png/home/box5.png";
 import NavBar from "../../components/common/NavBar";
-import { MotionTypography } from "../../components/common/motionTypography";
 import Footer from "../../components/common/Footer";
+import { MotionTypography } from "../../components/common/motionTypography";
 
 const WhyChainCoop = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -245,17 +245,18 @@ const WhyChainCoop = () => {
                     variant="h5"
                     className="text-center text-xl text-text2 lg:text-start lg:text-lg"
                   >
-                    Save in Multiple Currencies
+                    Flexible Naira Savings
                   </Typography>
                   <Typography
                     variant="small"
                     className="text-center text-sm font-normal lg:text-start"
                   >
-                    Choose how you want to save—whether in dollars, naira, or
-                    even gold. Our platform adapts to your preferences, giving
-                    you the freedom to diversify your savings like never before.
+                    Choose how you want to save with full control. Whether
+                    daily, weekly, or monthly, our system lets you build your
+                    Naira savings your own way.
                   </Typography>
                 </div>
+
                 <div className="order-1 mt-4 md:order-1 md:mt-0">
                   <img
                     src={box2}
@@ -337,17 +338,18 @@ const WhyChainCoop = () => {
                     variant="h5"
                     className="text-center text-xl text-text2 lg:text-start lg:text-lg"
                   >
-                    Save in Multiple Currencies
+                    Save Conveniently in Naira
                   </Typography>
                   <Typography
                     variant="small"
                     className="text-center text-sm font-normal lg:text-start"
                   >
-                    Choose how you want to save—in dollars, naira, or even gold.
-                    Our platform adapts to your preferences, giving you the
-                    freedom to diversify your savings like never before.
+                    Choose how you want to save—daily, weekly, or monthly in
+                    Naira. Our platform gives you the flexibility to grow your
+                    savings in a way that suits your lifestyle.
                   </Typography>
                 </div>
+
                 <div className="order-1 mt-4 md:order-1 md:mt-0">
                   <img
                     src={box5}
