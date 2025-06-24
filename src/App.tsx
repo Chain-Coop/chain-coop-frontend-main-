@@ -22,7 +22,6 @@ import PrivacyPolicy from "./pages/footer/PrivacyPolicy";
 import VerifyEmail from "./pages/auth/verifyEmail";
 import VerifyPhoneNumber from "./pages/auth/verifyPhoneNumber";
 import GoogleFormPage from "./pages/auth/googleFormPage";
-import DashboardRoutes from "./adminPages/routes/dashboardRoutes";
 import BlogDetails from "./pages/entry/BlogDetails";
 
 function App() {
@@ -56,7 +55,6 @@ function App() {
         <Route path="/form" element={<GoogleFormPage />} />
         <Route element={<ProtectedRoutes />}>
           <Route path="/dashboard/*" element={<Dashboard />} />
-          <Route path="/admin/*" element={<DashboardRoutes />} />
         </Route>
         <Route path="/blog/:id" element={<BlogDetails />} />
         <Route path="*" element={<NotFound />} />

@@ -3,25 +3,17 @@ import { Route, Routes } from "react-router-dom";
 import "../../../../src/App.css";
 import DashboardNav from "../../common/DashboardNav";
 import Sidebar from "./Sidebar";
-import ContributionDetails from "../../../pages/contribution/ViewContribution";
 import CryptoContributionDetails from "../../../pages/contribution/crypto/ViewContribution";
 import CryptoContribution from "../../../pages/contribution/crypto/main/Contribution";
 import Right from "../rightbar/Right";
-import Purpose from "../../../pages/contribution/naira/auto/Purpose";
-import SavingsPlan from "../../../pages/contribution/naira/auto/SavingsPlan";
 import StartDate from "../../../pages/contribution/naira/auto/StartDate";
-import SavingsAmount from "../../../pages/contribution/naira/auto/SavingsAmount";
-import WithdrawContribution from "../../../pages/contribution/withdrawContribution/WithdrawContribution";
 import WithdrawCryptoContribution from "../../../pages/contribution/withdrawContribution/WithdrawCryptoContribution";
 import WithdrawCryptoWallet from "../../../pages/wallet/crypto/withdraw";
 import WithdrawToBank from "../../../pages/wallet/crypto/WithdrawToBank";
 import WithdrawCryptoPreview from "../../../pages/wallet/crypto/WithdrawCryptoPreview";
 import ConfirmWithdrawal from "../../../pages/contribution/withdrawContribution/ConfirmAmount";
 import ConfirmCryptoWithdrawal from "../../../pages/contribution/withdrawContribution/ConfirmCryptoAmount";
-import ContributionCurrencyType from "../../../pages/contribution/naira/auto/ContributionCurrencyType";
 import OneTimeCurrencyType from "../../../pages/contribution/naira/oneTimePlan/ContributionCurrencyType";
-import OneTimePurpose from "../../../pages/contribution/naira/oneTimePlan/Purpose";
-import OneTimeAmount from "../../../pages/contribution/naira/oneTimePlan/SavingsAmount";
 import OneTimeStartDate from "../../../pages/contribution/naira/oneTimePlan/StartDate";
 import FundCryptoWallet from "../../../pages/wallet/fund/FundCryptoWallet";
 import FundCryptoWalletPreview from "../../../pages/wallet/fund/FundCryptoWalletPreview";
@@ -33,18 +25,12 @@ import SavingsDetail from "../../../pages/ajo/savings_detail/page";
 import OtherGroupDetails from "../../../pages/ajo/details/other_group_details";
 
 import Preview from "../../../pages/contribution/naira/auto/Preview";
-import Contribution from "../../../pages/contribution/Contribution";
 import Notification from "../../../pages/notification/Notification";
 import CryptoMain from "../../../pages/wallet/crypto/CryptoMain";
 import FundWallet from "../../../pages/wallet/fund/FundWallet";
 import VerifyTransaction from "../../../pages/wallet/fund/VerifyTransaction";
-import VerifyAccount from "../../../pages/wallet/withdraw/VerifyAccount";
-import SelectAccount from "../../../pages/wallet/withdraw/SelectAccount";
-import BankAccount from "../../../pages/wallet/withdraw/BankAccount";
 import SelectBank from "../../../pages/wallet/withdraw/SelectBank";
-import Withdraw from "../../../pages/wallet/withdraw/Withdraw";
 import Profile from "../../../pages/profile/profile";
-import Wallet from "../../../pages/wallet/Wallet";
 import Home from "../../../pages/home/Home";
 import ManageCards from "../../../pages/profile/ManageCards";
 import CreateOpenGroup from "../../../pages/ajo/open_group/create_open_group";
@@ -83,41 +69,19 @@ const Dashboard = () => {
         <Routes>
           <Route path="/" element={<Home />} />
 
-          <Route path="contribution" element={<Contribution />} />
-          <Route
-            path="contribution/contribution_details"
-            element={<ContributionDetails />}
-          />
+          <Route path="contribution" element={<CryptoContribution />} />
 
-          <Route
-            path="contribution/contribution_curency_type"
-            element={<ContributionCurrencyType />}
-          />
-          <Route path="contribution/purpose" element={<Purpose />} />
-          <Route path="contribution/plan" element={<SavingsPlan />} />
           <Route path="contribution/date" element={<StartDate />} />
-          <Route path="contribution/amount" element={<SavingsAmount />} />
 
-          <Route path="wallet/*" element={<Wallet />} />
+          <Route path="wallet/*" element={<CryptoMain />} />
           <Route path="wallet/crypto_wallet" element={<CryptoMain />} />
-          <Route path="wallet/withdraw" element={<Withdraw />} />
           <Route path="wallet/select-bank" element={<SelectBank />} />
-          <Route path="wallet/bank-account" element={<BankAccount />} />
-          <Route path="wallet/select-account" element={<SelectAccount />} />
-          <Route path="wallet/verify-account" element={<VerifyAccount />} />
 
           <Route
             path="contribution/one_time/contribution_curency_type"
             element={<OneTimeCurrencyType />}
           />
-          <Route
-            path="contribution/one_time/purpose"
-            element={<OneTimePurpose />}
-          />
-          <Route
-            path="contribution/one_time/amount"
-            element={<OneTimeAmount />}
-          />
+
           <Route
             path="contribution/one_time/date"
             element={<OneTimeStartDate />}
@@ -150,11 +114,6 @@ const Dashboard = () => {
           />
 
           <Route path="/contribution/preview" element={<Preview />} />
-
-          <Route
-            path="/contribution/withdraw_contribution"
-            element={<WithdrawContribution />}
-          />
 
           <Route
             path="/contribution/withdraw_contribution/confirm-amount"

@@ -36,8 +36,14 @@ const HeroSection = () => {
             variant="small"
             className="mb-8 font-normal tracking-tight text-gray-600 lg:text-lg"
           >
+<<<<<<< HEAD
+            Your all-in-one platform for automated savings <br /> in crypto and
+            digital assets
+=======
             Your all-in-one platform for automated savings in <br /> Naira
+>>>>>>> f09838306ba95944619fd460a897adf872c4aec1
           </MotionTypography>
+
           <motion.div
             variants={container(1)}
             initial="hidden"
