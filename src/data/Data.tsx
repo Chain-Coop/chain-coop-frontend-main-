@@ -53,15 +53,6 @@ export const sidebarLinks = [
     to: "/dashboard/wallet",
     pathsToCheck: ["/dashboard/wallet"],
   },
-<<<<<<< HEAD
-  {
-    img: buy,
-    text: "Buy Crypto",
-    to: "/dashboard/wallet/fund/fund_crypto_wallet",
-    pathsToCheck: ["/dashboard/wallet/fund/fund_crypto_wallet"],
-  },
-=======
->>>>>>> f09838306ba95944619fd460a897adf872c4aec1
   {
     img: profile,
     text: "Profile",
@@ -95,37 +86,24 @@ export const dashboardNav = [
 
 export const becomeData = [
   {
-<<<<<<< HEAD
-    title: "Save in Crypto",
-    paragraph:
-      "Build a culture of saving and join others in building communal wealth by saving in crypto.",
-=======
     title: "Save Seamlessly",
     paragraph:
-      "Build a culture of saving and join others in building communal wealth through smart savings.",
->>>>>>> f09838306ba95944619fd460a897adf872c4aec1
+      "Build a habit of saving and join others in creating shared wealth through smart contributions.",
   },
   {
     title: "Protect Your Funds from Inflation",
     paragraph:
-<<<<<<< HEAD
-      "Beat inflation by saving in stablecoins and other cryptos. Automate your savings in digital currency.",
-  },
-  {
-    title: "Save a Percentage of Your Funds in Crypto",
-=======
-      "Beat inflation by saving in stable options. Automate your savings and protect your purchasing power.",
+      "Beat inflation by saving through reliable methods. Automate your savings and maintain spending power.",
   },
   {
     title: "Customize Your Savings Strategy",
->>>>>>> f09838306ba95944619fd460a897adf872c4aec1
     paragraph:
-      "Choose how you want your funds saved with flexible, personalized saving options.",
+      "Decide how you want your money saved with flexible, tailored saving preferences just for you.",
   },
   {
     title: "Save Together, Grow Together",
     paragraph:
-      "Create savings cycles with friends and family you trust. Our innovative platform makes it seamless.",
+      "Start savings groups with people you trust. Our easy-to-use platform helps you manage everything.",
   },
 ];
 
