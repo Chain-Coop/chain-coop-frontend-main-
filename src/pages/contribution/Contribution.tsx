@@ -84,13 +84,9 @@ const Contribution: React.FC = () => {
     setContributionType(type);
   };
 
-  const switchToCrypto = () => {
-    navigate("/dashboard/contribution/main/crypto_contribution");
-  };
-
   const filteredContributions = useMemo(() => {
     const contributions = usersContributionHistory?.contributions || [];
-    const currentDate = new Date("2025-05-20T08:12:00+01:00");
+    const currentDate = new Date();
 
     return contributions.filter((contribution: Contribution) => {
       const matchesSearch = contribution.savingsCategory
@@ -106,8 +102,10 @@ const Contribution: React.FC = () => {
         contribution.savingsType === filters.lockType;
 
       const isInactive =
-        new Date(contribution.endDate) < currentDate &&
+        contribution.withdrawalDate &&
+        new Date(contribution.withdrawalDate) < currentDate &&
         contribution.balance === 0;
+
       const statusMatch =
         filters.status === "all" ||
         (filters.status === "active" && !isInactive) ||
