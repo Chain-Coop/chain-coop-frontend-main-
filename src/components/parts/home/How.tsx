@@ -31,7 +31,7 @@ const How = () => {
       steps: [
         "Set up recurring deposits.",
         "Track performance in real-time.",
-        "Earn rewards and watch your wealth grow.",
+        "Contribute together and grow purchasing power.",
       ],
     },
   ];

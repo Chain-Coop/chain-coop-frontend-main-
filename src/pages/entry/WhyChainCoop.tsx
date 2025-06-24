@@ -72,9 +72,9 @@ const WhyChainCoop = () => {
                 className="mx-auto mt-4 text-sm font-normal text-gray-500 md:text-base lg:max-w-2xl lg:text-base"
               >
                 Chain Co-op provides a secure platform for members to save,
-                hedge against inflation, and access loans, creating a
-                cooperative savings ecosystem focused on members' security and
-                stability.
+                hedge against inflation, and access financial opportunities,
+                creating a cooperative savings ecosystem focused on members'
+                security and stability.
               </Typography>
             </div>
           </section>
@@ -180,9 +180,8 @@ const WhyChainCoop = () => {
                   Wealth creation, empowerment, and inclusion are at the core of
                   what we stand for. Our values guide what we do at Chain Co-op.
                   We are focused on building a secure and transparent savings
-                  platform that bridges traditional and digital finance,
-                  empowering individuals and communities to achieve financial
-                  stability and growth.
+                  platform that empowers individuals and communities to achieve
+                  financial stability and growth.
                 </MotionTypography>
               </div>
             </div>
@@ -220,21 +219,21 @@ const WhyChainCoop = () => {
                     variant="h5"
                     className="text-center text-xl text-text2 lg:text-start lg:text-lg"
                   >
-                    Blockchain-Powered Security
+                    Industry-Leading Digital Security
                   </Typography>
                   <Typography
                     variant="small"
                     className="text-center text-sm font-normal lg:text-start"
                   >
-                    Your savings are protected by cutting-edge blockchain
-                    technology, ensuring transparency, security, and peace of
+                    Your savings are protected using advanced digital security
+                    systems, ensuring transparency, protection, and peace of
                     mind. Say goodbye to data breaches and unauthorized access.
                   </Typography>
                 </div>
                 <div className="order-1 mt-4 md:order-2 md:mt-0">
                   <img
                     src={box1}
-                    alt="Blockchain Security"
+                    alt="Security"
                     className="w-full max-w-[300px] md:max-w-none"
                   />
                 </div>
@@ -311,14 +310,14 @@ const WhyChainCoop = () => {
                     variant="h5"
                     className="text-center text-xl text-text2 lg:text-start lg:text-lg"
                   >
-                    Blockchain-Powered Security
+                    Industry-Leading Digital Security
                   </Typography>
                   <Typography
                     variant="small"
                     className="text-center text-sm font-normal lg:text-start"
                   >
-                    Your savings are protected by cutting-edge blockchain
-                    technology, ensuring transparency, security, and peace of
+                    Your savings are protected using advanced digital security
+                    systems, ensuring transparency, protection, and peace of
                     mind. Say goodbye to worries about data breaches or
                     unauthorized access.
                   </Typography>
@@ -326,7 +325,7 @@ const WhyChainCoop = () => {
                 <div className="order-1 mt-4 md:order-2 md:mt-0">
                   <img
                     src={box4}
-                    alt="Blockchain Security"
+                    alt="Security"
                     className="w-full max-w-[300px] md:max-w-none"
                   />
                 </div>

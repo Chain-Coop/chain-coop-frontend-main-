@@ -88,22 +88,22 @@ export const becomeData = [
   {
     title: "Save Seamlessly",
     paragraph:
-      "Build a culture of saving and join others in building communal wealth through smart savings.",
+      "Build a habit of saving and join others in creating shared wealth through smart contributions.",
   },
   {
     title: "Protect Your Funds from Inflation",
     paragraph:
-      "Beat inflation by saving in stable options. Automate your savings and protect your purchasing power.",
+      "Beat inflation by saving through reliable methods. Automate your savings and maintain spending power.",
   },
   {
     title: "Customize Your Savings Strategy",
     paragraph:
-      "Choose how you want your funds saved with flexible, personalized saving options.",
+      "Decide how you want your money saved with flexible, tailored saving preferences just for you.",
   },
   {
     title: "Save Together, Grow Together",
     paragraph:
-      "Create savings cycles with friends and family you trust. Our innovative platform makes it seamless.",
+      "Start savings groups with people you trust. Our easy-to-use platform helps you manage everything.",
   },
 ];
 
