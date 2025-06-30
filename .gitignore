@@ -28,3 +28,4 @@ dist-ssr
 .env.production
 echo ".env" >> .gitignore
 echo ".env.production" >> .gitignore
+.vercel
