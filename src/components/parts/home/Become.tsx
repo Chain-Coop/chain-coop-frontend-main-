@@ -73,17 +73,17 @@ const Become = () => {
                   variants={itemVariant}
                   whileHover={{ scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 300 }}
-                  className="h-full"
+                  className="flex h-full min-h-[200px]"
                 >
-                  <Card className="flex flex-col p-6 lg:p-16">
-                    <div className="flex-grow">
+                  <Card className="flex w-full flex-col justify-between p-4 lg:p-16">
+                    <div className="flex flex-grow flex-col">
                       <Typography
                         variant="h2"
                         className="mb-4 text-xl font-bold tracking-tight"
                       >
                         {item.title}
                       </Typography>
-                      <Typography className="text-lg font-normal leading-normal">
+                      <Typography className="flex-grow text-lg font-normal leading-normal">
                         {item.paragraph}
                       </Typography>
                     </div>
