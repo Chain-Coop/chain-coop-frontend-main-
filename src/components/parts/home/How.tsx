@@ -17,21 +17,21 @@ const How = () => {
       ],
     },
     {
-      title: "Choose Your Savings Plan",
+      title: "Select your Engagement Plan",
       bgClass: "bg-how2",
       steps: [
-        "Select Flexible, Lock, or Strict Lock savings.",
-        "Set savings amount and duration.",
-        "Connect a payment method.",
+        "Select the level of participation",
+        "Set your level of engagement and timeframe ",
+        "Track performance in real time.",
       ],
     },
     {
-      title: "Automate & Grow",
+      title: "Collaborate and Achieve",
       bgClass: "bg-how3",
       steps: [
-        "Set up recurring deposits.",
-        "Track performance in real-time.",
-        "Contribute together and grow purchasing power.",
+        "Engage with other members and work towards shared goals.",
+        "Track the progress of cooperative initiatives in real-time.",
+        "Work together to make the most of your collective potential.",
       ],
     },
   ];
@@ -115,15 +115,15 @@ const How = () => {
           variant="h5"
           className="text-base sm:text-lg md:text-xl lg:text-2xl"
         >
-          It's not just savings—it's smarter, more secure, and more rewarding
-          savings.
+          It's not just about participation, it's about smarter, more secure,
+          and more rewarding community collaboration.
         </Typography>
         <Link to={ROUTES.sign_in}>
           <Button
             className="mx-auto flex items-center gap-3 border-[2px] border-text2 text-text2"
             variant="outlined"
           >
-            <Typography className="font-semibold">Sign Up for Free</Typography>
+            <Typography className="font-semibold">Sign Up Now</Typography>
             <FaArrowRight size={20} />
           </Button>
         </Link>

@@ -90,10 +90,12 @@ const PartnerWithUs = () => {
                 variant="small"
                 className="mt-4 px-4 font-normal text-gray-500 lg:px-0"
               >
-                At Chain Co-op, everyone deserves the tools to achieve financial
-                stability and growth. We're building a platform that bridges
-                traditional and digital finance, empowering individuals and
-                communities. We invite you to partner with us on this journey.
+                At Chain Co-op, we believe everyone should have access to the
+                tools and resources to shape the future they want.
+                <br className="hidden sm:block" />
+                We're creating a platform that empowers individuals and
+                communities to learn, share skills, and grow together. Join us
+                on this journey of collective growth.
               </Typography>
               <Button
                 onClick={handlePartnerModalOpen}
@@ -122,11 +124,12 @@ const PartnerWithUs = () => {
                 variant="small"
                 className="max-w-xl text-sm font-normal text-gray-500 sm:text-base"
               >
-                At Chain Co-op, we are on a mission to revolutionize
-                wealth-building for individuals and businesses across Africa.
-                Partner with us and be a part of a financial ecosystem that
-                promotes secure and innovative savings solutions. We offer a
-                partner model designed for mutual growth and impact.
+                At Chain Co-op, we are on a mission to revolutionize how
+                communities learn, collaborate, and access shared tools. By
+                partnering with us, you contribute to fostering communal
+                discipline, shared knowledge, and strategies that encourage
+                collective growth. We offer a partnership model designed to
+                create mutual success and impact.
               </Typography>
               <Link to={ROUTES.sign_up}>
                 <Button className="mx-auto mt-6 max-w-fit rounded-md bg-text2 px-6 py-3 text-sm font-semibold normal-case text-text5 lg:mx-0 lg:mt-8">
@@ -147,7 +150,7 @@ const PartnerWithUs = () => {
             >
               Interested in Chain Co-op? Discover the benefits of
               <br className="hidden sm:block" />
-              membership and partnership
+              membership and partnership.
             </Typography>
 
             <div className="flex w-full flex-col gap-8">
@@ -187,15 +190,16 @@ const PartnerWithUs = () => {
                       variant="h4"
                       className="text-center text-lg font-bold text-text2 sm:text-left"
                     >
-                      Bank-Grade Security
+                      Expand Your Reach
                     </Typography>
                     <Typography
                       variant="small"
                       className="text-center text-gray-500 sm:text-left"
                     >
-                      Your funds are protected with industry-standard security
-                      measures, including encrypted transactions, cold wallet
-                      storage, and proof of reserves.
+                      Connect with our growing network of learners, educators,
+                      and community-driven individuals to share your knowledge,
+                      products, or services with an engaged audience focused on
+                      personal and communal growth.
                     </Typography>
                   </div>
                 </div>
@@ -235,15 +239,15 @@ const PartnerWithUs = () => {
                       variant="h4"
                       className="text-center text-lg font-bold text-text2 sm:text-left"
                     >
-                      Drive Financial Inclusion
+                      Drive Community Growth
                     </Typography>
                     <Typography
                       variant="small"
                       className="text-center text-gray-500 sm:text-left"
                     >
-                      Support the movement to provide accessible and secure
-                      wealth management solutions to underserved communities
-                      across Africa.
+                      Support the movement to drive individual growth that will
+                      lead to communal impact through disciplined and consistent
+                      actions.
                     </Typography>
                   </div>
                 </div>

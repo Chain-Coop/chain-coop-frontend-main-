@@ -40,8 +40,8 @@ const Become = () => {
             transition={{ duration: 0.5 }}
             className="text-2xl font-bold md:text-3xl"
           >
-            Build your digital wealth through{" "}
-            <span className="text-text2">savings</span>
+            Build a Stronger Future
+            <span className="text-text2">with Chain Co-op</span>
           </MotionTypography>
 
           <MotionTypography
@@ -49,12 +49,12 @@ const Become = () => {
             initial={{ opacity: 0 }}
             className="mt-3 max-w-2xl font-normal lg:text-lg"
           >
-            Your journey to wealth starts here.
+            Your all-in-one Co-operative platform for automated savings in Naira
           </MotionTypography>
 
           <Link to={ROUTES.sign_up}>
             <Button className="mt-3 bg-text2 px-8 py-3 text-sm font-semibold normal-case text-text5 transition-all hover:opacity-90 sm:text-base">
-              Start Growing Your Wealth
+              Join us
             </Button>
           </Link>
         </header>

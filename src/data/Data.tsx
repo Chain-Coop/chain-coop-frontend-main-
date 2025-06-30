@@ -86,24 +86,24 @@ export const dashboardNav = [
 
 export const becomeData = [
   {
-    title: "Save Seamlessly",
+    title: "Collaborate Seamlessly",
     paragraph:
-      "Build a habit of saving and join others in creating shared wealth through smart contributions.",
+      "Build a habit of collaboration and join others in creating shared goals and building for the future.",
   },
   {
-    title: "Protect Your Funds from Inflation",
+    title: "Learn Budgeting and Strategy",
     paragraph:
-      "Beat inflation by saving through reliable methods. Automate your savings and maintain spending power.",
+      "Learn reliable methods to build a budget, improve financial discipline, and plan together for the future. Maintain control over your life goals through communal accountability.",
   },
   {
-    title: "Customize Your Savings Strategy",
+    title: "Customize Your Engagement Strategy",
     paragraph:
-      "Decide how you want your money saved with flexible, tailored saving preferences just for you.",
+      "Decide how you want to participate with flexible, tailored preferences designed for the cooperative's objectives.",
   },
   {
-    title: "Save Together, Grow Together",
+    title: "Work Together, Grow Together",
     paragraph:
-      "Start savings groups with people you trust. Our easy-to-use platform helps you manage everything.",
+      "Start or join different groups within the Cooperative and grow with people you trust. Our easy-to-use platform helps members learn and grow efficiently.",
   },
 ];
 
