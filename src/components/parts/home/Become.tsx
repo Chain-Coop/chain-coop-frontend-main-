@@ -41,7 +41,7 @@ const Become = () => {
             className="text-2xl font-bold md:text-3xl"
           >
             Build a Stronger Future
-            <span className="text-text2">with Chain Co-op</span>
+            <span className="ml-1 text-text2">{""}with Chain Co-op</span>
           </MotionTypography>
 
           <MotionTypography
