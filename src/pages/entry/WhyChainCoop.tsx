@@ -64,17 +64,18 @@ const WhyChainCoop = () => {
                 variants={fadeInUp}
                 className="text-xl font-bold sm:mt-2 md:text-[2em] lg:text-3xl"
               >
-                Building communal wealth for Africans, one
+                Building communal discipline, one
                 <br className="hidden sm:block" /> person at a time.
               </MotionTypography>
               <Typography
                 variants={fadeInUp}
                 className="mx-auto mt-4 text-sm font-normal text-gray-500 md:text-base lg:max-w-2xl lg:text-base"
               >
-                Chain Co-op provides a secure platform for members to save,
-                hedge against inflation, and access financial opportunities,
-                creating a cooperative savings ecosystem focused on members'
-                security and stability.
+                Chain Co-op provides a secure platform for cooperative members
+                to cultivate discipline, collaborate, and access
+                community-driven opportunities. We are fostering a cooperative
+                ecosystem focused on the security, stability, and growth of all
+                members.
               </Typography>
             </div>
           </section>
@@ -194,15 +195,15 @@ const WhyChainCoop = () => {
                 variants={fadeInUp}
                 className="text-xl font-bold sm:mt-2 md:text-[1.5em]"
               >
-                Join Early and Multiply Your Savings with Exclusive{" "}
-                <br className="hidden sm:block" /> Multiple Currency Cycles.
+                Join Early and Begin Building the Future
+                <br className="hidden sm:block" /> of Your Dreams.
               </MotionTypography>
               <Typography
                 variants={fadeInUp}
                 className="mt-4 text-sm font-normal text-gray-500 sm:text-sm lg:text-base"
               >
-                Access 5x your funds by participating in Chain Co-Op’s powerful
-                saving cycles.
+                Access to like-minded individuals who are building their desired
+                future one disciplined decision at a time.
               </Typography>
               <Typography
                 variant="h5"
@@ -219,15 +220,15 @@ const WhyChainCoop = () => {
                     variant="h5"
                     className="text-center text-xl text-text2 lg:text-start lg:text-lg"
                   >
-                    Industry-Leading Digital Security
+                    Shared Learning Opportunities
                   </Typography>
                   <Typography
                     variant="small"
                     className="text-center text-sm font-normal lg:text-start"
                   >
-                    Your savings are protected using advanced digital security
-                    systems, ensuring transparency, protection, and peace of
-                    mind. Say goodbye to data breaches and unauthorized access.
+                    Gain access to a wealth of knowledge as part of a community
+                    dedicated to learning and skill-sharing. Enhance your
+                    expertise or teach others and grow together.
                   </Typography>
                 </div>
                 <div className="order-1 mt-4 md:order-2 md:mt-0">
@@ -245,15 +246,15 @@ const WhyChainCoop = () => {
                     variant="h5"
                     className="text-center text-xl text-text2 lg:text-start lg:text-lg"
                   >
-                    Flexible Naira Savings
+                    Flexible Skill Development
                   </Typography>
                   <Typography
                     variant="small"
                     className="text-center text-sm font-normal lg:text-start"
                   >
-                    Choose how you want to save with full control. Whether
-                    daily, weekly, or monthly, our system lets you build your
-                    Naira savings your own way.
+                    Choose how you want to engage with our learning programs.
+                    You have full control over your participation in our
+                    educational initiatives.
                   </Typography>
                 </div>
 
@@ -272,15 +273,15 @@ const WhyChainCoop = () => {
                     variant="h5"
                     className="text-center text-xl text-text2 lg:text-start lg:text-lg"
                   >
-                    Auto-Savings for Your Convenience
+                    Collaborative Learning for Your Convenience
                   </Typography>
                   <Typography
                     variant="small"
                     className="text-center text-sm font-normal lg:text-start"
                   >
-                    Take the hassle out of saving with our auto-savings feature.
-                    Set your goal, customize your schedule, and watch your
-                    savings grow effortlessly—all on autopilot.
+                    Take advantage of community-driven learning. Set your
+                    learning schedule, participate in group study sessions, and
+                    watch your skills grow.
                   </Typography>
                 </div>
                 <div className="order-1 mt-4 md:order-2 md:mt-0">
@@ -311,16 +312,16 @@ const WhyChainCoop = () => {
                     variant="h5"
                     className="text-center text-xl text-text2 lg:text-start lg:text-lg"
                   >
-                    Industry-Leading Digital Security
+                    Shared Tools for All
                   </Typography>
                   <Typography
                     variant="small"
                     className="text-center text-sm font-normal lg:text-start"
                   >
-                    Your savings are protected using advanced digital security
-                    systems, ensuring transparency, protection, and peace of
-                    mind. Say goodbye to worries about data breaches or
-                    unauthorized access.
+                    Access tools and resources that are co-owned by the
+                    cooperative. From shared workspaces to equipment, our
+                    platform provides members with the tools they need to
+                    succeed at a fraction of the cost.
                   </Typography>
                 </div>
                 <div className="order-1 mt-4 md:order-2 md:mt-0">
@@ -338,15 +339,16 @@ const WhyChainCoop = () => {
                     variant="h5"
                     className="text-center text-xl text-text2 lg:text-start lg:text-lg"
                   >
-                    Save Conveniently in Naira
+                    Engage with the Cooperative Community
                   </Typography>
                   <Typography
                     variant="small"
                     className="text-center text-sm font-normal lg:text-start"
                   >
-                    Choose how you want to save—daily, weekly, or monthly in
-                    Naira. Our platform gives you the flexibility to grow your
-                    savings in a way that suits your lifestyle.
+                    Whether it’s contributing knowledge, participating in
+                    training sessions, or using shared resources, you have the
+                    flexibility to engage in ways that suit your personal
+                    learning journey and professional development.
                   </Typography>
                 </div>
 

@@ -20,7 +20,7 @@ const Explore = () => {
             transition={{ duration: 0.5 }}
             className="text-2xl font-bold md:text-3xl lg:text-4xl"
           >
-            Savings Made Simple
+            Community Made Simple for you
           </MotionTypography>
 
           <motion.div
@@ -30,12 +30,13 @@ const Explore = () => {
             className="mx-auto mt-3 max-w-xl px-3"
           >
             <Typography className="mb-6 text-lg font-normal">
-              Join hundreds of others using our smart lock savings options.
+              Join hundreds of others who are strengthening their community
+              through shared goals.
             </Typography>
 
             <Link to={ROUTES.sign_up} className="inline-block">
               <Button className="bg-text2 px-8 py-3 text-sm font-semibold normal-case text-text5 transition-all hover:opacity-90">
-                Start Saving
+                Start Here
               </Button>
             </Link>
           </motion.div>
@@ -44,24 +45,24 @@ const Explore = () => {
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {[
             {
-              title: "Flexible Savings",
+              title: "Flexible Participation ",
               image: flexible,
               description:
-                "Savings at your convenience and access funds whenever needed.",
+                "Engage when and how it suits you, and access the benefits of being part of a thriving cooperative.",
               tags: ["Accessible", "Convenient", "Liquidity"],
             },
             {
-              title: "Lock Savings",
+              title: "Voluntary Commitments",
               image: lock,
               description:
-                "We are committed to helping you reach your savings target. If you break your goal, you pay a 1% penalty fee for early withdrawal.",
+                "Make voluntary contributions that help you and others in your cooperative achieve shared goals. Our platform supports full flexibility for members.",
               tags: ["Set Target", "Commit", "Execute"],
             },
             {
-              title: "Strict Lock",
+              title: "Strict Commitments",
               image: strict_lock,
               description:
-                "Build unshakable savings habits. Stay locked in; no withdrawals are allowed until you reach your selected target or timeline.",
+                "Stay committed to the goals of your cooperative. Voluntary contributions are strictly for members, and your participation is essential for collective success.",
               tags: ["Smartsave", "Easy Entry", "Simple Withdrawal"],
             },
           ].map((item, index) => (
