@@ -26,10 +26,10 @@ const HeroSection = () => {
             animate="visible"
             className="mb-2 text-2xl font-bold tracking-tight lg:mb-8 lg:text-5xl"
           >
-            Build Wealth, Grow <br /> Faster{" "}
-            <span className="text-text2">with Chain Co-op</span>
+            Build with Like Minds <br className="hidden lg:block" />
+            Grow Smarter and <br />
+            <span className="text-text2">Faster with Chain Co-op</span>
           </MotionTypography>
-
           <MotionTypography
             variants={container(1)}
             initial="hidden"
@@ -37,7 +37,8 @@ const HeroSection = () => {
             variant="small"
             className="mb-8 font-normal tracking-tight text-gray-600 lg:text-lg"
           >
-            Your all-in-one platform for automated savings in <br /> Naira
+            Your all-in-one platform for skill-sharing, community <br />{" "}
+            collaboration, and growth.
           </MotionTypography>
 
           <motion.div
@@ -52,7 +53,7 @@ const HeroSection = () => {
                 className="bg-text2 px-6 py-3 text-center normal-case transition-all duration-300 hover:bg-text2 hover:bg-opacity-90 hover:shadow-lg"
               >
                 <Typography className="text-sm font-semibold text-text5 sm:text-base">
-                  Start Saving
+                  Start Building
                 </Typography>
               </Button>
             </Link>
