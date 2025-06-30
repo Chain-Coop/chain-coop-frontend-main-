@@ -102,11 +102,11 @@ const WhyChainCoop = () => {
                   variants={fadeInUp}
                   className="text-sm font-normal lg:text-base"
                 >
-                  Chain Co-op provides a secure platform for members to save,
-                  hedge against inflation, and build wealth. We're breaking down
-                  traditional wealth-building barriers and introducing a digital
-                  saving culture, putting financial empowerment within
-                  everyone's reach.
+                  Chain Co-op is a platform that empowers members to
+                  collaborate, share skills, and access shared resources. We’re
+                  breaking down traditional barriers to learning and growth,
+                  enabling a community where everyone has the tools and
+                  opportunities to thrive.
                 </MotionTypography>
               </div>
             </div>
@@ -178,11 +178,16 @@ const WhyChainCoop = () => {
                   variants={fadeInUp}
                   className="text-sm font-normal lg:text-base"
                 >
-                  Wealth creation, empowerment, and inclusion are at the core of
-                  what we stand for. Our values guide what we do at Chain Co-op.
-                  We are focused on building a secure and transparent savings
-                  platform that empowers individuals and communities to achieve
-                  financial stability and growth.
+                  Empowerment, collaboration, and inclusion are at the heart of
+                  what we do. Our values guide everything at Chain Co-op. We’re
+                  dedicated to building a transparent, secure platform where
+                  individuals and communities can share knowledge, grow
+                  together, and achieve collective success. Wealth creation,
+                  empowerment, and inclusion are at the core of what we stand
+                  for. Our values guide what we do at Chain Co-op. We are
+                  focused on building a secure and transparent savings platform
+                  that empowers individuals and communities to achieve financial
+                  stability and growth.
                 </MotionTypography>
               </div>
             </div>

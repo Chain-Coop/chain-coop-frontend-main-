@@ -40,8 +40,8 @@ const Become = () => {
             transition={{ duration: 0.5 }}
             className="text-2xl font-bold md:text-3xl"
           >
-            Build a Stronger Future
-            <span className="ml-1 text-text2">{""}with Chain Co-op</span>
+            Build for the Future Through
+            <span className="ml-1 text-text2">Community</span>
           </MotionTypography>
 
           <MotionTypography
@@ -49,7 +49,7 @@ const Become = () => {
             initial={{ opacity: 0 }}
             className="mt-3 max-w-2xl font-normal lg:text-lg"
           >
-            Your all-in-one Co-operative platform for automated savings in Naira
+            Start here to build the future.
           </MotionTypography>
 
           <Link to={ROUTES.sign_up}>

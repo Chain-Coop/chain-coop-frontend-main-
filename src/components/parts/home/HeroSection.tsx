@@ -26,9 +26,10 @@ const HeroSection = () => {
             animate="visible"
             className="mb-2 text-2xl font-bold tracking-tight lg:mb-8 lg:text-5xl"
           >
-            Save Smarter, Grow <br /> Faster{" "}
+            Build Wealth, Grow <br /> Faster{" "}
             <span className="text-text2">with Chain Co-op</span>
           </MotionTypography>
+
           <MotionTypography
             variants={container(1)}
             initial="hidden"
