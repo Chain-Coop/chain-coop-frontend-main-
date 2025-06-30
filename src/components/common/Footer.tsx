@@ -84,13 +84,13 @@ const Footer = () => {
           <div className="grid w-full grid-cols-1 gap-8 lg:grid-cols-5">
             <section className="w-full space-y-4 lg:col-span-2">
               <Typography variant="h2" className="text-md font-light">
-                Chain Co-Op is a secure, registered cooperative dedicated to
-                empowering individuals with innovative savings solutions in
-                Naira.
+                Chain Co-Op is a registered cooperative dedicated to empowering
+                individuals through collaboration and shared ownership.
               </Typography>
               <Typography className="text-md font-light">
-                Our platform combines cutting-edge technology with trusted
-                financial practices to help you build and protect your wealth.
+                By blending cutting-edge technology with trusted cooperative
+                practices, we provide a secure platform for members to thrive
+                together.
               </Typography>
             </section>
 
