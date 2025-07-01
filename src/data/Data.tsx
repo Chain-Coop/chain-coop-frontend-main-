@@ -430,10 +430,10 @@ export const customerFeeExplorerCardData = [
 ];
 
 export const Company = [
-  {
-    text: "Team",
-    to: "/team",
-  },
+  // {
+  //   text: "Team",
+  //   to: "/team",
+  // },
   {
     text: "About Us",
     to: "/about-us",
@@ -449,10 +449,10 @@ export const Explore = [
     text: "Partnership",
     to: "/partner-with-us",
   },
-  {
-    text: "Register Class",
-    to: "/form",
-  },
+  // {
+  //   text: "Register Class",
+  //   to: "/form",
+  // },
 ];
 
 export const Legal = [
