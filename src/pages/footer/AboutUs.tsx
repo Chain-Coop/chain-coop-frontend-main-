@@ -65,14 +65,17 @@ const AboutUs = () => {
             </MotionTypography>
             <Typography
               variants={fadeInUp}
-              className="mx-auto mt-4 text-sm font-normal md:text-base lg:max-w-4xl lg:text-base"
+              className="mx-auto mt-4 text-sm font-normal md:text-base lg:max-w-5xl lg:text-base"
             >
-              At the core of our service is empowering Africans to build wealth
-              and giving individuals and communities greater financial freedom.
-              We are Nigeria's first digital cooperative creating communal
-              prosperity through innovative solutions for modern Nigerians. As a
-              worker-owned co-op, we are reshaping the future of work and
-              investment.
+              At the core of our service is empowering Africans to build
+              together and giving individuals and communities greater strength
+              through unity. We are Nigeria's first digital cooperative creating
+              communal prosperity through innovative solutions for modern
+              Nigerians. As a worker-owned co-op, we are reshaping the future of
+              work and investment —{" "}
+              <span className="font-semibold text-red-400">
+                strictly for our cooperative members.
+              </span>
             </Typography>
           </div>
         </div>
