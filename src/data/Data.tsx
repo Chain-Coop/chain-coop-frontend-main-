@@ -456,10 +456,10 @@ export const Explore = [
 ];
 
 export const Legal = [
-  {
-    text: "Terms of service",
-    to: "/terms",
-  },
+  // {
+  //   text: "Terms of service",
+  //   to: "/terms",
+  // },
   {
     text: "Privacy Policy",
     to: "/privacy-policy",
