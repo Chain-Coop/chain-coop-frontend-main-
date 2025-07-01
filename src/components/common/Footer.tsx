@@ -52,8 +52,8 @@ const Footer = () => {
             variant="h1"
             className="m-auto mb-3 w-full px-2 text-sm font-semibold tracking-tight md:text-lg lg:max-w-4xl lg:px-5 lg:text-2xl"
           >
-            Subscribe to the latest tech in tech-driven cooperative innovations
-            and Savings opportunities.
+            Subscribe for updates on new opportunities to learn, grow
+            professionally and engage in community-driven projects.
           </Typography>
           <form
             onSubmit={joinNews}

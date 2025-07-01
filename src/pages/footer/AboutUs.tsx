@@ -103,7 +103,7 @@ const AboutUs = () => {
 
             <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-2">
               <Link to="https://www.linkedin.com/in/oluwajuwon-micheal?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
-                <CardComponent image={juwon} title="Data Engineer/CCO" />
+                <CardComponent image={juwon} title="Chain co-op president" />
               </Link>
               <Link to="https://www.linkedin.com/in/thedotconnector?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
                 <CardComponent image={heather} title="Advisor and Consultant" />
