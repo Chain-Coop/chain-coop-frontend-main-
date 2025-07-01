@@ -93,7 +93,7 @@ const Explore = () => {
                 <div>
                   <Link to={ROUTES.sign_up}>
                     <Button className="mt-4 bg-text2 px-8 py-3 text-sm font-semibold text-white transition-transform duration-300 hover:scale-105 md:text-base">
-                      Start Saving
+                      Join Us
                     </Button>
                   </Link>
                 </div>

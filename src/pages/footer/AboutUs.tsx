@@ -67,11 +67,12 @@ const AboutUs = () => {
               variants={fadeInUp}
               className="mx-auto mt-4 text-sm font-normal md:text-base lg:max-w-4xl lg:text-base"
             >
-              At the core of our service is democratising savings for Africans
-              and giving individuals and communities access to wealth. We are
-              Nigeria's first digital cooperative building communal wealth
-              through digital solutions for modern Nigerians. As a worker-owned
-              co-op we are reshaping the future of work and investment
+              At the core of our service is empowering Africans to build wealth
+              and giving individuals and communities greater financial freedom.
+              We are Nigeria's first digital cooperative creating communal
+              prosperity through innovative solutions for modern Nigerians. As a
+              worker-owned co-op, we are reshaping the future of work and
+              investment.
             </Typography>
           </div>
         </div>
@@ -108,7 +109,7 @@ const AboutUs = () => {
                 <CardComponent image={heather} title="Advisor and Consultant" />
               </Link>
               <Link to="https://www.linkedin.com/in/abdulsamadgobir?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
-                <CardComponent image={samad} title="Product Manager / CMO" />
+                <CardComponent image={samad} title="cmo/co-treasurer" />
               </Link>
             </div>
           </div>
