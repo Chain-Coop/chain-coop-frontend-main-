@@ -1,7 +1,7 @@
 import "./explore.css";
-import flexible from "../../../../Assets/png/home/flexible_savings.png";
-import lock from "../../../../Assets/png/home/lock_savings.png";
-import strict_lock from "../../../../Assets/png/home/strict_lock.png";
+import flexible from "../../../../Assets/png/home/flexible.png";
+import lock from "../../../../Assets/png/home/voluntary.jpg";
+import strict_lock from "../../../../Assets/png/home/strict.png";
 import { motion } from "framer-motion";
 import { MotionTypography } from "../../../common/motionTypography";
 import { Button, Typography } from "@material-tailwind/react";
@@ -49,21 +49,18 @@ const Explore = () => {
               image: flexible,
               description:
                 "Engage when and how it suits you, and access the benefits of being part of a thriving cooperative.",
-              tags: ["Accessible", "Convenient", "Liquidity"],
             },
             {
               title: "Voluntary Commitments",
               image: lock,
               description:
                 "Make voluntary contributions that help you and others in your cooperative achieve shared goals. Our platform supports full flexibility for members.",
-              tags: ["Set Target", "Commit", "Execute"],
             },
             {
               title: "Strict Commitments",
               image: strict_lock,
               description:
                 "Stay committed to the goals of your cooperative. Voluntary contributions are strictly for members, and your participation is essential for collective success.",
-              tags: ["Smartsave", "Easy Entry", "Simple Withdrawal"],
             },
           ].map((item, index) => (
             <div key={index} className="card mx-auto w-full">
@@ -83,13 +80,7 @@ const Explore = () => {
                 >
                   {item.description}
                 </Typography>
-                <div className="tags text-text2">
-                  {item.tags.map((tag, idx) => (
-                    <span key={idx} className="tag text-xs md:text-sm">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+
                 <div>
                   <Link to={ROUTES.sign_up}>
                     <Button className="mt-4 bg-text2 px-8 py-3 text-sm font-semibold text-white transition-transform duration-300 hover:scale-105 md:text-base">
