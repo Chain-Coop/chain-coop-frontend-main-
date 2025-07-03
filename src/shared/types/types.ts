@@ -30,7 +30,7 @@ export interface WithdrawAmountModalProps {
 }
 
 export interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
+  label?: React.ReactNode;
   error?: string;
   wrapperClassName?: string;
   labelClassName?: string;
