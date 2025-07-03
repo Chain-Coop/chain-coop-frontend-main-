@@ -164,20 +164,21 @@ const CreateAccount = () => {
           />
           <Typography
             variant="h1"
-            className="mb-4 text-3xl font-bold text-text2"
+            className="mb-1 text-3xl font-bold text-text2"
           >
             Create Your Account
           </Typography>
           <Typography className="font-medium text-howtext">
             Start building your investment portfolio and track your growth.
           </Typography>
-          <Typography className="font-medium text-howtext">
+          <Typography className="font-medium text-red-500">
             Ensure you provide your legal name as it appears on your government
-            issued ID
+            issued ID. If you have a first name and middle name, please ensure
+            you type in your first name and middle name in the first name field.
           </Typography>
         </div>
 
-        <form className="mt-5 flex flex-col gap-6" onSubmit={handleSubmit}>
+        <form className="mt-7 flex flex-col gap-6" onSubmit={handleSubmit}>
           <FormInput
             label="First Name"
             type="text"
