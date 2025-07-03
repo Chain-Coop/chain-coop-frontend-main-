@@ -72,7 +72,7 @@ const AboutUs = () => {
               through unity. We are Nigeria's first digital cooperative creating
               communal prosperity through innovative solutions for modern
               Nigerians. As a worker-owned co-op, we are reshaping the future of
-              work and investment —{" "}
+              work and collaboration —{" "}
               <span className="font-semibold text-red-400">
                 strictly for our cooperative members.
               </span>
@@ -105,15 +105,9 @@ const AboutUs = () => {
             </div>
 
             <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-2">
-              <Link to="https://www.linkedin.com/in/oluwajuwon-micheal?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
-                <CardComponent image={juwon} title="Chain co-op president" />
-              </Link>
-              <Link to="https://www.linkedin.com/in/thedotconnector?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
-                <CardComponent image={heather} title="Advisor and Consultant" />
-              </Link>
-              <Link to="https://www.linkedin.com/in/abdulsamadgobir?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
-                <CardComponent image={samad} title="cmo/co-treasurer" />
-              </Link>
+              <CardComponent image={juwon} title="Chain co-op president" />
+              <CardComponent image={heather} title="Advisor and Consultant" />
+              <CardComponent image={samad} title="cmo/co-treasurer" />
             </div>
           </div>
         </div>
