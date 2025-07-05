@@ -29,6 +29,7 @@ interface Contribution {
   lastContributionDate?: string;
   withdrawalDate?: string;
   status?: string;
+  savingsDuration?: string;
 }
 
 const Contribution: React.FC = () => {
