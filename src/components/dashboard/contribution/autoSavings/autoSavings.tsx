@@ -7,8 +7,6 @@ import FormInput from "../../../../components/common/FormInput";
 import { Alert } from "@mui/material";
 import contributionImg from "../../../../Assets/svg/dashboard/contribution/category-contribution.svg";
 import { ContributionListSkeleton } from "../../../common/Loading";
-import { format, parseISO } from "date-fns";
-import { calculateSavingsDuration } from "../../../../shared/utils/format";
 
 interface Contribution {
   _id: string;
@@ -25,7 +23,6 @@ interface Contribution {
   lastContributionDate?: string;
   withdrawalDate?: string;
   status?: string;
-  savingsDuration?: string;
 }
 
 interface AutoSavingsProps {
@@ -84,26 +81,6 @@ const AutoSavings: React.FC<AutoSavingsProps> = ({
   const formatCurrency = (amount: number | undefined) => {
     if (!amount && amount !== 0) return "₦ 0";
     return `₦ ${amount.toLocaleString()}`;
-  };
-
-  const formatContributionDate = (dateString?: string) => {
-    if (!dateString) return "Date not available";
-    try {
-      return format(parseISO(dateString), "dd/MM/yyyy");
-    } catch {
-      return "Invalid date";
-    }
-  };
-
-  const isWithdrawalTimeReached = (withdrawalDate?: string) => {
-    if (!withdrawalDate) return false;
-    try {
-      const today = new Date();
-      const withdrawal = parseISO(withdrawalDate);
-      return today >= withdrawal;
-    } catch {
-      return false;
-    }
   };
 
   return (
@@ -178,7 +155,7 @@ const AutoSavings: React.FC<AutoSavingsProps> = ({
               animate={{ opacity: 1, y: 0 }}
               whileHover={{ scale: 1.02 }}
               onClick={() => onNavigateToDetails(contribution._id)}
-              className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col rounded-xl border-2 border-gray-500 bg-white px-4 transition-all hover:bg-gray-50 lg:px-6"
+              className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-full border-2 border-gray-500 bg-white px-4 transition-all hover:bg-gray-50 lg:px-6"
             >
               <div className="flex justify-between text-sm font-medium text-gray-500 md:text-base">
                 <Typography className="font-normal">Savings Name</Typography>
@@ -203,28 +180,6 @@ const AutoSavings: React.FC<AutoSavingsProps> = ({
                   <figure className="text-base font-semibold md:text-lg">
                     {formatCurrency(contribution.balance)}
                   </figure>
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <div>
-                  Duration:{" "}
-                  {calculateSavingsDuration(
-                    contribution?.startDate,
-                    contribution?.withdrawalDate,
-                  )}
-                </div>
-                <div>Deposited Amount: {contribution?.amount}</div>
-              </div>
-              <div className="flex items-center justify-between">
-                <div>
-                  Withdrawal Status:{" "}
-                  {isWithdrawalTimeReached(contribution.withdrawalDate)
-                    ? "✅ Ready"
-                    : "⏳ Not Yet Time"}
-                </div>
-                <div>
-                  Withdrawal Date:{" "}
-                  {formatContributionDate(contribution.withdrawalDate)}
                 </div>
               </div>
             </motion.div>
