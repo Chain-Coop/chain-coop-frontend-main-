@@ -263,7 +263,7 @@ const AutoSavings: React.FC<AutoSavingsProps> = ({
                 {/* Mobile Details Grid */}
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   <div className="flex flex-col">
-                    <span className="text-gray-500">Duration</span>
+                    <span className="text-gray-500">Savings Duration</span>
                     <span className="font-medium text-gray-800">
                       {calculateSavingsDuration(
                         contribution?.startDate,
@@ -272,17 +272,17 @@ const AutoSavings: React.FC<AutoSavingsProps> = ({
                     </span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-gray-500">Deposited</span>
+                    <span className="text-gray-500">Deposited Amount</span>
                     <span className="font-medium text-gray-800">
                       {formatCurrency(contribution?.amount)}
                     </span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-gray-500">Status</span>
+                    <span className="text-gray-500">Withdrawal Status</span>
                     <span className="font-medium text-gray-800">
                       {isWithdrawalTimeReached(contribution.withdrawalDate)
                         ? "✅ Ready"
-                        : "⏳ Pending"}
+                        : "⏳ Not Yet Time"}
                     </span>
                   </div>
                   <div className="flex flex-col">
