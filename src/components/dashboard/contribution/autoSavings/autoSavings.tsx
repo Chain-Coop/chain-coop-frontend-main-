@@ -7,6 +7,8 @@ import FormInput from "../../../../components/common/FormInput";
 import { Alert } from "@mui/material";
 import contributionImg from "../../../../Assets/svg/dashboard/contribution/category-contribution.svg";
 import { ContributionListSkeleton } from "../../../common/Loading";
+import { format, parseISO } from "date-fns";
+import { calculateSavingsDuration } from "../../../../shared/utils/format";
 
 interface Contribution {
   _id: string;
@@ -23,6 +25,7 @@ interface Contribution {
   lastContributionDate?: string;
   withdrawalDate?: string;
   status?: string;
+  savingsDuration?: string;
 }
 
 interface AutoSavingsProps {
@@ -81,6 +84,26 @@ const AutoSavings: React.FC<AutoSavingsProps> = ({
   const formatCurrency = (amount: number | undefined) => {
     if (!amount && amount !== 0) return "₦ 0";
     return `₦ ${amount.toLocaleString()}`;
+  };
+
+  const formatContributionDate = (dateString?: string) => {
+    if (!dateString) return "Date not available";
+    try {
+      return format(parseISO(dateString), "dd/MM/yyyy");
+    } catch {
+      return "Invalid date";
+    }
+  };
+
+  const isWithdrawalTimeReached = (withdrawalDate?: string) => {
+    if (!withdrawalDate) return false;
+    try {
+      const today = new Date();
+      const withdrawal = parseISO(withdrawalDate);
+      return today >= withdrawal;
+    } catch {
+      return false;
+    }
   };
 
   return (
@@ -155,31 +178,119 @@ const AutoSavings: React.FC<AutoSavingsProps> = ({
               animate={{ opacity: 1, y: 0 }}
               whileHover={{ scale: 1.02 }}
               onClick={() => onNavigateToDetails(contribution._id)}
-              className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col gap-2 rounded-full border-2 border-gray-500 bg-white px-4 transition-all hover:bg-gray-50 lg:px-6"
+              className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col rounded-xl border-2 border-gray-500 bg-white px-4 transition-all hover:bg-gray-50 md:px-4 lg:px-6"
             >
-              <div className="flex justify-between text-sm font-medium text-gray-500 md:text-base">
-                <Typography className="font-normal">Savings Name</Typography>
-                <Typography className="font-normal">Savings Balance</Typography>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 md:gap-3">
-                  <div className="w-8 md:w-10">
-                    <motion.img
-                      whileHover={{ rotate: 360 }}
-                      transition={{ duration: 0.5 }}
-                      src={contributionImg}
-                      alt="Contribution category icon"
-                      className="w-full"
-                    />
-                  </div>
-                  <Typography className="text-base font-semibold md:text-lg">
-                    {contribution.savingsCategory}
+              {/* Desktop View - Hidden on mobile - Your Original Code */}
+              <div className="hidden md:block">
+                <div className="flex justify-between text-sm font-medium text-gray-500 md:text-base">
+                  <Typography className="font-normal">Savings Name</Typography>
+                  <Typography className="font-normal">
+                    Savings Balance
                   </Typography>
                 </div>
-                <div>
-                  <figure className="text-base font-semibold md:text-lg">
-                    {formatCurrency(contribution.balance)}
-                  </figure>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <div className="w-8 md:w-10">
+                      <motion.img
+                        whileHover={{ rotate: 360 }}
+                        transition={{ duration: 0.5 }}
+                        src={contributionImg}
+                        alt="Contribution category icon"
+                        className="w-full"
+                      />
+                    </div>
+                    <Typography className="text-base font-semibold md:text-lg">
+                      {contribution.savingsCategory}
+                    </Typography>
+                  </div>
+                  <div>
+                    <figure className="text-base font-semibold md:text-lg">
+                      {formatCurrency(contribution.balance)}
+                    </figure>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    Duration:{" "}
+                    {calculateSavingsDuration(
+                      contribution?.startDate,
+                      contribution?.withdrawalDate,
+                    )}
+                  </div>
+                  <div>Deposited Amount: {contribution?.amount}</div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    Withdrawal Status:{" "}
+                    {isWithdrawalTimeReached(contribution.withdrawalDate)
+                      ? "✅ Ready"
+                      : "⏳ Not Yet Time"}
+                  </div>
+                  <div>
+                    Withdrawal Date:{" "}
+                    {formatContributionDate(contribution.withdrawalDate)}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col space-y-3 p-3 md:hidden">
+                <div className="flex items-center justify-between">
+                  <div className="flex flex-col">
+                    <div className="text-xs text-gray-500">Savings Name</div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-6">
+                        <motion.img
+                          whileHover={{ rotate: 360 }}
+                          transition={{ duration: 0.5 }}
+                          src={contributionImg}
+                          alt="Contribution category icon"
+                          className="w-full"
+                        />
+                      </div>
+                      <Typography className="text-sm font-semibold text-gray-800">
+                        {contribution.savingsCategory}
+                      </Typography>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-xs text-gray-500">Savings Balance</div>
+                    <div className="text-sm font-semibold">
+                      {formatCurrency(contribution.balance)}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Mobile Details Grid */}
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="flex flex-col">
+                    <span className="text-gray-500">Duration</span>
+                    <span className="font-medium text-gray-800">
+                      {calculateSavingsDuration(
+                        contribution?.startDate,
+                        contribution?.withdrawalDate,
+                      )}
+                    </span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-gray-500">Deposited</span>
+                    <span className="font-medium text-gray-800">
+                      {formatCurrency(contribution?.amount)}
+                    </span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-gray-500">Status</span>
+                    <span className="font-medium text-gray-800">
+                      {isWithdrawalTimeReached(contribution.withdrawalDate)
+                        ? "✅ Ready"
+                        : "⏳ Pending"}
+                    </span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-gray-500">Withdrawal Date</span>
+                    <span className="font-medium text-gray-800">
+                      {formatContributionDate(contribution.withdrawalDate)}
+                    </span>
+                  </div>
                 </div>
               </div>
             </motion.div>
