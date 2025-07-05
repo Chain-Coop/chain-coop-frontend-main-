@@ -1062,3 +1062,31 @@ export const adminSideBarLinks = [
     pathsToCheck: ["/admin/notification"],
   },
 ];
+
+export const faqData = [
+  {
+    question: "Who can join Chain Coop?",
+    answer:
+      "Only individuals who have been approved as members of the cooperative can access our services. The general public is not permitted to use this platform.",
+  },
+  {
+    question: "Is this a financial platform?",
+    answer:
+      "No. Chain Coop is not a financial institution. We are a registered cooperative society focused on member engagement and community activities.",
+  },
+  {
+    question: "How do I become a member?",
+    answer:
+      "Membership requires completing a registration process and submitting valid identification. Once approved, you gain access to member-only tools and events.",
+  },
+  {
+    question: "What can members do on the platform?",
+    answer:
+      "Members can connect, collaborate, and participate in cooperative programs and initiatives aimed at building communal progress.",
+  },
+  {
+    question: "Can non-members view or join activities?",
+    answer:
+      "No. All activities and opportunities shared on the platform are exclusive to registered members only.",
+  },
+];

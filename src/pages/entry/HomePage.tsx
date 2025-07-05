@@ -6,6 +6,7 @@ import Become from "../../components/parts/home/Become";
 import Explore from "../../components/parts/home/explore/Explore";
 import How from "../../components/parts/home/How";
 import Footer from "../../components/common/Footer";
+import FAQs from "../../components/common/FAQs";
 
 const HomePage = () => {
   useEffect(() => {
@@ -20,6 +21,7 @@ const HomePage = () => {
         <Become />
         <Explore />
         <How />
+        <FAQs />
         <Footer />
       </div>
     </>
