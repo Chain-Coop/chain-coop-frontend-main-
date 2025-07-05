@@ -456,10 +456,10 @@ export const Explore = [
 ];
 
 export const Legal = [
-  // {
-  //   text: "Terms of service",
-  //   to: "/terms",
-  // },
+  {
+    text: "Terms of service",
+    to: "/terms",
+  },
   {
     text: "Privacy Policy",
     to: "/privacy-policy",
@@ -504,206 +504,44 @@ export const Plan = [{ text: "Monthly" }, { text: "Daily" }];
 
 export const Terms = [
   {
-    title: "1. Introduction",
+    title: "Terms and Conditions (Chain Coop)",
     content:
-      "The website is operated by the Co-operative 'Chain Co-op', a legal entity registered with the Lagos State Ministry of Commerce, Industry, and Co-operatives, Alausa, Lagos, with its registered office at 9, Ogunlana Close, Alausa, Lagos. Chain Co-op provides an automated savings platform available on its website at chaincoop.org.",
+      "Welcome to Chain Coop, a registered member-only cooperative society committed to community growth and shared progress. By accessing and using this platform, you agree to the following terms:",
   },
   {
-    title: "2. Definitions",
-    content: [
-      {
-        term: '"Privacy Policy"',
-        definition:
-          "means the regulations established on chaincoop.org/privacy-policy operated by Chain Co-op, as well as all documents referred to within them.",
-      },
-      {
-        term: '"Applicable Law"',
-        definition:
-          "means any constitution, statute, law, rule, regulation, ordinance, judgment, order, decree of the Federal Republic of Nigeria, or any published directive, guideline, requirement, or other governmental restriction that has the force of law, whether in effect as of the date hereof or as of any date thereafter in the Federal Republic of Nigeria.",
-      },
-      {
-        term: '"Client", "Customer", "You", "Your"',
-        definition:
-          "means a party using and utilizing our Services through our Platform.",
-      },
-      {
-        term: '"Chain Co-op", "We", "Us", "Our"',
-        definition:
-          'means Chain Co-op and its successors, affiliates, and assignees. "Chain Co-op Account" means a Client or Customer\'s account with Chain Co-op for the Services we render.',
-      },
-      {
-        term: '"Partner Program"',
-        definition:
-          "refers to contractual relationships entered into between Chain Co-op and third-party service providers to enhance or build on Chain Co-op's product offerings.",
-      },
-      {
-        term: '"Platform"',
-        definition:
-          "means collectively, Chain Co-op's website, mobile applications, and blog, including any updates or replacements as may be applicable.",
-      },
-      {
-        term: '"Services"',
-        definition:
-          "refers to the management of a Client's savings and investments made through the Platform and/or other services as may be agreed between the parties but subject always to the terms of our license.",
-      },
-      {
-        term: '"Terms of Use"',
-        definition: "means these Terms of Use.",
-      },
-      {
-        term: '"Members"',
-        definition:
-          "means the natural person who acquired the status of Member within Chain Co-op.",
-      },
-    ],
-  },
-  {
-    title: "3. Membership",
+    title: "Membership Restriction",
     content:
-      "Chain Co-op is a Co-operative that allows users to save money online and convert it into stable cryptocurrencies like USDT. Becoming a member requires completing the necessary procedures, such as the successful completion of the Know Your Customer (KYC) procedure, along with any other methods outlined in the governing documents of Chain Co-op.",
+      "Access to Chain Coop is strictly limited to registered and approved members. We do not offer services to the general public.",
   },
   {
-    title: "4. Purposes",
-    content: [
-      "Chain Co-op provides an online platform where users can save money automatically and convert it into cryptocurrencies. As our Client, we will use our best efforts and reasonable care to manage your savings.",
-      "In order to operate and make available the Services and utilize the Platform, Chain Co-op collects, uses, and discloses certain personal information about you. We collect, use, disclose, and protect that information as described in our Privacy Policy, which is hereby incorporated into these Terms of Use.",
-      "Please read the Privacy Policy carefully before accessing the Platform or using the Services.",
-      "References to 'You' or 'Your' are references to any person accessing or using the Platform and/or Services by any means. Chain Co-op provides an online platform where users can save money and convert it into cryptocurrencies.",
-      "The Co-operative is governed using blockchain technology, ensuring transparency, security, and efficient management of member funds.",
-    ],
+    title: "Purpose of the Platform",
+    content:
+      "This platform is used for coordination, communication, and community-building activities among members of the cooperative.",
   },
   {
-    title: "5. Obligations",
-    sections: [
-      {
-        title: "5.1 Eligibility",
-        content:
-          "Access to the Chain Co-op Platform and Services is strictly limited to:",
-        list: [
-          "Individuals possessing a valid Bank Verification Number (BVN);",
-          "Nigerian citizens or legal residents;",
-          "Businesses or entities duly registered and incorporated in Nigeria.",
-        ],
-        footer:
-          "Use of the Platform or Services by any party not meeting these criteria is unauthorized and constitutes a violation of these Terms of Service.",
-      },
-      {
-        title: "5.2 Your Access",
-        content: [
-          "To access certain features of our Platform, you must register and create an account ('Member Account'). During registration, you will be required to set a password, which must be provided to access your account.",
-          "Chain Co-op maintains robust security measures compliant with legal standards to protect your personal information (refer to our Privacy Policy). You are responsible for safeguarding your password and other account details. You must not share your password with anyone, and you must notify Chain Co-op immediately if your password is compromised or if you suspect unauthorized use of your account.",
-          "As a Member, you are solely responsible for all activities conducted through your Chain Co-op account. Chain Co-op will act on instructions received under your account, which will be considered duly authorized by you.",
-          "You must ensure that all information provided during account registration is accurate, complete, and kept up-to-date.",
-          "If you are interested in developing enhancements or extensions to the Services, such activity must proceed through our API as part of the Partner Program, which requires meeting specific eligibility criteria and a formal partnership agreement.",
-          "If your account is inactive for a prolonged period, applicable laws may classify the funds as unclaimed property. We may attempt to contact you or your legally designated Next of Kin (NOK) using the last address in our records. Your NOK will not have access to transaction details or funds. If contact attempts fail, we may be required to surrender any funds in your account to the state as unclaimed property, in accordance with local regulations.",
-          "In the event of a member's death, the disposition of funds or interests within the member's account will comply with applicable laws.",
-        ],
-      },
-      {
-        title: "5.3 Alerts, Notifications, and Service Communications",
-        content: [
-          "By creating a Member Account, you agree to receive various alerts and notifications via email and mobile notification.",
-          "These messages will never contain your password but may include your name, email address, and portfolio information.",
-          "These alerts are visible to anyone with access to your email or mobile device.",
-          "You can opt out of non-essential communications at any time.",
-        ],
-      },
-      {
-        title: "5.4 Confidentiality",
-        content: [
-          "Chain Co-op and its employees, consultants, or agents will maintain the confidentiality of all non-public information and documents obtained while providing Services.",
-          "Confidential information will not be disclosed to third parties except as required by law or as necessary for legal advice.",
-          "This confidentiality obligation persists beyond the termination of these Terms.",
-        ],
-      },
-    ],
+    title: "Member Conduct",
+    content:
+      "Members are expected to act in a respectful and lawful manner while engaging with others or participating in any activity hosted through the cooperative.",
   },
   {
-    title: "6. User Responsibilities",
-    content: [
-      "Chain Co-op provides an online platform where users can save automatically and convert it to cryptocurrencies. As our Client, we will use our best efforts and reasonable care to manage your savings.",
-      "In order to operate and make available the Services and utilize the Platform, Chain Co-op collects, uses, and discloses certain personal information about you. We collect, use, disclose, and protect that information as described in our Privacy Policy, which is hereby incorporated into these Terms of Use.",
-      "Chain Co-op reserves the right to modify these Terms as necessary, in accordance with applicable laws and prevailing market conditions.",
-      "Please read the Privacy Policy carefully before accessing the Platform or using the Services.",
-      "References to 'You' or 'Your' are references to any person accessing or using the Platform and/or Services by any means. Chain Co-op provides an online platform where users can save money and convert it into cryptocurrencies.",
-      "The Co-operative is governed by using blockchain technology, ensuring transparency, security, and efficient management of member funds.",
-    ],
+    title: "Access and Use",
+    content:
+      "Members must maintain the confidentiality of their login details. Any unauthorized access or misuse of the platform may result in suspension of access.",
   },
   {
-    title: "7. Savings Terms and Conditions",
-    content: [
-      "By utilizing our Services and Platform, you acknowledge and accept the following terms:",
-      "The duration and commission rates of each savings plan on our Platform are specified within the plan details.",
-      "Chain Co-op reserves the right to modify these terms as necessary, in accordance with applicable laws and prevailing market conditions.",
-      "Chain Co-op may modify, without prior notice, the lock periods and commission rates of any savings plan.",
-      "By agreeing to these terms, you release Chain Co-op and its directors, officers, employees, agents, successors, and assigns from all liabilities, losses, claims, damages, costs, and expenses, including reasonable attorney fees, that could arise from these changes.",
-    ],
+    title: "Content and Communication",
+    content:
+      "Information shared on the platform is intended for member use only and should not be redistributed externally without consent.",
   },
   {
-    title: "8. Fee Payment",
-    content: [
-      "By utilizing our Services, you authorize Chain Co-op to automatically deduct any applicable fees directly from your Chain Co-op account (referred to as 'Account Fees').",
-      "Fee payments will typically be drawn first from liquid assets in your account, followed by the liquidation of cash equivalents, and, if necessary, by selling securities held in your account.",
-      "By maintaining your account with us, you continuously reaffirm your consent for Chain Co-op to deduct these Account Fees as described.",
-    ],
+    title: "Amendments",
+    content:
+      "Chain Coop reserves the right to update these terms as needed. All updates will be shared directly with registered members.",
   },
   {
-    title: "9. Other Fees",
-    content: [
-      "You acknowledge that using Chain Co-op's Services may result in fees imposed by third-party financial institutions.",
-      "These additional costs can include bank transfer fees, transfer taxes, and other similar expenses.",
-      "Please be aware that these fees are not covered by the fees you pay to Chain Co-op.",
-    ],
-  },
-  {
-    title: "10. Anti-Money Laundering",
-    content: [
-      "You affirm and guarantee the following, and you agree to notify Chain Co-op promptly if any of these assurances no longer hold:",
-      "To the best of your knowledge, after conducting thorough inquiries, no funds or assets under Chain Co-op management have been or will be derived from or involved in any illegal activities violating applicable laws.",
-      "Your contributions or payments to Chain Co-op will not cause the Co-operative to breach applicable laws.",
-    ],
-  },
-  {
-    title: "11. Intellectual Property",
-    content: [
-      "All materials, including text, images, logos, products, and services available on the Site and App, are owned by Chain Co-op or licensed.",
-      "Any unauthorized use, reproduction, or distribution is prohibited.",
-    ],
-  },
-  {
-    title: "12. Amendments to Terms and Conditions",
-    content: [
-      "Chain Co-op reserves the right to modify these Terms and Conditions at any time, without prior notice.",
-      "Updated versions will be posted on the Site. The latest version will include the date of the last update, allowing users to check for any changes.",
-    ],
-  },
-  {
-    title: "13. Privacy and Data Protection",
-    content: [
-      "By using the Site, you agree to our Privacy Policy and Cookie Policy, which outline how your data is collected, stored, and used.",
-      "These documents are part of the overall Terms and Conditions.",
-    ],
-  },
-  {
-    title: "14. International Use",
-    content: [
-      "Chain Co-op is exclusively available within the borders of the Federal Republic of Nigeria.",
-      "We do not claim that Chain Co-op is suitable or available outside of Nigeria.",
-      "Additionally, we do not guarantee that accessing Chain Co-op from territories outside Nigeria complies with applicable laws.",
-      "If you use Chain Co-op from outside Nigeria, you do so at your own risk and must ensure compliance with the laws of your location.",
-    ],
-  },
-  {
-    title: "15. Liability",
-    content: [
-      "Chain Co-op is exclusively available within the borders of the Federal Republic of Nigeria. We do not claim that Chain Co-op is suitable or available outside of Nigeria. Additionally, we do not guarantee that accessing Chain Co-op from territories outside Nigeria complies with applicable laws. If you use Chain Co-op from outside Nigeria, you do so at your own risk and must ensure compliance with the laws of your location.",
-    ],
-  },
-  {
-    title: "16. Termination of Membership",
-    content: [
-      "Chain Co-op reserves the right to suspend or terminate any user account for failure to comply with these Terms and Conditions.",
-    ],
+    title: "Governing Law",
+    content:
+      "These Terms are governed by the laws of the Federal Republic of Nigeria and the Nigerian Cooperative Societies Act.",
   },
 ];
 

@@ -33,6 +33,24 @@ const Avatar = () => {
 
   const avatarSource = avatarUrl || getProfile?.profilePhoto?.url || user;
 
+  // Mail icon SVG component
+  const MailIcon = ({ className }: { className?: string }) => (
+    <svg
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+      />
+    </svg>
+  );
+
   return (
     <main>
       <div className="flex flex-row items-center justify-between gap-4 lg:flex-row">
@@ -62,7 +80,7 @@ const Avatar = () => {
               </div>
             </label>
           </div>
-          <div className="flex flex-col items-center gap-2 sm:items-start sm:gap-4">
+          <div className="flex flex-col items-center gap-2 sm:items-start sm:gap-2">
             <div className="flex items-center gap-2">
               <span className="flex gap-2 text-lg font-bold">
                 {getProfile?.firstName || "User"}
@@ -70,6 +88,10 @@ const Avatar = () => {
               <span className="flex gap-2 text-lg font-bold">
                 {getProfile?.lastName || ""}
               </span>
+            </div>
+            <div className="flex items-center gap-1">
+              <MailIcon className="h-4 w-4 text-gray-500" />
+              <span>{getProfile?.email}</span>
             </div>
             <div className="flex items-center gap-1">
               <div>
