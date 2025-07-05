@@ -209,7 +209,7 @@ const AutoSavings: React.FC<AutoSavingsProps> = ({
                     </figure>
                   </div>
                 </div>
-                <div className="flex items-center justify-between">
+                {/* <div className="flex items-center justify-between">
                   <div>
                     Duration:{" "}
                     {calculateSavingsDuration(
@@ -218,7 +218,7 @@ const AutoSavings: React.FC<AutoSavingsProps> = ({
                     )}
                   </div>
                   <div>Deposited Amount: {contribution?.amount}</div>
-                </div>
+                </div> */}
                 <div className="flex items-center justify-between">
                   <div>
                     Withdrawal Status:{" "}
