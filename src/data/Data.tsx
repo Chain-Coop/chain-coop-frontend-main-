@@ -500,7 +500,11 @@ export const SavingOn = [
   { text: "Car" },
 ];
 
-export const Plan = [{ text: "Monthly" }, { text: "Daily" }];
+export const Plan = [
+  { text: "Monthly" },
+  { text: "Daily" },
+  { text: "Weekly" },
+];
 
 export const Terms = [
   {
