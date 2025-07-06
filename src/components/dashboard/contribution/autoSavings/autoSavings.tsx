@@ -180,7 +180,7 @@ const AutoSavings: React.FC<AutoSavingsProps> = ({
               onClick={() => onNavigateToDetails(contribution._id)}
               className="mx-auto flex w-full max-w-3xl cursor-pointer flex-col rounded-xl border-2 border-gray-500 bg-white px-4 transition-all hover:bg-gray-50 md:px-4 lg:px-6"
             >
-              {/* Desktop View - Hidden on mobile - Your Original Code */}
+              {/* Desktop View - Hidden on mobile */}
               <div className="hidden md:block">
                 <div className="flex justify-between text-sm font-medium text-gray-500 md:text-base">
                   <Typography className="font-normal">Savings Name</Typography>
@@ -217,7 +217,19 @@ const AutoSavings: React.FC<AutoSavingsProps> = ({
                       contribution?.withdrawalDate,
                     )}
                   </div>
-                  <div>Deposited Amount: {contribution?.amount}</div>
+                  <div>
+                    Deposited Amount: {formatCurrency(contribution?.amount)}
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    Contribution Plan:{" "}
+                    {contribution?.contributionPlan || "Not specified"}
+                  </div>
+                  <div>
+                    Contribution Type:{" "}
+                    {contribution?.contributionType || "Not specified"}
+                  </div>
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
@@ -275,6 +287,18 @@ const AutoSavings: React.FC<AutoSavingsProps> = ({
                     <span className="text-gray-500">Deposited Amount</span>
                     <span className="font-medium text-gray-800">
                       {formatCurrency(contribution?.amount)}
+                    </span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-gray-500">Contribution Plan</span>
+                    <span className="font-medium text-gray-800">
+                      {contribution?.contributionPlan || "Not specified"}
+                    </span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-gray-500">Contribution Type</span>
+                    <span className="font-medium text-gray-800">
+                      {contribution?.contributionType || "Not specified"}
                     </span>
                   </div>
                   <div className="flex flex-col">
