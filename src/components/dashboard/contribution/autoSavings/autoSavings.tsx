@@ -228,7 +228,7 @@ const AutoSavings: React.FC<AutoSavingsProps> = ({
                   </div>
                   <div>
                     Contribution Type:{" "}
-                    {contribution?.contributionType || "Not specified"}
+                    {contribution?.contributionType || "One-time"}
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
@@ -292,7 +292,7 @@ const AutoSavings: React.FC<AutoSavingsProps> = ({
                   <div className="flex flex-col">
                     <span className="text-gray-500">Contribution Plan</span>
                     <span className="font-medium text-gray-800">
-                      {contribution?.contributionPlan || "Not specified"}
+                      {contribution?.contributionPlan || "one-time"}
                     </span>
                   </div>
                   <div className="flex flex-col">
