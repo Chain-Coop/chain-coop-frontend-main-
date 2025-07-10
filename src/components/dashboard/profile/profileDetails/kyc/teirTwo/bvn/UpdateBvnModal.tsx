@@ -37,7 +37,6 @@ const UpdateBvnModal = ({ isOpen, onClose }: BvnModalProps) => {
       const result = await dispatch(UpdateBvn({ idNumber }));
 
       if (UpdateBvn.fulfilled.match(result)) {
-        console.log("result", result);
         toast.success("BVN updated successfully!");
         await dispatch(GetUserProfile());
         onClose();
