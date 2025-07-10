@@ -190,7 +190,7 @@ const CreateAccount = () => {
             required
           />
           <FormInput
-            label="Last Name"
+            label="Last Name (Surname)"
             type="text"
             name="lastName"
             value={formData.lastName}
