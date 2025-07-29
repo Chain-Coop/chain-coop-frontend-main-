@@ -183,7 +183,7 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
             {tier2Status.buttonContent}
           </div>
 
-          <div
+          {/* <div
             className={`flex w-full items-center justify-between rounded-lg border border-gray-200 p-4 shadow-[0px_8px_16px_0px_#00000014,0px_0px_4px_0px_#0000000A] ${
               userTier >= 2 ? "cursor-pointer" : "cursor-not-allowed opacity-50"
             }`}
@@ -210,7 +210,7 @@ const TierOneFirstModal: React.FC<TierOneFirstModalProps> = ({
             >
               {!isLoading && <CircleArrow />}
             </Button>
-          </div>
+          </div> */}
         </div>
       </DialogBody>
     </Dialog>
